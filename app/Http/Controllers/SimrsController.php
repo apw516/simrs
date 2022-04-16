@@ -305,7 +305,7 @@ class SimrsController extends Controller
         //end of get counter
         //mapping penjamin bpjs dan db simrs
         $mt_penjamin = DB::select('select * from mt_penjamin_bpjs where nama_penjamin_bpjs = ?', [$request->penjamin]);
-        //end
+       //end
         // dd($mt_penjamin);
         //jenis pelayanan
         if ($request->jenispelayanan == 1) {
@@ -366,6 +366,11 @@ class SimrsController extends Controller
         //membuat kode layanan header menggunakan store procedure
         $r = DB::select("CALL GET_NOMOR_LAYANAN_HEADER('$kodeunit')");
         $kode_layanan_header = $r[0]->no_trx_layanan;
+        if($kode_layanan_header == ""){
+            $year = date('y');
+            $kode_layanan_header = $unit[0]['prefix_unit'].$year.date('m').date('d').'000001';
+            DB::select('insert into mt_nomor_trx (tgl,no_trx_layanan,unit) values (?,?,?)', [date('Y-m-d h:i:s'),$kode_layanan_header,$kodeunit]);
+        }
         $data_layanan_header = [
             'kode_layanan_header' => $kode_layanan_header,
             'tgl_entry' =>   date('Y-m-d h:i:s'),
@@ -695,10 +700,14 @@ class SimrsController extends Controller
         ]);
     }
     public function detailkunjungan(Request $request)
-    {
+    {   
         $data_kunjungan = DB::select('select * from view_ts_kunjungan where kode_kunjungan = ?', [$request->kodekunjungan]);
-
-        $data_layanan = DB::select('select * from view_ts_layanan where kode_kunjungan = ?', [$request->kodekunjungan]);
+        
+        $data_layanan = DB::select('select distinct * from view_ts_layanan where kode_kunjungan = ?', [$request->kodekunjungan]);
+        $cek = count($data_layanan);
+        if($cek == 0){
+            $data_layanan = DB::select('select distinct * from view_ts_layanan_rajal where kode_kunjungan = ?', [$request->kodekunjungan]);
+        }
         return view('simrs.detailkunjungan', [
             'datakunjungan' => $data_kunjungan,
             'data_layanan' => $data_layanan,
@@ -706,8 +715,8 @@ class SimrsController extends Controller
     }
     public function batalperiksa(Request $request)
     {
-        ts_kunjungan::where('kode_kunjungan', $request->kodekunjungan)->update(['status_kunjungan' => 8]);
-        ts_layanan_header::where('kode_kunjungan', $request->kodekunjungan)->update(['status_layanan' => 3]);
+        ts_kunjungan::where('kode_kunjungan', $request->kodekunjungan)->update(['status_kunjungan' => 8,'pic2' => auth()->user()->id_simrs]);
+        ts_layanan_header::where('kode_kunjungan', $request->kodekunjungan)->update(['status_layanan' => 3,'pic2' => auth()->user()->id_simrs]);
         $ts_kunjungan = ts_kunjungan::where('kode_kunjungan', $request->kodekunjungan)->get();
         $id_ruangan = $ts_kunjungan[0]['id_ruangan'];
         $sep = $ts_kunjungan[0]['no_sep'];
@@ -754,7 +763,7 @@ class SimrsController extends Controller
             $status_kunjungan = 8;
             $status_layanan = 3;
         }
-        ts_kunjungan::where('kode_kunjungan', $request->kodekunjungan)->update(['status_kunjungan' => $status_kunjungan, 'id_alasan_pulang' => $status_pulang_simrs, 'tgl_keluar' => $request->tanggalpulang]);
+        ts_kunjungan::where('kode_kunjungan', $request->kodekunjungan)->update(['status_kunjungan' => $status_kunjungan, 'id_alasan_pulang' => $status_pulang_simrs, 'tgl_keluar' => $request->tanggalpulang,'pic2' => auth()->user()->id_simrs]);
         ts_layanan_header::where('kode_kunjungan', $request->kodekunjungan)->update(['status_layanan' => $status_layanan,'pic2' => auth()->user()->id_simrs]);
         $sep = DB::select('select * FROM ts_kunjungan where kode_kunjungan = ?', [$request->kodekunjungan]);
         $id_ruangan = $sep[0]->id_ruangan;
