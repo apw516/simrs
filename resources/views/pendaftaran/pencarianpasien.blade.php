@@ -48,7 +48,7 @@
                 nomorrm,
                 nomorbpjs
             },
-            url: '/pendaftaran/formbpjs',
+            url: '<?= route('formbpjs');?>',
             error: function(data) {
                 spinner.hide()
                 Swal.fire({

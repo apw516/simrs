@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6">
-            <img src="/auth/images/undraw_remotely_2j6y.svg" alt="Image"
+            <img src="{{ asset('public/auth/images/undraw_remotely_2j6y.svg');}}" alt="Image"
                 class="img-fluid">
         </div>
         <div class="col-md-6 contents">
@@ -24,7 +24,7 @@
                         </div>
                         @endif
                     </div>
-                    <form action="/login" method="post">
+                    <form action="{{ route('login')}}" method="post">
                         @csrf
                         <div class="form-group first">
                             <label for="username">Username</label>

@@ -109,7 +109,7 @@
                 _token: "{{ csrf_token() }}",
                 nomorsep,
             },
-            url: '/simrsvclaim/detailsep',
+            url: '<?= route('vclaimdetailsep');?>',
             error: function(data) {
                 spinner.hide()
                 Swal.fire({
@@ -133,7 +133,7 @@
                 _token: "{{ csrf_token() }}",
                 nomorsep,
             },
-            url: '/simrsvclaim/detailsep',
+            url: '<?= route('vclaimdetailsep');?>',
             error: function(data) {
                 spinner.hide()
                 Swal.fire({

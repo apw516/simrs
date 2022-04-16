@@ -480,7 +480,7 @@
                         _token: "{{ csrf_token() }}",
                         provinsi: provinsi
                     },
-                    url: 'Pendaftaran/carikab_local',
+                    url: '<?= route('carikab_local');?>',
                     success: function(response) {
                         $('#kabupaten').html(response);
                         // $('#daftarpxumum').attr('disabled', true);
@@ -497,7 +497,7 @@
                         _token: "{{ csrf_token() }}",
                         kabupaten: kabupaten
                     },
-                    url: 'Pendaftaran/carikec_local',
+                    url: '<?= route('carikec_local');?>',
                     success: function(response) {
                         $('#kecamatan').html(response);
                         // $('#daftarpxumum').attr('disabled', true);
@@ -514,7 +514,7 @@
                         _token: "{{ csrf_token() }}",
                         kecamatan: kecamatan
                     },
-                    url: 'Pendaftaran/caridesa_local',
+                    url: '<?= route('caridesa_local');?>',
                     success: function(response) {
                         $('#desa').html(response);
                         // $('#daftarpxumum').attr('disabled', true);
@@ -531,7 +531,7 @@
                         _token: "{{ csrf_token() }}",
                         provinsi: provinsi
                     },
-                    url: 'Pendaftaran/carikab_local',
+                    url: '<?= route('carikab_local');?>',
                     success: function(response) {
                         $('#kabupatendom').html(response);
                         // $('#daftarpxumum').attr('disabled', true);
@@ -548,7 +548,7 @@
                         _token: "{{ csrf_token() }}",
                         kabupaten: kabupaten
                     },
-                    url: 'Pendaftaran/carikec_local',
+                    url: '<?= route('carikec_local');?>',
                     success: function(response) {
                         $('#kecamatandom').html(response);
                         // $('#daftarpxumum').attr('disabled', true);
@@ -565,7 +565,7 @@
                         _token: "{{ csrf_token() }}",
                         kecamatan: kecamatan
                     },
-                    url: 'Pendaftaran/caridesa_local',
+                    url: '<?= route('caridesa_local');?>',
                     success: function(response) {
                         $('#desadom').html(response);
                         // $('#daftarpxumum').attr('disabled', true);

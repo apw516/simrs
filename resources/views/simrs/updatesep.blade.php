@@ -265,7 +265,7 @@
 <script>
     $(document).ready(function() {
         $('#diagnosa').autocomplete({
-            source: "/Pendaftaran/caridiagnosa",
+            source: "<?= route('caridiagnosa');?>",
             select: function(event, ui) {
                 $('[id="diagnosa"]').val(ui.item.label);
                 $('[id="kodediagnosa"]').val(ui.item.kode);
@@ -274,7 +274,7 @@
     });
      $(document).ready(function() {
         $('#editpolitujuan').autocomplete({
-            source: "/pendaftaran/caripoli",
+            source: "<?= route('caripoli');?>",
             select: function(event, ui) {
                 spinner.show();
                 $('[id="editpolitujuan"]').val(ui.item.label);
@@ -286,7 +286,7 @@
     });
      $(document).ready(function() {
         $('#namadokterlayan2').autocomplete({
-            source: "/pendaftaran/caridokter",
+            source: "<?= route('caridokter');?>",
             select: function(event, ui) {
                 $('[id="namadokterlayan2"]').val(ui.item.label);
                 $('[id="kodedokterlayan2"]').val(ui.item.kode);
@@ -302,7 +302,7 @@
                     _token: "{{ csrf_token() }}",
                     prov: sep_laka_prov
                 },
-                url: '/Pendaftaran/carikabupaten',
+                url: '<?= route('carikabupaten');?>',
                 success: function(response) {
                     spinner.hide();
                     $('#updatekablaka').html(response);
@@ -320,7 +320,7 @@
                 _token: "{{ csrf_token() }}",
                 kab: sep_laka_kab
             },
-            url: '/Pendaftaran/carikecamatan',
+            url: '<?= route('carikecamatan');?>',
             success: function(response) {
                 spinner.hide();
                 $('#updatekeclaka').html(response);

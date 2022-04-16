@@ -112,7 +112,7 @@
                 _token: "{{ csrf_token() }}",
                 nomorsep,
             },
-            url: '/simrsvclaim/detailsep',
+            url: '<?= route('vclaimdetailsep');?>',
             error: function(data) {
                 spinner.hide()
                 Swal.fire({
@@ -136,7 +136,7 @@
                 _token: "{{ csrf_token() }}",
                 nomorsep,
             },
-            url: '/simrsvclaim/detailsep',
+            url: '<?= route('vclaimdetailsep');?>',
             error: function(data) {
                 spinner.hide()
                 Swal.fire({
@@ -174,7 +174,7 @@
                     },
                     dataType: 'Json',
                     Async: true,
-                    url: '/simrsvclaim/hapussep',
+                    url: '<?= route('vclaimhapussep');?>',
                     error: function(data) {
                         spinner.hide()
                         Swal.fire({
@@ -223,7 +223,7 @@
                     },
                     dataType: 'Json',
                     Async: true,
-                    url: '/simrsvclaim/hapussep',
+                    url: '<?= route('vclaimhapussep');?>',
                     error: function(data) {
                         spinner.hide()
                         Swal.fire({
@@ -261,7 +261,7 @@
                 _token: "{{ csrf_token() }}",
                 nomorsep,
             },
-            url: '/simrsvclaim/update',
+            url: '<?= route('vclaimupdate');?>',
             error: function(data) {
                 spinner.hide()
                 Swal.fire({
@@ -285,7 +285,7 @@
                 _token: "{{ csrf_token() }}",
                 nomorsep,
             },
-            url: '/simrsvclaim/update',
+            url: '<?= route('vclaimupdate');?>',
             error: function(data) {
                 spinner.hide()
                 Swal.fire({

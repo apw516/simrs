@@ -776,7 +776,7 @@
                 penunjang,
                 asessment
             },
-            url: 'Pendaftaran/simpansep',
+            url: '<?= route('simpansep');?>',
             error: function(data) {
                 spinner.hide()
                 Swal.fire({
@@ -798,7 +798,7 @@
                         cancelButtonText: 'Tidak'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.open('/cetaksep/'+data.kode_kunjungan);
+                            window.open('cetaksep/'+data.kode_kunjungan);
                             location.reload();
                         } else {
                             location.reload();
@@ -829,7 +829,7 @@
                 nomor,
                 tanggal
             },
-            url: 'Pendaftaran/caripolikontrol',
+            url: '<?= route('caripolikontrol');?>',
             error: function(data) {
                 spinner.hide();
                 alert('error!')
@@ -856,7 +856,7 @@
                 kodepoli,
                 tanggal
             },
-            url: 'Pendaftaran/caridokterkontrol',
+            url: '<?= route('caridokterkontrol');?>',
             error: function(data) {
                 spinner.hide();
                 alert('error!')
@@ -891,7 +891,7 @@
                 kodepolikontrol,
                 kodedokterkontrol
             },
-            url: 'Pendaftaran/buatsuratkontrol',
+            url: '<?= route('buatsuratkontrol');?>',
             error: function(data) {
                 spinner.hide();
                 alert('error!')
@@ -917,7 +917,7 @@
                 _token: "{{ csrf_token() }}",
                 nomorkartu
             },
-            url: 'Pendaftaran/carisuratkontrol',
+            url: '<?= route('carisuratkontrol');?>',
             error: function(data) {
                 spinner.hide();
                 alert('error!')
@@ -940,7 +940,7 @@
                 _token: "{{ csrf_token() }}",
                 nomorkartu
             },
-            url: 'Pendaftaran/carirujukan',
+            url: '<?= route('carirujukan');?>',
             error: function(data) {
                 spinner.hide();
                 alert('error!')
@@ -969,7 +969,7 @@
                     naikkelas,
                     kelasrawatnaik
                 },
-                url: 'Pendaftaran/cariruanganranap',
+                url: '<?= route('cariruangranap');?>',
                 success: function(response) {
                     $('#kamarranap').html(response);
                     // $('#daftarpxumum').attr('disabled', true);
@@ -986,7 +986,7 @@
                     _token: "{{ csrf_token() }}",
                     kamarranap: kamarranap,
                 },
-                url: 'Pendaftaran/caribedranap',
+                url: '<?= route('caribedranap');?>',
                 success: function(response) {
                     $('#bedranap').html(response);
                     // $('#daftarpxumum').attr('disabled', true);
@@ -1060,7 +1060,7 @@
     });
     $(document).ready(function() {
         $('#politujuan').autocomplete({
-            source: "/pendaftaran/caripoli",
+            source: "<?= route('caripoli');?>",
             select: function(event, ui) {
                 spinner.show();
                 $('[id="politujuan"]').val(ui.item.label);
@@ -1072,7 +1072,7 @@
     });
     $(document).ready(function() {
         $('#namadokterlayan').autocomplete({
-            source: "pendaftaran/caridokter",
+            source: "<?= route('caridokter');?>",
             select: function(event, ui) {
                 $('[id="namadokterlayan"]').val(ui.item.label);
                 $('[id="kodedokterlayan"]').val(ui.item.kode);
@@ -1081,7 +1081,7 @@
     });
     $(document).ready(function() {
         $('#namadiagnosa').autocomplete({
-            source: "Pendaftaran/caridiagnosa",
+            source: "<?= route('caridiagnosa');?>",
             select: function(event, ui) {
                 $('[id="namadiagnosa"]').val(ui.item.label);
                 $('[id="kodediagnosa"]').val(ui.item.kode);
@@ -1116,7 +1116,7 @@
                 _token: "{{ csrf_token() }}",
                 prov: sep_laka_prov
             },
-            url: 'Pendaftaran/carikabupaten',
+            url: '<?= route('carikabupaten');?>',
             success: function(response) {
                 spinner.hide();
                 $('#kabupatenkejadian').html(response);
@@ -1134,7 +1134,7 @@ $(document).ready(function() {
                 _token: "{{ csrf_token() }}",
                 kab: sep_laka_kab
             },
-            url: 'Pendaftaran/carikecamatan',
+            url: '<?= route('carikecamatan');?>',
             success: function(response) {
                 spinner.hide();
                 $('#kecamatankejadian').html(response);

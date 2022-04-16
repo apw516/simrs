@@ -393,7 +393,7 @@
                     bulan,
                     tahun
                 },
-                url: '/simrsvclaim/listtanggalpulang',
+                url: '<?= route('vclaimlisttanggalpulang');?>',
                 error: function(data) {
                     spinner.hide();
                     alert('error!')
@@ -415,7 +415,7 @@
                     _token: "{{ csrf_token() }}",
                     tanggalpelayanan
                 },
-                url: '/simrsvclaim/carilistfinger',
+                url: '<?= route('vclaimcarilistfinger');?>',
                 error: function(data) {
                     spinner.hide();
                     alert('error!')
@@ -441,7 +441,7 @@
                     tglakhir,
                     nomorkartu
                 },
-                url: '/simrsvclaim/carikunjungansep_peserta',
+                url: '<?= route('vclaimcarikunjungansep_peserta');?>',
                 error: function(data) {
                     spinner.hide();
                     alert('error!')
@@ -464,7 +464,7 @@
                     _token: "{{ csrf_token() }}",
                     tanggalsep
                 },
-                url: '/simrsvclaim/carikunjungansep',
+                url: '<?= route('vclaimcarikunjungansep');?>',
                 error: function(data) {
                     spinner.hide();
                     alert('error!')
@@ -487,7 +487,7 @@
                     _token: "{{ csrf_token() }}",
                     nomorsep,
                 },
-                url: '/simrsvclaim/detailsep',
+                url: '<?= route('vclaimdetailsep');?>',
                 error: function(data) {
                     spinner.hide()
                     Swal.fire({
@@ -511,7 +511,7 @@
                     _token: "{{ csrf_token() }}",
                     nomorsep,
                 },
-                url: '/simrsvclaim/detailsep',
+                url: '<?= route('vclaimdetailsep');?>',
                 error: function(data) {
                     spinner.hide()
                     Swal.fire({
@@ -549,7 +549,7 @@
                         },
                         dataType: 'Json',
                         Async: true,
-                        url: '/simrsvclaim/hapussep',
+                        url: '<?= route('vclaimhapussep');?>',
                         error: function(data) {
                             spinner.hide()
                             Swal.fire({
@@ -598,7 +598,7 @@
                         },
                         dataType: 'Json',
                         Async: true,
-                        url: '/simrsvclaim/hapussep',
+                        url: '<?= route('vclaimhapussep');?>',
                         error: function(data) {
                             spinner.hide()
                             Swal.fire({
@@ -635,7 +635,7 @@
                     _token: "{{ csrf_token() }}",
                     nomorsep,
                 },
-                url: '/simrsvclaim/update',
+                url: '<?= route('vclaimupdate');?>',
                 error: function(data) {
                     spinner.hide()
                     Swal.fire({
@@ -659,7 +659,7 @@
                     _token: "{{ csrf_token() }}",
                     nomorsep,
                 },
-                url: '/simrsvclaim/update',
+                url: '<?= route('vclaimupdate');?>',
                 error: function(data) {
                     spinner.hide()
                     Swal.fire({

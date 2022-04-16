@@ -799,8 +799,8 @@ class SimrsController extends Controller
         $pdf->SetTitle('Cetak SEP');
         $pdf->SetMargins('15', '20', '10');
         $pdf->SetFont('Arial', '', 15);
-        $pdf->Image('img/logobpjs.png', 1, -5, 60, 40);
-        $pdf->Image('img/logo_rs.png', 170, 4, 35, 25);
+        $pdf->Image('public/img/logobpjs.png', 1, -5, 60, 40);
+        $pdf->Image('public/img/logo_rs.png', 170, 4, 35, 25);
         $pdf->SetXY(70, 8);
         $pdf->Cell(10, 7, 'SURAT ELIGIBILITAS PESERTA', 0, 1);
         $pdf->SetXY(73, 14);

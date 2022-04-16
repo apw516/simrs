@@ -2,7 +2,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="index3.html" class="brand-link">
-          <img src="/img/logo_rs.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+          <img src="{{ asset('public/img/logo_rs.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
               style="opacity: .8">
           <span class="brand-text font-weight-light">SEMERUSMART</span>
       </a>
@@ -12,7 +12,7 @@
           <!-- Sidebar user panel (optional) -->
           <div class="user-panel mt-3 pb-3 mb-3 d-flex">
               <div class="image">
-                  <img src="/img/user.jpg" class="img-circle elevation-2" alt="User Image">
+                  <img src="{{ asset('public/img/user.jpg') }}" class="img-circle elevation-2" alt="User Image">
               </div>
               <div class="info">
                   <a href="#" class="d-block">{{ auth()->user()->username }}</a>
@@ -43,7 +43,7 @@
                   </li>
                   @if(auth()->user()->hak_akses == 1 || auth()->user()->hak_akses == 2)
                   <li class="nav-item">
-                      <a href="/pendaftaran" class="nav-link @if($sidebar == '2') active @endif">
+                      <a href="{{ route('pendaftaran') }}" class="nav-link @if($sidebar == '2') active @endif">
                           <i class="nav-icon fas fa-th"></i>
                           <p>
                               Pendaftaran
@@ -78,13 +78,13 @@
                       </a>
                       <ul class="nav nav-treeview">
                           <li class="nav-item ">
-                              <a href="datakunjungan/riwayatpelayanan_user" class="nav-link @if($sidebar_m == '3.1') active @endif ">
+                              <a href="{{ route('riwayatpelayanan_user')}}" class="nav-link @if($sidebar_m == '3.1') active @endif ">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>Riwayat Pelayanan User</p>
                               </a>
                           </li>
                           <li class="nav-item ">
-                              <a href="/datakunjungan" class="nav-link @if($sidebar_m == '3.2') active @endif ">
+                              <a href="{{ route('datakunjungan') }}" class="nav-link @if($sidebar_m == '3.2') active @endif ">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>Data Kunjungan RS</p>
                               </a>
@@ -101,13 +101,13 @@
                       </a>
                       <ul class="nav nav-treeview">
                           <li class="nav-item">
-                              <a href="/simrsvclaim/sep" class="nav-link @if($sidebar_m == '4.1') active @endif">
+                              <a href="{{ route('vclaimsep')}}" class="nav-link @if($sidebar_m == '4.1') active @endif">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>SEP</p>
                               </a>
                           </li>
                           <li class="nav-item">
-                              <a href="/simrsvclaim/surakontrol" class="nav-link @if($sidebar_m == '4.2') active @endif">
+                              <a href="{{ route('vclaimsurakontrol')}}" class="nav-link @if($sidebar_m == '4.2') active @endif">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>SURAT KONTROL</p>
                               </a>

@@ -251,7 +251,7 @@
                     tahun,
                     filter
                 },
-                url: '/simrsvclaim/listsuratkontrol_peserta',
+                url: '<?= route('vclaimlistsuratkontrol_peserta');?>',
                 error: function(data) {
                     spinner.hide();
                     alert('error!')
@@ -277,7 +277,7 @@
                     tanggalakhir,
                     filter
                 },
-                url: '/simrsvclaim/listsuratkontrol_rs',
+                url: '<?= route('vclaimlistsuratkontrol_rs');?>',
                 error: function(data) {
                     spinner.hide();
                     alert('error!')
@@ -311,7 +311,7 @@
                         },
                         dataType: 'Json',
                         Async: true,
-                        url: '/simrsvclaim/hapussurkon',
+                        url: '<?= route('vclaimhapussurkon');?>',
                         error: function(data) {
                             spinner.hide()
                             Swal.fire({

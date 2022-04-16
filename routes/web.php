@@ -22,57 +22,99 @@ Route::get('/', [LoginController::class, 'index']);
 
 Route::get('/login', [LoginController::class, 'index'])->middleware('guest')->name('login');
 Route::post('/login', [LoginController::class, 'authenticate']);
-Route::get('/logout', [LoginController::class, 'logout']);
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::get('/register', [RegisterController::class, 'index'])->middleware('guest');
+Route::get('/register', [RegisterController::class, 'index'])->middleware('guest')->name('register');
 Route::post('/register', [RegisterController::class, 'Store']);
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
 Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
-    Route::get('/pendaftaran', [SimrsController::class, 'Pendaftaran']);
-    Route::post('/pendaftaran/formbpjs', [SimrsController::class, 'Formbpjs']);
-    Route::post('/pendaftaran/caripasien', [SimrsController::class, 'Caripasien']);
-    Route::get('/pendaftaran/caripoli', [SimrsController::class, 'Caripoli']);
-    Route::get('/pendaftaran/caridokter', [SimrsController::class, 'Caridokter']);
-    Route::get('Pendaftaran/caridiagnosa', [SimrsController::class, 'Caridiagnosa']);
-    Route::post('Pendaftaran/simpansep', [SimrsController::class, 'Simpansep']);
-    Route::post('Pendaftaran/cariruanganranap', [SimrsController::class, 'Cariruangranap']);
-    Route::post('Pendaftaran/caribedranap', [SimrsController::class, 'Caribedranap']);
-    Route::post('Pendaftaran/caripolikontrol', [SimrsController::class, 'Caripolikontrol']);
-    Route::post('Pendaftaran/caridokterkontrol', [SimrsController::class, 'Caridokterkontrol']);
-    Route::post('Pendaftaran/buatsuratkontrol', [SimrsController::class, 'Buatsuratkontrol']);
-    Route::post('Pendaftaran/updatesuratkontrol', [SimrsController::class, 'updatesuratkontrol']);
-    Route::post('Pendaftaran/carisuratkontrol', [SimrsController::class, 'Carisuratkontrol']);
-    Route::post('Pendaftaran/carirujukan', [SimrsController::class, 'Carirujukan']);
-    Route::post('Pendaftaran/carikabupaten', [SimrsController::class, 'Carikabupaten']);
-    Route::post('Pendaftaran/carikecamatan', [SimrsController::class, 'Carikecamatan']);
-    Route::post('Pendaftaran/carikab_local', [SimrsController::class, 'carikab_local']);
-    Route::post('Pendaftaran/carikec_local', [SimrsController::class, 'carikec_local']);
-    Route::post('Pendaftaran/caridesa_local', [SimrsController::class, 'caridesa_local']);
-    Route::post('Pendaftaran/updatepulang', [SimrsController::class, 'updatepulang']);
-    Route::get('/datakunjungan/riwayatpelayanan_user', [SimrsController::class, 'riwayatpelayanan_user']);
-    Route::get('/datakunjungan', [SimrsController::class, 'datakunjungan']);
-    Route::post('/datakunjungan/cari', [SimrsController::class, 'caridatakunjungan']);
-    Route::post('/datakunjungan/caririwayatpelayanan_user', [SimrsController::class, 'caririwayatpelayanan_user']);
-    Route::post('datakunjungan/detailkunjungan', [SimrsController::class, 'detailkunjungan']);
-    Route::post('datakunjungan/batalperiksa', [SimrsController::class, 'batalperiksa']);
-    Route::get('/cetaksep/{kodekunjungan}', [SimrsController::class, 'Cetaksep']);
+    Route::get('/pendaftaran', [SimrsController::class, 'Pendaftaran'])
+        ->name('pendaftaran'); //sidebar
+    Route::get('/datakunjungan/riwayatpelayanan_user', [SimrsController::class, 'riwayatpelayanan_user'])->name('riwayatpelayanan_user'); //sidebar
+    Route::get('/datakunjungan', [SimrsController::class, 'datakunjungan'])
+        ->name('datakunjungan'); //sidebar
+    Route::post('/pendaftaran/formbpjs', [SimrsController::class, 'Formbpjs'])
+        ->name('formbpjs'); //footer,pencarianpasien
+    Route::post('Pendaftaran/caripolikontrol', [SimrsController::class, 'Caripolikontrol'])
+        ->name('caripolikontrol'); //footer,formpasien_bpjs
+    Route::post('Pendaftaran/caridokterkontrol', [SimrsController::class, 'Caridokterkontrol'])
+        ->name('caridokterkontrol'); //footer,formpasien_bpjs
+    Route::post('Pendaftaran/updatesuratkontrol', [SimrsController::class, 'updatesuratkontrol'])
+        ->name('updatesuratkontrol'); //footer
+    Route::post('/pendaftaran/caripasien', [SimrsController::class, 'Caripasien'])
+        ->name('caripasien'); //footer
+    Route::post('Pendaftaran/simpansep', [SimrsController::class, 'Simpansep'])
+        ->name('simpansep'); //formpasien_bpjs
+    Route::get('/cetaksep/{kodekunjungan}', [SimrsController::class, 'Cetaksep']); //formpasien_bpjs
+    Route::post('Pendaftaran/buatsuratkontrol', [SimrsController::class, 'Buatsuratkontrol'])
+        ->name('buatsuratkontrol'); //formpasien_bpjs
+    Route::post('Pendaftaran/carisuratkontrol', [SimrsController::class, 'Carisuratkontrol'])
+        ->name('carisuratkontrol'); //formpasien_bpjs
+    Route::post('Pendaftaran/carirujukan', [SimrsController::class, 'Carirujukan'])
+        ->name('carirujukan'); //formpasien_bpjs
+    Route::post('Pendaftaran/cariruanganranap', [SimrsController::class, 'Cariruangranap'])
+        ->name('cariruangranap'); //formpasien_bpjs
+    Route::post('Pendaftaran/caribedranap', [SimrsController::class, 'Caribedranap'])
+        ->name('caribedranap'); //formpasien_bpjs
+    Route::get('/pendaftaran/caripoli', [SimrsController::class, 'Caripoli'])
+        ->name('caripoli'); //formpasien_bpjs
+    Route::get('/pendaftaran/caridokter', [SimrsController::class, 'Caridokter'])
+        ->name('caridokter'); //formpasien_bpjs
+    Route::get('Pendaftaran/caridiagnosa', [SimrsController::class, 'Caridiagnosa'])
+        ->name('caridiagnosa'); //form[asien_bpjs
+    Route::post('Pendaftaran/carikabupaten', [SimrsController::class, 'Carikabupaten'])
+        ->name('carikabupaten'); //formpasien_bpjs
+    Route::post('Pendaftaran/carikecamatan', [SimrsController::class, 'Carikecamatan'])
+        ->name('carikecamatan'); //formpasien_bpjs
+    Route::post('Pendaftaran/carikab_local', [SimrsController::class, 'carikab_local'])
+        ->name('carikab_local'); //indexpendaftaran
+    Route::post('Pendaftaran/carikec_local', [SimrsController::class, 'carikec_local'])
+        ->name('carikec_local'); //indexpendaftaran
+    Route::post('Pendaftaran/caridesa_local', [SimrsController::class, 'caridesa_local'])
+        ->name('caridesa_local'); //indexpendaftaran
+    Route::post('datakunjungan/detailkunjungan', [SimrsController::class, 'detailkunjungan'])
+        ->name('detailkunjungan'); //caridatakunjungan,caririwayatpelayanan_user,datakunjungan
+    Route::post('datakunjungan/batalperiksa', [SimrsController::class, 'batalperiksa'])
+        ->name('batalperiksa'); //caridatakunjungan,caririwayatpelayanan_user,datakunjungan
+    Route::post('Pendaftaran/updatepulang', [SimrsController::class, 'updatepulang'])
+        ->name('updatepulang'); //caridatakunjungan,datakunjungan
+    Route::post('/datakunjungan/cari', [SimrsController::class, 'caridatakunjungan'])
+        ->name('datakunjungan/cari'); //datakunjungan
+    Route::post('/datakunjungan/caririwayatpelayanan_user', [SimrsController::class, 'caririwayatpelayanan_user'])
+        ->name('caririwayatpelayanan_user');
 
-    Route::get('simrsvclaim/sep', [VclaimController::class, 'index'])->middleware('auth');
-    Route::get('simrsvclaim/surakontrol', [VclaimController::class, 'Suratkontrol']);
-    Route::post('simrsvclaim/carikunjungansep', [VclaimController::class, 'datakunjungansep']);
-    Route::post('simrsvclaim/carikunjungansep_peserta', [VclaimController::class, 'datakunjungansep_peserta']);
-    Route::post('simrsvclaim/listtanggalpulang', [VclaimController::class, 'datalisttanggalpulang']);
-    Route::post('simrsvclaim/detailsep', [VclaimController::class, 'detailsep']);
-    Route::post('simrsvclaim/hapussep', [VclaimController::class, 'hapussep']);
-    Route::post('simrsvclaim/update', [VclaimController::class, 'updatesep']);
-    Route::post('simrsvclaim/updatepulang', [VclaimController::class, 'updatepulang']);
-    Route::post('simrsvclaim/updatesep', [VclaimController::class, 'simpanupdatesep']);
-    Route::post('simrsvclaim/pengajuansep', [VclaimController::class, 'pengajuansep']);
-    Route::post('simrsvclaim/carilistfinger', [VclaimController::class, 'carilistfinger']);
-    Route::post('simrsvclaim/listsuratkontrol_peserta', [VclaimController::class, 'listsuratkontrol_peserta']);
-    Route::post('simrsvclaim/hapussurkon', [VclaimController::class, 'hapus_suratkontrol']);
-    Route::post('simrsvclaim/listsuratkontrol_rs', [VclaimController::class, 'listsuratkontrol_rs']);
+
+    //vclaim controller
+    Route::get('simrsvclaim/sep', [VclaimController::class, 'index'])->middleware('auth')
+        ->name('vclaimsep'); //sidebar
+    Route::get('simrsvclaim/surakontrol', [VclaimController::class, 'Suratkontrol'])
+        ->name('vclaimsurakontrol'); //sidebar
+    Route::post('simrsvclaim/updatepulang', [VclaimController::class, 'updatepulang'])
+        ->name('vclaimupdatepulang'); //footer
+    Route::post('simrsvclaim/updatesep', [VclaimController::class, 'simpanupdatesep'])
+        ->name('vclaimupdatesep'); //footer
+    Route::post('simrsvclaim/update', [VclaimController::class, 'updatesep'])
+        ->name('vclaimupdate'); //footer.simrsindex
+    Route::post('simrsvclaim/pengajuansep', [VclaimController::class, 'pengajuansep'])
+        ->name('vclaimpengajuansep'); //footer
+    Route::post('simrsvclaim/listtanggalpulang', [VclaimController::class, 'datalisttanggalpulang'])
+        ->name('vclaimlisttanggalpulang'); //simrsindex
+    Route::post('simrsvclaim/carilistfinger', [VclaimController::class, 'carilistfinger'])
+        ->name('vclaimcarilistfinger');//simrsindex
+        Route::post('simrsvclaim/carikunjungansep_peserta', [VclaimController::class, 'datakunjungansep_peserta'])->name('vclaimcarikunjungansep_peserta');//simrsindex
+    Route::post('simrsvclaim/carikunjungansep', [VclaimController::class, 'datakunjungansep'])
+        ->name('vclaimcarikunjungansep');//simrsindex    
+    Route::post('simrsvclaim/detailsep', [VclaimController::class, 'detailsep'])
+        ->name('vclaimdetailsep');//simrsindex        
+    Route::post('simrsvclaim/hapussep', [VclaimController::class, 'hapussep'])
+        ->name('vclaimhapussep');//simrsindex
+    Route::post('simrsvclaim/listsuratkontrol_peserta', [VclaimController::class, 'listsuratkontrol_peserta'])->name('vclaimlistsuratkontrol_peserta');
+    
+    Route::post('simrsvclaim/hapussurkon', [VclaimController::class, 'hapus_suratkontrol'])
+        ->name('vclaimhapussurkon');
+    Route::post('simrsvclaim/listsuratkontrol_rs', [VclaimController::class, 'listsuratkontrol_rs'])
+        ->name('vclaimlistsuratkontrol_rs');
 });
 
 

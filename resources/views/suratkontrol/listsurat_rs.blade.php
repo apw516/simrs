@@ -90,7 +90,7 @@
                         },
                         dataType: 'Json',
                         Async: true,
-                        url: '/simrsvclaim/hapussurkon',
+                        url: '<?= route('vclaimhapussurkon');?>',
                         error: function(data) {
                             spinner.hide()
                             Swal.fire({

@@ -67,7 +67,7 @@
                 _token: "{{ csrf_token() }}",
                 kodekunjungan,
             },
-            url: '/datakunjungan/detailkunjungan',
+            url: '<?= route('detailkunjungan');?>',
             error: function(data) {
                 spinner.hide()
                 Swal.fire({
@@ -104,7 +104,7 @@
                     },
                     dataType: 'Json',
                     Async: true,
-                    url: '/datakunjungan/batalperiksa',
+                    url: '<?= route('batalperiksa');?>',
                     error: function(data) {
                         spinner.hide()
                         Swal.fire({
@@ -168,7 +168,7 @@
                 suratmeninggal,
                 nomorlp
             },
-            url: '/Pendaftaran/updatepulang',
+            url: '<?= route('updatepulang');?>',
             error: function(data) {
                 spinner.hide()
                 Swal.fire({
