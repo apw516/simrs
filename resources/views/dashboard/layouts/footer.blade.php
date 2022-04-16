@@ -336,7 +336,7 @@
   <script src="{{ asset('dist/js/bootstrap-datepicker.js')}}"></script>
   <!-- AdminLTE for demo purposes -->
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="/dist/js/demo.js"></script>
+  <script src="{{ asset('dist/js/demo.js')}}"></script>
   <script>
       $(function() {
           $(".datepicker").datepicker({
