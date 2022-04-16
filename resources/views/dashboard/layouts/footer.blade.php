@@ -306,37 +306,37 @@
   <script src="{{ asset('public/dist/js/jquery-ui.min.js') }}"></script>
   {{-- <script src="{{ asset('public/plugins/jquery/jquery.min.js"></script> --}}
   <!-- Bootstrap -->
-  <script src="{{ asset('public/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+  <script src="{{ asset('public/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
   <!-- overlayScrollbars -->
-  <script src="{{ asset('public/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
+  <script src="{{ asset('public/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
   <!-- AdminLTE App -->
-  <script src="{{ asset('public/dist/js/adminlte.js')}}"></script>
+  <script src="{{ asset('public/dist/js/adminlte.js') }}"></script>
 
   <!-- PAGE PLUGINS -->
   <!-- jQuery Mapael -->
-  <script src="{{ asset('public/plugins/jquery-mousewheel/jquery.mousewheel.js')}}"></script>
-  <script src="{{ asset('public/plugins/raphael/raphael.min.js')}}"></script>
-  <script src="{{ asset('public/plugins/jquery-mapael/jquery.mapael.min.js')}}"></script>
-  <script src="{{ asset('public/plugins/jquery-mapael/maps/usa_states.min.js')}}"></script>
+  <script src="{{ asset('public/plugins/jquery-mousewheel/jquery.mousewheel.js') }}"></script>
+  <script src="{{ asset('public/plugins/raphael/raphael.min.js') }}"></script>
+  <script src="{{ asset('public/plugins/jquery-mapael/jquery.mapael.min.js') }}"></script>
+  <script src="{{ asset('public/plugins/jquery-mapael/maps/usa_states.min.js') }}"></script>
   <!-- ChartJS -->
-  <script src="{{ asset('public/plugins/chart.js/Chart.min.js')}}"></script>
+  <script src="{{ asset('public/plugins/chart.js/Chart.min.js') }}"></script>
   <!-- datatable -->
-  <script src="{{ asset('public/plugins/datatables/jquery.dataTables.min.js')}}"></script>
-  <script src="{{ asset('public/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
-  <script src="{{ asset('public/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
-  <script src="{{ asset('public/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
-  <script src="{{ asset('public/plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
-  <script src="{{ asset('public/plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
-  <script src="{{ asset('public/plugins/jszip/jszip.min.js')}}"></script>
-  <script src="{{ asset('public/plugins/pdfmake/pdfmake.min.js')}}"></script>
-  <script src="{{ asset('public/plugins/pdfmake/vfs_fonts.js')}}"></script>
-  <script src="{{ asset('public/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
-  <script src="{{ asset('public/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
-  <script src="{{ asset('public/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
-  <script src="{{ asset('public/dist/js/bootstrap-datepicker.js')}}"></script>
+  <script src="{{ asset('public/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+  <script src="{{ asset('public/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+  <script src="{{ asset('public/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+  <script src="{{ asset('public/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+  <script src="{{ asset('public/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+  <script src="{{ asset('public/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+  <script src="{{ asset('public/plugins/jszip/jszip.min.js') }}"></script>
+  <script src="{{ asset('public/plugins/pdfmake/pdfmake.min.js') }}"></script>
+  <script src="{{ asset('public/plugins/pdfmake/vfs_fonts.js') }}"></script>
+  <script src="{{ asset('public/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+  <script src="{{ asset('public/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+  <script src="{{ asset('public/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+  <script src="{{ asset('public/dist/js/bootstrap-datepicker.js') }}"></script>
   <!-- AdminLTE for demo purposes -->
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="{{ asset('public/dist/js/demo.js')}}"></script>
+  <script src="{{ asset('public/dist/js/demo.js') }}"></script>
   <script>
       $(function() {
           $(".datepicker").datepicker({
@@ -365,7 +365,7 @@
                   nomorrm,
                   nomorbpjs
               },
-              url: '<?= route('formbpjs');?>',
+              url: '<?= route('formbpjs') ?>',
               error: function(data) {
                   spinner.hide()
                   Swal.fire({
@@ -394,7 +394,7 @@
                   nomor,
                   tanggal
               },
-              url: '<?= route('caripolikontrol');?>',
+              url: '<?= route('caripolikontrol') ?>',
               error: function(data) {
                   spinner.hide();
                   alert('error!')
@@ -421,7 +421,7 @@
                   kodepoli,
                   tanggal
               },
-              url: '<?= route('caridokterkontrol');?>',
+              url: '<?= route('caridokterkontrol') ?>',
               error: function(data) {
                   spinner.hide();
                   alert('error!')
@@ -458,7 +458,7 @@
                   kodepolikontrol,
                   kodedokterkontrol
               },
-              url: '<?= route('updatesuratkontrol');?>',
+              url: '<?= route('updatesuratkontrol') ?>',
               error: function(data) {
                   spinner.hide();
                   alert('error!')
@@ -492,7 +492,7 @@
                   nama,
                   alamat
               },
-              url: '<?= route('caripasien');?>',
+              url: '<?= route('caripasien') ?>',
               error: function(data) {
                   spinner.hide()
                   Swal.fire({
@@ -517,6 +517,8 @@
       }
 
       function simpanupdatepulang() {
+          spinner = $('#loader');
+          spinner.show();
           sep = $('#pulang_nomorsep').val()
           status = $('#status_pulang').val()
           tanggalpulang = $('#pulang_tanggal').val()
@@ -540,7 +542,7 @@
                   suratmeninggal,
                   nomorlp
               },
-              url: '<?= route('vclaimupdatepulang');?>',
+              url: '<?= route('vclaimupdatepulang') ?>',
               error: function(data) {
                   spinner.hide()
                   Swal.fire({
@@ -568,6 +570,8 @@
       }
 
       function simpanupdate() {
+          spinner = $('#loader');
+          spinner.show();
           sep = $('#sep_update').val()
           rm = $('#nomorm_update').val()
           hakkelas = $('#hakkelas_update').val()
@@ -620,7 +624,7 @@
                   kec,
                   nomortelp,
               },
-              url: '<?= route('vclaimupdatesep');?>',
+              url: '<?= route('vclaimupdatesep') ?>',
               error: function(data) {
                   spinner.hide()
                   Swal.fire({
@@ -658,7 +662,7 @@
                   _token: "{{ csrf_token() }}",
                   nomorsep,
               },
-              url: '<?= route('vclaimupdate');?>',
+              url: '<?= route('vclaimupdate') ?>',
               error: function(data) {
                   spinner.hide()
                   Swal.fire({
@@ -693,7 +697,7 @@
                   jenispengajuan,
                   keterangan
               },
-              url: '<?= route('vclaimpengajuansep');?>',
+              url: '<?= route('vclaimpengajuansep') ?>',
               error: function(data) {
                   spinner.hide()
                   Swal.fire({
@@ -720,7 +724,7 @@
           });
       }
 
-     
+
       function logout() {
           Swal.fire({
               title: 'Logout',
@@ -733,7 +737,7 @@
               cancelButtonText: 'Tidak'
           }).then((result) => {
               if (result.isConfirmed) {
-                  location.href = "<?= route('logout');?>";
+                  location.href = "<?= route('logout') ?>";
               }
           })
       }
