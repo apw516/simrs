@@ -23,6 +23,8 @@ use App\Models\Provinsi;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Desa;
+use App\Models\mt_keluarga;
+use App\Models\mt_domisili;
 ;
 class SimrsController extends Controller
 {
@@ -647,6 +649,20 @@ class SimrsController extends Controller
         date_default_timezone_set('Asia/Jakarta');
         return 'DET' . date('ymd') . $kd;
     }
+    public function get_rm()
+    {        
+            $y = DB::select('SELECT MAX(RIGHT(no_rm,6)) AS kd_max FROM mt_pasien');
+            if (count($y) > 0) {
+                foreach ($y as $k) {
+                    $tmp = ((int) $k->kd_max) + 1;
+                    $kd = sprintf("%06s", $tmp);
+                }
+            } else {
+                $kd = "0001";
+            }
+            date_default_timezone_set('Asia/Jakarta');
+            return date('y') . $kd;
+    }
     public function datakunjungan()
     {
         $title = 'SIMRS - Riwayat Pendaftaran';
@@ -969,5 +985,101 @@ class SimrsController extends Controller
         $pdf->Output();
 
         exit;
+    }
+    public function simpanpasien(Request $request)
+    {
+
+        // namapasien,
+        // tempatlahir,
+        // tanggallahir,
+        // jeniskelamin,
+        // agama,
+        // pekerjaan,
+        // pendidikan,
+        // nomortelp,
+        // namakeluarga,
+        // hubungankeluarga,
+        // telpkeluarga,
+        // alamatkeluarga,
+        // kewarganegaraan,
+        // negara,
+        // provinsi,
+        // kabupaten,
+        // kecamatan,
+        // desa,
+        // alamat,
+        // sesuaiktp,
+        // provinisidom,
+        // kabupatendom,
+        // kecamatandom,
+        // desadom,
+        // alamatdom
+        $rm = $this->get_rm();
+        if($request->sesuaiktp == 1){
+            $desa = $request->desa;
+            $kecamatan = $request->kecamatan;
+            $kab = $request->kabupaten;
+            $prop = $request->provinsi;
+            $alamat = $request->alamat;
+        }else{
+            $desa = $request->desadom;
+            $kecamatan = $request->kecamatandom;
+            $kab = $request->kabupatendom;
+            $prop = $request->provinsidom;
+            $alamat = $request->alamatdom;   
+        }      
+
+        $data_pasien = [
+            'no_rm' => $rm,
+            'no_Bpjs' => $request->nomorbpjs,
+            'nik_bpjs' => $request->nomorktp,
+            'nama_px' => $request->namapasien,
+            'jenis_kelamin' => $request->jeniskelamin,
+            'tempat_lahir' => $request->tempatlahir,
+            'tgl_lahir' =>$request->tanggallahir,
+            'agama' => $request->agama,
+            'pendidikan' => $request->pendidikan,
+            'pekerjaan' => $request->pekerjaan,
+            'kewarganegaraan' => $request->kewarganegaraan,
+            'negara' => $request->negara,
+            'propinsi' => $request->provinsi,
+            'kabupaten' => $request->kabupaten,
+            'kecamatan' => $request->kecamatan,
+            'desa' => $request->desa,
+            'alamat' => $request->alamat,
+            'no_tlp' => $request->nomortelp,
+            'tgl_entry' => date('Y-m-d h:i:s'),
+            'pic' => auth()->user()->id_simrs,
+            'kode_propinsi' => $request->provinsi,
+            'kode_kabupaten' => $request->kabupaten,
+            'kode_kecamatan' => $request->kecamatan,
+            'kode_desa' => $request->kode_desa
+        ];
+        $data_keluarga = [
+            'no_rm' => $rm,
+            'nama_keluarga' => $request->nama_keluarga,
+            'hubungan_keluarga' => $request->hubungankeluarga,
+            'alamat_keluarga' => $request->alamatkeluarga,
+            'tlp_keluarga' => $request->telpkeluarga,
+            'input_date' => date('Y-m-d h:i:s'),
+            'pic1' => auth()->user()->id_simrs
+        ];  
+        $data_domisili = [
+            'no_rm' => $rm,
+            'negara' => $request->negara,
+            'kd_desa' => $desa,
+            'kd_kecamatan' => $kecamatan,
+            'kd_kabupaten' => $kab,
+            'kd_prop' => $prop,
+            'alamat' => $alamat
+        ];
+        Pasien::create($data_pasien);
+        mt_keluarga::create($data_keluarga);
+        mt_domisili::create($data_domisili);
+        $data = [
+            'code' => 200,
+            'message'=> 'ok'
+        ];
+        echo json_encode($data);
     }
 }

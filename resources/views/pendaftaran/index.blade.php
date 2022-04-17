@@ -154,7 +154,7 @@
                                     <div class="col-sm-4">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Tgl lahir</label>
-                                            <input class="form-control datepicker" id="tanggallahir" placeholder="">
+                                            <input class="form-control datepicker" data-date-format="yyyy-mm-dd" id="tanggallahir" placeholder="">
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
@@ -390,6 +390,7 @@
     <script>
         function simpanpasien() {
             nomorktp = $('#nomorktp').val()
+            nomorbpjs = $('#nomorbpjs').val()
             namapasien = $('#namapasien').val()
             tempatlahir = $('#tempatlahir').val()
             tanggallahir = $('#tanggallahir').val()
@@ -466,10 +467,58 @@
                     $('#desadom').addClass('is-invalid')
                 } else if (alamatdom == '') {
                     $('#alamatdom').addClass('is-invalid')
+                } else {
+                    simpan()
                 }
             } else {
-                alert('ok')
+                simpan()
             }
+            function simpan() {
+                    $.ajax({
+                        dataType: 'Json',
+                        async: true,
+                        type: 'post',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            nomorktp,
+                            nomorbpjs,
+                            namapasien,
+                            tempatlahir,
+                            tanggallahir,
+                            jeniskelamin,
+                            agama,
+                            pekerjaan,
+                            pendidikan,
+                            nomortelp,
+                            namakeluarga,
+                            hubungankeluarga,
+                            telpkeluarga,
+                            alamatkeluarga,
+                            kewarganegaraan,
+                            negara,
+                            provinsi,
+                            kabupaten,
+                            kecamatan,
+                            desa,
+                            alamat,
+                            sesuaiktp,
+                            provinisidom,
+                            kabupatendom,
+                            kecamatandom,
+                            desadom,
+                            alamatdom
+                        },
+                        url: '<?= route('simpanpasien') ?>',
+                        error: function(datas) {
+                            alert('error')
+                        },
+                        success: function(data) {
+                            alert('Berhasil')
+                            location.reload()
+                            // $('#daftarpxumum').attr('disabled', true);
+                        }
+                    });
+                }
         }
         $(document).ready(function() {
             $('#provinsi').change(function() {
@@ -480,7 +529,7 @@
                         _token: "{{ csrf_token() }}",
                         provinsi: provinsi
                     },
-                    url: '<?= route('carikab_local');?>',
+                    url: '<?= route('carikab_local') ?>',
                     success: function(response) {
                         $('#kabupaten').html(response);
                         // $('#daftarpxumum').attr('disabled', true);
@@ -497,7 +546,7 @@
                         _token: "{{ csrf_token() }}",
                         kabupaten: kabupaten
                     },
-                    url: '<?= route('carikec_local');?>',
+                    url: '<?= route('carikec_local') ?>',
                     success: function(response) {
                         $('#kecamatan').html(response);
                         // $('#daftarpxumum').attr('disabled', true);
@@ -514,7 +563,7 @@
                         _token: "{{ csrf_token() }}",
                         kecamatan: kecamatan
                     },
-                    url: '<?= route('caridesa_local');?>',
+                    url: '<?= route('caridesa_local') ?>',
                     success: function(response) {
                         $('#desa').html(response);
                         // $('#daftarpxumum').attr('disabled', true);
@@ -531,7 +580,7 @@
                         _token: "{{ csrf_token() }}",
                         provinsi: provinsi
                     },
-                    url: '<?= route('carikab_local');?>',
+                    url: '<?= route('carikab_local') ?>',
                     success: function(response) {
                         $('#kabupatendom').html(response);
                         // $('#daftarpxumum').attr('disabled', true);
@@ -548,7 +597,7 @@
                         _token: "{{ csrf_token() }}",
                         kabupaten: kabupaten
                     },
-                    url: '<?= route('carikec_local');?>',
+                    url: '<?= route('carikec_local') ?>',
                     success: function(response) {
                         $('#kecamatandom').html(response);
                         // $('#daftarpxumum').attr('disabled', true);
@@ -565,7 +614,7 @@
                         _token: "{{ csrf_token() }}",
                         kecamatan: kecamatan
                     },
-                    url: '<?= route('caridesa_local');?>',
+                    url: '<?= route('caridesa_local') ?>',
                     success: function(response) {
                         $('#desadom').html(response);
                         // $('#daftarpxumum').attr('disabled', true);

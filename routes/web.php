@@ -83,6 +83,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('datakunjungan/cari'); //datakunjungan
     Route::post('/datakunjungan/caririwayatpelayanan_user', [SimrsController::class, 'caririwayatpelayanan_user'])
         ->name('caririwayatpelayanan_user');
+    Route::post('/pendaftaran/simpanpasien', [SimrsController::class, 'simpanpasien'])
+        ->name('simpanpasien');
 
 
     //vclaim controller
