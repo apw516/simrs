@@ -4,13 +4,14 @@
             Nomor RM
         </div>
         <div class="col-md-2">
+            {{-- @dd($datakunjungan) --}}
             :   {{ $datakunjungan[0]->no_rm }}
         </div>
         <div class="col-md-2">
             Penjamin
         </div>
         <div class="col-md-2">
-            :   {{ $datakunjungan[0]->penjamin }}
+            :   {{ $datakunjungan[0]->nama_penjamin }}
         </div>
         <div class="col-md-1">
             No SEP
@@ -20,12 +21,12 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-2">
+        {{-- <div class="col-md-2">
             Nomor KTP
         </div>
         <div class="col-md-2">
             :   {{ $datakunjungan[0]->nik_bpjs }}
-        </div>
+        </div> --}}
         <div class="col-md-2">
             Unit
         </div>
@@ -34,17 +35,17 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-2">
+        {{-- <div class="col-md-2">
             Nomor BPJS
         </div>
         <div class="col-md-2">
             :   {{ $datakunjungan[0]->no_bpjs }}
-        </div>
+        </div> --}}
         <div class="col-md-2">
             Nama Dokter
         </div>
         <div class="col-md-5">
-            :   {{ $datakunjungan[0]->nama_dokter }}
+            :   {{ $datakunjungan[0]->dokter }}
         </div>
     </div>
     <div class="row">
@@ -55,22 +56,22 @@
             :   {{ $datakunjungan[0]->nama_px }}
         </div>
     </div>
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-md-2">
             Alamat
         </div>
         <div class="col-md-5">
             :   {{ $datakunjungan[0]->alamat }}
         </div>
-    </div>
-    <div class="row">
+    </div> --}}
+    {{-- <div class="row">
         <div class="col-md-2">
             Status
         </div>
         <div class="col-md-5">
             :   {{ $datakunjungan[0]->status }}
         </div>
-    </div>
+    </div> --}}
     <div class="row">
         <div class="col-md-2">
             Tanggal Masuk

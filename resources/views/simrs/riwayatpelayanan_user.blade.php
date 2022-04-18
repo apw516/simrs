@@ -80,7 +80,7 @@
                                 <td>{{ $d->tgl_masuk }}</td>
                                 <td>{{ $d->tgl_keluar }}</td>
                                 <td>
-                                    <button class="badge badge-primary detailkunjungan"
+                                    <button class="badge badge-primary detailkunjungan" nomorrm ="{{ $d->no_rm }}"
                                         kodekunjungan="{{ $d->kode_kunjungan }}" data-placement="right" title="detail"><i
                                             class="bi bi-eye text-sm" data-toggle="modal"
                                             data-target="#detailkunjungan"></i></button>
@@ -199,11 +199,12 @@
             spinner = $('#loader')
             spinner.show();
             kodekunjungan = $(this).attr('kodekunjungan')
+            nomorrm = $(this).attr('nomorrm')
             $.ajax({
                 type: 'post',
                 data: {
                     _token: "{{ csrf_token() }}",
-                    kodekunjungan,
+                    kodekunjungan,nomorrm
                 },
                 url: '<?= route('detailkunjungan');?>',
                 error: function(data) {

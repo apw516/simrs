@@ -727,8 +727,9 @@ class SimrsController extends Controller
     }
     public function detailkunjungan(Request $request)
     {
-        $data_kunjungan = DB::select('select * from view_ts_kunjungan where kode_kunjungan = ?', [$request->kodekunjungan]);
-
+        // $data_kunjungan = DB::select('select * from view_ts_kunjungan where kode_kunjungan = ?', [$request->kodekunjungan]);
+        $data_kunjungan = DB::select("CALL SP_DETAIL_KUNJUNGAN_PX('$request->kodekunjungan')");
+        // dd($data_kunjungan);
         $data_layanan = DB::select('select distinct * from view_ts_layanan where kode_kunjungan = ?', [$request->kodekunjungan]);
         $cek = count($data_layanan);
         if ($cek == 0) {
