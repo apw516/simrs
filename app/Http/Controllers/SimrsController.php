@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Auth;
 use Codedge\Fpdf\Fpdf\Fpdf;
 use Illuminate\Http\Request;
@@ -24,8 +25,9 @@ use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Desa;
 use App\Models\mt_keluarga;
-use App\Models\mt_domisili;
-;
+use App\Models\mt_domisili;;
+use App\Models\tracer;;
+
 class SimrsController extends Controller
 {
     public function index()
@@ -210,7 +212,7 @@ class SimrsController extends Controller
                     "kodeDokter" => "$request->kodedokterkontrol",
                     "poliKontrol" => "$request->kodepolikontrol",
                     "tglRencanaKontrol" => "$request->tanggalkontrol",
-                    "user" => "waled | ". auth()->user()->id_simrs
+                    "user" => "waled | " . auth()->user()->id_simrs
 
                 ]
             ];
@@ -224,7 +226,7 @@ class SimrsController extends Controller
                     "kodeDokter" => "$request->kodedokterkontrol",
                     "poliKontrol" => "$request->kodepolikontrol",
                     "tglRencanaKontrol" => "$request->tanggalkontrol",
-                    "user" => "waled | ". auth()->user()->id_simrs
+                    "user" => "waled | " . auth()->user()->id_simrs
                 ]
             ];
             $v = new VclaimModel();
@@ -242,7 +244,7 @@ class SimrsController extends Controller
                     "kodeDokter" => "$request->kodedokterkontrol",
                     "poliKontrol" => "$request->kodepolikontrol",
                     "tglRencanaKontrol" => "$request->tanggalkontrol",
-                    "user" => "waled | ". auth()->user()->id_simrs
+                    "user" => "waled | " . auth()->user()->id_simrs
 
                 ]
             ];
@@ -257,7 +259,7 @@ class SimrsController extends Controller
                     "kodeDokter" => "$request->kodedokterkontrol",
                     "poliKontrol" => "$request->kodepolikontrol",
                     "tglRencanaKontrol" => "$request->tanggalkontrol",
-                    "user" => "waled | ". auth()->user()->id_simrs
+                    "user" => "waled | " . auth()->user()->id_simrs
                 ]
             ];
             $v = new VclaimModel();
@@ -307,7 +309,7 @@ class SimrsController extends Controller
         //end of get counter
         //mapping penjamin bpjs dan db simrs
         $mt_penjamin = DB::select('select * from mt_penjamin_bpjs where nama_penjamin_bpjs = ?', [$request->penjamin]);
-       //end
+        //end
         // dd($mt_penjamin);
         //jenis pelayanan
         if ($request->jenispelayanan == 1) {
@@ -368,10 +370,10 @@ class SimrsController extends Controller
         //membuat kode layanan header menggunakan store procedure
         $r = DB::select("CALL GET_NOMOR_LAYANAN_HEADER('$kodeunit')");
         $kode_layanan_header = $r[0]->no_trx_layanan;
-        if($kode_layanan_header == ""){
+        if ($kode_layanan_header == "") {
             $year = date('y');
-            $kode_layanan_header = $unit[0]['prefix_unit'].$year.date('m').date('d').'000001';
-            DB::select('insert into mt_nomor_trx (tgl,no_trx_layanan,unit) values (?,?,?)', [date('Y-m-d h:i:s'),$kode_layanan_header,$kodeunit]);
+            $kode_layanan_header = $unit[0]['prefix_unit'] . $year . date('m') . date('d') . '000001';
+            DB::select('insert into mt_nomor_trx (tgl,no_trx_layanan,unit) values (?,?,?)', [date('Y-m-d h:i:s'), $kode_layanan_header, $kodeunit]);
         }
         $data_layanan_header = [
             'kode_layanan_header' => $kode_layanan_header,
@@ -536,7 +538,7 @@ class SimrsController extends Controller
                     ],
                     "dpjpLayan" => "$request->kodedokterlayan",
                     "noTelp" => "$request->nomortelepon",
-                    "user" => "waled | ". auth()->user()->id_simrs
+                    "user" => "waled | " . auth()->user()->id_simrs
                 ]
             ]
         ];
@@ -616,6 +618,14 @@ class SimrsController extends Controller
             $ts_sep = ts_sep::create($data_ts_sep);
             //insert tracer
             //belum
+            $data_tracer = [
+                'kode_kunjungan' => $ts_kunjungan->id,
+                'tgl_tracer' => date('Y-m-d'),
+                'id_status_tracer' => 1,
+                'cek_tracer' => 'N'
+            ];
+            //insert ke tracer
+            tracer::create($data_tracer);
             $data = [
                 'kode' => 200,
                 'message' => 'sukses',
@@ -650,18 +660,18 @@ class SimrsController extends Controller
         return 'DET' . date('ymd') . $kd;
     }
     public function get_rm()
-    {        
-            $y = DB::select('SELECT MAX(RIGHT(no_rm,6)) AS kd_max FROM mt_pasien');
-            if (count($y) > 0) {
-                foreach ($y as $k) {
-                    $tmp = ((int) $k->kd_max) + 1;
-                    $kd = sprintf("%06s", $tmp);
-                }
-            } else {
-                $kd = "0001";
+    {
+        $y = DB::select('SELECT MAX(RIGHT(no_rm,6)) AS kd_max FROM mt_pasien');
+        if (count($y) > 0) {
+            foreach ($y as $k) {
+                $tmp = ((int) $k->kd_max) + 1;
+                $kd = sprintf("%06s", $tmp);
             }
-            date_default_timezone_set('Asia/Jakarta');
-            return date('y') . $kd;
+        } else {
+            $kd = "0001";
+        }
+        date_default_timezone_set('Asia/Jakarta');
+        return date('y') . $kd;
     }
     public function datakunjungan()
     {
@@ -716,12 +726,12 @@ class SimrsController extends Controller
         ]);
     }
     public function detailkunjungan(Request $request)
-    {   
+    {
         $data_kunjungan = DB::select('select * from view_ts_kunjungan where kode_kunjungan = ?', [$request->kodekunjungan]);
-        
+
         $data_layanan = DB::select('select distinct * from view_ts_layanan where kode_kunjungan = ?', [$request->kodekunjungan]);
         $cek = count($data_layanan);
-        if($cek == 0){
+        if ($cek == 0) {
             $data_layanan = DB::select('select distinct * from view_ts_layanan_rajal where kode_kunjungan = ?', [$request->kodekunjungan]);
         }
         return view('simrs.detailkunjungan', [
@@ -731,8 +741,8 @@ class SimrsController extends Controller
     }
     public function batalperiksa(Request $request)
     {
-        ts_kunjungan::where('kode_kunjungan', $request->kodekunjungan)->update(['status_kunjungan' => 8,'pic2' => auth()->user()->id_simrs]);
-        ts_layanan_header::where('kode_kunjungan', $request->kodekunjungan)->update(['status_layanan' => 3,'pic2' => auth()->user()->id_simrs]);
+        ts_kunjungan::where('kode_kunjungan', $request->kodekunjungan)->update(['status_kunjungan' => 8, 'pic2' => auth()->user()->id_simrs]);
+        ts_layanan_header::where('kode_kunjungan', $request->kodekunjungan)->update(['status_layanan' => 3, 'pic2' => auth()->user()->id_simrs]);
         $ts_kunjungan = ts_kunjungan::where('kode_kunjungan', $request->kodekunjungan)->get();
         $id_ruangan = $ts_kunjungan[0]['id_ruangan'];
         $sep = $ts_kunjungan[0]['no_sep'];
@@ -740,13 +750,13 @@ class SimrsController extends Controller
             DB::table('mt_ruangan')->where('id_ruangan', $id_ruangan)->update(['status_incharge' => 0]);
         }
         if ($sep) {
-            DB::table('ts_sep')->where('kode_kunjungan', $request->kodekunjungan)->update(['status' => 8,'pic2' =>auth()->user()->id_simrs ]);
+            DB::table('ts_sep')->where('kode_kunjungan', $request->kodekunjungan)->update(['status' => 8, 'pic2' => auth()->user()->id_simrs]);
             $v = new VclaimModel();
             $data_sep = [
                 "request" => [
                     "t_sep" => [
                         "noSep" => $sep,
-                        "user" => "waled | ". auth()->user()->id_simrs
+                        "user" => "waled | " . auth()->user()->id_simrs
                     ]
                 ]
             ];
@@ -779,8 +789,8 @@ class SimrsController extends Controller
             $status_kunjungan = 8;
             $status_layanan = 3;
         }
-        ts_kunjungan::where('kode_kunjungan', $request->kodekunjungan)->update(['status_kunjungan' => $status_kunjungan, 'id_alasan_pulang' => $status_pulang_simrs, 'tgl_keluar' => $request->tanggalpulang,'pic2' => auth()->user()->id_simrs]);
-        ts_layanan_header::where('kode_kunjungan', $request->kodekunjungan)->update(['status_layanan' => $status_layanan,'pic2' => auth()->user()->id_simrs]);
+        ts_kunjungan::where('kode_kunjungan', $request->kodekunjungan)->update(['status_kunjungan' => $status_kunjungan, 'id_alasan_pulang' => $status_pulang_simrs, 'tgl_keluar' => $request->tanggalpulang, 'pic2' => auth()->user()->id_simrs]);
+        ts_layanan_header::where('kode_kunjungan', $request->kodekunjungan)->update(['status_layanan' => $status_layanan, 'pic2' => auth()->user()->id_simrs]);
         $sep = DB::select('select * FROM ts_kunjungan where kode_kunjungan = ?', [$request->kodekunjungan]);
         $id_ruangan = $sep[0]->id_ruangan;
         if ($id_ruangan) {
@@ -796,7 +806,7 @@ class SimrsController extends Controller
                         "tglMeninggal" => "$request->tanggalmeninggal",
                         "tglPulang" => "$request->tanggalpulang",
                         "noLPManual" => "$request->nomorlp",
-                        "user" => "waled | ". auth()->user()->id_simrs
+                        "user" => "waled | " . auth()->user()->id_simrs
                     ]
                 ]
             ];
@@ -988,46 +998,20 @@ class SimrsController extends Controller
     }
     public function simpanpasien(Request $request)
     {
-
-        // namapasien,
-        // tempatlahir,
-        // tanggallahir,
-        // jeniskelamin,
-        // agama,
-        // pekerjaan,
-        // pendidikan,
-        // nomortelp,
-        // namakeluarga,
-        // hubungankeluarga,
-        // telpkeluarga,
-        // alamatkeluarga,
-        // kewarganegaraan,
-        // negara,
-        // provinsi,
-        // kabupaten,
-        // kecamatan,
-        // desa,
-        // alamat,
-        // sesuaiktp,
-        // provinisidom,
-        // kabupatendom,
-        // kecamatandom,
-        // desadom,
-        // alamatdom
         $rm = $this->get_rm();
-        if($request->sesuaiktp == 1){
+        if ($request->sesuaiktp == 1) {
             $desa = $request->desa;
             $kecamatan = $request->kecamatan;
             $kab = $request->kabupaten;
             $prop = $request->provinsi;
             $alamat = $request->alamat;
-        }else{
+        } else {
             $desa = $request->desadom;
             $kecamatan = $request->kecamatandom;
             $kab = $request->kabupatendom;
             $prop = $request->provinsidom;
-            $alamat = $request->alamatdom;   
-        }      
+            $alamat = $request->alamatdom;
+        }
 
         $data_pasien = [
             'no_rm' => $rm,
@@ -1036,7 +1020,7 @@ class SimrsController extends Controller
             'nama_px' => $request->namapasien,
             'jenis_kelamin' => $request->jeniskelamin,
             'tempat_lahir' => $request->tempatlahir,
-            'tgl_lahir' =>$request->tanggallahir,
+            'tgl_lahir' => $request->tanggallahir,
             'agama' => $request->agama,
             'pendidikan' => $request->pendidikan,
             'pekerjaan' => $request->pekerjaan,
@@ -1063,7 +1047,7 @@ class SimrsController extends Controller
             'tlp_keluarga' => $request->telpkeluarga,
             'input_date' => date('Y-m-d h:i:s'),
             'pic1' => auth()->user()->id_simrs
-        ];  
+        ];
         $data_domisili = [
             'no_rm' => $rm,
             'negara' => $request->negara,
@@ -1078,7 +1062,7 @@ class SimrsController extends Controller
         mt_domisili::create($data_domisili);
         $data = [
             'code' => 200,
-            'message'=> 'ok'
+            'message' => 'ok'
         ];
         echo json_encode($data);
     }
