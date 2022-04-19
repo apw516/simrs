@@ -13,7 +13,7 @@
     <tbody>
         @if($suratkontrol->metaData->code == 200)
         @foreach ($suratkontrol->response->list as $p)
-            <tr class="pilihdokter" nomorsurat="{{ $p->noSuratKontrol }}" namadokter="{{ $p->namaDokter }}" kodedokter="{{ $p->kodeDokter }}">
+            <tr class="pilihdokter" nomorsurat="{{ $p->noSuratKontrol }}" namadokter="{{ $p->namaDokter }}" kodedokter="{{ $p->kodeDokter }}" data-dismiss="modal">
                 <td>{{ $p->noSuratKontrol }}</td>
                 <td>{{ $p->namaJnsKontrol }}</td>
                 <td>{{ $p->tglRencanaKontrol }}</td>
@@ -46,5 +46,7 @@
         $('#suratkontrol').val(nomor)
         $('#namadpjp').val(nama)
         $('#kodedpjp').val(kode)
+        $('#namadokterlayan').val(nama)
+        $('#kodedokterlayan').val(kode)
     });
 </script>

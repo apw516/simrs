@@ -16,7 +16,7 @@
                     tglrujukan="{{ $p->tglKunjungan }}" polirujukan="{{ $p->poliRujukan->nama }}"
                     kodepolirujukan="{{ $p->poliRujukan->kode }}" faskes="1"
                     kodefaskes="{{ $p->provPerujuk->kode }}" diagnosa="{{ $p->diagnosa->nama }}"
-                    kodediagnosa="{{ $p->diagnosa->kode }}">
+                    kodediagnosa="{{ $p->diagnosa->kode }}" data-dismiss="modal">
                     <td>{{ $p->noKunjungan }}</td>
                     <td>{{ $p->tglKunjungan }}</td>
                     <td>{{ $p->pelayanan->nama }}</td>
@@ -50,7 +50,7 @@
                     faskes="2"
                     kodefaskes="{{ $p->provPerujuk->kode }}" 
                     diagnosa="{{ $p->diagnosa->nama }}"
-                    kodediagnosa="{{ $p->diagnosa->kode }}">
+                    kodediagnosa="{{ $p->diagnosa->kode }}" data-dismiss="modal">
                     <td>{{ $p->noKunjungan }}</td>
                     <td>{{ $p->tglKunjungan }}</td>
                     <td>{{ $p->pelayanan->nama }}</td>
