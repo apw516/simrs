@@ -358,7 +358,7 @@ class SimrsController extends Controller
                 'tgl_masuk' => date('Y-m-d h:i:s'),
                 'status_kunjungan' => '8',
                 'kode_penjamin' => $mt_penjamin[0]->kode_penjamin_simrs,
-                'kelas' => $request->hakkelas,
+                'kelas' => 3,
                 'hak_kelas' => $request->hakkelas,
                 'pic' => auth()->user()->id_simrs,
                 'no_sep' => '',
