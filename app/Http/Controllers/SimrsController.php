@@ -26,6 +26,7 @@ use App\Models\Kecamatan;
 use App\Models\Desa;
 use App\Models\mt_keluarga;
 use App\Models\mt_domisili;;
+
 use App\Models\tracer;;
 
 class SimrsController extends Controller
@@ -296,6 +297,9 @@ class SimrsController extends Controller
         // bedranap
         // $d = $this->createLayanandetail();
         // dd($d);
+        //cek sudah daftar belum
+        //cek_kronis sp_cari_riwayat_kronis_terakhir
+        //cek pasien aktif
         $cek_rm = DB::select('select * from ts_kunjungan where no_rm = ?', [$request->norm]);
         if (count($cek_rm) == 0) {
             $counter = 1;
@@ -344,6 +348,7 @@ class SimrsController extends Controller
                 'no_sep' => '',
             ];
             $kodeunit = $request->namaunitranap;
+            $kelas_unit = $unit['0']['kelas_unit'];
         } else {
             //jika pasien rawat jalan
             //data yang akan disimpan ke ts kunjungan
@@ -365,97 +370,99 @@ class SimrsController extends Controller
                 'id_alasan_masuk' => $request->alasanmasuk
             );
             $kodeunit = $unit[0]['kode_unit'];
+            $kelas_unit = $unit['0']['kelas_unit'];
         }
         //insert ke ts_kunjungan
         $ts_kunjungan = ts_kunjungan::create($data_ts_kunjungan);
         //membuat kode layanan header menggunakan store procedure
-        $r = DB::select("CALL GET_NOMOR_LAYANAN_HEADER('$kodeunit')");
-        $kode_layanan_header = $r[0]->no_trx_layanan;
-        if ($kode_layanan_header == "") {
-            $year = date('y');
-            $kode_layanan_header = $unit[0]['prefix_unit'] . $year . date('m') . date('d') . '000001';
-            DB::select('insert into mt_nomor_trx (tgl,no_trx_layanan,unit) values (?,?,?)', [date('Y-m-d h:i:s'), $kode_layanan_header, $kodeunit]);
+        if ($kelas_unit == 1 || $kelas_unit == 2) {
+            //jika kelas penunjang  seperti hd,lab dll tidak akan tebentuk layanan header
+            $r = DB::select("CALL GET_NOMOR_LAYANAN_HEADER('$kodeunit')");
+            $kode_layanan_header = $r[0]->no_trx_layanan;
+            if ($kode_layanan_header == "") {
+                $year = date('y');
+                $kode_layanan_header = $unit[0]['prefix_unit'] . $year . date('m') . date('d') . '000001';
+                DB::select('insert into mt_nomor_trx (tgl,no_trx_layanan,unit) values (?,?,?)', [date('Y-m-d h:i:s'), $kode_layanan_header, $kodeunit]);
+            }
+            $data_layanan_header = [
+                'kode_layanan_header' => $kode_layanan_header,
+                'tgl_entry' =>   date('Y-m-d h:i:s'),
+                'kode_kunjungan' => $ts_kunjungan->id,
+                'kode_unit' => $ts_kunjungan['kode_unit'],
+                'kode_tipe_transaksi' => 2,
+                'pic' => auth()->user()->id_simrs,
+                'status_layanan' => '3',
+                'status_retur' => 'OPN',
+                'status_pembayaran' => 'OPN'
+            ]; //data yg diinsert ke ts_layanan_header
+            //simpan ke layanan header
+            $ts_layanan_header = ts_layanan_header::create($data_layanan_header);
+            //menentukan tarif
+            if ($request->jenispelayanan == 1) {
+                //jika pasien rawat inap maka hanya memakai tarif admin ranap
+                $tarif = $unit[0]->mt_tarif_detail3->TOTAL_TARIF_CURRENT;
+                $id_detail = $this->createLayanandetail();
+                $tgl_detail = date('Y-m-d h:i:s');
+                $save_detail1 = [
+                    'id_layanan_detail' => $id_detail,
+                    'kode_layanan_header' => $kode_layanan_header,
+                    'kode_tarif_detail' => $unit[0]['kode_tarif_adm'],
+                    'total_tarif' => $tarif,
+                    'jumlah_layanan' => '1',
+                    'diskon_layanan' => '0',
+                    'total_layanan' => $tarif,
+                    'grantotal_layanan' => $tarif,
+                    'status_layanan_detail' => 'OPN',
+                    'tgl_layanan_detail' => date('Y-m-d h:i:s'),
+                    'tagihan_penjamin' => $tarif,
+                    'tgl_layanan_detail_2' => $tgl_detail,
+                    'row_id_header' => $ts_layanan_header->id
+                ];
+                $ts_layanan_detail = ts_layanan_detail::create($save_detail1);
+                $grand_total_tarif = $tarif;
+            } else {
+                //jika pasien rawat jalan
+                $tarif1 = $unit[0]->mt_tarif_detail->TOTAL_TARIF_CURRENT;
+                $tarif2 = $unit[0]->mt_tarif_detail2->TOTAL_TARIF_CURRENT;
+                $tgl_detail = date('Y-m-d h:i:s');
+                $id_detail1 = $this->createLayanandetail();
+                $save_detail1 = [
+                    'id_layanan_detail' => $id_detail1,
+                    'kode_layanan_header' => $kode_layanan_header,
+                    'kode_tarif_detail' => $unit[0]['kode_tarif_adm'],
+                    'total_tarif' => $tarif1,
+                    'jumlah_layanan' => '1',
+                    'diskon_layanan' => '0',
+                    'total_layanan' => $tarif1,
+                    'grantotal_layanan' => $tarif1,
+                    'status_layanan_detail' => 'OPN',
+                    'tgl_layanan_detail' => $tgl_detail,
+                    'tagihan_penjamin' => $tarif1,
+                    'tgl_layanan_detail_2' => $tgl_detail,
+                    'row_id_header' => $ts_layanan_header->id
+                ];
+                $ts_layanan_detail = ts_layanan_detail::create($save_detail1);
+                $id_detail2 = $this->createLayanandetail();
+                $save_detail2 = [
+                    'id_layanan_detail' => $id_detail2,
+                    'kode_layanan_header' => $kode_layanan_header,
+                    'kode_tarif_detail' => $unit[0]['kode_tarif_karcis'],
+                    'total_tarif' => $tarif2,
+                    'jumlah_layanan' => '1',
+                    'diskon_layanan' => '0',
+                    'total_layanan' => $tarif2,
+                    'grantotal_layanan' => $tarif2,
+                    'status_layanan_detail' => 'OPN',
+                    'tgl_layanan_detail' => $tgl_detail,
+                    'tagihan_penjamin' => $tarif2,
+                    'tgl_layanan_detail_2' => $tgl_detail,
+                    'row_id_header' => $ts_layanan_header->id
+                ];
+                ts_layanan_detail::create($save_detail2);
+                $grand_total_tarif = $tarif1 + $tarif2;
+            }
         }
-        $data_layanan_header = [
-            'kode_layanan_header' => $kode_layanan_header,
-            'tgl_entry' =>   date('Y-m-d h:i:s'),
-            'kode_kunjungan' => $ts_kunjungan->id,
-            'kode_unit' => $ts_kunjungan['kode_unit'],
-            'kode_tipe_transaksi' => 2,
-            'pic' => auth()->user()->id_simrs,
-            'status_layanan' => '3',
-            'status_retur' => 'OPN',
-            'status_pembayaran' => 'OPN'
-        ]; //data yg diinsert ke ts_layanan_header
-        //simpan ke layanan header
-        $ts_layanan_header = ts_layanan_header::create($data_layanan_header);
-        //menentukan tarif
-        if ($request->jenispelayanan == 1) {
-            //jika pasien rawat inap maka hanya memakai tarif admin ranap
-            $tarif = $unit[0]->mt_tarif_detail3->TOTAL_TARIF_CURRENT;
-            $id_detail = $this->createLayanandetail();
-            DB::select('insert into mt_nomor_trx_detail (tgl,row_id_header,no_trx_detail) values (?,?,?)', [date('Y-m-d h:i:s'), $ts_layanan_header->id, $id_detail]);
-            $tgl_detail = date('Y-m-d h:i:s');
-            $save_detail1 = [
-                'id_layanan_detail' => $id_detail,
-                'kode_layanan_header' => $kode_layanan_header,
-                'kode_tarif_detail' => $unit[0]['kode_tarif_adm'],
-                'total_tarif' => $tarif,
-                'jumlah_layanan' => '1',
-                'diskon_layanan' => '0',
-                'total_layanan' => $tarif,
-                'grantotal_layanan' => $tarif,
-                'status_layanan_detail' => 'OPN',
-                'tgl_layanan_detail' => date('Y-m-d h:i:s'),
-                'tagihan_penjamin' => $tarif,
-                'tgl_layanan_detail_2' => $tgl_detail,
-                'row_id_header' => $ts_layanan_header->id
-            ];
-            $ts_layanan_detail = ts_layanan_detail::create($save_detail1);
-            $grand_total_tarif = $tarif;
-        } else {
-            //jika pasien rawat jalan
-            $tarif1 = $unit[0]->mt_tarif_detail->TOTAL_TARIF_CURRENT;
-            $tarif2 = $unit[0]->mt_tarif_detail2->TOTAL_TARIF_CURRENT;
-            $tgl_detail = date('Y-m-d h:i:s');
-            $id_detail1 = $this->createLayanandetail();
-            DB::select('insert into mt_nomor_trx_detail (tgl,row_id_header,no_trx_detail) values (?,?,?)', [date('Y-m-d h:i:s'), $ts_layanan_header->id, $id_detail1]);
-            $save_detail1 = [
-                'id_layanan_detail' => $id_detail1,
-                'kode_layanan_header' => $kode_layanan_header,
-                'kode_tarif_detail' => $unit[0]['kode_tarif_adm'],
-                'total_tarif' => $tarif1,
-                'jumlah_layanan' => '1',
-                'diskon_layanan' => '0',
-                'total_layanan' => $tarif1,
-                'grantotal_layanan' => $tarif1,
-                'status_layanan_detail' => 'OPN',
-                'tgl_layanan_detail' => $tgl_detail,
-                'tagihan_penjamin' => $tarif1,
-                'tgl_layanan_detail_2' => $tgl_detail,
-                'row_id_header' => $ts_layanan_header->id
-            ];
-            $ts_layanan_detail = ts_layanan_detail::create($save_detail1);
-            $id_detail2 = $this->createLayanandetail();
-            DB::select('insert into mt_nomor_trx_detail (tgl,row_id_header,no_trx_detail) values (?,?,?)', [date('Y-m-d h:i:s'), $ts_layanan_header->id, $id_detail2]);
-            $save_detail2 = [
-                'id_layanan_detail' => $id_detail2,
-                'kode_layanan_header' => $kode_layanan_header,
-                'kode_tarif_detail' => $unit[0]['kode_tarif_karcis'],
-                'total_tarif' => $tarif2,
-                'jumlah_layanan' => '1',
-                'diskon_layanan' => '0',
-                'total_layanan' => $tarif2,
-                'grantotal_layanan' => $tarif2,
-                'status_layanan_detail' => 'OPN',
-                'tgl_layanan_detail' => $tgl_detail,
-                'tagihan_penjamin' => $tarif2,
-                'tgl_layanan_detail_2' => $tgl_detail,
-                'row_id_header' => $ts_layanan_header->id
-            ];
-            ts_layanan_detail::create($save_detail2);
-            $grand_total_tarif = $tarif1 + $tarif2;
-        }
+
         //create sep  bridging bpjs
         $keterangansuplesi = 1;
         $katarak = 1;
@@ -550,29 +557,30 @@ class SimrsController extends Controller
         $datasep = $v->insertsep2($get_sep);
         if ($datasep == 'RTO') {
             DB::table('ts_kunjungan')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
-            DB::table('ts_layanan_header')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
-            DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
+            if ($kelas_unit == 1 || $kelas_unit == 2){
+                //jika kelas penunjang  seperti hd,lab dll tidak akan tebentuk layanan header
+                DB::table('ts_layanan_header')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
+                DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
+            }
             $data = [
                 'kode' => 500,
                 'message' => 'Connection lost'
             ];
             echo json_encode($data);
         } else if ($datasep->metaData->code == 200) {
-            //update ts_kunjungan
-            // ts_kunjungan::where('kode_kunjungan', $ts_kunjungan->id)
-            //     ->update(['status_kunjungan' => 1, 'no_sep' => $datasep->response->sep->noSep]);
-
-
-            ts_kunjungan::whereRaw('kode_kunjungan = ? and no_rm = ? and kode_unit = ?', array($ts_kunjungan->id,$request->norm,$kodeunit))->update([
+            ts_kunjungan::whereRaw('kode_kunjungan = ? and no_rm = ? and kode_unit = ?', array($ts_kunjungan->id, $request->norm, $kodeunit))->update([
                 'status_kunjungan' => 1, 'no_sep' => $datasep->response->sep->noSep
             ]);
-            //update mt_ruangan
-            if ($request->jenispelayanan == 1) {
-                DB::table('mt_ruangan')->where('id_ruangan', $idruangan)->update(['status_incharge' => 1]);
+            if ($kelas_unit == 1 || $kelas_unit == 2){
+                //jika kelas penunjang  seperti hd,lab dll tidak akan tebentuk layanan header
+                if ($request->jenispelayanan == 1) {
+                    DB::table('mt_ruangan')->where('id_ruangan', $idruangan)->update(['status_incharge' => 1]);
+                }
+                //update ts_layanan_header
+                ts_layanan_header::where('kode_kunjungan', $ts_kunjungan->id)
+                    ->update(['status_layanan' => 2, 'total_layanan' => $grand_total_tarif, 'tagihan_penjamin' => $grand_total_tarif]);
             }
-            //update ts_layanan_header
-           ts_layanan_header::where('kode_kunjungan', $ts_kunjungan->id)
-                ->update(['status_layanan' => 2, 'total_layanan' => $grand_total_tarif, 'tagihan_penjamin' => $grand_total_tarif]); 
+            //update mt_ruangan
             //insert ts_sep
             $sep = $datasep->response->sep;
             if ($request->keterangan_kll == '0') {
@@ -634,7 +642,7 @@ class SimrsController extends Controller
                 'cek_tracer' => 'N'
             ];
             //insert ke tracer
-            tracer::create($data_tracer);
+            // tracer::create($data_tracer);
             $data = [
                 'kode' => 200,
                 'message' => 'sukses',
@@ -643,8 +651,11 @@ class SimrsController extends Controller
             echo json_encode($data);
         } else if ($datasep->metaData->code != 200) {
             DB::table('ts_kunjungan')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
-            DB::table('ts_layanan_header')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
-            DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
+            if ($kelas_unit == 1 || $kelas_unit == 2){
+                //jika kelas penunjang  seperti hd,lab dll tidak akan tebentuk layanan header
+                DB::table('ts_layanan_header')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
+                DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
+            }
             $data = [
                 'kode' => 201,
                 'message' => $datasep->metaData->message

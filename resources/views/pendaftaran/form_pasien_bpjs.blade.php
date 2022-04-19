@@ -109,6 +109,14 @@
             </div>
             <div class="col-md-7 mb-3">
                 <h4 class="text-danger mb-2">*Wajib Diisi</h4>
+                @if($data_peserta->response->peserta->statusPeserta->keterangan != 'AKTIF')
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>STATUS PASIEN {{ $data_peserta->response->peserta->statusPeserta->keterangan }}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                @endif
                 <div class="container mt-3">
                     <div class="row justify-content-center">
                         {{-- <div class="col-sm-2 text-right text-bold">
@@ -447,7 +455,7 @@
                         <div class="col-sm-4 text-right text-bold">
                         </div>
                         <div class="col-sm-7">
-                            <button class="btn btn-success mt-3 float-right" data-toggle="modal"
+                            <button @if($data_peserta->response->peserta->statusPeserta->keterangan != 'AKTIF') disabled @endif class="btn btn-success mt-3 float-right" data-toggle="modal"
                                 data-target="#modalasessment">Simpan</button>
                             <button class="btn btn-danger mt-3 float-right mr-2" onclick="location.reload()">Batal</button>
                         </div>
