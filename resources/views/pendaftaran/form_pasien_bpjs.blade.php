@@ -364,7 +364,7 @@
                         <div class="col-sm-7">
                             <select class="form-control form-control-sm" id="alasanmasuk">
                                 @foreach ($alasan_masuk as $a)
-                                    <option value="{{ $a->id }}"> {{ $a->alasan_masuk }} </option>
+                                    <option value="{{ $a->id }}" @if( $a->id == 1) selected @endif > {{ $a->alasan_masuk }} </option>
                                 @endforeach
                             </select>
                         </div>
