@@ -2,6 +2,7 @@
     <thead>
         <th>Nomor rujukan</th>
         <th>Tgl rujukan</th>
+        <th>status</th>
         <th>jns pelayanan</th>
         <th>faskes perujuk</th>
         <th>diagnosa</th>
@@ -11,6 +12,18 @@
         {{-- @dd($f1); --}}
         @if ($f1->metaData->code == 200)
             @foreach ($f1->response->rujukan as $p)
+                <?php
+                $awal = new DateTime($p->tglKunjungan);
+                $akhir = new DateTime(date('Y-m-d'));
+                $diff = $awal->diff($akhir);
+                if ($diff->y > 0) {
+                    $status = 'expired';
+                } elseif ($diff->y < 1 && $diff->m < 4) {
+                    $status = 'aktif';
+                } else {
+                    $status = 'expired';
+                }
+                ?>
                 <tr class="pilihrujukan" ppk="{{ $p->provPerujuk->nama }}"
                     jenispelayanan="{{ $p->pelayanan->kode }}" nomorrujukan="{{ $p->noKunjungan }}"
                     tglrujukan="{{ $p->tglKunjungan }}" polirujukan="{{ $p->poliRujukan->nama }}"
@@ -19,6 +32,7 @@
                     kodediagnosa="{{ $p->diagnosa->kode }}" data-dismiss="modal">
                     <td>{{ $p->noKunjungan }}</td>
                     <td>{{ $p->tglKunjungan }}</td>
+                    <td>{{ $status }} </td>
                     <td>{{ $p->pelayanan->nama }}</td>
                     <td>{{ $p->provPerujuk->nama }}</td>
                     <td>{{ $p->diagnosa->nama }}</td>
@@ -32,6 +46,7 @@
     <thead>
         <th>Nomor rujukan</th>
         <th>Tgl rujukan</th>
+        <th>Status</th>
         <th>jns pelayanan</th>
         <th>faskes perujuk</th>
         <th>diagnosa</th>
@@ -41,18 +56,27 @@
         {{-- @dd($f1); --}}
         @if ($f2->metaData->code == 200)
             @foreach ($f2->response->rujukan as $p)
+                <?php
+                $awal = new DateTime($p->tglKunjungan);
+                $akhir = new DateTime(date('Y-m-d'));
+                $diff = $awal->diff($akhir);
+                if ($diff->y > 0) {
+                    $status = 'expired';
+                } elseif ($diff->y < 1 && $diff->m < 4) {
+                    $status = 'aktif';
+                } else {
+                    $status = 'expired';
+                }
+                ?>
                 <tr class="pilihrujukan" ppk="{{ $p->provPerujuk->nama }}"
-                    jenispelayanan="{{ $p->pelayanan->kode }}" 
-                    nomorrujukan="{{ $p->noKunjungan }}"
-                    tglrujukan="{{ $p->tglKunjungan }}" 
-                    polirujukan="{{ $p->poliRujukan->nama }}"
-                    kodepolirujukan="{{ $p->poliRujukan->kode }}" 
-                    faskes="2"
-                    kodefaskes="{{ $p->provPerujuk->kode }}" 
-                    diagnosa="{{ $p->diagnosa->nama }}"
+                    jenispelayanan="{{ $p->pelayanan->kode }}" nomorrujukan="{{ $p->noKunjungan }}"
+                    tglrujukan="{{ $p->tglKunjungan }}" polirujukan="{{ $p->poliRujukan->nama }}"
+                    kodepolirujukan="{{ $p->poliRujukan->kode }}" faskes="2"
+                    kodefaskes="{{ $p->provPerujuk->kode }}" diagnosa="{{ $p->diagnosa->nama }}"
                     kodediagnosa="{{ $p->diagnosa->kode }}" data-dismiss="modal">
                     <td>{{ $p->noKunjungan }}</td>
                     <td>{{ $p->tglKunjungan }}</td>
+                    <td>{{ $status }} </td>
                     <td>{{ $p->pelayanan->nama }}</td>
                     <td>{{ $p->provPerujuk->nama }}</td>
                     <td>{{ $p->diagnosa->nama }}</td>
@@ -70,7 +94,9 @@
             "autoWidth": true,
             "pageLength": 3,
             "searching": true,
-            "order": [[ 1, "desc" ]]
+            "order": [
+                [1, "desc"]
+            ]
         })
     });
     $(function() {
@@ -80,10 +106,14 @@
             "autoWidth": true,
             "pageLength": 3,
             "searching": true,
-            "order": [[ 1, "desc" ]]
+            "order": [
+                [1, "desc"]
+            ]
         })
     });
     $('#rujukanf1').on('click', '.pilihrujukan', function() {
+        spinner = $('#loader');
+        spinner.show();
         jenispelayanan = $(this).attr('jenispelayanan')
         nomorrujukan = $(this).attr('nomorrujukan')
         tglrujukan = $(this).attr('tglrujukan')
@@ -97,8 +127,8 @@
         if (jenispelayanan == 2) {
             $('#non-igd').removeAttr('Hidden', true)
             $('#formranap').attr('Hidden', true)
-            $('.pilihpoli').removeAttr('Hidden',true)
-            $('.dokterlayan').removeAttr('Hidden',true)
+            $('.pilihpoli').removeAttr('Hidden', true)
+            $('.dokterlayan').removeAttr('Hidden', true)
         }
         $('#jenispelayanan').val(jenispelayanan)
         $('#nomorrujukan').val(nomorrujukan)
@@ -111,8 +141,27 @@
         $('#kodeppkrujukan').val(kodefaskes)
         $('#namadiagnosa').val(diagnosa)
         $('#kodediagnosa').val(kodediagnosa)
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrujukan,
+                faskes
+            },
+            url: '<?= route('cekkunjungan_rujukan') ?>',
+            error: function(data) {
+                spinner.hide();
+            },
+            success: function(response) {
+                spinner.hide();
+                $('#kunjunganrujukan_count').html(response);
+                // $('#daftarpxumum').attr('disabled', true);
+            }
+        });
     });
     $('#rujukanf2').on('click', '.pilihrujukan', function() {
+        spinner = $('#loader');
+        spinner.show();
         jenispelayanan = $(this).attr('jenispelayanan')
         nomorrujukan = $(this).attr('nomorrujukan')
         tglrujukan = $(this).attr('tglrujukan')
@@ -126,9 +175,9 @@
         if (jenispelayanan == 2) {
             $('#non-igd').removeAttr('Hidden', true)
             $('#formranap').attr('Hidden', true)
-            $('.pilihpoli').removeAttr('Hidden',true)
-            $('.dokterlayan').removeAttr('Hidden',true)
-         }
+            $('.pilihpoli').removeAttr('Hidden', true)
+            $('.dokterlayan').removeAttr('Hidden', true)
+        }
         $('#jenispelayanan').val(jenispelayanan)
         $('#nomorrujukan').val(nomorrujukan)
         $('#politujuan').val(polirujukan)
@@ -139,5 +188,22 @@
         $('#kodeppkrujukan').val(kodefaskes)
         $('#namadiagnosa').val(diagnosa)
         $('#kodediagnosa').val(kodediagnosa)
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrujukan,
+                faskes
+            },
+            url: '<?= route('cekkunjungan_rujukan') ?>',
+            error: function(data) {
+                spinner.hide();
+            },
+            success: function(response) {
+                spinner.hide();
+                $('#kunjunganrujukan_count').html(response);
+                // $('#daftarpxumum').attr('disabled', true);
+            }
+        });
     });
 </script>

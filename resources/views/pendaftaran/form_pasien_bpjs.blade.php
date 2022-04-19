@@ -35,7 +35,7 @@
             <div class="col-md-5">
                 <div class="container">
                     <div class="card">
-                        <input type="text" value="{{ $cek_kunjungan }}" id="status_kunjungan">
+                        <input hidden type="text" value="{{ $cek_kunjungan }}" id="status_kunjungan">
                         {{-- @dd($data_peserta->response->peserta->noKartu); --}}
                         <div class="card-header bg-info">Info Peserta</div>
                         <div class="card-body text-sm">
@@ -119,6 +119,7 @@
                         </button>
                     </div>
                 @endif
+                <div id="kunjunganrujukan_count"></div>
                 <div class="container mt-3">
                     <div class="row justify-content-center">
                         {{-- <div class="col-sm-2 text-right text-bold">

@@ -658,7 +658,7 @@ class SimrsController extends Controller
                 'cek_tracer' => 'N'
             ];
             //insert ke tracer
-            tracer::create($data_tracer);
+            // tracer::create($data_tracer);
             $data = [
                 'kode' => 200,
                 'message' => 'sukses',
@@ -1104,5 +1104,14 @@ class SimrsController extends Controller
             'message' => 'ok'
         ];
         echo json_encode($data);
+    }
+    public function cekkunjungan_rujukan(Request $request)
+    {
+        $v = new VclaimModel();
+        $pulang = $v->jumlahseprujukan($request->faskes,$request->nomorrujukan);
+        if($pulang->metaData->code == 200){
+            $jumlah = $pulang->response->jumlahSEP;
+            echo "<div class='alert alert-success alert-dismissible fade show' role=alert>Nomor rujukan : $request->nomorrujukan <strong>Kunjungan ke-$jumlah</strong><button type=button class=close data-dismiss=alert aria-label=Close><span aria-hidden=true>&times;</span></button></div>";
+        }
     }
 }
