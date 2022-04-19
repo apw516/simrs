@@ -33,8 +33,9 @@
         </div>
         <div class="row mt-2">
             <div class="col-md-5">
-                <div class="container">                   
+                <div class="container">
                     <div class="card">
+                        <input type="text" value="{{ $cek_kunjungan }}" id="status_kunjungan">
                         {{-- @dd($data_peserta->response->peserta->noKartu); --}}
                         <div class="card-header bg-info">Info Peserta</div>
                         <div class="card-body text-sm">
@@ -109,13 +110,14 @@
             </div>
             <div class="col-md-7 mb-3">
                 <h4 class="text-danger mb-2">*Wajib Diisi</h4>
-                @if($data_peserta->response->peserta->statusPeserta->keterangan != 'AKTIF')
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>STATUS PASIEN {{ $data_peserta->response->peserta->statusPeserta->keterangan }}</strong>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
+                @if ($data_peserta->response->peserta->statusPeserta->keterangan != 'AKTIF')
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>STATUS PASIEN
+                            {{ $data_peserta->response->peserta->statusPeserta->keterangan }}</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 @endif
                 <div class="container mt-3">
                     <div class="row justify-content-center">
@@ -129,7 +131,7 @@
                                 data-target="#modalcarispri" onclick="carisuratkontrol()"><i class="bi bi-search"></i>
                                 SPRI / Surat Kontrol</button>
                             <button class="btn btn-success btn-sm mb-3 float-right ml-1" data-toggle="modal"
-                            data-target="#modalrujukan" onclick="carirujukan()"><i class="bi bi-search"></i>
+                                data-target="#modalrujukan" onclick="carirujukan()"><i class="bi bi-search"></i>
                                 Rujukan</button>
                         </div>
                     </div>
@@ -372,7 +374,9 @@
                         <div class="col-sm-7">
                             <select class="form-control form-control-sm" id="alasanmasuk">
                                 @foreach ($alasan_masuk as $a)
-                                    <option value="{{ $a->id }}" @if( $a->id == 1) selected @endif > {{ $a->alasan_masuk }} </option>
+                                    <option value="{{ $a->id }}"
+                                        @if ($a->id == 1) selected @endif> {{ $a->alasan_masuk }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -455,9 +459,11 @@
                         <div class="col-sm-4 text-right text-bold">
                         </div>
                         <div class="col-sm-7">
-                            <button @if($data_peserta->response->peserta->statusPeserta->keterangan != 'AKTIF') disabled @endif class="btn btn-success mt-3 float-right" data-toggle="modal"
+                            <button @if ($data_peserta->response->peserta->statusPeserta->keterangan != 'AKTIF') disabled @endif
+                                class="btn btn-success mt-3 float-right simpanpendaftaran" data-toggle="modal"
                                 data-target="#modalasessment">Simpan</button>
-                            <button class="btn btn-danger mt-3 float-right mr-2" onclick="location.reload()">Batal</button>
+                            <button class="btn btn-danger mt-3 float-right mr-2"
+                                onclick="location.reload()">Batal</button>
                         </div>
                     </div>
                 </div>
@@ -784,7 +790,7 @@
                 penunjang,
                 asessment
             },
-            url: '<?= route('simpansep');?>',
+            url: '<?= route('simpansep') ?>',
             error: function(data) {
                 spinner.hide()
                 Swal.fire({
@@ -806,7 +812,7 @@
                         cancelButtonText: 'Tidak'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.open('cetaksep/'+data.kode_kunjungan);
+                            window.open('cetaksep/' + data.kode_kunjungan);
                             location.reload();
                         } else {
                             location.reload();
@@ -837,7 +843,7 @@
                 nomor,
                 tanggal
             },
-            url: '<?= route('caripolikontrol');?>',
+            url: '<?= route('caripolikontrol') ?>',
             error: function(data) {
                 spinner.hide();
                 alert('error!')
@@ -864,7 +870,7 @@
                 kodepoli,
                 tanggal
             },
-            url: '<?= route('caridokterkontrol');?>',
+            url: '<?= route('caridokterkontrol') ?>',
             error: function(data) {
                 spinner.hide();
                 alert('error!')
@@ -899,7 +905,7 @@
                 kodepolikontrol,
                 kodedokterkontrol
             },
-            url: '<?= route('buatsuratkontrol');?>',
+            url: '<?= route('buatsuratkontrol') ?>',
             error: function(data) {
                 spinner.hide();
                 alert('error!')
@@ -925,7 +931,7 @@
                 _token: "{{ csrf_token() }}",
                 nomorkartu
             },
-            url: '<?= route('carisuratkontrol');?>',
+            url: '<?= route('carisuratkontrol') ?>',
             error: function(data) {
                 spinner.hide();
                 alert('error!')
@@ -948,7 +954,7 @@
                 _token: "{{ csrf_token() }}",
                 nomorkartu
             },
-            url: '<?= route('carirujukan');?>',
+            url: '<?= route('carirujukan') ?>',
             error: function(data) {
                 spinner.hide();
                 alert('error!')
@@ -977,7 +983,7 @@
                     naikkelas,
                     kelasrawatnaik
                 },
-                url: '<?= route('cariruangranap');?>',
+                url: '<?= route('cariruangranap') ?>',
                 success: function(response) {
                     $('#kamarranap').html(response);
                     // $('#daftarpxumum').attr('disabled', true);
@@ -986,6 +992,31 @@
         });
     });
     $(document).ready(function() {
+        status = $('#status_kunjungan').val()
+        if (status > 1) {
+            Swal.fire({
+                title: 'Kunjungan pasien masih aktif',
+                text: "status pasien masih dalam kunjungan lain, silahkan tutup / batalkan kunjungan untuk melanjutkan pendaftaran !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Lanjut Rawat Inap',
+                cancelButtonText: 'Tidak'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('.simpanpendaftaran').removeAttr('Disabled',true)
+                    $('#jenispelayanan').val(1)
+                    $('#formranap').removeAttr('hidden', true)
+                    $('.pilihpoli').attr('hidden', true)
+                    $('.dokterlayan').attr('hidden', true)
+                    $('#non-igd').removeAttr('Hidden', true);
+                } else {
+                    location.reload()
+                }
+            })
+            $('.simpanpendaftaran').attr('Disabled',true)
+        }
         $('#kamarranap').change(function() {
             kamarranap = $('#kamarranap').val()
             $.ajax({
@@ -994,7 +1025,7 @@
                     _token: "{{ csrf_token() }}",
                     kamarranap: kamarranap,
                 },
-                url: '<?= route('caribedranap');?>',
+                url: '<?= route('caribedranap') ?>',
                 success: function(response) {
                     $('#bedranap').html(response);
                     // $('#daftarpxumum').attr('disabled', true);
@@ -1019,7 +1050,9 @@
             "autoWidth": true,
             "pageLength": 2,
             "searching": false,
-            "order": [[ 1, "desc" ]]
+            "order": [
+                [1, "desc"]
+            ]
         })
     });
     $(function() {
@@ -1068,7 +1101,7 @@
     });
     $(document).ready(function() {
         $('#politujuan').autocomplete({
-            source: "<?= route('caripoli');?>",
+            source: "<?= route('caripoli') ?>",
             select: function(event, ui) {
                 spinner.show();
                 $('[id="politujuan"]').val(ui.item.label);
@@ -1080,7 +1113,7 @@
     });
     $(document).ready(function() {
         $('#namadokterlayan').autocomplete({
-            source: "<?= route('caridokter');?>",
+            source: "<?= route('caridokter') ?>",
             select: function(event, ui) {
                 $('[id="namadokterlayan"]').val(ui.item.label);
                 $('[id="kodedokterlayan"]').val(ui.item.kode);
@@ -1089,7 +1122,7 @@
     });
     $(document).ready(function() {
         $('#namadiagnosa').autocomplete({
-            source: "<?= route('caridiagnosa');?>",
+            source: "<?= route('caridiagnosa') ?>",
             select: function(event, ui) {
                 $('[id="namadiagnosa"]').val(ui.item.label);
                 $('[id="kodediagnosa"]').val(ui.item.kode);
@@ -1116,39 +1149,39 @@
         })
     });
     $(document).ready(function() {
-    $('#provinsikejadian').change(function() {
-        var sep_laka_prov = $('#provinsikejadian').val()
-        $.ajax({
-            type: 'post',
-            data: {
-                _token: "{{ csrf_token() }}",
-                prov: sep_laka_prov
-            },
-            url: '<?= route('carikabupaten');?>',
-            success: function(response) {
-                spinner.hide();
-                $('#kabupatenkejadian').html(response);
-                // $('#daftarpxumum').attr('disabled', true);
-            }
+        $('#provinsikejadian').change(function() {
+            var sep_laka_prov = $('#provinsikejadian').val()
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    prov: sep_laka_prov
+                },
+                url: '<?= route('carikabupaten') ?>',
+                success: function(response) {
+                    spinner.hide();
+                    $('#kabupatenkejadian').html(response);
+                    // $('#daftarpxumum').attr('disabled', true);
+                }
+            });
         });
     });
-});
-$(document).ready(function() {
-    $('#kabupatenkejadian').change(function() {
-        var sep_laka_kab = $('#kabupatenkejadian').val()
-        $.ajax({
-            type: 'post',
-            data: {
-                _token: "{{ csrf_token() }}",
-                kab: sep_laka_kab
-            },
-            url: '<?= route('carikecamatan');?>',
-            success: function(response) {
-                spinner.hide();
-                $('#kecamatankejadian').html(response);
-                // $('#daftarpxumum').attr('disabled', true);
-            }
+    $(document).ready(function() {
+        $('#kabupatenkejadian').change(function() {
+            var sep_laka_kab = $('#kabupatenkejadian').val()
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    kab: sep_laka_kab
+                },
+                url: '<?= route('carikecamatan') ?>',
+                success: function(response) {
+                    spinner.hide();
+                    $('#kecamatankejadian').html(response);
+                    // $('#daftarpxumum').attr('disabled', true);
+                }
+            });
         });
     });
-});
 </script>
