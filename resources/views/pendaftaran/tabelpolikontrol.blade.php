@@ -23,7 +23,7 @@
             "lengthChange": false,
             "autoWidth": true,
             "pageLength": 3,
-            "searching": false
+            "searching": true
         })
     });
     $('#tabelpolikontrol').on('click', '.pilihpoli', function() {

@@ -292,9 +292,10 @@ class SimrsController extends Controller
     }
     public function Simpansep(Request $request)
     {
-
         // kamarranap
         // bedranap
+        // $d = $this->createLayanandetail();
+        // dd($d);
         $cek_rm = DB::select('select * from ts_kunjungan where no_rm = ?', [$request->norm]);
         if (count($cek_rm) == 0) {
             $counter = 1;
@@ -393,6 +394,7 @@ class SimrsController extends Controller
             //jika pasien rawat inap maka hanya memakai tarif admin ranap
             $tarif = $unit[0]->mt_tarif_detail3->TOTAL_TARIF_CURRENT;
             $id_detail = $this->createLayanandetail();
+            DB::select('insert into mt_nomor_trx_detail (tgl,row_id_header,no_trx_detail) values (?,?,?)', [date('Y-m-d h:i:s'), $ts_layanan_header->id, $id_detail]);
             $tgl_detail = date('Y-m-d h:i:s');
             $save_detail1 = [
                 'id_layanan_detail' => $id_detail,
@@ -417,6 +419,7 @@ class SimrsController extends Controller
             $tarif2 = $unit[0]->mt_tarif_detail2->TOTAL_TARIF_CURRENT;
             $tgl_detail = date('Y-m-d h:i:s');
             $id_detail1 = $this->createLayanandetail();
+            DB::select('insert into mt_nomor_trx_detail (tgl,row_id_header,no_trx_detail) values (?,?,?)', [date('Y-m-d h:i:s'), $ts_layanan_header->id, $id_detail1]);
             $save_detail1 = [
                 'id_layanan_detail' => $id_detail1,
                 'kode_layanan_header' => $kode_layanan_header,
@@ -434,6 +437,7 @@ class SimrsController extends Controller
             ];
             $ts_layanan_detail = ts_layanan_detail::create($save_detail1);
             $id_detail2 = $this->createLayanandetail();
+            DB::select('insert into mt_nomor_trx_detail (tgl,row_id_header,no_trx_detail) values (?,?,?)', [date('Y-m-d h:i:s'), $ts_layanan_header->id, $id_detail2]);
             $save_detail2 = [
                 'id_layanan_detail' => $id_detail2,
                 'kode_layanan_header' => $kode_layanan_header,
@@ -449,7 +453,7 @@ class SimrsController extends Controller
                 'tgl_layanan_detail_2' => $tgl_detail,
                 'row_id_header' => $ts_layanan_header->id
             ];
-            $ts_layanan_detail2 = ts_layanan_detail::create($save_detail2);
+            ts_layanan_detail::create($save_detail2);
             $grand_total_tarif = $tarif1 + $tarif2;
         }
         //create sep  bridging bpjs
@@ -555,15 +559,20 @@ class SimrsController extends Controller
             echo json_encode($data);
         } else if ($datasep->metaData->code == 200) {
             //update ts_kunjungan
-            ts_kunjungan::where('kode_kunjungan', $ts_kunjungan->id)
-                ->update(['status_kunjungan' => 1, 'no_sep' => $datasep->response->sep->noSep]);
+            // ts_kunjungan::where('kode_kunjungan', $ts_kunjungan->id)
+            //     ->update(['status_kunjungan' => 1, 'no_sep' => $datasep->response->sep->noSep]);
+
+
+            ts_kunjungan::whereRaw('kode_kunjungan = ? and no_rm = ? and kode_unit = ?', array($ts_kunjungan->id,$request->norm,$kodeunit))->update([
+                'status_kunjungan' => 1, 'no_sep' => $datasep->response->sep->noSep
+            ]);
             //update mt_ruangan
             if ($request->jenispelayanan == 1) {
                 DB::table('mt_ruangan')->where('id_ruangan', $idruangan)->update(['status_incharge' => 1]);
             }
             //update ts_layanan_header
-            ts_layanan_header::where('kode_kunjungan', $ts_kunjungan->id)
-                ->update(['status_layanan' => 2, 'total_layanan' => $grand_total_tarif, 'tagihan_penjamin' => $grand_total_tarif]);
+           ts_layanan_header::where('kode_kunjungan', $ts_kunjungan->id)
+                ->update(['status_layanan' => 2, 'total_layanan' => $grand_total_tarif, 'tagihan_penjamin' => $grand_total_tarif]); 
             //insert ts_sep
             $sep = $datasep->response->sep;
             if ($request->keterangan_kll == '0') {
@@ -645,8 +654,10 @@ class SimrsController extends Controller
     }
     public function createLayanandetail()
     {
-        $q = DB::select('SELECT MAX(RIGHT(id_layanan_detail,6)) AS kd_max FROM ts_layanan_detail WHERE DATE(tgl_layanan_detail) = CURDATE()');
-        // $q = $db2->query("SELECT MAX(RIGHT(id_layanan_detail,6)) AS kd_max FROM ts_layanan_detail");
+        $q = DB::select('SELECT id,id_layanan_detail,RIGHT(id_layanan_detail,6) AS kd_max  FROM ts_layanan_detail 
+        WHERE DATE(tgl_layanan_detail) = CURDATE()
+        ORDER BY id DESC
+        LIMIT 1');
         $kd = "";
         if (count($q) > 0) {
             foreach ($q as $k) {
@@ -654,7 +665,7 @@ class SimrsController extends Controller
                 $kd = sprintf("%06s", $tmp);
             }
         } else {
-            $kd = "0001";
+            $kd = "000001";
         }
         date_default_timezone_set('Asia/Jakarta');
         return 'DET' . date('ymd') . $kd;

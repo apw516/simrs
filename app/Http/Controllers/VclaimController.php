@@ -256,8 +256,13 @@ class VclaimController extends Controller
                     ]
                 ]
             ];
-            $ajuan = $v->aprrovalpengajuan($data);
-            echo json_encode($ajuan);
+            // dd($request->jenispengajuan);
+            if($request->jenispengajuan > 1){
+                $ajuan = $v->aprrovalpengajuan($data);
+                echo json_encode($ajuan);
+            }else{
+                echo json_encode($ajuan);
+            }
         } else {
             echo json_encode($ajuan);
         }

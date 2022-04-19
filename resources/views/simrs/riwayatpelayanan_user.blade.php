@@ -54,14 +54,14 @@
                     <thead>
                         <th>nomor rm</th>
                         {{-- <th>kode kunjungan</th> --}}
+                        <th>tgl masuk</th>
+                        <th>tgl keluar</th>
                         <th>nama</th>
                         <th>penjamin</th>
                         <th>unit</th>
                         <th>dokter</th>
                         <th>user</th>
                         <th>no sep</th>
-                        <th>tgl masuk</th>
-                        <th>tgl keluar</th>
                         <th>--</th>
                     </thead>
                     <tbody>
@@ -70,6 +70,8 @@
                             <tr>
                                 <td>{{ $d->no_rm }}</td>
                                 {{-- <td>{{ $d->kode_kunjungan }}</td> --}}
+                                <td>{{ $d->tgl_masuk }}</td>
+                                <td>{{ $d->tgl_keluar }}</td>
                                 <td>{{ $d->nama_px }}</td>
                                 <td>{{ $d->nama_penjamin }}</td>
                                 <td>{{ $d->nama_unit }}</td>
@@ -77,8 +79,6 @@
                                 {{-- <td>{{ $d->status }}</td> --}}
                                 <td>{{ $d->nama_user }}</td>
                                 <td>{{ $d->no_sep }}</td>
-                                <td>{{ $d->tgl_masuk }}</td>
-                                <td>{{ $d->tgl_keluar }}</td>
                                 <td>
                                     <button class="badge badge-primary detailkunjungan" nomorrm ="{{ $d->no_rm }}"
                                         kodekunjungan="{{ $d->kode_kunjungan }}" data-placement="right" title="detail"><i
