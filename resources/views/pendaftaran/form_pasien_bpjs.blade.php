@@ -4,6 +4,8 @@
             <div class="card">
                 <div class="card-header bg-info">Riwayat Kunjungan</div>
                 <div class="card-body">
+                <button class="btn btn-danger"  data-toggle="modal"
+                data-target="#modalriwayatsep"><i class="bi bi-search"></i> Riwayat SEP Terakhir</button>
                     <table id="tabelriwayatkunjungan" class="table table-bordered table-sm text-xs">
                         <thead>
                             <th>Unit</th>
@@ -664,6 +666,49 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modalriwayatsep" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Riwayat SEP Terakhir</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid mb-4">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label for="">nomor kartu</label>
+                            <input type="text" class="form-control" id="nomorkartu_riwayatsep" value="{{ $data_peserta->response->peserta->noKartu }}" placeholder="masukan nomor kartu ...">
+                        </div>
+                        <div class="col-sm-3">
+                            <label for="">tanggal awal</label>
+                            <?php $tglawal = date('Y-m-d', strtotime('-29 days')) ;?>
+                            <input type="text" class="form-control"
+                                id="tanggalawal_riwayat" value="{{ $tglawal }}" placeholder="Tanggal awal ..">
+                        </div>
+                        <div class="col-sm-3">
+                            <label for="">tanggal akhir</label>
+                            <input type="text" class="form-control datepicker" data-date-format="yyyy-mm-dd"
+                                id="tanggalakhir_riwayat" placeholder="Tanggal akhir ..">
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-dark mb-2 mt-4" onclick="caririwayatseppeserta()">Cari
+                                Riwayat</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="vkunjunganpasien">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Modal -->
 <div class="modal fade" id="modalrujukan" data-backdrop="static" data-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -685,6 +730,33 @@
     </div>
 </div>
 <script>
+    function caririwayatseppeserta() {       
+            tglawal = $('#tanggalawal_riwayat').val()
+            tglakhir = $('#tanggalakhir_riwayat').val()
+            nomorkartu = $('#nomorkartu_riwayatsep').val()
+            spinner = $('#loader');
+            spinner.show();
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    tglawal,
+                    tglakhir,
+                    nomorkartu
+                },
+                url: '<?= route('vclaimcarikunjungansep_peserta');?>',
+                error: function(data) {
+                    spinner.hide();
+                    alert('error!')
+                },
+                success: function(response) {
+                    spinner.hide();
+                    $('.vkunjunganpasien').html(response);
+                    // $('#daftarpxumum').attr('disabled', true);
+                }
+            });
+        }
+
     function simpansep() {
         nomorkartu = $('#nomorkartu').val();
         penjamin = $('#penjamin').val();
