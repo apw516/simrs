@@ -397,13 +397,15 @@ class SimrsController extends Controller
             if($kodeunit != '1002'){
                 //jika pasien rawat jalan dan bukan igd maka dilakukan cek kronis
                 $r = DB::select("CALL sp_cari_riwayat_kronis_terakhir('$request->norm','$kodeunit','$tgl_masuk')");
-                if($r[0]->ada_kronis == 'Yes'){
-                    $data = [
-                        'kode' => 500,
-                        'message' => 'Pasien Kronis'
-                    ];
-                    echo json_encode($data);
-                    die;
+                if(count($r) > 0){
+                    if($r[0]->ada_kronis == 'Yes'){
+                        $data = [
+                            'kode' => 500,
+                            'message' => 'Pasien Kronis'
+                        ];
+                        echo json_encode($data);
+                        die;
+                    }
                 }
             }
         }
@@ -676,7 +678,7 @@ class SimrsController extends Controller
                 'cek_tracer' => 'N'
             ];
             //insert ke tracer
-            tracer::create($data_tracer);
+            // tracer::create($data_tracer);
             $data = [
                 'kode' => 200,
                 'message' => 'sukses',
