@@ -34,7 +34,7 @@
                       </a>
                       <ul class="nav nav-treeview">
                           <li class="nav-item">
-                              <a href="/dashboard" class="nav-link @if($sidebar_m == 1.1) active @endif">
+                              <a href="{{ route('dashboard') }}" class="nav-link @if($sidebar_m == 1.1) active @endif">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>SIMRS</p>
                               </a>
