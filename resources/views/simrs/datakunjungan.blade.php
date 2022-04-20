@@ -66,7 +66,7 @@
                     </thead>
                     <tbody>
                         @foreach ($datakunjungan as $d)
-                            <tr>
+                            <tr @if($d->nama_penjamin != 'PRIBADI' && $d->no_sep == '') class="bg-warning" @endif>
                                 <td>{{ $d->no_rm }}</td>
                                 {{-- <td>{{ $d->kode_kunjungan }}</td> --}}
                                 <td>{{ $d->tgl_masuk }}</td>

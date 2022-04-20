@@ -303,6 +303,8 @@ class SimrsController extends Controller
         //cek sudah daftar belum
         //cek_kronis sp_cari_riwayat_kronis_terakhir
         //cek pasien aktif
+        $tgl_masuk = $request->tglsep;
+        $tgl_masuk_time = $request->tglsep .' '.date('h:i:s');
         $cek_rm = DB::select('select * from ts_kunjungan where no_rm = ?', [$request->norm]);
         if (count($cek_rm) == 0) {
             $counter = 1;
@@ -337,7 +339,7 @@ class SimrsController extends Controller
                 'kode_unit' => $request->namaunitranap,
                 'kode_paramedis' => $paramedis[0]['kode_dokter'],
                 'prefix_kunjungan' => $unit[0]['prefix_unit'],
-                'tgl_masuk' => date('Y-m-d h:i:s'),
+                'tgl_masuk' => $tgl_masuk_time,
                 'status_kunjungan' => '8',
                 'kode_penjamin' => $mt_penjamin[0]->kode_penjamin_simrs,
                 'id_alasan_masuk' => $request->alasanmasuk,
@@ -363,18 +365,18 @@ class SimrsController extends Controller
                 'kode_unit' => $unit[0]['kode_unit'],
                 'kode_paramedis' => $paramedis[0]['kode_dokter'],
                 'prefix_kunjungan' => $unit[0]['prefix_unit'],
-                'tgl_masuk' => date('Y-m-d h:i:s'),
+                'tgl_masuk' => $tgl_masuk_time,
                 'status_kunjungan' => '8',
                 'kode_penjamin' => $mt_penjamin[0]->kode_penjamin_simrs,
                 'kelas' => 3,
-                'hak_kelas' => $request->hakkelas,
+                'hak_kelas' => 3,
                 'pic' => auth()->user()->id_simrs,
                 'no_sep' => '',
                 'id_alasan_masuk' => $request->alasanmasuk
             );
             $kodeunit = $unit[0]['kode_unit'];
             $kelas_unit = $unit['0']['kelas_unit'];
-            $tgl_masuk = date('Y-m-d');
+            // $tgl_masuk = date('Y-m-d');
             if($kodeunit != '1002'){
                 //jika pasien rawat jalan dan bukan igd maka dilakukan cek kronis
                 $r = DB::select("CALL sp_cari_riwayat_kronis_terakhir('$request->norm','$kodeunit','$tgl_masuk')");
@@ -402,7 +404,7 @@ class SimrsController extends Controller
             }
             $data_layanan_header = [
                 'kode_layanan_header' => $kode_layanan_header,
-                'tgl_entry' =>   date('Y-m-d h:i:s'),
+                'tgl_entry' =>   $tgl_masuk_time,
                 'kode_kunjungan' => $ts_kunjungan->id,
                 'kode_unit' => $ts_kunjungan['kode_unit'],
                 'kode_tipe_transaksi' => 2,
@@ -429,7 +431,7 @@ class SimrsController extends Controller
                     'total_layanan' => $tarif,
                     'grantotal_layanan' => $tarif,
                     'status_layanan_detail' => 'OPN',
-                    'tgl_layanan_detail' => date('Y-m-d h:i:s'),
+                    'tgl_layanan_detail' => $tgl_masuk_time,
                     'tagihan_penjamin' => $tarif,
                     'tgl_layanan_detail_2' => $tgl_detail,
                     'row_id_header' => $ts_layanan_header->id
@@ -440,7 +442,7 @@ class SimrsController extends Controller
                 //jika pasien rawat jalan
                 $tarif1 = $unit[0]->mt_tarif_detail->TOTAL_TARIF_CURRENT;
                 $tarif2 = $unit[0]->mt_tarif_detail2->TOTAL_TARIF_CURRENT;
-                $tgl_detail = date('Y-m-d h:i:s');
+                $tgl_detail = $tgl_masuk_time;
                 $id_detail1 = $this->createLayanandetail();
                 $save_detail1 = [
                     'id_layanan_detail' => $id_detail1,
@@ -653,12 +655,12 @@ class SimrsController extends Controller
             //belum
             $data_tracer = [
                 'kode_kunjungan' => $ts_kunjungan->id,
-                'tgl_tracer' => date('Y-m-d'),
+                'tgl_tracer' => $tgl_masuk,
                 'id_status_tracer' => 1,
                 'cek_tracer' => 'N'
             ];
             //insert ke tracer
-            tracer::create($data_tracer);
+            // tracer::create($data_tracer);
             $data = [
                 'kode' => 200,
                 'message' => 'sukses',

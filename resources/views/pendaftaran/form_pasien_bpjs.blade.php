@@ -1049,11 +1049,11 @@
             "responsive": true,
             "lengthChange": false,
             "autoWidth": true,
-            "pageLength": 2,
-            "searching": false,
-            "order": [
-                [1, "desc"]
-            ]
+            "pageLength": 3,
+            "searching": true,
+            // "order": [
+            //     [2, "desc"]
+            // ]
         })
     });
     $(function() {

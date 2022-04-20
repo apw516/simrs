@@ -46,7 +46,7 @@
         $('#suratkontrol').val(nomor)
         $('#namadpjp').val(nama)
         $('#kodedpjp').val(kode)
-        $('#namadokterlayan').val(nama)
-        $('#kodedokterlayan').val(kode)
+        // $('#namadokterlayan').val(nama)
+        // $('#kodedokterlayan').val(kode)
     });
 </script>
