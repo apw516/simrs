@@ -11,8 +11,8 @@ use GuzzleHttp\Exception\RequestException;
 
 class VclaimModel extends Model
 {
-    public $baseUrl = 'https://apijkn-dev.bpjs-kesehatan.go.id/vclaim-rest-dev/';
-    // public $baseUrl = 'https://apijkn.bpjs-kesehatan.go.id/vclaim-rest/';
+    // public $baseUrl = 'https://apijkn-dev.bpjs-kesehatan.go.id/vclaim-rest-dev/';
+    public $baseUrl = 'https://apijkn.bpjs-kesehatan.go.id/vclaim-rest/';
     public static function signature()
     {
         $cons_id =  env('CONS_ID');

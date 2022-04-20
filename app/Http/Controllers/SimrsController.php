@@ -669,7 +669,6 @@ class SimrsController extends Controller
             ];
             $ts_sep = ts_sep::create($data_ts_sep);
             //insert tracer
-            //belum
             $data_tracer = [
                 'kode_kunjungan' => $ts_kunjungan->id,
                 'tgl_tracer' => $tgl_masuk,
@@ -677,7 +676,7 @@ class SimrsController extends Controller
                 'cek_tracer' => 'N'
             ];
             //insert ke tracer
-            // tracer::create($data_tracer);
+            tracer::create($data_tracer);
             $data = [
                 'kode' => 200,
                 'message' => 'sukses',
