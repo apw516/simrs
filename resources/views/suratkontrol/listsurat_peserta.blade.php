@@ -126,13 +126,13 @@
         } else {
             nomor = nomorsep
         }
-        $('#jenissurat').val(jenissurat)
-        $('#tanggalkontrol').val(tgl)
-        $('#nomorkartukontrol').val(nomor)
-        $('#polikontrol').val(namapolitujuan)
-        $('#kodepolikontrol').val(kodepolitujuan)
-        $('#dokterkontrol').val(namadokter)
-        $('#kodedokterkontrol').val(kodedokter)
-        $('#nomorsurat').val(suratkontrol)
+        $('#editjenissurat').val(jenissurat)
+        $('#edittanggalkontrol').val(tgl)
+        $('#editnomorkartukontrol').val(nomor)
+        $('#editpolikontrol').val(namapolitujuan)
+        $('#editkodepolikontrol').val(kodepolitujuan)
+        $('#editdokterkontrol').val(namadokter)
+        $('#editkodedokterkontrol').val(kodedokter)
+        $('#editnomorsurat').val(suratkontrol)
     });
 </script>

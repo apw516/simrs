@@ -5,16 +5,18 @@
             <div class="row">
                 <div class="col-sm-5">
                     <div class="input-group mb-3 mt-3">
-                        <input type="text" class="form-control" id="pencariansep" placeholder="Cari Surat Kontrol / SPRI ...">
+                        <input disabled type="text" class="form-control" id="pencariansep"
+                            placeholder="Masih dalam tahap pengembangan ...">
                         <div class="input-group-append">
-                            <button class="btn btn-outline-primary" type="button" id="button-addon2" onclick="carisep()"
-                                data-toggle="modal" data-target="#modaleditsep"><i class="bi bi-search-heart"></i></button>
+                            <button disabled class="btn btn-outline-primary" type="button" id="button-addon2" onclick="carisuratkontrol()"
+                            data-toggle="modal"
+                            data-target="#modaleditsuratkontrol"><i class="bi bi-search-heart"></i></button>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-7 mt-3">
-                    <button class="btn btn-primary float-sm-right mr-2" data-toggle="modal"
-                        data-target="#modalformpasienbaru"><i class="bi bi-person-plus"></i> SURAT KONTROL</button>
+                    <button class="btn btn-primary float-sm-right mr-2" data-toggle="modal" data-target="#staticBackdrop"><i
+                            class="bi bi-person-plus"></i> SURAT KONTROL</button>
                 </div>
             </div>
 
@@ -209,6 +211,70 @@
             </div>
         </div>
     </section>
+    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Buat Surat Kontrol / SPRI </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Jenis Surat</label>
+                        <select class="form-control" id="jenissurat">
+                            <option value="1">SPRI</option>
+                            <option value="2">SURAT KONTROL</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Tanggal Kontrol</label>
+                        <input type="email" class="form-control datepicker" id="tanggalkontrol"
+                            placeholder="name@example.com" data-date-format="yyyy-mm-dd">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Nomor Kartu / SEP</label>
+                        <input type="email" class="form-control" id="nomorkartukontrol" value=""
+                            placeholder="masukan nomor kartu / sep ...">
+                        <small id="emailHelp" class="form-text text-danger">masukan nomor kartu untuk pembuatan spri / sep
+                            untuk pembuatan surat kontrol</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Poli Kontrol</label>
+                        <div class="input-group mb-3">
+                            <input readonly type="text" class="form-control" placeholder="Klik cari poli ..."
+                                id="polikontrol">
+                            <input hidden readonly type="text" class="form-control" placeholder="Klik cari poli ..."
+                                id="kodepolikontrol">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" data-toggle="modal"
+                                    data-target="#modalpilihpoli" onclick="caripolikontrol()">Cari Poli</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Dokter</label>
+                        <div class="input-group mb-3">
+                            <input readonly type="text" class="form-control" placeholder="Klik cari dokter ..."
+                                id="dokterkontrol">
+                            <input hidden readonly type="text" class="form-control" placeholder="Klik cari dokter ..."
+                                id="kodedokterkontrol">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" data-toggle="modal"
+                                    data-target="#modalpilihdokter" onclick="caridokterkontrol()">Cari Dokter</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="buatsuratkontrol()">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         $(function() {
             $("#tabelsuratkontrol_rs").DataTable({
@@ -251,7 +317,7 @@
                     tahun,
                     filter
                 },
-                url: '<?= route('vclaimlistsuratkontrol_peserta');?>',
+                url: '<?= route('vclaimlistsuratkontrol_peserta') ?>',
                 error: function(data) {
                     spinner.hide();
                     alert('error!')
@@ -263,6 +329,7 @@
                 }
             });
         }
+
         function getsuratkontrol_rs() {
             tanggalawal = $('#tanggalawal').val()
             tanggalakhir = $('#tanggalakhir').val()
@@ -277,7 +344,7 @@
                     tanggalakhir,
                     filter
                 },
-                url: '<?= route('vclaimlistsuratkontrol_rs');?>',
+                url: '<?= route('vclaimlistsuratkontrol_rs') ?>',
                 error: function(data) {
                     spinner.hide();
                     alert('error!')
@@ -311,7 +378,7 @@
                         },
                         dataType: 'Json',
                         Async: true,
-                        url: '<?= route('vclaimhapussurkon');?>',
+                        url: '<?= route('vclaimhapussurkon') ?>',
                         error: function(data) {
                             spinner.hide()
                             Swal.fire({
@@ -353,14 +420,51 @@
             } else {
                 nomor = nomorsep
             }
-            $('#jenissurat').val(jenissurat)
-            $('#tanggalkontrol').val(tgl)
-            $('#nomorkartukontrol').val(nomor)
-            $('#polikontrol').val(namapolitujuan)
-            $('#kodepolikontrol').val(kodepolitujuan)
-            $('#dokterkontrol').val(namadokter)
-            $('#kodedokterkontrol').val(kodedokter)
-            $('#nomorsurat').val(suratkontrol)
+            $('#editjenissurat').val(jenissurat)
+            $('#edittanggalkontrol').val(tgl)
+            $('#editnomorkartukontrol').val(nomor)
+            $('#editpolikontrol').val(namapolitujuan)
+            $('#editkodepolikontrol').val(kodepolitujuan)
+            $('#editdokterkontrol').val(namadokter)
+            $('#editkodedokterkontrol').val(kodedokter)
+            $('#editnomorsurat').val(suratkontrol)
         });
+        function buatsuratkontrol() {
+            spinner = $('#loader');
+            spinner.show();
+            nomorkartu = $('#nomorkartukontrol').val()
+            jenissurat = $('#jenissurat').val()
+            tanggalkontrol = $('#tanggalkontrol').val()
+            polikontrol = $('#polikontrol').val()
+            kodepolikontrol = $('#kodepolikontrol').val()
+            dokterkontrol = $('#dokterkontrol').val()
+            kodedokterkontrol = $('#kodedokterkontrol').val()
+            $.ajax({
+                async: true,
+                dataType: 'Json',
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    nomorkartu,
+                    jenissurat,
+                    tanggalkontrol,
+                    kodepolikontrol,
+                    kodedokterkontrol
+                },
+                url: '<?= route('buatsuratkontrol') ?>',
+                error: function(data) {
+                    spinner.hide();
+                    alert('error!')
+                },
+                success: function(data) {
+                    spinner.hide();
+                    if (data.metaData.code == 200) {
+                        alert(data.metaData.message)
+                    } else {
+                        alert(data.metaData.message)
+                    }
+                }
+            });
+        }
     </script>
 @endsection

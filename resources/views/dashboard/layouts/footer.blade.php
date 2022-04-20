@@ -207,30 +207,30 @@
               <div class="modal-body">
                   <div class="form-group">
                       <label for="exampleFormControlInput1">Jenis Surat</label>
-                      <select class="form-control" id="jenissurat">
+                      <select class="form-control" id="editjenissurat">
                           <option value="1">SPRI</option>
                           <option value="2">SURAT KONTROL</option>
                       </select>
                   </div>
                   <div class="form-group">
                       <label for="exampleFormControlInput1">Tanggal Kontrol</label>
-                      <input type="" class="form-control datepicker" id="tanggalkontrol" placeholder="name@example.com"
+                      <input type="" class="form-control datepicker" id="edittanggalkontrol" placeholder="name@example.com"
                           data-date-format="yyyy-mm-dd">
                   </div>
                   <div class="form-group">
                       <label for="exampleFormControlInput1">Nomor Kartu</label>
-                      <input type="" class="form-control" id="nomorkartukontrol" value=""
+                      <input type="" class="form-control" id="editnomorkartukontrol" value=""
                           placeholder="name@example.com">
-                      <input hidden type="" class="form-control" id="nomorsurat" value=""
+                      <input hidden type="" class="form-control" id="editnomorsurat" value=""
                           placeholder="name@example.com">
                   </div>
                   <div class="form-group">
                       <label for="exampleFormControlInput1">Poli Kontrol</label>
                       <div class="input-group mb-3">
                           <input readonly type="text" class="form-control" placeholder="Klik cari poli ..."
-                              id="polikontrol">
+                              id="editpolikontrol">
                           <input hidden readonly type="text" class="form-control" placeholder="Klik cari poli ..."
-                              id="kodepolikontrol">
+                              id="editkodepolikontrol">
                           <div class="input-group-append">
                               <button class="btn btn-outline-secondary" type="button" data-toggle="modal"
                                   data-target="#modalpilihpoli" onclick="caripolikontrol()">Cari Poli</button>
@@ -241,9 +241,9 @@
                       <label for="exampleFormControlInput1">Dokter</label>
                       <div class="input-group mb-3">
                           <input readonly type="text" class="form-control" placeholder="Klik cari dokter ..."
-                              id="dokterkontrol">
+                              id="editdokterkontrol">
                           <input hidden readonly type="text" class="form-control" placeholder="Klik cari dokter ..."
-                              id="kodedokterkontrol">
+                              id="editkodedokterkontrol">
                           <div class="input-group-append">
                               <button class="btn btn-outline-secondary" type="button" data-toggle="modal"
                                   data-target="#modalpilihdokter" onclick="caridokterkontrol()">Cari Dokter</button>
@@ -437,14 +437,14 @@
       function updatesuratkontrol() {
           spinner = $('#loader');
           spinner.show();
-          nomorsurat = $('#nomorsurat').val()
-          nomorkartu = $('#nomorkartukontrol').val()
-          jenissurat = $('#jenissurat').val()
-          tanggalkontrol = $('#tanggalkontrol').val()
-          polikontrol = $('#polikontrol').val()
-          kodepolikontrol = $('#kodepolikontrol').val()
-          dokterkontrol = $('#dokterkontrol').val()
-          kodedokterkontrol = $('#kodedokterkontrol').val()
+          nomorsurat = $('#editnomorsurat').val()
+          nomorkartu = $('#editnomorkartukontrol').val()
+          jenissurat = $('#editjenissurat').val()
+          tanggalkontrol = $('#edittanggalkontrol').val()
+          polikontrol = $('#editpolikontrol').val()
+          kodepolikontrol = $('#editkodepolikontrol').val()
+          dokterkontrol = $('#editdokterkontrol').val()
+          kodedokterkontrol = $('#editkodedokterkontrol').val()
           $.ajax({
               async: true,
               dataType: 'Json',
