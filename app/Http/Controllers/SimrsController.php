@@ -303,6 +303,23 @@ class SimrsController extends Controller
         //cek sudah daftar belum
         //cek_kronis sp_cari_riwayat_kronis_terakhir
         //cek pasien aktif
+        if($request->jenispelayanan == 2){
+            if($request->kodedokterlayan == ''){
+                $data = [
+                    'kode' => 500,
+                    'message' => 'Dokter belum dipilih !'
+                ];
+                echo json_encode($data);
+                die;
+            }else if($request->kodepolitujuan ==''){
+                $data = [
+                    'kode' => 500,
+                    'message' => 'Poli belum dipilih !'
+                ];
+                echo json_encode($data);
+                die;
+            }
+        }
         $tgl_masuk = $request->tglsep;
         $tgl_masuk_time = $request->tglsep .' '.date('h:i:s');
         $cek_rm = DB::select('select * from ts_kunjungan where no_rm = ?', [$request->norm]);
@@ -660,7 +677,7 @@ class SimrsController extends Controller
                 'cek_tracer' => 'N'
             ];
             //insert ke tracer
-            tracer::create($data_tracer);
+            // tracer::create($data_tracer);
             $data = [
                 'kode' => 200,
                 'message' => 'sukses',

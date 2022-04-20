@@ -11,8 +11,8 @@ use GuzzleHttp\Exception\RequestException;
 
 class VclaimModel extends Model
 {
-    // public $baseUrl = 'https://apijkn-dev.bpjs-kesehatan.go.id/vclaim-rest-dev/';
-    public $baseUrl = 'https://apijkn.bpjs-kesehatan.go.id/vclaim-rest/';
+    public $baseUrl = 'https://apijkn-dev.bpjs-kesehatan.go.id/vclaim-rest-dev/';
+    // public $baseUrl = 'https://apijkn.bpjs-kesehatan.go.id/vclaim-rest/';
     public static function signature()
     {
         $cons_id =  env('CONS_ID');
@@ -23,7 +23,6 @@ class VclaimModel extends Model
         $tStamp = strval(time() - strtotime('1970-01-01 00:00:00'));
         $signature = hash_hmac('sha256', $cons_id . "&" . $tStamp, $secretKey, true);
         $encodedSignature = base64_encode($signature);
-
         $response = array(
             'user_key' => $userkey,
             'x-cons-id' => $cons_id,
