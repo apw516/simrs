@@ -71,6 +71,24 @@ class SimrsController extends Controller
             'cek_kunjungan' => $total
         ]);
     }
+    public function Formumum(Request $request)
+    {
+        // $noka = $v->get_peserta_noka($request->nomorrm, date('Y-m-d'));
+        $cek_rm = DB::select('select * from ts_kunjungan where no_rm = ? and status_kunjungan = 1', [$request->nomorrm]);
+        $total = count($cek_rm);
+        return view('pendaftaran.form_pasien_umum'
+        // [
+        //     'data_peserta' => $noka,
+        //     'riwayat_kunjungan' => DB::select("CALL SP_RIWAYAT_KUNJUNGAN_PX('$request->nomorrm')"),
+        //     'alasan_masuk' => DB::select('select * from mt_alasan_masuk'),
+        //     'nomorrm' => $request->nomorrm,
+        //     'mt_pasien' => Pasien::where('no_rm', $request->nomorrm)->get(),
+        //     'mt_unit' => mt_unit::where('kelas_unit', 2)->get(),
+        //     'provinsi' => $v->referensi_propinsi(),
+        //     'cek_kunjungan' => $total
+        // ]
+    );
+    }
     public function Caripasien(Request $request)
     {
         return view('pendaftaran.pencarianpasien', [
