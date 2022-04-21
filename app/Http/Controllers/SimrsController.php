@@ -399,7 +399,7 @@ class SimrsController extends Controller
                 //jika pasien rawat jalan dan bukan igd maka dilakukan cek kronis
                 $r = DB::select("CALL sp_cari_riwayat_kronis_terakhir('$request->norm','$kodeunit','$tgl_masuk')");
                 if(count($r) > 0){
-                    if($r[0]->ada_kronis == 'Yes'){
+                    if($r[0]->status_daftar == 'Tidak boleh daftar'){
                         $data = [
                             'kode' => 500,
                             'message' => 'Pasien Kronis'
