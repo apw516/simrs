@@ -214,8 +214,8 @@
                   </div>
                   <div class="form-group">
                       <label for="exampleFormControlInput1">Tanggal Kontrol</label>
-                      <input type="" class="form-control datepicker" id="edittanggalkontrol" placeholder="name@example.com"
-                          data-date-format="yyyy-mm-dd">
+                      <input type="" class="form-control datepicker" id="edittanggalkontrol"
+                          placeholder="name@example.com" data-date-format="yyyy-mm-dd">
                   </div>
                   <div class="form-group">
                       <label for="exampleFormControlInput1">Nomor Kartu</label>
@@ -298,6 +298,40 @@
           </div>
       </div>
   </div>
+  <!-- Modal -->
+  <div class="modal fade" id="editpasien" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <div class="modal-header bg-warning">
+                  <h5 class="modal-title" id="exampleModalLabel">Edit pasien</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <form>
+                      <div class="form-group">
+                          <label for="exampleInputEmail1">Nama pasien</label>
+                          <input type="text" class="form-control" id="namapasien_edit">
+                          <input hidden type="text" class="form-control" id="nomor_rm_edit">
+                      </div>
+                      <div class="form-group">
+                          <label for="exampleInputPassword1">Nomor KTP</label>
+                          <input type="text" class="form-control" id="nomorktp_edit">
+                      </div>
+                      <div class="form-group">
+                          <label for="exampleInputPassword1">Nomor BPJS</label>
+                          <input type="text" class="form-control" id="nomorbpjs_edit">
+                      </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" onclick="update_mtpasien()">Save changes</button>
+              </div>
+          </div>
+      </div>
+  </div>
   <!-- ./wrapper -->
 
   <!-- REQUIRED SCRIPTS -->
@@ -352,8 +386,8 @@
               "autoWidth": true,
               "pageLength": 5,
               "order": [
-                [1, "desc"]
-            ]
+                  [1, "desc"]
+              ]
           })
       });
       $('#tabelpasienbaru').on('click', '.daftarbpjs', function() {
@@ -361,28 +395,80 @@
           spinner.show();
           nomorrm = $(this).attr('rm')
           nomorbpjs = $(this).attr('noka')
-          $.ajax({
-              type: 'post',
-              data: {
-                  _token: "{{ csrf_token() }}",
-                  nomorrm,
-                  nomorbpjs
-              },
-              url: '<?= route('formbpjs') ?>',
-              error: function(data) {
-                  spinner.hide()
-                  Swal.fire({
-                      icon: 'error',
-                      title: 'Oops,silahkan coba lagi',
-                  })
-              },
-              success: function(response) {
-                  spinner.hide()
-                  $('.formpasien').html(response)
-              }
-          });
+          if (nomorbpjs == '' || nomorbpjs == '0') {
+              spinner.hide()
+              Swal.fire({
+                  icon: 'warning',
+                  title: 'Oops,silahkan coba lagi',
+                  text: 'Nomor Kartu Belum diisi ...'
+              })
+          } else {
+              $.ajax({
+                  type: 'post',
+                  data: {
+                      _token: "{{ csrf_token() }}",
+                      nomorrm,
+                      nomorbpjs
+                  },
+                  url: '<?= route('formbpjs') ?>',
+                  error: function(data) {
+                      spinner.hide()
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Oops,silahkan coba lagi',
+                      })
+                  },
+                  success: function(response) {
+                      spinner.hide()
+                      $('.formpasien').html(response)
+                  }
+              });
+          }
+      });
+      $('#tabelpasienbaru').on('click', '.editpasien', function() {
+          nomorrm = $(this).attr('rm')
+          nama = $(this).attr('namapasien_edit')
+          nomorktp = $(this).attr('nomorktp_edit')
+          nomorbpjs = $(this).attr('nomorbpjs_edit')
+          $('#namapasien_edit').val(nama)
+          $('#nomor_rm_edit').val(nomorrm)
+          $('#nomorktp_edit').val(nomorktp)
+          $('#nomorbpjs_edit').val(nomorbpjs)
       });
 
+      function update_mtpasien() {
+          nama = $('#namapasien_edit').val()
+          rm = $('#nomor_rm_edit').val()
+          ktp = $('#nomorktp_edit').val()
+          bpjs = $('#nomorbpjs_edit').val()
+          $.ajax({
+              dataType: 'Json',
+              async: true,
+              type: 'post',
+              data: {
+                _token: "{{ csrf_token() }}",
+                  nama,
+                  rm,
+                  ktp,
+                  bpjs
+              },
+              url: '<?= route('updatepasien') ?>',
+              error: function(data) {
+                Swal.fire({
+                        icon: 'error',
+                        title: 'Oops,silahkan coba lagi',
+                    })
+              },
+              success: function(data) {
+                Swal.fire({
+                        icon: 'success',
+                        title: 'Update data pasien berhasil',
+                    })
+                  location.reload()
+                  // $('#daftarpxumum').attr('disabled', true);
+              }
+          })
+      }
       function caripolikontrol() {
           spinner = $('#loader');
           spinner.show();

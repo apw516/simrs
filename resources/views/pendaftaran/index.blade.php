@@ -86,14 +86,16 @@
                                 <td>{{ $p['nama_px'] }}</td>
                                 <td>
                                     @isset($p->Desa)
-                                        
-                                    {{ $p->Desa->name }}
+                                        {{ $p->Desa->name }}
                                     @endisset
                                     @empty($p->Desa)
                                         null
                                     @endempty
                                 </td>
                                 <td>
+                                    <button class="badge badge-warning editpasien" namapasien_edit="{{ $p['nama_px'] }}"
+                                        nomorktp_edit="{{ $p['nik_bpjs'] }}" nomorbpjs_edit="{{ $p['no_Bpjs'] }}"
+                                        rm="{{ $p['no_rm'] }}" data-toggle="modal" data-target="#editpasien"><i class="bi bi-pencil-square"></i></button>
                                     <button class="badge badge-primary daftarumum" rm="{{ $p['no_rm'] }}"
                                         nik="{{ $p['nik_bpjs'] }}">Umum</button>
                                     <button class="badge badge-success daftarbpjs" rm="{{ $p['no_rm'] }}"
@@ -162,7 +164,8 @@
                                     <div class="col-sm-4">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Tgl lahir</label>
-                                            <input class="form-control datepicker" data-date-format="yyyy-mm-dd" id="tanggallahir" placeholder="">
+                                            <input class="form-control datepicker" data-date-format="yyyy-mm-dd"
+                                                id="tanggallahir" placeholder="">
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
@@ -481,52 +484,59 @@
             } else {
                 simpan()
             }
+
             function simpan() {
-                    $.ajax({
-                        dataType: 'Json',
-                        async: true,
-                        type: 'post',
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            nomorktp,
-                            nomorbpjs,
-                            namapasien,
-                            tempatlahir,
-                            tanggallahir,
-                            jeniskelamin,
-                            agama,
-                            pekerjaan,
-                            pendidikan,
-                            nomortelp,
-                            namakeluarga,
-                            hubungankeluarga,
-                            telpkeluarga,
-                            alamatkeluarga,
-                            kewarganegaraan,
-                            negara,
-                            provinsi,
-                            kabupaten,
-                            kecamatan,
-                            desa,
-                            alamat,
-                            sesuaiktp,
-                            provinisidom,
-                            kabupatendom,
-                            kecamatandom,
-                            desadom,
-                            alamatdom
-                        },
-                        url: '<?= route('simpanpasien') ?>',
-                        error: function(datas) {
-                            alert('error')
-                        },
-                        success: function(data) {
-                            alert('Berhasil')
-                            location.reload()
-                            // $('#daftarpxumum').attr('disabled', true);
-                        }
-                    });
-                }
+                $.ajax({
+                    dataType: 'Json',
+                    async: true,
+                    type: 'post',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        nomorktp,
+                        nomorbpjs,
+                        namapasien,
+                        tempatlahir,
+                        tanggallahir,
+                        jeniskelamin,
+                        agama,
+                        pekerjaan,
+                        pendidikan,
+                        nomortelp,
+                        namakeluarga,
+                        hubungankeluarga,
+                        telpkeluarga,
+                        alamatkeluarga,
+                        kewarganegaraan,
+                        negara,
+                        provinsi,
+                        kabupaten,
+                        kecamatan,
+                        desa,
+                        alamat,
+                        sesuaiktp,
+                        provinisidom,
+                        kabupatendom,
+                        kecamatandom,
+                        desadom,
+                        alamatdom
+                    },
+                    url: '<?= route('simpanpasien') ?>',
+                    error: function(datas) {
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Oops maaf sepertinya ada masalah'
+                    })
+                    },
+                    success: function(data) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil insert data pasien ...',
+                        })
+                        location.reload()
+                        // $('#daftarpxumum').attr('disabled', true);
+                    }
+                });
+            }
         }
         $(document).ready(function() {
             $('#provinsi').change(function() {

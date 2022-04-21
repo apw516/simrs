@@ -1074,7 +1074,7 @@ class SimrsController extends Controller
         }
         $nobpjs = $request->nomorbpjs;
         if($request->nomorbpjs == ''){
-            $nobpjs = ' ';
+            $nobpjs = '0';
         }
         $data_pasien = [
             'no_rm' => $rm,
@@ -1137,5 +1137,10 @@ class SimrsController extends Controller
             $jumlah = $pulang->response->jumlahSEP;
             echo "<div class='alert alert-success alert-dismissible fade show' role=alert>Nomor rujukan : $request->nomorrujukan <strong>Kunjungan ke-$jumlah</strong><button type=button class=close data-dismiss=alert aria-label=Close><span aria-hidden=true>&times;</span></button></div>";
         }
+    }
+    public function updatepasien(Request $request)
+    {
+        Pasien::where('no_rm', $request->rm)->update(['no_Bpjs' => $request->bpjs, 'nama_px' => $request->nama, 'nik_bpjs' => $request->ktp]);
+        echo json_encode('ok');
     }
 }
