@@ -425,6 +425,30 @@
               });
           }
       });
+      $('#tabelpasienbaru').on('click', '.daftarumum', function() {
+          spinner = $('#loader')
+          spinner.show();
+          nomorrm = $(this).attr('rm')
+              $.ajax({
+                  type: 'post',
+                  data: {
+                      _token: "{{ csrf_token() }}",
+                      nomorrm,
+                  },
+                  url: '<?= route('formumum') ?>',
+                  error: function(data) {
+                      spinner.hide()
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Oops,silahkan coba lagi',
+                      })
+                  },
+                  success: function(response) {
+                      spinner.hide()
+                      $('.formpasien').html(response)
+                  }
+              });
+      });
       $('#tabelpasienbaru').on('click', '.editpasien', function() {
           nomorrm = $(this).attr('rm')
           nama = $(this).attr('namapasien_edit')

@@ -36,6 +36,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('datakunjungan'); //sidebar
     Route::post('/pendaftaran/formbpjs', [SimrsController::class, 'Formbpjs'])
         ->name('formbpjs'); //footer,pencarianpasien
+    Route::post('/pendaftaran/formumum', [SimrsController::class, 'Formumum'])
+        ->name('formumum'); //footer,pencarianpasien
     Route::post('Pendaftaran/caripolikontrol', [SimrsController::class, 'Caripolikontrol'])
         ->name('caripolikontrol'); //footer,formpasien_bpjs
     Route::post('Pendaftaran/caridokterkontrol', [SimrsController::class, 'Caridokterkontrol'])
