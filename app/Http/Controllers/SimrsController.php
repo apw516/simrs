@@ -40,10 +40,11 @@ class SimrsController extends Controller
         $title = 'SIMRS - PENDAFTARAN';
         $sidebar = '2';
         $sidebar_m = '2';
+   
         return view('pendaftaran.index', [
             'title' => $title,
             'sidebar' => $sidebar,
-            'data_pasien' => Pasien::where('tgl_entry', date('Y-m-d'))->get(),
+            'data_pasien' => Pasien::limit(200)->orderBy('tgl_entry','desc')->get(),
             'sidebar_m' => $sidebar_m,
             'agama' => Agama::all(),
             'pekerjaan' => Pekerjaan::all(),
@@ -1071,10 +1072,13 @@ class SimrsController extends Controller
             $prop = $request->provinsidom;
             $alamat = $request->alamatdom;
         }
-
+        $nobpjs = $request->nomorbpjs;
+        if($request->nomorbpjs == ''){
+            $nobpjs = ' ';
+        }
         $data_pasien = [
             'no_rm' => $rm,
-            'no_Bpjs' => $request->nomorbpjs,
+            'no_Bpjs' => $nobpjs,
             'nik_bpjs' => $request->nomorktp,
             'nama_px' => $request->namapasien,
             'jenis_kelamin' => $request->jeniskelamin,
@@ -1096,7 +1100,7 @@ class SimrsController extends Controller
             'kode_propinsi' => $request->provinsi,
             'kode_kabupaten' => $request->kabupaten,
             'kode_kecamatan' => $request->kecamatan,
-            'kode_desa' => $request->kode_desa
+            'kode_desa' => $desa
         ];
         $data_keluarga = [
             'no_rm' => $rm,

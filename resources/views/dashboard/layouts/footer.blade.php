@@ -351,6 +351,9 @@
               "lengthChange": false,
               "autoWidth": true,
               "pageLength": 5,
+              "order": [
+                [1, "desc"]
+            ]
           })
       });
       $('#tabelpasienbaru').on('click', '.daftarbpjs', function() {

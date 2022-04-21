@@ -27,8 +27,8 @@
                 <!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Pendaftaran</li>
+                        {{-- <li class="breadcrumb-item"><a href="{{ route}}">Dashboard</a></li> --}}
+                        {{-- <li class="breadcrumb-item active">Pendaftaran</li> --}}
                     </ol>
                 </div>
                 <!-- /.col -->
@@ -84,7 +84,15 @@
                                 <td>{{ $p['nik_bpjs'] }}</td>
                                 <td>{{ $p['no_Bpjs'] }}</td>
                                 <td>{{ $p['nama_px'] }}</td>
-                                <td>{{ $p->Desa->name }}</td>
+                                <td>
+                                    @isset($p->Desa)
+                                        
+                                    {{ $p->Desa->name }}
+                                    @endisset
+                                    @empty($p->Desa)
+                                        null
+                                    @endempty
+                                </td>
                                 <td>
                                     <button class="badge badge-primary daftarumum" rm="{{ $p['no_rm'] }}"
                                         nik="{{ $p['nik_bpjs'] }}">Umum</button>
