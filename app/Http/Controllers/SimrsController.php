@@ -76,17 +76,18 @@ class SimrsController extends Controller
         // $noka = $v->get_peserta_noka($request->nomorrm, date('Y-m-d'));
         $cek_rm = DB::select('select * from ts_kunjungan where no_rm = ? and status_kunjungan = 1', [$request->nomorrm]);
         $total = count($cek_rm);
-        return view('pendaftaran.form_pasien_umum'
-        // [
-        //     'data_peserta' => $noka,
-        //     'riwayat_kunjungan' => DB::select("CALL SP_RIWAYAT_KUNJUNGAN_PX('$request->nomorrm')"),
-        //     'alasan_masuk' => DB::select('select * from mt_alasan_masuk'),
-        //     'nomorrm' => $request->nomorrm,
-        //     'mt_pasien' => Pasien::where('no_rm', $request->nomorrm)->get(),
-        //     'mt_unit' => mt_unit::where('kelas_unit', 2)->get(),
-        //     'provinsi' => $v->referensi_propinsi(),
-        //     'cek_kunjungan' => $total
-        // ]
+        return view('pendaftaran.form_pasien_umum',
+        [
+            // 'data_peserta' => $noka,
+            'riwayat_kunjungan' => DB::select("CALL SP_RIWAYAT_KUNJUNGAN_PX('$request->nomorrm')"),
+            'alasan_masuk' => DB::select('select * from mt_alasan_masuk'),
+            'mt_penjamin' => DB::select('select * from mt_penjamin'),
+            // 'nomorrm' => $request->nomorrm,
+            // 'mt_pasien' => Pasien::where('no_rm', $request->nomorrm)->get(),
+            // 'mt_unit' => mt_unit::where('kelas_unit', 2)->get(),
+            // 'provinsi' => $v->referensi_propinsi(),
+            // 'cek_kunjungan' => $total
+        ]
     );
     }
     public function Caripasien(Request $request)
@@ -108,6 +109,21 @@ class SimrsController extends Controller
             echo json_encode($arr_result);
         }
     }
+    public function Caripoli_rs(Request $request)
+    {
+        $v = new VclaimModel();
+        // $result = $v->referensi_poli($request['term']);
+        $r = 'JANTUNG';
+        $result = DB::table('mt_unit')->where('nama_unit','LIKE','%'.$request['term'].'%')->where('kelas_unit','=','1')->get();
+        if (count($result) > 0) {
+            foreach ($result as $row)
+                $arr_result[] = array(
+                    'label' => $row->nama_unit,
+                    'kode' => $row->kode_unit,
+                );
+            echo json_encode($arr_result);
+        }
+    }
     public function Caridokter(Request $request)
     {
         $r = $request['term'];
@@ -117,6 +133,18 @@ class SimrsController extends Controller
                 $arr_result[] = array(
                     'label' => $row['nama_dokter'],
                     'kode' => $row['kode_dpjp'],
+                );
+            echo json_encode($arr_result);
+        }
+    }
+    public function Caridokter_rs(Request $request)
+    {
+        $result = DB::table('mt_paramedis')->where('nama_paramedis','LIKE','%'.$request['term'].'%')->where('keilmuan','=','dr')->get();
+        if (count($result) > 0) {
+            foreach ($result as $row)
+                $arr_result[] = array(
+                    'label' => $row->nama_paramedis,
+                    'kode' => $row->kode_paramedis,
                 );
             echo json_encode($arr_result);
         }
