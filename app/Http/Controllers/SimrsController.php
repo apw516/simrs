@@ -924,54 +924,54 @@ class SimrsController extends Controller
         $pdf->SetXY(45, 40);
         $pdf->Cell(10, 7, $sep['0']['no_kartu'], 0, 1);
 
-        $pdf->SetXY(90, 40);
+        $pdf->SetXY(100, 35);
         $pdf->Cell(10, 7, 'No. MR', 0, 1);
-        $pdf->SetXY(110, 40);
+        $pdf->SetXY(115, 35);
         $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(115, 40);
+        $pdf->SetXY(120, 35);
         $pdf->Cell(10, 7, $sep['0']['no_rm'], 0, 1);
 
-        $pdf->SetXY(90, 45);
+        $pdf->SetXY(100, 40);
         $pdf->Cell(10, 7, 'Kelamin', 0, 1);
-        $pdf->SetXY(110, 45);
+        $pdf->SetXY(115, 40);
         $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(115, 45);
+        $pdf->SetXY(120, 40);
         $pdf->Cell(10, 7, $sep['0']['jenis_kelamin'], 0, 1);
 
-        $pdf->SetXY(140, 40);
+        $pdf->SetXY(140, 35);
         $pdf->Cell(10, 7, 'Peserta', 0, 1);
-        $pdf->SetXY(160, 40);
+        $pdf->SetXY(160, 35);
         $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(165, 40);
+        $pdf->SetXY(165, 35);
         $pdf->Cell(10, 7, $sep['0']['peserta'], 0, 1);
 
 
-        $pdf->SetXY(140, 45);
+        $pdf->SetXY(140, 40);
         $pdf->Cell(10, 7, 'COB', 0, 1);
+        $pdf->SetXY(160, 40);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(165, 40);
+        $pdf->Cell(10, 7, $sep['0']['cob'], 0, 1);
+
+        $pdf->SetXY(140, 45);
+        $pdf->Cell(10, 7, 'Jns Rawat', 0, 1);
         $pdf->SetXY(160, 45);
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetXY(165, 45);
-        $pdf->Cell(10, 7, $sep['0']['cob'], 0, 1);
+        $pdf->Cell(10, 7, $sep['0']['jenis_rawat'], 0, 1);
 
         $pdf->SetXY(140, 50);
-        $pdf->Cell(10, 7, 'Jns Rawat', 0, 1);
+        $pdf->Cell(10, 7, 'Kls Rawat', 0, 1);
         $pdf->SetXY(160, 50);
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetXY(165, 50);
-        $pdf->Cell(10, 7, $sep['0']['jenis_rawat'], 0, 1);
+        $pdf->Cell(10, 7, $sep['0']['kls_rawat'], 0, 1);
 
         $pdf->SetXY(140, 55);
-        $pdf->Cell(10, 7, 'Kls Rawat', 0, 1);
+        $pdf->Cell(10, 7, 'Penjamin', 0, 1);
         $pdf->SetXY(160, 55);
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetXY(165, 55);
-        $pdf->Cell(10, 7, $sep['0']['kls_rawat'], 0, 1);
-
-        $pdf->SetXY(140, 60);
-        $pdf->Cell(10, 7, 'Penjamin', 0, 1);
-        $pdf->SetXY(160, 60);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(165, 60);
         $pdf->Cell(10, 7, '', 0, 1);
 
 
@@ -980,7 +980,7 @@ class SimrsController extends Controller
         $pdf->SetXY(40, 45);
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetXY(45, 46);
-        $pdf->MultiCell(30, 5, $sep['0']['nama_peserta']);
+        $pdf->MultiCell(60, 5, $sep['0']['nama_peserta']);
         // $pdf->Cell(10,7,$sep['0']['nama_peserta'],0,1);
         $y = $pdf->GetY();
         $pdf->SetXY(10, $y);
