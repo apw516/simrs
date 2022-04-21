@@ -96,7 +96,8 @@
                                     <button class="badge badge-warning editpasien" namapasien_edit="{{ $p['nama_px'] }}"
                                         nomorktp_edit="{{ $p['nik_bpjs'] }}" nomorbpjs_edit="{{ $p['no_Bpjs'] }}"
                                         rm="{{ $p['no_rm'] }}" data-toggle="modal" data-target="#editpasien"><i class="bi bi-pencil-square"></i></button>
-                                    <button class="badge badge-primary daftarumum" rm="{{ $p['no_rm'] }}">Umum</button>
+                                    <button class="badge badge-primary daftarumum" nama="{{ $p['nama_px'] }}"
+                                    rm="{{ $p['no_rm'] }}">Umum</button>
                                     <button class="badge badge-success daftarbpjs" rm="{{ $p['no_rm'] }}"
                                         noka="{{ $p['no_Bpjs'] }}">Bpjs</button>
                                 </td>

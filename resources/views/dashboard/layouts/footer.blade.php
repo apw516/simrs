@@ -429,6 +429,7 @@
           spinner = $('#loader')
           spinner.show();
           nomorrm = $(this).attr('rm')
+          nama = $(this).attr('nama')
               $.ajax({
                   type: 'post',
                   data: {
@@ -446,6 +447,8 @@
                   success: function(response) {
                       spinner.hide()
                       $('.formpasien').html(response)
+                      $('#namapasien').val(nama)
+                      $('#nomorrm').val(nomorrm)
                   }
               });
       });
@@ -836,8 +839,6 @@
               }
           });
       }
-
-
       function logout() {
           Swal.fire({
               title: 'Logout',
