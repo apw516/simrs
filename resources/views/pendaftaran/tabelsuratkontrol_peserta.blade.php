@@ -1,4 +1,4 @@
-<table id="tabelsuratkontrol_peserta" class="table table-sm table-bordered table-hover text-xs">
+<table id="tabelsuratkontrol_peserta" class="table table-sm table-bordered table-hover text-mf">
     <thead>
         <th>Nomor surat</th>
         <th>jns kontrol</th>

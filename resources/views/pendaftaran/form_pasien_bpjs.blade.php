@@ -6,7 +6,7 @@
                 <div class="card-body">
                 <button class="btn btn-danger"  data-toggle="modal"
                 data-target="#modalriwayatsep"><i class="bi bi-search"></i> Riwayat SEP Terakhir</button>
-                    <table id="tabelriwayatkunjungan" class="table table-bordered table-sm text-xs">
+                    <table id="tabelriwayatkunjungan" class="table table-bordered table-sm text-md table-hover table-striped">
                         <thead>
                             <th>Unit</th>
                             <th>Tgl Masuk</th>
@@ -20,7 +20,7 @@
                             @foreach ($riwayat_kunjungan as $r)
                                 <tr>
                                     <td>{{ $r->nama_unit }}</td>
-                                    <td>{{ $r->tgl_masuk }}</td>
+                                    <td><button class="badge badge-warning">{{ $r->tgl_masuk }}</button></td>
                                     <td>{{ $r->tgl_keluar }}</td>
                                     <td>{{ $r->nama_penjamin }}</td>
                                     <td>{{ $r->CATATAN }}</td>
@@ -40,7 +40,7 @@
                         <input hidden type="text" value="{{ $cek_kunjungan }}" id="status_kunjungan">
                         {{-- @dd($data_peserta->response->peserta->noKartu); --}}
                         <div class="card-header bg-info">Info Peserta</div>
-                        <div class="card-body text-sm">
+                        <div class="card-body text-md">
                             <div class="row">
                                 <div class="col-sm-3">Nomor RM</div>
                                 <div class="col-sm-5">: {{ $data_peserta->response->peserta->mr->noMR }}</div>
@@ -1123,8 +1123,10 @@
             "autoWidth": true,
             "pageLength": 3,
             "searching": true,
+            "ordering" : true,
+            "columnDefs" : [{"targets":0, "type":"date"}],
             // "order": [
-            //     [2, "desc"]
+            //     [1, "desc"]
             // ]
         })
     });

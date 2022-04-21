@@ -1134,7 +1134,7 @@ class SimrsController extends Controller
         $v = new VclaimModel();
         $pulang = $v->jumlahseprujukan($request->faskes,$request->nomorrujukan);
         if($pulang->metaData->code == 200){
-            $jumlah = $pulang->response->jumlahSEP;
+            $jumlah = $pulang->response->jumlahSEP + 1;
             echo "<div class='alert alert-success alert-dismissible fade show' role=alert>Nomor rujukan : $request->nomorrujukan <strong>Kunjungan ke-$jumlah</strong><button type=button class=close data-dismiss=alert aria-label=Close><span aria-hidden=true>&times;</span></button></div>";
         }
     }

@@ -1,4 +1,4 @@
-<table id="rujukanf1" class="table table-sm table-bordered table-hover text-xs">
+<table id="rujukanf1" class="table table-sm table-bordered table-hover text-md">
     <thead>
         <th>Nomor rujukan</th>
         <th>Tgl rujukan</th>
@@ -42,7 +42,7 @@
         @endif
     </tbody>
 </table>
-<table id="rujukanf2" class="table table-sm table-bordered table-hover text-xs">
+<table id="rujukanf2" class="table table-sm table-bordered table-hover text-md">
     <thead>
         <th>Nomor rujukan</th>
         <th>Tgl rujukan</th>
