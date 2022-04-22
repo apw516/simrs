@@ -157,10 +157,10 @@
                                             value="1">Eksekutif
                                     </div>
                                 </div>
-                                <input type="text" class="form-control" value="INSTALASI GAWAT DARURAT"
+                                <input type="text" class="form-control" value="" placeholder="ketik dan pilih poli tujuan ..."
                                     aria-label="Text input with checkbox" id="politujuan">
                             </div>
-                            <input hidden type="text" class="form-control" value="IGD"
+                            <input hidden type="text" class="form-control" value=""
                                 aria-label="Text input with checkbox" id="kodepolitujuan">
                         </div>
                     </div>
@@ -1107,15 +1107,6 @@
         });
     });
     $(".preloader").fadeOut();
-    $(function() {
-        $("#tabelpolikontrol").DataTable({
-            "responsive": true,
-            "lengthChange": false,
-            "autoWidth": true,
-            "pageLength": 2,
-            "searching": false
-        })
-    });
     $(function() {
         $("#tabelriwayatkunjungan").DataTable({
             "responsive": true,

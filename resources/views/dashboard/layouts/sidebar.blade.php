@@ -118,6 +118,12 @@
                                   <p>RUJUKAN</p>
                               </a>
                           </li>
+                          <li class="nav-item">
+                              <a href="{{ route('vclaimreferensi') }}" class="nav-link @if($sidebar_m == '4.4') active @endif">
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>REFERENSI</p>
+                              </a>
+                          </li>
                       </ul>
                   </li>
                   @endif

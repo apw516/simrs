@@ -102,6 +102,10 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('vclaimsep'); //sidebar
     Route::get('simrsvclaim/surakontrol', [VclaimController::class, 'Suratkontrol'])
         ->name('vclaimsurakontrol'); //sidebar
+    Route::get('simrsvclaim/referensi', [VclaimController::class, 'Referensi'])
+        ->name('vclaimreferensi'); //sidebar
+    Route::post('simrsvclaim/carireferensidokter', [VclaimController::class, 'Referensidokter'])
+        ->name('vclaimreferensidokter'); //sidebar
     Route::post('simrsvclaim/updatepulang', [VclaimController::class, 'updatepulang'])
         ->name('vclaimupdatepulang'); //footer
     Route::post('simrsvclaim/updatesep', [VclaimController::class, 'simpanupdatesep'])

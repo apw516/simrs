@@ -46,6 +46,36 @@ class VclaimController extends Controller
             // 'data_pasien' => Pasien::where('tgl_entry', date('Y-m-d'))->get()
         ]);
     }
+    public function Referensi()
+    {
+        $title = 'SIMRS - DATA SURAT KONTROL';
+        $sidebar = '4';
+        $sidebar_m = '4.4';
+        return view('referensi.index', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+            'poli' => DB::select('select * from mt_unit')
+            // 'data_pasien' => Pasien::where('tgl_entry', date('Y-m-d'))->get()
+        ]);
+    }
+    public function Referensidokter(Request $request)
+    {
+        $v = new VclaimModel();
+        $dokter = $v->referensi_dpjp($request->filter, $request->tanggal,$request->poli);
+        if($dokter->metaData->code == 200){
+            foreach($dokter->response->list as $d){
+                $kodedpjp = $d->kode;
+                 $tb = DB::table('mt_kuota_dokter_poli')->where('kode_dpjp', $kodedpjp)->get();
+                if(count($tb) == 0){
+                    DB::select('insert into mt_kuota_dokter_poli (nama_dokter,kode_poli_bpjs,kode_dpjp) values (?,?,?)', [$d->nama, $request->poli, $kodedpjp]);
+                };
+            };
+        }
+        return view('referensi.tabeldokter', [
+            'dokter' => $dokter
+        ]);
+    }
     public function listsuratkontrol_rs(Request $request)
     {
         $v = new VclaimModel();
