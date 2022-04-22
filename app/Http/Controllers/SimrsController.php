@@ -351,6 +351,8 @@ class SimrsController extends Controller
         //cek_kronis sp_cari_riwayat_kronis_terakhir
         //cek pasien aktif
         if($request->jenispelayanan == 2){
+            $paramedis = Dokter::where('kode_dpjp', '=', "$request->kodedokterlayan")->get();
+            $cek_paramedis = count($paramedis);
             if($request->kodedokterlayan == ''){
                 $data = [
                     'kode' => 500,
@@ -362,6 +364,14 @@ class SimrsController extends Controller
                 $data = [
                     'kode' => 500,
                     'message' => 'Poli belum dipilih !'
+                ];
+                echo json_encode($data);
+                die;
+            }
+            else if($cek_paramedis == 0){
+                $data = [
+                    'kode' => 500,
+                    'message' => 'Data paramedis belum update,silahkan hubungi IT'
                 ];
                 echo json_encode($data);
                 die;
