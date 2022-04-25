@@ -74,4 +74,14 @@
             });
         }
     });
+    $('#tabelpasienbaru').on('click', '.editpasien', function() {
+          nomorrm = $(this).attr('rm')
+          nama = $(this).attr('namapasien_edit')
+          nomorktp = $(this).attr('nomorktp_edit')
+          nomorbpjs = $(this).attr('nomorbpjs_edit')
+          $('#namapasien_edit').val(nama)
+          $('#nomor_rm_edit').val(nomorrm)
+          $('#nomorktp_edit').val(nomorktp)
+          $('#nomorbpjs_edit').val(nomorbpjs)
+      });
 </script>

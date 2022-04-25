@@ -468,6 +468,9 @@
           rm = $('#nomor_rm_edit').val()
           ktp = $('#nomorktp_edit').val()
           bpjs = $('#nomorbpjs_edit').val()
+          if(bpjs == ''){
+              bpjs = '0'
+          }
           $.ajax({
               dataType: 'Json',
               async: true,
