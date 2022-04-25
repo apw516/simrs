@@ -1136,7 +1136,7 @@ class SimrsController extends Controller
             'no_rm' => $rm,
             'no_Bpjs' => $nobpjs,
             'nik_bpjs' => $request->nomorktp,
-            'nama_px' => $request->namapasien,
+            'nama_px' => strtoupper($request->namapasien),
             'jenis_kelamin' => $request->jeniskelamin,
             'tempat_lahir' => $request->tempatlahir,
             'tgl_lahir' => $request->tanggallahir,
