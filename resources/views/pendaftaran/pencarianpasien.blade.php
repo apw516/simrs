@@ -16,6 +16,7 @@
                 <td>{{ $p->nama_pasien }}</td>
                 <td>{{ $p->alamat }}</td>
                 <td>
+                    <button class="badge badge-info detailpasien" norm={{ $p->no_rm }} data-toggle="modal" data-target="#modaldetailpasien"><i class="bi bi-info-square"></i></button>
                     <button class="badge badge-warning editpasien" namapasien_edit="{{ $p->nama_pasien }}"
                         nomorktp_edit="{{ $p->NIK }}" nomorbpjs_edit="{{ $p->no_asuransi }}"
                         rm="{{ $p->no_rm }}" data-toggle="modal" data-target="#editpasien"><i class="bi bi-pencil-square"></i></button>
@@ -84,4 +85,26 @@
           $('#nomorktp_edit').val(nomorktp)
           $('#nomorbpjs_edit').val(nomorbpjs)
       });
+      $('#tabelpasienbaru').on('click', '.detailpasien', function() {
+          nomorrm = $(this).attr('norm')
+           $.ajax({
+              type: 'post',
+              data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+              },
+              url: '<?= route('detailpasien') ?>',
+              error: function(data) {
+                Swal.fire({
+                        icon: 'error',
+                        title: 'Oops,silahkan coba lagi',
+                    })
+              },
+              success: function(response) {
+                  $('.view_detail_pasien').html(response)
+                  // $('#daftarpxumum').attr('disabled', true);
+              }
+          })
+      });
+
 </script>

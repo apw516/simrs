@@ -66,7 +66,7 @@
 
         <div class="container">
             <div class="vpasien">
-                <table id="tabelpasienbaru" class="table table-bordered table-sm">
+                <table id="tabelpasienbaru" class="table table-bordered table-sm table-striped table-hover">
                     <thead>
                         <th>Tgl entry</th>
                         <th>Nomor RM</th>
@@ -93,6 +93,7 @@
                                     @endempty
                                 </td>
                                 <td>
+                                    <button class="badge badge-info detailpasien" norm={{ $p['no_rm'] }} data-toggle="modal" data-target="#modaldetailpasien"><i class="bi bi-info-square"></i></button>
                                     <button class="badge badge-warning editpasien" namapasien_edit="{{ $p['nama_px'] }}"
                                         nomorktp_edit="{{ $p['nik_bpjs'] }}" nomorbpjs_edit="{{ $p['no_Bpjs'] }}"
                                         rm="{{ $p['no_rm'] }}" data-toggle="modal" data-target="#editpasien"><i class="bi bi-pencil-square"></i></button>

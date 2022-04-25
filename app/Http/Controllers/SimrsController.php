@@ -1199,4 +1199,12 @@ class SimrsController extends Controller
         Pasien::where('no_rm', $request->rm)->update(['no_Bpjs' => $request->bpjs, 'nama_px' => $request->nama, 'nik_bpjs' => $request->ktp]);
         echo json_encode('ok');
     }
+    public function detailpasien(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $pasien = Pasien::where('no_rm', $rm)->get();
+        return view('pendaftaran.detailpasien', [
+            'data_pasien' => $pasien
+        ]);
+    }
 }

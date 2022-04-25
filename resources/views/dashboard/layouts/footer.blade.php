@@ -332,6 +332,28 @@
           </div>
       </div>
   </div>
+  
+<!-- Modal -->
+<div class="modal fade" id="modaldetailpasien" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-info">
+          <h5 class="modal-title" id="exampleModalLabel">Info pasien</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="view_detail_pasien">
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- ./wrapper -->
 
   <!-- REQUIRED SCRIPTS -->
@@ -461,6 +483,27 @@
           $('#nomor_rm_edit').val(nomorrm)
           $('#nomorktp_edit').val(nomorktp)
           $('#nomorbpjs_edit').val(nomorbpjs)
+      });
+      $('#tabelpasienbaru').on('click', '.detailpasien', function() {
+          nomorrm = $(this).attr('norm')
+           $.ajax({
+              type: 'post',
+              data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+              },
+              url: '<?= route('detailpasien') ?>',
+              error: function(data) {
+                Swal.fire({
+                        icon: 'error',
+                        title: 'Oops,silahkan coba lagi',
+                    })
+              },
+              success: function(response) {
+                  $('.view_detail_pasien').html(response)
+                  // $('#daftarpxumum').attr('disabled', true);
+              }
+          })
       });
 
       function update_mtpasien() {

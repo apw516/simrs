@@ -95,6 +95,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('updatepasien');
     Route::post('/pendaftaran/cekkunjunganrujukan', [SimrsController::class, 'cekkunjungan_rujukan'])
         ->name('cekkunjungan_rujukan');
+    Route::post('/pendaftaran/detailpasien', [SimrsController::class, 'detailpasien'])
+        ->name('detailpasien');
 
 
     //vclaim controller
