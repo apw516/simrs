@@ -1,4 +1,4 @@
-<h5>Rawat Jalan </h5>
+<h2 class="text-bold">Kunjungan Rawat Jalan</h2>
 <table id="kunjunganrawatjalan" class="table table-bordered table-sm text-xs">
     <thead>
         <th>Nama</th>
@@ -38,7 +38,7 @@
         @endif
     </tbody>
 </table>
-<h5>Rawat Inap </h5>
+<h2 class="text-bold">Kunjungan Rawat Inap</h2>
 <table id="kunjunganrawatinap" class="table table-bordered table-sm text-xs">
     <thead>
         <th>Nama</th>

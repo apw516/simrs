@@ -686,7 +686,7 @@
                         <div class="col-sm-3">
                             <label for="">tanggal awal</label>
                             <?php $tglawal = date('Y-m-d', strtotime('-29 days')) ;?>
-                            <input type="text" class="form-control"
+                            <input type="text" class="form-control datepicker" data-date-format="yyyy-mm-dd"
                                 id="tanggalawal_riwayat" value="{{ $tglawal }}" placeholder="Tanggal awal ..">
                         </div>
                         <div class="col-sm-3">

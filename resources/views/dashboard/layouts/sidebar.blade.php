@@ -80,7 +80,7 @@
                           <li class="nav-item ">
                               <a href="{{ route('riwayatpelayanan_user')}}" class="nav-link @if($sidebar_m == '3.1') active @endif ">
                                   <i class="far fa-circle nav-icon"></i>
-                                  <p>Riwayat Pelayanan User</p>
+                                  <p>Riwayat Pelayanan</p>
                               </a>
                           </li>
                           <li class="nav-item ">

@@ -127,7 +127,7 @@ class SimrsController extends Controller
     public function Caridokter(Request $request)
     {
         $r = $request['term'];
-        $result = Dokter::where('nama_dokter', 'LIKE', "%{$r}%")->get();
+        $result = Dokter::where('nama_dokter', 'LIKE', "%{$r}%")->where('act','=','1')->get();
         if (count($result) > 0) {
             foreach ($result as $row)
                 $arr_result[] = array(
@@ -1108,6 +1108,21 @@ class SimrsController extends Controller
 
         $pdf->SetFont('Arial', '', 12);
         $pdf->Line(150, 100, 190, 100);
+        $pdf->Output();
+
+        exit;
+    }
+    public function Cetaklabel($nomorrm){
+        $p = Pasien::where('no_rm', $nomorrm)->get();
+        $pdf = new Fpdf('P', 'mm', 'A4');
+        $pdf->AddPage();
+        $pdf->SetTitle('Cetak Label ');
+        $pdf->SetMargins('15', '20', '10');
+        $pdf->SetFont('Arial', '', 15);
+        $pdf->SetXY(70, 8);
+        $pdf->Cell(10, 7, 'SURAT ELIGIBILITAS PESERTA', 0, 1);
+        $pdf->SetXY(73, 14);
+        $pdf->Cell(10, 7, 'RSUD WALED KAB.CIREBON', 0, 1);
         $pdf->Output();
 
         exit;

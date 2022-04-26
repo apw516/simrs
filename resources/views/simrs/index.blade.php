@@ -6,9 +6,10 @@
                 <div class="input-group mb-3 mt-3">
                     <input type="text" class="form-control" id="pencariansep" placeholder="Cari SEP ...">
                     <div class="input-group-append">
-                      <button class="btn btn-outline-primary" type="button" id="button-addon2" onclick="carisep()"><i class="bi bi-search-heart"  data-toggle="modal" data-target="#modaleditsep"></i></button>
+                        <button class="btn btn-outline-primary" type="button" id="button-addon2" onclick="carisep()"><i
+                                class="bi bi-search-heart" data-toggle="modal" data-target="#modaleditsep"></i></button>
                     </div>
-                  </div>
+                </div>
             </div>
             <div class="row mb-2">
                 <div class="col-sm-6">
@@ -17,7 +18,7 @@
                 <!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('pendaftaran')}}">Pendaftaran</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('pendaftaran') }}">Pendaftaran</a></li>
                         <li class="breadcrumb-item active">Data SEP</li>
                     </ol>
                 </div>
@@ -28,116 +29,6 @@
         <!-- /.container-fluid -->
     </div>
     <section class="content">
-        <div class="card collapsed-card">
-            <div class="card-header bg-success">
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
-                    </button>
-                </div>
-                <h4>List Approval Pengajuan SEP </h4>
-            </div>
-            <div class="card-body">
-                <div class="container-fluid mb-4">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control datepicker" data-date-format="yyyy-mm-dd"
-                                id="tanggalpelayanan" placeholder="Tanggal Pelayanan ..">
-                        </div>
-                        <div class="col-sm-3">
-                            <button type="submit" class="btn btn-dark mb-2" onclick="getlisfinger()">Cari</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="vlistajuan">
-                        <table id="tabellistfinger" class="table table-bordered table-sm text-xs mt-3">
-                            <thead>
-                                <th>nomor kartu</th>
-                                <th>Nomor SEP</th>
-                            </thead>
-                            <tbody>
-                                @if($listajuan->metaData->code == 200)
-                                    @foreach ($listajuan->response->list as $d )
-                                        <tr>
-                                            <td>{{ $d->noKartu}}</td>
-                                            <td>{{ $d->noSEP}}</td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <div class="card collapsed-card">
-            <div class="card-header bg-success">
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
-                    </button>
-                </div>
-                <h4>Riwayat Pelayanan Peserta </h4>
-            </div>
-            <div class="card-body">
-                <div class="container-fluid mb-4">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control" id="nomorkartu" placeholder="masukan nomor kartu ...">
-                        </div>
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control datepicker" data-date-format="yyyy-mm-dd"
-                                id="tanggalawal" placeholder="Tanggal awal ..">
-                        </div>
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control datepicker" data-date-format="yyyy-mm-dd"
-                                id="tanggalakhir" placeholder="Tanggal akhir ..">
-                        </div>
-                        <div class="col-sm-3">
-                            <button type="submit" class="btn btn-dark mb-2" onclick="caririwayatseppeserta()">Cari
-                                Riwayat</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="vkunjunganpasien">
-                        <h5>Rawat Jalan </h5>
-                        <table id="kunjunganpasienrawatjalan" class="table table-bordered table-sm text-xs mt-3">
-                            <thead>
-                                <th>Nama</th>
-                                <th>nomor kartu</th>
-                                <th>nomor sep</th>
-                                <th>nomor rujukan</th>
-                                <th>jns pelayanan</th>
-                                <th>poli</th>
-                                <th>tgl sep</th>
-                                <th>tgl pulang sep</th>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                        <h5>Rawat Inap </h5>
-                        <table id="kunjunganpasienrawatinap" class="table table-bordered table-sm text-xs mt-3">
-                            <thead>
-                                <th>Nama</th>
-                                <th>nomor kartu</th>
-                                <th>nomor sep</th>
-                                <th>nomor rujukan</th>
-                                <th>jns pelayanan</th>
-                                <th>poli</th>
-                                <th>tgl sep</th>
-                                <th>tgl pulang sep</th>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-            </div>
-        </div>
         <div class="card collapsed-card">
             <div class="card-header bg-success">
                 <div class="card-tools">
@@ -161,7 +52,7 @@
                     </div>
                 </div>
                 <div class="vkunjungan">
-                    <h5>Rawat Jalan </h5>
+                    <h2 class="text-bold">Kunjungan Rawat Jalan </h2>
                     <table id="kunjunganrawatjalan" class="table table-bordered table-sm text-xs">
                         <thead>
                             <th>Nama</th>
@@ -204,7 +95,7 @@
                             @endif
                         </tbody>
                     </table>
-                    <h5>Rawat Inap </h5>
+                    <h2 class="text-bold">Kunjungan Rawat Inap</h2>
                     <table id="kunjunganrawatinap" class="table table-bordered table-sm text-xs">
                         <thead>
                             <th>Nama</th>
@@ -241,7 +132,7 @@
                                                 data-placement="right" title="edit sep" data-toggle="modal"
                                                 data-target="#modaleditsep"><i
                                                     class="bi bi-pencil-square text-sm"></i></button>
-                                                          
+
                                             <button class="badge badge-success pulangkan" nomorsep="{{ $s->noSep }}"
                                                 data-placement="right" title="edit tgl pulangsep" data-toggle="modal"
                                                 data-target="#modalupdatetglpulang"><i
@@ -253,6 +144,73 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+        <div class="card collapsed-card">
+            <div class="card-header bg-success">
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <h4>Riwayat Pelayanan Peserta </h4>
+            </div>
+            <div class="card-body">
+                <div class="container-fluid mb-4">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="nomorkartu" placeholder="masukan nomor kartu ...">
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control datepicker" data-date-format="yyyy-mm-dd"
+                                id="tanggalawal" placeholder="Tanggal awal ..">
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control datepicker" data-date-format="yyyy-mm-dd"
+                                id="tanggalakhir" placeholder="Tanggal akhir ..">
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-dark mb-2" onclick="caririwayatseppeserta()">Cari
+                                Riwayat</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid">
+                    <div class="vkunjunganpasien">
+                        <h2 class="text-bold">Kunjungan Rawat Jalan </h2>
+                        <table id="kunjunganpasienrawatjalan" class="table table-bordered table-sm text-xs mt-3">
+                            <thead>
+                                <th>Nama</th>
+                                <th>nomor kartu</th>
+                                <th>nomor sep</th>
+                                <th>nomor rujukan</th>
+                                <th>jns pelayanan</th>
+                                <th>poli</th>
+                                <th>tgl sep</th>
+                                <th>tgl pulang sep</th>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                        <h2 class="text-bold">Kunjungan Rawat Inap</h2>
+                        <table id="kunjunganpasienrawatinap" class="table table-bordered table-sm text-xs mt-3">
+                            <thead>
+                                <th>Nama</th>
+                                <th>nomor kartu</th>
+                                <th>nomor sep</th>
+                                <th>nomor rujukan</th>
+                                <th>jns pelayanan</th>
+                                <th>poli</th>
+                                <th>tgl sep</th>
+                                <th>tgl pulang sep</th>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
         </div>
         <div class="card collapsed-card">
@@ -318,6 +276,49 @@
                 </div>
             </div>
         </div>
+        <div class="card collapsed-card">
+            <div class="card-header bg-success">
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <h4>List Approval Pengajuan SEP </h4>
+            </div>
+            <div class="card-body">
+                <div class="container-fluid mb-4">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control datepicker" data-date-format="yyyy-mm-dd"
+                                id="tanggalpelayanan" placeholder="Tanggal Pelayanan ..">
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-dark mb-2" onclick="getlisfinger()">Cari</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="vlistajuan">
+                        <table id="tabellistfinger" class="table table-bordered table-sm text-xs mt-3">
+                            <thead>
+                                <th>nomor kartu</th>
+                                <th>Nomor SEP</th>
+                            </thead>
+                            <tbody>
+                                @if ($listajuan->metaData->code == 200)
+                                    @foreach ($listajuan->response->list as $d)
+                                        <tr>
+                                            <td>{{ $d->noKartu }}</td>
+                                            <td>{{ $d->noSEP }}</td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </section>
     <script>
         $(function() {
@@ -327,7 +328,9 @@
                 "autoWidth": true,
                 "pageLength": 3,
                 "searching": true,
-                "order": [[ 1, "desc" ]]
+                "order": [
+                    [1, "desc"]
+                ]
             })
         });
         $(function() {
@@ -337,7 +340,9 @@
                 "autoWidth": true,
                 "pageLength": 3,
                 "searching": true,
-                "order": [[ 6, "desc" ]]
+                "order": [
+                    [6, "desc"]
+                ]
             })
         });
         $(function() {
@@ -347,7 +352,9 @@
                 "autoWidth": true,
                 "pageLength": 3,
                 "searching": true,
-                "order": [[ 6, "desc" ]]
+                "order": [
+                    [6, "desc"]
+                ]
             })
         });
         $(function() {
@@ -357,7 +364,9 @@
                 "autoWidth": true,
                 "pageLength": 3,
                 "searching": true,
-                "order": [[ 6, "desc" ]]
+                "order": [
+                    [6, "desc"]
+                ]
             })
         });
         $(function() {
@@ -367,7 +376,9 @@
                 "autoWidth": true,
                 "pageLength": 3,
                 "searching": true,
-                "order": [[ 6, "desc" ]]
+                "order": [
+                    [6, "desc"]
+                ]
             })
         });
         $(function() {
@@ -377,7 +388,9 @@
                 "autoWidth": true,
                 "pageLength": 3,
                 "searching": true,
-                "order": [[ 6, "desc" ]]
+                "order": [
+                    [6, "desc"]
+                ]
             })
         });
 
@@ -393,7 +406,7 @@
                     bulan,
                     tahun
                 },
-                url: '<?= route('vclaimlisttanggalpulang');?>',
+                url: '<?= route('vclaimlisttanggalpulang') ?>',
                 error: function(data) {
                     spinner.hide();
                     alert('error!')
@@ -405,7 +418,8 @@
                 }
             });
         }
-        function getlisfinger (){
+
+        function getlisfinger() {
             tanggalpelayanan = $('#tanggalpelayanan').val()
             spinner = $('#loader');
             spinner.show();
@@ -415,7 +429,7 @@
                     _token: "{{ csrf_token() }}",
                     tanggalpelayanan
                 },
-                url: '<?= route('vclaimcarilistfinger');?>',
+                url: '<?= route('vclaimcarilistfinger') ?>',
                 error: function(data) {
                     spinner.hide();
                     alert('error!')
@@ -427,6 +441,7 @@
                 }
             });
         }
+
         function caririwayatseppeserta() {
             tglawal = $('#tanggalawal').val()
             tglakhir = $('#tanggalakhir').val()
@@ -441,7 +456,7 @@
                     tglakhir,
                     nomorkartu
                 },
-                url: '<?= route('vclaimcarikunjungansep_peserta');?>',
+                url: '<?= route('vclaimcarikunjungansep_peserta') ?>',
                 error: function(data) {
                     spinner.hide();
                     alert('error!')
@@ -464,7 +479,7 @@
                     _token: "{{ csrf_token() }}",
                     tanggalsep
                 },
-                url: '<?= route('vclaimcarikunjungansep');?>',
+                url: '<?= route('vclaimcarikunjungansep') ?>',
                 error: function(data) {
                     spinner.hide();
                     alert('error!')
@@ -487,7 +502,7 @@
                     _token: "{{ csrf_token() }}",
                     nomorsep,
                 },
-                url: '<?= route('vclaimdetailsep');?>',
+                url: '<?= route('vclaimdetailsep') ?>',
                 error: function(data) {
                     spinner.hide()
                     Swal.fire({
@@ -511,7 +526,7 @@
                     _token: "{{ csrf_token() }}",
                     nomorsep,
                 },
-                url: '<?= route('vclaimdetailsep');?>',
+                url: '<?= route('vclaimdetailsep') ?>',
                 error: function(data) {
                     spinner.hide()
                     Swal.fire({
@@ -549,7 +564,7 @@
                         },
                         dataType: 'Json',
                         Async: true,
-                        url: '<?= route('vclaimhapussep');?>',
+                        url: '<?= route('vclaimhapussep') ?>',
                         error: function(data) {
                             spinner.hide()
                             Swal.fire({
@@ -598,7 +613,7 @@
                         },
                         dataType: 'Json',
                         Async: true,
-                        url: '<?= route('vclaimhapussep');?>',
+                        url: '<?= route('vclaimhapussep') ?>',
                         error: function(data) {
                             spinner.hide()
                             Swal.fire({
@@ -635,7 +650,7 @@
                     _token: "{{ csrf_token() }}",
                     nomorsep,
                 },
-                url: '<?= route('vclaimupdate');?>',
+                url: '<?= route('vclaimupdate') ?>',
                 error: function(data) {
                     spinner.hide()
                     Swal.fire({
@@ -659,7 +674,7 @@
                     _token: "{{ csrf_token() }}",
                     nomorsep,
                 },
-                url: '<?= route('vclaimupdate');?>',
+                url: '<?= route('vclaimupdate') ?>',
                 error: function(data) {
                     spinner.hide()
                     Swal.fire({
@@ -675,8 +690,8 @@
         });
 
         $('#kunjunganrawatinap').on('click', '.pulangkan', function() {
-        nomorsep = $(this).attr('nomorsep')
-       $('#pulang_nomorsep').val(nomorsep)
-    });
+            nomorsep = $(this).attr('nomorsep')
+            $('#pulang_nomorsep').val(nomorsep)
+        });
     </script>
 @endsection
