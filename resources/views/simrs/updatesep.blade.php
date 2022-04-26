@@ -202,7 +202,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="exampleInputPassword1">Nomor Telp</label>
-                       <input type="text" class="form-control" id="nomortelp" value="">
+                       <input type="text" class="form-control" id="nomortelpupdate" value="">
                     </div>
                 </div>
             </div>

@@ -756,7 +756,7 @@
           prov = $('#updateprovlaka').val()
           kab = $('#updatekablaka').val()
           kec = $('#updatekeclaka').val()
-          nomortelp = $('#nomortelp').val()
+          nomortelp = $('#nomortelpupdate').val()
           $.ajax({
               async: true,
               dataType: 'Json',

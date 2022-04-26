@@ -207,6 +207,7 @@ class VclaimController extends Controller
     }
     public function simpanupdatesep(Request $request)
     {
+        // dd($request->nomortelp);
         $v = new VclaimModel();
         $data =
             [

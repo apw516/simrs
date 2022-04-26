@@ -1114,16 +1114,47 @@ class SimrsController extends Controller
     }
     public function Cetaklabel($nomorrm){
         $p = Pasien::where('no_rm', $nomorrm)->get();
+        $tgllahir = $p[0]->tgl_lahir;
+        if($p[0]->jenis_kelamin == 'P'){
+            $JK = 'PEREMPUAN';
+        }else{
+            $JK = 'Laki - Laki';
+        }
+        $newDate = date("d/m/Y", strtotime($tgllahir));
         $pdf = new Fpdf('P', 'mm', 'A4');
         $pdf->AddPage();
         $pdf->SetTitle('Cetak Label ');
         $pdf->SetMargins('15', '20', '10');
-        $pdf->SetFont('Arial', '', 15);
-        $pdf->SetXY(70, 8);
-        $pdf->Cell(10, 7, 'SURAT ELIGIBILITAS PESERTA', 0, 1);
-        $pdf->SetXY(73, 14);
-        $pdf->Cell(10, 7, 'RSUD WALED KAB.CIREBON', 0, 1);
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetXY(4, 5);
+        $pdf->Cell(10, 7, $nomorrm, 0, 1);
+        $pdf->SetXY(5, 10);
+        $pdf->Cell(10, 7, $p[0]->nama_px, 0, 1);
+        $pdf->SetXY(5, 25);
+        $pdf->Cell(10, 7, $p[0]->tempat_lahir.' ,'. $newDate, 0, 1);
+        $pdf->SetXY(5, 30);
+        $pdf->Cell(10, 7, $JK, 0, 1);
+        
+        $pdf->SetXY(60, 5);
+        $pdf->Cell(14, 7, $nomorrm, 0, 1);
+        $pdf->SetXY(60, 10);
+        $pdf->Cell(10, 7, $p[0]->nama_px, 0, 1);
+        $pdf->SetXY(60, 25);
+        $pdf->Cell(10, 7, $p[0]->tempat_lahir.' ,'. $newDate, 0, 1);
+        $pdf->SetXY(60, 30);
+        $pdf->Cell(10, 7, $JK, 0, 1);
         $pdf->Output();
+        
+        $pdf->SetXY(60, 5);
+        $pdf->Cell(14, 7, $nomorrm, 0, 1);
+        $pdf->SetXY(60, 10);
+        $pdf->Cell(10, 7, $p[0]->nama_px, 0, 1);
+        $pdf->SetXY(60, 25);
+        $pdf->Cell(10, 7, $p[0]->tempat_lahir.' ,'. $newDate, 0, 1);
+        $pdf->SetXY(60, 30);
+        $pdf->Cell(10, 7, $JK, 0, 1);
+        $pdf->Output();
+
 
         exit;
     }
