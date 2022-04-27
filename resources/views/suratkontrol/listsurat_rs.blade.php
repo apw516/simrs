@@ -67,6 +67,30 @@
                 ]
             })
         });
+        $('#tabelsuratkontrol_rs').on('click', '.editsurat', function() {
+            tgl = $(this).attr('tglkontrol')
+            jenissurat = $(this).attr('jenissurat')
+            suratkontrol = $(this).attr('suratkontrol')
+            nomorsep = $(this).attr('nomorsep')
+            nomorkartu = $(this).attr('nomorkartu')
+            namapolitujuan = $(this).attr('namapolitujuan')
+            kodepolitujuan = $(this).attr('kodepolitujuan')
+            namadokter = $(this).attr('namadokter')
+            kodedokter = $(this).attr('kodedokter')
+            if (jenissurat == 1) {
+                nomor = nomorkartu
+            } else {
+                nomor = nomorsep
+            }
+            $('#editjenissurat').val(jenissurat)
+            $('#edittanggalkontrol').val(tgl)
+            $('#editnomorkartukontrol').val(nomor)
+            $('#editpolikontrol').val(namapolitujuan)
+            $('#editkodepolikontrol').val(kodepolitujuan)
+            $('#editdokterkontrol').val(namadokter)
+            $('#editkodedokterkontrol').val(kodedokter)
+            $('#editnomorsurat').val(suratkontrol)
+        });
      $('#tabelsuratkontrol_rs').on('click', '.hapussurat', function() {
             nomorsurat = $(this).attr('nomorsurat')
             Swal.fire({

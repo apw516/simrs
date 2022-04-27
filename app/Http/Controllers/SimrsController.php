@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use PDF;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Auth;
 use Codedge\Fpdf\Fpdf\Fpdf;
 use Illuminate\Http\Request;
@@ -1114,49 +1115,108 @@ class SimrsController extends Controller
     }
     public function Cetaklabel($nomorrm){
         $p = Pasien::where('no_rm', $nomorrm)->get();
-        $tgllahir = $p[0]->tgl_lahir;
-        if($p[0]->jenis_kelamin == 'P'){
-            $JK = 'PEREMPUAN';
-        }else{
-            $JK = 'Laki - Laki';
-        }
-        $newDate = date("d/m/Y", strtotime($tgllahir));
-        $pdf = new Fpdf('P', 'mm', 'A4');
-        $pdf->AddPage();
-        $pdf->SetTitle('Cetak Label ');
-        $pdf->SetMargins('15', '20', '10');
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->SetXY(4, 5);
-        $pdf->Cell(10, 7, $nomorrm, 0, 1);
-        $pdf->SetXY(5, 10);
-        $pdf->Cell(10, 7, $p[0]->nama_px, 0, 1);
-        $pdf->SetXY(5, 25);
-        $pdf->Cell(10, 7, $p[0]->tempat_lahir.' ,'. $newDate, 0, 1);
-        $pdf->SetXY(5, 30);
-        $pdf->Cell(10, 7, $JK, 0, 1);
+        $pdf = PDF::loadView('cetaklabel', $p);  
+        return $pdf->download('itsolutionstuff.pdf');
+        // $tgllahir = $p[0]->tgl_lahir;
+        // if($p[0]->jenis_kelamin == 'P'){
+        //     $JK = 'PEREMPUAN';
+        // }else{
+        //     $JK = 'Laki - Laki';
+        // }
+        // $qrcode = QrCode::size(400)->generate($nomorrm);
+        // $newDate = date("d/m/Y", strtotime($tgllahir));
+        // $pdf = new Fpdf('P', 'mm', 'A4');
+        // $pdf->AddPage();
+        // $pdf->SetTitle('Cetak Label ');
+        // $pdf->SetMargins('15', '20', '10');
+        // $pdf->SetFont('Arial', '', 9);
+
+        // $pdf->SetXY(4, 5);
+        // $pdf->Cell(10, 7, $nomorrm, 0, 1);
+        // $pdf->SetXY(5, 10);
+        // $pdf->Cell(10, 7, $p[0]->nama_px, 0, 1);
+        // $pdf->SetXY(5, 25);
+        // $pdf->Cell(10, 7, $p[0]->tempat_lahir.' ,'. $newDate, 0, 1);
+        // $pdf->SetXY(5, 30);
+        // $pdf->Cell(10, 7, $JK, 0, 1);
         
-        $pdf->SetXY(60, 5);
-        $pdf->Cell(14, 7, $nomorrm, 0, 1);
-        $pdf->SetXY(60, 10);
-        $pdf->Cell(10, 7, $p[0]->nama_px, 0, 1);
-        $pdf->SetXY(60, 25);
-        $pdf->Cell(10, 7, $p[0]->tempat_lahir.' ,'. $newDate, 0, 1);
-        $pdf->SetXY(60, 30);
-        $pdf->Cell(10, 7, $JK, 0, 1);
-        $pdf->Output();
+        // $pdf->SetXY(60, 5);
+        // $pdf->Cell(14, 7, $nomorrm, 0, 1);
+        // $pdf->SetXY(60, 10);
+        // $pdf->Cell(10, 7, $p[0]->nama_px, 0, 1);
+        // $pdf->SetXY(60, 25);
+        // $pdf->Cell(10, 7, $p[0]->tempat_lahir.' ,'. $newDate, 0, 1);
+        // $pdf->SetXY(60, 30);
+        // $pdf->Cell(10, 7, $JK, 0, 1);
+        // $pdf->Cell(10, 7, $qrcode, 0, 1);
         
-        $pdf->SetXY(60, 5);
-        $pdf->Cell(14, 7, $nomorrm, 0, 1);
-        $pdf->SetXY(60, 10);
-        $pdf->Cell(10, 7, $p[0]->nama_px, 0, 1);
-        $pdf->SetXY(60, 25);
-        $pdf->Cell(10, 7, $p[0]->tempat_lahir.' ,'. $newDate, 0, 1);
-        $pdf->SetXY(60, 30);
-        $pdf->Cell(10, 7, $JK, 0, 1);
-        $pdf->Output();
+        // $pdf->SetXY(120, 5);
+        // $pdf->Cell(14, 7, $nomorrm, 0, 1);
+        // $pdf->SetXY(120, 10);
+        // $pdf->Cell(10, 7, $p[0]->nama_px, 0, 1);
+        // $pdf->SetXY(120, 25);
+        // $pdf->Cell(10, 7, $p[0]->tempat_lahir.' ,'. $newDate, 0, 1);
+        // $pdf->SetXY(120, 30);
+        // $pdf->Cell(10, 7, $JK, 0, 1);
+        
+        // $pdf->SetXY(4, 40);
+        // $pdf->Cell(10, 7, $nomorrm, 0, 1);
+        // $pdf->SetXY(5, 45);
+        // $pdf->Cell(10, 7, $p[0]->nama_px, 0, 1);
+        // $pdf->SetXY(5, 60);
+        // $pdf->Cell(10, 7, $p[0]->tempat_lahir.' ,'. $newDate, 0, 1);
+        // $pdf->SetXY(5, 65);
+        // $pdf->Cell(10, 7, $JK, 0, 1);
+        
+        // $pdf->SetXY(60, 40);
+        // $pdf->Cell(14, 7, $nomorrm, 0, 1);
+        // $pdf->SetXY(60, 45);
+        // $pdf->Cell(10, 7, $p[0]->nama_px, 0, 1);
+        // $pdf->SetXY(60, 60);
+        // $pdf->Cell(10, 7, $p[0]->tempat_lahir.' ,'. $newDate, 0, 1);
+        // $pdf->SetXY(60, 65);
+        // $pdf->Cell(10, 7, $JK, 0, 1);
+        
+        // $pdf->SetXY(120, 40);
+        // $pdf->Cell(14, 7, $nomorrm, 0, 1);
+        // $pdf->SetXY(120, 45);
+        // $pdf->Cell(10, 7, $p[0]->nama_px, 0, 1);
+        // $pdf->SetXY(120, 60);
+        // $pdf->Cell(10, 7, $p[0]->tempat_lahir.' ,'. $newDate, 0, 1);
+        // $pdf->SetXY(120, 65);
+        // $pdf->Cell(10, 7, $JK, 0, 1);
+
+        // $pdf->SetXY(4, 75);
+        // $pdf->Cell(10, 7, $nomorrm, 0, 1);
+        // $pdf->SetXY(5, 80);
+        // $pdf->Cell(10, 7, $p[0]->nama_px, 0, 1);
+        // $pdf->SetXY(5, 95);
+        // $pdf->Cell(10, 7, $p[0]->tempat_lahir.' ,'. $newDate, 0, 1);
+        // $pdf->SetXY(5, 100);
+        // $pdf->Cell(10, 7, $JK, 0, 1);
+        
+        // $pdf->SetXY(60, 75);
+        // $pdf->Cell(14, 7, $nomorrm, 0, 1);
+        // $pdf->SetXY(60, 80);
+        // $pdf->Cell(10, 7, $p[0]->nama_px, 0, 1);
+        // $pdf->SetXY(60, 95);
+        // $pdf->Cell(10, 7, $p[0]->tempat_lahir.' ,'. $newDate, 0, 1);
+        // $pdf->SetXY(60, 100);
+        // $pdf->Cell(10, 7, $JK, 0, 1);
+        
+        // $pdf->SetXY(120, 75);
+        // $pdf->Cell(14, 7, $nomorrm, 0, 1);
+        // $pdf->SetXY(120, 80);
+        // $pdf->Cell(10, 7, $p[0]->nama_px, 0, 1);
+        // $pdf->SetXY(120, 95);
+        // $pdf->Cell(10, 7, $p[0]->tempat_lahir.' ,'. $newDate, 0, 1);
+        // $pdf->SetXY(120, 100);
+        // $pdf->Cell(10, 7, $JK, 0, 1);
 
 
-        exit;
+        // $pdf->Output();
+
+        // exit;
     }
     public function simpanpasien(Request $request)
     {
