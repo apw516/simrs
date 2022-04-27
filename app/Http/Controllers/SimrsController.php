@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use PDF;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Auth;
@@ -41,11 +42,11 @@ class SimrsController extends Controller
         $title = 'SIMRS - PENDAFTARAN';
         $sidebar = '2';
         $sidebar_m = '2';
-   
+
         return view('pendaftaran.index', [
             'title' => $title,
             'sidebar' => $sidebar,
-            'data_pasien' => Pasien::limit(200)->orderBy('tgl_entry','desc')->get(),
+            'data_pasien' => Pasien::limit(200)->orderBy('tgl_entry', 'desc')->get(),
             'sidebar_m' => $sidebar_m,
             'agama' => Agama::all(),
             'pekerjaan' => Pekerjaan::all(),
@@ -77,19 +78,20 @@ class SimrsController extends Controller
         // $noka = $v->get_peserta_noka($request->nomorrm, date('Y-m-d'));
         $cek_rm = DB::select('select * from ts_kunjungan where no_rm = ? and status_kunjungan = 1', [$request->nomorrm]);
         $total = count($cek_rm);
-        return view('pendaftaran.form_pasien_umum',
-        [
-            // 'data_peserta' => $noka,
-            'riwayat_kunjungan' => DB::select("CALL SP_RIWAYAT_KUNJUNGAN_PX('$request->nomorrm')"),
-            'alasan_masuk' => DB::select('select * from mt_alasan_masuk'),
-            'mt_penjamin' => DB::select('select * from mt_penjamin'),
-            // 'nomorrm' => $request->nomorrm,
-            // 'mt_pasien' => Pasien::where('no_rm', $request->nomorrm)->get(),
-            // 'mt_unit' => mt_unit::where('kelas_unit', 2)->get(),
-            // 'provinsi' => $v->referensi_propinsi(),
-            // 'cek_kunjungan' => $total
-        ]
-    );
+        return view(
+            'pendaftaran.form_pasien_umum',
+            [
+                // 'data_peserta' => $noka,
+                'riwayat_kunjungan' => DB::select("CALL SP_RIWAYAT_KUNJUNGAN_PX('$request->nomorrm')"),
+                'alasan_masuk' => DB::select('select * from mt_alasan_masuk'),
+                'mt_penjamin' => DB::select('select * from mt_penjamin'),
+                // 'nomorrm' => $request->nomorrm,
+                // 'mt_pasien' => Pasien::where('no_rm', $request->nomorrm)->get(),
+                // 'mt_unit' => mt_unit::where('kelas_unit', 2)->get(),
+                // 'provinsi' => $v->referensi_propinsi(),
+                // 'cek_kunjungan' => $total
+            ]
+        );
     }
     public function Caripasien(Request $request)
     {
@@ -115,7 +117,7 @@ class SimrsController extends Controller
         $v = new VclaimModel();
         // $result = $v->referensi_poli($request['term']);
         $r = 'JANTUNG';
-        $result = DB::table('mt_unit')->where('nama_unit','LIKE','%'.$request['term'].'%')->where('kelas_unit','=','1')->get();
+        $result = DB::table('mt_unit')->where('nama_unit', 'LIKE', '%' . $request['term'] . '%')->where('kelas_unit', '=', '1')->get();
         if (count($result) > 0) {
             foreach ($result as $row)
                 $arr_result[] = array(
@@ -128,7 +130,7 @@ class SimrsController extends Controller
     public function Caridokter(Request $request)
     {
         $r = $request['term'];
-        $result = Dokter::where('nama_dokter', 'LIKE', "%{$r}%")->where('act','=','1')->get();
+        $result = Dokter::where('nama_dokter', 'LIKE', "%{$r}%")->where('act', '=', '1')->get();
         if (count($result) > 0) {
             foreach ($result as $row)
                 $arr_result[] = array(
@@ -140,7 +142,7 @@ class SimrsController extends Controller
     }
     public function Caridokter_rs(Request $request)
     {
-        $result = DB::table('mt_paramedis')->where('nama_paramedis','LIKE','%'.$request['term'].'%')->where('keilmuan','=','dr')->get();
+        $result = DB::table('mt_paramedis')->where('nama_paramedis', 'LIKE', '%' . $request['term'] . '%')->where('keilmuan', '=', 'dr')->get();
         if (count($result) > 0) {
             foreach ($result as $row)
                 $arr_result[] = array(
@@ -351,25 +353,24 @@ class SimrsController extends Controller
         //cek sudah daftar belum
         //cek_kronis sp_cari_riwayat_kronis_terakhir
         //cek pasien aktif
-        if($request->jenispelayanan == 2){
+        if ($request->jenispelayanan == 2) {
             $paramedis = Dokter::where('kode_dpjp', '=', "$request->kodedokterlayan")->get();
             $cek_paramedis = count($paramedis);
-            if($request->kodedokterlayan == ''){
+            if ($request->kodedokterlayan == '') {
                 $data = [
                     'kode' => 500,
                     'message' => 'Dokter belum dipilih !'
                 ];
                 echo json_encode($data);
                 die;
-            }else if($request->kodepolitujuan ==''){
+            } else if ($request->kodepolitujuan == '') {
                 $data = [
                     'kode' => 500,
                     'message' => 'Poli belum dipilih !'
                 ];
                 echo json_encode($data);
                 die;
-            }
-            else if($cek_paramedis == 0){
+            } else if ($cek_paramedis == 0) {
                 $data = [
                     'kode' => 500,
                     'message' => 'Data paramedis belum update,silahkan hubungi IT'
@@ -379,7 +380,7 @@ class SimrsController extends Controller
             }
         }
         $tgl_masuk = $request->tglsep;
-        $tgl_masuk_time = $request->tglsep .' '.date('h:i:s');
+        $tgl_masuk_time = $request->tglsep . ' ' . date('h:i:s');
         $cek_rm = DB::select('select * from ts_kunjungan where no_rm = ?', [$request->norm]);
         if (count($cek_rm) == 0) {
             $counter = 1;
@@ -452,11 +453,11 @@ class SimrsController extends Controller
             $kodeunit = $unit[0]['kode_unit'];
             $kelas_unit = $unit['0']['kelas_unit'];
             // $tgl_masuk = date('Y-m-d');
-            if($kodeunit != '1002'){
+            if ($kodeunit != '1002') {
                 //jika pasien rawat jalan dan bukan igd maka dilakukan cek kronis
                 $r = DB::select("CALL sp_cari_riwayat_kronis_terakhir('$request->norm','$kodeunit','$tgl_masuk')");
-                if(count($r) > 0){
-                    if($r[0]->status_daftar == 'Tidak boleh daftar'){
+                if (count($r) > 0) {
+                    if ($r[0]->status_daftar == 'Tidak boleh daftar') {
                         $data = [
                             'kode' => 500,
                             'message' => 'Pasien Kronis'
@@ -652,21 +653,21 @@ class SimrsController extends Controller
         $datasep = $v->insertsep2($get_sep);
         if ($datasep == 'RTO') {
             DB::table('ts_kunjungan')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
-            if ($kelas_unit == 1 || $kelas_unit == 2){
+            if ($kelas_unit == 1 || $kelas_unit == 2) {
                 //jika kelas penunjang  seperti hd,lab dll tidak akan tebentuk layanan header
                 DB::table('ts_layanan_header')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
                 DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
             }
             $data = [
                 'kode' => 500,
-                'message' => 'Connection lost'
+                'message' => 'The Network connection lost, please try again ...'
             ];
             echo json_encode($data);
         } else if ($datasep->metaData->code == 200) {
             ts_kunjungan::whereRaw('kode_kunjungan = ? and no_rm = ? and kode_unit = ?', array($ts_kunjungan->id, $request->norm, $kodeunit))->update([
                 'status_kunjungan' => 1, 'no_sep' => $datasep->response->sep->noSep
             ]);
-            if ($kelas_unit == 1 || $kelas_unit == 2){
+            if ($kelas_unit == 1 || $kelas_unit == 2) {
                 //jika kelas penunjang  seperti hd,lab dll tidak akan tebentuk layanan header
                 if ($request->jenispelayanan == 1) {
                     DB::table('mt_ruangan')->where('id_ruangan', $idruangan)->update(['status_incharge' => 1]);
@@ -745,7 +746,7 @@ class SimrsController extends Controller
             echo json_encode($data);
         } else if ($datasep->metaData->code != 200) {
             DB::table('ts_kunjungan')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
-            if ($kelas_unit == 1 || $kelas_unit == 2){
+            if ($kelas_unit == 1 || $kelas_unit == 2) {
                 //jika kelas penunjang  seperti hd,lab dll tidak akan tebentuk layanan header
                 DB::table('ts_layanan_header')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
                 DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
@@ -756,6 +757,221 @@ class SimrsController extends Controller
             ];
             echo json_encode($data);
         }
+    }
+    public function daftarpasien_umum(Request $request)
+    {
+        //cek counter
+        $cek_rm = DB::select('select * from ts_kunjungan where no_rm = ?', [
+            $request->nomorrm,
+        ]);
+        if (count($cek_rm) == 0) {
+            $counter = 1;
+        } else {
+            foreach ($cek_rm as $c)
+                $arr_counter[] = array(
+                    'counter' => $c->counter
+                );
+            $last_count = max($arr_counter);
+            $counter = $last_count['counter'] + 1;
+        }
+        $tgl_masuk_time = $request->tglmasuk . ' ' . date('h:i:s');
+
+        if ($request->jenispelayanan == 2) {
+            //jika rawat jalan
+            $unit = mt_unit::where('kode_unit', '=', "$request->kodepolitujuan")->get();
+            // $mt_penjamin = DB::select('select * from mt_penjamin_bpjs where kode_penjamin_simrs = ?', [$request->penjamin]);
+            $data_ts_kunjungan = array(
+                'counter' => $counter,
+                'no_rm' => $request->nomorrm,
+                'kode_unit' => $request->kodepolitujuan,
+                'kode_paramedis' => $request->kodedokter,
+                'prefix_kunjungan' => $unit[0]['prefix_unit'],
+                'tgl_masuk' => $tgl_masuk_time,
+                'status_kunjungan' => '8',
+                'kode_penjamin' => $request->penjamin,
+                'kelas' => 3,
+                'hak_kelas' => 3,
+                'pic' => auth()->user()->id_simrs,
+                'no_sep' => '',
+                'id_alasan_masuk' => $request->alasanmasuk
+            );
+            // if ($request->kodepolitujuan != '1002') {
+            //     //jika pasien rawat jalan dan bukan igd maka dilakukan cek kronis
+            //     $r = DB::select("CALL sp_cari_riwayat_kronis_terakhir('$request->nomorrm','$request->kodepolitujuan','$request->tgl_masuk')");
+            //     if (count($r) > 0) {
+            //         if ($r[0]->status_daftar == 'Tidak boleh daftar') {
+            //             $data = [
+            //                 'kode' => 500,
+            //                 'message' => 'Pasien Kronis'
+            //             ];
+            //             echo json_encode($data);
+            //             die;
+            //         }
+            //     }
+            // }
+        } else {
+
+        }     
+        $ts_kunjungan = ts_kunjungan::create($data_ts_kunjungan);
+        $kelas_unit = $unit['0']['kelas_unit'];
+        $kodeunit = $request->kodepolitujuan;
+        //membuat kode layanan header menggunakan store procedure
+        if ($kelas_unit == 1 || $kelas_unit == 2) {
+            //jika kelas penunjang  seperti hd,lab dll tidak akan tebentuk layanan header
+            $r = DB::select("CALL GET_NOMOR_LAYANAN_HEADER('$kodeunit')");
+            $kode_layanan_header = $r[0]->no_trx_layanan;
+            if ($kode_layanan_header == "") {
+                $year = date('y');
+                $kode_layanan_header = $unit[0]['prefix_unit'] . $year . date('m') . date('d') . '000001';
+                DB::select('insert into mt_nomor_trx (tgl,no_trx_layanan,unit) values (?,?,?)', [date('Y-m-d h:i:s'), $kode_layanan_header, $kodeunit]);
+            }
+            if($request->penjamin == "P01"){
+                $data_layanan_header = [
+                    'kode_layanan_header' => $kode_layanan_header,
+                    'tgl_entry' =>   $tgl_masuk_time,
+                    'kode_kunjungan' => $ts_kunjungan->id,
+                    'kode_unit' => $ts_kunjungan['kode_unit'],
+                    'kode_tipe_transaksi' => 1,
+                    'pic' => auth()->user()->id_simrs,
+                    'status_layanan' => '1',
+                    'status_retur' => 'OPN',
+                    'status_pembayaran' => 'OPN'
+                ]; 
+                //data yg diinsert ke ts_layanan_header
+            }else{
+                $data_layanan_header = [
+                    'kode_layanan_header' => $kode_layanan_header,
+                    'tgl_entry' =>   $tgl_masuk_time,
+                    'kode_kunjungan' => $ts_kunjungan->id,
+                    'kode_unit' => $ts_kunjungan['kode_unit'],
+                    'kode_tipe_transaksi' => 2,
+                    'pic' => auth()->user()->id_simrs,
+                    'status_layanan' => '1',
+                    'status_retur' => 'OPN',
+                    'status_pembayaran' => 'OPN'
+                ]; 
+                //data yg diinsert ke ts_layanan_header
+            }
+            //simpan ke layanan header
+           $ts_layanan_header = ts_layanan_header::create($data_layanan_header);
+            //menentukan tarif
+            if ($request->jenispelayanan == 1) {
+                //jika pasien rawat inap maka hanya memakai tarif admin ranap
+                $tarif = $unit[0]->mt_tarif_detail3->TOTAL_TARIF_CURRENT;
+                $id_detail = $this->createLayanandetail();
+                $tgl_detail = date('Y-m-d h:i:s');
+                $tagihanpribadi = $tarif;
+                $tagihanpenjamin = $tarif;
+                if($request->penjamin == "P01"){
+                    $tagihanpribadi = $tarif;
+                    $tagihanpenjamin = (NULL);
+                }else{
+                    $tagihanpribadi = (NULL);
+                    $tagihanpenjamin = $tarif;
+                }
+                $save_detail1 = [
+                    'id_layanan_detail' => $id_detail,
+                    'kode_layanan_header' => $kode_layanan_header,
+                    'kode_tarif_detail' => $unit[0]['kode_tarif_adm'],
+                    'total_tarif' => $tarif,
+                    'jumlah_layanan' => '1',
+                    'diskon_layanan' => '0',
+                    'total_layanan' => $tarif,
+                    'grantotal_layanan' => $tarif,
+                    'status_layanan_detail' => 'OPN',
+                    'tgl_layanan_detail' => $tgl_masuk_time,
+                    'tagihan_pribadi' => $tagihanpribadi,
+                    'tagihan_penjamin' => $tagihanpenjamin,
+                    'tgl_layanan_detail_2' => $tgl_detail,
+                    'row_id_header' => $ts_layanan_header->id
+                ];
+                $ts_layanan_detail = ts_layanan_detail::create($save_detail1);
+                $grand_total_tarif = $tarif;
+            } else {
+                //jika pasien rawat jalan
+                $tarif1 = $unit[0]->mt_tarif_detail->TOTAL_TARIF_CURRENT;
+                $tarif2 = $unit[0]->mt_tarif_detail2->TOTAL_TARIF_CURRENT;
+                $tagihanpribadi1 = $tarif1;
+                $tagihanpenjamin1 = $tarif1;
+                $tagihanpribadi2 = $tarif2;
+                $tagihanpenjamin2 = $tarif2;
+                if($request->penjamin == "P01"){
+                    $tagihanpribadi1 = $tarif1;
+                    $tagihanpenjamin1 = (NULL);
+                    $tagihanpribadi2 = $tarif2;
+                    $tagihanpenjamin2 = (NULL);
+                }else{
+                    $tagihanpribadi1 = (NULL);
+                    $tagihanpenjamin1 = $tarif1;
+                    $tagihanpribadi2 = (NULL);
+                    $tagihanpenjamin2 = $tarif2;
+                }
+                $tgl_detail = $tgl_masuk_time;
+                $id_detail1 = $this->createLayanandetail();
+                $save_detail1 = [
+                    'id_layanan_detail' => $id_detail1,
+                    'kode_layanan_header' => $kode_layanan_header,
+                    'kode_tarif_detail' => $unit[0]['kode_tarif_adm'],
+                    'total_tarif' => $tarif1,
+                    'jumlah_layanan' => '1',
+                    'diskon_layanan' => '0',
+                    'total_layanan' => $tarif1,
+                    'grantotal_layanan' => $tarif1,
+                    'status_layanan_detail' => 'OPN',
+                    'tgl_layanan_detail' => $tgl_detail,
+                    'tagihan_pribadi' => $tagihanpribadi1,
+                    'tagihan_penjamin' => $tagihanpenjamin1,
+                    'tgl_layanan_detail_2' => $tgl_detail,
+                    'row_id_header' => $ts_layanan_header->id
+                ];
+                $ts_layanan_detail = ts_layanan_detail::create($save_detail1);
+                $id_detail2 = $this->createLayanandetail();
+                $save_detail2 = [
+                    'id_layanan_detail' => $id_detail2,
+                    'kode_layanan_header' => $kode_layanan_header,
+                    'kode_tarif_detail' => $unit[0]['kode_tarif_karcis'],
+                    'total_tarif' => $tarif2,
+                    'jumlah_layanan' => '1',
+                    'diskon_layanan' => '0',
+                    'total_layanan' => $tarif2,
+                    'grantotal_layanan' => $tarif2,
+                    'status_layanan_detail' => 'OPN',
+                    'tgl_layanan_detail' => $tgl_detail,
+                    'tagihan_pribadi' => $tagihanpribadi2,
+                    'tagihan_penjamin' => $tagihanpenjamin2,
+                    'tgl_layanan_detail_2' => $tgl_detail,
+                    'row_id_header' => $ts_layanan_header->id
+                ];
+                ts_layanan_detail::create($save_detail2);
+                $grand_total_tarif = $tarif1 + $tarif2;
+            }
+        }
+        ts_kunjungan::whereRaw('kode_kunjungan = ? and no_rm = ? and kode_unit = ?', array($ts_kunjungan->id, $request->nomorrm, $kodeunit))->update([
+            'status_kunjungan' => 1
+        ]);
+        if ($kelas_unit == 1 || $kelas_unit == 2) {
+            //jika kelas penunjang  seperti hd,lab dll tidak akan tebentuk layanan header
+            if ($request->jenispelayanan == 1) {
+                // DB::table('mt_ruangan')->where('id_ruangan', $idruangan)->update(['status_incharge' => 1]);
+            }
+            //update ts_layanan_header
+            ts_layanan_header::where('kode_kunjungan', $ts_kunjungan->id)
+                ->update(['status_layanan' => 2, 'total_layanan' => $grand_total_tarif, 'tagihan_pribadi' => $grand_total_tarif]);
+        }
+        $data_tracer = [
+            'kode_kunjungan' => $ts_kunjungan->id,
+            'tgl_tracer' => $request->tgl_masuk,
+            'id_status_tracer' => 1,
+            'cek_tracer' => 'N'
+        ];
+        //insert ke tracer
+        tracer::create($data_tracer);
+        $data = [
+            'kode' => 200,
+            'message' => 'sukses',
+            'kode_kunjungan' => $ts_kunjungan->id
+        ];
+        echo json_encode($data);        
     }
     public function createLayanandetail()
     {
@@ -1113,9 +1329,13 @@ class SimrsController extends Controller
 
         exit;
     }
-    public function Cetaklabel($nomorrm){
+    public function Cetaklabel($nomorrm)
+    {
         $p = Pasien::where('no_rm', $nomorrm)->get();
-        $pdf = PDF::loadView('cetaklabel', $p);  
+        $data = [
+            'pasien' => $p
+        ];
+        $pdf = PDF::loadView('cetaklabel', $data);
         return $pdf->download('itsolutionstuff.pdf');
         // $tgllahir = $p[0]->tgl_lahir;
         // if($p[0]->jenis_kelamin == 'P'){
@@ -1139,7 +1359,7 @@ class SimrsController extends Controller
         // $pdf->Cell(10, 7, $p[0]->tempat_lahir.' ,'. $newDate, 0, 1);
         // $pdf->SetXY(5, 30);
         // $pdf->Cell(10, 7, $JK, 0, 1);
-        
+
         // $pdf->SetXY(60, 5);
         // $pdf->Cell(14, 7, $nomorrm, 0, 1);
         // $pdf->SetXY(60, 10);
@@ -1149,7 +1369,7 @@ class SimrsController extends Controller
         // $pdf->SetXY(60, 30);
         // $pdf->Cell(10, 7, $JK, 0, 1);
         // $pdf->Cell(10, 7, $qrcode, 0, 1);
-        
+
         // $pdf->SetXY(120, 5);
         // $pdf->Cell(14, 7, $nomorrm, 0, 1);
         // $pdf->SetXY(120, 10);
@@ -1158,7 +1378,7 @@ class SimrsController extends Controller
         // $pdf->Cell(10, 7, $p[0]->tempat_lahir.' ,'. $newDate, 0, 1);
         // $pdf->SetXY(120, 30);
         // $pdf->Cell(10, 7, $JK, 0, 1);
-        
+
         // $pdf->SetXY(4, 40);
         // $pdf->Cell(10, 7, $nomorrm, 0, 1);
         // $pdf->SetXY(5, 45);
@@ -1167,7 +1387,7 @@ class SimrsController extends Controller
         // $pdf->Cell(10, 7, $p[0]->tempat_lahir.' ,'. $newDate, 0, 1);
         // $pdf->SetXY(5, 65);
         // $pdf->Cell(10, 7, $JK, 0, 1);
-        
+
         // $pdf->SetXY(60, 40);
         // $pdf->Cell(14, 7, $nomorrm, 0, 1);
         // $pdf->SetXY(60, 45);
@@ -1176,7 +1396,7 @@ class SimrsController extends Controller
         // $pdf->Cell(10, 7, $p[0]->tempat_lahir.' ,'. $newDate, 0, 1);
         // $pdf->SetXY(60, 65);
         // $pdf->Cell(10, 7, $JK, 0, 1);
-        
+
         // $pdf->SetXY(120, 40);
         // $pdf->Cell(14, 7, $nomorrm, 0, 1);
         // $pdf->SetXY(120, 45);
@@ -1194,7 +1414,7 @@ class SimrsController extends Controller
         // $pdf->Cell(10, 7, $p[0]->tempat_lahir.' ,'. $newDate, 0, 1);
         // $pdf->SetXY(5, 100);
         // $pdf->Cell(10, 7, $JK, 0, 1);
-        
+
         // $pdf->SetXY(60, 75);
         // $pdf->Cell(14, 7, $nomorrm, 0, 1);
         // $pdf->SetXY(60, 80);
@@ -1203,7 +1423,7 @@ class SimrsController extends Controller
         // $pdf->Cell(10, 7, $p[0]->tempat_lahir.' ,'. $newDate, 0, 1);
         // $pdf->SetXY(60, 100);
         // $pdf->Cell(10, 7, $JK, 0, 1);
-        
+
         // $pdf->SetXY(120, 75);
         // $pdf->Cell(14, 7, $nomorrm, 0, 1);
         // $pdf->SetXY(120, 80);
@@ -1235,7 +1455,7 @@ class SimrsController extends Controller
             $alamat = $request->alamatdom;
         }
         $nobpjs = $request->nomorbpjs;
-        if($request->nomorbpjs == ''){
+        if ($request->nomorbpjs == '') {
             $nobpjs = '0';
         }
         $data_pasien = [
@@ -1294,8 +1514,8 @@ class SimrsController extends Controller
     public function cekkunjungan_rujukan(Request $request)
     {
         $v = new VclaimModel();
-        $pulang = $v->jumlahseprujukan($request->faskes,$request->nomorrujukan);
-        if($pulang->metaData->code == 200){
+        $pulang = $v->jumlahseprujukan($request->faskes, $request->nomorrujukan);
+        if ($pulang->metaData->code == 200) {
             $jumlah = $pulang->response->jumlahSEP + 1;
             echo "<div class='alert alert-success alert-dismissible fade show' role=alert>Nomor rujukan : $request->nomorrujukan <strong>Kunjungan ke-$jumlah</strong><button type=button class=close data-dismiss=alert aria-label=Close><span aria-hidden=true>&times;</span></button></div>";
         }
@@ -1313,11 +1533,12 @@ class SimrsController extends Controller
             'data_pasien' => $pasien
         ]);
     }
-    public function carifaskes(Request $request){
+    public function carifaskes(Request $request)
+    {
         $faskes = $request->faskes;
         $r = $request->q;
         $v = new VclaimModel();
-        $result = $v->referensi_faskes($r,$faskes);
+        $result = $v->referensi_faskes($r, $faskes);
         if (count($result->response->faskes) > 0) {
             foreach ($result->response->faskes as $row)
                 $arr_result[] = array(

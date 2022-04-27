@@ -72,15 +72,27 @@
                                     <input type="text" class="form-control" value="INSTALASI GAWAT DARURAT"
                                         placeholder="ketik poli tujuan ..." aria-label="Text input with checkbox"
                                         id="politujuan">
-                                    <input hidden type="text" class="form-control" value="IGD"
+                                    <input hidden type="text" class="form-control" value="1002"
                                         aria-label="Text input with checkbox" id="kodepolitujuan">
                                 </div>
                             </div>
                             <div hidden class="ranap" id="ranap">
                                 <div class="row mt-2">
+                                    <div class="col-sm-4 text-right text-bold">Kelas</div>
+                                    <div class="col-sm-7">
+                                        <select class="form-control" id="kelasranap">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
                                     <div class="col-sm-4 text-right text-bold">Unit</div>
                                     <div class="col-sm-7">
-                                        <select class="form-control" id="exampleFormControlSelect1">
+                                        <select class="form-control" id="unitranap">
                                             <option>1</option>
                                             <option>2</option>
                                             <option>3</option>
@@ -92,7 +104,7 @@
                                 <div class="row mt-2">
                                     <div class="col-sm-4 text-right text-bold">Kamar</div>
                                     <div class="col-sm-7">
-                                        <select class="form-control" id="exampleFormControlSelect1">
+                                        <select class="form-control" id="kamarranap">
                                             <option>1</option>
                                             <option>2</option>
                                             <option>3</option>
@@ -104,7 +116,7 @@
                                 <div class="row mt-2">
                                     <div class="col-sm-4 text-right text-bold">Bed</div>
                                     <div class="col-sm-7">
-                                        <select class="form-control" id="exampleFormControlSelect1">
+                                        <select class="form-control" id="bedaranap">
                                             <option>1</option>
                                             <option>2</option>
                                             <option>3</option>
@@ -182,6 +194,20 @@
     </div>
 </div>
 <script>
+     $(function() {
+        $("#tabelriwayatkunjungan").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": true,
+            "pageLength": 3,
+            "searching": true,
+            "ordering" : true,
+            "columnDefs" : [{"targets":0, "type":"date"}],
+            // "order": [
+            //     [1, "desc"]
+            // ]
+        })
+    });
     $(function() {
         $(".datepicker").datepicker({
             autoclose: true,
@@ -235,15 +261,62 @@
         penjamin = $('#penjamin').val()
         sep = $('#sep').val()
         alasanmasuk = $('#alasanmasuk').val()
-        alert(jenispelayanan + namapasien + nomorrm +
-            politujuan + ' ' +
-            kodepolitujuan + ' ' +
-            namadokter + ' ' +
-            kodedokter + ' ' +
-            tglmasuk + ' ' +
-            penjamin + ' ' +
-            sep + ' ' +
-            alasanmasuk)
+        spinner = $('#loader');
+        spinner.show();
+        $.ajax({
+            async: true,
+            dataType: 'Json',
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                jenispelayanan,
+                namapasien,
+                nomorrm,
+                politujuan,
+                kodepolitujuan,
+                namadokter,
+                kodedokter,
+                tglmasuk,
+                penjamin,
+                sep,
+                alasanmasuk
+            },
+            url: '<?= route('daftarpasien_umum') ?>',
+            error: function(data) {
+                spinner.hide()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops,silahkan coba lagi',
+                })
+            },
+            success: function(data) {
+                spinner.hide()
+                if (data.kode == '200') {
+                    Swal.fire({
+                        title: 'Pendaftaran berhasil !',
+                        text: "Cetak nota pembayaran ...",
+                        icon: 'success',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya, cetak Nota',
+                        cancelButtonText: 'Tidak'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.open('cetaksep/' + data.kode_kunjungan);
+                            location.reload();
+                        } else {
+                            location.reload();
+                        }
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops, Sorry !',
+                        text: data.message,
+                    })
+                }
+            }
+        });
     }
 </script>
-    

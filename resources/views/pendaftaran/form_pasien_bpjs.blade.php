@@ -894,7 +894,7 @@
                 } else {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Oops, maaf !',
+                        title: 'Oops, Sorry !',
                         text: data.message,
                     })
                 }

@@ -92,6 +92,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('caririwayatpelayanan_user');
     Route::post('/pendaftaran/simpanpasien', [SimrsController::class, 'simpanpasien'])
         ->name('simpanpasien');
+    Route::post('/pendaftaran/daftarpasien_umum', [SimrsController::class, 'daftarpasien_umum'])
+        ->name('daftarpasien_umum');
     Route::post('/pendaftaran/updatepasien', [SimrsController::class, 'updatepasien'])
         ->name('updatepasien');
     Route::post('/pendaftaran/cekkunjunganrujukan', [SimrsController::class, 'cekkunjungan_rujukan'])
