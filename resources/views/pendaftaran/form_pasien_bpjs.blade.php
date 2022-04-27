@@ -184,8 +184,8 @@
                     <div class="row mt-2">
                         <div class="col-sm-4 text-right text-bold">PPK Asal rujukan</div>
                         <div class="col-sm-7">
-                            <input type="text" class="form-control" id="namappkrujukan" value="RSUD WALED">
-                            <input hidden type="text" class="form-control" id="kodeppkrujukan" value="1018R001">
+                            <input type="text" class="form-control" name="namappkrujukan" id="namappkrujukan" value="RSUD WALED">
+                            <input hidden type="text" class="form-control" name="kodeppkrujukan" id="kodeppkrujukan" value="1018R001">
                         </div>
                     </div>
                     <div hidden id="non-igd">
@@ -1250,4 +1250,27 @@
             });
         });
     });
+    $(document).ready(function() {       
+    $('#namappkrujukan').autocomplete({
+        source: function(request, response) {
+            faskes = $('#asalrujukan').val()
+            $.ajax({
+                url: "<?= route('carifaskes') ?>",
+                dataType: "json",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    faskes: faskes,
+                    q: request.term
+                },
+                success: function(data) {
+                    response(data);
+                }
+            });
+        },
+        select: function(event, ui) {
+            $('[name="namappkrujukan"]').val(ui.item.label);
+            $('[name="kodeppkrujukan"]').val(ui.item.kode);
+        }
+    });
+});
 </script>

@@ -1313,4 +1313,18 @@ class SimrsController extends Controller
             'data_pasien' => $pasien
         ]);
     }
+    public function carifaskes(Request $request){
+        $faskes = $request->faskes;
+        $r = $request->q;
+        $v = new VclaimModel();
+        $result = $v->referensi_faskes($r,$faskes);
+        if (count($result->response->faskes) > 0) {
+            foreach ($result->response->faskes as $row)
+                $arr_result[] = array(
+                    'label' => $row->nama,
+                    'kode' => $row->kode,
+                );
+            echo json_encode($arr_result);
+        }
+    }
 }
