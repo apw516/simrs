@@ -1,3 +1,20 @@
+<div class="row justify-content-center">
+    <div class="col-sm-6">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" id="carinomorrujukan"
+                placeholder="Cari rujukan ...." aria-label="Recipient's username"
+                aria-describedby="button-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="button-addon2"
+                    onclick="pencarianrujukan()"><i class="bi bi-search"></i>
+                    Rujukan</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="hasilpencarianrujukan">
+    
+</div>
 <table id="rujukanf1" class="table table-sm table-bordered table-hover text-md">
     <thead>
         <th>Nomor rujukan</th>

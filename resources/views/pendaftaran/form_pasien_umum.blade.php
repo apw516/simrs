@@ -44,7 +44,7 @@
                             <div class="row">
                                 <div class="col-sm-4 text-right text-bold">Jenis Pelayanan</div>
                                 <div class="col-sm-7">
-                                    <select class="form-control" id="jenispelayanan" onchange="gantijenispelayanan()">
+                                    <select disabled class="form-control" id="jenispelayanan" onchange="gantijenispelayanan()">
                                         <option value="1">Rawat Inap</option>
                                         <option selected value="2">Rawat Jalan</option>
                                     </select>
@@ -67,7 +67,7 @@
                                 </div>
                             </div>
                             <div class="row mt-2 pilihpoli">
-                                <div class="col-sm-4 text-right text-bold">Poli Tujuan</div>
+                                <div class="col-sm-4 text-right text-bold">Tujuan</div>
                                 <div class="col-sm-7">
                                     <input type="text" class="form-control" value="INSTALASI GAWAT DARURAT"
                                         placeholder="ketik poli tujuan ..." aria-label="Text input with checkbox"
@@ -257,6 +257,17 @@
         kodepolitujuan = $('#kodepolitujuan').val()
         namadokter = $('#namadokter').val()
         kodedokter = $('#kodedokter').val()
+        if(namadokter == ''){
+            Swal.fire({
+                    icon: 'error',
+                    title: 'Dokter harus diisi...',
+                })
+        }else if(kodedokter == ''){
+            Swal.fire({
+                    icon: 'error',
+                    title: 'Dokter harus diisi dengan benar ...',
+                })
+        }else{
         tglmasuk = $('#tglmasuk').val()
         penjamin = $('#penjamin').val()
         sep = $('#sep').val()
@@ -318,5 +329,6 @@
                 }
             }
         });
+        }
     }
 </script>

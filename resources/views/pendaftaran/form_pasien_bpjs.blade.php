@@ -4,9 +4,10 @@
             <div class="card">
                 <div class="card-header bg-info">Riwayat Kunjungan</div>
                 <div class="card-body">
-                <button class="btn btn-danger"  data-toggle="modal"
-                data-target="#modalriwayatsep"><i class="bi bi-search"></i> Riwayat SEP Terakhir</button>
-                    <table id="tabelriwayatkunjungan" class="table table-bordered table-sm text-md table-hover table-striped">
+                    <button class="btn btn-danger" data-toggle="modal" data-target="#modalriwayatsep"><i
+                            class="bi bi-search"></i> Riwayat SEP Terakhir</button>
+                    <table id="tabelriwayatkunjungan"
+                        class="table table-bordered table-sm text-md table-hover table-striped">
                         <thead>
                             <th>Unit</th>
                             <th>Tgl Masuk</th>
@@ -122,8 +123,8 @@
                     </div>
                 @endif
                 <div id="kunjunganrujukan_count"></div>
-                <div class="container mt-3">
-                    <div class="row justify-content-center">
+                <div class="container mt-3">                    
+                    <div class="row justify-content-center mt-2">
                         {{-- <div class="col-sm-2 text-right text-bold">
                         </div> --}}
                         <div class="col-sm-10">
@@ -157,8 +158,9 @@
                                             value="1">Eksekutif
                                     </div>
                                 </div>
-                                <input type="text" class="form-control" value="" placeholder="ketik dan pilih poli tujuan ..."
-                                    aria-label="Text input with checkbox" id="politujuan">
+                                <input type="text" class="form-control" value=""
+                                    placeholder="ketik dan pilih poli tujuan ..." aria-label="Text input with checkbox"
+                                    id="politujuan">
                             </div>
                             <input hidden type="text" class="form-control" value=""
                                 aria-label="Text input with checkbox" id="kodepolitujuan">
@@ -184,8 +186,10 @@
                     <div class="row mt-2">
                         <div class="col-sm-4 text-right text-bold">PPK Asal rujukan</div>
                         <div class="col-sm-7">
-                            <input type="text" class="form-control" name="namappkrujukan" id="namappkrujukan" value="RSUD WALED">
-                            <input hidden type="text" class="form-control" name="kodeppkrujukan" id="kodeppkrujukan" value="1018R001">
+                            <input type="text" class="form-control" name="namappkrujukan" id="namappkrujukan"
+                                value="RSUD WALED">
+                            <input hidden type="text" class="form-control" name="kodeppkrujukan" id="kodeppkrujukan"
+                                value="1018R001">
                         </div>
                     </div>
                     <div hidden id="non-igd">
@@ -681,11 +685,13 @@
                     <div class="row">
                         <div class="col-sm-3">
                             <label for="">nomor kartu</label>
-                            <input type="text" class="form-control" id="nomorkartu_riwayatsep" value="{{ $data_peserta->response->peserta->noKartu }}" placeholder="masukan nomor kartu ...">
+                            <input type="text" class="form-control" id="nomorkartu_riwayatsep"
+                                value="{{ $data_peserta->response->peserta->noKartu }}"
+                                placeholder="masukan nomor kartu ...">
                         </div>
                         <div class="col-sm-3">
                             <label for="">tanggal awal</label>
-                            <?php $tglawal = date('Y-m-d', strtotime('-29 days')) ;?>
+                            <?php $tglawal = date('Y-m-d', strtotime('-29 days')); ?>
                             <input type="text" class="form-control datepicker" data-date-format="yyyy-mm-dd"
                                 id="tanggalawal_riwayat" value="{{ $tglawal }}" placeholder="Tanggal awal ..">
                         </div>
@@ -730,32 +736,32 @@
     </div>
 </div>
 <script>
-    function caririwayatseppeserta() {       
-            tglawal = $('#tanggalawal_riwayat').val()
-            tglakhir = $('#tanggalakhir_riwayat').val()
-            nomorkartu = $('#nomorkartu_riwayatsep').val()
-            spinner = $('#loader');
-            spinner.show();
-            $.ajax({
-                type: 'post',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    tglawal,
-                    tglakhir,
-                    nomorkartu
-                },
-                url: '<?= route('vclaimcarikunjungansep_peserta');?>',
-                error: function(data) {
-                    spinner.hide();
-                    alert('error!')
-                },
-                success: function(response) {
-                    spinner.hide();
-                    $('.vkunjunganpasien').html(response);
-                    // $('#daftarpxumum').attr('disabled', true);
-                }
-            });
-        }
+    function caririwayatseppeserta() {
+        tglawal = $('#tanggalawal_riwayat').val()
+        tglakhir = $('#tanggalakhir_riwayat').val()
+        nomorkartu = $('#nomorkartu_riwayatsep').val()
+        spinner = $('#loader');
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                tglawal,
+                tglakhir,
+                nomorkartu
+            },
+            url: '<?= route('vclaimcarikunjungansep_peserta') ?>',
+            error: function(data) {
+                spinner.hide();
+                alert('error!')
+            },
+            success: function(response) {
+                spinner.hide();
+                $('.vkunjunganpasien').html(response);
+                // $('#daftarpxumum').attr('disabled', true);
+            }
+        });
+    }
 
     function simpansep() {
         nomorkartu = $('#nomorkartu').val();
@@ -1078,7 +1084,7 @@
                 cancelButtonText: 'Tidak'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $('.simpanpendaftaran').removeAttr('Disabled',true)
+                    $('.simpanpendaftaran').removeAttr('Disabled', true)
                     $('#jenispelayanan').val(1)
                     $('#formranap').removeAttr('hidden', true)
                     $('.pilihpoli').attr('hidden', true)
@@ -1088,7 +1094,7 @@
                     location.reload()
                 }
             })
-            $('.simpanpendaftaran').attr('Disabled',true)
+            $('.simpanpendaftaran').attr('Disabled', true)
         }
         $('#kamarranap').change(function() {
             kamarranap = $('#kamarranap').val()
@@ -1114,8 +1120,11 @@
             "autoWidth": true,
             "pageLength": 3,
             "searching": true,
-            "ordering" : true,
-            "columnDefs" : [{"targets":0, "type":"date"}],
+            "ordering": true,
+            "columnDefs": [{
+                "targets": 0,
+                "type": "date"
+            }],
             // "order": [
             //     [1, "desc"]
             // ]
@@ -1250,27 +1259,27 @@
             });
         });
     });
-    $(document).ready(function() {       
-    $('#namappkrujukan').autocomplete({
-        source: function(request, response) {
-            faskes = $('#asalrujukan').val()
-            $.ajax({
-                url: "<?= route('carifaskes') ?>",
-                dataType: "json",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    faskes: faskes,
-                    q: request.term
-                },
-                success: function(data) {
-                    response(data);
-                }
-            });
-        },
-        select: function(event, ui) {
-            $('[name="namappkrujukan"]').val(ui.item.label);
-            $('[name="kodeppkrujukan"]').val(ui.item.kode);
-        }
+    $(document).ready(function() {
+        $('#namappkrujukan').autocomplete({
+            source: function(request, response) {
+                faskes = $('#asalrujukan').val()
+                $.ajax({
+                    url: "<?= route('carifaskes') ?>",
+                    dataType: "json",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        faskes: faskes,
+                        q: request.term
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            select: function(event, ui) {
+                $('[name="namappkrujukan"]').val(ui.item.label);
+                $('[name="kodeppkrujukan"]').val(ui.item.kode);
+            }
+        });
     });
-});
 </script>

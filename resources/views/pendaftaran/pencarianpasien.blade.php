@@ -20,7 +20,7 @@
                     <button class="badge badge-warning editpasien" namapasien_edit="{{ $p->nama_pasien }}"
                         nomorktp_edit="{{ $p->NIK }}" nomorbpjs_edit="{{ $p->no_asuransi }}"
                         rm="{{ $p->no_rm }}" data-toggle="modal" data-target="#editpasien"><i class="bi bi-pencil-square"></i></button>
-                    <button class="badge badge-primary daftarumum" rm="{{ $p->no_rm }}"
+                    <button class="badge badge-primary daftarumum" nama="{{ $p->nama_pasien }}" rm="{{ $p->no_rm }}"
                         nik="{{ $p->NIK }}">Umum</button>
                     <button class="badge badge-success daftarbpjs" rm="{{ $p->no_rm }}"
                         noka="{{ $p->no_asuransi }}">Bpjs</button>
@@ -75,6 +75,33 @@
             });
         }
     });
+    $('#tabelpasienbaru').on('click', '.daftarumum', function() {
+          spinner = $('#loader')
+          spinner.show();
+          nomorrm = $(this).attr('rm')
+          nama = $(this).attr('nama')
+              $.ajax({
+                  type: 'post',
+                  data: {
+                      _token: "{{ csrf_token() }}",
+                      nomorrm,
+                  },
+                  url: '<?= route('formumum') ?>',
+                  error: function(data) {
+                      spinner.hide()
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Oops,silahkan coba lagi',
+                      })
+                  },
+                  success: function(response) {
+                      spinner.hide()
+                      $('.formpasien').html(response)
+                      $('#namapasien').val(nama)
+                      $('#nomorrm').val(nomorrm)
+                  }
+              });
+      });
     $('#tabelpasienbaru').on('click', '.editpasien', function() {
           nomorrm = $(this).attr('rm')
           nama = $(this).attr('namapasien_edit')

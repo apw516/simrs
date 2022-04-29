@@ -901,6 +901,30 @@
               }
           })
       }
+      function pencarianrujukan()
+      {
+          alert('Masih dalam pengembangan ....')
+        //  nomorrujukan = $('#carinomorrujukan').val()
+        //  $.ajax({
+        //       type: 'post',
+        //       data: {
+        //           _token: "{{ csrf_token() }}",
+        //           nomorrujukan,
+        //       },
+        //       url: '<?= route('carirujukan_nomor') ?>',
+        //       error: function(data) {
+        //           spinner.hide()
+        //           Swal.fire({
+        //               icon: 'error',
+        //               title: 'Oops,silahkan coba lagi',
+        //           })
+        //       },
+        //       success: function(response) {
+        //           spinner.hide()
+        //           $('.hasilpencarianrujukan').html(response)
+        //       }
+        //   });
+      }
   </script>
   </body>
 

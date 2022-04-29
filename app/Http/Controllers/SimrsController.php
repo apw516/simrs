@@ -965,7 +965,7 @@ class SimrsController extends Controller
             'cek_tracer' => 'N'
         ];
         //insert ke tracer
-        tracer::create($data_tracer);
+        // tracer::create($data_tracer);
         $data = [
             'kode' => 200,
             'message' => 'sukses',
@@ -1547,5 +1547,12 @@ class SimrsController extends Controller
                 );
             echo json_encode($arr_result);
         }
+    }
+    public function carirujukan_nomor(Request $request)
+    {
+        $nomorrujukan = $request->nomorrujukan;
+        $v = new VclaimModel();
+        $result = $v->carirujukan_byno($nomorrujukan);
+        dd($result);
     }
 }
