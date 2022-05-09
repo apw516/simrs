@@ -126,7 +126,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mt-2 dokteryangmelayani" id="dokteryangmelayani">
+                            {{-- <div class="row mt-2 dokteryangmelayani" id="dokteryangmelayani">
                                 <div class="col-sm-4 text-right text-bold">Dokter yang melayani</div>
                                 <div class="col-sm-7">
                                     <input type="text" class="form-control"
@@ -135,7 +135,7 @@
                                     <input hidden type="text" class="form-control" value=""
                                         aria-label="Text input with checkbox" id="kodedokter">
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="row mt-2">
                                 <div class="col-sm-4 text-right text-bold">Tgl masuk</div>
                                 <div class="col-sm-7">
@@ -239,15 +239,15 @@
             }
         });
     });
-    $(document).ready(function() {
-        $('#namadokter').autocomplete({
-            source: "<?= route('caridokter_rs') ?>",
-            select: function(event, ui) {
-                $('[id="namadokter"]').val(ui.item.label);
-                $('[id="kodedokter"]').val(ui.item.kode);
-            }
-        });
-    });
+    // $(document).ready(function() {
+    //     $('#namadokter').autocomplete({
+    //         source: "<?= route('caridokter_rs') ?>",
+    //         select: function(event, ui) {
+    //             $('[id="namadokter"]').val(ui.item.label);
+    //             $('[id="kodedokter"]').val(ui.item.kode);
+    //         }
+    //     });
+    // });
 
     function daftarpasienumum() {
         jenispelayanan = $('#jenispelayanan').val()
@@ -255,19 +255,19 @@
         nomorrm = $('#nomorrm').val()
         politujuan = $('#politujuan').val()
         kodepolitujuan = $('#kodepolitujuan').val()
-        namadokter = $('#namadokter').val()
-        kodedokter = $('#kodedokter').val()
-        if(namadokter == ''){
-            Swal.fire({
-                    icon: 'error',
-                    title: 'Dokter harus diisi...',
-                })
-        }else if(kodedokter == ''){
-            Swal.fire({
-                    icon: 'error',
-                    title: 'Dokter harus diisi dengan benar ...',
-                })
-        }else{
+        // namadokter = $('#namadokter').val()
+        // kodedokter = $('#kodedokter').val()
+        // if(namadokter == ''){
+        //     Swal.fire({
+        //             icon: 'error',
+        //             title: 'Dokter harus diisi...',
+        //         })
+        // }else if(kodedokter == ''){
+        //     Swal.fire({
+        //             icon: 'error',
+        //             title: 'Dokter harus diisi dengan benar ...',
+        //         })
+        // }else{
         tglmasuk = $('#tglmasuk').val()
         penjamin = $('#penjamin').val()
         sep = $('#sep').val()
@@ -285,8 +285,6 @@
                 nomorrm,
                 politujuan,
                 kodepolitujuan,
-                namadokter,
-                kodedokter,
                 tglmasuk,
                 penjamin,
                 sep,
@@ -329,6 +327,6 @@
                 }
             }
         });
-        }
+        // }
     }
 </script>

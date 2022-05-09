@@ -784,7 +784,7 @@ class SimrsController extends Controller
                 'counter' => $counter,
                 'no_rm' => $request->nomorrm,
                 'kode_unit' => $request->kodepolitujuan,
-                'kode_paramedis' => $request->kodedokter,
+                'kode_paramedis' => 0,
                 'prefix_kunjungan' => $unit[0]['prefix_unit'],
                 'tgl_masuk' => $tgl_masuk_time,
                 'status_kunjungan' => '8',
@@ -958,14 +958,14 @@ class SimrsController extends Controller
             ts_layanan_header::where('kode_kunjungan', $ts_kunjungan->id)
                 ->update(['status_layanan' => 2, 'total_layanan' => $grand_total_tarif, 'tagihan_pribadi' => $grand_total_tarif]);
         }
-        $data_tracer = [
-            'kode_kunjungan' => $ts_kunjungan->id,
-            'tgl_tracer' => $request->tgl_masuk,
-            'id_status_tracer' => 1,
-            'cek_tracer' => 'N'
-        ];
+        // $data_tracer = [
+        //     'kode_kunjungan' => $ts_kunjungan->id,
+        //     'tgl_tracer' => $request->tgl_masuk,
+        //     'id_status_tracer' => 1,
+        //     'cek_tracer' => 'N'
+        // ];
         // insert ke tracer
-        tracer::create($data_tracer);
+        // tracer::create($data_tracer);
         $data = [
             'kode' => 200,
             'message' => 'sukses',
