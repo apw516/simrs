@@ -743,7 +743,7 @@ class SimrsController extends Controller
                 'cek_tracer' => 'N'
             ];
             //insert ke tracer
-            tracer::create($data_tracer);
+            // tracer::create($data_tracer);
             $data = [
                 'kode' => 200,
                 'message' => 'sukses',
@@ -974,7 +974,7 @@ class SimrsController extends Controller
         $data = [
             'kode' => 200,
             'message' => 'sukses',
-            'kode_kunjungan' => $ts_kunjungan->id
+            'kode_kunjungan' => $ts_kunjungan->id,
         ];
         echo json_encode($data);
     }

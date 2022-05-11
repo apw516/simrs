@@ -44,7 +44,8 @@
                             <div class="row">
                                 <div class="col-sm-4 text-right text-bold">Jenis Pelayanan</div>
                                 <div class="col-sm-7">
-                                    <select disabled class="form-control" id="jenispelayanan" onchange="gantijenispelayanan()">
+                                    <select disabled class="form-control" id="jenispelayanan"
+                                        onchange="gantijenispelayanan()">
                                         <option value="1">Rawat Inap</option>
                                         <option selected value="2">Rawat Jalan</option>
                                     </select>
@@ -194,15 +195,18 @@
     </div>
 </div>
 <script>
-     $(function() {
+    $(function() {
         $("#tabelriwayatkunjungan").DataTable({
             "responsive": true,
             "lengthChange": false,
             "autoWidth": true,
             "pageLength": 3,
             "searching": true,
-            "ordering" : true,
-            "columnDefs" : [{"targets":0, "type":"date"}],
+            "ordering": true,
+            "columnDefs": [{
+                "targets": 0,
+                "type": "date"
+            }],
             // "order": [
             //     [1, "desc"]
             // ]
@@ -306,13 +310,25 @@
                         text: "Cetak nota pembayaran ...",
                         icon: 'success',
                         showCancelButton: true,
+                        showDenyButton: true,
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
+                        denyButtonColor: 'green',
+                        denyButtonText: `Cetak Nota dan Label`,
                         confirmButtonText: 'Ya, cetak Nota',
                         cancelButtonText: 'Tidak'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             window.open('cetakstruk/' + data.kode_kunjungan);
+                            location.reload();
+                        } else if (result.isDenied) {
+                            // window.open('cetakstruk/' + data.kode_kunjungan);
+                            // window.open('http://localhost/printlabel/cetaklabel.php?rm=19882642&nama=BADRIYAH');
+                            var url = 'cetakstruk/' + data.kode_kunjungan
+                            var url2 = `http://192.168.2.45/printlabel/cetaklabel.php?rm=`+nomorrm+`&nama=`+namapasien;
+                            var locs = [url,url2] 
+                            for (let i = 0; i < locs.length; i++) {
+				                window.open(locs[i])}
                             location.reload();
                         } else {
                             location.reload();

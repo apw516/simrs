@@ -15,19 +15,20 @@
         </div>
         @if($datakunjungan[0]->nama_penjamin != 'PRIBADI')
         <div class="col-md-1">
-            No SEP
         </div>
         <div class="col-md-3">
-            :   {{ $datakunjungan[0]->no_sep }} | <a href="cetaksep/{{ $datakunjungan[0]->kode_kunjungan}}" target="_blank"><i class="bi bi-printer-fill"></i> Print</a>
+            <a href="cetaksep/{{ $datakunjungan[0]->kode_kunjungan}}" target="_blank"><i class="bi bi-printer-fill"></i> SEP  </a> | 
+            <a href="http://192.168.2.45/printlabel/cetaklabel.php?rm={{ $datakunjungan[0]->no_rm }}&nama={{ $datakunjungan[0]->nama_px }}" target="_blank"><i class="bi bi-printer-fill"></i> label</a> 
         </div>
         @else
         <div class="col-md-1">
-            cetak nota
         </div>
         <div class="col-md-3">
-              {{ $datakunjungan[0]->no_sep }} <a href="cetakstruk/{{ $datakunjungan[0]->kode_kunjungan}}" target="_blank"><i class="bi bi-printer-fill"></i> Print</a>
+              {{ $datakunjungan[0]->no_sep }} <a href="cetakstruk/{{ $datakunjungan[0]->kode_kunjungan}}" target="_blank"><i class="bi bi-printer-fill"></i> Nota</a> | 
+              
+              <a href="http://192.168.2.45/printlabel/cetaklabel.php?rm={{ $datakunjungan[0]->no_rm }}&nama={{ $datakunjungan[0]->nama_px }}" target="_blank"><i class="bi bi-printer-fill"></i> label</a>
         </div>
-        @endif
+        @endif       
     </div>
     <div class="row">
         {{-- <div class="col-md-2">
@@ -42,6 +43,7 @@
         <div class="col-md-2">
             :   {{ $datakunjungan[0]->nama_unit }}
         </div>
+        
     </div>
     <div class="row">
         {{-- <div class="col-md-2">

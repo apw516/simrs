@@ -59,6 +59,8 @@
                             <div class="row mt-3">
                                 <div class="col-sm-3">Nama</div>
                                 <div class="col-sm-8">: {{ $data_peserta->response->peserta->nama }}</div>
+                                <input hidden type="text" value="{{ $data_peserta->response->peserta->nama }}"
+                                id="namapasien">
                             </div>
                             <div class="row">
                                 <div class="col-sm-3">Nomor Telp</div>
@@ -765,6 +767,7 @@
 
     function simpansep() {
         nomorkartu = $('#nomorkartu').val();
+        namapasien = $('#namapasien').val();
         penjamin = $('#penjamin').val();
         jenispelayanan = $('#jenispelayanan').val();
         polieksekutif = $('#polieksekutif:checked').val();
@@ -885,13 +888,25 @@
                         text: "Apakah anda ingin mencetak SEP ?",
                         icon: 'success',
                         showCancelButton: true,
+                        showDenyButton: true,
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
+                        denyButtonColor: 'green',
                         confirmButtonText: 'Ya, cetak SEP',
+                        denyButtonText: `Cetak SEP dan Label`,
                         cancelButtonText: 'Tidak'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             window.open('cetaksep/' + data.kode_kunjungan);
+                            location.reload();
+                        }else if (result.isDenied) {
+                            // window.open('cetakstruk/' + data.kode_kunjungan);
+                            // window.open('http://localhost/printlabel/cetaklabel.php?rm=19882642&nama=BADRIYAH');
+                            var url = 'cetaksep/' + data.kode_kunjungan
+                            var url2 = `http://192.168.2.45/printlabel/cetaklabel.php?rm=`+norm+`&nama=`+namapasien;
+                            var locs = [url,url2] 
+                            for (let i = 0; i < locs.length; i++) {
+				                window.open(locs[i])}
                             location.reload();
                         } else {
                             location.reload();
