@@ -13,12 +13,21 @@
         <div class="col-md-2">
             :   {{ $datakunjungan[0]->nama_penjamin }}
         </div>
+        @if($datakunjungan[0]->nama_penjamin != 'PRIBADI')
         <div class="col-md-1">
             No SEP
         </div>
         <div class="col-md-3">
             :   {{ $datakunjungan[0]->no_sep }} | <a href="cetaksep/{{ $datakunjungan[0]->kode_kunjungan}}" target="_blank"><i class="bi bi-printer-fill"></i> Print</a>
         </div>
+        @else
+        <div class="col-md-1">
+            cetak nota
+        </div>
+        <div class="col-md-3">
+              {{ $datakunjungan[0]->no_sep }} <a href="cetakstruk/{{ $datakunjungan[0]->kode_kunjungan}}" target="_blank"><i class="bi bi-printer-fill"></i> Print</a>
+        </div>
+        @endif
     </div>
     <div class="row">
         {{-- <div class="col-md-2">

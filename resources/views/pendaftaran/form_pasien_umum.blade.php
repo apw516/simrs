@@ -312,7 +312,7 @@
                         cancelButtonText: 'Tidak'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.open('cetaksep/' + data.kode_kunjungan);
+                            window.open('cetakstruk/' + data.kode_kunjungan);
                             location.reload();
                         } else {
                             location.reload();

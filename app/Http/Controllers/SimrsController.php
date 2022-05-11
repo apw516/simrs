@@ -4,6 +4,12 @@ namespace App\Http\Controllers;
 
 use PDF;
 // use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Mike42\Escpos\Printer;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
+use Mike42\Escpos\EscposImage;
+use Mike42\Escpos\GdEscposImage;
 use Illuminate\Support\Facades\Auth;
 use Codedge\Fpdf\Fpdf\Fpdf;
 use Illuminate\Http\Request;
@@ -810,8 +816,7 @@ class SimrsController extends Controller
             //     }
             // }
         } else {
-
-        }     
+        }
         $ts_kunjungan = ts_kunjungan::create($data_ts_kunjungan);
         $kelas_unit = $unit['0']['kelas_unit'];
         $kodeunit = $request->kodepolitujuan;
@@ -825,7 +830,7 @@ class SimrsController extends Controller
                 $kode_layanan_header = $unit[0]['prefix_unit'] . $year . date('m') . date('d') . '000001';
                 DB::select('insert into mt_nomor_trx (tgl,no_trx_layanan,unit) values (?,?,?)', [date('Y-m-d h:i:s'), $kode_layanan_header, $kodeunit]);
             }
-            if($request->penjamin == "P01"){
+            if ($request->penjamin == "P01") {
                 $data_layanan_header = [
                     'kode_layanan_header' => $kode_layanan_header,
                     'tgl_entry' =>   $tgl_masuk_time,
@@ -836,9 +841,9 @@ class SimrsController extends Controller
                     'status_layanan' => '1',
                     'status_retur' => 'OPN',
                     'status_pembayaran' => 'OPN'
-                ]; 
+                ];
                 //data yg diinsert ke ts_layanan_header
-            }else{
+            } else {
                 $data_layanan_header = [
                     'kode_layanan_header' => $kode_layanan_header,
                     'tgl_entry' =>   $tgl_masuk_time,
@@ -849,11 +854,11 @@ class SimrsController extends Controller
                     'status_layanan' => '1',
                     'status_retur' => 'OPN',
                     'status_pembayaran' => 'OPN'
-                ]; 
+                ];
                 //data yg diinsert ke ts_layanan_header
             }
             //simpan ke layanan header
-           $ts_layanan_header = ts_layanan_header::create($data_layanan_header);
+            $ts_layanan_header = ts_layanan_header::create($data_layanan_header);
             //menentukan tarif
             if ($request->jenispelayanan == 1) {
                 //jika pasien rawat inap maka hanya memakai tarif admin ranap
@@ -862,10 +867,10 @@ class SimrsController extends Controller
                 $tgl_detail = date('Y-m-d h:i:s');
                 $tagihanpribadi = $tarif;
                 $tagihanpenjamin = $tarif;
-                if($request->penjamin == "P01"){
+                if ($request->penjamin == "P01") {
                     $tagihanpribadi = $tarif;
                     $tagihanpenjamin = (NULL);
-                }else{
+                } else {
                     $tagihanpribadi = (NULL);
                     $tagihanpenjamin = $tarif;
                 }
@@ -895,12 +900,12 @@ class SimrsController extends Controller
                 $tagihanpenjamin1 = $tarif1;
                 $tagihanpribadi2 = $tarif2;
                 $tagihanpenjamin2 = $tarif2;
-                if($request->penjamin == "P01"){
+                if ($request->penjamin == "P01") {
                     $tagihanpribadi1 = $tarif1;
                     $tagihanpenjamin1 = (NULL);
                     $tagihanpribadi2 = $tarif2;
                     $tagihanpenjamin2 = (NULL);
-                }else{
+                } else {
                     $tagihanpribadi1 = (NULL);
                     $tagihanpenjamin1 = $tarif1;
                     $tagihanpribadi2 = (NULL);
@@ -971,7 +976,7 @@ class SimrsController extends Controller
             'message' => 'sukses',
             'kode_kunjungan' => $ts_kunjungan->id
         ];
-        echo json_encode($data);        
+        echo json_encode($data);
     }
     public function createLayanandetail()
     {
@@ -1554,5 +1559,146 @@ class SimrsController extends Controller
         $v = new VclaimModel();
         $result = $v->carirujukan_byno($nomorrujukan);
         dd($result);
+    }
+    public function Cetakstruk($kodekunjungan)
+    {
+        $t = ts_layanan_header::where('kode_kunjungan', $kodekunjungan)->get();
+        $kode = $t[0]['kode_layanan_header'];
+        $id = $t[0]['id'];
+        $nota = DB::select("CALL SP_NOTA_TINDAKAN_NEW('$kode','$id')");
+        // dd($nota);
+        // $p = Pasien::where('no_rm', $t[0]['no_rm'])->get();
+        $pdf = new Fpdf('P', 'mm');
+        $pdf->AddPage();
+        $pdf->SetTitle('Cetak nota');
+        $pdf->SetMargins('15', '20', '10');
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->Image('public/img/logo_rs.png', 5, 2, 18, 12);
+        $pdf->SetXY(23, 3);
+        $pdf->Cell(10, 7, 'PENDAFTARAN RAWAT JALAN', 0, 1);
+        $pdf->SetXY(23, 7);
+        $pdf->Cell(10, 7, 'RSUD WALED KAB.CIREBON', 0, 1);
+        $pdf->Line(5, 15, 78, 15);
+        
+        $pdf->SetFont('Arial', 'B', 7);
+        $pdf->SetXY(4, 15);
+        $pdf->Cell(10, 7, 'Kode Layanan', 0, 1);
+        $pdf->SetXY(30, 15);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetXY(35, 15);
+        $pdf->Cell(10, 7, $nota[0]->kode_layanan_header, 0, 1);
+        
+        $pdf->SetFont('Arial', 'B', 7);
+        $pdf->SetXY(4, 18);
+        $pdf->Cell(10, 7, 'Tgl Entry', 0, 1);
+        $pdf->SetXY(30, 18);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(35, 18);
+        $pdf->Cell(10, 7,$nota[0]->tgl_entry, 0, 1);
+
+        $pdf->SetFont('Arial', 'B', 7);
+        $pdf->SetXY(4, 22);
+        $pdf->Cell(10, 7, 'Unit', 0, 1);
+        $pdf->SetXY(30, 22);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(35, 22);
+        $pdf->Cell(10, 7, $nota[0]->nama_unit, 0, 1);
+
+        $pdf->SetFont('Arial', 'B', 7);
+        $pdf->SetXY(4, 26);
+        $pdf->Cell(10, 7, 'RM / Kunjungan', 0, 1);
+        $pdf->SetXY(30, 26);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(35, 26);
+        $pdf->Cell(10, 7, $nota[0]->no_rm." / ".$nota[0]->counter, 0, 1);
+
+        $pdf->SetFont('Arial', 'B', 7);
+        $pdf->SetXY(4, 30);
+        $pdf->Cell(10, 7, 'Nama Pasien', 0, 1);
+        $pdf->SetXY(30, 30);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(35, 32);
+        $pdf->MultiCell(30, 3, $nota[0]->nama_px);
+        // $pdf->Cell(10, 7, "Agyl Putera Wibowo", 0, 1);
+
+        $y = $pdf->GetY()-2;
+        $pdf->SetXY(4, $y);
+        $pdf->Cell(10, 7, 'Tgl lahir /JK/ umur', 0, 1);
+        $pdf->SetXY(30, $y);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(35, $y);
+        $pdf->Cell(10, 7, $nota[0]->tgl_lahir. " / ". $nota[0]->JK ." / " . $nota[0]->umur, 0, 1);
+
+        $pdf->SetFont('Arial', 'B', 7);
+        $y = $pdf->GetY()-2;
+        $pdf->SetXY(4, $y);
+        $pdf->Cell(10, 7, 'Alamat', 0, 1);
+        $pdf->SetXY(30, $y);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(35, $y+2);
+        $pdf->MultiCell(30, 3, $nota[0]->alamat);
+
+        $y = $pdf->GetY()-1;
+        $pdf->SetXY(4, $y);
+        $pdf->Cell(10, 7, 'Penjamin', 0, 1);
+        $pdf->SetXY(30, $y);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(35, $y);
+        $pdf->Cell(10, 7, $nota[0]->nama_penjamin , 0, 1);
+
+        $y = $pdf->GetY()-1;
+        $pdf->SetXY(4, $y);
+        $pdf->Cell(10, 7, 'Nama Layanan', 0, 1);
+        $pdf->SetXY(40, $y);
+        $pdf->Cell(10, 7, 'Tarif', 0, 1);
+        $pdf->SetXY(50, $y);
+        $pdf->Cell(10, 7, "Jml", 0, 1);
+        $pdf->SetXY(60, $y);
+        $pdf->Cell(10, 7, "Sub Total", 0, 1);
+        $y = $pdf->GetY()-1;
+        $pdf->Line(5, $y, 78, $y);
+        $total = 0;
+        foreach($nota as $n){
+            $y = $pdf->GetY()-1;
+            $pdf->SetXY(4, $y+2);
+            $pdf->MultiCell(30, 3,$n->NAMA_TARIF);
+            $pdf->SetXY(40, $y);
+            $pdf->Cell(10, 7, $n->total_layanan, 0, 1);
+            $pdf->SetXY(50, $y);
+            $pdf->Cell(10, 7,$n->jumlah_layanan, 0, 1);
+            $pdf->SetXY(60, $y);
+            $pdf->Cell(10, 7, $n->grantotal_layanan, 0, 1);
+            $total = $n->total_layanan + $total;
+        }
+
+        // $y = $pdf->GetY()+2;
+        // $pdf->SetXY(4, $y+2);
+        // $pdf->MultiCell(30, 3, "Karcis Konsul Poliklinik");
+        // $pdf->SetXY(40, $y);
+        // $pdf->Cell(10, 7, '25000', 0, 1);
+        // $pdf->SetXY(50, $y);
+        // $pdf->Cell(10, 7, "1", 0, 1);
+        // $pdf->SetXY(60, $y);
+        // $pdf->Cell(10, 7, "25,000", 0, 1);
+
+        $y = $pdf->GetY()+2;
+        $pdf->Line(5, $y, 78, $y);
+
+        $y = $pdf->GetY()+2;
+        $pdf->SetXY(30, $y);
+        $pdf->Cell(10, 7, 'Tunai total bayar', 0, 1);
+        $pdf->SetXY(60, $y);
+        $pdf->Cell(10, 7, $total, 0, 1);
+        
+        $pdf->SetFont('Arial', 'B', 5);
+        $y = $pdf->GetY();
+        $pdf->SetXY(30, $y);
+        $pdf->Cell(10, 7, auth()->user()->nama, 0, 1);
+        $pdf->SetXY(50, $y);
+        $pdf->Cell(10, 7,date('Y-m-d h:i:s'), 0, 1);
+
+        $pdf->Output();
+        exit;      
     }
 }
