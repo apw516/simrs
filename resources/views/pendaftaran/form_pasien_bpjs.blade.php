@@ -903,7 +903,7 @@
                             // window.open('cetakstruk/' + data.kode_kunjungan);
                             // window.open('http://localhost/printlabel/cetaklabel.php?rm=19882642&nama=BADRIYAH');
                             var url = 'cetaksep/' + data.kode_kunjungan
-                            var url2 = `http://192.168.2.45/printlabel/cetaklabel.php?rm=`+norm+`&nama=`+namapasien;
+                            var url2 = `http://192.168.2.45/printlabel/cetaklabel.php?rm=`+norm+`&nama=`+data.nama;
                             var locs = [url,url2] 
                             for (let i = 0; i < locs.length; i++) {
 				                window.open(locs[i])}

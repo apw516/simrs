@@ -743,11 +743,13 @@ class SimrsController extends Controller
                 'cek_tracer' => 'N'
             ];
             //insert ke tracer
-            // tracer::create($data_tracer);
+            tracer::create($data_tracer);
+            $pasien = Pasien::where('no_rm', '=', "$request->norm")->get();
             $data = [
                 'kode' => 200,
                 'message' => 'sukses',
-                'kode_kunjungan' => $ts_kunjungan->id
+                'kode_kunjungan' => $ts_kunjungan->id,
+                'nama' => $pasien[0]['nama_px']
             ];
             echo json_encode($data);
         } else if ($datasep->metaData->code != 200) {
@@ -963,14 +965,14 @@ class SimrsController extends Controller
             ts_layanan_header::where('kode_kunjungan', $ts_kunjungan->id)
                 ->update(['status_layanan' => 2, 'total_layanan' => $grand_total_tarif, 'tagihan_pribadi' => $grand_total_tarif]);
         }
-        // $data_tracer = [
-        //     'kode_kunjungan' => $ts_kunjungan->id,
-        //     'tgl_tracer' => $request->tgl_masuk,
-        //     'id_status_tracer' => 1,
-        //     'cek_tracer' => 'N'
-        // ];
+        $data_tracer = [
+            'kode_kunjungan' => $ts_kunjungan->id,
+            'tgl_tracer' => $request->tgl_masuk,
+            'id_status_tracer' => 1,
+            'cek_tracer' => 'N'
+        ];
         // insert ke tracer
-        // tracer::create($data_tracer);
+        tracer::create($data_tracer);
         $data = [
             'kode' => 200,
             'message' => 'sukses',
