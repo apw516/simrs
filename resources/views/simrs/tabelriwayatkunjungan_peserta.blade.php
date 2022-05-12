@@ -71,6 +71,10 @@
                                     class="bi bi-eye text-md"></i></button>
                             <button class="badge badge-success" data-placement="right" title="print sep"><i
                                     class="bi bi-printer text-md"></i></button>
+                                    <button class="badge badge-warning pulangkan" nomorsep="{{ $r->noSep }}"
+                                        data-placement="right" title="pulangkan sep pasien" data-toggle="modal"
+                                        data-target="#modalupdatetglpulang"><i
+                                            class="bi bi-pencil-square text-md"></i></button>
                         </td>
                     </tr>
                 @endif
@@ -147,4 +151,8 @@
             }
         });
     });
+    $('#kunjunganpasienrawatinap').on('click', '.pulangkan', function() {
+        nomorsep = $(this).attr('nomorsep')
+       $('#pulang_nomorsep').val(nomorsep)
+    })
 </script>

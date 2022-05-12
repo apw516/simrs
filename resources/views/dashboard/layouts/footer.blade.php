@@ -719,7 +719,7 @@
                           icon: 'success',
                           title: 'Pasien dipulangkan ...',
                       })
-                      location.reload()
+                    //   location.reload()
                   } else {
                       Swal.fire({
                           icon: 'error',
