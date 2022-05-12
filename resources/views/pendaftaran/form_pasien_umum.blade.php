@@ -70,10 +70,10 @@
                             <div class="row mt-2 pilihpoli">
                                 <div class="col-sm-4 text-right text-bold">Tujuan</div>
                                 <div class="col-sm-7">
-                                    <input type="text" class="form-control" value="INSTALASI GAWAT DARURAT"
+                                    <input type="text" class="form-control" value=""
                                         placeholder="ketik poli tujuan ..." aria-label="Text input with checkbox"
                                         id="politujuan">
-                                    <input hidden type="text" class="form-control" value="1002"
+                                    <input hidden type="text" class="form-control" value=""
                                         aria-label="Text input with checkbox" id="kodepolitujuan">
                                 </div>
                             </div>
@@ -259,90 +259,95 @@
         nomorrm = $('#nomorrm').val()
         politujuan = $('#politujuan').val()
         kodepolitujuan = $('#kodepolitujuan').val()
-        // namadokter = $('#namadokter').val()
-        // kodedokter = $('#kodedokter').val()
-        // if(namadokter == ''){
-        //     Swal.fire({
-        //             icon: 'error',
-        //             title: 'Dokter harus diisi...',
-        //         })
-        // }else if(kodedokter == ''){
-        //     Swal.fire({
-        //             icon: 'error',
-        //             title: 'Dokter harus diisi dengan benar ...',
-        //         })
-        // }else{
-        tglmasuk = $('#tglmasuk').val()
-        penjamin = $('#penjamin').val()
-        sep = $('#sep').val()
-        alasanmasuk = $('#alasanmasuk').val()
-        spinner = $('#loader');
-        spinner.show();
-        $.ajax({
-            async: true,
-            dataType: 'Json',
-            type: 'post',
-            data: {
-                _token: "{{ csrf_token() }}",
-                jenispelayanan,
-                namapasien,
-                nomorrm,
-                politujuan,
-                kodepolitujuan,
-                tglmasuk,
-                penjamin,
-                sep,
-                alasanmasuk
-            },
-            url: '<?= route('daftarpasien_umum') ?>',
-            error: function(data) {
-                spinner.hide()
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops,silahkan coba lagi',
-                })
-            },
-            success: function(data) {
-                spinner.hide()
-                if (data.kode == '200') {
-                    Swal.fire({
-                        title: 'Pendaftaran berhasil !',
-                        text: "Cetak nota pembayaran ...",
-                        icon: 'success',
-                        showCancelButton: true,
-                        showDenyButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        denyButtonColor: 'green',
-                        denyButtonText: `Cetak Nota dan Label`,
-                        confirmButtonText: 'Ya, cetak Nota',
-                        cancelButtonText: 'Tidak'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.open('cetakstruk/' + data.kode_kunjungan);
-                            location.reload();
-                        } else if (result.isDenied) {
-                            // window.open('cetakstruk/' + data.kode_kunjungan);
-                            // window.open('http://localhost/printlabel/cetaklabel.php?rm=19882642&nama=BADRIYAH');
-                            var url = 'cetakstruk/' + data.kode_kunjungan
-                            var url2 = `http://192.168.2.45/printlabel/cetaklabel.php?rm=`+nomorrm+`&nama=`+namapasien;
-                            var locs = [url,url2] 
-                            for (let i = 0; i < locs.length; i++) {
-				                window.open(locs[i])}
-                            location.reload();
-                        } else {
-                            location.reload();
-                        }
-                    })
-                } else {
+        if (kodepolitujuan == '') {
+            alert('silahkan pilih poli tujuan ...')
+        } else {
+            // namadokter = $('#namadokter').val()
+            // kodedokter = $('#kodedokter').val()
+            // if(namadokter == ''){
+            //     Swal.fire({
+            //             icon: 'error',
+            //             title: 'Dokter harus diisi...',
+            //         })
+            // }else if(kodedokter == ''){
+            //     Swal.fire({
+            //             icon: 'error',
+            //             title: 'Dokter harus diisi dengan benar ...',
+            //         })
+            // }else{
+            tglmasuk = $('#tglmasuk').val()
+            penjamin = $('#penjamin').val()
+            sep = $('#sep').val()
+            alasanmasuk = $('#alasanmasuk').val()
+            spinner = $('#loader');
+            spinner.show();
+            $.ajax({
+                async: true,
+                dataType: 'Json',
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    jenispelayanan,
+                    namapasien,
+                    nomorrm,
+                    politujuan,
+                    kodepolitujuan,
+                    tglmasuk,
+                    penjamin,
+                    sep,
+                    alasanmasuk
+                },
+                url: '<?= route('daftarpasien_umum') ?>',
+                error: function(data) {
+                    spinner.hide()
                     Swal.fire({
                         icon: 'error',
-                        title: 'Oops, Sorry !',
-                        text: data.message,
+                        title: 'Oops,silahkan coba lagi',
                     })
+                },
+                success: function(data) {
+                    spinner.hide()
+                    if (data.kode == '200') {
+                        Swal.fire({
+                            title: 'Pendaftaran berhasil !',
+                            text: "Cetak nota pembayaran ...",
+                            icon: 'success',
+                            showCancelButton: true,
+                            showDenyButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            denyButtonColor: 'green',
+                            denyButtonText: `Cetak Nota dan Label`,
+                            confirmButtonText: 'Ya, cetak Nota',
+                            cancelButtonText: 'Tidak'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.open('cetakstruk/' + data.kode_kunjungan);
+                                location.reload();
+                            } else if (result.isDenied) {
+                                // window.open('cetakstruk/' + data.kode_kunjungan);
+                                // window.open('http://localhost/printlabel/cetaklabel.php?rm=19882642&nama=BADRIYAH');
+                                var url = 'cetakstruk/' + data.kode_kunjungan
+                                var url2 = `http://192.168.2.45/printlabel/cetaklabel.php?rm=` +
+                                    nomorrm + `&nama=` + namapasien;
+                                var locs = [url, url2]
+                                for (let i = 0; i < locs.length; i++) {
+                                    window.open(locs[i])
+                                }
+                                location.reload();
+                            } else {
+                                location.reload();
+                            }
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops, Sorry !',
+                            text: data.message,
+                        })
+                    }
                 }
-            }
-        });
-        // }
+            });
+        }
     }
 </script>
