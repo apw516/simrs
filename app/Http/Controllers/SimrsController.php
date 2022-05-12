@@ -963,7 +963,7 @@ class SimrsController extends Controller
             }
             //update ts_layanan_header
             ts_layanan_header::where('kode_kunjungan', $ts_kunjungan->id)
-                ->update(['status_layanan' => 2, 'total_layanan' => $grand_total_tarif, 'tagihan_pribadi' => $grand_total_tarif]);
+                ->update(['status_layanan' => 1, 'total_layanan' => $grand_total_tarif, 'tagihan_pribadi' => $grand_total_tarif]);
         }
         $data_tracer = [
             'kode_kunjungan' => $ts_kunjungan->id,
