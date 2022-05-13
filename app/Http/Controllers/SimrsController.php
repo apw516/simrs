@@ -91,6 +91,7 @@ class SimrsController extends Controller
                 'riwayat_kunjungan' => DB::select("CALL SP_RIWAYAT_KUNJUNGAN_PX('$request->nomorrm')"),
                 'alasan_masuk' => DB::select('select * from mt_alasan_masuk'),
                 'mt_penjamin' => DB::select('select * from mt_penjamin'),
+                'mt_unit' => mt_unit::where('kelas_unit', '=', "2")->get()
                 // 'nomorrm' => $request->nomorrm,
                 // 'mt_pasien' => Pasien::where('no_rm', $request->nomorrm)->get(),
                 // 'mt_unit' => mt_unit::where('kelas_unit', 2)->get(),
@@ -186,6 +187,17 @@ class SimrsController extends Controller
         foreach ($ruangan as $j) {
             echo "<option value=$j->nama_kamar>$j->nama_kamar</option>";
         }
+    }
+    public function Cariruangranap2(Request $request)
+    {
+        $kelas = $request->kelas;
+        $unit = $request->unit;
+        return view('pendaftaran.tabelruangan',
+            [
+                'ruangan' => DB::select('SELECT * FROM mt_ruangan WHERE id_kelas = ?  AND kode_unit = ? AND status = ?', [$kelas, $unit, 1])
+            ]
+        );
+        
     }
     public function Carikabupaten(Request $request)
     {
@@ -967,7 +979,7 @@ class SimrsController extends Controller
         }
         $data_tracer = [
             'kode_kunjungan' => $ts_kunjungan->id,
-            'tgl_tracer' => $request->tgl_masuk,
+            'tgl_tracer' => $request->tglmasuk,
             'id_status_tracer' => 1,
             'cek_tracer' => 'N'
         ];

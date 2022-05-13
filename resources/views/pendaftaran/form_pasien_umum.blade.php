@@ -44,7 +44,7 @@
                             <div class="row">
                                 <div class="col-sm-4 text-right text-bold">Jenis Pelayanan</div>
                                 <div class="col-sm-7">
-                                    <select disabled class="form-control" id="jenispelayanan"
+                                    <select class="form-control" id="jenispelayanan"
                                         onchange="gantijenispelayanan()">
                                         <option value="1">Rawat Inap</option>
                                         <option selected value="2">Rawat Jalan</option>
@@ -82,11 +82,12 @@
                                     <div class="col-sm-4 text-right text-bold">Kelas</div>
                                     <div class="col-sm-7">
                                         <select class="form-control" id="kelasranap">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
+                                            <option>-- Silahkan Pilih Kelas --</option>
+                                            <option value="1">Kelas 1</option>
+                                            <option value="2">Kelas 2</option>
+                                            <option value="3">Kelas 3</option>
+                                            <option value="4">VIP</option>
+                                            <option value="5">VVIP</option>
                                         </select>
                                     </div>
                                 </div>
@@ -94,36 +95,31 @@
                                     <div class="col-sm-4 text-right text-bold">Unit</div>
                                     <div class="col-sm-7">
                                         <select class="form-control" id="unitranap">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
+                                            <option>-- Silahkan Pilih Unit --</option>
+                                            @foreach ($mt_unit as $a)
+                                            <option value="{{ $a->kode_unit }}">
+                                                {{ $a->nama_unit }}
+                                            </option>
+                                        @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
-                                    <div class="col-sm-4 text-right text-bold">Kamar</div>
+                                    <div class="col-sm-4 text-right text-bold">Kamar / Bed</div>
                                     <div class="col-sm-7">
-                                        <select class="form-control" id="kamarranap">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row mt-2">
-                                    <div class="col-sm-4 text-right text-bold">Bed</div>
-                                    <div class="col-sm-7">
-                                        <select class="form-control" id="bedaranap">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                        </select>
+                                            <div class="form-row align-items-center">
+                                              <div class="col-auto">
+                                                <label class="sr-only" for="inlineFormInput">Name</label>
+                                                <input readonly type="text" class="form-control mb-2" id="namaruanganranap" placeholder="nama ruangan">
+                                              </div>
+                                              <div class="col-auto">
+                                                <label class="sr-only" for="inlineFormInput">Name</label>
+                                                <input readonly type="text" class="form-control mb-2" id="kodebedranap" placeholder="kode tempat tidur">
+                                              </div>                                             
+                                              <div class="col-auto">
+                                                <button type="button" data-toggle="modal" data-target="#modalpilihruangan" onclick="cariruangan()"class="btn btn-primary mb-2">Pilih ruangan</button>
+                                              </div>
+                                            </div>
                                     </div>
                                 </div>
                             </div>
@@ -194,6 +190,27 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalpilihruangan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Pilih ruangan</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div id="viewruangan2"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 <script>
     $(function() {
         $("#tabelriwayatkunjungan").DataTable({
@@ -243,16 +260,30 @@
             }
         });
     });
-    // $(document).ready(function() {
-    //     $('#namadokter').autocomplete({
-    //         source: "<?= route('caridokter_rs') ?>",
-    //         select: function(event, ui) {
-    //             $('[id="namadokter"]').val(ui.item.label);
-    //             $('[id="kodedokter"]').val(ui.item.kode);
-    //         }
-    //     });
-    // });
-
+    function cariruangan()
+    {
+        kelas = $('#kelasranap').val()
+        unit = $('#unitranap').val()
+        spinner = $('#loader');
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kelas,
+                unit
+            },
+            url: '<?= route('cariruangranap2') ?>',
+            error: function(data) {
+                spinner.hide();
+                alert('error!')
+            },
+            success: function(response) {
+                spinner.hide();
+                $('#viewruangan2').html(response);
+            }
+        });
+    }   
     function daftarpasienumum() {
         jenispelayanan = $('#jenispelayanan').val()
         namapasien = $('#namapasien').val()
@@ -262,19 +293,6 @@
         if (kodepolitujuan == '') {
             alert('silahkan pilih poli tujuan ...')
         } else {
-            // namadokter = $('#namadokter').val()
-            // kodedokter = $('#kodedokter').val()
-            // if(namadokter == ''){
-            //     Swal.fire({
-            //             icon: 'error',
-            //             title: 'Dokter harus diisi...',
-            //         })
-            // }else if(kodedokter == ''){
-            //     Swal.fire({
-            //             icon: 'error',
-            //             title: 'Dokter harus diisi dengan benar ...',
-            //         })
-            // }else{
             tglmasuk = $('#tglmasuk').val()
             penjamin = $('#penjamin').val()
             sep = $('#sep').val()

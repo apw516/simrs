@@ -61,6 +61,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('carirujukan'); //formpasien_bpjs
     Route::post('Pendaftaran/cariruanganranap', [SimrsController::class, 'Cariruangranap'])
         ->name('cariruangranap'); //formpasien_bpjs
+    Route::post('Pendaftaran/cariruanganranap2', [SimrsController::class, 'Cariruangranap2'])
+        ->name('cariruangranap2'); //formpasien_bpjs
     Route::post('Pendaftaran/caribedranap', [SimrsController::class, 'Caribedranap'])
         ->name('caribedranap'); //formpasien_bpjs
     Route::get('/pendaftaran/caripoli', [SimrsController::class, 'Caripoli'])
