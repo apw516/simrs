@@ -62,6 +62,48 @@ class SimrsController extends Controller
             'provinsi' => Provinsi::all(),
         ]);
     }
+    public function ValidasiRanap()
+    {
+        $title = 'SIMRS - Validasi Ranap';
+        $sidebar = '2.1';
+        $sidebar_m = '2.1';
+        $now = date('Y-m-d');
+        $d2 = date('Y-m-d', strtotime('-12 days'));
+        $data_kunjungan = DB::select("CALL SP_RIWAYAT_KUNJUNGAN_RS_RANAP('$d2','$now')");
+        return view('pendaftaran.validasi', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'datakunjungan' => $data_kunjungan,
+            'sidebar_m' => $sidebar_m
+        ]);
+    }
+    public function formvalidasi(Request $request){
+        $v = new VclaimModel();
+        $rm = $request->nomorrm;
+        $kodekunjungan = $request->kodekunjungan;
+        $tglmasuk = $request->tglmasuk;
+        $date = str_replace('/', '-', $tglmasuk);
+        $tglmasuk2 = date("Y-m-d", strtotime($date));
+        // dd($tglmasuk2);
+        $naikkelas = $request->naikkelas;
+        $mt_pasien = Pasien::where('no_rm', $rm)->get();
+        $noka = $mt_pasien[0]->no_Bpjs;
+        $v = new VclaimModel();
+        $noka = $v->get_peserta_noka($noka, date('Y-m-d'));
+        return view('pendaftaran.form_validasi', [
+            'tglmasuk' => $tglmasuk2,
+            'data_peserta' => $noka,
+            'riwayat_kunjungan' => DB::select("CALL SP_RIWAYAT_KUNJUNGAN_PX('$rm')"),
+            // 'alasan_masuk' => DB::select('select * from mt_alasan_masuk'),
+            'kode_kunjungan' => $kodekunjungan,
+            'nomorrm' => $rm,
+            'mt_pasien' => Pasien::where('no_rm', $rm)->get(),
+            'ts_kunjungan' => ts_kunjungan::where('kode_kunjungan',$kodekunjungan)->get(),
+            'provinsi' => $v->referensi_propinsi(),
+            'crad' => $naikkelas,
+            // 'cek_kunjungan' => $total
+        ]);
+    }
     public function Formbpjs(Request $request)
     {
         $v = new VclaimModel();
@@ -778,6 +820,161 @@ class SimrsController extends Controller
             echo json_encode($data);
         }
     }
+    public function Simpansepranap(Request $request){
+         //create sep  bridging bpjs
+         $keterangansuplesi = 1;
+         $katarak = 1;
+         $cob = 1;
+         $polieksekutif = 1;
+         if ($request->keterangansuplesi == '') {
+             $keterangansuplesi = 0;
+         }
+         if ($request->katarak == '') {
+             $katarak = 0;
+         }
+         if ($request->cob == '') {
+             $cob = 0;
+         }
+         $get_sep = [
+            "request" => [
+                "t_sep" => [
+                    "noKartu" => "$request->nomorkartu",
+                    "tglSep" => "$request->tglsep",
+                    "ppkPelayanan" => "1018R001",
+                    "jnsPelayanan" => "$request->jenispelayanan",
+                    "klsRawat" => [
+                        "klsRawatHak" => "$request->hakkelas",
+                        "klsRawatNaik" => "$request->kelasrawatnaik",
+                        "pembiayaan" => "$request->pembiayaan",
+                        "penanggungJawab" => "$request->penanggugjawab"
+                    ],
+                    "noMR" => "$request->norm",
+                    "rujukan" => [
+                        "asalRujukan" => "$request->asalrujukan",
+                        "tglRujukan" => "$request->tglrujukan",
+                        "noRujukan" => "$request->nomorrujukan",
+                        "ppkRujukan" => "$request->kodeppkrujukan"
+                    ],
+                    "catatan" => "$request->catatan",
+                    "diagAwal" => "$request->kodediagnosa",
+                    "poli" => [
+                        "tujuan" => "",
+                        "eksekutif" => "0"
+                    ],
+                    "cob" => [
+                        "cob" => "$cob"
+                    ],
+                    "katarak" => [
+                        "katarak" => "$katarak"
+                    ],
+                    "jaminan" => [
+                        "lakaLantas" => "$request->keterangan_kll",
+                        "noLP" => "$request->nomorlp",
+                        "penjamin" => [
+                            "tglKejadian" => "$request->tglkejadianlaka",
+                            "keterangan" => "$request->keteranganlaka",
+                            "suplesi" => [
+                                "suplesi" => "$keterangansuplesi",
+                                "noSepSuplesi" => "$request->sepsuplesi",
+                                "lokasiLaka" => [
+                                    "kdPropinsi" => "$request->provinsikejadian",
+                                    "kdKabupaten" => "$request->kabupatenkejadian",
+                                    "kdKecamatan" => "$request->kecamatankejadian"
+                                ]
+                            ]
+                        ]
+                    ],
+                    "tujuanKunj" => "$request->tujuankunjungan",
+                    "flagProcedure" => "$request->flagprocedure",
+                    "kdPenunjang" => "$request->penunjang",
+                    "assesmentPel" => "$request->asessment",
+                    "skdp" => [
+                        "noSurat" => "$request->suratkontrol",
+                        "kodeDPJP" => "$request->kodedpjp"
+                    ],
+                    "dpjpLayan" => "",
+                    "noTelp" => "$request->nomortelepon",
+                    "user" => "waled | " . auth()->user()->id_simrs
+                ]
+            ]
+        ];
+        $v = new VclaimModel();
+        $datasep = $v->insertsep2($get_sep);
+        if ($datasep == 'RTO') {
+            $data = [
+                'kode' => 500,
+                'message' => 'The Network connection lost, please try again ...'
+            ];
+            echo json_encode($data);
+        } else if ($datasep->metaData->code == 200) {            
+            //update ts_kunjungan
+            $sep = $datasep->response->sep;
+            ts_kunjungan::where('kode_kunjungan', $request->kode_kunjungan)
+            ->update(['no_sep' => $sep->noSep]);
+            //insert ts_sep
+            if ($request->keterangan_kll == '0') {
+                $CATKLL = "";
+            } else if ($request->keterangan_kll == '1') {
+                $CATKLL = "KLL dan bukan kecelakaan Kerja [BKK]";
+            } else if ($request->keterangan_kll == '2') {
+                $CATKLL = "KLL dan kecelakaan Kerja [KK]";
+            } else if ($request->keterangan_kll == '3') {
+                $CATKLL = "Kecelakaan Kerja [KK]";
+            }
+            $jk = $sep->peserta->kelamin;
+            if ($jk == 'Laki-Laki') {
+                $jk = 'L';
+            } else {
+                $jk = 'P';
+            }
+            $data_ts_sep = [
+                'no_SEP' => $sep->noSep,
+                'tgl_SEP' => $sep->tglSep,
+                'no_kartu' => $sep->peserta->noKartu,
+                'nama_peserta' => $sep->peserta->nama,
+                'tgl_lahir' => $sep->peserta->tglLahir,
+                'jenis_kelamin' => $jk,
+                'asal_faskes' => $request->kodeppkrujukan,
+                'nama_asal_faskes' => $request->namappkrujukan,
+                'diagnosa_awal' => $sep->diagnosa,
+                'peserta' => $sep->peserta->jnsPeserta,
+                'cob' => $request->cob,
+                'jenis_rawat' => $sep->jnsPelayanan,
+                'kls_rawat' => $sep->peserta->hakKelas,
+                'no_rm' => $request->norm,
+                'catatan' => $sep->catatan . "  " . $CATKLL,
+                'act' => 1,
+                'alasan_masuk' => '',
+                'no_tlp' => $request->nomortelepon,
+                'kode_kunjungan' => "$request->kode_kunjungan",
+                'tgl_rujukan' => $request->tglrujukan,
+                'no_skdp' => "",
+                'dpjp' => $request->kodedpjp . ' | ' . $request->namadpjp,
+                'no_rujukan' => $request->nomorrujukan,
+                'katarak' => $request->katarak,
+                'tgl_kll' => $request->tglkejadianlaka,
+                'prop_kll' => $request->provinsikejadian,
+                'kab_kll' => $request->kabupatenkejadian,
+                'kec_kll' => $request->kecamatankejadian,
+                'ket_kll' => $request->keteranganlaka,
+                'pic1' => auth()->user()->id_simrs,
+                'tingkat_faskes' => $request->asalrujukan,
+            ];
+            $ts_sep = ts_sep::create($data_ts_sep);
+            $data = [
+                'kode' => 200,
+                'message' => 'sukses',
+                'kode_kunjungan' => $request->kode_kunjungan,
+            ];
+            echo json_encode($data);
+        } else if ($datasep->metaData->code != 200) {
+            $data = [
+                'kode' => 201,
+                'message' => $datasep->metaData->message
+            ];
+            echo json_encode($data);
+        }
+    }
     public function daftarpasien_umum(Request $request)
     {
         //cek counter
@@ -830,10 +1027,42 @@ class SimrsController extends Controller
             //     }
             // }
         } else {
+            // kelasranap
+            // unitranap
+            // namaruanganranap
+            // kodebedranap
+            $unit = mt_unit::where('kode_unit', '=', "$request->unitranap")->get();
+            // $mt_penjamin = DB::select('select * from mt_penjamin_bpjs where kode_penjamin_simrs = ?', [$request->penjamin]);
+            // dd($request->koderef);
+            $data_ts_kunjungan = array(
+                'counter' => $counter,
+                'no_rm' => $request->nomorrm,
+                'kode_unit' => $request->unitranap,
+                'id_ruangan' => $request->idruangan,
+                'kamar' => $request->namaruanganranap,
+                'no_bed' => $request->kodebedranap,
+                'kode_paramedis' => 0,
+                'prefix_kunjungan' => $unit[0]['prefix_unit'],
+                'tgl_masuk' => $tgl_masuk_time,
+                'status_kunjungan' => '8',
+                'ref_kunjungan' => $request->koderef,
+                'kode_penjamin' => $request->penjamin,
+                'kelas' => $request->kelasranap,
+                'hak_kelas' => $request->kelasranap,
+                'pic' => auth()->user()->id_simrs,
+                'no_sep' => '',
+                'id_alasan_masuk' => $request->alasanmasuk
+            );
         }
         $ts_kunjungan = ts_kunjungan::create($data_ts_kunjungan);
         $kelas_unit = $unit['0']['kelas_unit'];
-        $kodeunit = $request->kodepolitujuan;
+        if($request->jenispelayanan == 2){
+            $kodeunit = $request->kodepolitujuan;
+            //jika rajal
+        }else{
+            $kodeunit = $request->unitranap;
+            //jika ranap
+        }
         //membuat kode layanan header menggunakan store procedure
         if ($kelas_unit == 1 || $kelas_unit == 2) {
             //jika kelas penunjang  seperti hd,lab dll tidak akan tebentuk layanan header
@@ -971,7 +1200,7 @@ class SimrsController extends Controller
         if ($kelas_unit == 1 || $kelas_unit == 2) {
             //jika kelas penunjang  seperti hd,lab dll tidak akan tebentuk layanan header
             if ($request->jenispelayanan == 1) {
-                // DB::table('mt_ruangan')->where('id_ruangan', $idruangan)->update(['status_incharge' => 1]);
+                DB::table('mt_ruangan')->where('id_ruangan', $request->idruangan)->update(['status_incharge' => 1]);
             }
             //update ts_layanan_header
             ts_layanan_header::where('kode_kunjungan', $ts_kunjungan->id)
@@ -1294,9 +1523,15 @@ class SimrsController extends Controller
         $pdf->SetXY(40, 65);
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetXY(45, 65);
-        $poli = $sep['0']['poli_tujuan'];
-        $arr = explode('|', $poli, 2);
-        $pdf->Cell(10, 7, $arr[1], 0, 1);
+        if($sep['0']['jenis_rawat'] == "R.Inap"){
+            // $poli = $sep['0']['poli_tujuan'];
+            // $arr = explode('|', $poli, 2);
+            $pdf->Cell(10, 7, '', 0, 1);
+        }else{
+            $poli = $sep['0']['poli_tujuan'];
+            $arr = explode('|', $poli, 2);
+            $pdf->Cell(10, 7, $arr[1], 0, 1);
+        }
 
 
         $pdf->SetXY(10, 70);

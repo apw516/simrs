@@ -31,6 +31,10 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('aut
 Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
     Route::get('/pendaftaran', [SimrsController::class, 'Pendaftaran'])
         ->name('pendaftaran'); //sidebar
+    Route::get('/validasiranap', [SimrsController::class, 'ValidasiRanap'])
+        ->name('Validasiranap'); //sidebar
+    Route::post('/formvalidasi', [SimrsController::class, 'formvalidasi'])
+        ->name('formvalidasi'); //sidebar
     Route::get('/datakunjungan/riwayatpelayanan_user', [SimrsController::class, 'riwayatpelayanan_user'])->name('riwayatpelayanan_user'); //sidebar
     Route::get('/datakunjungan', [SimrsController::class, 'datakunjungan'])
         ->name('datakunjungan'); //sidebar
@@ -48,6 +52,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('caripasien'); //footer
     Route::post('Pendaftaran/simpansep', [SimrsController::class, 'Simpansep'])
         ->name('simpansep'); //formpasien_bpjs
+    Route::post('Pendaftaran/simpansepranap', [SimrsController::class, 'Simpansepranap'])
+        ->name('simpansepranap'); //formpasien_bpjs
     Route::get('/cetaksep/{kodekunjungan}', [SimrsController::class, 'Cetaksep']); //formpasien_bpjs
     Route::get('datakunjungan/cetaksep/{kodekunjungan}', [SimrsController::class, 'Cetaksep']); //formpasien_bpjs
     Route::get('/cetaklabel/{kodekunjungan}', [SimrsController::class, 'Cetaklabel']); //formpasien_bpjs

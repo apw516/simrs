@@ -16,6 +16,7 @@
                             <th>Catatan</th>
                             <th>Dokter</th>
                             <th>SEP</th>
+                            <th>action</th>
                         </thead>
                         <tbody>
                             @foreach ($riwayat_kunjungan as $r)
@@ -27,6 +28,7 @@
                                     <td>{{ $r->CATATAN }}</td>
                                     <td>{{ $r->dokter }}</td>
                                     <td>{{ $r->no_sep }}</td>
+                                    <td><button kodekunjungan="{{ $r->kode_kunjungan }}" unit="{{ $r->nama_unit }}" dokter="{{ $r->dokter }}"class="badge badge-info pilihrefranap">Ref Ranap</button></td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -44,14 +46,12 @@
                             <div class="row">
                                 <div class="col-sm-4 text-right text-bold">Jenis Pelayanan</div>
                                 <div class="col-sm-7">
-                                    <select class="form-control" id="jenispelayanan"
-                                        onchange="gantijenispelayanan()">
+                                    <select class="form-control" id="jenispelayanan" onchange="gantijenispelayanan()">
                                         <option value="1">Rawat Inap</option>
                                         <option selected value="2">Rawat Jalan</option>
                                     </select>
                                 </div>
                             </div>
-
                             <div class="row mt-2">
                                 <div class="col-sm-4 text-right text-bold">Nama Pasien</div>
                                 <div class="col-sm-7">
@@ -97,29 +97,62 @@
                                         <select class="form-control" id="unitranap">
                                             <option>-- Silahkan Pilih Unit --</option>
                                             @foreach ($mt_unit as $a)
-                                            <option value="{{ $a->kode_unit }}">
-                                                {{ $a->nama_unit }}
-                                            </option>
-                                        @endforeach
+                                                <option value="{{ $a->kode_unit }}">
+                                                    {{ $a->nama_unit }}
+                                                </option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-sm-4 text-right text-bold">Kamar / Bed</div>
                                     <div class="col-sm-7">
-                                            <div class="form-row align-items-center">
-                                              <div class="col-auto">
+                                        <div class="form-row align-items-center">
+                                            <div class="col-auto">
                                                 <label class="sr-only" for="inlineFormInput">Name</label>
-                                                <input readonly type="text" class="form-control mb-2" id="namaruanganranap" placeholder="nama ruangan">
-                                              </div>
-                                              <div class="col-auto">
-                                                <label class="sr-only" for="inlineFormInput">Name</label>
-                                                <input readonly type="text" class="form-control mb-2" id="kodebedranap" placeholder="kode tempat tidur">
-                                              </div>                                             
-                                              <div class="col-auto">
-                                                <button type="button" data-toggle="modal" data-target="#modalpilihruangan" onclick="cariruangan()"class="btn btn-primary mb-2">Pilih ruangan</button>
-                                              </div>
+                                                <input readonly type="text" class="form-control mb-2"
+                                                    id="namaruanganranap" placeholder="nama ruangan">
                                             </div>
+                                            <div class="col-auto">
+                                                <label class="sr-only" for="inlineFormInput">Name</label>
+                                                <input readonly type="text" class="form-control mb-2" id="kodebedranap"
+                                                    placeholder="kode tempat tidur">
+                                            </div>
+                                            <div hidden class="col-auto">
+                                                <label class="sr-only" for="inlineFormInput">Name</label>
+                                                <input readonly type="text" class="form-control mb-2" id="idruangan"
+                                                    placeholder="kode tempat tidur">
+                                            </div>
+                                            <div class="col-auto">
+                                                <button type="button" data-toggle="modal"
+                                                    data-target="#modalpilihruangan" onclick="cariruangan()"
+                                                    class="btn btn-primary mb-2">Pilih ruangan</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-sm-4 text-right text-bold">Referensi Kunjungan</div>
+                                    <div class="col-sm-7">
+                                        <div class="form-row align-items-center">
+                                            <div class="col-auto">
+                                                <label class="sr-only" for="inlineFormInput">Name</label>
+                                                <input readonly type="text" class="form-control mb-2"
+                                                    id="unitref" placeholder="Unit">
+                                            </div>
+                                            
+
+
+                                            <div class="col-auto">
+                                                <label class="sr-only" for="inlineFormInput">Name</label>
+                                                <input readonly type="text" class="form-control mb-2" id="dokterref"
+                                                    placeholder="Dokter">
+                                            </div>
+                                            <div hidden class="col-auto">
+                                                <label class="sr-only" for="inlineFormInput">Name</label>
+                                                <input readonly type="text" class="form-control mb-2" id="kodekunjunganref">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -192,25 +225,26 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="modalpilihruangan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalpilihruangan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Pilih ruangan</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Pilih ruangan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="viewruangan2"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
         </div>
-        <div class="modal-body">
-          <div id="viewruangan2"></div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
 <script>
     $(function() {
         $("#tabelriwayatkunjungan").DataTable({
@@ -228,6 +262,14 @@
             //     [1, "desc"]
             // ]
         })
+    });
+    $('#tabelriwayatkunjungan').on('click', '.pilihrefranap', function() {
+        kode = $(this).attr('kodekunjungan')
+        dokter = $(this).attr('dokter')
+        unit = $(this).attr('unit')
+        $('#kodekunjunganref').val(kode)
+        $('#dokterref').val(dokter)
+        $('#unitref').val(unit)
     });
     $(function() {
         $(".datepicker").datepicker({
@@ -260,8 +302,8 @@
             }
         });
     });
-    function cariruangan()
-    {
+
+    function cariruangan() {
         kelas = $('#kelasranap').val()
         unit = $('#unitranap').val()
         spinner = $('#loader');
@@ -283,20 +325,109 @@
                 $('#viewruangan2').html(response);
             }
         });
-    }   
+    }
+
     function daftarpasienumum() {
         jenispelayanan = $('#jenispelayanan').val()
         namapasien = $('#namapasien').val()
         nomorrm = $('#nomorrm').val()
         politujuan = $('#politujuan').val()
         kodepolitujuan = $('#kodepolitujuan').val()
+        tglmasuk = $('#tglmasuk').val()
+        penjamin = $('#penjamin').val()
+        sep = $('#sep').val()
+        alasanmasuk = $('#alasanmasuk').val()
+        kelasranap = $('#kelasranap').val()
+        unitranap = $('#unitranap').val()
+        namaruanganranap = $('#namaruanganranap').val()
+        kodebedranap = $('#kodebedranap').val()
+        idruangan = $('#idruangan').val()
+        koderef = $('#kodekunjunganref').val()
+        dokterref = $('#dokterref').val()      
         if (kodepolitujuan == '') {
-            alert('silahkan pilih poli tujuan ...')
+            if (jenispelayanan == 1) {
+                if(koderef == ''){
+                    alert('Pilih referensi kunjungan ditabel riwayat kunjungan ...')
+                }else{
+                spinner = $('#loader');
+                spinner.show();
+                $.ajax({
+                    async: true,
+                    dataType: 'Json',
+                    type: 'post',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        jenispelayanan,
+                        namapasien,
+                        nomorrm,
+                        tglmasuk,
+                        penjamin,
+                        sep,
+                        alasanmasuk,
+                        kelasranap,
+                        unitranap,
+                        idruangan,
+                        namaruanganranap,
+                        kodebedranap,
+                        koderef,
+                        dokterref                    },
+                    url: '<?= route('daftarpasien_umum') ?>',
+                    error: function(data) {
+                        spinner.hide()
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops,silahkan coba lagi',
+                        })
+                    },
+                    success: function(data) {
+                        spinner.hide()
+                        if (data.kode == '200') {
+                            Swal.fire({
+                                title: 'Pendaftaran berhasil !',
+                                text: "Cetak nota pembayaran ...",
+                                icon: 'success',
+                                showCancelButton: true,
+                                showDenyButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                denyButtonColor: 'green',
+                                denyButtonText: `Cetak Nota dan Label`,
+                                confirmButtonText: 'Ya, cetak Nota',
+                                cancelButtonText: 'Tidak'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.open('cetakstruk/' + data.kode_kunjungan);
+                                    location.reload();
+                                } else if (result.isDenied) {
+                                    // window.open('cetakstruk/' + data.kode_kunjungan);
+                                    // window.open('http://localhost/printlabel/cetaklabel.php?rm=19882642&nama=BADRIYAH');
+                                    var url = 'cetakstruk/' + data.kode_kunjungan
+                                    var url2 = `http://192.168.2.45/printlabel/cetaklabel.php?rm=` +
+                                        nomorrm + `&nama=` + namapasien;
+                                    var locs = [url, url2]
+                                    for (let i = 0; i < locs.length; i++) {
+                                        window.open(locs[i])
+                                    }
+                                    location.reload();
+                                } else {
+                                    location.reload();
+                                }
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops, Sorry !',
+                                text: data.message,
+                            })
+                        }
+                    }
+                });
+                //end of pasien ranap
+                }              
+            } else {
+                alert('silahkan pilih poli tujuan ...')
+            }
         } else {
-            tglmasuk = $('#tglmasuk').val()
-            penjamin = $('#penjamin').val()
-            sep = $('#sep').val()
-            alasanmasuk = $('#alasanmasuk').val()
             spinner = $('#loader');
             spinner.show();
             $.ajax({

@@ -50,6 +50,14 @@
                           </p>
                       </a>
                   </li>
+                  <li class="nav-item">
+                      <a href="{{ route('Validasiranap') }}" class="nav-link @if($sidebar == '2.1') active @endif">
+                          <i class="nav-icon fas fa-th"></i>
+                          <p>
+                              Validasi Pasien Ranap
+                          </p>
+                      </a>
+                  </li>
                   @endif
                   {{-- <li class="nav-item">
                       <a href="/pendaftaran" class="nav-link @if($sidebar == '6') active @endif">

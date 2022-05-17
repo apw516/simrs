@@ -11,7 +11,7 @@
                     <td>{{ $r->nama_kamar}}</td>
                     <td>{{ $r->no_bed }}</td>
                     <td class="text-center">                    
-                        @if($r->status_incharge == '1') <p class="text-md text-danger">sudah diisi !</p> @else <button class="badge badge-success pilhruangan" namaruangan="{{ $r->nama_kamar }}" bed="{{ $r->no_bed }}">Pilih</button> @endif
+                        @if($r->status_incharge == '1') <p class="text-md text-danger">sudah diisi !</p> @else <button class="badge badge-success pilhruangan" data-dismiss="modal" namaruangan="{{ $r->nama_kamar }}" bed="{{ $r->no_bed }}" idruangan={{ $r->id_ruangan }}>Pilih</button> @endif
                     </td>
                 </tr>
                 @endforeach
@@ -32,7 +32,9 @@
     $('#tabelruangan').on('click', '.pilhruangan', function() {
         nama = $(this).attr('namaruangan')
         bed = $(this).attr('bed')
+        idruangan = $(this).attr('idruangan')
         $('#namaruanganranap').val(nama)
         $('#kodebedranap').val(bed)
+        $('#idruangan').val(idruangan)
     });
 </script>
