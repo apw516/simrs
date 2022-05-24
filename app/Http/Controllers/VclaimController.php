@@ -46,6 +46,23 @@ class VclaimController extends Controller
             // 'data_pasien' => Pasien::where('tgl_entry', date('Y-m-d'))->get()
         ]);
     }
+    public function rujukan()
+    {
+        $title = 'SIMRS - RUJUKAN';
+        $sidebar = '4';
+        $sidebar_m = '4.3';
+        $v = new VclaimModel();
+        // $tgl = date('Y-m-d');
+        // $d2 = date('Y-m-d', strtotime('-7 days'));
+        // $suratkontrol_rs = $v->ListRencanaKontrol_rs($d2,$tgl,2);
+        return view('rujukan.index', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            // 'list' => $suratkontrol_rs,
+            'sidebar_m' => $sidebar_m
+            // 'data_pasien' => Pasien::where('tgl_entry', date('Y-m-d'))->get()
+        ]);
+    }
     public function Referensi()
     {
         $title = 'SIMRS - DATA SURAT KONTROL';
@@ -319,5 +336,15 @@ class VclaimController extends Controller
         ];
         $hapus = $v->hapus_suratkontrol($data);
         echo json_encode($hapus);
+    }
+    public function datarujukan_bycard(Request $request){
+        $nomorkartu = $request->noka;
+        $v = new VclaimModel();
+        $r1 = $v->Listrujukan_bycard_faskes1($nomorkartu);
+        $r2 = $v->Listrujukan_bycard_faskes2($nomorkartu);
+        return view('rujukan.tabelrujukan_peserta', [
+            'f1' => $r1,
+            'f2' => $r2
+        ]);
     }
 }

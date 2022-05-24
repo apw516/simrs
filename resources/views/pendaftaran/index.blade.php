@@ -3,7 +3,7 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                     <div class="input-group mb-3 mt-3">
                         <input type="text" class="form-control" id="pencariansep" placeholder="Cari SEP ...">
                         <div class="input-group-append">
@@ -12,7 +12,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-7 mt-3">
+                <div class="col-sm-4">
+                    <div class="input-group mb-3 mt-3">
+                        <input type="text" class="form-control" id="pencarianrujukan" placeholder="Cari Rujukan ...">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-primary" type="button" id="button-addon2" onclick="carirujukan_bycard()"
+                                data-toggle="modal" data-target="#modals_datarujukan"><i class="bi bi-search-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 mt-3">
                     <button class="btn btn-warning float-sm-right" data-toggle="modal" data-target="#modalpengajuansep"> <i
                             class="bi bi-send-plus-fill"></i> PENGAJUAN SEP</button>
                     <button class="btn btn-success float-sm-right mr-2" data-toggle="modal"

@@ -121,7 +121,7 @@
                               </a>
                           </li>
                           <li class="nav-item">
-                              <a href="/simrsvclaim/surakontrol" class="nav-link @if($sidebar_m == '4.3') active @endif">
+                              <a href="{{ route('rujukan')}}" class="nav-link @if($sidebar_m == '4.3') active @endif">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>RUJUKAN</p>
                               </a>

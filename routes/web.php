@@ -151,6 +151,11 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('vclaimhapussurkon');
     Route::post('simrsvclaim/listsuratkontrol_rs', [VclaimController::class, 'listsuratkontrol_rs'])
         ->name('vclaimlistsuratkontrol_rs');
+    Route::post('simrsvclaim/carirujukankartu', [VclaimController::class, 'datarujukan_bycard'])
+        ->name('vclaimcarirujukankartu');
+
+    Route::get('simrsvclaim/rujukan', [VclaimController::class, 'rujukan'])
+        ->name('rujukan');
 });
 
 
