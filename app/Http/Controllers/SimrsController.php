@@ -33,10 +33,9 @@ use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Desa;
 use App\Models\mt_keluarga;
-use App\Models\mt_domisili;;
-use App\Models\ts_rujukan;;
-
-use App\Models\tracer;;
+use App\Models\mt_domisili;
+use App\Models\ts_rujukan;
+use App\Models\tracer;
 
 class SimrsController extends Controller
 {
@@ -832,7 +831,7 @@ class SimrsController extends Controller
                 'cek_tracer' => 'N'
             ];
             //insert ke tracer
-            // tracer::create($data_tracer);
+            tracer::create($data_tracer);
             $pasien = Pasien::where('no_rm', '=', "$request->norm")->get();
             $data = [
                 'kode' => 200,
