@@ -16,6 +16,7 @@
                             <th>Catatan</th>
                             <th>Dokter</th>
                             <th>SEP</th>
+                            <th>Rujukan</th>
                         </thead>
                         <tbody>
                             @foreach ($riwayat_kunjungan as $r)
@@ -27,6 +28,7 @@
                                     <td>{{ $r->CATATAN }}</td>
                                     <td>{{ $r->dokter }}</td>
                                     <td>{{ $r->no_sep }}</td>
+                                    <td>{{ $r->no_rujukan }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
