@@ -52,6 +52,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('caripasien'); //footer
     Route::post('Pendaftaran/simpansep', [SimrsController::class, 'Simpansep'])
         ->name('simpansep'); //formpasien_bpjs
+    Route::post('Pendaftaran/simpanrujukan', [SimrsController::class, 'Simpanrujukan'])
+        ->name('simpanrujukan'); //formpasien_bpjs
     Route::post('Pendaftaran/simpansepranap', [SimrsController::class, 'Simpansepranap'])
         ->name('simpansepranap'); //formpasien_bpjs
     Route::get('/cetaksep/{kodekunjungan}', [SimrsController::class, 'Cetaksep']); //formpasien_bpjs
@@ -77,6 +79,10 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('caripoli_rs'); //formpasien_bpjs
     Route::get('/pendaftaran/caridokter', [SimrsController::class, 'Caridokter'])
         ->name('caridokter'); //formpasien_bpjs
+    Route::get('/pendaftaran/carippkrujukan', [SimrsController::class, 'Carippkrujukan'])
+        ->name('carippkrujukan'); //formpasien_bpjs
+    Route::post('/pendaftaran/caripoli_ppk', [SimrsController::class, 'Caripoli_ppk'])
+        ->name('caripoli_ppk'); //formpasien_bpjs
     Route::get('/pendaftaran/caridokter_rs', [SimrsController::class, 'Caridokter_rs'])
         ->name('caridokter_rs'); //formpasien_bpjs
     Route::get('Pendaftaran/caridiagnosa', [SimrsController::class, 'Caridiagnosa'])

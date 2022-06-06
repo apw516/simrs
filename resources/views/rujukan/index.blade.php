@@ -15,28 +15,31 @@
                     </div>
                 </div>
                 <div class="col-sm-7 mt-3">
-                    <button class="btn btn-primary float-sm-right mr-2" data-toggle="modal" data-target="#staticBackdrop"><i
-                            class="bi bi-person-plus"></i> RUJUKAN </button>
+                    <button class="btn btn-primary float-sm-right mr-2" data-toggle="modal" data-target="#staticBackdrop"
+                        onclick="buatrujukan()"><i class="bi bi-person-plus"></i> RUJUKAN </button>
                 </div>
             </div>
-            <div class="row mb-2 justify-content-center">
+            <div hidden id="formrujuk" class="row mb-2 justify-content-center">
                 <div class="col-sm-6">
                     <div class="card card-outline card-success">
-                        <div class="card-header"><h3>Form Buat Rujukan</h3>
+                        <div class="card-header">
+                            <h3>Form Buat Rujukan</h3>
                         </div>
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Nomor SEP</label>
-                                <input type="email" class="form-control" id="exampleFormControlInput1"
+                                <input type="email" class="form-control" id="nomorsep_rujukan"
                                     placeholder="Masukan nomor SEP">
                             </div>
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Tanggal Rujukan</label>
-                                <input type="email" class="form-control datepicker" id="exampleFormControlInput1" data-date-format="yyyy-mm-dd">
+                                <input type="email" class="form-control datepicker" id="tanggal_rujukan"
+                                    data-date-format="yyyy-mm-dd">
                             </div>
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Tanggal Rencana Kunjungan</label>
-                                <input type="email" class="form-control datepicker" id="exampleFormControlInput1" data-date-format="yyyy-mm-dd">
+                                <input type="email" class="form-control datepicker" id="tglrencana_kunjungan"
+                                    data-date-format="yyyy-mm-dd">
                             </div>
                             <div class="form-group">
                                 <div class="row">
@@ -46,14 +49,16 @@
                                             <option value="">-- Silahkan Pilih --</option>
                                             <option value="1">Faskes 1</option>
                                             <option value="2">Faskes 2 ( Rumah Sakit ) </option>
-                                          </select>
+                                        </select>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="exampleFormControlInput1">PPK dirujuk</label>
                                         <input type="email" class="form-control" id="namappkrujukan"
+                                            placeholder="cari nama ppk rujukan ...">
+                                        <input hidden type="email" class="form-control" id="kodeppkrujukan"
                                             placeholder="name@example.com">
                                     </div>
-                                </div>                                
+                                </div>
                             </div>
                             <div class="form-group">
                                 <div class="row">
@@ -63,11 +68,11 @@
                                             <option value="">-- Silahkan Pilih --</option>
                                             <option value="1">Rawat Inap</option>
                                             <option value="2">Rawat Jalan</option>
-                                          </select>
+                                        </select>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="exampleFormControlInput1">Tipe Rujukan</label>
-                                        <select class="form-control" id="jenispelayanan">
+                                        <select class="form-control" id="tiperujukan">
                                             <option value="">-- Silahkan Pilih --</option>
                                             <option value="0">Penuh</option>
                                             <option value="1">Partial</option>
@@ -76,26 +81,42 @@
                                     </div>
                                 </div>
                             </div>
-                           
+
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Poli Rujukan</label>
                                 <div class="input-group mb-3">
-                                    <input readonly type="text" class="form-control" placeholder="Pilih poli rujukan" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                    <input readonly type="text" class="form-control" id="namapolirujukan"
+                                        placeholder="Pilih poli rujukan" aria-label="Recipient's username"
+                                        aria-describedby="button-addon2">
                                     <div class="input-group-append">
-                                      <button class="btn btn-outline-secondary" type="button" id="button-addon2">List Poli Rujukan</button>
+                                        <button class="btn btn-outline-secondary" type="button" id="button-addon2"
+                                            data-toggle="modal" data-target="#modalpolippk" onclick="caripolippk()">List
+                                            Poli
+                                            Rujukan</button>
                                     </div>
-                                  </div>
-                                    <small id="emailHelp" class="form-text text-danger">*Kosongkan jika rujuk balik, Wajib diisi jika rujukan penuh atau partial !</small>
+                                    <input hidden readonly type="text" class="form-control" id="kodepolirujukan"
+                                        placeholder="Pilih poli rujukan" aria-label="Recipient's username"
+                                        aria-describedby="button-addon2">
+                                </div>
+                                <small id="emailHelp" class="form-text text-danger">*Kosongkan jika rujuk balik, Wajib diisi
+                                    jika rujukan penuh atau partial !</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">diagnosa</label>
+                                <input type="text" class="form-control" id="namadiagnosa">
+                                <input hidden type="text" class="form-control" id="kodediagnosa">
                             </div>
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Catatan</label>
-                                <textarea type="email" class="form-control" id="exampleFormControlInput1"
+                                <textarea type="email" class="form-control" id="catatanrujukan"
                                     placeholder="catatan untuk ppk rujukan ..."></textarea>
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button class="btn btn-success float-right mb-2 btn-sm">Buat Rujukan</button>
-                            <button class="btn btn-danger float-right mb-2 mr-2 btn-sm">Batal</button>
+                            <button class="btn btn-success float-right mb-2 btn-sm" onclick="simpanrujukan()">Buat
+                                Rujukan</button>
+                            <button class="btn btn-danger float-right mb-2 mr-2 btn-sm"
+                                onclick="batalrujukan()">Batal</button>
                         </div>
                     </div>
                 </div>
@@ -239,7 +260,6 @@
                                 <th>dokter</th>
                             </thead>
                             <tbody>
-
                             </tbody>
                         </table>
                     </div>
@@ -248,7 +268,134 @@
             </div>
         </div>
     </section>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalpolippk" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Pilih Poli</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="view_poli_ppk_rujukan">
+
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
-      
+        function buatrujukan() {
+            $('#formrujuk').removeAttr('Hidden', true)
+        }
+
+        function batalrujukan() {
+            $('#formrujuk').attr('Hidden', true)
+        }
+        $(document).ready(function() {
+            $("#namappkrujukan").autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        url: "<?= route('carippkrujukan') ?>",
+                        dataType: "json",
+                        data: {
+                            term: request.term,
+                            faskes: $("#jenisfaskes").val()
+                        },
+                        success: function(data) {
+                            response(data);
+                        }
+                    });
+                },
+                delay: 300,
+                select: function(event, ui) {
+                    $('[id="kodeppkrujukan"]').val(ui.item.kode);
+                }
+            });
+        });
+
+        function caripolippk() {
+            tgl = $('#tanggal_rujukan').val()
+            kodeppk = $('#kodeppkrujukan').val()
+            spinner = $('#loader');
+            spinner.show();
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    kodeppk,
+                    tgl
+                },
+                url: '<?= route('caripoli_ppk') ?>',
+                error: function(data) {
+                    spinner.hide();
+                    alert('error!')
+                },
+                success: function(response) {
+                    spinner.hide();
+                    $('.view_poli_ppk_rujukan').html(response);
+                    // $('#daftarpxumum').attr('disabled', true);
+                }
+            });
+        }
+        $(document).ready(function() {
+            $('#namadiagnosa').autocomplete({
+                source: "<?= route('caridiagnosa') ?>",
+                select: function(event, ui) {
+                    $('[id="namadiagnosa"]').val(ui.item.label);
+                    $('[id="kodediagnosa"]').val(ui.item.kode);
+                }
+            });
+        });
+
+        function simpanrujukan() {
+            spinner = $('#loader');
+            spinner.show();
+            nosep = $('#nomorsep_rujukan').val()
+            tglRujukan = $('#tanggal_rujukan').val()
+            tglRencanaKunjungan = $('#tglrencana_kunjungan').val()
+            ppkDirujuk = $('#kodeppkrujukan').val()
+            jnsPelayanan = $('#jenispelayanan').val()
+            catatan = $('#catatanrujukan').val()
+            diagRujukan = $('#kodediagnosa').val()
+            tipeRujukan = $('#tiperujukan').val()
+            poliRujukan = $('#kodepolirujukan').val()
+            $.ajax({
+                async: true,
+                dataType: 'Json',
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    nosep,
+                    tglRujukan,
+                    tglRencanaKunjungan,
+                    ppkDirujuk,
+                    jnsPelayanan,
+                    catatan,
+                    diagRujukan,
+                    tipeRujukan,
+                    poliRujukan
+                },
+                url: '<?= route('simpanrujukan') ?>',
+                error: function(data) {
+                    spinner.hide()
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops,silahkan coba lagi',
+                    })
+                },
+                success: function(data) {
+
+                }
+            });
+        }
     </script>
 @endsection
