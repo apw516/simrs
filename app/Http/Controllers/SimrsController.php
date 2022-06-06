@@ -34,6 +34,7 @@ use App\Models\Kecamatan;
 use App\Models\Desa;
 use App\Models\mt_keluarga;
 use App\Models\mt_domisili;;
+use App\Models\ts_rujukan;;
 
 use App\Models\tracer;;
 
@@ -437,6 +438,7 @@ class SimrsController extends Controller
         //cek sudah daftar belum
         //cek_kronis sp_cari_riwayat_kronis_terakhir
         //cek pasien aktif
+        $cek_kunjungan_aktif = DB::select('select * from ts_kunjungan where no_rm = ? AND status_kunjungan = ?', [$request->norm, '1']);
         if ($request->jenispelayanan == 2) {
             $paramedis = Dokter::where('kode_dpjp', '=', "$request->kodedokterlayan")->get();
             $cek_paramedis = count($paramedis);
@@ -458,6 +460,14 @@ class SimrsController extends Controller
                 $data = [
                     'kode' => 500,
                     'message' => 'Data paramedis belum update,silahkan hubungi IT'
+                ];
+                echo json_encode($data);
+                die;
+            } else if (count($cek_kunjungan_aktif) > 0)
+            {
+                $data = [
+                    'kode' => 500,
+                    'message' => 'status kunjungan pasien masih aktif ! Sudah didaftarkan'
                 ];
                 echo json_encode($data);
                 die;
@@ -822,7 +832,7 @@ class SimrsController extends Controller
                 'cek_tracer' => 'N'
             ];
             //insert ke tracer
-            tracer::create($data_tracer);
+            // tracer::create($data_tracer);
             $pasien = Pasien::where('no_rm', '=', "$request->norm")->get();
             $data = [
                 'kode' => 200,
@@ -1885,5 +1895,44 @@ class SimrsController extends Controller
                 ]
             ]
         ];
+        $v = new VclaimModel();
+        $r = $v->insertrujukan($data_rujukan);
+        if ($r == 'RTO') {
+            $data = [
+                'kode' => 500,
+                'message' => 'The Network connection lost, please try again ...'
+            ];
+            echo json_encode($data);
+        } else if ($r->metaData->code == 200) {
+            $data = [
+                'kode' => 200,
+                'message' => $r->metaData->message
+            ];
+            $dr = $r->response->rujukan;
+            $data_rujukan = [
+                'asal_rujukan' => $dr->AsalRujukan->kode,
+                'nama_asal_rujukan' => $dr->AsalRujukan->nama,
+                'no_rujukan' => $dr->noRujukan,
+                'no_sep' => $request->nosep,
+                'tglBerlakuKunjungan' => $dr->tglBerlakuKunjungan,
+                'tglRencanaKunjungan' => $dr->tglRencanaKunjungan,
+                'tglRujukan' => $dr->tglRujukan,
+                'tujuanRujukan' => $dr->tujuanRujukan->kode,
+                'namaTujuanRujukan' => $dr->tujuanRujukan->nama,
+                'nama_px' => $dr->peserta->nama,
+                'no_rm' => $dr->peserta->noMr,
+                'no_bpjs' => $dr->peserta->noKartu,
+                'kelamin' => $dr->peserta->kelamin,
+                'jenis_peserta' => $dr->peserta->jnsPeserta
+            ];
+            ts_rujukan::create($data_rujukan);
+            echo json_encode($data);
+        } else {
+            $data = [
+                'kode' => $r->metaData->code,
+                'message' => $r->metaData->message
+            ];
+            echo json_encode($data);
+        }
     }
 }

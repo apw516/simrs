@@ -144,41 +144,31 @@
                 <div class="container-fluid mb-4">
                     <div class="row">
                         <div class="col-sm-2">
-                            <input type="text" class="form-control datepicker" id="tanggalawal"
-                                data-date-format="yyyy-mm-dd" placeholder="Masukan No kartu ..">
+                            <label for="">Tanggal awal</label>
+                            <input type="text" class="form-control datepicker" id="tanggalawal_rj"
+                            data-date-format="yyyy-mm-dd" placeholder="Masukan No kartu ..">
                         </div>
                         <div class="col-sm-2">
-                            <input type="text" class="form-control datepicker" id="tanggalakhir"
-                                data-date-format="yyyy-mm-dd" placeholder="Masukan No kartu ..">
-                        </div>
-                        <div class="col-sm-3">
-                            <select class="form-control" id="filter_rs">
-                                <option value="1">Tanggal entry</option>
-                                <option value="2" selected>tanggal rencana kontrol</option>
-                            </select>
+                            <label for="">Tanggal akhir</label>
+                            <input type="text" class="form-control datepicker" id="tanggalakhir_rj"
+                            data-date-format="yyyy-mm-dd" placeholder="Masukan No kartu ..">
                         </div>
                         <div class="col-sm-2">
-                            <button type="submit" class="btn btn-dark mb-2" onclick="getsuratkontrol_rs()">Cari</button>
+                            <button type="submit" class="btn btn-dark mb-2 mt-4" onclick="get_list_rujukan()">Cari</button>
                         </div>
                     </div>
                 </div>
                 <div class="container-fluid">
-                    <div class="listsuratkontrol_rs">
+                    <div class="list_rujukan_keluar">
                         <table id="tabelsuratkontrol_rs" class="table table-bordered table-sm text-xs mt-3">
                             <thead>
-                                <th>nomor kartu</th>
-                                <th>Nama</th>
-                                <th>Terbit Sep</th>
-                                <th>Tgl Sep</th>
-                                <th>Nomor surat</th>
-                                <th>Jn pelayanan</th>
-                                <th>Jn kontrol</th>
-                                <th>Tgl kontrol</th>
-                                <th>Tgl terbit</th>
-                                <th>SEP asal</th>
-                                <th>poli asal</th>
-                                <th>poli tujuan</th>
-                                <th>dokter</th>
+                                <th>nomor rujukan</th>
+                                <th>tgl rujukan</th>
+                                <th>jenis pelayanan</th>
+                                <th>no sep</th>
+                                <th>No kartu</th>
+                                <th>nama peserta</th>
+                                <th>nama ppk dirujuk</th>
                                 <th>---</th>
                             </thead>
                             <tbody>
@@ -393,7 +383,42 @@
                     })
                 },
                 success: function(data) {
-
+                    if(data.kode == 200)
+                    {
+                        spinner.hide()
+                        alert('rujukan berhasil disimpan !')
+                    }else if (data.kode == 500) {
+                        spinner.hide()
+                        alert(data.message)
+                    }else{
+                        spinner.hide()
+                        alert(data.message)
+                    }
+                }
+            });
+        }
+        function get_list_rujukan()
+        {          
+            tgl_awal = $('#tanggalawal_rj').val()
+            tgl_akhir = $('#tanggalakhir_rj').val()
+            spinner = $('#loader');
+            spinner.show();
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    tgl_awal,
+                    tgl_akhir
+                },
+                url: '<?= route('vclaimlistrujukan_keluar') ?>',
+                error: function(data) {
+                    spinner.hide();
+                    alert('error!')
+                },
+                success: function(response) {
+                    spinner.hide();
+                    $('.list_rujukan_keluar').html(response);
+                    // $('#daftarpxumum').attr('disabled', true);
                 }
             });
         }

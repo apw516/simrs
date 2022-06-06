@@ -347,4 +347,8 @@ class VclaimController extends Controller
             'f2' => $r2
         ]);
     }
+    public function listrujukan_keluar(Request $request)
+    {
+        dd('Belum jadi');
+    }
 }
