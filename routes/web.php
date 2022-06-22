@@ -63,6 +63,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
     Route::get('datakunjungan/cetakstruk/{kodekunjungan}', [SimrsController::class, 'Cetakstruk']); //formpasien_bpjs
     Route::post('Pendaftaran/buatsuratkontrol', [SimrsController::class, 'Buatsuratkontrol'])
         ->name('buatsuratkontrol'); //formpasien_bpjs
+    Route::post('Pendaftaran/buatsuratkontrol2', [SimrsController::class, 'Buatsuratkontrol2'])
+        ->name('buatsuratkontrol2'); //formpasien_bpjs
     Route::post('Pendaftaran/carisuratkontrol', [SimrsController::class, 'Carisuratkontrol'])
         ->name('carisuratkontrol'); //formpasien_bpjs
     Route::post('Pendaftaran/carirujukan', [SimrsController::class, 'Carirujukan'])

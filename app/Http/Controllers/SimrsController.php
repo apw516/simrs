@@ -362,6 +362,35 @@ class SimrsController extends Controller
         }
         echo json_encode($poli);
     }
+    public function Buatsuratkontrol2(Request $request)
+    {
+        $v = new VclaimModel();
+        $sep = $request->nosep;
+        $kode_paramedis = $request->kodedokter;
+        $kode_unit =$request->kodepoli;
+        $kode_poli = mt_unit::where('kode_unit', $kode_unit)->get();
+        $kode_dokter = Dokter::where('kode_dokter', $kode_paramedis)->get();
+        $politujuan = $kode_poli['0']->KDPOLI;
+        $dpjp = $kode_dokter['0']->kode_dpjp;       
+        $datasurat = [
+            "request" =>
+            [
+                "noSEP" => "$sep",
+                "kodeDokter" => "$dpjp",
+                "poliKontrol" => "$politujuan",
+                "tglRencanaKontrol" => date('Y-m-d'),
+                "user" => "waled | " . "test"
+            ]
+        ];
+        $v = new VclaimModel();
+        $suratkontrol = $v->InserRencanakontrol($datasurat);
+        $data_kontrol = [
+            'kode_dokter' => $dpjp,
+            'kode_poli' => $politujuan,
+            'surat_kontrol' => $suratkontrol
+        ];
+        echo json_encode($data_kontrol);
+    }
     public function updatesuratkontrol(Request $request)
     {
         if ($request->jenissurat == 1) {

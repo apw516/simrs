@@ -1,13 +1,19 @@
 <div class="container mt-3">
     <div class="card card-outline card-success">
-        <div class="col-md-12 mt-3">
+        <div class="col-md-12 mt-1">
             <div class="card">
                 <div class="card-header bg-info">Riwayat Kunjungan</div>
                 <div class="card-body">
+                    <button class="btn btn-success ml-1" data-toggle="modal"
+                    data-target="#modalrujukan" onclick="carirujukan()"><i class="bi bi-search"></i>
+                    Pilih Rujukan</button>
                     <button class="btn btn-danger" data-toggle="modal" data-target="#modalriwayatsep"><i
                             class="bi bi-search"></i> Riwayat SEP Terakhir</button>
+                    <button class="btn btn-warning ml-1" data-toggle="modal"
+                            data-target="#staticBackdrop"><i class="bi bi-plus-lg"></i> Buat Surat
+                            Kontrol</button>
                     <table id="tabelriwayatkunjungan"
-                        class="table table-bordered table-sm text-md table-hover table-striped">
+                        class="table table-bordered table-sm text-sm table-hover table-striped">
                         <thead>
                             <th>Unit</th>
                             <th>Tgl Masuk</th>
@@ -17,6 +23,7 @@
                             <th>Dokter</th>
                             <th>SEP</th>
                             <th>Rujukan</th>
+                            <th>action</th>
                         </thead>
                         <tbody>
                             @foreach ($riwayat_kunjungan as $r)
@@ -28,7 +35,8 @@
                                     <td>{{ $r->CATATAN }}</td>
                                     <td>{{ $r->dokter }}</td>
                                     <td>{{ $r->no_sep }}</td>
-                                    <td>{{ $r->no_rujukan }}</td>
+                                    <td><p class="font-weight-bold">{{ $r->no_rujukan }} </p></td>
+                                    <td><button nosep="{{ $r->no_sep }}" kodedokter="{{ $r->kode_dokter }}" polikontrol="{{ $r->kode_unit }}" tglkontrol="" class="badge badge-info buatsuratkontrol2">+ tujuan kontrol</button></td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -131,16 +139,10 @@
                     <div class="row justify-content-center mt-2">
                         {{-- <div class="col-sm-2 text-right text-bold">
                         </div> --}}
-                        <div class="col-sm-10">
-                            <button class="btn btn-warning btn-sm mb-3 float-right ml-1" data-toggle="modal"
-                                data-target="#staticBackdrop"><i class="bi bi-plus-lg"></i> SPRI / Surat
-                                Kontrol</button>
+                        <div class="col-sm-10">                           
                             <button class="btn btn-info btn-sm mb-3 float-right ml-1" data-toggle="modal"
                                 data-target="#modalcarispri" onclick="carisuratkontrol()"><i class="bi bi-search"></i>
-                                SPRI / Surat Kontrol</button>
-                            <button class="btn btn-success btn-sm mb-3 float-right ml-1" data-toggle="modal"
-                                data-target="#modalrujukan" onclick="carirujukan()"><i class="bi bi-search"></i>
-                                Rujukan</button>
+                                Cari Surat Kontrol</button>                          
                         </div>
                     </div>
                     <div class="row">
@@ -1010,6 +1012,10 @@
                 spinner.hide();
                 if (data.metaData.code == 200) {
                     alert(data.metaData.message)
+                    $('#suratkontrol').val(data.response.noSuratKontrol)
+                    $('#namadpjp').val(dokterkontrol)
+                    $('#kodedpjp').val(kodedokterkontrol)
+                    $('#staticBackdrop').modal('hide');
                 } else {
                     alert(data.metaData.message)
                 }
@@ -1147,6 +1153,49 @@
             // ]
         })
     });
+    $('#tabelriwayatkunjungan').on('click', '.buatsuratkontrol2', function() {
+        spinner = $('#loader');
+        spinner.show();
+        nosep = $(this).attr('nosep')
+        kodedokter = $(this).attr('kodedokter')
+        kodepoli = $(this).attr('polikontrol')
+        $.ajax({
+            type: 'post',
+            async: true,
+            dataType: 'Json',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nosep,
+                kodedokter,
+                kodepoli
+            },
+            url: '<?= route('buatsuratkontrol2') ?>',
+            error: function(data) {
+                spinner.hide();
+            },
+            success: function(data) {
+                spinner.hide();
+                if (data.surat_kontrol.metaData.code != 200) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: data.surat_kontrol.metaData.message,
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Surat Kontrol berhasil dibuat',
+                    })
+                    $('#namadokterlayan').val(data.surat_kontrol.response.namaDokter)
+                    $('#kodedokterlayan').val(data.kode_dokter)
+                    $('#suratkontrol').val(data.surat_kontrol.response.noSuratKontrol)
+                    $('#namadpjp').val(data.surat_kontrol.response.namaDokter)
+                    $('#kodedpjp').val(data.kode_dokter)
+
+                }
+                // $('#daftarpxumum').attr('disabled', true);
+            }
+        });
+    });
     $(function() {
         $(".datepicker").datepicker({
             autoclose: true,
@@ -1164,7 +1213,6 @@
             $('.pn').attr('hidden', true)
         }
     }
-
     function gantijenispelayanan() {
         jnsPelayanan = $('#jenispelayanan').val();
         if (jnsPelayanan == 1) {
