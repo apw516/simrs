@@ -16,10 +16,11 @@
                 <td>{{ $p->nama_pasien }}</td>
                 <td>{{ $p->alamat }}</td>
                 <td>
-                    <button class="badge badge-info detailpasien" norm={{ $p->no_rm }} data-toggle="modal" data-target="#modaldetailpasien"><i class="bi bi-info-square"></i></button>
-                    <button class="badge badge-warning editpasien" namapasien_edit="{{ $p->nama_pasien }}"
+                    <button class="badge badge-warning detailpasien" norm={{ $p->no_rm }} data-toggle="modal"
+                        data-target="#modaldetailpasien"><i class="bi bi-pencil-square"></i></button>
+                    {{-- <button class="badge badge-warning editpasien" namapasien_edit="{{ $p->nama_pasien }}"
                         nomorktp_edit="{{ $p->NIK }}" nomorbpjs_edit="{{ $p->no_asuransi }}"
-                        rm="{{ $p->no_rm }}" data-toggle="modal" data-target="#editpasien"><i class="bi bi-pencil-square"></i></button>
+                        rm="{{ $p->no_rm }}" data-toggle="modal" data-target="#editpasien"><i class="bi bi-pencil-square"></i></button> --}}
                     <button class="badge badge-primary daftarumum" nama="{{ $p->nama_pasien }}" rm="{{ $p->no_rm }}"
                         nik="{{ $p->NIK }}">Umum</button>
                     <button class="badge badge-success daftarbpjs" rm="{{ $p->no_rm }}"
@@ -76,62 +77,65 @@
         }
     });
     $('#tabelpasienbaru').on('click', '.daftarumum', function() {
-          spinner = $('#loader')
-          spinner.show();
-          nomorrm = $(this).attr('rm')
-          nama = $(this).attr('nama')
-              $.ajax({
-                  type: 'post',
-                  data: {
-                      _token: "{{ csrf_token() }}",
-                      nomorrm,
-                  },
-                  url: '<?= route('formumum') ?>',
-                  error: function(data) {
-                      spinner.hide()
-                      Swal.fire({
-                          icon: 'error',
-                          title: 'Oops,silahkan coba lagi',
-                      })
-                  },
-                  success: function(response) {
-                      spinner.hide()
-                      $('.formpasien').html(response)
-                      $('#namapasien').val(nama)
-                      $('#nomorrm').val(nomorrm)
-                  }
-              });
-      });
-    $('#tabelpasienbaru').on('click', '.editpasien', function() {
-          nomorrm = $(this).attr('rm')
-          nama = $(this).attr('namapasien_edit')
-          nomorktp = $(this).attr('nomorktp_edit')
-          nomorbpjs = $(this).attr('nomorbpjs_edit')
-          $('#namapasien_edit').val(nama)
-          $('#nomor_rm_edit').val(nomorrm)
-          $('#nomorktp_edit').val(nomorktp)
-          $('#nomorbpjs_edit').val(nomorbpjs)
-      });
-      $('#tabelpasienbaru').on('click', '.detailpasien', function() {
-          nomorrm = $(this).attr('norm')
-           $.ajax({
-              type: 'post',
-              data: {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('rm')
+        nama = $(this).attr('nama')
+        $.ajax({
+            type: 'post',
+            data: {
                 _token: "{{ csrf_token() }}",
                 nomorrm,
-              },
-              url: '<?= route('detailpasien') ?>',
-              error: function(data) {
+            },
+            url: '<?= route('formumum') ?>',
+            error: function(data) {
+                spinner.hide()
                 Swal.fire({
-                        icon: 'error',
-                        title: 'Oops,silahkan coba lagi',
-                    })
-              },
-              success: function(response) {
-                  $('.view_detail_pasien').html(response)
-                  // $('#daftarpxumum').attr('disabled', true);
-              }
-          })
-      });
-
+                    icon: 'error',
+                    title: 'Oops,silahkan coba lagi',
+                })
+            },
+            success: function(response) {
+                spinner.hide()
+                $('.formpasien').html(response)
+                $('#namapasien').val(nama)
+                $('#nomorrm').val(nomorrm)
+            }
+        });
+    });
+    $('#tabelpasienbaru').on('click', '.editpasien', function() {
+        nomorrm = $(this).attr('rm')
+        nama = $(this).attr('namapasien_edit')
+        nomorktp = $(this).attr('nomorktp_edit')
+        nomorbpjs = $(this).attr('nomorbpjs_edit')
+        $('#namapasien_edit').val(nama)
+        $('#nomor_rm_edit').val(nomorrm)
+        $('#nomorktp_edit').val(nomorktp)
+        $('#nomorbpjs_edit').val(nomorbpjs)
+    });
+    $('#tabelpasienbaru').on('click', '.detailpasien', function() {
+        nomorrm = $(this).attr('norm')
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+            },
+            url: '<?= route('detailpasien') ?>',
+            error: function(data) {
+                spinner.hide()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops,silahkan coba lagi',
+                })
+            },
+            success: function(response) {
+                spinner.hide()
+                $('.view_detail_pasien').html(response)
+                // $('#daftarpxumum').attr('disabled', true);
+            }
+        })
+    });
 </script>

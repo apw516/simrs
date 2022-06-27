@@ -2,9 +2,9 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="index3.html" class="brand-link">
-          <img src="{{ asset('public/img/logo_rs.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+          <img width="100%" src="{{ asset('public/img/logo.png')}}" alt="AdminLTE Logo" class=""
               style="opacity: .8">
-          <span class="brand-text font-weight-light">SEMERUSMART</span>
+          {{-- <span class="brand-text font-weight-light">SEMERUSMART</span> --}}
       </a>
 
       <!-- Sidebar -->
@@ -12,7 +12,7 @@
           <!-- Sidebar user panel (optional) -->
           <div class="user-panel mt-3 pb-3 mb-3 d-flex">
               <div class="image">
-                  <img src="{{ asset('public/img/user.jpg') }}" class="img-circle elevation-2" alt="User Image">
+                  <img src="{{ asset('public/img/logouser.png') }}" class="img-circle elevation-2" alt="User Image">
               </div>
               <div class="info">
                   <a href="#" class="d-block">{{ auth()->user()->username }}</a>
@@ -50,14 +50,14 @@
                           </p>
                       </a>
                   </li>
-                  <li class="nav-item">
+                  {{-- <li class="nav-item">
                       <a href="{{ route('Validasiranap') }}" class="nav-link @if($sidebar == '2.1') active @endif">
                           <i class="nav-icon fas fa-th"></i>
                           <p>
                               Validasi Pasien Ranap
                           </p>
                       </a>
-                  </li>
+                  </li> --}}
                   @endif
                   {{-- <li class="nav-item">
                       <a href="/pendaftaran" class="nav-link @if($sidebar == '6') active @endif">

@@ -111,6 +111,11 @@ class SimrsController extends Controller
         $noka = $v->get_peserta_noka($request->nomorbpjs, date('Y-m-d'));
         $cek_rm = DB::select('select * from ts_kunjungan where no_rm = ? and status_kunjungan = 1', [$request->nomorrm]);
         $total = count($cek_rm);
+        if($total > 0){
+            $tanggal_k = $cek_rm[0]->tgl_masuk;
+        }else{
+            $tanggal_k = 0;
+        }
         return view('pendaftaran.form_pasien_bpjs', [
             'data_peserta' => $noka,
             'riwayat_kunjungan' => DB::select("CALL SP_RIWAYAT_KUNJUNGAN_PX('$request->nomorrm')"),
@@ -119,7 +124,8 @@ class SimrsController extends Controller
             'mt_pasien' => Pasien::where('no_rm', $request->nomorrm)->get(),
             'mt_unit' => mt_unit::where('kelas_unit', 2)->get(),
             'provinsi' => $v->referensi_propinsi(),
-            'cek_kunjungan' => $total
+            'cek_kunjungan' => $total,
+            'kunjungan_aktif' => $tanggal_k
         ]);
     }
     public function Formumum(Request $request)
@@ -491,15 +497,16 @@ class SimrsController extends Controller
                 ];
                 echo json_encode($data);
                 die;
-            } else if (count($cek_kunjungan_aktif) > 0)
-            {
-                $data = [
-                    'kode' => 500,
-                    'message' => 'status kunjungan pasien masih aktif ! Sudah didaftarkan'
-                ];
-                echo json_encode($data);
-                die;
-            }
+            } 
+            // else if (count($cek_kunjungan_aktif) > 0)
+            // {
+            //     $data = [
+            //         'kode' => 500,
+            //         'message' => 'status kunjungan pasien masih aktif ! Sudah didaftarkan'
+            //     ];
+            //     echo json_encode($data);
+            //     die;
+            // }
         }
         $tgl_masuk = $request->tglsep;
         $tgl_masuk_time = $request->tglsep . ' ' . date('h:i:s');
@@ -1675,6 +1682,8 @@ class SimrsController extends Controller
             'jenis_kelamin' => $request->jeniskelamin,
             'tempat_lahir' => $request->tempatlahir,
             'tgl_lahir' => $request->tanggallahir,
+            'gol_darah' => '',
+            'status_px' => '1',
             'agama' => $request->agama,
             'pendidikan' => $request->pendidikan,
             'pekerjaan' => $request->pekerjaan,
@@ -1686,6 +1695,7 @@ class SimrsController extends Controller
             'desa' => $request->desa,
             'alamat' => $request->alamat,
             'no_tlp' => $request->nomortelp,
+            'no_hp' => $request->nomortelp,
             'tgl_entry' => date('Y-m-d h:i:s'),
             'pic' => auth()->user()->id_simrs,
             'kode_propinsi' => $request->provinsi,
@@ -1695,7 +1705,7 @@ class SimrsController extends Controller
         ];
         $data_keluarga = [
             'no_rm' => $rm,
-            'nama_keluarga' => $request->nama_keluarga,
+            'nama_keluarga' => $request->namakeluarga,
             'hubungan_keluarga' => $request->hubungankeluarga,
             'alamat_keluarga' => $request->alamatkeluarga,
             'tlp_keluarga' => $request->telpkeluarga,
@@ -1720,6 +1730,78 @@ class SimrsController extends Controller
         ];
         echo json_encode($data);
     }
+    public function updatenpasien(Request $request)
+    {
+        if ($request->sesuaiktp == 1) {
+            $desa = $request->desa;
+            $kecamatan = $request->kecamatan;
+            $kab = $request->kabupaten;
+            $prop = $request->provinsi;
+            $alamat = $request->alamat;
+        } else {
+            $desa = $request->desadom;
+            $kecamatan = $request->kecamatandom;
+            $kab = $request->kabupatendom;
+            $prop = $request->provinsidom;
+            $alamat = $request->alamatdom;
+        }
+        $nobpjs = $request->nomorbpjs;
+        if ($request->nomorbpjs == '') {
+            $nobpjs = '0';
+        }
+        $data_pasien = [
+            'no_Bpjs' => $nobpjs,
+            'nik_bpjs' => $request->nomorktp,
+            'nama_px' => strtoupper($request->namapasien),
+            'jenis_kelamin' => $request->jeniskelamin,
+            'tempat_lahir' => $request->tempatlahir,
+            'tgl_lahir' => $request->tanggallahir,
+            'gol_darah' => '',
+            'status_px' => '1',
+            'agama' => $request->agama,
+            'pendidikan' => $request->pendidikan,
+            'pekerjaan' => $request->pekerjaan,
+            'kewarganegaraan' => $request->kewarganegaraan,
+            'negara' => $request->negara,
+            'propinsi' => $request->provinsi,
+            'kabupaten' => $request->kabupaten,
+            'kecamatan' => $request->kecamatan,
+            'desa' => $request->desa,
+            'alamat' => $request->alamat,
+            'no_tlp' => $request->nomortelp,
+            'no_hp' => $request->nomortelp,
+            'tgl_entry' => date('Y-m-d h:i:s'),
+            'pic' => auth()->user()->id_simrs,
+            'kode_propinsi' => $request->provinsi,
+            'kode_kabupaten' => $request->kabupaten,
+            'kode_kecamatan' => $request->kecamatan,
+            'kode_desa' => $desa
+        ];
+        $data_keluarga = [
+            'nama_keluarga' => $request->namakeluarga,
+            'hubungan_keluarga' => $request->hubungankeluarga,
+            'alamat_keluarga' => $request->alamatkeluarga,
+            'tlp_keluarga' => $request->telpkeluarga,
+            'input_date' => date('Y-m-d h:i:s'),
+            'pic1' => auth()->user()->id_simrs
+        ];
+        $data_domisili = [
+            'negara' => $request->negara,
+            'kd_desa' => $desa,
+            'kd_kecamatan' => $kecamatan,
+            'kd_kabupaten' => $kab,
+            'kd_prop' => $prop,
+            'alamat' => $alamat
+        ];
+        Pasien::where('no_rm',$request->nomorrm)->update($data_pasien);
+        mt_keluarga::where('no_rm',$request->nomorrm)->update($data_keluarga);
+        mt_domisili::where('no_rm',$request->nomorrm)->update($data_domisili);
+        $data = [
+            'code' => 200,
+            'message' => 'ok'
+        ];
+        echo json_encode($data);
+    }
     public function cekkunjungan_rujukan(Request $request)
     {
         $v = new VclaimModel();
@@ -1738,9 +1820,60 @@ class SimrsController extends Controller
     {
         $rm = $request->nomorrm;
         $pasien = Pasien::where('no_rm', $rm)->get();
+        $keluarga = mt_keluarga::where('no_rm', $rm)->get();
+        $domisili = mt_domisili::where('no_rm', $rm)->get();
+        if(count($keluarga) > 0){
+            $dkeluarga = 1;
+        }else{
+            $dkeluarga = 0;
+        }
+        if(count($domisili) > 0){
+            $s_dom = 1;
+            $prop_DOM = $domisili[0]['kd_prop'];
+            $kab_DOM = $domisili[0]['kd_kabupaten'];
+            $ds_DOM = $domisili[0]['kd_kecamatan'];
+            $status = 1;
+        }else{
+            $s_dom = 0;
+            $prop_DOM = $pasien[0]['kode_propinsi'];
+            $kab_DOM = $pasien[0]['kode_kabupaten'];
+            $ds_DOM = $pasien[0]['kode_kecamatan'];
+            $status = 0;
+        }
+        $prop = $pasien[0]['kode_propinsi'];
+        $kab = $pasien[0]['kode_kabupaten'];
+        $ds = $pasien[0]['kode_kecamatan'];
+        $kabupatenDOM = Kabupaten::where('province_id',$prop_DOM)->get();
+        $kecamatanDOM = Kecamatan::where('regency_id',$kab_DOM)->get();
+        $desaDOM = Desa::where('district_id',$ds_DOM)->get();
+        $kabupaten = Kabupaten::where('province_id',$prop)->get();
+        $kecamatan = Kecamatan::where('regency_id',$kab)->get();
+        $desa = Desa::where('district_id',$ds)->get();
+        // dd($pasien);
         return view('pendaftaran.detailpasien', [
-            'data_pasien' => $pasien
+            'status_dom' => $s_dom,
+            'status_k' => $dkeluarga,
+            'status' => $status,
+            'data_pasien' => $pasien,
+            'domisili' => $domisili,
+            'data_keluarga' => $keluarga,
+            'agama' => Agama::all(),
+            'pekerjaan' => Pekerjaan::all(),
+            'pendidikan' => Pendidikan::all(),
+            'hubkel' => Hubkeluarga::all(),
+            'negara' => Negara::all(),
+            'provinsi' => Provinsi::all(),
+            'kabupaten' => $kabupaten,
+            'kecamatan' => $kecamatan,
+            'desa' => $desa,
+            'kabupatendom' => $kabupatenDOM,
+            'kecamatandom' => $kecamatanDOM,
+            'desadom' => $desaDOM,
         ]);
+    // }else{
+    //     $status_update = 0;
+    //     return view('eror_pasien');
+    // }
     }
     public function carifaskes(Request $request)
     {

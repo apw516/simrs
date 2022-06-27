@@ -3,7 +3,10 @@
     <ul class="navbar-nav">
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-        </li>
-        
+        </li>        
+        <li class="nav-item">
+            <img width="8%" src="{{ asset('public/img/logo_rs.png')}}" alt="AdminLTE Logo" class="ml-3"
+            style="opacity: .8">
+        </li>        
     </ul>
 </nav>

@@ -36,7 +36,13 @@
                                     <td>{{ $r->dokter }}</td>
                                     <td>{{ $r->no_sep }}</td>
                                     <td><p class="font-weight-bold">{{ $r->no_rujukan }} </p></td>
-                                    <td><button nosep="{{ $r->no_sep }}" kodedokter="{{ $r->kode_dokter }}" polikontrol="{{ $r->kode_unit }}" tglkontrol="" class="badge badge-info buatsuratkontrol2">+ tujuan kontrol</button></td>
+                                    <td>
+                                        <?php $jns = substr($r->kode_unit,0,1) ;?>
+                                        @if($jns == 1 ) <button nosep="{{ $r->no_sep }}" kodedokter="{{ $r->kode_dokter }}" polikontrol="{{ $r->kode_unit }}" tglkontrol="" class="badge badge-info buatsuratkontrol2">+ tujuan kontrol</button>
+                                        @else
+                                        <button nosep="{{ $r->no_sep }}" kodedokter="{{ $r->kode_dokter }}" polikontrol="{{ $r->kode_unit }}" tglkontrol="" class="badge badge-danger buatsuratkontrol_pasca">+ pasca rawat</button>
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -125,6 +131,14 @@
             </div>
             <div class="col-md-7 mb-3">
                 <h4 class="text-danger mb-2">*Wajib Diisi</h4>
+                @if ($cek_kunjungan  > 0 )
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong><i class="bi bi-megaphone"></i> </strong>  ada kunjungan pasien yang belum selesai / belum ditutup ! tanggal {{ $kunjungan_aktif }} 
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
                 @if ($data_peserta->response->peserta->statusPeserta->keterangan != 'AKTIF')
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <strong>STATUS PASIEN

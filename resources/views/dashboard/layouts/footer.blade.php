@@ -6,10 +6,10 @@
 
   <!-- Main Footer -->
   <footer class="main-footer">
-      <strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights
+      <strong>Copyright &copy; 2022 <a href="">semerusmartwaled</a>.</strong> All rights
       reserved.
       <div class="float-right d-none d-sm-inline-block">
-          <b>Version</b> 3.1.0-rc
+          <b>Version</b> 1.1.0-apw
       </div>
   </footer>
   <!-- Modal -->
@@ -300,7 +300,7 @@
   </div>
   <!-- Modal -->
   <div class="modal fade" id="editpasien" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
+      <div class="modal-dialog modal-xl">
           <div class="modal-content">
               <div class="modal-header bg-warning">
                   <h5 class="modal-title" id="exampleModalLabel">Edit pasien</h5>
@@ -309,25 +309,11 @@
                   </button>
               </div>
               <div class="modal-body">
-                  <form>
-                      <div class="form-group">
-                          <label for="exampleInputEmail1">Nama pasien</label>
-                          <input type="text" class="form-control" id="namapasien_edit">
-                          <input hidden type="text" class="form-control" id="nomor_rm_edit">
-                      </div>
-                      <div class="form-group">
-                          <label for="exampleInputPassword1">Nomor KTP</label>
-                          <input type="text" class="form-control" id="nomorktp_edit">
-                      </div>
-                      <div class="form-group">
-                          <label for="exampleInputPassword1">Nomor BPJS</label>
-                          <input type="text" class="form-control" id="nomorbpjs_edit">
-                      </div>
-                  </form>
-              </div>
+                
+            </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary" onclick="update_mtpasien()">Save changes</button>
+                  <button type="button" class="btn btn-primary" onclick="update_mtpasien()">Update</button>
               </div>
           </div>
       </div>
@@ -335,7 +321,7 @@
   
 <!-- Modal -->
 <div class="modal fade" id="modaldetailpasien" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header bg-info">
           <h5 class="modal-title" id="exampleModalLabel">Info pasien</h5>
@@ -348,9 +334,7 @@
 
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
+        
       </div>
     </div>
   </div>
@@ -507,6 +491,8 @@
       });
       $('#tabelpasienbaru').on('click', '.detailpasien', function() {
           nomorrm = $(this).attr('norm')
+          spinner = $('#loader')
+          spinner.show();
            $.ajax({
               type: 'post',
               data: {
@@ -515,12 +501,14 @@
               },
               url: '<?= route('detailpasien') ?>',
               error: function(data) {
+                spinner.hide();
                 Swal.fire({
                         icon: 'error',
                         title: 'Oops,silahkan coba lagi',
                     })
               },
               success: function(response) {
+                spinner.hide();
                   $('.view_detail_pasien').html(response)
                   // $('#daftarpxumum').attr('disabled', true);
               }

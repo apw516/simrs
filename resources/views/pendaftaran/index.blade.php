@@ -16,8 +16,9 @@
                     <div class="input-group mb-3 mt-3">
                         <input type="text" class="form-control" id="pencarianrujukan" placeholder="Cari Rujukan ...">
                         <div class="input-group-append">
-                            <button class="btn btn-outline-primary" type="button" id="button-addon2" onclick="carirujukan_bycard()"
-                                data-toggle="modal" data-target="#modals_datarujukan"><i class="bi bi-search-heart"></i></button>
+                            <button class="btn btn-outline-primary" type="button" id="button-addon2"
+                                onclick="carirujukan_bycard()" data-toggle="modal" data-target="#modals_datarujukan"><i
+                                    class="bi bi-search-heart"></i></button>
                         </div>
                     </div>
                 </div>
@@ -102,12 +103,14 @@
                                     @endempty
                                 </td>
                                 <td>
-                                    <button class="badge badge-info detailpasien" norm={{ $p['no_rm'] }} data-toggle="modal" data-target="#modaldetailpasien"><i class="bi bi-info-square"></i></button>
-                                    <button class="badge badge-warning editpasien" namapasien_edit="{{ $p['nama_px'] }}"
+                                    <button class="badge badge-warning detailpasien" norm={{ $p['no_rm'] }}
+                                        data-toggle="modal" data-target="#modaldetailpasien"><i class="bi bi-pencil-square"></i></button>
+                                    {{-- <button class="badge badge-warning editpasien" namapasien_edit="{{ $p['nama_px'] }}"
                                         nomorktp_edit="{{ $p['nik_bpjs'] }}" nomorbpjs_edit="{{ $p['no_Bpjs'] }}"
-                                        rm="{{ $p['no_rm'] }}" data-toggle="modal" data-target="#editpasien"><i class="bi bi-pencil-square"></i></button>
+                                        rm="{{ $p['no_rm'] }}" data-toggle="modal" data-target="#editpasien"><i
+                                            class="bi bi-pencil-square"></i></button> --}}
                                     <button class="badge badge-primary daftarumum" nama="{{ $p['nama_px'] }}"
-                                    rm="{{ $p['no_rm'] }}">Umum</button>
+                                        rm="{{ $p['no_rm'] }}">Umum</button>
                                     <button class="badge badge-success daftarbpjs" rm="{{ $p['no_rm'] }}"
                                         noka="{{ $p['no_Bpjs'] }}">Bpjs</button>
                                 </td>
@@ -144,7 +147,8 @@
                                     <div class="col-sm-5">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Nomor KTP</label>
-                                            <input class="form-control" id="nomorktp" placeholder="masukan nomor ktp ...">
+                                            <input class="form-control" id="nomorktp"
+                                                placeholder="masukan nomor ktp ...">
                                         </div>
                                     </div>
                                     <div class="col-sm-5">
@@ -168,7 +172,8 @@
                                     <div class="col-sm-4">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Tempat</label>
-                                            <input class="form-control" id="tempatlahir" placeholder="ketik tempat lahir">
+                                            <input class="form-control" id="tempatlahir"
+                                                placeholder="ketik tempat lahir">
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
@@ -248,7 +253,8 @@
                                             <select class="form-control" id="hubungankeluarga">
                                                 <option value="">--Silahkan Pilih--</option>
                                                 @foreach ($hubkel as $a)
-                                                    <option value="{{ $a->kode }}">{{ $a->nama_hubungan }}</option>
+                                                    <option value="{{ $a->kode }}">{{ $a->nama_hubungan }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -533,9 +539,9 @@
                     url: '<?= route('simpanpasien') ?>',
                     error: function(datas) {
                         Swal.fire({
-                        icon: 'error',
-                        title: 'Oops maaf sepertinya ada masalah'
-                    })
+                            icon: 'error',
+                            title: 'Oops maaf sepertinya ada masalah'
+                        })
                     },
                     success: function(data) {
                         Swal.fire({
@@ -547,6 +553,87 @@
                     }
                 });
             }
+        }
+        function updatepasien() {
+            nomorrm = $('#edit_nomorrm').val()
+            nomorktp = $('#edit_nomorktp').val()
+            nomorbpjs = $('#edit_nomorbpjs').val()
+            namapasien = $('#edit_namapasien').val()
+            tempatlahir = $('#edit_tempatlahir').val()
+            tanggallahir = $('#edit_tanggallahir').val()
+            jeniskelamin = $('#edit_jeniskelamin').val()
+            agama = $('#edit_agama').val()
+            pekerjaan = $('#edit_pekerjaan').val()
+            pendidikan = $('#edit_pendidikan').val()
+            nomortelp = $('#edit_nomortelp').val()
+            namakeluarga = $('#edit_namakeluarga').val()
+            hubungankeluarga = $('#edit_hubungankeluarga').val()
+            telpkeluarga = $('#edit_telpkeluarga').val()
+            alamatkeluarga = $('#edit_alamatkeluarga').val()
+            kewarganegaraan = $('#edit_kewarganegaraan').val()
+            negara = $('#edit_negara').val()
+            provinsi = $('#edit_provinsi').val()
+            kabupaten = $('#edit_kabupaten').val()
+            kecamatan = $('#edit_kecamatan').val()
+            desa = $('#edit_desa').val()
+            alamat = $('#edit_alamat').val()
+            sesuaiktp = $('#edit_sesuaiktp:checked').val()
+            provinisidom = $('#edit_provinisidom').val()
+            kabupatendom = $('#edit_kabupatendom').val()
+            kecamatandom = $('#edit_kecamatandom').val()
+            desadom = $('#edit_desadom').val()
+            alamatdom = $('#edit_alamatdom').val()
+                $.ajax({
+                    dataType: 'Json',
+                    async: true,
+                    type: 'post',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        nomorrm,
+                        nomorktp,
+                        nomorbpjs,
+                        namapasien,
+                        tempatlahir,
+                        tanggallahir,
+                        jeniskelamin,
+                        agama,
+                        pekerjaan,
+                        pendidikan,
+                        nomortelp,
+                        namakeluarga,
+                        hubungankeluarga,
+                        telpkeluarga,
+                        alamatkeluarga,
+                        kewarganegaraan,
+                        negara,
+                        provinsi,
+                        kabupaten,
+                        kecamatan,
+                        desa,
+                        alamat,
+                        sesuaiktp,
+                        provinisidom,
+                        kabupatendom,
+                        kecamatandom,
+                        desadom,
+                        alamatdom
+                    },
+                    url: '<?= route('updatenpasien') ?>',
+                    error: function(data) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops maaf sepertinya ada masalah'
+                        })
+                    },
+                    success: function(data) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil update data pasien ...',
+                        })
+                        location.reload()
+                        // $('#daftarpxumum').attr('disabled', true);
+                    }
+                });
         }
         $(document).ready(function() {
             $('#provinsi').change(function() {
