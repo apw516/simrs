@@ -1063,7 +1063,6 @@ class SimrsController extends Controller
             $counter = $last_count['counter'] + 1;
         }
         $tgl_masuk_time = $request->tglmasuk . ' ' . date('h:i:s');
-
         if ($request->jenispelayanan == 2) {
             //jika rawat jalan
             $unit = mt_unit::where('kode_unit', '=', "$request->kodepolitujuan")->get();
@@ -1216,13 +1215,13 @@ class SimrsController extends Controller
                 $tagihanpenjamin2 = $tarif2;
                 if ($request->penjamin == "P01") {
                     $tagihanpribadi1 = $tarif1;
-                    $tagihanpenjamin1 = (NULL);
+                    $tagihanpenjamin1 = '0';
                     $tagihanpribadi2 = $tarif2;
-                    $tagihanpenjamin2 = (NULL);
+                    $tagihanpenjamin2 = '0';
                 } else {
-                    $tagihanpribadi1 = (NULL);
+                    $tagihanpribadi1 = '0';
                     $tagihanpenjamin1 = $tarif1;
-                    $tagihanpribadi2 = (NULL);
+                    $tagihanpribadi2 = '0';
                     $tagihanpenjamin2 = $tarif2;
                 }
                 $tgl_detail = $tgl_masuk_time;

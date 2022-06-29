@@ -6,6 +6,7 @@ use App\Http\Controllers\SimrsController;
 use App\Http\Controllers\VclaimController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\BillingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -169,6 +170,12 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
 
     Route::post('simrsvclaim/list_rujukan', [VclaimController::class, 'listrujukan_keluar'])
         ->name('vclaimlistrujukan_keluar');
+});
+Route::group(['middleware' => ['auth','hak_akses1:3']],function (){
+    Route::get('/Billing', [BillingController::class, 'Billing'])
+    ->name('Billing'); //sidebar
+    Route::post('/Formlayanan', [BillingController::class, 'Formlayanan'])
+    ->name('formlayanan'); //sidebar
 });
 
 

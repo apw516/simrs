@@ -59,6 +59,14 @@
                       </a>
                   </li> --}}
                   @endif
+                  <li hidden class="nav-item">
+                    <a href="{{ route('Billing') }}" class="nav-link @if($sidebar == '2') active @endif">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Billing
+                        </p>
+                    </a>
+                </li>
                   {{-- <li class="nav-item">
                       <a href="/pendaftaran" class="nav-link @if($sidebar == '6') active @endif">
                           <i class="nav-icon fas fa-th"></i>
