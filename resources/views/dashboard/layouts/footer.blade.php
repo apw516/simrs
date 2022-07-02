@@ -135,7 +135,7 @@
       aria-hidden="true">
       <div class="modal-dialog modal-lg">
           <div class="modal-content">
-              <div class="modal-header">
+              <div class="modal-header bg-danger">
                   <h5 class="modal-title" id="exampleModalLabel">Pengajuan SEP backdate / finger </h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
@@ -242,8 +242,8 @@
                       <div class="input-group mb-3">
                           <input readonly type="text" class="form-control" placeholder="Klik cari dokter ..."
                               id="editdokterkontrol">
-                          <input hidden readonly type="text" class="form-control" placeholder="Klik cari dokter ..."
-                              id="editkodedokterkontrol">
+                          <input hidden readonly type="text" class="form-control"
+                              placeholder="Klik cari dokter ..." id="editkodedokterkontrol">
                           <div class="input-group-append">
                               <button class="btn btn-outline-secondary" type="button" data-toggle="modal"
                                   data-target="#modalpilihdokter" onclick="caridokterkontrol()">Cari Dokter</button>
@@ -309,8 +309,8 @@
                   </button>
               </div>
               <div class="modal-body">
-                
-            </div>
+
+              </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   <button type="button" class="btn btn-primary" onclick="update_mtpasien()">Update</button>
@@ -318,46 +318,152 @@
           </div>
       </div>
   </div>
-  
-<!-- Modal -->
-<div class="modal fade" id="modaldetailpasien" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header bg-info">
-          <h5 class="modal-title" id="exampleModalLabel">Info pasien</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="view_detail_pasien">
+
+  <!-- Modal -->
+  <div class="modal fade" id="modaldetailpasien" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+              <div class="modal-header bg-info">
+                  <h5 class="modal-title" id="exampleModalLabel">Info pasien</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <div class="view_detail_pasien">
+
+                  </div>
+              </div>
 
           </div>
-        </div>
-        
       </div>
-    </div>
   </div>
-<!-- Modal -->
-<div class="modal fade" id="modals_datarujukan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header bg-info">
-          <h5 class="modal-title" id="exampleModalLabel">List Rujukan Peserta</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="viewlistrujukan">
+  <!-- Modal -->
+  <div class="modal fade" id="modals_datarujukan" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+              <div class="modal-header bg-info">
+                  <h5 class="modal-title" id="exampleModalLabel">List Rujukan Peserta</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <div class="viewlistrujukan">
 
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
       </div>
-    </div>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="modalinfopasienbpjs" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <div class="modal-header bg-info">
+                  <h5 class="modal-title" id="exampleModalLabel">Info Pasien BPJS</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                        <div class="input-group mb-3">
+                            <input type="text" id="nomorkartupencarian" class="form-control" placeholder="Masukan nomor Kartu BPJS ..."
+                                aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button"
+                                    id="button-addon2" onclick="cariinfopasienbpjs()">Info Pasien</button>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                  </div>
+                  <div class="viewinfopasien">
+
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="modalpencarianrujukan" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+              <div class="modal-header bg-primary">
+                  <h5 class="modal-title" id="exampleModalLabel">Pencarian Rujukan ...</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                <div class="container">
+                    <div class="col-md-6">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="pencariannomor_rujukan" placeholder="Masukan nomor rujukan ..."
+                                aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button"
+                                    id="button-addon2" onclick="yukcarirujukan()">Cari Rujukan</button>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="detailinforujukan">
+
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="modalpencariansep" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+              <div class="modal-header bg-warning">
+                  <h5 class="modal-title" id="exampleModalLabel">Pencarian SEP ...</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body ui-front">
+                  <div class="container">
+                    <div class="col-md-6">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="nomorseppencarian" placeholder="Masukan nomor SEP ..."
+                                aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button"
+                                    id="button-addon2" onclick="yukcarisep()">Cari Sep</button>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="viewinfoSEP">
+
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+          </div>
+      </div>
   </div>
   <!-- ./wrapper -->
 
@@ -457,27 +563,27 @@
           spinner.show();
           nomorrm = $(this).attr('rm')
           nama = $(this).attr('nama')
-              $.ajax({
-                  type: 'post',
-                  data: {
-                      _token: "{{ csrf_token() }}",
-                      nomorrm,
-                  },
-                  url: '<?= route('formumum') ?>',
-                  error: function(data) {
-                      spinner.hide()
-                      Swal.fire({
-                          icon: 'error',
-                          title: 'Oops,silahkan coba lagi',
-                      })
-                  },
-                  success: function(response) {
-                      spinner.hide()
-                      $('.formpasien').html(response)
-                      $('#namapasien').val(nama)
-                      $('#nomorrm').val(nomorrm)
-                  }
-              });
+          $.ajax({
+              type: 'post',
+              data: {
+                  _token: "{{ csrf_token() }}",
+                  nomorrm,
+              },
+              url: '<?= route('formumum') ?>',
+              error: function(data) {
+                  spinner.hide()
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Oops,silahkan coba lagi',
+                  })
+              },
+              success: function(response) {
+                  spinner.hide()
+                  $('.formpasien').html(response)
+                  $('#namapasien').val(nama)
+                  $('#nomorrm').val(nomorrm)
+              }
+          });
       });
       $('#tabelpasienbaru').on('click', '.editpasien', function() {
           nomorrm = $(this).attr('rm')
@@ -493,22 +599,22 @@
           nomorrm = $(this).attr('norm')
           spinner = $('#loader')
           spinner.show();
-           $.ajax({
+          $.ajax({
               type: 'post',
               data: {
-                _token: "{{ csrf_token() }}",
-                nomorrm,
+                  _token: "{{ csrf_token() }}",
+                  nomorrm,
               },
               url: '<?= route('detailpasien') ?>',
               error: function(data) {
-                spinner.hide();
-                Swal.fire({
-                        icon: 'error',
-                        title: 'Oops,silahkan coba lagi',
-                    })
+                  spinner.hide();
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Oops,silahkan coba lagi',
+                  })
               },
               success: function(response) {
-                spinner.hide();
+                  spinner.hide();
                   $('.view_detail_pasien').html(response)
                   // $('#daftarpxumum').attr('disabled', true);
               }
@@ -520,7 +626,7 @@
           rm = $('#nomor_rm_edit').val()
           ktp = $('#nomorktp_edit').val()
           bpjs = $('#nomorbpjs_edit').val()
-          if(bpjs == ''){
+          if (bpjs == '') {
               bpjs = '0'
           }
           $.ajax({
@@ -528,7 +634,7 @@
               async: true,
               type: 'post',
               data: {
-                _token: "{{ csrf_token() }}",
+                  _token: "{{ csrf_token() }}",
                   nama,
                   rm,
                   ktp,
@@ -536,21 +642,22 @@
               },
               url: '<?= route('updatepasien') ?>',
               error: function(data) {
-                Swal.fire({
-                        icon: 'error',
-                        title: 'Oops,silahkan coba lagi',
-                    })
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Oops,silahkan coba lagi',
+                  })
               },
               success: function(data) {
-                Swal.fire({
-                        icon: 'success',
-                        title: 'Update data pasien berhasil',
-                    })
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'Update data pasien berhasil',
+                  })
                   location.reload()
                   // $('#daftarpxumum').attr('disabled', true);
               }
           })
       }
+
       function caripolikontrol() {
           spinner = $('#loader');
           spinner.show();
@@ -728,7 +835,7 @@
                           icon: 'success',
                           title: 'Pasien dipulangkan ...',
                       })
-                    //   location.reload()
+                      //   location.reload()
                   } else {
                       Swal.fire({
                           icon: 'error',
@@ -847,6 +954,7 @@
               }
           });
       };
+
       function carirujukan_bycard() {
           noka = $('#pencarianrujukan').val()
           spinner = $('#loader')
@@ -919,6 +1027,7 @@
               }
           });
       }
+
       function logout() {
           Swal.fire({
               title: 'Logout',
@@ -935,29 +1044,104 @@
               }
           })
       }
-      function pencarianrujukan()
-      {
+
+      function pencarianrujukan() {
           alert('Masih dalam pengembangan ....')
-        //  nomorrujukan = $('#carinomorrujukan').val()
-        //  $.ajax({
-        //       type: 'post',
-        //       data: {
-        //           _token: "{{ csrf_token() }}",
-        //           nomorrujukan,
-        //       },
-        //       url: '<?= route('carirujukan_nomor') ?>',
-        //       error: function(data) {
-        //           spinner.hide()
-        //           Swal.fire({
-        //               icon: 'error',
-        //               title: 'Oops,silahkan coba lagi',
-        //           })
-        //       },
-        //       success: function(response) {
-        //           spinner.hide()
-        //           $('.hasilpencarianrujukan').html(response)
-        //       }
-        //   });
+          //  nomorrujukan = $('#carinomorrujukan').val()
+          //  $.ajax({
+          //       type: 'post',
+          //       data: {
+          //           _token: "{{ csrf_token() }}",
+          //           nomorrujukan,
+          //       },
+          //       url: '<?= route('carirujukan_nomor') ?>',
+          //       error: function(data) {
+          //           spinner.hide()
+          //           Swal.fire({
+          //               icon: 'error',
+          //               title: 'Oops,silahkan coba lagi',
+          //           })
+          //       },
+          //       success: function(response) {
+          //           spinner.hide()
+          //           $('.hasilpencarianrujukan').html(response)
+          //       }
+          //   });
+      }
+      function cariinfopasienbpjs()
+      {
+        spinner = $('#loader')
+        spinner.show()
+        noka = $('#nomorkartupencarian').val()
+        $.ajax({
+              type: 'post',
+              data: {
+                  _token: "{{ csrf_token() }}",
+                  noka,
+              },
+              url: '<?= route('cariinfopasienbpjs') ?>',
+              error: function(data) {
+                  spinner.hide()
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Oops,silahkan coba lagi',
+                  })
+              },
+              success: function(response) {
+                  spinner.hide()
+                  $('.viewinfopasien').html(response)
+              }
+          });
+      }
+      function yukcarisep()
+      {
+        spinner = $('#loader')
+        spinner.show()
+        nosep = $('#nomorseppencarian').val()
+        $.ajax({
+              type: 'post',
+              data: {
+                  _token: "{{ csrf_token() }}",
+                  nosep,
+              },
+              url: '<?= route('cariinfoseppasien') ?>',
+              error: function(data) {
+                  spinner.hide()
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Oops,silahkan coba lagi',
+                  })
+              },
+              success: function(response) {
+                  spinner.hide()
+                  $('.viewinfoSEP').html(response)
+              }
+          });
+      }
+      function yukcarirujukan()
+      {
+        spinner = $('#loader')
+        spinner.show()
+        norujukan = $('#pencariannomor_rujukan').val()
+        $.ajax({
+              type: 'post',
+              data: {
+                  _token: "{{ csrf_token() }}",
+                  norujukan,
+              },
+              url: '<?= route('cariinforujukanpasien') ?>',
+              error: function(data) {
+                  spinner.hide()
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Oops,silahkan coba lagi',
+                  })
+              },
+              success: function(response) {
+                  spinner.hide()
+                  $('.detailinforujukan').html(response)
+              }
+          });
       }
   </script>
   </body>

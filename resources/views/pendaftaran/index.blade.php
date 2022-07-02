@@ -2,8 +2,8 @@
 @section('container')
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-4">
+            <div class="row mb-3">
+                {{-- <div class="col-sm-4">
                     <div class="input-group mb-3 mt-3">
                         <input type="text" class="form-control" id="pencariansep" placeholder="Cari SEP ...">
                         <div class="input-group-append">
@@ -11,8 +11,8 @@
                                 data-toggle="modal" data-target="#modaleditsep"><i class="bi bi-search-heart"></i></button>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-4">
+                </div> --}}
+                {{-- <div class="col-sm-4">
                     <div class="input-group mb-3 mt-3">
                         <input type="text" class="form-control" id="pencarianrujukan" placeholder="Cari Rujukan ...">
                         <div class="input-group-append">
@@ -21,12 +21,35 @@
                                     class="bi bi-search-heart"></i></button>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-4 mt-3">
-                    <button class="btn btn-warning float-sm-right" data-toggle="modal" data-target="#modalpengajuansep"> <i
-                            class="bi bi-send-plus-fill"></i> PENGAJUAN SEP</button>
+                </div> --}}
+                <div class="col-sm-8 mt-3">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalformpasienbaru"><i
+                                class="bi bi-person-plus"></i> Pasien
+                            Baru</button></button>
+                        <button type="button" class="btn btn-info" data-toggle="modal"
+                            data-target="#modalinfopasienbpjs"><i class="bi bi-person-plus"></i> Info Pasien
+                            BPJS</button>
+                        <button type="button" class="btn btn-danger" data-toggle="modal"
+                            data-target="#modalpengajuansep"><i class="bi bi-send-plus-fill"></i> Pengajuan SEP
+                            Bckdate / Finger</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#modalpencarianrujukan"><i class="bi bi-send-plus-fill"></i> Cari
+                            Rujukan</button>
+                        <button type="button" class="btn btn-warning" data-toggle="modal"
+                            data-target="#modalpencariansep"><i class="bi bi-send-plus-fill"></i> Cari
+                            SEP</button>
+                    </div>
+                    {{-- <button class="btn btn-primary float-sm-right ml-2" data-toggle="modal" data-target="#modalpengajuansep"> <i
+                            class="bi bi-send-plus-fill"></i> Cari Rujukan</button>
+                    <button class="btn btn-info float-sm-right ml-2" data-toggle="modal" data-target="#modalpengajuansep"> <i
+                            class="bi bi-send-plus-fill"></i> Cari SEP</button>
+                    <button class="btn btn-danger float-sm-right" data-toggle="modal" data-target="#modalpengajuansep"> <i
+                            class="bi bi-send-plus-fill"></i> Pengajuan SEP Bckdate / Finger</button>
+                    <button class="btn btn-warning float-sm-right mr-2" data-toggle="modal"
+                        data-target="#modalformpasienbaru"><i class="bi bi-person-plus"></i> Info Pasien BPJS</button>
                     <button class="btn btn-success float-sm-right mr-2" data-toggle="modal"
-                        data-target="#modalformpasienbaru"><i class="bi bi-person-plus"></i> PASIEN BARU</button>
+                        data-target="#modalformpasienbaru"><i class="bi bi-person-plus"></i> Pasien Baru</button> --}}
                 </div>
             </div>
 
@@ -104,7 +127,8 @@
                                 </td>
                                 <td>
                                     <button class="badge badge-warning detailpasien" norm={{ $p['no_rm'] }}
-                                        data-toggle="modal" data-target="#modaldetailpasien"><i class="bi bi-pencil-square"></i></button>
+                                        data-toggle="modal" data-target="#modaldetailpasien"><i
+                                            class="bi bi-pencil-square"></i></button>
                                     {{-- <button class="badge badge-warning editpasien" namapasien_edit="{{ $p['nama_px'] }}"
                                         nomorktp_edit="{{ $p['nik_bpjs'] }}" nomorbpjs_edit="{{ $p['no_Bpjs'] }}"
                                         rm="{{ $p['no_rm'] }}" data-toggle="modal" data-target="#editpasien"><i
@@ -126,11 +150,10 @@
             </div>
         </div>
     </section>
-    <div class="modal fade" id="modalformpasienbaru" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="modalformpasienbaru" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header bg-success">
                     <h5 class="modal-title" id="exampleModalLabel">
                         <h4>Form pasien baru</h4>
                     </h5>
@@ -554,6 +577,7 @@
                 });
             }
         }
+
         function updatepasien() {
             nomorrm = $('#edit_nomorrm').val()
             nomorktp = $('#edit_nomorktp').val()
@@ -583,57 +607,57 @@
             kecamatandom = $('#edit_kecamatandom').val()
             desadom = $('#edit_desadom').val()
             alamatdom = $('#edit_alamatdom').val()
-                $.ajax({
-                    dataType: 'Json',
-                    async: true,
-                    type: 'post',
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        nomorrm,
-                        nomorktp,
-                        nomorbpjs,
-                        namapasien,
-                        tempatlahir,
-                        tanggallahir,
-                        jeniskelamin,
-                        agama,
-                        pekerjaan,
-                        pendidikan,
-                        nomortelp,
-                        namakeluarga,
-                        hubungankeluarga,
-                        telpkeluarga,
-                        alamatkeluarga,
-                        kewarganegaraan,
-                        negara,
-                        provinsi,
-                        kabupaten,
-                        kecamatan,
-                        desa,
-                        alamat,
-                        sesuaiktp,
-                        provinisidom,
-                        kabupatendom,
-                        kecamatandom,
-                        desadom,
-                        alamatdom
-                    },
-                    url: '<?= route('updatenpasien') ?>',
-                    error: function(data) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops maaf sepertinya ada masalah'
-                        })
-                    },
-                    success: function(data) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil update data pasien ...',
-                        })
-                        location.reload()
-                        // $('#daftarpxumum').attr('disabled', true);
-                    }
-                });
+            $.ajax({
+                dataType: 'Json',
+                async: true,
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    nomorrm,
+                    nomorktp,
+                    nomorbpjs,
+                    namapasien,
+                    tempatlahir,
+                    tanggallahir,
+                    jeniskelamin,
+                    agama,
+                    pekerjaan,
+                    pendidikan,
+                    nomortelp,
+                    namakeluarga,
+                    hubungankeluarga,
+                    telpkeluarga,
+                    alamatkeluarga,
+                    kewarganegaraan,
+                    negara,
+                    provinsi,
+                    kabupaten,
+                    kecamatan,
+                    desa,
+                    alamat,
+                    sesuaiktp,
+                    provinisidom,
+                    kabupatendom,
+                    kecamatandom,
+                    desadom,
+                    alamatdom
+                },
+                url: '<?= route('updatenpasien') ?>',
+                error: function(data) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops maaf sepertinya ada masalah'
+                    })
+                },
+                success: function(data) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil update data pasien ...',
+                    })
+                    location.reload()
+                    // $('#daftarpxumum').attr('disabled', true);
+                }
+            });
         }
         $(document).ready(function() {
             $('#provinsi').change(function() {

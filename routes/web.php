@@ -59,6 +59,7 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('simpansepranap'); //formpasien_bpjs
     Route::get('/cetaksep/{kodekunjungan}', [SimrsController::class, 'Cetaksep']); //formpasien_bpjs
     Route::get('datakunjungan/cetaksep/{kodekunjungan}', [SimrsController::class, 'Cetaksep']); //formpasien_bpjs
+    Route::get('/cetaksep_v/{sep}', [SimrsController::class, 'Cetaksep_v']); //formpasien_bpjs
     Route::get('/cetaklabel/{kodekunjungan}', [SimrsController::class, 'Cetaklabel']); //formpasien_bpjs
     Route::get('cetakstruk/{kodekunjungan}', [SimrsController::class, 'Cetakstruk']); //formpasien_bpjs
     Route::get('datakunjungan/cetakstruk/{kodekunjungan}', [SimrsController::class, 'Cetakstruk']); //formpasien_bpjs
@@ -126,6 +127,12 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('carifaskes');
     Route::post('/pendaftaran/carirujukan_nomor', [SimrsController::class, 'carirujukan_nomor'])
         ->name('carirujukan_nomor');
+    Route::post('/pendaftaran/cariinfopasienbpjs', [SimrsController::class, 'infopasienbpjs'])
+        ->name('cariinfopasienbpjs');
+    Route::post('/pendaftaran/cariinfoseppasien', [SimrsController::class, 'infosep'])
+        ->name('cariinfoseppasien');
+    Route::post('/pendaftaran/cariinforujukanpasien', [SimrsController::class, 'inforujukan'])
+        ->name('cariinforujukanpasien');
 
 
     //vclaim controller
