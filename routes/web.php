@@ -39,6 +39,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
     Route::get('/datakunjungan/riwayatpelayanan_user', [SimrsController::class, 'riwayatpelayanan_user'])->name('riwayatpelayanan_user'); //sidebar
     Route::get('/datakunjungan', [SimrsController::class, 'datakunjungan'])
         ->name('datakunjungan'); //sidebar
+    Route::post('/pendaftaran/formranap', [SimrsController::class, 'Formranap'])
+        ->name('formranap'); //footer,pencarianpasien
     Route::post('/pendaftaran/formbpjs', [SimrsController::class, 'Formbpjs'])
         ->name('formbpjs'); //footer,pencarianpasien
     Route::post('/pendaftaran/formumum', [SimrsController::class, 'Formumum'])
@@ -117,6 +119,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('updatenpasien');
     Route::post('/pendaftaran/daftarpasien_umum', [SimrsController::class, 'daftarpasien_umum'])
         ->name('daftarpasien_umum');
+    Route::post('/pendaftaran/daftarpasien_ranap', [SimrsController::class, 'daftarpasien_ranap'])
+        ->name('daftarpasien_ranap');
     Route::post('/pendaftaran/updatepasien', [SimrsController::class, 'updatepasien'])
         ->name('updatepasien');
     Route::post('/pendaftaran/cekkunjunganrujukan', [SimrsController::class, 'cekkunjungan_rujukan'])
@@ -129,10 +133,14 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('carirujukan_nomor');
     Route::post('/pendaftaran/cariinfopasienbpjs', [SimrsController::class, 'infopasienbpjs'])
         ->name('cariinfopasienbpjs');
+    Route::post('/pendaftaran/cariinfopasienbpjs2', [SimrsController::class, 'infopasienbpjs2'])
+        ->name('cariinfopasienbpjs2');
     Route::post('/pendaftaran/cariinfoseppasien', [SimrsController::class, 'infosep'])
         ->name('cariinfoseppasien');
     Route::post('/pendaftaran/cariinforujukanpasien', [SimrsController::class, 'inforujukan'])
         ->name('cariinforujukanpasien');
+    Route::post('/pendaftaran/cariunit_kelas', [SimrsController::class, 'cariunit_kelas'])
+        ->name('cariunit_kelas');
 
 
     //vclaim controller

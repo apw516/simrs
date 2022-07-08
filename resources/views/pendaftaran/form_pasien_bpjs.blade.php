@@ -320,9 +320,9 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-4 text-right text-bold">Cek Ruangan</div>
+                            <div class="col-sm-4 text-right text-bold">Ruangan</div>
                             <div class="col-sm-7">
-                                <div class="input-group mb-3">
+                                {{-- <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
                                             <input type="checkbox" class="mr-1" value="1"
@@ -331,7 +331,8 @@
                                     </div>
                                     <input disabled readonly type="text" class="form-control"
                                         value="ceklis jika ruangan sesuai hak kelas penuh">
-                                </div>
+                                </div> --}}
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#modalpilihruangan">Pilih ruangan</button>
                             </div>
                         </div>
                         <div class="row mt-2">
@@ -748,6 +749,26 @@
             </div>
             <div class="modal-body vrujukan">
                 ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalpilihruangan" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Pilihan ruangan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <button class="btn btn-success">ruangan</button>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

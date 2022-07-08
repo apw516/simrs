@@ -523,6 +523,40 @@
               ]
           })
       });
+      $('#tabelpasienbaru').on('click', '.daftarranap', function() {
+          spinner = $('#loader')
+          spinner.show();
+          nomorrm = $(this).attr('rm')
+          nama = $(this).attr('nama')
+          if (nomorbpjs == '' || nomorbpjs == '0') {
+              spinner.hide()
+              Swal.fire({
+                  icon: 'warning',
+                  title: 'Oops,silahkan coba lagi',
+                  text: 'Nomor Kartu Belum diisi ...'
+              })
+          } else {
+              $.ajax({
+                  type: 'post',
+                  data: {
+                      _token: "{{ csrf_token() }}",
+                      nomorrm
+                  },
+                  url: '<?= route('formranap') ?>',
+                  error: function(data) {
+                      spinner.hide()
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Oops,silahkan coba lagi',
+                      })
+                  },
+                  success: function(response) {
+                      spinner.hide()
+                      $('.formpasien').html(response)
+                  }
+              });
+          }
+      });
       $('#tabelpasienbaru').on('click', '.daftarbpjs', function() {
           spinner = $('#loader')
           spinner.show();

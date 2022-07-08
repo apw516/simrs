@@ -175,6 +175,7 @@
         <table id="tabelsepinternal" class="table table-sm table-bordered">
             <thead>
                 <th>No SEP</th>
+                <th>No Surat</th>
                 <th>No SEP ref</th>
                 <th>tgl sep</th>
                 <th>Poli Asal</th>
@@ -189,6 +190,7 @@
                     @foreach ($sepinternal->response->list as $d)
                         <tr>
                             <td>{{ $d->nosep }}</td>
+                            <td>{{ $d->nosurat }}</td>
                             <td>{{ $d->nosepref }}</td>
                             <td>{{ $d->tglsep }}</td>
                             <td>{{ $d->nmpoliasal }}</td>

@@ -18,6 +18,8 @@
                 <td>
                     <button class="badge badge-warning detailpasien" norm={{ $p->no_rm }} data-toggle="modal"
                         data-target="#modaldetailpasien"><i class="bi bi-pencil-square"></i></button>
+                    <button class="badge badge-danger daftarranap" nama="{{ $p->nama_pasien }}"
+                                        rm="{{ $p->no_rm }}">Ranap</button>
                     {{-- <button class="badge badge-warning editpasien" namapasien_edit="{{ $p->nama_pasien }}"
                         nomorktp_edit="{{ $p->NIK }}" nomorbpjs_edit="{{ $p->no_asuransi }}"
                         rm="{{ $p->no_rm }}" data-toggle="modal" data-target="#editpasien"><i class="bi bi-pencil-square"></i></button> --}}
@@ -138,4 +140,29 @@
             }
         })
     });
+    $('#tabelpasienbaru').on('click', '.daftarranap', function() {
+          spinner = $('#loader')
+          spinner.show();
+          nomorrm = $(this).attr('rm')
+          nama = $(this).attr('nama')
+              $.ajax({
+                  type: 'post',
+                  data: {
+                      _token: "{{ csrf_token() }}",
+                      nomorrm
+                  },
+                  url: '<?= route('formranap') ?>',
+                  error: function(data) {
+                      spinner.hide()
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Oops,silahkan coba lagi',
+                      })
+                  },
+                  success: function(response) {
+                      spinner.hide()
+                      $('.formpasien').html(response)
+                  }
+              });
+      });
 </script>

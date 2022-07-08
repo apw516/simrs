@@ -35,7 +35,13 @@
                   <b>Faskes 1</b> <a class="float-right text-dark text-bold">{{ $data_peserta->response->peserta->provUmum->nmProvider }}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Status | Tanggal Cetak Kartu </b> <a class="float-right text-dark text-bold">{{ $data_peserta->response->peserta->statusPeserta->keterangan }} | {{ $data_peserta->response->peserta->tglCetakKartu }}</a>
+                  <b>Status </b> <a class="float-right text-dark text-bold">{{ $data_peserta->response->peserta->statusPeserta->keterangan }}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Hak kelas </b> <a class="float-right text-dark text-bold">{{ $data_peserta->response->peserta->hakKelas->keterangan }}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Tanggal Cetak Kartu </b> <a class="float-right text-dark text-bold"> {{ $data_peserta->response->peserta->tglCetakKartu }}</a>
                 </li>
               </ul>
         </div>

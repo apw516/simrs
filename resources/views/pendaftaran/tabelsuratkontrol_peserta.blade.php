@@ -13,7 +13,7 @@
     <tbody>
         @if($suratkontrol->metaData->code == 200)
         @foreach ($suratkontrol->response->list as $p)
-            <tr class="pilihdokter" nomorsurat="{{ $p->noSuratKontrol }}" namadokter="{{ $p->namaDokter }}" kodedokter="{{ $p->kodeDokter }}" jnskontrol="{{ $p->jnsKontrol }}" data-dismiss="modal">
+            <tr class="pilihdokter" tgl="{{ $p->tglRencanaKontrol }}"nomorsurat="{{ $p->noSuratKontrol }}" namadokter="{{ $p->namaDokter }}" kodedokter="{{ $p->kodeDokter }}" jnskontrol="{{ $p->jnsKontrol }}" data-dismiss="modal">
                 <td>{{ $p->noSuratKontrol }}</td>
                 <td>{{ $p->namaJnsKontrol }}</td>
                 <td>{{ $p->tglRencanaKontrol }}</td>
@@ -42,10 +42,14 @@
     $('#tabelsuratkontrol_peserta').on('click', '.pilihdokter', function() {
         nomor = $(this).attr('nomorsurat')
         nama = $(this).attr('namadokter')
+        tgl = $(this).attr('tgl')
         kode = $(this).attr('kodedokter')
         jns = $(this).attr('jnskontrol')
         $('#suratkontrol').val(nomor)
+        $('#nomorspri').val(nomor)
+        $('#tglspri').val(tgl)
         $('#namadpjp').val(nama)
+        $('#dpjp').val(nama)
         $('#kodedpjp').val(kode)
         if(jns == '2'){
             $('#namadokterlayan').val(nama)
