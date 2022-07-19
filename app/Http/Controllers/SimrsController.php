@@ -2765,8 +2765,14 @@ class SimrsController extends Controller
     public function inforujukan(Request $request)
     {
         $v = new VclaimModel();
+        $rujukan = $v->carirujukan_byno($request->norujukan);
+        if($rujukan->metaData->code == 200 ){
+
+        }else{
+            $rujukan = $v->carirujukanRS_byno_($request->norujukan);
+        }
         return view('pendaftaran.inforujukan', [
-            'rujukan' => $v->carirujukan_byno($request->norujukan)
+            'rujukan' => $rujukan
         ]);
     }
     public function cariunit_kelas(Request $request)
