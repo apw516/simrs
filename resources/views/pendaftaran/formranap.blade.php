@@ -32,16 +32,16 @@
                             ;?>
                                 <tr>
                                     <td>{{ $r->nama_unit }}</td>
-                                    <td><button class="badge badge-warning">{{ $date_for }}</button></td>
+                                    <td><button class="badge badge-warning">{{ $r->tgl_masuk }}</button></td>
                                     <td>{{ $r->tgl_keluar }}</td>
                                     <td>{{ $r->nama_penjamin }}</td>
                                     <td>{{ $r->CATATAN }}</td>
                                     <td>{{ $r->dokter }}</td>
                                     <td>{{ $r->no_sep }}</td>
-                                    <td>@if( $date_for === $datenow )<button kodedokter="{{ $r->kode_dokter }}" kodeunit={{ $r->kode_unit }}
+                                    <td><button kodedokter="{{ $r->kode_dokter }}" kodeunit={{ $r->kode_unit }}
                                             kodekunjungan="{{ $r->kode_kunjungan }}" unit="{{ $r->nama_unit }}"
                                             dokter="{{ $r->dokter }}"class="badge badge-info pilihrefranap">Referensi
-                                            Ranap</button> @endif </td>
+                                            Ranap</button></td>
                                 </tr>
                             @endforeach
                         </tbody>

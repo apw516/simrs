@@ -1,14 +1,11 @@
-<h5>List tanggal pulang </h5>
-<table id="tabeltanggalpulang" class="table table-bordered table-sm text-xs mt-3">
+<table id="tabeltanggalpulang" class="table table-bordered table-sm text-xs mt-4">
     <thead>
         <th>Nama</th>
         <th>nomor kartu</th>
-        <th>jns pelayanan</th>
         <th>nomor sep</th>
         <th>nomor sep updating</th>
         <th>status</th>
         <th>tgl meninggal</th>
-        <th>no. surat</th>
         <th>keterangan</th>
         <th>tgl sep</th>
         <th>tgl pulang</th>
@@ -20,12 +17,10 @@
                 <tr>
                     <td>{{ $d->nama }}</td>
                     <td>{{ $d->noKartu }}</td>
-                    <td>{{ $d->jnsPelayanan }}</td>
                     <td>{{ $d->noSep }}</td>
                     <td>{{ $d->noSepUpdating }}</td>
                     <td>{{ $d->status }}</td>
                     <td>{{ $d->tglMeninggal }}</td>
-                    <td>{{ $d->noSurat }}</td>
                     <td>{{ $d->keterangan }}</td>
                     <td>{{ $d->tglSep }}</td>
                     <td>{{ $d->tglPulang }}</td>
@@ -56,14 +51,14 @@
     $('#tabeltanggalpulang').on('click', '.detailsep', function() {
         spinner = $('#loader')
         spinner.show();
-        nomorsep = $(this).attr('nomorsep')
+        nosep = $(this).attr('nomorsep')
         $.ajax({
             type: 'post',
             data: {
                 _token: "{{ csrf_token() }}",
-                nomorsep,
+                nosep,
             },
-            url: '<?= route('vclaimdetailsep');?>',
+            url: '<?= route('cariinfoseppasien');?>',
             error: function(data) {
                 spinner.hide()
                 Swal.fire({

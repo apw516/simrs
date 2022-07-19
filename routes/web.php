@@ -32,6 +32,24 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('aut
 Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
     Route::get('/pendaftaran', [SimrsController::class, 'Pendaftaran'])
         ->name('pendaftaran'); //sidebar
+    Route::get('/menucarisep', [SimrsController::class, 'Menucarisep'])
+        ->name('menucarisep'); //sidebar
+    Route::get('/menulisttglpulang', [SimrsController::class, 'menulisttglpulang'])
+        ->name('menulisttglpulang'); //sidebar
+    Route::get('/menulistfinger', [SimrsController::class, 'menulistfinger'])
+        ->name('menulistfinger'); //sidebar
+    Route::get('/menucarirujukan', [SimrsController::class, 'menucarirujukan'])
+        ->name('menucarirujukan'); //sidebar
+    Route::get('/menuinsertrujukan', [SimrsController::class, 'menuinsertrujukan'])
+        ->name('menuinsertrujukan'); //sidebar
+    Route::get('/menulistrujukankeluar', [SimrsController::class, 'menulistrujukankeluar'])
+        ->name('menulistrujukankeluar'); //sidebar
+    Route::get('/menuinsertrujukankhusus', [SimrsController::class, 'menuinsertrujukankhusus'])
+        ->name('menuinsertrujukankhusus'); //sidebar
+    Route::get('/menulistrujukankhusus', [SimrsController::class, 'menulistrujukankhusus'])
+        ->name('menulistrujukankhusus'); //sidebar
+    Route::get('/menucarisuratkontrol', [SimrsController::class, 'menucarisuratkontrol'])
+        ->name('menucarisuratkontrol'); //sidebar
     Route::get('/validasiranap', [SimrsController::class, 'ValidasiRanap'])
         ->name('Validasiranap'); //sidebar
     Route::post('/formvalidasi', [SimrsController::class, 'formvalidasi'])
@@ -93,6 +111,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('caridokter_rs'); //formpasien_bpjs
     Route::get('Pendaftaran/caridiagnosa', [SimrsController::class, 'Caridiagnosa'])
         ->name('caridiagnosa'); //form[asien_bpjs
+    Route::get('Pendaftaran/cariprocedure', [SimrsController::class, 'cariprocedure'])
+        ->name('cariprocedure'); //form[asien_bpjs
     Route::post('Pendaftaran/carikabupaten', [SimrsController::class, 'Carikabupaten'])
         ->name('carikabupaten'); //formpasien_bpjs
     Route::post('Pendaftaran/carikecamatan', [SimrsController::class, 'Carikecamatan'])
@@ -185,6 +205,43 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
 
     Route::post('simrsvclaim/list_rujukan', [VclaimController::class, 'listrujukan_keluar'])
         ->name('vclaimlistrujukan_keluar');
+
+    Route::post('simrsvclaim/vclaimcarisep', [VclaimController::class, 'vclaimcarisep'])
+        ->name('vclaimcarisep');
+    Route::post('simrsvclaim/vclaimcarisepinternal', [VclaimController::class, 'sepinternal'])
+        ->name('vclaimcarisepinternal');
+    Route::post('simrsvclaim/vclaimlistfinger', [VclaimController::class, 'vclaimlistfinger'])
+        ->name('vclaimlistfinger');
+    Route::post('simrsvclaim/vclaimcarirujukanpeserta', [VclaimController::class, 'vclaimcarirujukanpeserta'])
+        ->name('vclaimcarirujukanpeserta');
+    Route::post('simrsvclaim/vclaimcarirujukankhusus', [VclaimController::class, 'vclaimcarirujukankhusus'])
+        ->name('vclaimcarirujukankhusus');
+    Route::post('simrsvclaim/vclaimcarirujukankeluar', [VclaimController::class, 'vclaimcarirujukankeluar'])
+        ->name('vclaimcarirujukankeluar');
+    Route::post('simrsvclaim/detailrujukankeluar', [VclaimController::class, 'detailrujukankeluar'])
+        ->name('detailrujukankeluar');
+    Route::post('simrsvclaim/updaterujukankeluar', [VclaimController::class, 'updaterujukankeluar'])
+        ->name('updaterujukankeluar');
+    Route::post('simrsvclaim/vclaimsimpanupdate_rujukan', [VclaimController::class, 'vclaimsimpanupdate_rujukan'])
+        ->name('vclaimsimpanupdate_rujukan');
+    Route::post('simrsvclaim/caripolirujukan', [VclaimController::class, 'caripolirujukan'])
+        ->name('caripolirujukan');
+    Route::post('simrsvclaim/vclaimsimpan_rujukan', [VclaimController::class, 'vclaimsimpan_rujukan'])
+        ->name('vclaimsimpan_rujukan');
+    Route::post('simrsvclaim/deleterujukan', [VclaimController::class, 'deleterujukan'])
+        ->name('deleterujukan');
+    Route::post('simrsvclaim/vclaimambil_formdiagnosa', [VclaimController::class, 'vclaimambil_formdiagnosa'])
+        ->name('vclaimambil_formdiagnosa');
+    Route::post('simrsvclaim/vclaimambil_formprocedure', [VclaimController::class, 'vclaimambil_formprocedure'])
+        ->name('vclaimambil_formprocedure');
+    Route::post('simrsvclaim/vclaimsimpan_rujukankhusus', [VclaimController::class, 'vclaimsimpan_rujukankhusus'])
+        ->name('vclaimsimpan_rujukankhusus');
+    Route::post('simrsvclaim/vclaimcarisuratkontrolpeserta', [VclaimController::class, 'vclaimcarisuratkontrolpeserta'])
+        ->name('vclaimcarisuratkontrolpeserta');
+    Route::post('simrsvclaim/vclaimcarisuratkontrolpeserta_bycard', [VclaimController::class, 'vclaimcarisuratkontrolpeserta_bycard'])
+        ->name('vclaimcarisuratkontrolpeserta_bycard');
+    Route::post('simrsvclaim/vclaimcarisuratkontrol_byrs', [VclaimController::class, 'vclaimcarisuratkontrol_byrs'])
+        ->name('vclaimcarisuratkontrol_byrs');
 });
 Route::group(['middleware' => ['auth','hak_akses1:3']],function (){
     Route::get('/Billing', [BillingController::class, 'Billing'])

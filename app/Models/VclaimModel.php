@@ -784,10 +784,40 @@ class VclaimModel extends Model
         }
         return $response;
     }
-    public function carirujukanRS_byno_($rujukan)
+    public function detailrujukan_keluar($rujukan)
     {
         $client = new Client();
-        $url = $this->baseUrl . "Rujukan/RS/".$rujukan;
+        $url = $this->baseUrl . "Rujukan/Keluar/".$rujukan;
+        $signature = $this->signature();       
+        $response = $client->request('GET', $url, [
+            'headers' => $signature
+        ]);
+        $response = json_decode($response->getBody());
+        if ($response->metaData->code == 200) {
+            $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
+            $response->response = json_decode($decrypt);
+        }
+        return $response;
+    }
+    public function carirujukan_keluar($tglawal,$tglakhir)
+    {
+        $client = new Client();
+        $url = $this->baseUrl . "Rujukan/Keluar/List/tglMulai/".$tglawal."/tglAkhir/".$tglakhir;
+        $signature = $this->signature();       
+        $response = $client->request('GET', $url, [
+            'headers' => $signature
+        ]);
+        $response = json_decode($response->getBody());
+        if ($response->metaData->code == 200) {
+            $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
+            $response->response = json_decode($decrypt);
+        }
+        return $response;
+    }
+    public function carirujukan_khusus($bulan,$tahun)
+    {
+        $client = new Client();
+        $url = $this->baseUrl . "Rujukan/Khusus/List/Bulan/".$bulan."/Tahun/".$tahun;
         $signature = $this->signature();       
         $response = $client->request('GET', $url, [
             'headers' => $signature
@@ -821,5 +851,88 @@ class VclaimModel extends Model
         }catch(ClientException){
             return 'RTO';
         } 
+    }
+    public function insertrujukankhusus($data_rujukan)
+    {
+        $client = new Client();
+        $data = json_encode($data_rujukan);
+        $url = $this->baseUrl . "Rujukan/Khusus/insert";
+        $signature = $this->signature();       
+        try{
+            $response = $client->request('POST', $url, [
+                'headers' => $signature,
+                'body' => $data,
+                'allow_redirects' => true,
+                'timeout' => 20 
+                ]);
+            $response = json_decode($response->getBody());
+            if ($response->metaData->code == 200) {
+                $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
+                $response->response = json_decode($decrypt);
+            }
+            return $response;
+        }catch(ClientException){
+            return 'RTO';
+        } 
+    }
+    public function updaterujukan($data_rujukan)
+    {
+        $client = new Client();
+        $data = json_encode($data_rujukan);
+        $url = $this->baseUrl . "Rujukan/2.0/Update";
+        $signature = $this->signature();       
+        try{
+            $response = $client->request('PUT', $url, [
+                'headers' => $signature,
+                'body' => $data,
+                'allow_redirects' => true,
+                'timeout' => 20 
+                ]);
+            $response = json_decode($response->getBody());
+            if ($response->metaData->code == 200) {
+                $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
+                $response->response = json_decode($decrypt);
+            }
+            return $response;
+        }catch(ClientException){
+            return 'RTO';
+        } 
+    }
+    public function deleterujukan($data_rujukan)
+    {
+        $client = new Client();
+        $data = json_encode($data_rujukan);
+        $url = $this->baseUrl . "Rujukan/delete";
+        $signature = $this->signature();       
+        try{
+            $response = $client->request('DELETE', $url, [
+                'headers' => $signature,
+                'body' => $data,
+                'allow_redirects' => true,
+                'timeout' => 20 
+                ]);
+            $response = json_decode($response->getBody());
+            if ($response->metaData->code == 200) {
+                $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
+                $response->response = json_decode($decrypt);
+            }
+            return $response;
+        }catch(ClientException){
+            return 'RTO';
+        } 
+    }
+    public function carisuratkontrol($nomor){
+        $client = new Client();
+        $url = $this->baseUrl . "RencanaKontrol/noSuratKontrol/".$nomor;
+        $signature = $this->signature();       
+        $response = $client->request('GET', $url, [
+            'headers' => $signature
+        ]);
+        $response = json_decode($response->getBody());
+        if ($response->metaData->code == 200) {
+            $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
+            $response->response = json_decode($decrypt);
+        }
+        return $response;
     }
 }

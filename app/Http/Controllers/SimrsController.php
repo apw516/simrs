@@ -62,6 +62,105 @@ class SimrsController extends Controller
             'provinsi' => Provinsi::all(),
         ]);
     }
+    public function Menucarisep()
+    {
+        $title = 'SIMRS - CARI SEP';
+        $sidebar = 'SEP';
+        $sidebar_m = 'CARI SEP';
+        return view('vclaim.carisep', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+        ]);
+    }
+    public function menulisttglpulang()
+    {
+        $title = 'SIMRS - LIST TANGGAL PULANG SEP';
+        $sidebar = 'SEP';
+        $sidebar_m = 'LIST TANGGAL PULANG SEP';
+        return view('vclaim.listtanggalpulang', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+        ]);
+    }
+    public function menulistfinger()
+    {
+        $title = 'SIMRS - LIST fINGER PRINT';
+        $sidebar = 'SEP';
+        $sidebar_m = 'LIST FINGER PRINT';
+        return view('vclaim.listfingerprint', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+        ]);
+    }
+    public function menucarirujukan()
+    {
+        $title = 'SIMRS - CARI RUJUKAN';
+        $sidebar = 'RUJUKAN';
+        $sidebar_m = 'CARI RUJUKAN';
+        return view('vclaim.carirujukan', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+        ]);
+    }
+    public function menuinsertrujukan()
+    {
+        $title = 'SIMRS - INSERT RUJUKAN';
+        $sidebar = 'RUJUKAN';
+        $sidebar_m = 'INSERT RUJUKAN';
+        return view('vclaim.insertrujukan', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+        ]);
+    }
+    public function menulistrujukankeluar()
+    {
+        $title = 'SIMRS - DATA RUJUKAN KELIAR RS';
+        $sidebar = 'RUJUKAN';
+        $sidebar_m = 'DATA RUJUKAN KELUAR RS';
+        return view('vclaim.datarujukankeluar', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+        ]);
+    }
+    public function menuinsertrujukankhusus()
+    {
+        $title = 'SIMRS - INSERT RUJUKAN KHUSUS';
+        $sidebar = 'RUJUKAN';
+        $sidebar_m = 'INSERT RUJUKAN KHUSUS';
+        return view('vclaim.insertrujukan_khusus', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+        ]);
+    }
+    public function menulistrujukankhusus()
+    {
+        $title = 'SIMRS - LIST RUJUKAN KHUSUS';
+        $sidebar = 'RUJUKAN';
+        $sidebar_m = 'LIST RUJUKAN KHUSUS';
+        return view('vclaim.listrujukan_khusus', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+        ]);
+    }
+    public function menucarisuratkontrol()
+    {
+        $title = 'SIMRS - CARI SURAT KONTROL & SPRI';
+        $sidebar = 'SURAT KONTROL';
+        $sidebar_m = 'CARI SURAT KONTROL & SPRI';
+        return view('vclaim.carisuratkontrol', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+        ]);
+    }
     public function ValidasiRanap()
     {
         $title = 'SIMRS - Validasi Ranap';
@@ -238,6 +337,19 @@ class SimrsController extends Controller
         $result = $v->referensi_diagnosa($request['term']);
         if (count($result->response->diagnosa) > 0) {
             foreach ($result->response->diagnosa as $row)
+                $arr_result[] = array(
+                    'label' => $row->nama,
+                    'kode' => $row->kode,
+                );
+            echo json_encode($arr_result);
+        }
+    }
+    public function cariprocedure(Request $request)
+    {
+        $v = new VclaimModel();
+        $result = $v->referensi_procedure_prb($request['term']);
+        if (count($result->response->procedure) > 0) {
+            foreach ($result->response->procedure as $row)
                 $arr_result[] = array(
                     'label' => $row->nama,
                     'kode' => $row->kode,
@@ -2758,8 +2870,27 @@ class SimrsController extends Controller
     public function infosep(Request $request)
     {
         $v = new VclaimModel();
+        $sep = $v->carisep($request->nosep);
+        $kodeprop = $sep->response->lokasiKejadian->kdProp;
+        $kodekab = $sep->response->lokasiKejadian->kdKab;
+        $prop = $v->referensi_propinsi();
+        if($kodeprop != null ){
+            $kab = $v->referensi_kabupaten($kodeprop);
+            $datakab = $kab->response->list;
+        }else{
+            $datakab = 0;
+        }
+        if($kodekab != null ){
+            $kec = $v->referensi_kecamatan($kodekab);
+            $datakec = $kec->response->list;
+        }else{
+            $datakec = 0;
+        }
         return view('pendaftaran.infosep', [
-            'sep' => $v->carisep($request->nosep)
+            'sep' => $v->carisep($request->nosep),
+            'prop' => $prop->response->list,
+            'kab' => $datakab,
+            'kec' => $datakec
         ]);
     }
     public function inforujukan(Request $request)
