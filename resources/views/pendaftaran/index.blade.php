@@ -24,10 +24,10 @@
                 </div> --}}
                 <div class="col-sm-12 mt-3">
                     <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#modalformpasienbaru"><i
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalformpasienbaru"><i
                                 class="bi bi-person-plus"></i> Pasien
                             Baru</button></button>
-                        <button type="button" class="btn btn-outline-primary" data-toggle="modal"
+                        {{-- <button type="button" class="btn btn-outline-primary" data-toggle="modal"
                             data-target="#modalinfopasienbpjs"><i class="bi bi-person-plus"></i> Info Pasien
                             BPJS</button>
                         <button type="button" class="btn btn-outline-primary" data-toggle="modal"
@@ -40,7 +40,7 @@
                             data-target="#modalpencariansep"><i class="bi bi-send-plus-fill"></i> Cari
                             SEP</button>
                         <button type="button" class="btn btn-outline-primary" data-toggle="modal"
-                            data-target="#modalpencariansep"><i class="bi bi-send-plus-fill mr-2"></i>Update tanggal pulang</button>
+                            data-target="#modalpencariansep"><i class="bi bi-send-plus-fill mr-2"></i>Update tanggal pulang</button> --}}
                     </div>
                     {{-- <button class="btn btn-primary float-sm-right ml-2" data-toggle="modal" data-target="#modalpengajuansep"> <i
                             class="bi bi-send-plus-fill"></i> Cari Rujukan</button>

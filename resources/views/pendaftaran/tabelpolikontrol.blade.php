@@ -31,6 +31,8 @@
         kode = $(this).attr('data-id')
         $('#polikontrol').val(nama)
         $('#kodepolikontrol').val(kode)
+        $('#polikontrol2').val(nama)
+        $('#kodepolikontrol2').val(kode)
         $('#polikontrol_update').val(nama)
         $('#kodepolikontrol_update').val(kode)      
     });

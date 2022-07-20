@@ -161,6 +161,28 @@ class SimrsController extends Controller
             'sidebar_m' => $sidebar_m,
         ]);
     }
+    public function menuinsertrencanakontrol()
+    {
+        $title = 'SIMRS - INSERT SURAT KONTROL';
+        $sidebar = 'SURAT KONTROL';
+        $sidebar_m = 'INSERT SURAT KONTROL';
+        return view('vclaim.insertsuratkontrol', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+        ]);
+    }
+    public function menuinsertspri()
+    {
+        $title = 'SIMRS - INSERT SPRI';
+        $sidebar = 'SURAT KONTROL';
+        $sidebar_m = 'INSERT SPRI';
+        return view('vclaim.insertspri', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+        ]);
+    }
     public function ValidasiRanap()
     {
         $title = 'SIMRS - Validasi Ranap';

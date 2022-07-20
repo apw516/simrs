@@ -88,7 +88,7 @@
                   <form>
                       <div class="form-group">
                           <label for="exampleInputEmail1">Nomor SEP</label>
-                          <input readonly class="form-control" id="pulang_nomorsep">
+                          <input class="form-control" id="pulang_nomorsep">
                       </div>
                       <div class="form-group">
                           <label for="exampleInputPassword1">Status pulang</label>
