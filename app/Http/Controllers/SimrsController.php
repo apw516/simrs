@@ -183,6 +183,17 @@ class SimrsController extends Controller
             'sidebar_m' => $sidebar_m,
         ]);
     }
+    public function menuinsertprb()
+    {
+        $title = 'SIMRS - INSERT PRB';
+        $sidebar = 'PRB';
+        $sidebar_m = 'INSERT PRB';
+        return view('vclaim.insertprb', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+        ]);
+    }
     public function ValidasiRanap()
     {
         $title = 'SIMRS - Validasi Ranap';

@@ -54,6 +54,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('menuinsertrencanakontrol'); //sidebar
     Route::get('/menuinsertspri', [SimrsController::class, 'menuinsertspri'])
         ->name('menuinsertspri'); //sidebar
+    Route::get('/menuinsertprb', [SimrsController::class, 'menuinsertprb'])
+        ->name('menuinsertprb'); //sidebar
     Route::get('/validasiranap', [SimrsController::class, 'ValidasiRanap'])
         ->name('Validasiranap'); //sidebar
     Route::post('/formvalidasi', [SimrsController::class, 'formvalidasi'])

@@ -251,7 +251,7 @@
                       </li>
                     </ul>
                   </li> --}}
-                  <li class="nav-item @if($sidebar== 'SURAT KONTROL') menu-open @endif">
+                  <li class="nav-item @if($sidebar== 'PRB') menu-open @endif">
                     <a href="#" class="nav-link">
                       {{-- <i class="nav-icon fas fa-table"></i> --}}
                       <i class="nav-icon fasbi bi-back"></i>
@@ -262,7 +262,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                       <li class="nav-item">
-                        <a href="{{ route('menucarirujukan')}}" class="nav-link @if($sidebar_m == 'CARI RUJUKAN') active @endif">
+                        <a href="{{ route('menuinsertprb')}}" class="nav-link @if($sidebar_m == 'INSERT PRB') active @endif">
                           <i class="far fa-circle nav-icon"></i>
                           <p>Insert PRB</p>
                         </a>
@@ -281,7 +281,7 @@
                       </li>
                     </ul>
                   </li>
-                  <li class="nav-item @if($sidebar== 'SURAT KONTROL') menu-open @endif">
+                  <li class="nav-item @if($sidebar== 'MONITORING') menu-open @endif">
                     <a href="#" class="nav-link">
                       {{-- <i class="nav-icon fas fa-table"></i> --}}
                       <i class="nav-icon fas bi bi-tv"></i>
@@ -317,6 +317,7 @@
                       </li>
                     </ul>
                   </li>
+                  <div hidden class="menulain">
                   <li class="nav-header">Laboratorium</li>
                   <li class="nav-item @if($sidebar== 'SURAT KONTROL') menu-open @endif">
                     <a href="#" class="nav-link">
@@ -408,6 +409,8 @@
                       </li>
                     </ul>
                   </li>
+                </div>
+
 
 
 {{-- 
