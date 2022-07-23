@@ -80,7 +80,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="btn btn-danger float-right ml-1"><i class="bi bi-x-square"></i>  batal</button>
+                        <button class="btn btn-danger float-right ml-1" onclick="location.reload()"><i class="bi bi-x-square"></i>  batal</button>
                         <button class="btn btn-primary float-right" onclick="simpanrujukan_khusus()"><i class="bi bi-sd-card"></i> simpan</button>
                     </div>
                 </div>

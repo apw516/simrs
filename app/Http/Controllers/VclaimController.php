@@ -426,10 +426,10 @@ class VclaimController extends Controller
         $v = new VclaimModel();
         $tahun = $request->tahun;
         $bulan = $request->bulan;
-        $rujukan = $v->carirujukan_khusus($bulan,$tahun);
+        $rujukan = $v->carirujukan_khusus($bulan, $tahun);
         return view('vclaim.tabelrujukan_khusus', [
             'list' => $rujukan
-        ]);     
+        ]);
     }
     public function vclaimcarirujukankeluar(Request $request)
     {
@@ -563,6 +563,23 @@ class VclaimController extends Controller
             return view('rujukankhusus.procedure5');
         }
     }
+    public function vclaimambil_formjenisobat(Request $request)
+    {
+        $jlh = $request->jlhjns_obat;
+        if ($jlh == 1) {
+            return view('prb.obt1');
+        } else if ($jlh == 2) {
+            return view('prb.obt2');
+        } else if ($jlh == 3) {
+            return view('prb.obt3');
+        } else if ($jlh == 4) {
+            return view('prb.obt4');
+        } else if ($jlh == 5) {
+            return view('prb.obt5');
+        } else if ($jlh == 6) {
+            return view('prb.obt6');
+        }
+    }
     public function vclaimsimpan_rujukankhusus(Request $request)
     {
         $nomorrujukan = $request->rujukan;
@@ -613,39 +630,35 @@ class VclaimController extends Controller
                 ["kode" => "$s4;$d4"],
                 ["kode" => "$s5;$d5"]
             ];
-        }else{
+        } else {
             $diagnosa = [
                 ["kode" => ";"]
             ];
         }
 
-        if( $jlhproce == 1){
+        if ($jlhproce == 1) {
             $procedure = [
                 ["kode" =>  "$p1"]
             ];
-        }
-        else if($jlhproce == 2){
+        } else if ($jlhproce == 2) {
             $procedure = [
                 ["kode" =>  "$p1"],
                 ["kode" =>  "$p2"]
             ];
-        }
-        else if($jlhproce == 3){
+        } else if ($jlhproce == 3) {
             $procedure = [
                 ["kode" =>  "$p1"],
                 ["kode" =>  "$p2"],
                 ["kode" =>  "$p3"]
             ];
-        }
-        else if($jlhproce == 4){
+        } else if ($jlhproce == 4) {
             $procedure = [
                 ["kode" =>  "$p1"],
                 ["kode" =>  "$p2"],
                 ["kode" =>  "$p3"],
                 ["kode" =>  "$p4"]
             ];
-        }
-        else if($jlhproce == 5){
+        } else if ($jlhproce == 5) {
             $procedure = [
                 ["kode" =>  "$p1"],
                 ["kode" =>  "$p2"],
@@ -653,18 +666,18 @@ class VclaimController extends Controller
                 ["kode" =>  "$p4"],
                 ["kode" =>  "$p5"]
             ];
-        }else{
+        } else {
             $procedure = [
                 ["kode" =>  ""]
             ];
-        }      
+        }
         $data = [
             "noRujukan" => "$nomorrujukan",
             "diagnosa" =>
             $diagnosa,
             "procedure" =>
             $procedure,
-            "user" => "Coba Ws"
+            "user" => auth()->user()->id_simrs
         ];
         $v = new VclaimModel();
         $rujukan = $v->insertrujukankhusus($data);
@@ -674,8 +687,213 @@ class VclaimController extends Controller
         ];
         echo json_encode($data1);
     }
+    public function vclaimsimpan_prb(Request $request)
+    {
+        $sep = $request->sep_prb;
+        $noka_prb = $request->noka_prb;
+        $email_prb = $request->email_prb;
+        $kodeprogramprb = $request->kodeprogramprb;
+        $kodedokter_prb = $request->kodedokter_prb;
+        $alamatpx_prb = $request->alamatpx_prb;
+        $keterangan_prb = $request->keterangan_prb;
+        $saran_prb = $request->saran_prb;
+        $jlhobat = $request->jlhobat;
+        $kodeobat1 = $request->kodeobat1;
+        $signa1_1 = $request->signa1_1;
+        $signa2_1 = $request->signa2_1;
+        $jmlhobt1 = $request->jmlhobt1;
+        $kodeobat2 = $request->kodeobat2;
+        $signa1_2 = $request->signa1_2;
+        $signa2_2 = $request->signa2_2;
+        $jmlhobt2 = $request->jmlhobt2;
+        $kodeobat3 = $request->kodeobat3;
+        $signa1_3 = $request->signa1_3;
+        $signa2_3 = $request->signa2_3;
+        $jmlhobt3 = $request->jmlhobt3;
+        $kodeobat4 = $request->kodeobat4;
+        $signa1_4 = $request->signa1_4;
+        $signa2_4 = $request->signa2_4;
+        $jmlhobt4 = $request->jmlhobt4;
+        $kodeobat5 = $request->kodeobat5;
+        $signa1_5 = $request->signa1_5;
+        $signa2_5 = $request->signa2_5;
+        $jmlhobt5 = $request->jmlhobt5;
+        $kodeobat6 = $request->kodeobat6;
+        $signa1_6 = $request->signa1_6;
+        $signa2_6 = $request->signa2_6;
+        $jmlhobt6 = $request->jmlhobt6;
+
+        if ($jlhobat == 1) {
+            $obat = [
+                [
+                    "kdObat" => "$kodeobat1",
+                    "signa1" => "$signa1_1",
+                    "signa2" => "$signa2_1",
+                    "jmlObat" => "$jmlhobt1"
+                ]
+            ];
+        } else if ($jlhobat == 2) {
+            $obat = [
+                [
+                    "kdObat" => "$kodeobat1",
+                    "signa1" => "$signa1_1",
+                    "signa2" => "$signa2_1",
+                    "jmlObat" => "$jmlhobt1"
+                ],
+                [
+                    "kdObat" => "$kodeobat2",
+                    "signa1" => "$signa1_2",
+                    "signa2" => "$signa2_2",
+                    "jmlObat" => "$jmlhobt2"
+                ],
+            ];
+        } else if ($jlhobat == 3) {
+            $obat = [
+                [
+                    "kdObat" => "$kodeobat1",
+                    "signa1" => "$signa1_1",
+                    "signa2" => "$signa2_1",
+                    "jmlObat" => "$jmlhobt1"
+                ],
+                [
+                    "kdObat" => "$kodeobat2",
+                    "signa1" => "$signa1_2",
+                    "signa2" => "$signa2_2",
+                    "jmlObat" => "$jmlhobt2"
+                ],
+                [
+                    "kdObat" => "$kodeobat3",
+                    "signa1" => "$signa1_3",
+                    "signa2" => "$signa2_3",
+                    "jmlObat" => "$jmlhobt3"
+                ],
+            ];
+        } else if ($jlhobat == 4) {
+            $obat = [
+                [
+                    "kdObat" => "$kodeobat1",
+                    "signa1" => "$signa1_1",
+                    "signa2" => "$signa2_1",
+                    "jmlObat" => "$jmlhobt1"
+                ],
+                [
+                    "kdObat" => "$kodeobat2",
+                    "signa1" => "$signa1_2",
+                    "signa2" => "$signa2_2",
+                    "jmlObat" => "$jmlhobt2"
+                ],
+                [
+                    "kdObat" => "$kodeobat3",
+                    "signa1" => "$signa1_3",
+                    "signa2" => "$signa2_3",
+                    "jmlObat" => "$jmlhobt3"
+                ],
+                [
+                    "kdObat" => "$kodeobat4",
+                    "signa1" => "$signa1_4",
+                    "signa2" => "$signa2_4",
+                    "jmlObat" => "$jmlhobt4"
+                ]
+            ];
+        } else if ($jlhobat == 5) {
+            $obat = [
+                [
+                    "kdObat" => "$kodeobat1",
+                    "signa1" => "$signa1_1",
+                    "signa2" => "$signa2_1",
+                    "jmlObat" => "$jmlhobt1"
+                ],
+                [
+                    "kdObat" => "$kodeobat2",
+                    "signa1" => "$signa1_2",
+                    "signa2" => "$signa2_2",
+                    "jmlObat" => "$jmlhobt2"
+                ],
+                [
+                    "kdObat" => "$kodeobat3",
+                    "signa1" => "$signa1_3",
+                    "signa2" => "$signa2_3",
+                    "jmlObat" => "$jmlhobt3"
+                ],
+                [
+                    "kdObat" => "$kodeobat4",
+                    "signa1" => "$signa1_4",
+                    "signa2" => "$signa2_4",
+                    "jmlObat" => "$jmlhobt4"
+                ],
+                [
+                    "kdObat" => "$kodeobat5",
+                    "signa1" => "$signa1_5",
+                    "signa2" => "$signa2_5",
+                    "jmlObat" => "$jmlhobt5"
+                ]
+            ];
+        } else if ($jlhobat == 6) {
+            $obat = [
+                [
+                    "kdObat" => "$kodeobat1",
+                    "signa1" => "$signa1_1",
+                    "signa2" => "$signa2_1",
+                    "jmlObat" => "$jmlhobt1"
+                ],
+                [
+                    "kdObat" => "$kodeobat2",
+                    "signa1" => "$signa1_2",
+                    "signa2" => "$signa2_2",
+                    "jmlObat" => "$jmlhobt2"
+                ],
+                [
+                    "kdObat" => "$kodeobat3",
+                    "signa1" => "$signa1_3",
+                    "signa2" => "$signa2_3",
+                    "jmlObat" => "$jmlhobt3"
+                ],
+                [
+                    "kdObat" => "$kodeobat4",
+                    "signa1" => "$signa1_4",
+                    "signa2" => "$signa2_4",
+                    "jmlObat" => "$jmlhobt4"
+                ],
+                [
+                    "kdObat" => "$kodeobat5",
+                    "signa1" => "$signa1_5",
+                    "signa2" => "$signa2_5",
+                    "jmlObat" => "$jmlhobt5"
+                ],
+                [
+                    "kdObat" => "$kodeobat6",
+                    "signa1" => "$signa1_6",
+                    "signa2" => "$signa2_6",
+                    "jmlObat" => "$jmlhobt6"
+                ]
+            ];
+        }
+        $data = [
+            "request" => [
+                "t_prb" => [
+                    "noSep" => "$sep",
+                    "noKartu" => "$noka_prb",
+                    "alamat" => "$alamatpx_prb",
+                    "email" => "$email_prb",
+                    "programPRB" => "$kodeprogramprb",
+                    "kodeDPJP" => "$kodedokter_prb",
+                    "keterangan" => "$keterangan_prb",
+                    "saran" => "$saran_prb",
+                    "user" => auth()->user()->id_simrs,
+                    "obat" => $obat
+                ]
+            ]
+        ];    
+        $v = new VclaimModel();
+        $prb = $v->InsertPRB($data);
+        $data1 = [
+            'kode' => $prb->metaData->code,
+            'message' => $prb->metaData->message
+        ];
+        echo json_encode($data1);
+    }
     public function vclaimcarisuratkontrolpeserta(Request $request)
-    {        
+    {
         $v = new VclaimModel();
         $detail = $v->carisuratkontrol($request->nomorpencarian);
         return view('vclaim.detailsurkon', [
@@ -683,18 +901,34 @@ class VclaimController extends Controller
         ]);
     }
     public function vclaimcarisuratkontrolpeserta_bycard(Request $request)
-    {        
+    {
         $v = new VclaimModel();
-        $detail = $v->ListRencanaKontrol_bycard($request->bulan,$request->tahun,$request->nomorpencarian,$request->filter);
+        $detail = $v->ListRencanaKontrol_bycard($request->bulan, $request->tahun, $request->nomorpencarian, $request->filter);
         return view('vclaim.tabelsurkon', [
             'list' => $detail
         ]);
     }
     public function vclaimcarisuratkontrol_byrs(Request $request)
-    {        
+    {
         $v = new VclaimModel();
-        $detail = $v->ListRencanaKontrol_rs($request->tglawalcari_surkon,$request->tglakhircari_surkon,$request->filter);
+        $detail = $v->ListRencanaKontrol_rs($request->tglawalcari_surkon, $request->tglakhircari_surkon, $request->filter);
         return view('vclaim.tabelsurkon_rs', [
+            'list' => $detail
+        ]);
+    }
+    public function vclaimcarisrb(Request $request)
+    {
+        $v = new VclaimModel();
+        $detail = $v->cariprb($request->srb, $request->sep);
+        return view('vclaim.detailsrb', [
+            'list' => $detail
+        ]);
+    }
+    public function vclaimcarisrb_date(Request $request)
+    {
+        $v = new VclaimModel();
+        $detail = $v->cariprb_date($request->tglawal, $request->tglakhir);
+        return view('vclaim.tabelsrb', [
             'list' => $detail
         ]);
     }

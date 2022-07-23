@@ -406,6 +406,23 @@ class VclaimModel extends Model
         }
         return $response;  
     }
+    public function InsertPRB($datasurat)
+    {
+        $client = new Client();
+        $data = json_encode($datasurat);
+        $url = $this->baseUrl . "PRB/insert";
+        $signature = $this->signature();       
+        $response = $client->request('POST', $url, [
+            'headers' => $signature,
+            'body' => $data
+            ]);
+        $response = json_decode($response->getBody());
+        if ($response->metaData->code == 200) {
+            $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
+            $response->response = json_decode($decrypt);
+        }
+        return $response;  
+    }
     public function UpdateSPRI($datasurat)
     {
         $client = new Client();
@@ -596,6 +613,36 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "RencanaKontrol/nosep/".$nosep;
+        $signature = $this->signature();       
+        $response = $client->request('GET', $url, [
+            'headers' => $signature
+        ]);
+        $response = json_decode($response->getBody());
+        if ($response->metaData->code == 200) {
+            $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
+            $response->response = json_decode($decrypt);
+        }
+        return $response;
+    }
+    public function cariprb($prb,$nosep)
+    {
+        $client = new Client();
+        $url = $this->baseUrl . "prb/".$prb."/nosep/".$nosep;
+        $signature = $this->signature();       
+        $response = $client->request('GET', $url, [
+            'headers' => $signature
+        ]);
+        $response = json_decode($response->getBody());
+        if ($response->metaData->code == 200) {
+            $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
+            $response->response = json_decode($decrypt);
+        }
+        return $response;
+    }
+    public function cariprb_date($tglawal,$tglakhir)
+    {
+        $client = new Client();
+        $url = $this->baseUrl . "prb/tglMulai/".$tglawal."/tglAkhir/".$tglakhir;
         $signature = $this->signature();       
         $response = $client->request('GET', $url, [
             'headers' => $signature

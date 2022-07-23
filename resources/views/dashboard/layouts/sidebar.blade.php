@@ -268,15 +268,9 @@
                         </a>
                       </li>
                       <li class="nav-item">
-                        <a href="{{ route('menuinsertrujukan')}}" class="nav-link text-sm @if($sidebar_m == 'INSERT RUJUKAN') active @endif">
+                        <a href="{{ route('menucariprb')}}" class="nav-link text-sm @if($sidebar_m == 'CARI PRB') active @endif">
                           <i class="far fa-circle nav-icon"></i>
                           <p>Cari Nomor PRB</p>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="{{ route('menulistfinger')}}" class="nav-link text-sm @if($sidebar_m == 'LIST FINGER PRINT') active @endif">
-                          <i class="far fa-circle nav-icon"></i>
-                          <p>Data Rujukan Keluar RS</p>
                         </a>
                       </li>
                     </ul>
@@ -292,25 +286,25 @@
                     </a>
                     <ul class="nav nav-treeview">
                       <li class="nav-item">
-                        <a href="{{ route('menucarirujukan')}}" class="nav-link @if($sidebar_m == 'CARI RUJUKAN') active @endif">
+                        <a href="{{ route('menudatakunjungan')}}" class="nav-link @if($sidebar_m == 'DATA KUNJUNGAN') active @endif">
                           <i class="far fa-circle nav-icon"></i>
                           <p>Data Kunjungan</p>
                         </a>
                       </li>
                       <li class="nav-item">
-                        <a href="{{ route('menuinsertrujukan')}}" class="nav-link text-sm @if($sidebar_m == 'INSERT RUJUKAN') active @endif">
+                        <a href="{{ route('menudataklaim')}}" class="nav-link text-sm @if($sidebar_m == 'DATA KLAIM') active @endif">
                           <i class="far fa-circle nav-icon"></i>
                           <p>Data Klaim</p>
                         </a>
                       </li>
                       <li class="nav-item">
-                        <a href="{{ route('menulistfinger')}}" class="nav-link text-sm @if($sidebar_m == 'LIST FINGER PRINT') active @endif">
+                        <a href="{{ route('menuhispelpes')}}" class="nav-link text-sm @if($sidebar_m == 'History Pelayanan Peserta') active @endif">
                           <i class="far fa-circle nav-icon"></i>
                           <p>History Pelayanan Peserta </p>
                         </a>
                       </li>
                       <li class="nav-item">
-                        <a href="{{ route('menulistfinger')}}" class="nav-link text-sm @if($sidebar_m == 'LIST FINGER PRINT') active @endif">
+                        <a href="{{ route('menudataklaimjr')}}" class="nav-link text-sm @if($sidebar_m == 'DATA KLAIM JR') active @endif">
                           <i class="far fa-circle nav-icon"></i>
                           <p>Data Klaim JR</p>
                         </a>

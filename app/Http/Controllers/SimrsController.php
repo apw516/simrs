@@ -188,10 +188,89 @@ class SimrsController extends Controller
         $title = 'SIMRS - INSERT PRB';
         $sidebar = 'PRB';
         $sidebar_m = 'INSERT PRB';
+        $v = new VclaimModel();
+        $p = $v->referensi_diagnosa_prb();
+        // dd($p);
         return view('vclaim.insertprb', [
             'title' => $title,
             'sidebar' => $sidebar,
             'sidebar_m' => $sidebar_m,
+            'program_prb' => $p
+        ]);
+    }
+    public function menucariprb()
+    {
+        $title = 'SIMRS - PENCARIAN PRB';
+        $sidebar = 'PRB';
+        $sidebar_m = 'CARI PRB';
+        $v = new VclaimModel();
+        $p = $v->referensi_diagnosa_prb();
+        // dd($p);
+        return view('vclaim.cariprb', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+            'program_prb' => $p
+        ]);
+    }
+    public function menudatakunjungan()
+    {
+        $title = 'SIMRS - DATA KUNJUNGAN';
+        $sidebar = 'MONITORING';
+        $sidebar_m = 'DATA KUNJUNGAN';
+        $v = new VclaimModel();
+        $p = $v->referensi_diagnosa_prb();
+        // dd($p);
+        return view('vclaim.datakunjungan', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+            'program_prb' => $p
+        ]);
+    }
+    public function menudataklaim()
+    {
+        $title = 'SIMRS - DATA KLAIM';
+        $sidebar = 'MONITORING';
+        $sidebar_m = 'DATA KLAIM';
+        $v = new VclaimModel();
+        $p = $v->referensi_diagnosa_prb();
+        // dd($p);
+        return view('vclaim.dataklaim', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+            'program_prb' => $p
+        ]);
+    }
+    public function menuhispelpes()
+    {
+        $title = 'SIMRS - History Pelayanan Peserta';
+        $sidebar = 'MONITORING';
+        $sidebar_m = 'History Pelayanan Peserta';
+        $v = new VclaimModel();
+        $p = $v->referensi_diagnosa_prb();
+        // dd($p);
+        return view('vclaim.dataklaim', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+            'program_prb' => $p
+        ]);
+    }
+    public function menudataklaimjr()
+    {
+        $title = 'SIMRS - DATA KLAIM JR';
+        $sidebar = 'MONITORING';
+        $sidebar_m = 'DATA KLAIM JR';
+        $v = new VclaimModel();
+        $p = $v->referensi_diagnosa_prb();
+        // dd($p);
+        return view('vclaim.dataklaim', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+            'program_prb' => $p
         ]);
     }
     public function ValidasiRanap()
@@ -370,6 +449,19 @@ class SimrsController extends Controller
         $result = $v->referensi_diagnosa($request['term']);
         if (count($result->response->diagnosa) > 0) {
             foreach ($result->response->diagnosa as $row)
+                $arr_result[] = array(
+                    'label' => $row->nama,
+                    'kode' => $row->kode,
+                );
+            echo json_encode($arr_result);
+        }
+    }
+    public function cariobat(Request $request)
+    {
+        $v = new VclaimModel();
+        $result = $v->referensi_obat_generik_prb($request['term']);
+        if (count($result->response->list) > 0) {
+            foreach ($result->response->list as $row)
                 $arr_result[] = array(
                     'label' => $row->nama,
                     'kode' => $row->kode,

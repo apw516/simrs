@@ -56,6 +56,16 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('menuinsertspri'); //sidebar
     Route::get('/menuinsertprb', [SimrsController::class, 'menuinsertprb'])
         ->name('menuinsertprb'); //sidebar
+    Route::get('/menucariprb', [SimrsController::class, 'menucariprb'])
+        ->name('menucariprb'); //sidebar
+    Route::get('/menudatakunjungan', [SimrsController::class, 'menudatakunjungan'])
+        ->name('menudatakunjungan'); //sidebar
+    Route::get('/menudataklaim', [SimrsController::class, 'menudataklaim'])
+        ->name('menudataklaim'); //sidebar
+    Route::get('/menuhispelpes', [SimrsController::class, 'menuhispelpes'])
+        ->name('menuhispelpes'); //sidebar
+    Route::get('/menudataklaimjr', [SimrsController::class, 'menudataklaimjr'])
+        ->name('menudataklaimjr'); //sidebar
     Route::get('/validasiranap', [SimrsController::class, 'ValidasiRanap'])
         ->name('Validasiranap'); //sidebar
     Route::post('/formvalidasi', [SimrsController::class, 'formvalidasi'])
@@ -117,6 +127,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('caridokter_rs'); //formpasien_bpjs
     Route::get('Pendaftaran/caridiagnosa', [SimrsController::class, 'Caridiagnosa'])
         ->name('caridiagnosa'); //form[asien_bpjs
+    Route::get('Pendaftaran/cariobat', [SimrsController::class, 'cariobat'])
+        ->name('cariobat'); //form[asien_bpjs
     Route::get('Pendaftaran/cariprocedure', [SimrsController::class, 'cariprocedure'])
         ->name('cariprocedure'); //form[asien_bpjs
     Route::post('Pendaftaran/carikabupaten', [SimrsController::class, 'Carikabupaten'])
@@ -240,14 +252,22 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('vclaimambil_formdiagnosa');
     Route::post('simrsvclaim/vclaimambil_formprocedure', [VclaimController::class, 'vclaimambil_formprocedure'])
         ->name('vclaimambil_formprocedure');
+    Route::post('simrsvclaim/vclaimambil_formjenisobat', [VclaimController::class, 'vclaimambil_formjenisobat'])
+        ->name('vclaimambil_formjenisobat');
     Route::post('simrsvclaim/vclaimsimpan_rujukankhusus', [VclaimController::class, 'vclaimsimpan_rujukankhusus'])
         ->name('vclaimsimpan_rujukankhusus');
+    Route::post('simrsvclaim/vclaimsimpan_prb', [VclaimController::class, 'vclaimsimpan_prb'])
+        ->name('vclaimsimpan_prb');
     Route::post('simrsvclaim/vclaimcarisuratkontrolpeserta', [VclaimController::class, 'vclaimcarisuratkontrolpeserta'])
         ->name('vclaimcarisuratkontrolpeserta');
     Route::post('simrsvclaim/vclaimcarisuratkontrolpeserta_bycard', [VclaimController::class, 'vclaimcarisuratkontrolpeserta_bycard'])
         ->name('vclaimcarisuratkontrolpeserta_bycard');
     Route::post('simrsvclaim/vclaimcarisuratkontrol_byrs', [VclaimController::class, 'vclaimcarisuratkontrol_byrs'])
         ->name('vclaimcarisuratkontrol_byrs');
+    Route::post('simrsvclaim/vclaimcarisrb', [VclaimController::class, 'vclaimcarisrb'])
+        ->name('vclaimcarisrb');
+    Route::post('simrsvclaim/vclaimcarisrb_date', [VclaimController::class, 'vclaimcarisrb_date'])
+        ->name('vclaimcarisrb_date');
 });
 Route::group(['middleware' => ['auth','hak_akses1:3']],function (){
     Route::get('/Billing', [BillingController::class, 'Billing'])
