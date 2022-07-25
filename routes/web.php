@@ -268,6 +268,14 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('vclaimcarisrb');
     Route::post('simrsvclaim/vclaimcarisrb_date', [VclaimController::class, 'vclaimcarisrb_date'])
         ->name('vclaimcarisrb_date');
+    Route::post('simrsvclaim/vclaimcaridatakunjungan', [VclaimController::class, 'vclaimcaridatakunjungan'])
+        ->name('vclaimcaridatakunjungan');
+    Route::post('simrsvclaim/vclaimcaridataklaim', [VclaimController::class, 'vclaimcaridataklaim'])
+        ->name('vclaimcaridataklaim');
+    Route::post('simrsvclaim/vclaimcaririwayatpeserta', [VclaimController::class, 'vclaimcaririwayatpeserta'])
+        ->name('vclaimcaririwayatpeserta');
+    Route::post('simrsvclaim/vclaimcaridataklaimjr', [VclaimController::class, 'vclaimcaridataklaimjr'])
+        ->name('vclaimcaridataklaimjr');
 });
 Route::group(['middleware' => ['auth','hak_akses1:3']],function (){
     Route::get('/Billing', [BillingController::class, 'Billing'])

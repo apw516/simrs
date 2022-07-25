@@ -534,6 +534,51 @@ class VclaimModel extends Model
         }
         return $response;
     }
+    public function get_data_klaim($tgl,$jenis,$status)
+    {
+        $client = new Client();
+        $url = $this->baseUrl . "Monitoring/Klaim/Tanggal/".$tgl."/JnsPelayanan/".$jenis."/Status/".$status;
+        $signature = $this->signature();       
+        $response = $client->request('GET', $url, [
+            'headers' => $signature
+        ]);
+        $response = json_decode($response->getBody());
+        if ($response->metaData->code == 200) {
+            $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
+            $response->response = json_decode($decrypt);
+        }
+        return $response;
+    }
+    public function get_data_klaim_jr($jenis,$awal,$akhir)
+    {
+        $client = new Client();
+        $url = $this->baseUrl . "monitoring/JasaRaharja/JnsPelayanan/".$jenis."/tglMulai/".$awal."/tglAkhir/".$akhir;
+        $signature = $this->signature();       
+        $response = $client->request('GET', $url, [
+            'headers' => $signature
+        ]);
+        $response = json_decode($response->getBody());
+        if ($response->metaData->code == 200) {
+            $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
+            $response->response = json_decode($decrypt);
+        }
+        return $response;
+    }
+    public function get_data_kunjungan($tgl,$jenis)
+    {
+        $client = new Client();
+        $url = $this->baseUrl . "Monitoring/Kunjungan/Tanggal/".$tgl."/JnsPelayanan/".$jenis;
+        $signature = $this->signature();       
+        $response = $client->request('GET', $url, [
+            'headers' => $signature
+        ]);
+        $response = json_decode($response->getBody());
+        if ($response->metaData->code == 200) {
+            $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
+            $response->response = json_decode($decrypt);
+        }
+        return $response;
+    }
     public function get_data_kunjungan_ranap($tgl)
     {
         $client = new Client();

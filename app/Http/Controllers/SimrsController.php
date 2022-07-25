@@ -218,14 +218,10 @@ class SimrsController extends Controller
         $title = 'SIMRS - DATA KUNJUNGAN';
         $sidebar = 'MONITORING';
         $sidebar_m = 'DATA KUNJUNGAN';
-        $v = new VclaimModel();
-        $p = $v->referensi_diagnosa_prb();
-        // dd($p);
         return view('vclaim.datakunjungan', [
             'title' => $title,
             'sidebar' => $sidebar,
             'sidebar_m' => $sidebar_m,
-            'program_prb' => $p
         ]);
     }
     public function menudataklaim()
@@ -233,14 +229,10 @@ class SimrsController extends Controller
         $title = 'SIMRS - DATA KLAIM';
         $sidebar = 'MONITORING';
         $sidebar_m = 'DATA KLAIM';
-        $v = new VclaimModel();
-        $p = $v->referensi_diagnosa_prb();
-        // dd($p);
         return view('vclaim.dataklaim', [
             'title' => $title,
             'sidebar' => $sidebar,
             'sidebar_m' => $sidebar_m,
-            'program_prb' => $p
         ]);
     }
     public function menuhispelpes()
@@ -248,14 +240,10 @@ class SimrsController extends Controller
         $title = 'SIMRS - History Pelayanan Peserta';
         $sidebar = 'MONITORING';
         $sidebar_m = 'History Pelayanan Peserta';
-        $v = new VclaimModel();
-        $p = $v->referensi_diagnosa_prb();
-        // dd($p);
-        return view('vclaim.dataklaim', [
+        return view('vclaim.historypelayananpeserta', [
             'title' => $title,
             'sidebar' => $sidebar,
             'sidebar_m' => $sidebar_m,
-            'program_prb' => $p
         ]);
     }
     public function menudataklaimjr()
@@ -263,14 +251,10 @@ class SimrsController extends Controller
         $title = 'SIMRS - DATA KLAIM JR';
         $sidebar = 'MONITORING';
         $sidebar_m = 'DATA KLAIM JR';
-        $v = new VclaimModel();
-        $p = $v->referensi_diagnosa_prb();
-        // dd($p);
-        return view('vclaim.dataklaim', [
+        return view('vclaim.dataklaimjr', [
             'title' => $title,
             'sidebar' => $sidebar,
             'sidebar_m' => $sidebar_m,
-            'program_prb' => $p
         ]);
     }
     public function ValidasiRanap()

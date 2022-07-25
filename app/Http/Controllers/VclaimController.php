@@ -932,4 +932,43 @@ class VclaimController extends Controller
             'list' => $detail
         ]);
     }
+    public function vclaimcaridatakunjungan(Request $request)
+    {
+        $v = new VclaimModel();
+        $datakunjungan = $v->get_data_kunjungan($request->tanggalsep, $request->jenislayan);
+        if($request->jenislayan == 1){
+            $jenis = 'Rawat Inap';
+        }else {
+            $jenis = 'Rawat Jalan';
+        }
+        return view('vclaim.tabeldatakunjungan', [
+            'datakunjungan' => $datakunjungan,
+            'jenis' => $jenis
+        ]);
+    }
+    public function vclaimcaridataklaim(Request $request)
+    {
+        $v = new VclaimModel();
+        $dataklaim = $v->get_data_klaim($request->tanggalpulangsep, $request->jenislayan,$request->status);
+        return view('vclaim.tabeldataklaim', [
+            'data' => $dataklaim
+        ]);
+    }
+    public function vclaimcaririwayatpeserta(Request $request)
+    {
+        $v = new VclaimModel();
+        $riwayat = $v->get_data_kunjungan_peserta($request->nomorkartu_peserta, $request->tanggalawal,$request->tanggalakhir);
+        return view('vclaim.tabelriwayatpeserta', [
+            'data' => $riwayat
+        ]);
+    }
+    public function vclaimcaridataklaimjr(Request $request)
+    {
+        $v = new VclaimModel();
+        $data = $v->get_data_klaim_jr($request->jenis,$request->tanggalawal, $request->tanggalakhir);
+        return view('vclaim.tabelklaimjr', [
+            'data' => $data
+        ]);
+    }
 }
+

@@ -4,7 +4,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Data Klaim</h1>
+                    <h1 class="m-0">History Pelayanan Peserta</h1>
                 </div>
                 <!-- /.col -->
                 <div class="col-sm-6">
@@ -24,62 +24,57 @@
         <div class="container">
             <div class="row mt-3">
                 <div class="col-sm-3">
-                    <label for="exampleInputEmail1">Tanggal Pulang</label>
-                    <input type="text " data-date-format="yyyy-mm-dd" class="form-control datepicker" id="tanggalpulang">
+                    <label for="exampleInputEmail1">Nomor Kartu</label>
+                    <input type="text" class="form-control"
+                        id="nomorkartu_peserta">
                 </div>
                 <div class="col-sm-3">
-                    <label for="exampleInputEmail1">Jenis Pelayanan</label>
-                    <select class="form-control" id="jenislayan">
-                        <option value="1">Rawat Inap</option>
-                        <option value="2">Rawat Jalan</option>
-                    </select>
+                    <label for="exampleInputEmail1">Tanggal Awal</label>
+                    <input type="text " data-date-format="yyyy-mm-dd" class="form-control datepicker" id="tanggalawal">
                 </div>
                 <div class="col-sm-3">
-                    <label for="exampleInputEmail1">Status Klaim</label>
-                    <select class="form-control" id="status">
-                        <option value="1">Proses Verifikasi</option>
-                        <option value="2">Pending Verifikasi</option>
-                        <option value="3">Klaim</option>
-                    </select>
+                    <label for="exampleInputEmail1">Tanggal Akhir</label>
+                    <input type="text " data-date-format="yyyy-mm-dd" class="form-control datepicker" id="tanggalakhir">
                 </div>
+
                 <div class="col-sm-3 form-inline">
                     <div class="form-group mt-4">
                         <label for="exampleInputEmail1"></label>
-                        <button type="submit" class="btn btn-primary" onclick="vclaim_dataklaim()"> <i
-                                class="bi bi-search-heart"></i> Cari</button>
+                        <button type="submit" class="btn btn-primary" onclick="vclaim_caririwayatpeserta()"> <i
+                                class="bi bi-search-heart"></i> Cari </button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="container">
-            <div class="view_dataklaim">
+            <div class="view_riwayatpeserta">
 
             </div>
         </div>
     </section>
     <script>
-       function vclaim_dataklaim() {       
-            tanggalpulangsep = $('#tanggalpulang').val()
-            jenislayan = $('#jenislayan').val()
-            status = $('#status').val()
+        function vclaim_caririwayatpeserta() {
+            nomorkartu_peserta = $('#nomorkartu_peserta').val()
+            tanggalawal = $('#tanggalawal').val()
+            tanggalakhir = $('#tanggalakhir').val()
             spinner = $('#loader');
             spinner.show();
             $.ajax({
                 type: 'post',
                 data: {
                     _token: "{{ csrf_token() }}",
-                    tanggalpulangsep,
-                    jenislayan,
-                    status
+                    nomorkartu_peserta,
+                    tanggalawal,
+                    tanggalakhir
                 },
-                url: '<?= route('vclaimcaridataklaim') ?>',
+                url: '<?= route('vclaimcaririwayatpeserta') ?>',
                 error: function(data) {
                     spinner.hide();
                     alert('error!')
                 },
                 success: function(response) {
                     spinner.hide();
-                    $('.view_dataklaim').html(response);
+                    $('.view_riwayatpeserta').html(response);
                 }
             });
         }
