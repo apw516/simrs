@@ -2358,7 +2358,7 @@ class SimrsController extends Controller
         $pdf->SetXY(40, 35);
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetXY(45, 35);
-        $pdf->Cell(10, 7, "", 0, 1);
+        $pdf->Cell(10, 7, "$sep[0]->tgl_SEP", 0, 1);
 
         $pdf->SetXY(10, 40);
         $pdf->Cell(10, 7, 'No. Kartu', 0, 1);
