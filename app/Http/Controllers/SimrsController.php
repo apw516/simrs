@@ -257,6 +257,17 @@ class SimrsController extends Controller
             'sidebar_m' => $sidebar_m,
         ]);
     }
+    public function menusepvalidasi()
+    {
+        $title = 'SIMRS - INSERT SEP';
+        $sidebar = 'SEP';
+        $sidebar_m = 'INSERT SEP';
+        return view('vclaim.sepvalidasi', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+        ]);
+    }
     public function ValidasiRanap()
     {
         $title = 'SIMRS - Validasi Ranap';
@@ -2244,7 +2255,7 @@ class SimrsController extends Controller
         $pdf->SetXY(160, 55);
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetXY(165, 55);
-        $pdf->Cell(10, 7, '', 0, 1);
+        $pdf->Cell(10, 7, $sep['0']['peserta'], 0, 1);
 
 
         $pdf->SetXY(10, 45);
@@ -2274,7 +2285,7 @@ class SimrsController extends Controller
         $pdf->SetXY(40, 65);
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetXY(45, 65);
-        if ($sep['0']['jenis_rawat'] == "R.Inap") {
+        if ($sep['0']['jenis_rawat'] == "R.Inap" || $sep['0']['jenis_rawat'] == "Rawat Inap" ) {
             // $poli = $sep['0']['poli_tujuan'];
             // $arr = explode('|', $poli, 2);
             $pdf->Cell(10, 7, '', 0, 1);
@@ -2425,7 +2436,7 @@ class SimrsController extends Controller
         $pdf->SetXY(160, 55);
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetXY(165, 55);
-        $pdf->Cell(10, 7, '', 0, 1);
+        $pdf->Cell(10, 7, $sep['0']['peserta'], 0, 1);
 
 
         $pdf->SetXY(10, 45);
@@ -2455,7 +2466,7 @@ class SimrsController extends Controller
         $pdf->SetXY(40, 65);
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetXY(45, 65);
-        if ($sep['0']['jenis_rawat'] == "R.Inap") {
+        if ($sep['0']['jenis_rawat'] == "R.Inap" || $sep['0']['jenis_rawat'] == "Rawat Inap" ) {
             // $poli = $sep['0']['poli_tujuan'];
             // $arr = explode('|', $poli, 2);
             $pdf->Cell(10, 7, '', 0, 1);

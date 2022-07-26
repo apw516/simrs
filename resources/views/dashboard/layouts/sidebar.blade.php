@@ -119,6 +119,12 @@
                     </a>
                     <ul class="nav nav-treeview">
                       <li class="nav-item">
+                        <a href="{{ route('menusepvalidasi')}}" class="nav-link @if($sidebar_m == 'INSERT SEP') active @endif">
+                          <i class="far fa-circle nav-icon"></i>
+                          <p>Insert SEP</p>
+                        </a>
+                      </li>
+                      <li class="nav-item">
                         <a href="{{ route('menucarisep')}}" class="nav-link @if($sidebar_m == 'CARI SEP') active @endif">
                           <i class="far fa-circle nav-icon"></i>
                           <p>Cari SEP</p>

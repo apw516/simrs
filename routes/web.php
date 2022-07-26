@@ -32,6 +32,8 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('aut
 Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
     Route::get('/pendaftaran', [SimrsController::class, 'Pendaftaran'])
         ->name('pendaftaran'); //sidebar
+    Route::get('/menusepvalidasi', [SimrsController::class, 'menusepvalidasi'])
+        ->name('menusepvalidasi'); //sidebar
     Route::get('/menucarisep', [SimrsController::class, 'Menucarisep'])
         ->name('menucarisep'); //sidebar
     Route::get('/menulisttglpulang', [SimrsController::class, 'menulisttglpulang'])
@@ -276,6 +278,12 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('vclaimcaririwayatpeserta');
     Route::post('simrsvclaim/vclaimcaridataklaimjr', [VclaimController::class, 'vclaimcaridataklaimjr'])
         ->name('vclaimcaridataklaimjr');
+    Route::post('simrsvclaim/caririwayatkunjungan', [VclaimController::class, 'caririwayatkunjungan'])
+        ->name('caririwayatkunjungan');
+    Route::post('simrsvclaim/formbuatsep_manual', [VclaimController::class, 'formbuatsep_manual'])
+        ->name('formbuatsep_manual');
+    Route::post('simrsvclaim/buatsep_manual', [VclaimController::class, 'buatsep_manual'])
+        ->name('buatsep_manual');
 });
 Route::group(['middleware' => ['auth','hak_akses1:3']],function (){
     Route::get('/Billing', [BillingController::class, 'Billing'])

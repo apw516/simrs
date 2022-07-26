@@ -5,7 +5,8 @@
                 <div class="card-header bg-info">Riwayat Kunjungan</div>
                 <div class="card-body">
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <strong><i class="bi bi-megaphone"></i> </strong> Pasien rawat inap harus terdaftar sebagai pasien igd atau rawat jalan ditanggal yang sama.
+                        <strong><i class="bi bi-megaphone"></i> </strong> Pasien rawat inap harus terdaftar sebagai
+                        pasien igd atau rawat jalan ditanggal yang sama.
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -26,10 +27,10 @@
                         </thead>
                         <tbody>
                             @foreach ($riwayat_kunjungan as $r)
-                            <?php $datein = $r->tgl_masuk; 
-                             $date_for = date('Y-d-m',strtotime($datein));
+                                <?php $datein = $r->tgl_masuk;
+                                $date_for = date('Y-d-m', strtotime($datein));
                                 $datenow = date('Y-m-d');
-                            ;?>
+                                ?>
                                 <tr>
                                     <td>{{ $r->nama_unit }}</td>
                                     <td><button class="badge badge-warning">{{ $r->tgl_masuk }}</button></td>
@@ -130,7 +131,7 @@
                     <div class="card">
                         <div class="card-header bg-info">Pasien Rawat Inap</div>
                         <div class="card-body">
-                            <h4 class="text-danger mb-2">*Wajib Diisi</h4>                            
+                            <h4 class="text-danger mb-2">*Wajib Diisi</h4>
                             <div class="row">
                                 <div class="col-sm-4 text-right text-bold">Jenis Pelayanan</div>
                                 <div class="col-sm-7">
@@ -187,28 +188,28 @@
                                     </div>
                                 </div>
                                 <div hidden class="jikanaikkelas">
-                                <div class="row mt-2">
-                                    <div class="col-md-4 text-right">
-                                        Pembiayaan
+                                    <div class="row mt-2">
+                                        <div class="col-md-4 text-right">
+                                            Pembiayaan
+                                        </div>
+                                        <div class="col-md-8">
+                                            <select class="form-control form-control-md" id="pembiayaan">
+                                                <option value="">-- Silahkan Pilih --</option>
+                                                <option value="1">Pribadi</option>
+                                                <option value="2">Pemberi Kerja</option>
+                                                <option value="3">Asuransi Kesehatan Tambahan</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div class="col-md-8">
-                                        <select class="form-control form-control-md" id="pembiayaan">
-                                            <option value="">-- Silahkan Pilih --</option>
-                                            <option value="1">Pribadi</option>
-                                            <option value="2">Pemberi Kerja</option>
-                                            <option value="3">Asuransi Kesehatan Tambahan</option>
-                                        </select>
+                                    <div class="row mt-2">
+                                        <div class="col-md-4 text-right">
+                                            Nama Penanggung Jawab
+                                        </div>
+                                        <div class="col-md-8">
+                                            <textarea class="form-control" placeholder="Jika pembiayaan oleh pemberi kerja atau layanan kesehatan tambahan"
+                                                id="penanggugjawab"></textarea>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row mt-2">
-                                    <div class="col-md-4 text-right">
-                                        Nama Penanggung Jawab
-                                    </div>
-                                    <div class="col-md-8">
-                                        <textarea class="form-control" placeholder="Jika pembiayaan oleh pemberi kerja atau layanan kesehatan tambahan"
-                                            id="penanggugjawab"></textarea>
-                                    </div>
-                                </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-sm-4 text-right text-bold">Kelas</div>
@@ -307,8 +308,11 @@
                                 <div class="row mt-2">
                                     <div class="col-sm-4 text-right text-bold"></div>
                                     <div class="form-group form-check">
-                                        <button class="btn btn-primary" data-toggle="modal" data-target="#modalbuatspri">Buat SPRI</button>
-                                        <button class="btn btn-warning" data-toggle="modal" data-target="#modalcarispri" onclick="carisuratkontrol()">Cari SPRI</button>
+                                        <button class="btn btn-primary" data-toggle="modal"
+                                            data-target="#modalbuatspri">Buat SPRI</button>
+                                        <button class="btn btn-warning" data-toggle="modal"
+                                            data-target="#modalcarispri" onclick="carisuratkontrol()">Cari
+                                            SPRI</button>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
@@ -392,8 +396,8 @@
                                         <select class="form-control form-control-sm" id="provinsikejadian">
                                             <option value="">-- Silahkan Pilih Provinsi --</option>
                                             @foreach ($provinsi->response->list as $p)
-                                            <option value="{{ $p->kode }}">{{ $p->nama }}</option>
-                                        @endforeach
+                                                <option value="{{ $p->kode }}">{{ $p->nama }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -433,7 +437,7 @@
                                     </select>
                                 </div>
                             </div>
-                            
+
                             <div class="row mt-4">
                                 <div class="col-sm-4">
 
@@ -519,8 +523,8 @@
                 </div>
                 <div class="form-group">
                     <label for="exampleFormControlInput1">Nomor Kartu</label>
-                    <input type="email" class="form-control" id="nomorkartukontrol"
-                        value="" placeholder="name@example.com">
+                    <input type="email" class="form-control" id="nomorkartukontrol" value=""
+                        placeholder="name@example.com">
                 </div>
                 <div class="form-group">
                     <label for="exampleFormControlInput1">Poli Kontrol</label>
@@ -592,11 +596,11 @@
             todayHighlight: true
         }).datepicker('update', new Date());
     });
-    $("#naikkelas").click(function(){
+    $("#naikkelas").click(function() {
         value2 = $('#naikkelas:checked').val()
-        if(value2 == '1'){
+        if (value2 == '1') {
             $('.jikanaikkelas').removeAttr('hidden', true)
-        }else{
+        } else {
             $('.jikanaikkelas').attr('hidden', true)
         }
     })
@@ -707,8 +711,8 @@
         kodekunjunganref = $('#kodekunjunganref').val()
         tglmasukranap = $('#tglmasukranap').val()
         naikkelas = $('#naikkelas:checked').val()
-        pembiayaan = $('#pembiayaan').val()  
-        penanggugjawab = $('#penanggugjawab').val() 
+        pembiayaan = $('#pembiayaan').val()
+        penanggugjawab = $('#penanggugjawab').val()
         nomorspri = $('#nomorspri').val()
         tglspri = $('#tglspri').val()
         dpjp = $('#dpjp').val()
@@ -786,70 +790,72 @@
             },
             success: function(data) {
                 spinner.hide()
-                if (data.kode == '200') {                   
-                    if(data.jenis == 'BPJS'){
+                if (data.kode == '200') {
+                    if (data.jenis == 'BPJS') {
                         Swal.fire({
-                        title: 'Pendaftaran berhasil !',
-                        text: "Apakah anda ingin mencetak SEP ?",
-                        icon: 'success',
-                        showCancelButton: true,
-                        showDenyButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        denyButtonColor: 'green',
-                        confirmButtonText: 'Ya, cetak SEP',
-                        denyButtonText: `Cetak SEP dan Label`,
-                        cancelButtonText: 'Tidak'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.open('cetaksep/' + data.kode_kunjungan);
-                            location.reload();
-                        }else if (result.isDenied) {
-                            // window.open('cetakstruk/' + data.kode_kunjungan);
-                            // window.open('http://localhost/printlabel/cetaklabel.php?rm=19882642&nama=BADRIYAH');
-                            var url = 'cetaksep/' + data.kode_kunjungan
-                            var url2 = `http://192.168.2.45/printlabel/cetaklabel.php?rm=`+norm+`&nama=`+data.nama;
-                            var locs = [url,url2] 
-                            for (let i = 0; i < locs.length; i++) {
-				                window.open(locs[i])}
-                            location.reload();
-                        } else {
-                            location.reload();
-                        }
-                    })
-                    }else{
-                        Swal.fire({
-                        title: 'Pendaftaran berhasil !',
-                        text: "Cetak nota pembayaran ...",
-                        icon: 'success',
-                        showCancelButton: true,
-                        showDenyButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        denyButtonColor: 'green',
-                        denyButtonText: `Cetak Nota dan Label`,
-                        confirmButtonText: 'Ya, cetak Nota',
-                        cancelButtonText: 'Tidak'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.open('cetakstruk/' + data.kode_kunjungan);
-                            location.reload();
-                        } else if (result.isDenied) {
-                            // window.open('cetakstruk/' + data.kode_kunjungan);
-                            // window.open('http://localhost/printlabel/cetaklabel.php?rm=19882642&nama=BADRIYAH');
-                            var url = 'cetakstruk/' + data.kode_kunjungan
-                            var url2 =
-                                `http://192.168.2.45/printlabel/cetaklabel.php?rm=` +
-                                nomorrm + `&nama=` + namapasien;
-                            var locs = [url, url2]
-                            for (let i = 0; i < locs.length; i++) {
-                                window.open(locs[i])
+                            title: 'Pendaftaran berhasil !',
+                            text: "Apakah anda ingin mencetak SEP ?",
+                            icon: 'success',
+                            showCancelButton: true,
+                            showDenyButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            denyButtonColor: 'green',
+                            confirmButtonText: 'Ya, cetak SEP',
+                            denyButtonText: `Cetak SEP dan Label`,
+                            cancelButtonText: 'Tidak'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.open('cetaksep/' + data.kode_kunjungan);
+                                location.reload();
+                            } else if (result.isDenied) {
+                                // window.open('cetakstruk/' + data.kode_kunjungan);
+                                // window.open('http://localhost/printlabel/cetaklabel.php?rm=19882642&nama=BADRIYAH');
+                                var url = 'cetaksep/' + data.kode_kunjungan
+                                var url2 = `http://192.168.2.45/printlabel/cetaklabel.php?rm=` +
+                                    norm + `&nama=` + data.nama;
+                                var locs = [url, url2]
+                                for (let i = 0; i < locs.length; i++) {
+                                    window.open(locs[i])
+                                }
+                                location.reload();
+                            } else {
+                                location.reload();
                             }
-                            location.reload();
-                        } else {
-                            location.reload();
-                        }
-                    })
+                        })
+                    } else {
+                        Swal.fire({
+                            title: 'Pendaftaran berhasil !',
+                            text: "Cetak nota pembayaran ...",
+                            icon: 'success',
+                            showCancelButton: true,
+                            showDenyButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            denyButtonColor: 'green',
+                            denyButtonText: `Cetak Nota dan Label`,
+                            confirmButtonText: 'Ya, cetak Nota',
+                            cancelButtonText: 'Tidak'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.open('cetakstruk/' + data.kode_kunjungan);
+                                location.reload();
+                            } else if (result.isDenied) {
+                                // window.open('cetakstruk/' + data.kode_kunjungan);
+                                // window.open('http://localhost/printlabel/cetaklabel.php?rm=19882642&nama=BADRIYAH');
+                                var url = 'cetakstruk/' + data.kode_kunjungan
+                                var url2 =
+                                    `http://192.168.2.45/printlabel/cetaklabel.php?rm=` +
+                                    nomorrm + `&nama=` + namapasien;
+                                var locs = [url, url2]
+                                for (let i = 0; i < locs.length; i++) {
+                                    window.open(locs[i])
+                                }
+                                location.reload();
+                            } else {
+                                location.reload();
+                            }
+                        })
                     }
                 } else {
                     Swal.fire({
@@ -1100,7 +1106,8 @@
                 }
             });
         });
-    });    
+    });
+
     function buatsuratkontrol() {
         spinner = $('#loader');
         spinner.show();
@@ -1143,6 +1150,7 @@
             }
         });
     }
+
     function carisuratkontrol() {
         spinner = $('#loader');
         spinner.show();
@@ -1166,6 +1174,3 @@
         });
     }
 </script>
-
-
-
