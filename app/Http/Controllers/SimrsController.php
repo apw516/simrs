@@ -2165,6 +2165,166 @@ class SimrsController extends Controller
             echo json_encode($data);
         }
     }
+    function manipulasiTanggal($tgl,$jumlah=1,$format='days'){
+        $currentDate = $tgl;
+        return date('Y-m-d', strtotime($jumlah.' '.$format, strtotime($currentDate)));
+    }
+    public function cetakrujukan($nomorrujukan)
+    {
+        $v = new VclaimModel();
+        
+        $rujukan = $v->detailrujukan_keluar($nomorrujukan);
+        $tgl= $rujukan->response->rujukan->tglRujukan;
+        $masaberlakurujukan = $this->manipulasiTanggal($tgl,'+3','months');
+        $pdf = new Fpdf('L', 'mm', 'A4');
+        $pdf->AddPage();
+        $pdf->SetTitle('Cetak Rujukan');
+        $pdf->SetMargins('15', '20', '10');
+        $pdf->SetFont('Arial', '', 15);
+        $pdf->Image('public/img/logobpjs.png', 1, -5, 60, 40);
+        $pdf->Image('public/img/logo_rs.png', 240, 4, 35, 25);
+        $pdf->SetXY(70, 8);
+        $pdf->Cell(10, 7, 'SURAT RUJUKAN', 0, 1);
+        $pdf->SetXY(70, 14);
+        $pdf->Cell(10, 7, 'RSUD WALED KAB.CIREBON', 0, 1);
+        $pdf->SetXY(155, 8);
+        $pdf->Cell(10, 7, 'NO.', 0, 1);
+        $pdf->SetXY(168, 8);
+        $pdf->Cell(10, 7, $rujukan->response->rujukan->noRujukan, 0, 1);
+        $pdf->SetXY(70, 14);
+        $pdf->Cell(10, 7, 'RSUD WALED KAB.CIREBON', 0, 1);
+        $pdf->SetXY(155, 14);
+        $pdf->Cell(10, 7, 'Tgl.   '.$rujukan->response->rujukan->tglRujukan, 0, 1);
+        // dd($rujukan);       
+
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->SetXY(10, 30);
+        $pdf->Cell(10, 7, 'Kepada', 0, 1);
+        $pdf->SetXY(40, 30);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->SetXY(45, 32);
+        $pdf->MultiCell(80, 4, $rujukan->response->rujukan->namaPpkDirujuk );
+
+        $y = $pdf->GetY();
+
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->SetXY(10, $y);
+        $pdf->Cell(10, 7, 'Mohon Pemeriksaan dan Penanganan Lebih Lanjunt :', 0, 1);
+
+        $pdf->SetXY(150, 40);
+        $pdf->Cell(10, 7, "===".$rujukan->response->rujukan->namaTipeRujukan."===" , 0, 1);
+        $pdf->SetXY(150, 44);
+        if($rujukan->response->rujukan->jnsPelayanan == 2){
+            $jns = "rawat jalan";
+        }else{
+            $jns = "rawat inap";
+        }
+        $pdf->Cell(10, 7,$jns, 0, 1);
+
+        $y = $pdf->GetY();
+
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->SetXY(10, $y);
+        $pdf->Cell(10, 7, 'Nomor Kartu', 0, 1);
+        $pdf->SetXY(40, $y);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->SetXY(45, $y+2);
+        $pdf->MultiCell(80, 4, $rujukan->response->rujukan->noKartu );
+
+        $y = $pdf->GetY();
+
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->SetXY(10, $y);
+        $pdf->Cell(10, 7, 'Nama Peserta', 0, 1);
+        $pdf->SetXY(40, $y);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->SetXY(45, $y+2);
+        $pdf->MultiCell(80, 4, $rujukan->response->rujukan->nama );
+
+
+        $y = $pdf->GetY();
+
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->SetXY(10, $y);
+        $pdf->Cell(10, 7, 'Tanggal lahir', 0, 1);
+        $pdf->SetXY(40, $y);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->SetXY(45, $y+2);
+        $pdf->MultiCell(80, 4, $rujukan->response->rujukan->tglLahir );
+
+
+        $y = $pdf->GetY();
+
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->SetXY(10, $y);
+        $pdf->Cell(10, 7, 'Poli', 0, 1);
+        $pdf->SetXY(40, $y);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->SetXY(45, $y+2);
+        $pdf->MultiCell(80, 4, $rujukan->response->rujukan->namaPoliRujukan );
+
+        $y = $pdf->GetY();
+
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->SetXY(10, $y);
+        $pdf->Cell(10, 7, 'Diagnosa', 0, 1);
+        $pdf->SetXY(40, $y);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->SetXY(45, $y+2);
+        $pdf->MultiCell(80, 4, $rujukan->response->rujukan->namaDiagRujukan );
+
+        $y = $pdf->GetY();
+
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->SetXY(10, $y);
+        $pdf->Cell(10, 7, 'Keterangan', 0, 1);
+        $pdf->SetXY(40, $y);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->SetXY(45, $y+2);
+        $pdf->MultiCell(80, 4, $rujukan->response->rujukan->catatan );
+
+        $y = $pdf->GetY()+2;
+
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->SetXY(10, $y);
+        $pdf->Cell(10, 7, 'Demikian atas bantuannya, diucapkan banyak terima kasih.', 0, 1);
+       
+        $y = $pdf->GetY();
+
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->SetXY(10, $y);
+        $pdf->Cell(10, 7, '- Rujukan Berlaku Sampai Dengan '.$masaberlakurujukan , 0, 1);
+       
+       
+        $y = $pdf->GetY();
+
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->SetXY(10, $y);
+        $pdf->Cell(10, 7, '- Tgl Rencana Berkunjung '.$rujukan->response->rujukan->tglRencanaKunjungan , 0, 1);      
+       
+        $y = $pdf->GetY()+5;
+
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetXY(10, $y);
+        $pdf->Cell(10, 7, 'Tgl Cetak '.date('y-m-d h:i:s'), 0, 1);      
+
+        $pdf->SetFont('Arial', '', 9);
+        $pdf->SetXY(150, 85);
+        $pdf->Cell(10, 7, 'Mengetahui', 0, 1);
+
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Line(150, 100, 190, 100);
+        $pdf->Output();
+
+        exit;
+    }
     public function Cetaksep($kodekunjungan)
     {
         //ambil data sep
@@ -2198,7 +2358,7 @@ class SimrsController extends Controller
         $pdf->SetXY(40, 35);
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetXY(45, 35);
-        $pdf->Cell(10, 7, $sep['0']['tgl_SEP'], 0, 1);
+        $pdf->Cell(10, 7, "", 0, 1);
 
         $pdf->SetXY(10, 40);
         $pdf->Cell(10, 7, 'No. Kartu', 0, 1);

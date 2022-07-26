@@ -45,6 +45,10 @@
                             <b>Tgl rencana kunjungan</b> <a
                                 class="float-right text-dark text-bold text-monospace">{{ $data->response->rujukan->tglRencanaKunjungan }}</a>
                         </li>                        
+                        <li class="list-group-item">
+                            <input hidden type="text" id="nomorrujukanprint" value="{{ $data->response->rujukan->noRujukan }}">
+                            <a class="float-right text-dark text-bold text-monospace" nomor="" onclick="printrujukan()"><i class="bi bi-printer"></i> Print</a>
+                        </li>                        
                     </ul>
                 </div>
             </div>
@@ -103,3 +107,10 @@
         </div>
     </div>
 </div>
+<script>
+    function printrujukan()
+    {
+        data = $('#nomorrujukanprint').val()
+        window.open('cetakrujukan/' + data);
+    }
+</script>
