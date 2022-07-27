@@ -1580,6 +1580,7 @@ class SimrsController extends Controller
         $catatan = $request->catatan;
         $keterangankll = $request->keterangan_kll;
         $alasanmasuk = $request->alasanmasuk;
+        $notelp_ranap = $request->notelp_ranap;
         $keterangansuplesi = $request->keterangansuplesi;
         $suplesi = $request->sepsuplesi;
         $tgllaka = $request->tglkejadianlaka;
@@ -1832,7 +1833,7 @@ class SimrsController extends Controller
                             "kodeDPJP" => "$kode_dpjp"
                         ],
                         "dpjpLayan" => "",
-                        "noTelp" => "000000000000",
+                        "noTelp" => "$notelp_ranap",
                         "user" => "waled | " . auth()->user()->id_simrs
                     ]
                 ]
@@ -1909,7 +1910,7 @@ class SimrsController extends Controller
                     'catatan' => $sep->catatan . "  " . $CATKLL,
                     'act' => 1,
                     'alasan_masuk' => '',
-                    'no_tlp' => '',
+                    'no_tlp' => "$notelp_ranap",
                     'kode_kunjungan' => "$ts_kunjungan->id",
                     'tgl_rujukan' => $tglspri,
                     'no_skdp' => "",

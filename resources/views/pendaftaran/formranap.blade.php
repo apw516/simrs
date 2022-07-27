@@ -437,7 +437,12 @@
                                     </select>
                                 </div>
                             </div>
-
+                            <div class="row mt-2">
+                                <div class="col-sm-4 text-right text-bold">No Telepon</div>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" id="notelp_ranap">
+                                </div>
+                            </div>
                             <div class="row mt-4">
                                 <div class="col-sm-4">
 
@@ -447,7 +452,7 @@
                                     <button class="btn btn-success float-right"
                                         onclick="daftarpasienranap()">Simpan</button>
                                 </div>
-                            </div>
+                            </div>                           
                         </div>
                     </div>
                 </div>
@@ -722,6 +727,7 @@
         catatan = $('#catatan').val()
         keterangan_kll = $('#keterangan_kll').val()
         alasanmasuk = $('#alasanmasuk').val()
+        notelp_ranap = $('#notelp_ranap').val()
         keterangansuplesi = $('#keterangansuplesi').val()
         sepsuplesi = $('#sepsuplesi').val()
         tglkejadianlaka = $('#tglkejadianlaka').val()
@@ -771,6 +777,7 @@
                 catatan,
                 keterangan_kll,
                 alasanmasuk,
+                notelp_ranap,
                 keterangansuplesi,
                 sepsuplesi,
                 tglkejadianlaka,
