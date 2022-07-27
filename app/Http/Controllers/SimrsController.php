@@ -820,6 +820,9 @@ class SimrsController extends Controller
             //data yang akan disimpan ke ts kunjungan
             $paramedis = Dokter::where('kode_dpjp', '=', "$request->kodedokterlayan")->get();
             $unit = mt_unit::where('KDPOLI', '=', "$request->kodepolitujuan")->get();
+            if($request->kodepolitujuan == "HIV"){
+                $unit = mt_unit::where('kode_unit', '=', "1016")->get();
+            }
             $data_ts_kunjungan = array(
                 'counter' => $counter,
                 'no_rm' => $request->norm,
@@ -2465,12 +2468,17 @@ class SimrsController extends Controller
         $pdf->Cell(10, 7, $sep['0']['nama_asal_faskes'], 0, 1);
         $diag = $sep['0']['diagnosa_awal'];
         $arr = explode('-', $diag, 2);
+        if(count($arr) > 1){
+            $diag1 = $arr[1];
+        }else{
+            $diag1 = $arr[0];
+        }
         $pdf->SetXY(10, 75);
         $pdf->Cell(10, 7, 'Diagnosa Awal', 0, 1);
         $pdf->SetXY(40, 75);
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetXY(45, 75);
-        $pdf->Cell(10, 7, $arr[1], 0, 1);
+        $pdf->Cell(10, 7, $diag1, 0, 1);
 
         $pdf->SetXY(10, 80);
         $pdf->Cell(10, 7, 'Catatan', 0, 1);
@@ -2646,12 +2654,17 @@ class SimrsController extends Controller
         $pdf->Cell(10, 7, $sep['0']['nama_asal_faskes'], 0, 1);
         $diag = $sep['0']['diagnosa_awal'];
         $arr = explode('-', $diag, 2);
+        if(count($arr) > 1){
+            $diag1 = $arr[1];
+        }else{
+            $diag1 = $arr[0];
+        }
         $pdf->SetXY(10, 75);
         $pdf->Cell(10, 7, 'Diagnosa Awal', 0, 1);
         $pdf->SetXY(40, 75);
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetXY(45, 75);
-        $pdf->Cell(10, 7, $arr[1], 0, 1);
+        $pdf->Cell(10, 7, $diag1, 0, 1);
 
         $pdf->SetXY(10, 80);
         $pdf->Cell(10, 7, 'Catatan', 0, 1);
