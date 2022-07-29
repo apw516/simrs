@@ -15,11 +15,12 @@ class BillingController extends Controller
         $title = 'SIMRS - PENDAFTARAN';
         $sidebar = '2';
         $sidebar_m = '2';
+        $unit = auth()->user()->unit;
         return view('billing.index', [
             'title' => $title,
             'sidebar' => $sidebar,
             'sidebar_m' => $sidebar_m,
-            'data_pasien' => DB::select("CALL SP_PANGGIL_PASIEN_PENUNJANG('','','','3003')")
+            'data_pasien' => DB::select("CALL SP_PANGGIL_PASIEN_PENUNJANG_BARU_RI('','','')")
         ]);
     }
     public function Formlayanan(Request $request)

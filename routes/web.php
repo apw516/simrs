@@ -68,6 +68,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('menuhispelpes'); //sidebar
     Route::get('/menudataklaimjr', [SimrsController::class, 'menudataklaimjr'])
         ->name('menudataklaimjr'); //sidebar
+    Route::get('/menuriwayatpasien', [SimrsController::class, 'menuriwayatpasien'])
+        ->name('menuriwayatpasien'); //sidebar
     Route::get('/validasiranap', [SimrsController::class, 'ValidasiRanap'])
         ->name('Validasiranap'); //sidebar
     Route::post('/formvalidasi', [SimrsController::class, 'formvalidasi'])
@@ -281,6 +283,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('vclaimcaridataklaimjr');
     Route::post('simrsvclaim/caririwayatkunjungan', [VclaimController::class, 'caririwayatkunjungan'])
         ->name('caririwayatkunjungan');
+    Route::post('simrsvclaim/caririwayatkunjungan2', [VclaimController::class, 'caririwayatkunjungan2'])
+        ->name('caririwayatkunjungan2');
     Route::post('simrsvclaim/formbuatsep_manual', [VclaimController::class, 'formbuatsep_manual'])
         ->name('formbuatsep_manual');
     Route::post('simrsvclaim/buatsep_manual', [VclaimController::class, 'buatsep_manual'])

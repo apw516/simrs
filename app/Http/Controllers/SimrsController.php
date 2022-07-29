@@ -268,6 +268,17 @@ class SimrsController extends Controller
             'sidebar_m' => $sidebar_m,
         ]);
     }
+    public function menuriwayatpasien()
+    {
+        $title = 'SIMRS - RIWAYAT PELAYANAN PASIEN';
+        $sidebar = 'riwayatpasien';
+        $sidebar_m = '';
+        return view('vclaim.caririrwayatpasien', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+        ]);
+    }
     public function ValidasiRanap()
     {
         $title = 'SIMRS - Validasi Ranap';

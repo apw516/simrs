@@ -4,7 +4,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Layanan Billing</h1>
+                    <h1 class="m-0">Input Layanan</h1>
                 </div>
                 <!-- /.col -->
                 <div class="col-sm-6">
@@ -22,7 +22,7 @@
     <section class="content">
         <div class="container">
             <div class="vpasien">
-                <table id="tabelpasien_penunjang" class="table table-bordered table-sm table-striped table-hover">
+                <table id="tabelpasien_penunjang" class="table table-bordered table-xs table-striped table-hover">
                     <thead>
                         <th>Unit</th>
                         <th>Nomor RM</th>
@@ -30,6 +30,7 @@
                         <th>Jenis Kelamin</th>
                         <th>Alamat</th>
                         <th>Dokter</th>
+                        <th>Penjamin</th>
                         <th>--</th>
                     </thead>
                     <tbody>
@@ -41,6 +42,7 @@
                                 <td>{{ $p->jenis_kelamin }}</td>
                                 <td>{{ $p->alamat }}</td>
                                 <td>{{ $p->nama_paramedis }}</td>
+                                <td>{{ $p->nama_penjamin }}</td>
                                 <td>
                                     <button class="badge badge-primary pilihpasien" nomorrm="{{ $p->no_rm }}"
                                         nama="{{ $p->nama_px }}" alamat="{{ $p->alamat }}"

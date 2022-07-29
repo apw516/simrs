@@ -978,6 +978,12 @@ class VclaimController extends Controller
             'riwayat_kunjungan' => DB::select("CALL SP_RIWAYAT_KUNJUNGAN_PX('$request->nomorrm')"),
         ]);
     }
+    public function caririwayatkunjungan2(Request $request)
+    {
+        return view('vclaim.riwayatkunjunganpasien2', [
+            'riwayat_kunjungan' => DB::select("CALL SP_RIWAYAT_KUNJUNGAN_PX('$request->nomorrm')"),
+        ]);
+    }
     public function formbuatsep_manual(Request $request)
     {
         $rm = $request->rm;

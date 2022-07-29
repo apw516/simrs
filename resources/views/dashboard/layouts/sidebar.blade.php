@@ -49,7 +49,7 @@
                               Pendaftaran
                           </p>
                       </a>
-                  </li>
+                  </li>                
                   {{-- <li class="nav-item">
                       <a href="{{ route('Validasiranap') }}" class="nav-link @if($sidebar == '2.1') active @endif">
                           <i class="nav-icon fas fa-th"></i>
@@ -59,14 +59,16 @@
                       </a>
                   </li> --}}
                   @endif
-                  <li hidden class="nav-item">
+                  @if( auth()->user()->unit != '3001')
+                  <li class="nav-item">
                     <a href="{{ route('Billing') }}" class="nav-link @if($sidebar == '2') active @endif">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
-                            Billing
+                            Input Layanan
                         </p>
                     </a>
                 </li>
+                @endif
                   {{-- <li class="nav-item">
                       <a href="/pendaftaran" class="nav-link @if($sidebar == '6') active @endif">
                           <i class="nav-icon fas fa-th"></i>
@@ -107,12 +109,20 @@
                           </li>
                       </ul>
                   </li>
+                  <li class="nav-item">
+                    <a href="{{ route('menuriwayatpasien') }}" class="nav-link text-sm @if($sidebar == 'riwayatpasien') active @endif">
+                        <i class="nav-icon  bi bi-clock-history"></i>
+                        <p>
+                            Riwayat Pelayanan Pasien
+                        </p>
+                    </a>
+                </li>
                   <li class="nav-header">BPJS VClaim V2</li>
                   <li class="nav-item @if($sidebar== 'SEP') menu-open @endif">
                     <a href="#" class="nav-link">
                       {{-- <i class="nav-icon fas fa-table"></i> --}}
                       <i class="nav-icon fas bi bi-inboxes"></i>
-                      <p>
+                      <p class="font-weight-bold">
                         SEP
                         <i class="fas fa-angle-left right"></i>
                       </p>
@@ -160,7 +170,7 @@
                     <a href="#" class="nav-link">
                       {{-- <i class="nav-icon fas fa-table"></i> --}}
                       <i class="nav-icon fas bi bi-postcard font-weight-bold"></i>
-                      <p>
+                      <p class="font-weight-bold">
                         RUJUKAN
                         <i class="fas fa-angle-left right"></i>
                       </p>
@@ -202,7 +212,7 @@
                     <a href="#" class="nav-link text-xs">
                       {{-- <i class="nav-icon fas fa-table"></i> --}}
                       <i class="nav-icon fas  bi bi-envelope-paper-fill"></i>
-                      <p>
+                      <p class="font-weight-bold">
                         SURAT KONTROL & SPRI
                         <i class="fas fa-angle-left right"></i>
                       </p>
@@ -261,7 +271,7 @@
                     <a href="#" class="nav-link">
                       {{-- <i class="nav-icon fas fa-table"></i> --}}
                       <i class="nav-icon fasbi bi-back"></i>
-                      <p>
+                      <p class="font-weight-bold">
                         PRB
                         <i class="fas fa-angle-left right"></i>
                       </p>
@@ -285,7 +295,7 @@
                     <a href="#" class="nav-link">
                       {{-- <i class="nav-icon fas fa-table"></i> --}}
                       <i class="nav-icon fas bi bi-tv"></i>
-                      <p>
+                      <p class="font-weight-bold">
                         MONITORING
                         <i class="fas fa-angle-left right"></i>
                       </p>
@@ -297,12 +307,14 @@
                           <p>Data Kunjungan</p>
                         </a>
                       </li>
+                      @if(auth()->user()->hak_akses == 1 )
                       <li class="nav-item">
                         <a href="{{ route('menudataklaim')}}" class="nav-link text-sm @if($sidebar_m == 'DATA KLAIM') active @endif">
                           <i class="far fa-circle nav-icon"></i>
                           <p>Data Klaim</p>
                         </a>
                       </li>
+                      @endif
                       <li class="nav-item">
                         <a href="{{ route('menuhispelpes')}}" class="nav-link text-sm @if($sidebar_m == 'History Pelayanan Peserta') active @endif">
                           <i class="far fa-circle nav-icon"></i>
