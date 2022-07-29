@@ -61,9 +61,7 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
     Route::get('/menucariprb', [SimrsController::class, 'menucariprb'])
         ->name('menucariprb'); //sidebar
     Route::get('/menudatakunjungan', [SimrsController::class, 'menudatakunjungan'])
-        ->name('menudatakunjungan'); //sidebar
-    Route::get('/menudataklaim', [SimrsController::class, 'menudataklaim'])
-        ->name('menudataklaim'); //sidebar
+        ->name('menudatakunjungan'); //sidebar   
     Route::get('/menuhispelpes', [SimrsController::class, 'menuhispelpes'])
         ->name('menuhispelpes'); //sidebar
     Route::get('/menudataklaimjr', [SimrsController::class, 'menudataklaimjr'])
@@ -274,9 +272,7 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
     Route::post('simrsvclaim/vclaimcarisrb_date', [VclaimController::class, 'vclaimcarisrb_date'])
         ->name('vclaimcarisrb_date');
     Route::post('simrsvclaim/vclaimcaridatakunjungan', [VclaimController::class, 'vclaimcaridatakunjungan'])
-        ->name('vclaimcaridatakunjungan');
-    Route::post('simrsvclaim/vclaimcaridataklaim', [VclaimController::class, 'vclaimcaridataklaim'])
-        ->name('vclaimcaridataklaim');
+        ->name('vclaimcaridatakunjungan');   
     Route::post('simrsvclaim/vclaimcaririwayatpeserta', [VclaimController::class, 'vclaimcaririwayatpeserta'])
         ->name('vclaimcaririwayatpeserta');
     Route::post('simrsvclaim/vclaimcaridataklaimjr', [VclaimController::class, 'vclaimcaridataklaimjr'])
@@ -289,6 +285,12 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('formbuatsep_manual');
     Route::post('simrsvclaim/buatsep_manual', [VclaimController::class, 'buatsep_manual'])
         ->name('buatsep_manual');
+});
+Route::group(['middleware' => ['auth','hak_akses1:1']],function (){
+    Route::get('/menudataklaim', [SimrsController::class, 'menudataklaim'])
+    ->name('menudataklaim'); //sidebar
+    Route::post('simrsvclaim/vclaimcaridataklaim', [VclaimController::class, 'vclaimcaridataklaim'])
+    ->name('vclaimcaridataklaim');    
 });
 Route::group(['middleware' => ['auth','hak_akses1:3']],function (){
     Route::get('/Billing', [BillingController::class, 'Billing'])
