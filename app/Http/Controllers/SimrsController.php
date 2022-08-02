@@ -2530,186 +2530,356 @@ class SimrsController extends Controller
         //ambil data sep
         $sep = $request->sep;
         $sep = ts_sep::where('no_SEP', $sep)->get();
-        //update cetakan
-        $cetakan = $sep['0']['cetakan'] + 1;
-        ts_sep::where('kode_kunjungan', $sep)->update(['no_SEP' => $cetakan]);
-        $pdf = new Fpdf('L', 'mm', 'A4');
-        $pdf->AddPage();
-        $pdf->SetTitle('Cetak SEP');
-        $pdf->SetMargins('15', '20', '10');
-        $pdf->SetFont('Arial', '', 15);
-        $pdf->Image('public/img/logobpjs.png', 1, -5, 60, 40);
-        $pdf->Image('public/img/logo_rs.png', 170, 4, 35, 25);
-        $pdf->SetXY(70, 8);
-        $pdf->Cell(10, 7, 'SURAT ELIGIBILITAS PESERTA', 0, 1);
-        $pdf->SetXY(73, 14);
-        $pdf->Cell(10, 7, 'RSUD WALED KAB.CIREBON', 0, 1);
-
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->SetXY(10, 30);
-        $pdf->Cell(10, 7, 'No. SEP', 0, 1);
-        $pdf->SetXY(40, 30);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetFont('Arial', 'B', 12);
-        $pdf->SetXY(45, 30);
-        $pdf->Cell(10, 7, $sep[0]->no_SEP, 0, 1);
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->SetXY(10, 35);
-        $pdf->Cell(10, 7, 'Tgl. SEP', 0, 1);
-        $pdf->SetXY(40, 35);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(45, 35);
-        $pdf->Cell(10, 7, $sep['0']['tgl_SEP'], 0, 1);
-
-        $pdf->SetXY(10, 40);
-        $pdf->Cell(10, 7, 'No. Kartu', 0, 1);
-        $pdf->SetXY(40, 40);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(45, 40);
-        $pdf->Cell(10, 7, $sep['0']['no_kartu'], 0, 1);
-
-        $pdf->SetXY(100, 35);
-        $pdf->Cell(10, 7, 'No. MR', 0, 1);
-        $pdf->SetXY(115, 35);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(120, 35);
-        $pdf->Cell(10, 7, $sep['0']['no_rm'], 0, 1);
-
-        $pdf->SetXY(100, 40);
-        $pdf->Cell(10, 7, 'Kelamin', 0, 1);
-        $pdf->SetXY(115, 40);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(120, 40);
-        $pdf->Cell(10, 7, $sep['0']['jenis_kelamin'], 0, 1);
-
-        $pdf->SetXY(140, 35);
-        $pdf->Cell(10, 7, 'Peserta', 0, 1);
-        $pdf->SetXY(160, 35);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(165, 35);
-        $pdf->Cell(10, 7, $sep['0']['peserta'], 0, 1);
-
-
-        $pdf->SetXY(140, 40);
-        $pdf->Cell(10, 7, 'COB', 0, 1);
-        $pdf->SetXY(160, 40);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(165, 40);
-        $pdf->Cell(10, 7, $sep['0']['cob'], 0, 1);
-
-        $pdf->SetXY(140, 45);
-        $pdf->Cell(10, 7, 'Jns Rawat', 0, 1);
-        $pdf->SetXY(160, 45);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(165, 45);
-        $pdf->Cell(10, 7, $sep['0']['jenis_rawat'], 0, 1);
-
-        $pdf->SetXY(140, 50);
-        $pdf->Cell(10, 7, 'Kls Rawat', 0, 1);
-        $pdf->SetXY(160, 50);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(165, 50);
-        $pdf->Cell(10, 7, $sep['0']['kls_rawat'], 0, 1);
-
-        $pdf->SetXY(140, 55);
-        $pdf->Cell(10, 7, 'Penjamin', 0, 1);
-        $pdf->SetXY(160, 55);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(165, 55);
-        $pdf->Cell(10, 7, $sep['0']['peserta'], 0, 1);
-
-
-        $pdf->SetXY(10, 45);
-        $pdf->Cell(10, 7, 'Nama Peserta', 0, 1);
-        $pdf->SetXY(40, 45);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(45, 46);
-        $pdf->MultiCell(60, 5, $sep['0']['nama_peserta']);
-        // $pdf->Cell(10,7,$sep['0']['nama_peserta'],0,1);
-        $y = $pdf->GetY();
-        $pdf->SetXY(10, $y);
-        $pdf->Cell(10, 7, 'Tgl Lahir', 0, 1);
-        $pdf->SetXY(40, $y);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(45, $y);
-        $pdf->Cell(10, 7, $sep['0']['tgl_lahir'], 0, 1);
-
-        $pdf->SetXY(10, 60);
-        $pdf->Cell(10, 7, 'No.Telepon', 0, 1);
-        $pdf->SetXY(40, 60);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(45, 60);
-        $pdf->Cell(10, 7, $sep['0']['no_tlp'], 0, 1);
-
-        $pdf->SetXY(10, 65);
-        $pdf->Cell(10, 7, 'Poli Tujuan', 0, 1);
-        $pdf->SetXY(40, 65);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(45, 65);
-        if ($sep['0']['jenis_rawat'] == "R.Inap" || $sep['0']['jenis_rawat'] == "Rawat Inap" ) {
-            // $poli = $sep['0']['poli_tujuan'];
-            // $arr = explode('|', $poli, 2);
-            $pdf->Cell(10, 7, '', 0, 1);
-        } else {
-            $poli = $sep['0']['poli_tujuan'];
-            $arr = explode('|', $poli, 2);
-            $pdf->Cell(10, 7, $arr[1], 0, 1);
-        }
-
-
-        $pdf->SetXY(10, 70);
-        $pdf->Cell(10, 7, 'Faskes Perujuk', 0, 1);
-        $pdf->SetXY(40, 70);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(45, 70);
-        $pdf->Cell(10, 7, $sep['0']['nama_asal_faskes'], 0, 1);
-        $diag = $sep['0']['diagnosa_awal'];
-        $arr = explode('-', $diag, 2);
-        if(count($arr) > 1){
-            $diag1 = $arr[1];
+        $cek = count($sep);
+        if($cek == 0){
+            $v = new VclaimModel();
+            $sep = $v->carisep($request->sep);
+            $peserta = $v->get_peserta_noka($sep->response->peserta->noKartu, date('Y-m-d'));
+            // $cetakan = $sep['0']['cetakan'] + 1;
+            // ts_sep::where('kode_kunjungan', $sep)->update(['no_SEP' => $cetakan]);
+            $pdf = new Fpdf('L', 'mm', 'A4');
+            $pdf->AddPage();
+            $pdf->SetTitle('Cetak SEP');
+            $pdf->SetMargins('15', '20', '10');
+            $pdf->SetFont('Arial', '', 15);
+            $pdf->Image('public/img/logobpjs.png', 1, -5, 60, 40);
+            $pdf->Image('public/img/logo_rs.png', 170, 4, 35, 25);
+            $pdf->SetXY(70, 8);
+            $pdf->Cell(10, 7, 'SURAT ELIGIBILITAS PESERTA', 0, 1);
+            $pdf->SetXY(73, 14);
+            $pdf->Cell(10, 7, 'RSUD WALED KAB.CIREBON', 0, 1);
+    
+            $pdf->SetFont('Arial', '', 10);
+            $pdf->SetXY(10, 30);
+            $pdf->Cell(10, 7, 'No. SEP', 0, 1);
+            $pdf->SetXY(40, 30);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetFont('Arial', 'B', 12);
+            $pdf->SetXY(45, 30);
+            $pdf->Cell(10, 7, $sep->response->noSep, 0, 1);
+            $pdf->SetFont('Arial', '', 10);
+            $pdf->SetXY(10, 35);
+            $pdf->Cell(10, 7, 'Tgl. SEP', 0, 1);
+            $pdf->SetXY(40, 35);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(45, 35);
+            $pdf->Cell(10, 7, $sep->response->tglSep, 0, 1);
+    
+            $pdf->SetXY(10, 40);
+            $pdf->Cell(10, 7, 'No. Kartu', 0, 1);
+            $pdf->SetXY(40, 40);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(45, 40);
+            $pdf->Cell(10, 7, $sep->response->peserta->noKartu, 0, 1);
+    
+            $pdf->SetXY(100, 35);
+            $pdf->Cell(10, 7, 'No. MR', 0, 1);
+            $pdf->SetXY(115, 35);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(120, 35);
+            $pdf->Cell(10, 7, $sep->response->peserta->noMr, 0, 1);
+    
+            $pdf->SetXY(100, 40);
+            $pdf->Cell(10, 7, 'Kelamin', 0, 1);
+            $pdf->SetXY(115, 40);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(120, 40);
+            $pdf->Cell(10, 7, $sep->response->peserta->kelamin, 0, 1);
+    
+            $pdf->SetXY(140, 35);
+            $pdf->Cell(10, 7, 'Peserta', 0, 1);
+            $pdf->SetXY(160, 35);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(165, 35);
+            $pdf->Cell(10, 7, $sep->response->peserta->jnsPeserta, 0, 1);
+    
+    
+            $pdf->SetXY(140, 40);
+            $pdf->Cell(10, 7, 'COB', 0, 1);
+            $pdf->SetXY(160, 40);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(165, 40);
+            $pdf->Cell(10, 7, $sep->response->cob, 0, 1);
+    
+            $pdf->SetXY(140, 45);
+            $pdf->Cell(10, 7, 'Jns Rawat', 0, 1);
+            $pdf->SetXY(160, 45);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(165, 45);
+            $pdf->Cell(10, 7, $sep->response->jnsPelayanan, 0, 1);
+    
+            $pdf->SetXY(140, 50);
+            $pdf->Cell(10, 7, 'Kls Rawat', 0, 1);
+            $pdf->SetXY(160, 50);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(165, 50);
+            $pdf->Cell(10, 7, $sep->response->kelasRawat, 0, 1);
+    
+            $pdf->SetXY(140, 55);
+            $pdf->Cell(10, 7, 'Penjamin', 0, 1);
+            $pdf->SetXY(160, 55);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(165, 55);
+            $pdf->Cell(10, 7, $sep->response->penjamin, 0, 1);
+    
+    
+            $pdf->SetXY(10, 45);
+            $pdf->Cell(10, 7, 'Nama Peserta', 0, 1);
+            $pdf->SetXY(40, 45);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(45, 46);
+            $pdf->MultiCell(60, 5, $sep->response->peserta->nama);
+            // $pdf->Cell(10,7,$sep['0']['nama_peserta'],0,1);
+            $y = $pdf->GetY();
+            $pdf->SetXY(10, $y);
+            $pdf->Cell(10, 7, 'Tgl Lahir', 0, 1);
+            $pdf->SetXY(40, $y);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(45, $y);
+            $pdf->Cell(10, 7, $sep->response->peserta->tglLahir, 0, 1);
+    
+            $pdf->SetXY(10, 60);
+            $pdf->Cell(10, 7, 'No.Telepon', 0, 1);
+            $pdf->SetXY(40, 60);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(45, 60);
+            $pdf->Cell(10, 7, $peserta->response->peserta->mr->noTelepon, 0, 1);
+    
+            $pdf->SetXY(10, 65);
+            $pdf->Cell(10, 7, 'Poli Tujuan', 0, 1);
+            $pdf->SetXY(40, 65);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(45, 65);        
+            $pdf->Cell(10, 7, $sep->response->poli, 0, 1);   
+    
+            $pdf->SetXY(10, 70);
+            $pdf->Cell(10, 7, 'Faskes Perujuk', 0, 1);
+            $pdf->SetXY(40, 70);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(45, 70);
+            $pdf->Cell(10, 7, $peserta->response->peserta->provUmum->nmProvider, 0, 1);
+            $pdf->SetXY(10, 75);
+            $pdf->Cell(10, 7, 'Diagnosa Awal', 0, 1);
+            $pdf->SetXY(40, 75);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(45, 75);
+            $pdf->Cell(10, 7, $sep->response->diagnosa, 0, 1);
+    
+            $pdf->SetXY(10, 80);
+            $pdf->Cell(10, 7, 'Catatan', 0, 1);
+            $pdf->SetXY(40, 80);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(45, 80);
+            $pdf->Cell(10, 7, $sep->response->catatan, 0, 1);
+    
+            $pdf->SetFont('Arial', '', 8);
+            $pdf->SetXY(10, 85);
+            $pdf->Cell(10, 7, '*Saya menyetujui BPJS Kesehatan menggunakan informasi Medis Pasien jika diperlukan', 0, 1);
+    
+            $pdf->SetFont('Arial', '', 9);
+            $pdf->SetXY(150, 85);
+            $pdf->Cell(10, 7, 'Pasien / Keluarga Pasien', 0, 1);
+    
+            $pdf->SetFont('Arial', '', 8);
+            $pdf->SetXY(10, 90);
+            $pdf->Cell(10, 7, '*SEP bukan sebagai penjaminan peserta', 0, 1);
+            $pdf->SetFont('Arial', 'I', 7);
+            $pdf->SetXY(10, 100);
+            $pdf->Cell(10, 7, 'Cetakan ke -' . " " . ' ,.Tanggal cetak ' . date('y-m-d h:i:s'), 0, 1);
+            $pdf->SetFont('Arial', '', 8);
+            $pdf->SetXY(10, 90);
+            $pdf->Cell(10, 7, '*SEP bukan sebagai penjaminan peserta', 0, 1);
+            $pdf->SetFont('Arial', 'I', 7);
+            $pdf->SetXY(12, 100);
+            $pdf->Cell(10, 7, '..', 0, 1);
+    
+            $pdf->SetFont('Arial', '', 12);
+            $pdf->Line(150, 100, 190, 100);
+            $pdf->Output();
+    
+            exit;
         }else{
-            $diag1 = $arr[0];
+            $cetakan = $sep['0']['cetakan'] + 1;
+            ts_sep::where('kode_kunjungan', $sep)->update(['no_SEP' => $cetakan]);
+            $pdf = new Fpdf('L', 'mm', 'A4');
+            $pdf->AddPage();
+            $pdf->SetTitle('Cetak SEP');
+            $pdf->SetMargins('15', '20', '10');
+            $pdf->SetFont('Arial', '', 15);
+            $pdf->Image('public/img/logobpjs.png', 1, -5, 60, 40);
+            $pdf->Image('public/img/logo_rs.png', 170, 4, 35, 25);
+            $pdf->SetXY(70, 8);
+            $pdf->Cell(10, 7, 'SURAT ELIGIBILITAS PESERTA', 0, 1);
+            $pdf->SetXY(73, 14);
+            $pdf->Cell(10, 7, 'RSUD WALED KAB.CIREBON', 0, 1);
+    
+            $pdf->SetFont('Arial', '', 10);
+            $pdf->SetXY(10, 30);
+            $pdf->Cell(10, 7, 'No. SEP', 0, 1);
+            $pdf->SetXY(40, 30);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetFont('Arial', 'B', 12);
+            $pdf->SetXY(45, 30);
+            $pdf->Cell(10, 7, $sep[0]->no_SEP, 0, 1);
+            $pdf->SetFont('Arial', '', 10);
+            $pdf->SetXY(10, 35);
+            $pdf->Cell(10, 7, 'Tgl. SEP', 0, 1);
+            $pdf->SetXY(40, 35);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(45, 35);
+            $pdf->Cell(10, 7, $sep['0']['tgl_SEP'], 0, 1);
+    
+            $pdf->SetXY(10, 40);
+            $pdf->Cell(10, 7, 'No. Kartu', 0, 1);
+            $pdf->SetXY(40, 40);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(45, 40);
+            $pdf->Cell(10, 7, $sep['0']['no_kartu'], 0, 1);
+    
+            $pdf->SetXY(100, 35);
+            $pdf->Cell(10, 7, 'No. MR', 0, 1);
+            $pdf->SetXY(115, 35);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(120, 35);
+            $pdf->Cell(10, 7, $sep['0']['no_rm'], 0, 1);
+    
+            $pdf->SetXY(100, 40);
+            $pdf->Cell(10, 7, 'Kelamin', 0, 1);
+            $pdf->SetXY(115, 40);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(120, 40);
+            $pdf->Cell(10, 7, $sep['0']['jenis_kelamin'], 0, 1);
+    
+            $pdf->SetXY(140, 35);
+            $pdf->Cell(10, 7, 'Peserta', 0, 1);
+            $pdf->SetXY(160, 35);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(165, 35);
+            $pdf->Cell(10, 7, $sep['0']['peserta'], 0, 1);
+    
+    
+            $pdf->SetXY(140, 40);
+            $pdf->Cell(10, 7, 'COB', 0, 1);
+            $pdf->SetXY(160, 40);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(165, 40);
+            $pdf->Cell(10, 7, $sep['0']['cob'], 0, 1);
+    
+            $pdf->SetXY(140, 45);
+            $pdf->Cell(10, 7, 'Jns Rawat', 0, 1);
+            $pdf->SetXY(160, 45);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(165, 45);
+            $pdf->Cell(10, 7, $sep['0']['jenis_rawat'], 0, 1);
+    
+            $pdf->SetXY(140, 50);
+            $pdf->Cell(10, 7, 'Kls Rawat', 0, 1);
+            $pdf->SetXY(160, 50);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(165, 50);
+            $pdf->Cell(10, 7, $sep['0']['kls_rawat'], 0, 1);
+    
+            $pdf->SetXY(140, 55);
+            $pdf->Cell(10, 7, 'Penjamin', 0, 1);
+            $pdf->SetXY(160, 55);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(165, 55);
+            $pdf->Cell(10, 7, $sep['0']['peserta'], 0, 1);
+    
+    
+            $pdf->SetXY(10, 45);
+            $pdf->Cell(10, 7, 'Nama Peserta', 0, 1);
+            $pdf->SetXY(40, 45);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(45, 46);
+            $pdf->MultiCell(60, 5, $sep['0']['nama_peserta']);
+            // $pdf->Cell(10,7,$sep['0']['nama_peserta'],0,1);
+            $y = $pdf->GetY();
+            $pdf->SetXY(10, $y);
+            $pdf->Cell(10, 7, 'Tgl Lahir', 0, 1);
+            $pdf->SetXY(40, $y);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(45, $y);
+            $pdf->Cell(10, 7, $sep['0']['tgl_lahir'], 0, 1);
+    
+            $pdf->SetXY(10, 60);
+            $pdf->Cell(10, 7, 'No.Telepon', 0, 1);
+            $pdf->SetXY(40, 60);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(45, 60);
+            $pdf->Cell(10, 7, $sep['0']['no_tlp'], 0, 1);
+    
+            $pdf->SetXY(10, 65);
+            $pdf->Cell(10, 7, 'Poli Tujuan', 0, 1);
+            $pdf->SetXY(40, 65);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(45, 65);
+            if ($sep['0']['jenis_rawat'] == "R.Inap" || $sep['0']['jenis_rawat'] == "Rawat Inap" ) {
+                // $poli = $sep['0']['poli_tujuan'];
+                // $arr = explode('|', $poli, 2);
+                $pdf->Cell(10, 7, '', 0, 1);
+            } else {
+                $poli = $sep['0']['poli_tujuan'];
+                $arr = explode('|', $poli, 2);
+                $pdf->Cell(10, 7, $arr[1], 0, 1);
+            }
+    
+    
+            $pdf->SetXY(10, 70);
+            $pdf->Cell(10, 7, 'Faskes Perujuk', 0, 1);
+            $pdf->SetXY(40, 70);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(45, 70);
+            $pdf->Cell(10, 7, $sep['0']['nama_asal_faskes'], 0, 1);
+            $diag = $sep['0']['diagnosa_awal'];
+            $arr = explode('-', $diag, 2);
+            if(count($arr) > 1){
+                $diag1 = $arr[1];
+            }else{
+                $diag1 = $arr[0];
+            }
+            $pdf->SetXY(10, 75);
+            $pdf->Cell(10, 7, 'Diagnosa Awal', 0, 1);
+            $pdf->SetXY(40, 75);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(45, 75);
+            $pdf->Cell(10, 7, $diag1, 0, 1);
+    
+            $pdf->SetXY(10, 80);
+            $pdf->Cell(10, 7, 'Catatan', 0, 1);
+            $pdf->SetXY(40, 80);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetXY(45, 80);
+            $pdf->Cell(10, 7, $sep['0']['catatan'], 0, 1);
+    
+            $pdf->SetFont('Arial', '', 8);
+            $pdf->SetXY(10, 85);
+            $pdf->Cell(10, 7, '*Saya menyetujui BPJS Kesehatan menggunakan informasi Medis Pasien jika diperlukan', 0, 1);
+    
+            $pdf->SetFont('Arial', '', 9);
+            $pdf->SetXY(150, 85);
+            $pdf->Cell(10, 7, 'Pasien / Keluarga Pasien', 0, 1);
+    
+            $pdf->SetFont('Arial', '', 8);
+            $pdf->SetXY(10, 90);
+            $pdf->Cell(10, 7, '*SEP bukan sebagai penjaminan peserta', 0, 1);
+            $pdf->SetFont('Arial', 'I', 7);
+            $pdf->SetXY(10, 100);
+            $pdf->Cell(10, 7, 'Cetakan ke -' . $sep['0']['cetakan'] . ' ,.Tanggal cetak ' . date('y-m-d h:i:s'), 0, 1);
+            $pdf->SetFont('Arial', '', 8);
+            $pdf->SetXY(10, 90);
+            $pdf->Cell(10, 7, '*SEP bukan sebagai penjaminan peserta', 0, 1);
+            $pdf->SetFont('Arial', 'I', 7);
+            $pdf->SetXY(12, 100);
+            $pdf->Cell(10, 7, '..', 0, 1);
+    
+            $pdf->SetFont('Arial', '', 12);
+            $pdf->Line(150, 100, 190, 100);
+            $pdf->Output();
+    
+            exit;
         }
-        $pdf->SetXY(10, 75);
-        $pdf->Cell(10, 7, 'Diagnosa Awal', 0, 1);
-        $pdf->SetXY(40, 75);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(45, 75);
-        $pdf->Cell(10, 7, $diag1, 0, 1);
-
-        $pdf->SetXY(10, 80);
-        $pdf->Cell(10, 7, 'Catatan', 0, 1);
-        $pdf->SetXY(40, 80);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(45, 80);
-        $pdf->Cell(10, 7, $sep['0']['catatan'], 0, 1);
-
-        $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY(10, 85);
-        $pdf->Cell(10, 7, '*Saya menyetujui BPJS Kesehatan menggunakan informasi Medis Pasien jika diperlukan', 0, 1);
-
-        $pdf->SetFont('Arial', '', 9);
-        $pdf->SetXY(150, 85);
-        $pdf->Cell(10, 7, 'Pasien / Keluarga Pasien', 0, 1);
-
-        $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY(10, 90);
-        $pdf->Cell(10, 7, '*SEP bukan sebagai penjaminan peserta', 0, 1);
-        $pdf->SetFont('Arial', 'I', 7);
-        $pdf->SetXY(10, 100);
-        $pdf->Cell(10, 7, 'Cetakan ke -' . $sep['0']['cetakan'] . ' ,.Tanggal cetak ' . date('y-m-d h:i:s'), 0, 1);
-        $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY(10, 90);
-        $pdf->Cell(10, 7, '*SEP bukan sebagai penjaminan peserta', 0, 1);
-        $pdf->SetFont('Arial', 'I', 7);
-        $pdf->SetXY(12, 100);
-        $pdf->Cell(10, 7, '..', 0, 1);
-
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Line(150, 100, 190, 100);
-        $pdf->Output();
-
-        exit;
+        //update cetakan       
     }
     public function simpanpasien(Request $request)
     {
