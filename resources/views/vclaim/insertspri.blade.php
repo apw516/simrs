@@ -59,7 +59,7 @@
                         <div class="input-group mb-3">
                             <input readonly type="text" class="form-control" placeholder="Klik cari dokter ..."
                                 id="dokterkontrol2">
-                            <input hidden readonly type="text" class="form-control" placeholder="Klik cari dokter ..."
+                            <input  readonly type="text" class="form-control" placeholder="Klik cari dokter ..."
                                 id="kodedokterkontrol2">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary" type="button" data-toggle="modal"

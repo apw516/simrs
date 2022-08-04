@@ -42,4 +42,33 @@ class BillingController extends Controller
             'tarif' => DB::select("CALL sp_MASTER_TARIF_RAD")
         ]);
     }
+    public function billingformlayanan(Request $request)
+    {
+        $jlh = $request->jnslayanan;
+        if($jlh == 1){
+            return view('billing.formlayanan.layanan1');
+        }else if($jlh == 2){
+            return view('billing.formlayanan.layanan2');
+        }else if($jlh == 3){
+            return view('billing.formlayanan.layanan3');
+        }else if($jlh == 4){
+            return view('billing.formlayanan.layanan4');
+        }else if($jlh == 5){
+            return view('billing.formlayanan.layanan5');
+        }
+    }
+    public function carilayanan_penunjang(Request $request)
+    {
+        $unit = auth()->user()->unit;
+        $result = DB::table('view_panggil_tarif')->where('Tindakan', 'LIKE', '%' . $request->q . '%')->where('kelas_tarif', '=', $request->kelas)->where('kode_unit', '=', $unit)->get();
+        if (count($result) > 0) {
+            foreach ($result as $row)
+                $arr_result[] = array(
+                    'label' => "kelas " .$row->kelas_tarif." ".$row->Tindakan,
+                    'kode' => $row->kode,
+                    'tarif' => $row->tarif
+                );
+            echo json_encode($arr_result);
+        }
+    }
 }

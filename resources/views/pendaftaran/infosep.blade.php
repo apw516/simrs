@@ -39,7 +39,7 @@
                     <input hidden type="text" class="form-control edit" id="diagnosasep_update"
                         value="{{ $sep->response->diagnosa }}">
                     <input hidden type="text" class="form-control" id="kodediagnosasep_update"
-                        value="{{ $sep->response->diagnosa }}">
+                        value="{{ $diagnosa }}">
                 </li>
                 <li class="list-group-item">
                     <b>Poli</b>
@@ -163,6 +163,14 @@
                         value="{{ $sep->response->peserta->noMr }}">
                 </li>
                 <li class="list-group-item">
+                    <b>Nomor Telpon</b>
+                    <div class="bataledit">
+                        <a class="float-right text-dark text-monospace"> {{ $datapeserta->response->peserta->mr->noTelepon }}</a>
+                    </div>
+                    <input hidden type="text" class="form-control edit" id="nomortelp_update"
+                        value="{{ $datapeserta->response->peserta->mr->noTelepon }}">
+                </li>
+                <li class="list-group-item">
                     <b>Tgl lahir</b> <a
                         class="float-right text-dark text-monospace">{{ $sep->response->peserta->tglLahir }}</a>
                 </li>
@@ -227,18 +235,14 @@
         <div class="col-md-4">
             <ul class="list-group list-group-unbordered mb-3">
                 <li class="list-group-item">
-                    <b>Dokter DPJP</b> <a
-                        class="float-right text-dark text-monospace">{{ $sep->response->dpjp->nmDPJP }}</a>
-                </li>
-                <li class="list-group-item">
-                    <b>Dokter Kontrol</b>
+                    <b>Dokter DPJP</b>
                     <div class="bataledit">
-                        <a class="float-right text-dark text-monospace">{{ $sep->response->kontrol->nmDokter }}</a>
+                        <a class="float-right text-dark text-monospace">{{ $sep->response->dpjp->nmDPJP }}</a>
                     </div>
                     <input hidden type="text" class="form-control edit" id="dokterkontrol_update"
-                        value="{{ $sep->response->kontrol->nmDokter }}">
+                        value="{{ $sep->response->dpjp->nmDPJP }}">
                     <input hidden type="text" class="form-control" id="kodedokterkontrol_update"
-                        value="{{ $sep->response->kontrol->nmDokter }}">
+                        value="{{ $sep->response->dpjp->kdDPJP }}">
                 </li>
                 <li class="list-group-item">
                     <b>No.Surat Kontrol</b> <a
@@ -249,9 +253,9 @@
         <div class="col-md-8">
             <ul class="list-group list-group-unbordered mb-3">
                 <li class="list-group-item">
-                    <button disabled class="float-right btn btn-warning editsep" onclick="editsep()"><i
+                    <button class="float-right btn btn-warning editsep" onclick="editsep()"><i
                             class="bi bi-pencil-square"></i> Edit SEP</button>
-                    <button hidden class="float-right btn btn-danger mr-2 batledit" onclick="bataledit()"><i
+                    <button hidden class="float-right btn btn-danger mr-2 batledit" onclick="location.reload()"><i
                             class="bi bi-pencil-square"></i> Batal Edit</button>
                     <button hidden class="float-right btn btn-success mr-2 batledit" onclick="simapanedit()"><i
                             class="bi bi-pencil-square"></i> Simpan Edit</button>
@@ -296,7 +300,7 @@
         kdkab = $('#kabupatenkejadian_update').val()
         kdkec = $('#kecamatankejadian_update').val()
         dpjpLayan = $('#kodedokterkontrol_update').val()
-        notelp = "000000000000"
+        notelp = $('#nomortelp_update').val()
         spinner = $('#loader');
         spinner.show();
         $.ajax({
@@ -334,7 +338,11 @@
                 })
             },
             success: function(data) {
-                spinner.hide()               
+                spinner.hide()
+                Swal.fire({
+                    icon: 'warning',
+                    title: data.metaData.message,
+                })               
             }
         });
     }

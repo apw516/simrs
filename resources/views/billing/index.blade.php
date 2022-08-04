@@ -22,7 +22,7 @@
     <section class="content">
         <div class="container">
             <div class="vpasien">
-                <table id="tabelpasien_penunjang" class="table table-bordered table-xs table-striped table-hover">
+                <table id="tabelpasien_penunjang" class="table table-bordered table-sm text-xs table-striped table-hover">
                     <thead>
                         <th>Unit</th>
                         <th>Nomor RM</th>

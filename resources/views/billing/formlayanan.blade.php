@@ -2,14 +2,14 @@
     <div class="row">
         <div class="col-md-5">
             <div class="card">
-                <div class="card-outline card-success" >
+                <div class="card-outline card-success">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-3">
                                 Nomor RM
                             </div>
                             <div class="col-md-9">
-                                :  {{ $pasien['nomorm'] }}
+                                : {{ $pasien['nomorm'] }}
                             </div>
                         </div>
                         <div class="row">
@@ -17,7 +17,7 @@
                                 Nama
                             </div>
                             <div class="col-md-9">
-                                :  {{ $pasien['nama'] }}
+                                : {{ $pasien['nama'] }}
                             </div>
                         </div>
                         <div class="row">
@@ -25,7 +25,7 @@
                                 Jenis Kelamin
                             </div>
                             <div class="col-md-9">
-                                :  {{ $pasien['jk'] }}
+                                : {{ $pasien['jk'] }}
                             </div>
                         </div>
                         <div class="row">
@@ -33,7 +33,7 @@
                                 Alamat
                             </div>
                             <div class="col-md-9">
-                                :  {{ $pasien['alamat'] }}
+                                : {{ $pasien['alamat'] }}
                             </div>
                         </div>
                         <div class="row">
@@ -41,7 +41,16 @@
                                 Unit
                             </div>
                             <div class="col-md-9">
-                                :  {{ $pasien['unit'] }}
+                                : {{ $pasien['unit'] }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                Kelas Unit
+                            </div>
+                            <div class="col-md-9">
+                                : {{ $pasien['kelas'] }}
+                                <input hidden type="text" id="kelas_unit_pasien" value="{{ $pasien['kelas'] }}">
                             </div>
                         </div>
                         <div class="row">
@@ -49,7 +58,7 @@
                                 Penjamin
                             </div>
                             <div class="col-md-9">
-                                :  {{ $pasien['penjamin'] }}
+                                : {{ $pasien['penjamin'] }}
                             </div>
                         </div>
                     </div>
@@ -60,43 +69,88 @@
             <div class="card">
                 <div class="card-header bg-success">Input Layanan</div>
                 <div class="card-body">
-                    <table id="table-tarif" class="table table-sm">
-                        <thead>
-                            <th>Nama Layanan</th>
-                            <th>VVIP</th>
-                            <th>VIP</th>
-                            <th>I</th>
-                            <th>II</th>
-                            <th>III</th>
-                        </thead>
-                        <tbody>
-                            @foreach ($tarif as $t)
-                                <tr>
-                                    <td>{{ $t->NAMA_LAYANAN}}</td>
-                                    <td>{{ $t->VVIP}}</td>
-                                    <td>{{ $t->VIP}}</td>
-                                    <td>{{ $t->I}}</td>
-                                    <td>{{ $t->II}}</td>
-                                    <td>{{ $t->III}}</td>                                    
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control col-md-5" placeholder="Total jenis layanan ..."
+                            aria-label="Recipient's username" id="jlhjnslayanan" aria-describedby="button-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-success" type="button" onclick="add_layanan_penunjang()"><i
+                                    class="bi bi-plus text-md"></i></button>
+                        </div>
+                    </div>
+                    <div class="formlayanan2">
+
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="adatombol" hidden>
+                        <button class="btn btn-danger" onclick="location.reload()">Reset</button>
+                        <button class="btn btn-success" onclick="simpanbilling()">Simpan</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <script>
-    $(function() {
-        $("#table-tarif").DataTable({
-            "responsive": true,
-            "lengthChange": false,
-            "autoWidth": true,
-            "pageLength": 3,
-            "order": [
-                [1, "desc"]
-            ]
-        })
-    });
+    function add_layanan_penunjang() {
+        jnslayanan = $('#jlhjnslayanan').val()
+        if(jnslayanan != ''){
+            $('.adatombol').removeAttr('Hidden',true)
+        }else{
+            $('.adatombol').attr('Hidden',true)
+        }
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                jnslayanan
+            },
+            url: '<?= route('billingformlayanan') ?>',
+            error: function(data) {
+                alert('error!')
+            },
+            success: function(response) {
+                $('.formlayanan2').html(response);
+            }
+        });
+    }
+    function simpanbilling()
+    {
+        jnslayanan = $('#jlhjnslayanan').val()
+        nl1 = $('#nl1').val()
+        kodenl1 = $('#kodenl1').val()
+        tl1 = $('#tl1').val()
+        jlh1 = $('#jlh1').val()
+        disc1 = $('#disc1').val()
+        cyto1 = $('#cyto1').val()
+        
+        nl2 = $('#nl2').val()
+        kodenl2 = $('#kodenl2').val()
+        tl2 = $('#tl2').val()
+        jlh2 = $('#jlh2').val()
+        disc2 = $('#disc2').val()
+        cyto2 = $('#cyto2').val()
+
+        nl3 = $('#nl3').val()
+        kodenl3 = $('#kodenl3').val()
+        tl3 = $('#tl3').val()
+        jlh3 = $('#jlh3').val()
+        disc3 = $('#disc3').val()
+        cyto3 = $('#cyto3').val()
+
+        nl4 = $('#nl4').val()
+        kodenl4 = $('#kodenl4').val()
+        tl4 = $('#tl4').val()
+        jlh4 = $('#jlh4').val()
+        disc4 = $('#disc4').val()
+        cyto4 = $('#cyto4').val()
+
+        nl5 = $('#nl5').val()
+        kodenl5 = $('#kodenl5').val()
+        tl5 = $('#tl5').val()
+        jlh5 = $('#jlh5').val()
+        disc5 = $('#disc5').val()
+        cyto5 = $('#cyto5').val()
+        
+    }
 </script>

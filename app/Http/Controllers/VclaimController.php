@@ -274,8 +274,8 @@ class VclaimController extends Controller
                 ]
             ];
         // dd($data);
-        $delete = $v->updatesep($data);
-        echo json_encode($delete);
+        $data = $v->updatesep($data);
+        echo json_encode($data);
     }
     public function pengajuansep(Request $request)
     {

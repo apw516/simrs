@@ -831,7 +831,7 @@ class SimrsController extends Controller
             //data yang akan disimpan ke ts kunjungan
             $paramedis = Dokter::where('kode_dpjp', '=', "$request->kodedokterlayan")->get();
             $unit = mt_unit::where('KDPOLI', '=', "$request->kodepolitujuan")->get();
-            if($request->kodepolitujuan == "HIV"){
+            if ($request->kodepolitujuan == "HIV") {
                 $unit = mt_unit::where('kode_unit', '=', "1016")->get();
             }
             $data_ts_kunjungan = array(
@@ -1603,7 +1603,7 @@ class SimrsController extends Controller
         $kablaka = $request->kabupatenkejadian;
         $keclaka = $request->kecamatankejadian;
         $ketlaka = $request->keteranganlaka;
-        if($penjamin == ''){
+        if ($penjamin == '') {
             $data = [
                 'kode' => 201,
                 'message' => 'Data penjamin belum dipilih !'
@@ -1611,7 +1611,7 @@ class SimrsController extends Controller
             echo json_encode($data);
             die;
         }
-        if($hakkelasbpjs == ''){
+        if ($hakkelasbpjs == '') {
             $data = [
                 'kode' => 201,
                 'message' => 'Hak kelas belum dipilih !'
@@ -1619,7 +1619,7 @@ class SimrsController extends Controller
             echo json_encode($data);
             die;
         }
-        if($kelas_ranap == ''){
+        if ($kelas_ranap == '') {
             $data = [
                 'kode' => 201,
                 'message' => 'Kelas Perawatan belum dipilih !'
@@ -1627,15 +1627,15 @@ class SimrsController extends Controller
             echo json_encode($data);
             die;
         }
-        if($unitranap == ''){
+        if ($unitranap == '') {
             $data = [
                 'kode' => 201,
                 'message' => 'Unit ruangan belum dipilih !'
             ];
             echo json_encode($data);
             die;
-        }        
-        if($idruangan_ranap == ''){
+        }
+        if ($idruangan_ranap == '') {
             $data = [
                 'kode' => 201,
                 'message' => 'ruangan belum dipilih !'
@@ -1643,7 +1643,7 @@ class SimrsController extends Controller
             echo json_encode($data);
             die;
         }
-        if($bedranap == ''){
+        if ($bedranap == '') {
             $data = [
                 'kode' => 201,
                 'message' => 'Bed belum dipilih !'
@@ -1651,7 +1651,7 @@ class SimrsController extends Controller
             echo json_encode($data);
             die;
         }
-        if($kodekunjungan_ref == ''){
+        if ($kodekunjungan_ref == '') {
             $data = [
                 'kode' => 201,
                 'message' => 'Refernsi Kunjungan rawat jalan tidak boleh kosong !'
@@ -1768,19 +1768,19 @@ class SimrsController extends Controller
         }
         if ($naik_kelas == 1) {
             $kelasrawat = $kelas_ranap;
-            if($kelas_ranap == 1){
+            if ($kelas_ranap == 1) {
                 $kelasrawat = 3;
             }
-            if($kelas_ranap == 2){
+            if ($kelas_ranap == 2) {
                 $kelasrawat = 4;
             }
-            if($kelas_ranap == 3){
+            if ($kelas_ranap == 3) {
                 $kelasrawat = 5;
             }
-            if($kelas_ranap == 4){
+            if ($kelas_ranap == 4) {
                 $kelasrawat = 1;
             }
-            if($kelas_ranap == 5){
+            if ($kelas_ranap == 5) {
                 $kelasrawat = 2;
             }
         } else {
@@ -1971,8 +1971,8 @@ class SimrsController extends Controller
                 'status_kunjungan' => 1
             ]);
 
-             //update jika perubahan penjamin
-             if ($penjamin_lama != $penjamin && $penjamin != 'P01') {
+            //update jika perubahan penjamin
+            if ($penjamin_lama != $penjamin && $penjamin != 'P01') {
                 ts_kunjungan::whereRaw('kode_kunjungan = ?', array($kodekunjungan_ref))->update([
                     'kode_penjamin' => $penjamin, 'his_penjamin' => $penjamin_lama
                 ]);
@@ -2180,17 +2180,18 @@ class SimrsController extends Controller
             echo json_encode($data);
         }
     }
-    function manipulasiTanggal($tgl,$jumlah=1,$format='days'){
+    function manipulasiTanggal($tgl, $jumlah = 1, $format = 'days')
+    {
         $currentDate = $tgl;
-        return date('Y-m-d', strtotime($jumlah.' '.$format, strtotime($currentDate)));
+        return date('Y-m-d', strtotime($jumlah . ' ' . $format, strtotime($currentDate)));
     }
     public function cetakrujukan($nomorrujukan)
     {
         $v = new VclaimModel();
-        
+
         $rujukan = $v->detailrujukan_keluar($nomorrujukan);
-        $tgl= $rujukan->response->rujukan->tglRujukan;
-        $masaberlakurujukan = $this->manipulasiTanggal($tgl,'+3','months');
+        $tgl = $rujukan->response->rujukan->tglRujukan;
+        $masaberlakurujukan = $this->manipulasiTanggal($tgl, '+3', 'months');
         $pdf = new Fpdf('L', 'mm', 'A4');
         $pdf->AddPage();
         $pdf->SetTitle('Cetak Rujukan');
@@ -2209,7 +2210,7 @@ class SimrsController extends Controller
         $pdf->SetXY(70, 14);
         $pdf->Cell(10, 7, 'RSUD WALED KAB.CIREBON', 0, 1);
         $pdf->SetXY(155, 14);
-        $pdf->Cell(10, 7, 'Tgl.   '.$rujukan->response->rujukan->tglRujukan, 0, 1);
+        $pdf->Cell(10, 7, 'Tgl.   ' . $rujukan->response->rujukan->tglRujukan, 0, 1);
         // dd($rujukan);       
 
         $pdf->SetFont('Arial', '', 12);
@@ -2219,7 +2220,7 @@ class SimrsController extends Controller
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetFont('Arial', '', 12);
         $pdf->SetXY(45, 32);
-        $pdf->MultiCell(80, 4, $rujukan->response->rujukan->namaPpkDirujuk );
+        $pdf->MultiCell(80, 4, $rujukan->response->rujukan->namaPpkDirujuk);
 
         $y = $pdf->GetY();
 
@@ -2228,14 +2229,14 @@ class SimrsController extends Controller
         $pdf->Cell(10, 7, 'Mohon Pemeriksaan dan Penanganan Lebih Lanjunt :', 0, 1);
 
         $pdf->SetXY(150, 40);
-        $pdf->Cell(10, 7, "===".$rujukan->response->rujukan->namaTipeRujukan."===" , 0, 1);
+        $pdf->Cell(10, 7, "===" . $rujukan->response->rujukan->namaTipeRujukan . "===", 0, 1);
         $pdf->SetXY(150, 44);
-        if($rujukan->response->rujukan->jnsPelayanan == 2){
+        if ($rujukan->response->rujukan->jnsPelayanan == 2) {
             $jns = "rawat jalan";
-        }else{
+        } else {
             $jns = "rawat inap";
         }
-        $pdf->Cell(10, 7,$jns, 0, 1);
+        $pdf->Cell(10, 7, $jns, 0, 1);
 
         $y = $pdf->GetY();
 
@@ -2245,8 +2246,8 @@ class SimrsController extends Controller
         $pdf->SetXY(40, $y);
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetFont('Arial', '', 12);
-        $pdf->SetXY(45, $y+2);
-        $pdf->MultiCell(80, 4, $rujukan->response->rujukan->noKartu );
+        $pdf->SetXY(45, $y + 2);
+        $pdf->MultiCell(80, 4, $rujukan->response->rujukan->noKartu);
 
         $y = $pdf->GetY();
 
@@ -2256,8 +2257,8 @@ class SimrsController extends Controller
         $pdf->SetXY(40, $y);
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetFont('Arial', '', 12);
-        $pdf->SetXY(45, $y+2);
-        $pdf->MultiCell(80, 4, $rujukan->response->rujukan->nama );
+        $pdf->SetXY(45, $y + 2);
+        $pdf->MultiCell(80, 4, $rujukan->response->rujukan->nama);
 
 
         $y = $pdf->GetY();
@@ -2268,8 +2269,8 @@ class SimrsController extends Controller
         $pdf->SetXY(40, $y);
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetFont('Arial', '', 12);
-        $pdf->SetXY(45, $y+2);
-        $pdf->MultiCell(80, 4, $rujukan->response->rujukan->tglLahir );
+        $pdf->SetXY(45, $y + 2);
+        $pdf->MultiCell(80, 4, $rujukan->response->rujukan->tglLahir);
 
 
         $y = $pdf->GetY();
@@ -2280,8 +2281,8 @@ class SimrsController extends Controller
         $pdf->SetXY(40, $y);
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetFont('Arial', '', 12);
-        $pdf->SetXY(45, $y+2);
-        $pdf->MultiCell(80, 4, $rujukan->response->rujukan->namaPoliRujukan );
+        $pdf->SetXY(45, $y + 2);
+        $pdf->MultiCell(80, 4, $rujukan->response->rujukan->namaPoliRujukan);
 
         $y = $pdf->GetY();
 
@@ -2291,8 +2292,8 @@ class SimrsController extends Controller
         $pdf->SetXY(40, $y);
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetFont('Arial', '', 12);
-        $pdf->SetXY(45, $y+2);
-        $pdf->MultiCell(80, 4, $rujukan->response->rujukan->namaDiagRujukan );
+        $pdf->SetXY(45, $y + 2);
+        $pdf->MultiCell(80, 4, $rujukan->response->rujukan->namaDiagRujukan);
 
         $y = $pdf->GetY();
 
@@ -2302,33 +2303,33 @@ class SimrsController extends Controller
         $pdf->SetXY(40, $y);
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetFont('Arial', '', 12);
-        $pdf->SetXY(45, $y+2);
-        $pdf->MultiCell(80, 4, $rujukan->response->rujukan->catatan );
+        $pdf->SetXY(45, $y + 2);
+        $pdf->MultiCell(80, 4, $rujukan->response->rujukan->catatan);
 
-        $y = $pdf->GetY()+2;
+        $y = $pdf->GetY() + 2;
 
         $pdf->SetFont('Arial', '', 12);
         $pdf->SetXY(10, $y);
         $pdf->Cell(10, 7, 'Demikian atas bantuannya, diucapkan banyak terima kasih.', 0, 1);
-       
+
         $y = $pdf->GetY();
 
         $pdf->SetFont('Arial', '', 12);
         $pdf->SetXY(10, $y);
-        $pdf->Cell(10, 7, '- Rujukan Berlaku Sampai Dengan '.$masaberlakurujukan , 0, 1);
-       
-       
+        $pdf->Cell(10, 7, '- Rujukan Berlaku Sampai Dengan ' . $masaberlakurujukan, 0, 1);
+
+
         $y = $pdf->GetY();
 
         $pdf->SetFont('Arial', '', 12);
         $pdf->SetXY(10, $y);
-        $pdf->Cell(10, 7, '- Tgl Rencana Berkunjung '.$rujukan->response->rujukan->tglRencanaKunjungan , 0, 1);      
-       
-        $y = $pdf->GetY()+5;
+        $pdf->Cell(10, 7, '- Tgl Rencana Berkunjung ' . $rujukan->response->rujukan->tglRencanaKunjungan, 0, 1);
+
+        $y = $pdf->GetY() + 5;
 
         $pdf->SetFont('Arial', '', 10);
         $pdf->SetXY(10, $y);
-        $pdf->Cell(10, 7, 'Tgl Cetak '.date('y-m-d h:i:s'), 0, 1);      
+        $pdf->Cell(10, 7, 'Tgl Cetak ' . date('y-m-d h:i:s'), 0, 1);
 
         $pdf->SetFont('Arial', '', 9);
         $pdf->SetXY(150, 85);
@@ -2344,196 +2345,12 @@ class SimrsController extends Controller
     {
         //ambil data sep
         $sep = ts_sep::where('kode_kunjungan', $kodekunjungan)->get();
-        //update cetakan
-        $cetakan = $sep['0']['cetakan'] + 1;
-        ts_sep::where('kode_kunjungan', $kodekunjungan)->update(['cetakan' => $cetakan]);
-        $pdf = new Fpdf('L', 'mm', 'A4');
-        $pdf->AddPage();
-        $pdf->SetTitle('Cetak SEP');
-        $pdf->SetMargins('15', '20', '10');
-        $pdf->SetFont('Arial', '', 15);
-        $pdf->Image('public/img/logobpjs.png', 1, -5, 60, 40);
-        $pdf->Image('public/img/logo_rs.png', 170, 4, 35, 25);
-        $pdf->SetXY(70, 8);
-        $pdf->Cell(10, 7, 'SURAT ELIGIBILITAS PESERTA', 0, 1);
-        $pdf->SetXY(73, 14);
-        $pdf->Cell(10, 7, 'RSUD WALED KAB.CIREBON', 0, 1);
-
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->SetXY(10, 30);
-        $pdf->Cell(10, 7, 'No. SEP', 0, 1);
-        $pdf->SetXY(40, 30);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetFont('Arial', 'B', 12);
-        $pdf->SetXY(45, 30);
-        $pdf->Cell(10, 7, $sep[0]->no_SEP, 0, 1);
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->SetXY(10, 35);
-        $pdf->Cell(10, 7, 'Tgl. SEP', 0, 1);
-        $pdf->SetXY(40, 35);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(45, 35);
-        $pdf->Cell(10, 7, $sep[0]->tgl_SEP, 0, 1);
-
-        $pdf->SetXY(10, 40);
-        $pdf->Cell(10, 7, 'No. Kartu', 0, 1);
-        $pdf->SetXY(40, 40);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(45, 40);
-        $pdf->Cell(10, 7, $sep['0']['no_kartu'], 0, 1);
-
-        $pdf->SetXY(100, 35);
-        $pdf->Cell(10, 7, 'No. MR', 0, 1);
-        $pdf->SetXY(115, 35);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(120, 35);
-        $pdf->Cell(10, 7, $sep['0']['no_rm'], 0, 1);
-
-        $pdf->SetXY(100, 40);
-        $pdf->Cell(10, 7, 'Kelamin', 0, 1);
-        $pdf->SetXY(115, 40);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(120, 40);
-        $pdf->Cell(10, 7, $sep['0']['jenis_kelamin'], 0, 1);
-
-        $pdf->SetXY(140, 35);
-        $pdf->Cell(10, 7, 'Peserta', 0, 1);
-        $pdf->SetXY(160, 35);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(165, 35);
-        $pdf->Cell(10, 7, $sep['0']['peserta'], 0, 1);
-
-
-        $pdf->SetXY(140, 40);
-        $pdf->Cell(10, 7, 'COB', 0, 1);
-        $pdf->SetXY(160, 40);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(165, 40);
-        $pdf->Cell(10, 7, $sep['0']['cob'], 0, 1);
-
-        $pdf->SetXY(140, 45);
-        $pdf->Cell(10, 7, 'Jns Rawat', 0, 1);
-        $pdf->SetXY(160, 45);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(165, 45);
-        $pdf->Cell(10, 7, $sep['0']['jenis_rawat'], 0, 1);
-
-        $pdf->SetXY(140, 50);
-        $pdf->Cell(10, 7, 'Kls Rawat', 0, 1);
-        $pdf->SetXY(160, 50);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(165, 50);
-        $pdf->Cell(10, 7, $sep['0']['kls_rawat'], 0, 1);
-
-        $pdf->SetXY(140, 55);
-        $pdf->Cell(10, 7, 'Penjamin', 0, 1);
-        $pdf->SetXY(160, 55);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(165, 55);
-        $pdf->Cell(10, 7, $sep['0']['peserta'], 0, 1);
-
-
-        $pdf->SetXY(10, 45);
-        $pdf->Cell(10, 7, 'Nama Peserta', 0, 1);
-        $pdf->SetXY(40, 45);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(45, 46);
-        $pdf->MultiCell(60, 5, $sep['0']['nama_peserta']);
-        // $pdf->Cell(10,7,$sep['0']['nama_peserta'],0,1);
-        $y = $pdf->GetY();
-        $pdf->SetXY(10, $y);
-        $pdf->Cell(10, 7, 'Tgl Lahir', 0, 1);
-        $pdf->SetXY(40, $y);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(45, $y);
-        $pdf->Cell(10, 7, $sep['0']['tgl_lahir'], 0, 1);
-
-        $pdf->SetXY(10, 60);
-        $pdf->Cell(10, 7, 'No.Telepon', 0, 1);
-        $pdf->SetXY(40, 60);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(45, 60);
-        $pdf->Cell(10, 7, $sep['0']['no_tlp'], 0, 1);
-
-        $pdf->SetXY(10, 65);
-        $pdf->Cell(10, 7, 'Poli Tujuan', 0, 1);
-        $pdf->SetXY(40, 65);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(45, 65);
-        if ($sep['0']['jenis_rawat'] == "R.Inap" || $sep['0']['jenis_rawat'] == "Rawat Inap" ) {
-            // $poli = $sep['0']['poli_tujuan'];
-            // $arr = explode('|', $poli, 2);
-            $pdf->Cell(10, 7, '', 0, 1);
-        } else {
-            $poli = $sep['0']['poli_tujuan'];
-            $arr = explode('|', $poli, 2);
-            $pdf->Cell(10, 7, $arr[1], 0, 1);
-        }
-
-
-        $pdf->SetXY(10, 70);
-        $pdf->Cell(10, 7, 'Faskes Perujuk', 0, 1);
-        $pdf->SetXY(40, 70);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(45, 70);
-        $pdf->Cell(10, 7, $sep['0']['nama_asal_faskes'], 0, 1);
-        $diag = $sep['0']['diagnosa_awal'];
-        $arr = explode('-', $diag, 2);
-        if(count($arr) > 1){
-            $diag1 = $arr[1];
-        }else{
-            $diag1 = $arr[0];
-        }
-        $pdf->SetXY(10, 75);
-        $pdf->Cell(10, 7, 'Diagnosa Awal', 0, 1);
-        $pdf->SetXY(40, 75);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(45, 75);
-        $pdf->Cell(10, 7, $diag1, 0, 1);
-
-        $pdf->SetXY(10, 80);
-        $pdf->Cell(10, 7, 'Catatan', 0, 1);
-        $pdf->SetXY(40, 80);
-        $pdf->Cell(10, 7, ':', 0, 1);
-        $pdf->SetXY(45, 80);
-        $pdf->Cell(10, 7, $sep['0']['catatan'], 0, 1);
-
-        $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY(10, 85);
-        $pdf->Cell(10, 7, '*Saya menyetujui BPJS Kesehatan menggunakan informasi Medis Pasien jika diperlukan', 0, 1);
-
-        $pdf->SetFont('Arial', '', 9);
-        $pdf->SetXY(150, 85);
-        $pdf->Cell(10, 7, 'Pasien / Keluarga Pasien', 0, 1);
-
-        $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY(10, 90);
-        $pdf->Cell(10, 7, '*SEP bukan sebagai penjaminan peserta', 0, 1);
-        $pdf->SetFont('Arial', 'I', 7);
-        $pdf->SetXY(10, 100);
-        $pdf->Cell(10, 7, 'Cetakan ke -' . $sep['0']['cetakan'] . ' ,.Tanggal cetak ' . date('y-m-d h:i:s'), 0, 1);
-        $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY(10, 90);
-        $pdf->Cell(10, 7, '*SEP bukan sebagai penjaminan peserta', 0, 1);
-        $pdf->SetFont('Arial', 'I', 7);
-        $pdf->SetXY(12, 100);
-        $pdf->Cell(10, 7, '..', 0, 1);
-
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Line(150, 100, 190, 100);
-        $pdf->Output();
-
-        exit;
-    }
-    public function Cetaksep_v(Request $request)
-    {
-        //ambil data sep
-        $sep = $request->sep;
-        $sep = ts_sep::where('no_SEP', $sep)->get();
         $cek = count($sep);
-        if($cek == 0){
+        if ($cek == 0) {
+            $kj = ts_kunjungan::where('kode_kunjungan', $kodekunjungan)->get();
+            $sep = $kj['0']['no_sep'];
             $v = new VclaimModel();
-            $sep = $v->carisep($request->sep);
+            $sep = $v->carisep($sep);
             $peserta = $v->get_peserta_noka($sep->response->peserta->noKartu, date('Y-m-d'));
             // $cetakan = $sep['0']['cetakan'] + 1;
             // ts_sep::where('kode_kunjungan', $sep)->update(['no_SEP' => $cetakan]);
@@ -2649,8 +2466,8 @@ class SimrsController extends Controller
             $pdf->Cell(10, 7, 'Poli Tujuan', 0, 1);
             $pdf->SetXY(40, 65);
             $pdf->Cell(10, 7, ':', 0, 1);
-            $pdf->SetXY(45, 65);        
-            $pdf->Cell(10, 7, $sep->response->poli, 0, 1);   
+            $pdf->SetXY(45, 65);
+            $pdf->Cell(10, 7, $sep->response->poli, 0, 1);
     
             $pdf->SetXY(10, 70);
             $pdf->Cell(10, 7, 'Faskes Perujuk', 0, 1);
@@ -2698,9 +2515,10 @@ class SimrsController extends Controller
             $pdf->Output();
     
             exit;
-        }else{
+        } else {
+            //update cetakan
             $cetakan = $sep['0']['cetakan'] + 1;
-            ts_sep::where('kode_kunjungan', $sep)->update(['no_SEP' => $cetakan]);
+            ts_sep::where('kode_kunjungan', $kodekunjungan)->update(['cetakan' => $cetakan]);
             $pdf = new Fpdf('L', 'mm', 'A4');
             $pdf->AddPage();
             $pdf->SetTitle('Cetak SEP');
@@ -2712,7 +2530,7 @@ class SimrsController extends Controller
             $pdf->Cell(10, 7, 'SURAT ELIGIBILITAS PESERTA', 0, 1);
             $pdf->SetXY(73, 14);
             $pdf->Cell(10, 7, 'RSUD WALED KAB.CIREBON', 0, 1);
-    
+
             $pdf->SetFont('Arial', '', 10);
             $pdf->SetXY(10, 30);
             $pdf->Cell(10, 7, 'No. SEP', 0, 1);
@@ -2727,66 +2545,66 @@ class SimrsController extends Controller
             $pdf->SetXY(40, 35);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(45, 35);
-            $pdf->Cell(10, 7, $sep['0']['tgl_SEP'], 0, 1);
-    
+            $pdf->Cell(10, 7, $sep[0]->tgl_SEP, 0, 1);
+
             $pdf->SetXY(10, 40);
             $pdf->Cell(10, 7, 'No. Kartu', 0, 1);
             $pdf->SetXY(40, 40);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(45, 40);
             $pdf->Cell(10, 7, $sep['0']['no_kartu'], 0, 1);
-    
+
             $pdf->SetXY(100, 35);
             $pdf->Cell(10, 7, 'No. MR', 0, 1);
             $pdf->SetXY(115, 35);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(120, 35);
             $pdf->Cell(10, 7, $sep['0']['no_rm'], 0, 1);
-    
+
             $pdf->SetXY(100, 40);
             $pdf->Cell(10, 7, 'Kelamin', 0, 1);
             $pdf->SetXY(115, 40);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(120, 40);
             $pdf->Cell(10, 7, $sep['0']['jenis_kelamin'], 0, 1);
-    
+
             $pdf->SetXY(140, 35);
             $pdf->Cell(10, 7, 'Peserta', 0, 1);
             $pdf->SetXY(160, 35);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(165, 35);
             $pdf->Cell(10, 7, $sep['0']['peserta'], 0, 1);
-    
-    
+
+
             $pdf->SetXY(140, 40);
             $pdf->Cell(10, 7, 'COB', 0, 1);
             $pdf->SetXY(160, 40);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(165, 40);
             $pdf->Cell(10, 7, $sep['0']['cob'], 0, 1);
-    
+
             $pdf->SetXY(140, 45);
             $pdf->Cell(10, 7, 'Jns Rawat', 0, 1);
             $pdf->SetXY(160, 45);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(165, 45);
             $pdf->Cell(10, 7, $sep['0']['jenis_rawat'], 0, 1);
-    
+
             $pdf->SetXY(140, 50);
             $pdf->Cell(10, 7, 'Kls Rawat', 0, 1);
             $pdf->SetXY(160, 50);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(165, 50);
             $pdf->Cell(10, 7, $sep['0']['kls_rawat'], 0, 1);
-    
+
             $pdf->SetXY(140, 55);
             $pdf->Cell(10, 7, 'Penjamin', 0, 1);
             $pdf->SetXY(160, 55);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(165, 55);
             $pdf->Cell(10, 7, $sep['0']['peserta'], 0, 1);
-    
-    
+
+
             $pdf->SetXY(10, 45);
             $pdf->Cell(10, 7, 'Nama Peserta', 0, 1);
             $pdf->SetXY(40, 45);
@@ -2801,20 +2619,20 @@ class SimrsController extends Controller
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(45, $y);
             $pdf->Cell(10, 7, $sep['0']['tgl_lahir'], 0, 1);
-    
+
             $pdf->SetXY(10, 60);
             $pdf->Cell(10, 7, 'No.Telepon', 0, 1);
             $pdf->SetXY(40, 60);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(45, 60);
             $pdf->Cell(10, 7, $sep['0']['no_tlp'], 0, 1);
-    
+
             $pdf->SetXY(10, 65);
             $pdf->Cell(10, 7, 'Poli Tujuan', 0, 1);
             $pdf->SetXY(40, 65);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(45, 65);
-            if ($sep['0']['jenis_rawat'] == "R.Inap" || $sep['0']['jenis_rawat'] == "Rawat Inap" ) {
+            if ($sep['0']['jenis_rawat'] == "R.Inap" || $sep['0']['jenis_rawat'] == "Rawat Inap") {
                 // $poli = $sep['0']['poli_tujuan'];
                 // $arr = explode('|', $poli, 2);
                 $pdf->Cell(10, 7, '', 0, 1);
@@ -2823,8 +2641,8 @@ class SimrsController extends Controller
                 $arr = explode('|', $poli, 2);
                 $pdf->Cell(10, 7, $arr[1], 0, 1);
             }
-    
-    
+
+
             $pdf->SetXY(10, 70);
             $pdf->Cell(10, 7, 'Faskes Perujuk', 0, 1);
             $pdf->SetXY(40, 70);
@@ -2833,9 +2651,9 @@ class SimrsController extends Controller
             $pdf->Cell(10, 7, $sep['0']['nama_asal_faskes'], 0, 1);
             $diag = $sep['0']['diagnosa_awal'];
             $arr = explode('-', $diag, 2);
-            if(count($arr) > 1){
+            if (count($arr) > 1) {
                 $diag1 = $arr[1];
-            }else{
+            } else {
                 $diag1 = $arr[0];
             }
             $pdf->SetXY(10, 75);
@@ -2844,22 +2662,22 @@ class SimrsController extends Controller
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(45, 75);
             $pdf->Cell(10, 7, $diag1, 0, 1);
-    
+
             $pdf->SetXY(10, 80);
             $pdf->Cell(10, 7, 'Catatan', 0, 1);
             $pdf->SetXY(40, 80);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(45, 80);
             $pdf->Cell(10, 7, $sep['0']['catatan'], 0, 1);
-    
+
             $pdf->SetFont('Arial', '', 8);
             $pdf->SetXY(10, 85);
             $pdf->Cell(10, 7, '*Saya menyetujui BPJS Kesehatan menggunakan informasi Medis Pasien jika diperlukan', 0, 1);
-    
+
             $pdf->SetFont('Arial', '', 9);
             $pdf->SetXY(150, 85);
             $pdf->Cell(10, 7, 'Pasien / Keluarga Pasien', 0, 1);
-    
+
             $pdf->SetFont('Arial', '', 8);
             $pdf->SetXY(10, 90);
             $pdf->Cell(10, 7, '*SEP bukan sebagai penjaminan peserta', 0, 1);
@@ -2872,13 +2690,368 @@ class SimrsController extends Controller
             $pdf->SetFont('Arial', 'I', 7);
             $pdf->SetXY(12, 100);
             $pdf->Cell(10, 7, '..', 0, 1);
-    
+
             $pdf->SetFont('Arial', '', 12);
             $pdf->Line(150, 100, 190, 100);
             $pdf->Output();
-    
+
             exit;
         }
+    }
+    public function Cetaksep_v(Request $request)
+    {
+        //ambil data sep
+        $sep = $request->sep;
+        // $sep = ts_sep::where('no_SEP', $sep)->get();
+        // $cek = count($sep);
+        // if($cek == 0){
+        $v = new VclaimModel();
+        $sep = $v->carisep($request->sep);
+        $peserta = $v->get_peserta_noka($sep->response->peserta->noKartu, date('Y-m-d'));
+        // $cetakan = $sep['0']['cetakan'] + 1;
+        // ts_sep::where('kode_kunjungan', $sep)->update(['no_SEP' => $cetakan]);
+        $pdf = new Fpdf('L', 'mm', 'A4');
+        $pdf->AddPage();
+        $pdf->SetTitle('Cetak SEP');
+        $pdf->SetMargins('15', '20', '10');
+        $pdf->SetFont('Arial', '', 15);
+        $pdf->Image('public/img/logobpjs.png', 1, -5, 60, 40);
+        $pdf->Image('public/img/logo_rs.png', 170, 4, 35, 25);
+        $pdf->SetXY(70, 8);
+        $pdf->Cell(10, 7, 'SURAT ELIGIBILITAS PESERTA', 0, 1);
+        $pdf->SetXY(73, 14);
+        $pdf->Cell(10, 7, 'RSUD WALED KAB.CIREBON', 0, 1);
+
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetXY(10, 30);
+        $pdf->Cell(10, 7, 'No. SEP', 0, 1);
+        $pdf->SetXY(40, 30);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->SetXY(45, 30);
+        $pdf->Cell(10, 7, $sep->response->noSep, 0, 1);
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetXY(10, 35);
+        $pdf->Cell(10, 7, 'Tgl. SEP', 0, 1);
+        $pdf->SetXY(40, 35);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(45, 35);
+        $pdf->Cell(10, 7, $sep->response->tglSep, 0, 1);
+
+        $pdf->SetXY(10, 40);
+        $pdf->Cell(10, 7, 'No. Kartu', 0, 1);
+        $pdf->SetXY(40, 40);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(45, 40);
+        $pdf->Cell(10, 7, $sep->response->peserta->noKartu, 0, 1);
+
+        $pdf->SetXY(100, 35);
+        $pdf->Cell(10, 7, 'No. MR', 0, 1);
+        $pdf->SetXY(115, 35);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(120, 35);
+        $pdf->Cell(10, 7, $sep->response->peserta->noMr, 0, 1);
+
+        $pdf->SetXY(100, 40);
+        $pdf->Cell(10, 7, 'Kelamin', 0, 1);
+        $pdf->SetXY(115, 40);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(120, 40);
+        $pdf->Cell(10, 7, $sep->response->peserta->kelamin, 0, 1);
+
+        $pdf->SetXY(140, 35);
+        $pdf->Cell(10, 7, 'Peserta', 0, 1);
+        $pdf->SetXY(160, 35);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(165, 35);
+        $pdf->Cell(10, 7, $sep->response->peserta->jnsPeserta, 0, 1);
+
+
+        $pdf->SetXY(140, 40);
+        $pdf->Cell(10, 7, 'COB', 0, 1);
+        $pdf->SetXY(160, 40);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(165, 40);
+        $pdf->Cell(10, 7, $sep->response->cob, 0, 1);
+
+        $pdf->SetXY(140, 45);
+        $pdf->Cell(10, 7, 'Jns Rawat', 0, 1);
+        $pdf->SetXY(160, 45);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(165, 45);
+        $pdf->Cell(10, 7, $sep->response->jnsPelayanan, 0, 1);
+
+        $pdf->SetXY(140, 50);
+        $pdf->Cell(10, 7, 'Kls Rawat', 0, 1);
+        $pdf->SetXY(160, 50);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(165, 50);
+        $pdf->Cell(10, 7, $sep->response->kelasRawat, 0, 1);
+
+        $pdf->SetXY(140, 55);
+        $pdf->Cell(10, 7, 'Penjamin', 0, 1);
+        $pdf->SetXY(160, 55);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(165, 55);
+        $pdf->Cell(10, 7, $sep->response->penjamin, 0, 1);
+
+
+        $pdf->SetXY(10, 45);
+        $pdf->Cell(10, 7, 'Nama Peserta', 0, 1);
+        $pdf->SetXY(40, 45);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(45, 46);
+        $pdf->MultiCell(60, 5, $sep->response->peserta->nama);
+        // $pdf->Cell(10,7,$sep['0']['nama_peserta'],0,1);
+        $y = $pdf->GetY();
+        $pdf->SetXY(10, $y);
+        $pdf->Cell(10, 7, 'Tgl Lahir', 0, 1);
+        $pdf->SetXY(40, $y);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(45, $y);
+        $pdf->Cell(10, 7, $sep->response->peserta->tglLahir, 0, 1);
+
+        $pdf->SetXY(10, 60);
+        $pdf->Cell(10, 7, 'No.Telepon', 0, 1);
+        $pdf->SetXY(40, 60);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(45, 60);
+        $pdf->Cell(10, 7, $peserta->response->peserta->mr->noTelepon, 0, 1);
+
+        $pdf->SetXY(10, 65);
+        $pdf->Cell(10, 7, 'Poli Tujuan', 0, 1);
+        $pdf->SetXY(40, 65);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(45, 65);
+        $pdf->Cell(10, 7, $sep->response->poli, 0, 1);
+
+        $pdf->SetXY(10, 70);
+        $pdf->Cell(10, 7, 'Faskes Perujuk', 0, 1);
+        $pdf->SetXY(40, 70);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(45, 70);
+        $pdf->Cell(10, 7, $peserta->response->peserta->provUmum->nmProvider, 0, 1);
+        $pdf->SetXY(10, 75);
+        $pdf->Cell(10, 7, 'Diagnosa Awal', 0, 1);
+        $pdf->SetXY(40, 75);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(45, 75);
+        $pdf->Cell(10, 7, $sep->response->diagnosa, 0, 1);
+
+        $pdf->SetXY(10, 80);
+        $pdf->Cell(10, 7, 'Catatan', 0, 1);
+        $pdf->SetXY(40, 80);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(45, 80);
+        $pdf->Cell(10, 7, $sep->response->catatan, 0, 1);
+
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY(10, 85);
+        $pdf->Cell(10, 7, '*Saya menyetujui BPJS Kesehatan menggunakan informasi Medis Pasien jika diperlukan', 0, 1);
+
+        $pdf->SetFont('Arial', '', 9);
+        $pdf->SetXY(150, 85);
+        $pdf->Cell(10, 7, 'Pasien / Keluarga Pasien', 0, 1);
+
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY(10, 90);
+        $pdf->Cell(10, 7, '*SEP bukan sebagai penjaminan peserta', 0, 1);
+        $pdf->SetFont('Arial', 'I', 7);
+        $pdf->SetXY(10, 100);
+        $pdf->Cell(10, 7, 'Cetakan ke -' . " " . ' ,.Tanggal cetak ' . date('y-m-d h:i:s'), 0, 1);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY(10, 90);
+        $pdf->Cell(10, 7, '*SEP bukan sebagai penjaminan peserta', 0, 1);
+        $pdf->SetFont('Arial', 'I', 7);
+        $pdf->SetXY(12, 100);
+        $pdf->Cell(10, 7, '..', 0, 1);
+
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Line(150, 100, 190, 100);
+        $pdf->Output();
+
+        exit;
+        // }else{
+        //     $cetakan = $sep['0']['cetakan'] + 1;
+        //     ts_sep::where('kode_kunjungan', $sep)->update(['no_SEP' => $cetakan]);
+        //     $pdf = new Fpdf('L', 'mm', 'A4');
+        //     $pdf->AddPage();
+        //     $pdf->SetTitle('Cetak SEP');
+        //     $pdf->SetMargins('15', '20', '10');
+        //     $pdf->SetFont('Arial', '', 15);
+        //     $pdf->Image('public/img/logobpjs.png', 1, -5, 60, 40);
+        //     $pdf->Image('public/img/logo_rs.png', 170, 4, 35, 25);
+        //     $pdf->SetXY(70, 8);
+        //     $pdf->Cell(10, 7, 'SURAT ELIGIBILITAS PESERTA', 0, 1);
+        //     $pdf->SetXY(73, 14);
+        //     $pdf->Cell(10, 7, 'RSUD WALED KAB.CIREBON', 0, 1);
+
+        //     $pdf->SetFont('Arial', '', 10);
+        //     $pdf->SetXY(10, 30);
+        //     $pdf->Cell(10, 7, 'No. SEP', 0, 1);
+        //     $pdf->SetXY(40, 30);
+        //     $pdf->Cell(10, 7, ':', 0, 1);
+        //     $pdf->SetFont('Arial', 'B', 12);
+        //     $pdf->SetXY(45, 30);
+        //     $pdf->Cell(10, 7, $sep[0]->no_SEP, 0, 1);
+        //     $pdf->SetFont('Arial', '', 10);
+        //     $pdf->SetXY(10, 35);
+        //     $pdf->Cell(10, 7, 'Tgl. SEP', 0, 1);
+        //     $pdf->SetXY(40, 35);
+        //     $pdf->Cell(10, 7, ':', 0, 1);
+        //     $pdf->SetXY(45, 35);
+        //     $pdf->Cell(10, 7, $sep['0']['tgl_SEP'], 0, 1);
+
+        //     $pdf->SetXY(10, 40);
+        //     $pdf->Cell(10, 7, 'No. Kartu', 0, 1);
+        //     $pdf->SetXY(40, 40);
+        //     $pdf->Cell(10, 7, ':', 0, 1);
+        //     $pdf->SetXY(45, 40);
+        //     $pdf->Cell(10, 7, $sep['0']['no_kartu'], 0, 1);
+
+        //     $pdf->SetXY(100, 35);
+        //     $pdf->Cell(10, 7, 'No. MR', 0, 1);
+        //     $pdf->SetXY(115, 35);
+        //     $pdf->Cell(10, 7, ':', 0, 1);
+        //     $pdf->SetXY(120, 35);
+        //     $pdf->Cell(10, 7, $sep['0']['no_rm'], 0, 1);
+
+        //     $pdf->SetXY(100, 40);
+        //     $pdf->Cell(10, 7, 'Kelamin', 0, 1);
+        //     $pdf->SetXY(115, 40);
+        //     $pdf->Cell(10, 7, ':', 0, 1);
+        //     $pdf->SetXY(120, 40);
+        //     $pdf->Cell(10, 7, $sep['0']['jenis_kelamin'], 0, 1);
+
+        //     $pdf->SetXY(140, 35);
+        //     $pdf->Cell(10, 7, 'Peserta', 0, 1);
+        //     $pdf->SetXY(160, 35);
+        //     $pdf->Cell(10, 7, ':', 0, 1);
+        //     $pdf->SetXY(165, 35);
+        //     $pdf->Cell(10, 7, $sep['0']['peserta'], 0, 1);
+
+
+        //     $pdf->SetXY(140, 40);
+        //     $pdf->Cell(10, 7, 'COB', 0, 1);
+        //     $pdf->SetXY(160, 40);
+        //     $pdf->Cell(10, 7, ':', 0, 1);
+        //     $pdf->SetXY(165, 40);
+        //     $pdf->Cell(10, 7, $sep['0']['cob'], 0, 1);
+
+        //     $pdf->SetXY(140, 45);
+        //     $pdf->Cell(10, 7, 'Jns Rawat', 0, 1);
+        //     $pdf->SetXY(160, 45);
+        //     $pdf->Cell(10, 7, ':', 0, 1);
+        //     $pdf->SetXY(165, 45);
+        //     $pdf->Cell(10, 7, $sep['0']['jenis_rawat'], 0, 1);
+
+        //     $pdf->SetXY(140, 50);
+        //     $pdf->Cell(10, 7, 'Kls Rawat', 0, 1);
+        //     $pdf->SetXY(160, 50);
+        //     $pdf->Cell(10, 7, ':', 0, 1);
+        //     $pdf->SetXY(165, 50);
+        //     $pdf->Cell(10, 7, $sep['0']['kls_rawat'], 0, 1);
+
+        //     $pdf->SetXY(140, 55);
+        //     $pdf->Cell(10, 7, 'Penjamin', 0, 1);
+        //     $pdf->SetXY(160, 55);
+        //     $pdf->Cell(10, 7, ':', 0, 1);
+        //     $pdf->SetXY(165, 55);
+        //     $pdf->Cell(10, 7, $sep['0']['peserta'], 0, 1);
+
+
+        //     $pdf->SetXY(10, 45);
+        //     $pdf->Cell(10, 7, 'Nama Peserta', 0, 1);
+        //     $pdf->SetXY(40, 45);
+        //     $pdf->Cell(10, 7, ':', 0, 1);
+        //     $pdf->SetXY(45, 46);
+        //     $pdf->MultiCell(60, 5, $sep['0']['nama_peserta']);
+        //     // $pdf->Cell(10,7,$sep['0']['nama_peserta'],0,1);
+        //     $y = $pdf->GetY();
+        //     $pdf->SetXY(10, $y);
+        //     $pdf->Cell(10, 7, 'Tgl Lahir', 0, 1);
+        //     $pdf->SetXY(40, $y);
+        //     $pdf->Cell(10, 7, ':', 0, 1);
+        //     $pdf->SetXY(45, $y);
+        //     $pdf->Cell(10, 7, $sep['0']['tgl_lahir'], 0, 1);
+
+        //     $pdf->SetXY(10, 60);
+        //     $pdf->Cell(10, 7, 'No.Telepon', 0, 1);
+        //     $pdf->SetXY(40, 60);
+        //     $pdf->Cell(10, 7, ':', 0, 1);
+        //     $pdf->SetXY(45, 60);
+        //     $pdf->Cell(10, 7, $sep['0']['no_tlp'], 0, 1);
+
+        //     $pdf->SetXY(10, 65);
+        //     $pdf->Cell(10, 7, 'Poli Tujuan', 0, 1);
+        //     $pdf->SetXY(40, 65);
+        //     $pdf->Cell(10, 7, ':', 0, 1);
+        //     $pdf->SetXY(45, 65);
+        //     if ($sep['0']['jenis_rawat'] == "R.Inap" || $sep['0']['jenis_rawat'] == "Rawat Inap" ) {
+        //         // $poli = $sep['0']['poli_tujuan'];
+        //         // $arr = explode('|', $poli, 2);
+        //         $pdf->Cell(10, 7, '', 0, 1);
+        //     } else {
+        //         $poli = $sep['0']['poli_tujuan'];
+        //         $arr = explode('|', $poli, 2);
+        //         $pdf->Cell(10, 7, $arr[1], 0, 1);
+        //     }
+
+
+        //     $pdf->SetXY(10, 70);
+        //     $pdf->Cell(10, 7, 'Faskes Perujuk', 0, 1);
+        //     $pdf->SetXY(40, 70);
+        //     $pdf->Cell(10, 7, ':', 0, 1);
+        //     $pdf->SetXY(45, 70);
+        //     $pdf->Cell(10, 7, $sep['0']['nama_asal_faskes'], 0, 1);
+        //     $diag = $sep['0']['diagnosa_awal'];
+        //     $arr = explode('-', $diag, 2);
+        //     if(count($arr) > 1){
+        //         $diag1 = $arr[1];
+        //     }else{
+        //         $diag1 = $arr[0];
+        //     }
+        //     $pdf->SetXY(10, 75);
+        //     $pdf->Cell(10, 7, 'Diagnosa Awal', 0, 1);
+        //     $pdf->SetXY(40, 75);
+        //     $pdf->Cell(10, 7, ':', 0, 1);
+        //     $pdf->SetXY(45, 75);
+        //     $pdf->Cell(10, 7, $diag1, 0, 1);
+
+        //     $pdf->SetXY(10, 80);
+        //     $pdf->Cell(10, 7, 'Catatan', 0, 1);
+        //     $pdf->SetXY(40, 80);
+        //     $pdf->Cell(10, 7, ':', 0, 1);
+        //     $pdf->SetXY(45, 80);
+        //     $pdf->Cell(10, 7, $sep['0']['catatan'], 0, 1);
+
+        //     $pdf->SetFont('Arial', '', 8);
+        //     $pdf->SetXY(10, 85);
+        //     $pdf->Cell(10, 7, '*Saya menyetujui BPJS Kesehatan menggunakan informasi Medis Pasien jika diperlukan', 0, 1);
+
+        //     $pdf->SetFont('Arial', '', 9);
+        //     $pdf->SetXY(150, 85);
+        //     $pdf->Cell(10, 7, 'Pasien / Keluarga Pasien', 0, 1);
+
+        //     $pdf->SetFont('Arial', '', 8);
+        //     $pdf->SetXY(10, 90);
+        //     $pdf->Cell(10, 7, '*SEP bukan sebagai penjaminan peserta', 0, 1);
+        //     $pdf->SetFont('Arial', 'I', 7);
+        //     $pdf->SetXY(10, 100);
+        //     $pdf->Cell(10, 7, 'Cetakan ke -' . $sep['0']['cetakan'] . ' ,.Tanggal cetak ' . date('y-m-d h:i:s'), 0, 1);
+        //     $pdf->SetFont('Arial', '', 8);
+        //     $pdf->SetXY(10, 90);
+        //     $pdf->Cell(10, 7, '*SEP bukan sebagai penjaminan peserta', 0, 1);
+        //     $pdf->SetFont('Arial', 'I', 7);
+        //     $pdf->SetXY(12, 100);
+        //     $pdf->Cell(10, 7, '..', 0, 1);
+
+        //     $pdf->SetFont('Arial', '', 12);
+        //     $pdf->Line(150, 100, 190, 100);
+        //     $pdf->Output();
+
+        //     exit;
+        // }
         //update cetakan       
     }
     public function simpanpasien(Request $request)
@@ -3346,35 +3519,41 @@ class SimrsController extends Controller
     {
         $v = new VclaimModel();
         $sep = $v->carisep($request->nosep);
+        $sepkontrol = $v->carisep_kontrol($request->nosep);
+        $diagnosa = $sepkontrol->response->diagnosa;
+        $kodediagnosa = (explode('-', $diagnosa));
+        $kode = trim($kodediagnosa[0]);
+        $data_peserta = $v->get_peserta_noka($sep->response->peserta->noKartu, date('Y-m-d'));
         $kodeprop = $sep->response->lokasiKejadian->kdProp;
         $kodekab = $sep->response->lokasiKejadian->kdKab;
         $prop = $v->referensi_propinsi();
-        if($kodeprop != null ){
+        if ($kodeprop != null) {
             $kab = $v->referensi_kabupaten($kodeprop);
             $datakab = $kab->response->list;
-        }else{
+        } else {
             $datakab = 0;
         }
-        if($kodekab != null ){
+        if ($kodekab != null) {
             $kec = $v->referensi_kecamatan($kodekab);
             $datakec = $kec->response->list;
-        }else{
+        } else {
             $datakec = 0;
         }
         return view('pendaftaran.infosep', [
             'sep' => $v->carisep($request->nosep),
             'prop' => $prop->response->list,
             'kab' => $datakab,
-            'kec' => $datakec
+            'kec' => $datakec,
+            'datapeserta' => $data_peserta,
+            'diagnosa' => $kode
         ]);
     }
     public function inforujukan(Request $request)
     {
         $v = new VclaimModel();
         $rujukan = $v->carirujukan_byno($request->norujukan);
-        if($rujukan->metaData->code == 200 ){
-
-        }else{
+        if ($rujukan->metaData->code == 200) {
+        } else {
             $rujukan = $v->carirujukanRS_byno_($request->norujukan);
         }
         return view('pendaftaran.inforujukan', [

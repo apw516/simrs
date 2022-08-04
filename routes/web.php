@@ -297,6 +297,10 @@ Route::group(['middleware' => ['auth','hak_akses1:3']],function (){
     ->name('Billing'); //sidebar
     Route::post('/Formlayanan', [BillingController::class, 'Formlayanan'])
     ->name('formlayanan'); //sidebar
+    Route::post('/billingformlayanan', [BillingController::class, 'billingformlayanan'])
+    ->name('billingformlayanan'); //sidebar
+    Route::get('/carilayanan_penunjang', [BillingController::class, 'carilayanan_penunjang'])
+    ->name('carilayanan_penunjang'); //sidebar
 });
 
 
