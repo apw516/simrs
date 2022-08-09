@@ -94,10 +94,10 @@
 <script>
     function add_layanan_penunjang() {
         jnslayanan = $('#jlhjnslayanan').val()
-        if(jnslayanan != ''){
-            $('.adatombol').removeAttr('Hidden',true)
-        }else{
-            $('.adatombol').attr('Hidden',true)
+        if (jnslayanan != '') {
+            $('.adatombol').removeAttr('Hidden', true)
+        } else {
+            $('.adatombol').attr('Hidden', true)
         }
         $.ajax({
             type: 'post',
@@ -114,16 +114,16 @@
             }
         });
     }
-    function simpanbilling()
-    {
-        jnslayanan = $('#jlhjnslayanan').val()
+
+    function simpanbilling() {
+        jlhjnslayanan = $('#jlhjnslayanan').val()
         nl1 = $('#nl1').val()
         kodenl1 = $('#kodenl1').val()
         tl1 = $('#tl1').val()
         jlh1 = $('#jlh1').val()
         disc1 = $('#disc1').val()
         cyto1 = $('#cyto1').val()
-        
+
         nl2 = $('#nl2').val()
         kodenl2 = $('#kodenl2').val()
         tl2 = $('#tl2').val()
@@ -151,6 +151,69 @@
         jlh5 = $('#jlh5').val()
         disc5 = $('#disc5').val()
         cyto5 = $('#cyto5').val()
-        
+
+        spinner = $('#loader');
+        spinner.show();
+        $.ajax({
+            async: true,
+            dataType: 'Json',
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                jlhjnslayanan,
+                nl1,
+                kodenl1,
+                tl1,
+                jlh1,
+                disc1,
+                cyto1,
+                nl2,
+                kodenl2,
+                tl2,
+                jlh2,
+                disc2,
+                cyto2,
+                nl3,
+                kodenl3,
+                tl3,
+                jlh3,
+                disc3,
+                cyto3,
+                nl4,
+                kodenl4,
+                tl4,
+                jlh4,
+                disc4,
+                cyto4,
+                nl5,
+                kodenl5,
+                tl5,
+                jlh5,
+                disc5,
+                cyto5
+            },
+            url: '<?= route('simpanlayanan') ?>',
+            error: function(data) {
+                spinner.hide()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops,silahkan coba lagi',
+                })
+            },
+            success: function(data) {
+                spinner.hide()
+                if (data.kode == 200) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Rujukan khusus Berhasil dibuat !',
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: data.message,
+                    })
+                }
+            }
+        });
     }
 </script>

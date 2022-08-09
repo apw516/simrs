@@ -301,6 +301,14 @@ Route::group(['middleware' => ['auth','hak_akses1:3']],function (){
     ->name('billingformlayanan'); //sidebar
     Route::get('/carilayanan_penunjang', [BillingController::class, 'carilayanan_penunjang'])
     ->name('carilayanan_penunjang'); //sidebar
+    Route::post('/caripasienrajal', [BillingController::class, 'caripasienrajal'])
+    ->name('caripasienrajal'); //sidebar
+    Route::post('/caripasienrajal', [BillingController::class, 'caripasienrajal'])
+    ->name('caripasienrajal'); //sidebar
+    Route::get('/caripoli_rs_bil', [SimrsController::class, 'Caripoli_rs'])
+        ->name('caripoli_rs_bil'); //formpasien_bpjs
+    Route::get('/simpanlayanan', [SimrsController::class, 'simpanlayanan'])
+        ->name('simpanlayanan'); //formpasien_bpjs
 });
 
 

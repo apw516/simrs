@@ -83,13 +83,21 @@
                     <b>Lokasi Provinsi </b>
                     <div class="bataledit">
                         <a
-                            class="float-right text-dark text-monospace">{{ $sep->response->lokasiKejadian->kdKec }}</a>
+                            class="float-right text-dark text-monospace">
+                            @foreach ($prop as $p)
+                                @if($p->kode == $sep->response->lokasiKejadian->kdProp)
+                            {{ $p->nama }}
+                            @endif
+                            @endforeach
+                        </a>
                     </div>
                     {{-- <input hidden type="text" class="form-control edit" value="{{ $sep->response->lokasiKejadian->kdKec }}" id="lokasikec_update"> --}}
                     <select hidden class="form-control form-control-sm edit" id="provinsikejadian_update">
                         <option value="">-- Silahkan Pilih Provinsi --</option>
                         @foreach ($prop as $p)
-                            <option value="{{ $p->kode }}">{{ $p->nama }}</option>
+                            <option value="{{ $p->kode }}" @if($p->kode == $sep->response->lokasiKejadian->kdProp)
+                                selected
+                                @endif>{{ $p->nama }}</option>
                         @endforeach
                     </select>
                 </li>
@@ -97,13 +105,23 @@
                     <b>Lokasi Kabupaten </b>
                     <div class="bataledit">
                         <a
-                            class="float-right text-dark text-monospace">{{ $sep->response->lokasiKejadian->kdKab }}</a>
+                            class="float-right text-dark text-monospace">
+                            @if ($kab != 0)
+                            @foreach ($kab as $p)
+                            @if($p->kode == $sep->response->lokasiKejadian->kdKab)
+                        {{ $p->nama }}
+                        @endif
+                        @endforeach
+                        @endif
+                        </a>
                     </div>
                     <select hidden class="form-control form-control-sm edit" id="kabupatenkejadian_update">
                         <option value="">-- Silahkan Pilih Kabupaten --</option>
                         @if ($kab != 0)
                             @foreach ($kab as $k)
-                                <option value="{{ $k->kode }}">{{ $k->nama }}</option>
+                                <option value="{{ $k->kode }}" @if($k->kode == $sep->response->lokasiKejadian->kdKab)
+                                    selected
+                                    @endif>{{ $k->nama }}</option>
                             @endforeach
                         @endif
                     </select>
@@ -112,13 +130,23 @@
                     <b>Lokasi Kecamatan </b>
                     <div class="bataledit">
                         <a
-                            class="float-right text-dark text-monospace">{{ $sep->response->lokasiKejadian->ketKejadian }}</a>
+                            class="float-right text-dark text-monospace">
+                            @if ($kec != 0)
+                            @foreach ($kec as $p)
+                            @if($p->kode == $sep->response->lokasiKejadian->kdKec)
+                        {{ $p->nama }}
+                        @endif
+                        @endforeach
+                        @endif
+                        </a>
                     </div>
                     <select hidden class="form-control form-control-sm edit" id="kecamatankejadian_update">
                         <option value="">-- Silahkan Pilih Kecamatan --</option>
                         @if ($kec != 0)
                             @foreach ($kec as $k)
-                                <option value="{{ $k->kode }}">{{ $k->nama }}</option>
+                                <option value="{{ $k->kode }}" @if($k->kode == $sep->response->lokasiKejadian->kdKec)
+                                    selected
+                                    @endif>{{ $k->nama }}</option>
                             @endforeach
                         @endif
                     </select>
@@ -128,10 +156,10 @@
                     <b>Keterangan Kecelakaan </b>
                     <div class="bataledit">
                         <a
-                            class="float-right text-dark text-monospace">{{ $sep->response->lokasiKejadian->kdKab }}</a>
+                            class="float-right text-dark text-monospace">{{ $sep->response->lokasiKejadian->ketKejadian }}</a>
                     </div>
                     <input hidden type="text" class="form-control edit" id="keterangankll_update"
-                        value="{{ $sep->response->lokasiKejadian->kdKab }}">
+                        value="{{ $sep->response->lokasiKejadian->ketKejadian }}">
                 </li>
                 <li class="list-group-item">
                     <b>Tgl Kecelakaan </b>
@@ -139,8 +167,23 @@
                         <a
                             class="float-right text-dark text-monospace">{{ $sep->response->lokasiKejadian->tglKejadian }}</a>
                     </div>
-                    <input hidden type="text" class="form-control edit datepicker"
-                        id="tglkll_update"value="{{ $sep->response->lokasiKejadian->tglKejadian }}">
+                    <input hidden type="text" class="form-control edit" data-date-format="yyyy-mm-dd"
+                        id="tglkll_update" value="{{ $sep->response->lokasiKejadian->tglKejadian }}">
+                </li>
+                <li class="list-group-item">
+                    <b>Suplesi </b>
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="suplesi" value="1">
+                            <label class="form-check-label" for="exampleCheck1">YA</label>
+                        </div>                        
+                </li>
+                <li class="list-group-item">
+                    <b>No SEP Suplesi </b>
+                    <div class="bataledit">
+                        <a
+                            class="float-right text-dark text-monospace"></a>
+                    </div>
+                    <input hidden type="text" class="form-control edit" id="sep_suplesi" value="">
                 </li>
             </ul>
         </div>
@@ -216,8 +259,14 @@
                         <a
                             class="float-right text-dark text-monospace">{{ $sep->response->klsRawat->pembiayaan }}</a>
                     </div>
-                    <input hidden type="text" class="form-control edit" id="pembiayaan_update"
-                        value="{{ $sep->response->klsRawat->pembiayaan }}">
+                    {{-- <input hidden type="text" class="form-control edit" id="pembiayaan_update"
+                        value="{{ $sep->response->klsRawat->pembiayaan }}"> --}}
+                        <select hidden class="form-control form-control-sm edit" id="pembiayaan_update">
+                            <option value="">-- Silahkan Pilih Pembiayaan --</option>
+                            <option value="1">Pribadi</option>
+                            <option value="2">Pemberi Kerja</option>
+                            <option value="3">Asuransi Kesehatan Tambahan</option>
+                        </select>
                 </li>
                 <li class="list-group-item">
                     <b>Penanggung Jawab</b>
@@ -235,14 +284,14 @@
         <div class="col-md-4">
             <ul class="list-group list-group-unbordered mb-3">
                 <li class="list-group-item">
-                    <b>Dokter DPJP</b>
+                    <b>Dokter</b>
                     <div class="bataledit">
-                        <a class="float-right text-dark text-monospace">{{ $sep->response->dpjp->nmDPJP }}</a>
+                        <a class="float-right text-dark text-monospace">{{ $sep->response->kontrol->nmDokter }}</a>
                     </div>
                     <input hidden type="text" class="form-control edit" id="dokterkontrol_update"
-                        value="{{ $sep->response->dpjp->nmDPJP }}">
+                        value="{{ $sep->response->kontrol->nmDokter }}">
                     <input hidden type="text" class="form-control" id="kodedokterkontrol_update"
-                        value="{{ $sep->response->dpjp->kdDPJP }}">
+                        value="{{ $sep->response->kontrol->kdDokter }}">
                 </li>
                 <li class="list-group-item">
                     <b>No.Surat Kontrol</b> <a
@@ -250,10 +299,28 @@
                 </li>
             </ul>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-4">
             <ul class="list-group list-group-unbordered mb-3">
                 <li class="list-group-item">
-                    <button class="float-right btn btn-warning editsep" onclick="editsep()"><i
+                    <b>COB</b>
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" @if($sep->response->cob != 0 )checked @endif id="cob" value="1">
+                            <label class="form-check-label" for="exampleCheck1" >YA</label>
+                        </div> 
+                </li>
+                <li class="list-group-item">
+                    <b>Katarak</b> 
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="katarak" value="1" @if($sep->response->katarak != 0 )checked @endif>
+                        <label class="form-check-label" for="exampleCheck1">YA</label>
+                    </div> 
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <ul class="list-group list-group-unbordered mb-3">
+                <li class="list-group-item">
+                    <button  @if(auth()->user()->hak_akses != 1 ) disabled @endif class="float-right btn btn-warning editsep" onclick="editsep()"><i
                             class="bi bi-pencil-square"></i> Edit SEP</button>
                     <button hidden class="float-right btn btn-danger mr-2 batledit" onclick="location.reload()"><i
                             class="bi bi-pencil-square"></i> Batal Edit</button>
@@ -268,6 +335,12 @@
     </div>
 </div>
 <script>
+    $(function() {
+          $(".datepicker").datepicker({
+              autoclose: true,
+              todayHighlight: true
+          }).datepicker('update', new Date());
+      });
     function editsep() {
         $('.batledit').removeAttr('Hidden', true)
         $('.edit').removeAttr('Hidden', true)
@@ -282,6 +355,18 @@
         $('.edit').val('')
     }
     function simapanedit() {
+        katarak = $('#katarak:checked').val()
+        suplesi = $('#suplesi:checked').val()
+        cob = $('#cob:checked').val()
+        if(katarak != 1){
+            katarak = 0;
+        }
+        if(cob != 1){
+            cob = 0;
+        }
+        if(suplesi != 1){
+            suplesi = 0;
+        }
         nomorsep = $('#nomorsep_update').val()
         kelasrawathak = $('#hakkelas_update').val()
         klsRawatNaik = $('#kelasnaik_update').val()
@@ -294,8 +379,7 @@
         lakaLantas = $('#keterangan_kll_update').val()
         tglkejadian = $('#tglkll_update').val()
         keterangan = $('#keterangankll_update').val()
-        suplesi = "0"
-        nosuplesi = ""
+        nosuplesi = $('#sep_suplesi').val()
         kdprop = $('#provinsikejadian_update').val()
         kdkab = $('#kabupatenkejadian_update').val()
         kdkec = $('#kecamatankejadian_update').val()
@@ -309,6 +393,8 @@
             type: 'post',
             data: {
                 _token: "{{ csrf_token() }}",
+                katarak,
+                cob,
                 nomorsep,
                 kelasrawathak,
                 klsRawatNaik,

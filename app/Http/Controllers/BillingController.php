@@ -71,4 +71,24 @@ class BillingController extends Controller
             echo json_encode($arr_result);
         }
     }
+    public function caripasienrajal(Request $request)
+    {
+        $data_pasien = DB::select("CALL SP_PANGGIL_PASIEN_RAWAT_JALAN('$request->rm','','','$request->kodeunit','$request->tgl')");   
+        $datapasien = [
+            'nama' => $data_pasien[0]->nama_px,
+            'nomorm' => $data_pasien[0]->no_rm,
+            'alamat' => $data_pasien[0]->alamat,
+            'jk' => $data_pasien[0]->jenis_kelamin,
+            'dokter' => $data_pasien[0]->nama_paramedis,
+            'kodekunjungan' => $data_pasien[0]->kode_kunjungan,
+            'penjamin' => $data_pasien[0]->nama_penjamin,
+            'kelas' => $data_pasien[0]->KELAS_UNIT,                                                                         
+            'unit' => $data_pasien[0]->nama_unit,
+            'kode_unit' => $request->kodeunit
+        ];
+        return view('billing.formlayanan', [
+            'pasien' => $datapasien,
+            'tarif' => DB::select("CALL sp_MASTER_TARIF_RAD")
+        ]);
+    }
 }

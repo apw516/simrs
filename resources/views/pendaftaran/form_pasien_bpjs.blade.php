@@ -39,8 +39,6 @@
                                     <td>
                                         <?php $jns = substr($r->kode_unit,0,1) ;?>
                                         @if($jns == 1 ) <button nosep="{{ $r->no_sep }}" kodedokter="{{ $r->kode_dokter }}" polikontrol="{{ $r->kode_unit }}" tglkontrol="" class="badge badge-info buatsuratkontrol2">+ tujuan kontrol</button>
-                                        @else
-                                        <button nosep="{{ $r->no_sep }}" kodedokter="{{ $r->kode_dokter }}" polikontrol="{{ $r->kode_unit }}" tglkontrol="" class="badge badge-danger buatsuratkontrol_pasca">+ pasca rawat</button>
                                         @endif
                                     </td>
                                 </tr>

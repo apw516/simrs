@@ -246,10 +246,10 @@ class VclaimController extends Controller
                             "eksekutif" => "0"
                         ],
                         "cob" => [
-                            "cob" => "0"
+                            "cob" => "$request->cob"
                         ],
                         "katarak" => [
-                            "katarak" => "0"
+                            "katarak" => "$request->katarak"
                         ],
                         "jaminan" => [
                             "lakaLantas" => "$request->lakaLantas",
@@ -257,8 +257,8 @@ class VclaimController extends Controller
                                 "tglKejadian" => "$request->tglkejadian",
                                 "keterangan" => "$request->keterangan",
                                 "suplesi" => [
-                                    "suplesi" => "0",
-                                    "noSepSuplesi" => "",
+                                    "suplesi" => "$request->suplesi",
+                                    "noSepSuplesi" => "$request->nosuplesi",
                                     "lokasiLaka" => [
                                         "kdPropinsi" => "$request->kdprop",
                                         "kdKabupaten" => "$request->kdkab",

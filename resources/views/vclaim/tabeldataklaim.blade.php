@@ -17,24 +17,31 @@
         <th>Tarif RS</th>
     </thead>
     <tbody>
+        <?php
+        function rupiah($angka)
+        {
+            $hasil_rupiah = 'Rp ' . number_format($angka, 2, ',', '.');
+            return $hasil_rupiah;
+        }
+        ?>
         @if ($data->metaData->code == 200)
             @foreach ($data->response->klaim as $r)
-                    <tr>
-                        <td>{{ $r->peserta->nama }}</td>
-                        <td>{{ $r->peserta->noMR }}</td>
-                        <td>{{ $r->peserta->noKartu }}</td>
-                        <td>{{ $r->noSEP }}</td>
-                        <td>{{ $r->tglSep }}</td>
-                        <td>{{ $r->tglPulang }}</td>
-                        <td>{{ $r->status }}</td>
-                        <td>{{ $r->poli }}</td>
-                        <td>{{ $r->Inacbg->kode }}</td>
-                        <td>{{ $r->Inacbg->nama }}</td>
-                        <td>{{ $r->biaya->byPengajuan }}</td>
-                        <td>{{ $r->biaya->bySetujui }}</td>
-                        <td>{{ $r->biaya->byTarifGruper }}</td>
-                        <td>{{ $r->biaya->byTarifRS }}</td>
-                    </tr>
+                <tr>
+                    <td>{{ $r->peserta->nama }}</td>
+                    <td>{{ $r->peserta->noMR }}</td>
+                    <td>{{ $r->peserta->noKartu }}</td>
+                    <td>{{ $r->noSEP }}</td>
+                    <td>{{ $r->tglSep }}</td>
+                    <td>{{ $r->tglPulang }}</td>
+                    <td>{{ $r->status }}</td>
+                    <td>{{ $r->poli }}</td>
+                    <td>{{ $r->Inacbg->kode }}</td>
+                    <td>{{ $r->Inacbg->nama }}</td>
+                    <td>{{ rupiah($r->biaya->byPengajuan) }}</td>
+                    <td>{{ rupiah($r->biaya->bySetujui) }}</td>
+                    <td>{{ rupiah($r->biaya->byTarifGruper) }}</td>
+                    <td>{{ rupiah($r->biaya->byTarifRS) }}</td>
+                </tr>
             @endforeach
         @endif
     </tbody>
@@ -108,8 +115,10 @@
             "lengthChange": false,
             "autoWidth": true,
             "pageLength": 5,
-            "searching": true
-        })
+            "searching": true,
+            "dom": 'Bfrtip',
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)')
     });
     $(function() {
         $("#kunjunganpasienrawatinap").DataTable({
@@ -185,7 +194,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire({
-                    title: 'SEP '+ nosep +' akan dihapus ?',
+                    title: 'SEP ' + nosep + ' akan dihapus ?',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d5',
@@ -264,7 +273,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire({
-                    title: 'SEP '+ nosep +' akan dihapus ?',
+                    title: 'SEP ' + nosep + ' akan dihapus ?',
                     icon: 'danger',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d5',
@@ -283,5 +292,6 @@
     });
     $('#kunjunganpasienrawatinap').on('click', '.updatepulang', function() {
         nosep = $(this).attr('nomorsep')
-        $('#pulang_nomorsep').val(nosep)    });
+        $('#pulang_nomorsep').val(nosep)
+    });
 </script>

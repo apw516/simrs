@@ -105,23 +105,13 @@
     $(function() {
         $("#kunjunganpasienrawatjalan").DataTable({
             "responsive": true,
-            "lengthChange": false,
+            "lengthChange": true,
             "autoWidth": true,
-            "pageLength": 5,
-            "searching": true
-        })
-    });
-    $(function() {
-        $("#kunjunganpasienrawatinap").DataTable({
-            "responsive": true,
-            "lengthChange": false,
-            "autoWidth": true,
-            "pageLength": 3,
+            "pageLength": 10,
             "searching": true,
-            "order": [
-                [6, "desc"]
-            ]
-        })
+            "dom": 'Bfrtip',
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)')
     });
     $('#kunjunganpasienrawatjalan').on('click', '.detailsep', function() {
         spinner = $('#loader')

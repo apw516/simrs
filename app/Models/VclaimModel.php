@@ -876,6 +876,21 @@ class VclaimModel extends Model
         }
         return $response;
     }
+    public function carirujukan_byno_rs($rujukan)
+    {
+        $client = new Client();
+        $url = $this->baseUrl . "Rujukan/RS/".$rujukan;
+        $signature = $this->signature();       
+        $response = $client->request('GET', $url, [
+            'headers' => $signature
+        ]);
+        $response = json_decode($response->getBody());
+        if ($response->metaData->code == 200) {
+            $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
+            $response->response = json_decode($decrypt);
+        }
+        return $response;
+    }
     public function detailrujukan_keluar($rujukan)
     {
         $client = new Client();

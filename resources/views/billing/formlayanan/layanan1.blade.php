@@ -6,7 +6,7 @@
       </div>
       <div class="col-sm-3 my-1">
         <label class="" for="">Tarif</label>
-        <input type="text" class="form-control" id="tl1" name="tl1">
+        <input readonly type="text" class="form-control" id="tl1" name="tl1">
       </div>
       <div class="col-sm-1 my-1">
         <label class="" for="inlineFormInputName">jlh</label>
@@ -43,6 +43,9 @@
                    $('[name="nl1"]').val(ui.item.label);
                    $('[name="kodenl1"]').val(ui.item.kode);
                    $('[name="tl1"]').val(ui.item.tarif);
+                   $('[id="jlh1"]').val(1)
+                    $('[id="disc1"]').val(0)
+                    $('[id="cyto1"]').val(0)
                }
            });
        });  

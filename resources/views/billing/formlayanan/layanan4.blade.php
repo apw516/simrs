@@ -6,7 +6,7 @@
   </div>
   <div class="col-sm-3 my-1">
     <label class="" for="">Tarif</label>
-    <input type="text" class="form-control" id="tl1" name="tl1">
+    <input readonly type="text" class="form-control" id="tl1" name="tl1">
   </div>
   <div class="col-sm-1 my-1">
     <label class="" for="inlineFormInputName">jlh</label>
@@ -29,7 +29,7 @@
   </div>
   <div class="col-sm-3 my-1">
     <label class="" for="">Tarif</label>
-    <input type="text" class="form-control" id="tl1" name="tl2">
+    <input readonly type="text" class="form-control" id="tl1" name="tl2">
   </div>
   <div class="col-sm-1 my-1">
     <label class="" for="inlineFormInputName">jlh</label>
@@ -52,7 +52,7 @@
   </div>
   <div class="col-sm-3 my-1">
     <label class="" for="">Tarif</label>
-    <input type="text" class="form-control" id="tl1" name="tl3">
+    <input readonly type="text" class="form-control" id="tl1" name="tl3">
   </div>
   <div class="col-sm-1 my-1">
     <label class="" for="inlineFormInputName">jlh</label>
@@ -75,7 +75,7 @@
   </div>
   <div class="col-sm-3 my-1">
     <label class="" for="">Tarif</label>
-    <input type="text" class="form-control" id="tl1" name="tl4">
+    <input readonly type="text" class="form-control" id="tl1" name="tl4">
   </div>
   <div class="col-sm-1 my-1">
     <label class="" for="inlineFormInputName">jlh</label>
@@ -112,6 +112,9 @@
                         $('[name="nl1"]').val(ui.item.label);
                         $('[name="kodenl1"]').val(ui.item.kode);
                         $('[name="tl1"]').val(ui.item.tarif);
+                        $('[id="jlh1"]').val(1)
+                    $('[id="disc1"]').val(0)
+                    $('[id="cyto1"]').val(0)
                     }
                 });
             });  
@@ -136,6 +139,9 @@
                         $('[name="nl2"]').val(ui.item.label);
                         $('[name="kodenl2"]').val(ui.item.kode);
                         $('[name="tl2"]').val(ui.item.tarif);
+                        $('[id="jlh2"]').val(1)
+                    $('[id="disc2"]').val(0)
+                    $('[id="cyto2"]').val(0)
                     }
                 });
             });  
@@ -160,6 +166,9 @@
                         $('[name="nl3"]').val(ui.item.label);
                         $('[name="kodenl3"]').val(ui.item.kode);
                         $('[name="tl3"]').val(ui.item.tarif);
+                        $('[id="jlh3"]').val(1)
+                    $('[id="disc3"]').val(0)
+                    $('[id="cyto3"]').val(0)
                     }
                 });
             });  
@@ -184,6 +193,9 @@
                         $('[name="nl4"]').val(ui.item.label);
                         $('[name="kodenl4"]').val(ui.item.kode);
                         $('[name="tl4"]').val(ui.item.tarif);
+                        $('[id="jlh4"]').val(1)
+                    $('[id="disc4"]').val(0)
+                    $('[id="cyto4"]').val(0)
                     }
                 });
             });  

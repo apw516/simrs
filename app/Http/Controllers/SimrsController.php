@@ -732,6 +732,8 @@ class SimrsController extends Controller
     }
     public function Simpansep(Request $request)
     {
+        $v = new VclaimModel();
+        $nomorrujukan = trim($request->nomorrujukan);
         // kamarranap
         // bedranap
         // $d = $this->createLayanandetail();
@@ -739,6 +741,24 @@ class SimrsController extends Controller
         //cek sudah daftar belum
         //cek_kronis sp_cari_riwayat_kronis_terakhir
         //cek pasien aktif
+        $cekrujukan = $v->carirujukan_byno($request->nomorrujukan);
+        if($cekrujukan->metaData->code == 201){
+            $cekrujukan = $v->carirujukan_byno_rs($request->nomorrujukan);
+        }
+        if($cekrujukan->metaData->code == 201)
+        {
+            $ceksurkon = $v->carisuratkontrol($request->suratkontrol);
+            if($ceksurkon->response->sep->noSep == $request->nomorrujukan){
+
+            }else{
+                $data = [
+                    'kode' => 500,
+                    'message' => 'Rujukan dan Surat Kontrol tidak sesuai !'
+                ];
+                echo json_encode($data);
+                die;
+            }
+        }
         $cek_kunjungan_aktif = DB::select('select * from ts_kunjungan where no_rm = ? AND status_kunjungan = ?', [$request->norm, '1']);
         if ($request->jenispelayanan == 2) {
             $paramedis = Dokter::where('kode_dpjp', '=', "$request->kodedokterlayan")->get();
@@ -1003,7 +1023,7 @@ class SimrsController extends Controller
                     "rujukan" => [
                         "asalRujukan" => "$request->asalrujukan",
                         "tglRujukan" => "$request->tglrujukan",
-                        "noRujukan" => "$request->nomorrujukan",
+                        "noRujukan" => "$nomorrujukan",
                         "ppkRujukan" => "$request->kodeppkrujukan"
                     ],
                     "catatan" => "$request->catatan",
@@ -1049,7 +1069,6 @@ class SimrsController extends Controller
                 ]
             ]
         ];
-        $v = new VclaimModel();
         $datasep = $v->insertsep2($get_sep);
         if ($datasep == 'RTO') {
             DB::table('ts_kunjungan')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
