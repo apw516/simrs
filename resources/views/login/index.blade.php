@@ -38,7 +38,6 @@
                         <input type="submit" value="Log In" class="btn btn-block btn-primary">
                         <span class="d-block text-center my-4"><a href="/register">Register</a></span>
                         <span class="d-block text-center my-4 text-muted">&mdash; view dashboard &mdash;</span>
-
                         <div class="social-login text-center">
                             <a href="#" class="facebook">
                                 <span class="icon-facebook mr-3"></span>

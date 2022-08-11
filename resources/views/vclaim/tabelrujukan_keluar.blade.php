@@ -16,7 +16,7 @@
                     <td>{{ $r->noKartu }}</td>
                     <td>{{ $r->noRujukan }}</td>
                     <td>{{ $r->noSep }}</td>
-                    <td>{{ $r->jnsPelayanan }}</td>
+                    <td>@if($r->jnsPelayanan == 1)Rawat Inap @else Rawat Jalan @endif</td>
                     <td>{{ $r->namaPpkDirujuk }}</td>
                     <td>
                         <button class="badge badge-primary detailrujukan" noRujukan="{{ $r->noRujukan }}"

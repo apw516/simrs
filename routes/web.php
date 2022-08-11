@@ -7,6 +7,7 @@ use App\Http\Controllers\VclaimController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BillingController;
+use App\Http\Controllers\BedmonitoringController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,7 @@ Route::get('/', [LoginController::class, 'index']);
 Route::get('/login', [LoginController::class, 'index'])->middleware('guest')->name('login');
 Route::post('/login', [LoginController::class, 'authenticate']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('bedmonitoring', [BedmonitoringController::class, 'index'])->name('bedmonitoring');
 
 Route::get('/register', [RegisterController::class, 'index'])->middleware('guest')->name('register');
 Route::post('/register', [RegisterController::class, 'Store']);
@@ -182,6 +184,10 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
         ->name('cariinforujukanpasien');
     Route::post('/pendaftaran/cariunit_kelas', [SimrsController::class, 'cariunit_kelas'])
         ->name('cariunit_kelas');
+    Route::post('/pendaftaran/formedit_kunjungan', [SimrsController::class, 'formedit_kunjungan'])
+        ->name('formedit_kunjungan');
+    Route::post('/pendaftaran/savedit_kunjungan', [SimrsController::class, 'savedit_kunjungan'])
+        ->name('savedit_kunjungan');
 
 
     //vclaim controller

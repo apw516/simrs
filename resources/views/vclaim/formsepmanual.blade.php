@@ -11,7 +11,7 @@
                                 <div class="col-sm-3">Nomor RM</div>
                                 <div class="col-sm-5">: {{ $data_peserta->response->peserta->mr->noMR }}</div>
                                 <input hidden type="text" class="form-control" id="nomorrm"
-                                    value="{{ $data_peserta->response->peserta->mr->noMR }}">
+                                    value="{{ $rm }}">
                                 <input hidden type="text" class="form-control" id="nomorkartu"
                                     value="{{ $data_peserta->response->peserta->noKartu }}">
                                 <input hidden type="text" class="form-control" id="kodekunjungan"

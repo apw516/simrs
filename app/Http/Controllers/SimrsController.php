@@ -3589,4 +3589,29 @@ class SimrsController extends Controller
             echo "<option value=$j->kode_unit>$j->unit</option>";
         }
     }
+    public function formedit_kunjungan(Request $request)
+    {
+        $data = [
+            'kode' => "$request->kode",
+            'rm' => "$request->rm",
+            'sep' => "$request->sep",
+            'rujukan' => "$request->rujukan",
+            'status' => "$request->status",
+            'kronis' => "$request->kronis"
+        ];
+        return view('pendaftaran.editkunjungan', [
+            'data' => $data
+        ]);
+    }
+    public function savedit_kunjungan(Request $request)
+    {
+       $data = [
+        'no_sep' => "$request->nomorsep",
+        'no_rujukan' => "$request->nomorrujukan",
+        'status_kunjungan' => "$request->status_kunjungan",
+        'catatan' => "$request->kronis",
+       ];
+       $update = ts_kunjungan::where('kode_kunjungan', $request->kode)->update($data);
+       echo json_encode('ok');
+    }
 }
