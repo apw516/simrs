@@ -22,7 +22,7 @@
             "responsive": true,
             "lengthChange": false,
             "autoWidth": true,
-            "pageLength": 3,
+            "pageLength": 8,
             "searching": true
         })
     });
