@@ -15,6 +15,7 @@ use Codedge\Fpdf\Fpdf\Fpdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
+use Carbon\Carbon;
 use App\Models\VclaimModel;
 use App\Models\Pasien;
 use App\Models\Dokter;
@@ -732,6 +733,7 @@ class SimrsController extends Controller
     }
     public function Simpansep(Request $request)
     {
+        $dt = Carbon::now();
         $v = new VclaimModel();
         $nomorrujukan = trim($request->nomorrujukan);
         // kamarranap
@@ -796,7 +798,8 @@ class SimrsController extends Controller
             // }
         }
         $tgl_masuk = $request->tglsep;
-        $tgl_masuk_time = $request->tglsep . ' ' . date('h:i:s');
+        $time = $dt->toTimeString();
+        $tgl_masuk_time = $request->tglsep . ' ' . $time;
         $cek_rm = DB::select('select * from ts_kunjungan where no_rm = ?', [$request->norm]);
         if (count($cek_rm) == 0) {
             $counter = 1;
