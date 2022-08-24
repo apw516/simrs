@@ -34,6 +34,7 @@
                     <td>{{ $d->namaPoliTujuan }}</td>
                     <td>{{ $d->namaDokter }}</td>
                     <td>
+                        <button nomorsurat="{{ $d->noSuratKontrol }}" class="badge badge-info cetaksuratkontrol"><i class="bi bi-printer-fill"></i></button>
                         <button nomorsurat="{{ $d->noSuratKontrol }}" class="badge badge-danger hapussurat"><i
                                 class="bi bi-trash"></i></button>
                         <button tglkontrol="{{ $d->tglRencanaKontrol }}" jenissurat="{{ $d->jnsKontrol }}"
@@ -133,5 +134,9 @@
         $('#dokterkontrol_update').val(namadokter)
         $('#kodedokterkontrol_update').val(kodedokter)
         $('#jenis').val(jenissurat)
+    });
+    $('#tabelsuratkontrol_rs2').on('click', '.cetaksuratkontrol', function() {
+        suratkontrol = $(this).attr('nomorsurat')
+        window.open('cetaksurkon/' + suratkontrol);       
     });
 </script>

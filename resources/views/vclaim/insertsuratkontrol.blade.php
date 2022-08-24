@@ -179,6 +179,7 @@
                     spinner.hide();
                     if (data.metaData.code == 200) {
                         alert(data.metaData.message)
+                        window.open('cetaksurkon/' + data.response.noSuratKontrol);
                     } else {
                         alert(data.metaData.message)
                     }

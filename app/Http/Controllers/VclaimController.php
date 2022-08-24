@@ -8,6 +8,7 @@ use App\Models\VclaimModel;
 use App\Models\Pasien;
 use App\Models\ts_kunjungan;
 use App\Models\ts_sep;
+use Codedge\Fpdf\Fpdf\Fpdf;
 
 class VclaimController extends Controller
 {
@@ -1164,6 +1165,108 @@ class VclaimController extends Controller
                     ];
                     echo json_encode($data);
                 }
+    }
+     public function Cetaksurkon($nomorsurat)
+    {
+        //ambil data sep
+        // $sep = $request->sep;
+        // $sep = ts_sep::where('no_SEP', $sep)->get();
+        // $cek = count($sep);
+        // if($cek == 0){
+        $v = new VclaimModel();
+        $s = $v->carisuratkontrol($nomorsurat);
+        // $peserta = $v->get_peserta_noka($sep->response->peserta->noKartu, date('Y-m-d'));
+        // $cetakan = $sep['0']['cetakan'] + 1;
+        // ts_sep::where('kode_kunjungan', $sep)->update(['no_SEP' => $cetakan]);
+        $pdf = new Fpdf('L', 'mm', 'A4');
+        $pdf->AddPage();
+        $pdf->SetTitle('Cetak Surat Kontrol');
+        $pdf->SetMargins('15', '20', '10');
+        $pdf->SetFont('Arial', '', 15);
+        $pdf->Image('public/img/logobpjs.png', 1, -5, 60, 40);
+        $pdf->Image('public/img/logo_rs.png', 158, 4, 30, 25);
+        $pdf->SetXY(70, 8);
+        $pdf->Cell(10, 7, 'SURAT RENCANA KONTROL', 0, 1);
+        $pdf->SetXY(70, 14);
+        $pdf->Cell(10, 7, 'RSUD WALED KAB.CIREBON', 0, 1);
+        $pdf->SetFont('Arial', 'B', 15);
+        $pdf->SetXY(120, 36);
+        $pdf->Cell(10, 7, 'NO.'.' '.$s->response->noSuratKontrol , 0, 1);
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetXY(10, 30);
+        $pdf->Cell(10, 7, 'Kepada Yth', 0, 1);
+        $pdf->SetXY(40, 30);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetXY(45, 30);
+        $pdf->Cell(10, 7, $s->response->namaDokter.','.$s->response->namaPoliTujuan, 0, 1);
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetXY(10, 38);
+        $pdf->Cell(10, 7, 'Mohon Pemeriksaan dan Penanganan Lebih Lanjut :', 0, 1);
+        $pdf->SetXY(40, 35);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(45, 35);
+        $pdf->Cell(10, 7, " ", 0, 1);
+
+        $pdf->SetXY(10, 45);
+        $pdf->Cell(10, 7, 'No.Kartu', 0, 1);
+        $pdf->SetXY(40, 45);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(45, 46);
+        $pdf->MultiCell(60, 5, $s->response->sep->peserta->noKartu);
+        // $pdf->Cell(10,7,$sep['0']['nama_peserta'],0,1);
+        $y = $pdf->GetY();
+        $pdf->SetXY(10, $y);
+        $pdf->Cell(10, 7, 'Nama Peserta', 0, 1);
+        $pdf->SetXY(40, $y);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(45, $y);
+        $pdf->Cell(10, 7, $s->response->sep->peserta->nama, 0, 1);
+
+        $pdf->SetXY(10, 60);
+        $pdf->Cell(10, 7, 'Tgl Lahir', 0, 1);
+        $pdf->SetXY(40, 60);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(45, 60);
+        $pdf->Cell(10, 7, $s->response->sep->peserta->tglLahir, 0, 1);
+
+        $pdf->SetXY(10, 65);
+        $pdf->Cell(10, 7, 'Diagnosa', 0, 1);
+        $pdf->SetXY(40, 65);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(45, 65);
+        $pdf->Cell(10, 7,$s->response->sep->diagnosa, 0, 1);
+
+        $pdf->SetXY(10, 70);
+        $pdf->Cell(10, 7, 'Rencana Kontrol', 0, 1);
+        $pdf->SetXY(40, 70);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(45, 70);
+        $pdf->Cell(10, 7, $s->response->tglRencanaKontrol, 0, 1);
+        $pdf->SetXY(10, 75);
+        $pdf->Cell(10, 7, 'Demikian atas bantuannya,diucapkan banyak terima kasih.', 0, 1);
+        $pdf->SetXY(40, 75);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetXY(45, 75);
+        $pdf->Cell(10, 7, "", 0, 1);
+
+        $pdf->SetFont('Arial', '', 9);
+        $pdf->SetXY(150, 85);
+        $pdf->Cell(10, 7, 'Mengetahui DPJP', 0, 1);
+        $pdf->SetXY(138, 100);
+        $pdf->Cell(10, 7, $s->response->namaDokter, 0, 1);
+
+     
+        $pdf->SetFont('Arial', 'I', 10);
+        $pdf->SetXY(10, 100);
+        $pdf->Cell(10, 7, 'tgl entry -' . $s->response->tglTerbit . ' ,.Tanggal cetak ' . date('y-m-d h:i:s'), 0, 1);
+        $pdf->SetFont('Arial', '', 8);
+    
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Line(150, 100, 190, 100);
+        $pdf->Output();
+
+        exit;     
     }
 }
 

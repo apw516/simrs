@@ -103,9 +103,14 @@
                             </ul>
                         </div>
                     </div>
-                    <button id="editsurat" class="btn btn-warning float-right editsurat" data-toggle="modal" 
+                    <button id="editsurat" class="btn btn-warning float-right editsurat ml-2" data-toggle="modal" 
                     data-target="#modaleditsurkon" onclick="editsuratkontrol()" nomorkartu="{{ $detail->response->sep->peserta->noKartu }}" nama="{{ $detail->response->sep->peserta->nama }}" jenis="{{ $detail->response->jnsKontrol }}" nomor="{{ $detail->response->noSuratKontrol }}" nomorsep="{{ $detail->response->sep->noSep }}" tgl="{{ $detail->response->tglRencanaKontrol }}" namapoli="{{ $detail->response->namaPoliTujuan }}" kdpoli="{{ $detail->response->poliTujuan }}" nmdokter="{{ $detail->response->namaDokter }}" kddokter="{{ $detail->response->kodeDokter }}"><i
                         class="bi bi-pencil-square text-md mr-1"></i>Update</button>
+
+                    <a href="cetaksurkon/{{ $detail->response->noSuratKontrol }}" target="_blank" class="btn btn-info float-right">
+                        
+                    <i class="bi bi-printer-fill"></i>Print</a>
+
                     <button class="btn btn-danger float-right mr-2" id="hapussurat" onclick="hapussurkon()" nomorsurat="{{ $detail->response->noSuratKontrol }}"><i
                         class="bi bi-trash text-md mr-1"></i>Hapus</button>
                 </div>
