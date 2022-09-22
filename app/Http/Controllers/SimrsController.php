@@ -756,11 +756,12 @@ class SimrsController extends Controller
             "kodedokter" => $request->kodedokterlayan,
             "jampraktek" => $jampraktek[0]->jadwal,
             "jeniskunjungan" => "$tujuan",
-            "nomorreferensi" => "$nomorreferensi"
+            "nomorreferensi" => "$nomorreferensi",
+            "method" => "OFF"
         ];
         $antrian = $mw->ambilantrean($data_antrian);
-        // dd($antrian);
         $status_a = $antrian->metadata->code;
+        $kode = 0;
         if($status_a == 200){
             $time = Carbon::now();
             $timestamp = $time->timestamp * 1000;
@@ -1203,7 +1204,7 @@ class SimrsController extends Controller
                 'cek_tracer' => 'N'
             ];
             //insert ke tracer
-            tracer::create($data_tracer);
+            // tracer::create($data_tracer);
             $pasien = Pasien::where('no_rm', '=', "$request->norm")->get();
             $data = [
                 'kode' => 200,
