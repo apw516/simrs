@@ -1042,4 +1042,27 @@ class VclaimModel extends Model
         }
         return $response;
     }
+    public function ambilantrian($dataantrian)
+    {
+        $client = new Client();
+        $data = json_encode($dataantrian);
+        $url = "https://app.rsudwaled.id/api/ambilantrean";
+        $signature = $this->signature();       
+        // try{
+            $response = $client->request('POST', $url, [
+                'headers' => $signature,
+                'body' => $data,
+                'allow_redirects' => true,
+                'timeout' => 20 
+                ]);
+            // $response = json_decode($response->getBody());
+            // if ($response->metaData->code == 200) {
+            //     $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
+            //     $response->response = json_decode($decrypt);
+            // }
+            return $response;
+        // }catch(ClientException){
+        //     return 'RTO';
+        // } 
+    }
 }

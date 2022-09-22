@@ -68,7 +68,9 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-3">Nomor KTP</div>
-                                <div class="col-sm-5">: {{ $data_peserta->response->peserta->nik }}</div>
+                                <div class="col-sm-5">: {{ $data_peserta->response->peserta->nik }}
+                                <input hidden type="text" class="form-control" id="nomorktp_pendaftaran" value="{{ $data_peserta->response->peserta->nik }}">
+                                </div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-sm-3">Nama</div>
@@ -803,6 +805,7 @@
     }
 
     function simpansep() {
+        nik = $('#nomorktp_pendaftaran').val();
         nomorkartu = $('#nomorkartu').val();
         namapasien = $('#namapasien').val();
         penjamin = $('#penjamin').val();
@@ -860,6 +863,7 @@
             type: 'post',
             data: {
                 _token: "{{ csrf_token() }}",
+                nik,
                 nomorkartu,
                 penjamin,
                 jenispelayanan,

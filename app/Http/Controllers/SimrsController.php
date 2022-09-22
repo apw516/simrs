@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
 use App\Models\VclaimModel;
+use App\Models\antrianmarwan;
 use App\Models\Pasien;
 use App\Models\Dokter;
 use App\Models\ts_kunjungan;
@@ -45,7 +46,7 @@ class SimrsController extends Controller
         return view('dashboard.index');
     }
     public function pendaftaran()
-    {
+    {       
         $title = 'SIMRS - PENDAFTARAN';
         $sidebar = '2';
         $sidebar_m = '2';
@@ -733,6 +734,44 @@ class SimrsController extends Controller
     }
     public function Simpansep(Request $request)
     {
+         //ambil antrian
+         $mw = new antrianmarwan();
+         $day = $request->tglsep;
+         $today =strtoupper(Carbon::parse($day)->dayName);
+         $jampraktek = DB::select('select * from jkn_jadwal_dokter where kodedokter = ? and namahari = ?', [$request->kodedokterlayan,$today]);
+         if($request->tujuankunjungan == 0){
+             $nomorreferensi = $request->nomorrujukan;
+             $tujuan = 1;
+         }else if($request->tujuankunjungan == 2){
+             $nomorreferensi = $request->suratkontrol;
+             $tujuan = 3;
+         }
+         $data_antrian = [
+            "nomorkartu" => "$request->nomorkartu",
+            "nik" => "$request->nik",
+            "nohp" => "$request->nomortelepon",
+            "kodepoli" => "$request->kodepolitujuan",
+            "norm" => "$request->norm",
+            "tanggalperiksa" => "$request->tglsep",
+            "kodedokter" => $request->kodedokterlayan,
+            "jampraktek" => $jampraktek[0]->jadwal,
+            "jeniskunjungan" => "$tujuan",
+            "nomorreferensi" => "$nomorreferensi"
+        ];
+        $antrian = $mw->ambilantrean($data_antrian);
+        // dd($antrian);
+        $status_a = $antrian->metadata->code;
+        if($status_a == 200){
+            $time = Carbon::now();
+            $timestamp = $time->timestamp * 1000;
+            $kode = $antrian->response->kodebooking;
+            $taskid = [
+                "kodebooking" => "$kode",
+                "taskid" => "3",
+                "waktu" => $timestamp
+            ];
+            $taskid_r = $mw->update_antrian($taskid);         
+        }
         $dt = Carbon::now();
         $v = new VclaimModel();
         $nomorrujukan = trim($request->nomorrujukan);
@@ -1080,6 +1119,11 @@ class SimrsController extends Controller
                 DB::table('ts_layanan_header')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
                 DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
             }
+            $batal = [
+                "kodebooking" => "$kode",
+                "keterangan" => "sistem error"
+            ];
+            $antrianbatal = $mw->batalantrian($batal);
             $data = [
                 'kode' => 500,
                 'message' => 'The Network connection lost, please try again ...'
@@ -1166,7 +1210,7 @@ class SimrsController extends Controller
                 'message' => 'sukses',
                 'kode_kunjungan' => $ts_kunjungan->id,
                 'nama' => $pasien[0]['nama_px']
-            ];
+            ];         
             echo json_encode($data);
         } else if ($datasep->metaData->code != 200) {
             DB::table('ts_kunjungan')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
@@ -1175,6 +1219,11 @@ class SimrsController extends Controller
                 DB::table('ts_layanan_header')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
                 DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
             }
+            $batal = [
+                "kodebooking" => "$kode",
+                "keterangan" => "sistem error"
+            ];
+            $antrianbatal = $mw->batalantrian($batal);
             $data = [
                 'kode' => 201,
                 'message' => $datasep->metaData->message
