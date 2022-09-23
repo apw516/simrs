@@ -8,6 +8,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\BedmonitoringController;
+use App\Http\Controllers\RanapController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +32,7 @@ Route::get('/register', [RegisterController::class, 'index'])->middleware('guest
 Route::post('/register', [RegisterController::class, 'Store']);
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
-Route::group(['middleware' => ['auth', 'hak_akses1:1,2']], function () {
+Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9']], function () {
     Route::get('/pendaftaran', [SimrsController::class, 'Pendaftaran'])
         ->name('pendaftaran'); //sidebar
     Route::get('/menusepvalidasi', [SimrsController::class, 'menusepvalidasi'])
@@ -316,6 +317,10 @@ Route::group(['middleware' => ['auth','hak_akses1:3']],function (){
         ->name('caripoli_rs_bil'); //formpasien_bpjs
     Route::get('/simpanlayanan', [SimrsController::class, 'simpanlayanan'])
         ->name('simpanlayanan'); //formpasien_bpjs
+});
+Route::group(['middleware' => ['auth','hak_akses1:9']],function (){
+    Route::get('/datasepranap', [RanapController::class, 'Index'])
+    ->name('datasepranap'); //sidebar
 });
 
 
