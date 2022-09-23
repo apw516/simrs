@@ -1204,7 +1204,7 @@ class SimrsController extends Controller
                 'cek_tracer' => 'N'
             ];
             //insert ke tracer
-            // tracer::create($data_tracer);
+            tracer::create($data_tracer);
             $pasien = Pasien::where('no_rm', '=', "$request->norm")->get();
             $data = [
                 'kode' => 200,
