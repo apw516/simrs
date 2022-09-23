@@ -25,9 +25,7 @@ class RanapController extends Controller
     {
         $oneweek = (Carbon::now()->subWeek(1)->toDateString());
         $now = (Carbon::now()->toDateString());
-        $v = new VclaimModel();
-        $dataklaim = $v->get_data_klaim($oneweek, $now,'1','1');
-        dd($dataklaim);
+        $user = auth()->user()->unit;        
         $title = 'SIMRS -SEP RAWAT INAP';
         $sidebar = 'RANAP';
         $sidebar_m = 'SEP RANAP';
@@ -35,6 +33,7 @@ class RanapController extends Controller
             'title' => $title,
             'sidebar' => $sidebar,
             'sidebar_m' => $sidebar_m,
+            'datapasien' => DB::select('SELECT no_rm,no_sep,fc_nama_px(no_rm) AS nama ,tgl_masuk,tgl_keluar,fc_nama_unit1(kode_unit) AS unit,kamar,no_bed FROM ts_kunjungan WHERE kode_unit = ? AND tgl_masuk BETWEEN ? AND ?', [$user,$oneweek,$now])
         ]);
     }
 }
