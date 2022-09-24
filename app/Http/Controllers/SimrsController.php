@@ -1174,7 +1174,7 @@ class SimrsController extends Controller
                 'cek_tracer' => 'N'
             ];
             //insert ke tracer
-            // tracer::create($data_tracer);
+            tracer::create($data_tracer);
             $pasien = Pasien::where('no_rm', '=', "$request->norm")->get();
 
              //ambil antrian         
@@ -1200,7 +1200,6 @@ class SimrsController extends Controller
             "kode_kunjungan" => "$ts_kunjungan->id",
             "nomorsep" => "$sep->noSep"
         ];
-        dd($data_antrian);
         $antrian = $mw->ambilantrean($data_antrian);
         $status_a = $antrian->metadata->code;
         $kode = 0;
