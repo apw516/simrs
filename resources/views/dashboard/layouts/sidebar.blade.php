@@ -74,18 +74,18 @@
                     <a href="{{ route('datasepranap') }}" class="nav-link @if($title == 'SIMRS -SEP RAWAT INAP') active @endif">
                         <i class="nav-icon fas fa-th"></i>
                         <p style="font-size:12px">
-                            Data SEP Rawat Inap
+                            Data Pasien Rawat Inap
                         </p>
                     </a>
                 </li>
-                  <li class="nav-item">
+                  {{-- <li class="nav-item">
                     <a href="{{ route('Billing') }}" class="nav-link @if($sidebar == '2') active @endif">
                         <i class="nav-icon fas fa-th"></i>
                         <p style="font-size:12px">
                             Surat Kontrol Pasca Rawat
                         </p>
                     </a>
-                </li>
+                </li> --}}
                 @endif
                   {{-- <li class="nav-item">
                       <a href="/pendaftaran" class="nav-link @if($sidebar == '6') active @endif">

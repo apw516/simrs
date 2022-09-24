@@ -30,10 +30,13 @@
         nama = $(this).attr('nama')
         kode = $(this).attr('data-id')
         $('#dokterkontrol').val(nama)
+        $('#dokterkontrolpasca').val(nama)
         $('#kodedokterkontrol').val(kode)
+        $('#kodedokterkontrolpasca').val(kode)
         $('#dokterkontrol2').val(nama)
         $('#kodedokterkontrol2').val(kode)
         $('#dokterkontrol_update').val(nama)
-        $('#kodedokterkontrol_update').val(kode)       
+        $('#kodedokterkontrol_update').val(kode)      
+    
     });
 </script>
