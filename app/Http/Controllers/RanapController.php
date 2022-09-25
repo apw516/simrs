@@ -38,7 +38,7 @@ class RanapController extends Controller
             INNER JOIN mt_penjamin b ON b.kode_penjamin = a.kode_penjamin
             INNER JOIN mt_alasan_pulang c ON c.kode = a.id_alasan_pulang
             INNER JOIN mt_pasien d ON a.no_rm = d.no_rm
-            WHERE kode_unit = ? AND tgl_keluar BETWEEN ? AND ?
+            WHERE kode_unit = ? AND DATE(tgl_keluar) BETWEEN ? AND ?
             AND b.kode_kelompok <> 3', [$user, $oneweek, $now])
         ]);
     }
