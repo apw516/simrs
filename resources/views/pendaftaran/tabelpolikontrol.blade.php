@@ -29,6 +29,8 @@
     $('#tabelpolikontrol').on('click', '.pilihpoli', function() {
         nama = $(this).attr('nama')
         kode = $(this).attr('data-id')
+        $('#modalpilihpolipasca').modal('hide');
+        $('#modalpilihpoli').modal('hide');
         $('#polikontrolpasca').val(nama)
         $('#polikontrol').val(nama)
         $('#kodepolikontrol').val(kode)

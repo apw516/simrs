@@ -30,6 +30,8 @@
         nama = $(this).attr('nama')
         kode = $(this).attr('data-id')
         $('#dokterkontrol').val(nama)
+        $('#modalpilihdokterpasca').modal('hide');
+        $('#modalpilihdokter').modal('hide');
         $('#dokterkontrolpasca').val(nama)
         $('#kodedokterkontrol').val(kode)
         $('#kodedokterkontrolpasca').val(kode)
