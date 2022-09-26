@@ -1,4 +1,4 @@
-<table id="tabeldokterkontrol" class="table table-sm table-bordered">
+<table id="tabeldokterkontrol" class="table table-sm table-bordered table-hover">
     <thead>
         <th>Nama Dokter</th>
         <th>Jadwal</th>

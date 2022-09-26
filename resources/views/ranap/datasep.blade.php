@@ -56,9 +56,9 @@
                                     nomorsep="{{ $d->no_sep }}" nama="{{ $d->nama }}"
                                     class="badge badge-warning pulangsep" data-toggle="tooltip" data-placement="top"
                                     title="Pulangkan SEP ..."><i class="bi bi-house-door"></i></button>
-                                <button nomorsep="{{ $d->no_sep }}" class="badge badge-success buatsuratkontrolinap"
+                                {{-- <button nomorsep="{{ $d->no_sep }}" class="badge badge-success buatsuratkontrolinap"
                                     data-toggle="tooltip" data-placement="top" title="Buat surat kontrol ..."><i
-                                        class="bi bi-envelope-plus"></i></button>
+                                        class="bi bi-envelope-plus"></i></button> --}}
                             </td>
                         </tr>
                     @endforeach
@@ -391,6 +391,8 @@
                             icon: 'success',
                             title: 'Update tanggal pulang sep Berhasil ...',
                         })
+                        $('#modalpasienmeninggal').modal('hide');
+                        // $("#modalsurkonpasca").modal();
                         location.reload()
                     } else {
                         Swal.fire({
@@ -435,9 +437,13 @@
                     if (data.metaData.code == 200) {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Update tanggal pulang sep Berhasil ...',
+                            title: 'Update tanggal pulang sep Berhasil,silahkan buat surat kontrol pasca rawat inap ...',
                         })
-                        location.reload()
+                        $('#seppasca').val(nomorsurat)
+                        $('#modalpasienpulang').modal('hide');
+                        $("#modalsurkonpasca").modal();
+                        // location.reload()
+
                     } else {
                         Swal.fire({
                             icon: 'error',
@@ -543,6 +549,9 @@
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 window.open('cetaksurkon/' + data.response.noSuratKontrol);
+                                location.reload()
+                            }else{
+                                location.reload()
                             }
                         })
                     } else {

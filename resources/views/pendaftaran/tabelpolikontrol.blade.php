@@ -1,4 +1,4 @@
-<table id="tabelpolikontrol" class="table table-sm table-bordered">
+<table id="tabelpolikontrol" class="table table-sm table-bordered table-hover">
     <thead>
         <th>Nama Poli</th>
         <th>Jlh Kontrol dan Rujukan</th>
