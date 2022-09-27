@@ -78,6 +78,14 @@
                         </p>
                     </a>
                 </li>
+                  <li class="nav-item">
+                    <a href="{{ route('menucarisep') }}" class="nav-link @if($title == 'SIMRS - CARI SEP') active @endif">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p style="font-size:12px">
+                            Riwayat SEP
+                        </p>
+                    </a>
+                </li>
                   {{-- <li class="nav-item">
                     <a href="{{ route('Billing') }}" class="nav-link @if($sidebar == '2') active @endif">
                         <i class="nav-icon fas fa-th"></i>

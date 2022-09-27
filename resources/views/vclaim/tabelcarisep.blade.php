@@ -30,6 +30,7 @@
                             <button class="badge badge-primary detailsep" nomorsep="{{ $r->noSep }}"
                                 data-placement="right" title="detail sep" data-toggle="modal" data-target="#modaldetail"><i
                                     class="bi bi-eye text-md"></i></button>
+                            @if(auth()->user()->hak_akses != '9')
                             <button class="badge badge-warning sepinternal" nomorsep="{{ $r->noSep }}"
                                 data-placement="right" title="sep internal" data-toggle="modal"
                                 data-target="#modalsepinternal"><i class="bi bi-clipboard2-data text-md"></i></button>
@@ -41,6 +42,7 @@
                                     class="bi bi-x-square-fill text-md"></i></button>
                             {{-- <button class="badge badge-success" data-placement="right" title="print sep"><i
                                     class="bi bi-printer text-md"></i></button> --}}
+                            @endif
                         </td>
                     </tr>
                 @endif
@@ -86,11 +88,13 @@
                             {{-- <button class="badge badge-warning updatesep" nomorsep="{{ $r->noSep }}"
                                 data-placement="right" title="update sep" data-toggle="modal"
                                 data-target="#updatesepvclaim"><i class="bi bi-pencil-square text-md"></i></button> --}}
+                                @if(auth()->user()->hak_akses != '9')
                                 <button class="badge badge-success updatepulang" nomorsep={{ $r->noSep }} data-placement="right" title="update tanggal pulang" data-toggle="modal"
                                 data-target="#modalupdatetglpulang"><i class="bi bi-house-heart text-md"></i></button>
                             <button disabled class="badge badge-danger hapussep" nomorsep="{{ $r->noSep }}"
                                 data-placement="right" title="delete sep"><i
                                     class="bi bi-x-square-fill text-md"></i></button>
+                                    @endif
                         </td>
                     </tr>
                 @endif

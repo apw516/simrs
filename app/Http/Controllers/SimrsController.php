@@ -1216,8 +1216,7 @@ class SimrsController extends Controller
                 $taskid_r = $mw->update_antrian($taskid);         
             }
         }
-        //END OF AMBIL ANTRIAN
-        
+        //END OF AMBIL ANTRIAN        
             $data = [
                 'kode' => 200,
                 'message' => 'sukses',
