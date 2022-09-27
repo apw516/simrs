@@ -1201,18 +1201,20 @@ class SimrsController extends Controller
             "nomorsep" => "$sep->noSep"
         ];
         $antrian = $mw->ambilantrean($data_antrian);
-        $status_a = $antrian->metadata->code;
-        $kode = 0;
-        if($status_a == 200){
-            $time = Carbon::now();
-            $timestamp = $time->timestamp * 1000;
-            $kode = $antrian->response->kodebooking;
-            $taskid = [
-                "kodebooking" => "$kode",
-                "taskid" => "3",
-                "waktu" => $timestamp
-            ];
-            $taskid_r = $mw->update_antrian($taskid);         
+        if(isset($antrian)){
+            $status_a = $antrian->metadata->code;
+            $kode = 0;
+            if($status_a == 200){
+                $time = Carbon::now();
+                $timestamp = $time->timestamp * 1000;
+                $kode = $antrian->response->kodebooking;
+                $taskid = [
+                    "kodebooking" => "$kode",
+                    "taskid" => "3",
+                    "waktu" => $timestamp
+                ];
+                $taskid_r = $mw->update_antrian($taskid);         
+            }
         }
         //END OF AMBIL ANTRIAN
         
