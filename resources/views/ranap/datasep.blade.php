@@ -456,6 +456,7 @@
                     kodekunjungan,
                     alasan,
                     tglpulang,
+                    nolp
                 },
                 dataType: 'Json',
                 Async: true,

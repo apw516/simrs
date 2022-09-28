@@ -51,7 +51,7 @@ class RanapController extends Controller
         $kodekunjungan = $request->kodekunjungan;
         $stm = '';
         $dtm = '';
-        $nolp = '';
+        $nolp = $request->nolp;
         if($alasan == '6' || $alasan == 7){
             $alasanbrid = '4';//meninggal
             $stm = $request->suratmeninggal;
