@@ -37,6 +37,7 @@ use App\Models\Desa;
 use App\Models\mt_keluarga;
 use App\Models\mt_domisili;
 use App\Models\ts_rujukan;
+use App\Models\jkn_antrian;
 use App\Models\tracer;
 
 class SimrsController extends Controller
@@ -46,12 +47,31 @@ class SimrsController extends Controller
         return view('dashboard.index');
     }
     public function pendaftaran()
-    {       
+    {
         $title = 'SIMRS - PENDAFTARAN';
         $sidebar = '2';
         $sidebar_m = '2';
 
         return view('pendaftaran.index', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'data_pasien' => Pasien::limit(200)->orderBy('tgl_entry', 'desc')->get(),
+            'sidebar_m' => $sidebar_m,
+            'agama' => Agama::all(),
+            'pekerjaan' => Pekerjaan::all(),
+            'pendidikan' => Pendidikan::all(),
+            'hubkel' => Hubkeluarga::all(),
+            'negara' => Negara::all(),
+            'provinsi' => Provinsi::all(),
+        ]);
+    }
+    public function pendaftaran2()
+    {
+        $title = 'SIMRS - PENDAFTARAN2';
+        $sidebar = '2.9';
+        $sidebar_m = '2';
+
+        return view('pendaftaran2.index', [
             'title' => $title,
             'sidebar' => $sidebar,
             'data_pasien' => Pasien::limit(200)->orderBy('tgl_entry', 'desc')->get(),
@@ -733,21 +753,61 @@ class SimrsController extends Controller
         ]);
     }
     public function Simpansep(Request $request)
-    {        
+    {
         //antrian
         $mw = new antrianmarwan();
-         $day = $request->tglsep;
-         $today =strtoupper(Carbon::parse($day)->dayName);
-         $jampraktek = DB::select('select * from jkn_jadwal_dokter where kodedokter = ? and namahari = ?', [$request->kodedokterlayan,$today]);
-         if (empty($jampraktek)) {
+        $day = $request->tglsep;
+        $today = strtoupper(Carbon::parse($day)->dayName);
+        $jampraktek = DB::select('select * from jkn_jadwal_dokter where kodedokter = ? and namahari = ?', [$request->kodedokterlayan, $today]);
+        if (empty($jampraktek)) {
             $data = [
                 'kode' => 500,
                 'message' => 'Jadwal Dokter tidak ditemukan !'
             ];
             echo json_encode($data);
             die;
-         }       
-         //end antrian
+        }
+        //end antrian
+        //ambil antrian         
+        if ($request->tujuankunjungan == 0) {
+            $nomorreferensi = $request->nomorrujukan;
+            $tujuan = 1;
+        } else if ($request->tujuankunjungan == 2) {
+            $nomorreferensi = $request->suratkontrol;
+            $tujuan = 3;
+        }
+        $data_antrian = [
+            "nomorkartu" => "$request->nomorkartu",
+            "nik" => "$request->nik",
+            "nohp" => "$request->nomortelepon",
+            "kodepoli" => "$request->kodepolitujuan",
+            "norm" => "$request->norm",
+            "tanggalperiksa" => "$request->tglsep",
+            "kodedokter" => $request->kodedokterlayan,
+            "jampraktek" => $jampraktek[0]->jadwal,
+            "jeniskunjungan" => "$tujuan",
+            "nomorreferensi" => "$nomorreferensi",
+            "method" => "OFF",
+            "kode_kunjungan" => "",
+            "nomorsep" => ""
+        ];
+        $antrian = $mw->ambilantrean($data_antrian);
+        // $kodebooking = 0;
+        if (isset($antrian->metadata->code)) {
+            $status_a = $antrian->metadata->code;
+            if ($status_a == 200) {
+                $time = Carbon::now();
+                $timestamp = $time->timestamp * 1000;
+                $kodebooking = $antrian->response->kodebooking;
+                $taskid = [
+                    "kodebooking" => "$kodebooking",
+                    "taskid" => "3",
+                    "waktu" => $timestamp
+                ];
+                $taskid_r = $mw->update_antrian($taskid);
+            }
+        }
+        //END OF AMBIL ANTRIAN    
         $dt = Carbon::now();
         $v = new VclaimModel();
         $nomorrujukan = trim($request->nomorrujukan);
@@ -759,15 +819,13 @@ class SimrsController extends Controller
         //cek_kronis sp_cari_riwayat_kronis_terakhir
         //cek pasien aktif
         $cekrujukan = $v->carirujukan_byno($request->nomorrujukan);
-        if($cekrujukan->metaData->code == 201){
+        if ($cekrujukan->metaData->code == 201) {
             $cekrujukan = $v->carirujukan_byno_rs($request->nomorrujukan);
         }
-        if($cekrujukan->metaData->code == 201)
-        {
+        if ($cekrujukan->metaData->code == 201) {
             $ceksurkon = $v->carisuratkontrol($request->suratkontrol);
-            if($ceksurkon->response->sep->noSep == $request->nomorrujukan){
-
-            }else{
+            if ($ceksurkon->response->sep->noSep == $request->nomorrujukan) {
+            } else {
                 $data = [
                     'kode' => 500,
                     'message' => 'Rujukan dan Surat Kontrol tidak sesuai !'
@@ -1095,6 +1153,19 @@ class SimrsController extends Controller
                 DB::table('ts_layanan_header')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
                 DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
             }
+            //batal antrian 
+            if (isset($antrian->metadata->code)) {
+                $status_a = $antrian->metadata->code;
+                if ($status_a == 200) {
+                    $kodebooking = $antrian->response->kodebooking;
+                    $batal = [
+                        "kodebooking" => "$kodebooking",
+                        "keterangan" => "system error"
+                    ];
+                    $mw->batalantrian($batal);
+                }
+            }
+            //end of batal antrian
             $data = [
                 'kode' => 500,
                 'message' => 'The Network connection lost, please try again ...'
@@ -1175,54 +1246,23 @@ class SimrsController extends Controller
             ];
             //insert ke tracer
             tracer::create($data_tracer);
-            $pasien = Pasien::where('no_rm', '=', "$request->norm")->get();
-
-             //ambil antrian         
-         if($request->tujuankunjungan == 0){
-             $nomorreferensi = $request->nomorrujukan;
-             $tujuan = 1;
-         }else if($request->tujuankunjungan == 2){
-             $nomorreferensi = $request->suratkontrol;
-             $tujuan = 3;
-         }
-         $data_antrian = [
-            "nomorkartu" => "$request->nomorkartu",
-            "nik" => "$request->nik",
-            "nohp" => "$request->nomortelepon",
-            "kodepoli" => "$request->kodepolitujuan",
-            "norm" => "$request->norm",
-            "tanggalperiksa" => "$request->tglsep",
-            "kodedokter" => $request->kodedokterlayan,
-            "jampraktek" => $jampraktek[0]->jadwal,
-            "jeniskunjungan" => "$tujuan",
-            "nomorreferensi" => "$nomorreferensi",
-            "method" => "OFF",
-            "kode_kunjungan" => "$ts_kunjungan->id",
-            "nomorsep" => "$sep->noSep"
-        ];
-        $antrian = $mw->ambilantrean($data_antrian);
-        if(isset($antrian)){
-            $status_a = $antrian->metadata->code;
-            $kode = 0;
-            if($status_a == 200){
-                $time = Carbon::now();
-                $timestamp = $time->timestamp * 1000;
-                $kode = $antrian->response->kodebooking;
-                $taskid = [
-                    "kodebooking" => "$kode",
-                    "taskid" => "3",
-                    "waktu" => $timestamp
-                ];
-                $taskid_r = $mw->update_antrian($taskid);         
+            //update antrian 
+            if (isset($antrian->metadata->code)) {
+                $status_a = $antrian->metadata->code;
+                if ($status_a == 200) {
+                    $kodebooking = $antrian->response->kodebooking;
+                    jkn_antrian::where('kodebooking', $kodebooking)
+                    ->update(['nomorsep' => $sep->noSep, 'kode_kunjungan' => $ts_kunjungan->id ]);
+                }
             }
-        }
-        //END OF AMBIL ANTRIAN        
+            //end of update antrian           
+            $pasien = Pasien::where('no_rm', '=', "$request->norm")->get();
             $data = [
                 'kode' => 200,
                 'message' => 'sukses',
                 'kode_kunjungan' => $ts_kunjungan->id,
                 'nama' => $pasien[0]['nama_px']
-            ];         
+            ];
             echo json_encode($data);
         } else if ($datasep->metaData->code != 200) {
             DB::table('ts_kunjungan')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
@@ -1231,6 +1271,19 @@ class SimrsController extends Controller
                 DB::table('ts_layanan_header')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
                 DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
             }
+            //batal antrian 
+            if (isset($antrian->metadata->code)) {
+                $status_a = $antrian->metadata->code;
+                if ($status_a == 200) {
+                    $kodebooking = $antrian->response->kodebooking;
+                    $batal = [
+                        "kodebooking" => "$kodebooking",
+                        "keterangan" => "system error"
+                    ];
+                    $mw->batalantrian($batal);
+                }
+            }
+            //end of batal antrian
             $data = [
                 'kode' => 201,
                 'message' => $datasep->metaData->message
@@ -2443,7 +2496,7 @@ class SimrsController extends Controller
             $pdf->Cell(10, 7, 'SURAT ELIGIBILITAS PESERTA', 0, 1);
             $pdf->SetXY(73, 14);
             $pdf->Cell(10, 7, 'RSUD WALED KAB.CIREBON', 0, 1);
-    
+
             $pdf->SetFont('Arial', '', 10);
             $pdf->SetXY(10, 30);
             $pdf->Cell(10, 7, 'No. SEP', 0, 1);
@@ -2459,65 +2512,65 @@ class SimrsController extends Controller
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(45, 35);
             $pdf->Cell(10, 7, $sep->response->tglSep, 0, 1);
-    
+
             $pdf->SetXY(10, 40);
             $pdf->Cell(10, 7, 'No. Kartu', 0, 1);
             $pdf->SetXY(40, 40);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(45, 40);
             $pdf->Cell(10, 7, $sep->response->peserta->noKartu, 0, 1);
-    
+
             $pdf->SetXY(100, 35);
             $pdf->Cell(10, 7, 'No. MR', 0, 1);
             $pdf->SetXY(115, 35);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(120, 35);
             $pdf->Cell(10, 7, $sep->response->peserta->noMr, 0, 1);
-    
+
             $pdf->SetXY(100, 40);
             $pdf->Cell(10, 7, 'Kelamin', 0, 1);
             $pdf->SetXY(115, 40);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(120, 40);
             $pdf->Cell(10, 7, $sep->response->peserta->kelamin, 0, 1);
-    
+
             $pdf->SetXY(140, 35);
             $pdf->Cell(10, 7, 'Peserta', 0, 1);
             $pdf->SetXY(160, 35);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(165, 35);
             $pdf->Cell(10, 7, $sep->response->peserta->jnsPeserta, 0, 1);
-    
-    
+
+
             $pdf->SetXY(140, 40);
             $pdf->Cell(10, 7, 'COB', 0, 1);
             $pdf->SetXY(160, 40);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(165, 40);
             $pdf->Cell(10, 7, $sep->response->cob, 0, 1);
-    
+
             $pdf->SetXY(140, 45);
             $pdf->Cell(10, 7, 'Jns Rawat', 0, 1);
             $pdf->SetXY(160, 45);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(165, 45);
             $pdf->Cell(10, 7, $sep->response->jnsPelayanan, 0, 1);
-    
+
             $pdf->SetXY(140, 50);
             $pdf->Cell(10, 7, 'Kls Rawat', 0, 1);
             $pdf->SetXY(160, 50);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(165, 50);
             $pdf->Cell(10, 7, $sep->response->kelasRawat, 0, 1);
-    
+
             $pdf->SetXY(140, 55);
             $pdf->Cell(10, 7, 'Penjamin', 0, 1);
             $pdf->SetXY(160, 55);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(165, 55);
             $pdf->Cell(10, 7, $sep->response->penjamin, 0, 1);
-    
-    
+
+
             $pdf->SetXY(10, 45);
             $pdf->Cell(10, 7, 'Nama Peserta', 0, 1);
             $pdf->SetXY(40, 45);
@@ -2533,27 +2586,27 @@ class SimrsController extends Controller
             $pdf->SetXY(45, $y);
             $pdf->Cell(10, 7, $sep->response->peserta->tglLahir, 0, 1);
 
-            $pdf->SetXY(10,55);
+            $pdf->SetXY(10, 55);
             $pdf->Cell(10, 7, 'No.Telepon', 0, 1);
             $pdf->SetXY(40, 55);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(45, 55);
             $pdf->Cell(10, 7, $peserta->response->peserta->mr->noTelepon, 0, 1);
-    
+
             $pdf->SetXY(10, 60);
             $pdf->Cell(10, 7, 'Dokter', 0, 1);
             $pdf->SetXY(40, 60);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(45, 60);
-            $pdf->Cell(10, 7,$sep->response->kontrol->nmDokter, 0, 1);
-    
+            $pdf->Cell(10, 7, $sep->response->kontrol->nmDokter, 0, 1);
+
             $pdf->SetXY(10, 65);
             $pdf->Cell(10, 7, 'Poli Tujuan', 0, 1);
             $pdf->SetXY(40, 65);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(45, 65);
             $pdf->Cell(10, 7, $sep->response->poli, 0, 1);
-    
+
             $pdf->SetXY(10, 70);
             $pdf->Cell(10, 7, 'Faskes Perujuk', 0, 1);
             $pdf->SetXY(40, 70);
@@ -2566,22 +2619,22 @@ class SimrsController extends Controller
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(45, 75);
             $pdf->Cell(10, 7, $sep->response->diagnosa, 0, 1);
-    
+
             $pdf->SetXY(10, 80);
             $pdf->Cell(10, 7, 'Catatan', 0, 1);
             $pdf->SetXY(40, 80);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(45, 80);
             $pdf->Cell(10, 7, $sep->response->catatan, 0, 1);
-    
+
             $pdf->SetFont('Arial', '', 8);
             $pdf->SetXY(10, 85);
             $pdf->Cell(10, 7, '*Saya menyetujui BPJS Kesehatan menggunakan informasi Medis Pasien jika diperlukan', 0, 1);
-    
+
             $pdf->SetFont('Arial', '', 9);
             $pdf->SetXY(150, 85);
             $pdf->Cell(10, 7, 'Pasien / Keluarga Pasien', 0, 1);
-    
+
             $pdf->SetFont('Arial', '', 8);
             $pdf->SetXY(10, 90);
             $pdf->Cell(10, 7, '*SEP bukan sebagai penjaminan peserta', 0, 1);
@@ -2594,11 +2647,11 @@ class SimrsController extends Controller
             $pdf->SetFont('Arial', 'I', 7);
             $pdf->SetXY(12, 100);
             $pdf->Cell(10, 7, '..', 0, 1);
-    
+
             $pdf->SetFont('Arial', '', 12);
             $pdf->Line(150, 100, 190, 100);
             $pdf->Output();
-    
+
             exit;
         } else {
             //update cetakan
@@ -2705,24 +2758,24 @@ class SimrsController extends Controller
             $pdf->SetXY(45, $y);
             $pdf->Cell(10, 7, $sep['0']['tgl_lahir'], 0, 1);
 
-            $pdf->SetXY(10,55);
+            $pdf->SetXY(10, 55);
             $pdf->Cell(10, 7, 'No.Telepon', 0, 1);
             $pdf->SetXY(40, 55);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(45, 55);
-            $pdf->Cell(10, 7, $sep['0']['no_tlp'] , 0, 1);
+            $pdf->Cell(10, 7, $sep['0']['no_tlp'], 0, 1);
 
             $str = $sep['0']['dpjp'];
-            $start = strpos($str, '|'); 
+            $start = strpos($str, '|');
             $doktert = substr($str, $start + 1);
-    
+
             $pdf->SetXY(10, 60);
             $pdf->Cell(10, 7, 'Dokter', 0, 1);
             $pdf->SetXY(40, 60);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetXY(44, 60);
             $pdf->Cell(10, 7, $doktert, 0, 1);
-    
+
             $pdf->SetXY(10, 65);
             $pdf->Cell(10, 7, 'Poli Tujuan', 0, 1);
             $pdf->SetXY(40, 65);
@@ -2907,7 +2960,7 @@ class SimrsController extends Controller
         $pdf->SetXY(45, $y);
         $pdf->Cell(10, 7, $sep->response->peserta->tglLahir, 0, 1);
 
-        $pdf->SetXY(10,55);
+        $pdf->SetXY(10, 55);
         $pdf->Cell(10, 7, 'No.Telepon', 0, 1);
         $pdf->SetXY(40, 55);
         $pdf->Cell(10, 7, ':', 0, 1);
@@ -2919,7 +2972,7 @@ class SimrsController extends Controller
         $pdf->SetXY(40, 60);
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetXY(45, 60);
-        $pdf->Cell(10, 7,$sep->response->kontrol->nmDokter, 0, 1);
+        $pdf->Cell(10, 7, $sep->response->kontrol->nmDokter, 0, 1);
 
         $pdf->SetXY(10, 65);
         $pdf->Cell(10, 7, 'Poli Tujuan', 0, 1);
@@ -2973,7 +3026,7 @@ class SimrsController extends Controller
         $pdf->Line(150, 100, 190, 100);
         $pdf->Output();
 
-        exit;      
+        exit;
     }
     public function simpanpasien(Request $request)
     {
@@ -3507,13 +3560,13 @@ class SimrsController extends Controller
     }
     public function savedit_kunjungan(Request $request)
     {
-       $data = [
-        'no_sep' => "$request->nomorsep",
-        'no_rujukan' => "$request->nomorrujukan",
-        'status_kunjungan' => "$request->status_kunjungan",
-        'catatan' => "$request->kronis",
-       ];
-       $update = ts_kunjungan::where('kode_kunjungan', $request->kode)->update($data);
-       echo json_encode('ok');
+        $data = [
+            'no_sep' => "$request->nomorsep",
+            'no_rujukan' => "$request->nomorrujukan",
+            'status_kunjungan' => "$request->status_kunjungan",
+            'catatan' => "$request->kronis",
+        ];
+        $update = ts_kunjungan::where('kode_kunjungan', $request->kode)->update($data);
+        echo json_encode('ok');
     }
 }

@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
 use App\Models\VclaimModel;
+use App\Models\ts_kunjungan;
 
 
 class RanapController extends Controller
@@ -112,5 +113,9 @@ class RanapController extends Controller
         return view('ranap.tabelsurkonranap', [
             'list' => $detail
         ]);
+    }
+    public function editkunjungan(Request $request){
+        ts_kunjungan::whereRaw('kode_kunjungan = ?', array($request->kodekunjungan))->update(['no_sep' => $request->sep ]);
+        echo json_encode('oke');
     }
 }

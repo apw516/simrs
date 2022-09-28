@@ -35,6 +35,8 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('aut
 Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9']], function () {
     Route::get('/pendaftaran', [SimrsController::class, 'Pendaftaran'])
         ->name('pendaftaran'); //sidebar
+        Route::get('/pendaftaran2', [SimrsController::class, 'Pendaftaran2'])
+        ->name('pendaftaran2'); //sidebar
     Route::get('/menusepvalidasi', [SimrsController::class, 'menusepvalidasi'])
         ->name('menusepvalidasi'); //sidebar
     Route::get('/menucarisep', [SimrsController::class, 'Menucarisep'])
@@ -327,6 +329,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:9']], function () {
         ->name('infopasienranap'); //sidebar
     Route::post('/carisurkonranap', [RanapController::class, 'Carisurkonranap'])
         ->name('carisurkonranap'); //sidebar
+    Route::post('/editkunjungan', [RanapController::class, 'editkunjungan'])
+        ->name('editkunjungan'); //sidebar
 });
 
 

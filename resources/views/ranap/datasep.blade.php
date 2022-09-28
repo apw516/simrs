@@ -49,13 +49,17 @@
                             {{-- <td>{{ $d->kamar }}</td>
                             <td>{{ $d->no_bed }}</td> --}}
                             <td class="text-center">
-                                <button rm="{{ $d->no_rm }}" bpjs="{{ $d->no_Bpjs}}" class="badge badge-info infopasien" data-toggle="tooltip" data-placement="top"
+                                <button kodekunjungan="{{ $d->kode_kunjungan }}" nama="{{ $d->nama }}"
+                                    nomorsep="{{ $d->no_sep }}" rm="{{ $d->no_rm }}" bpjs="{{ $d->no_Bpjs }}"
+                                    class="badge badge-danger editkunjungan" data-toggle="tooltip" data-placement="top"
+                                    title="edit nomor sep ..."><i class="bi bi-pencil-square"></i></button>
+                                <button rm="{{ $d->no_rm }}" bpjs="{{ $d->no_Bpjs }}"
+                                    class="badge badge-info infopasien" data-toggle="tooltip" data-placement="top"
                                     title="Info pasien ..."><i class="bi bi-info-square"></i></button>
-                                <button kodekunjungan="{{ $d->kode_kunjungan }}"
-                                    tglpulang="{{ $d->tgl_keluar }}"" alasan="{{ $d->kode }}"
-                                    nomorsep="{{ $d->no_sep }}" nama="{{ $d->nama }}"
-                                    class="badge badge-warning pulangsep" data-toggle="tooltip" data-placement="top"
-                                    title="Pulangkan SEP ..."><i class="bi bi-house-door"></i></button>
+                                <button kodekunjungan="{{ $d->kode_kunjungan }}" tglpulang="{{ $d->tgl_keluar }}""
+                                    alasan="{{ $d->kode }}" nomorsep="{{ $d->no_sep }}"
+                                    nama="{{ $d->nama }}" class="badge badge-warning pulangsep" data-toggle="tooltip"
+                                    data-placement="top" title="Pulangkan SEP ..."><i class="bi bi-house-door"></i></button>
                                 {{-- <button nomorsep="{{ $d->no_sep }}" class="badge badge-success buatsuratkontrolinap"
                                     data-toggle="tooltip" data-placement="top" title="Buat surat kontrol ..."><i
                                         class="bi bi-envelope-plus"></i></button> --}}
@@ -67,8 +71,7 @@
         </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="infopasienranap" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
+        <div class="modal fade" id="infopasienranap" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -78,7 +81,7 @@
                         </button>
                     </div>
                     <div class="modal-body infopx">
-                      
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -283,6 +286,33 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="modaleditkunjungan" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Nomor SEP</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <label for="inputPassword" class="col-sm-4 col-form-label text-xs">Nomor SEP</label>
+                            <div class="col-sm-8">
+                                <input type="" class="form-control" id="NOSEPUPDATE">
+                                <input hidden type="" class="form-control" id="KODEKUNJUNGAN">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-primary" onclick="editkunjungan()">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
     <script>
         $(function() {
@@ -331,25 +361,30 @@
             rm = $(this).attr('rm')
             bpjs = $(this).attr('bpjs')
             $.ajax({
-              type: 'post',
-              data: {
-                  _token: "{{ csrf_token() }}",
-                  rm,
-                  bpjs
-              },
-              url: '<?= route('infopasienranap') ?>',
-              error: function(data) {
-                  spinner.hide()
-                  Swal.fire({
-                      icon: 'error',
-                      title: 'Oops,silahkan coba lagi',
-                  })
-              },
-              success: function(response) {
-                  spinner.hide()
-                  $('.infopx').html(response)
-              }
-          });
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    rm,
+                    bpjs
+                },
+                url: '<?= route('infopasienranap') ?>',
+                error: function(data) {
+                    spinner.hide()
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops,silahkan coba lagi',
+                    })
+                },
+                success: function(response) {
+                    spinner.hide()
+                    $('.infopx').html(response)
+                }
+            });
+        })
+        $('#tabelpasienranappulang').on('click', '.editkunjungan', function() {
+            $("#modaleditkunjungan").modal();
+            $('#NOSEPUPDATE').val($(this).attr('nomorsep'))
+            $('#KODEKUNJUNGAN').val($(this).attr('kodekunjungan'))
         })
 
         function updatesep_meninggal() {
@@ -550,7 +585,7 @@
                             if (result.isConfirmed) {
                                 window.open('cetaksurkon/' + data.response.noSuratKontrol);
                                 location.reload()
-                            }else{
+                            } else {
                                 location.reload()
                             }
                         })
@@ -561,6 +596,39 @@
                             'error'
                         )
                     }
+                }
+            });
+        }
+
+        function editkunjungan() {
+            spinner = $('#loader');
+            spinner.show();
+            sep = $('#NOSEPUPDATE').val()
+            kodekunjungan = $('#KODEKUNJUNGAN').val()
+            $.ajax({
+                async: true,
+                dataType: 'Json',
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    sep,
+                    kodekunjungan
+                },
+                url: '<?= route('editkunjungan') ?>',
+                error: function(data) {
+                    spinner.hide();
+                    alert('error!')
+                },
+                success: function(data) {
+                    spinner.hide();
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Update nomor sep berhasil !',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    location.reload()
                 }
             });
         }
