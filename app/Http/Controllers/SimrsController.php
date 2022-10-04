@@ -724,7 +724,7 @@ class SimrsController extends Controller
         $bulan = date('m');
         $tahun = date('Y');
         $nomorkartu = $request->nomorkartu;
-        $filter = 1;
+        $filter = 2;
         $v = new VclaimModel();
         $suratkontrol = $v->ListRencanaKontrol_bycard($bulan, $tahun, $nomorkartu, $filter);
         return view('pendaftaran.tabelsuratkontrol_peserta', [
