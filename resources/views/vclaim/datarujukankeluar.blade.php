@@ -22,7 +22,7 @@
 
     <section class="content">
         <div class="container">
-            <div class="row mt-3">
+            <div class="row mt-3 mb-4">
                 <div class="col-sm-3">
                     <label for="exampleInputEmail1">Tanggal awal pencarian</label>
                     <input type="text" class="form-control datepicker" data-date-format="yyyy-mm-dd" id="tgl_awal_cari_rujukan_keluar"

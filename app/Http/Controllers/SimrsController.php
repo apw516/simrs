@@ -141,7 +141,7 @@ class SimrsController extends Controller
     }
     public function menulistrujukankeluar()
     {
-        $title = 'SIMRS - DATA RUJUKAN KELIAR RS';
+        $title = 'SIMRS - DATA RUJUKAN KELUAR RS';
         $sidebar = 'RUJUKAN';
         $sidebar_m = 'DATA RUJUKAN KELUAR RS';
         return view('vclaim.datarujukankeluar', [

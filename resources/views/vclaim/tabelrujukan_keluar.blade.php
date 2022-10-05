@@ -1,4 +1,4 @@
-<table id="tabelrujukankeluar" class="table table-bordered table-sm text-xs">
+<table id="tabelrujukankeluar" class="table table-bordered table-sm text-xs mt-4">
     <thead>
         <th>Nama</th>
         <th>nomor kartu</th>
@@ -103,8 +103,10 @@
             "lengthChange": false,
             "autoWidth": true,
             "pageLength": 10,
-            "searching": true
-        })
+            "searching": true,
+            "dom": 'Bfrtip',
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)')
     });
     $('#tabelrujukankeluar').on('click', '.detailrujukan', function() {
         spinner = $('#loader')
