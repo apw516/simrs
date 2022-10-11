@@ -19,7 +19,6 @@
         </div>
         <!-- /.container-fluid -->
     </div>
-
     <section class="content">
         <div class="container">
             <div class="row mt-3 mb-4">
