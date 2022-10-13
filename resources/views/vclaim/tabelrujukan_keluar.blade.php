@@ -1,4 +1,5 @@
-<table id="tabelrujukankeluar" class="table table-bordered table-sm text-xs mt-4">
+<p class="text-bold mt-5 text-lg">Rujukan Rawat Jalan</p>
+<table id="tabelrujukankeluar_rajal" class="table table-bordered table-sm text-xs mt-4">
     <thead>
         <th>Nama</th>
         <th>nomor kartu</th>
@@ -11,6 +12,7 @@
     <tbody>
         @if ($list->metaData->code == 200)
             @foreach ($list->response->list as $r)
+            @if($r->jnsPelayanan == 2)
                 <tr>
                     <td>{{ $r->nama }}</td>
                     <td>{{ $r->noKartu }}</td>
@@ -29,6 +31,45 @@
                             data-placement="right" title="hapus rujukan"><i class="bi bi-trash text-md"></i></button>
                     </td>
                 </tr>
+                @endif
+            @endforeach
+        @endif
+    </tbody>
+</table>
+<p class="text-bold mt-5 text-lg">Rujukan Rawat Inap</p>
+<table id="tabelrujukankeluar_ranap" class="table table-bordered table-sm text-xs mt-4">
+    <thead>
+        <th>Nama</th>
+        <th>nomor kartu</th>
+        <th>nomor rujukan</th>
+        <th>no sep</th>
+        <th>jns pelayanan</th>
+        <th>PPk dirujuk</th>
+        <th>===</th>
+    </thead>
+    <tbody>
+        @if ($list->metaData->code == 200)
+            @foreach ($list->response->list as $r)
+            @if($r->jnsPelayanan == 1)
+                <tr>
+                    <td>{{ $r->nama }}</td>
+                    <td>{{ $r->noKartu }}</td>
+                    <td>{{ $r->noRujukan }}</td>
+                    <td>{{ $r->noSep }}</td>
+                    <td>@if($r->jnsPelayanan == 1)Rawat Inap @else Rawat Jalan @endif</td>
+                    <td>{{ $r->namaPpkDirujuk }}</td>
+                    <td>
+                        <button class="badge badge-primary detailrujukan" noRujukan="{{ $r->noRujukan }}"
+                            data-placement="right" title="detail rujukan" data-toggle="modal" data-target="#modaldetail"><i
+                                class="bi bi-eye text-md"></i></button>
+                        <button class="badge badge-warning updaterujukankeluar" noRujukan="{{ $r->noRujukan }}"
+                            data-placement="right" title="update rujukan" data-toggle="modal"
+                            data-target="#modalupdate"><i class="bi bi-pencil-square text-md"></i></button>
+                        <button class="badge badge-danger deleterujukankeluar" noRujukan="{{ $r->noRujukan }}"
+                            data-placement="right" title="hapus rujukan"><i class="bi bi-trash text-md"></i></button>
+                    </td>
+                </tr>
+                @endif
             @endforeach
         @endif
     </tbody>
@@ -98,17 +139,28 @@
 </div>
 <script>
     $(function() {
-        $("#tabelrujukankeluar").DataTable({
+        $("#tabelrujukankeluar_rajal").DataTable({
             "responsive": true,
             "lengthChange": false,
             "autoWidth": true,
-            "pageLength": 10,
+            "pageLength": 5,
             "searching": true,
             "dom": 'Bfrtip',
             "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)')
     });
-    $('#tabelrujukankeluar').on('click', '.detailrujukan', function() {
+    $(function() {
+        $("#tabelrujukankeluar_ranap").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": true,
+            "pageLength": 5,
+            "searching": true,
+            "dom": 'Bfrtip',
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)')
+    });
+    $('#tabelrujukankeluar_ranap').on('click', '.detailrujukan', function() {
         spinner = $('#loader')
         spinner.show();
         noRujukan = $(this).attr('noRujukan')
@@ -132,7 +184,31 @@
             }
         });
     });
-    $('#tabelrujukankeluar').on('click', '.updaterujukankeluar', function() {
+    $('#tabelrujukankeluar_rajal').on('click', '.detailrujukan', function() {
+        spinner = $('#loader')
+        spinner.show();
+        noRujukan = $(this).attr('noRujukan')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                noRujukan,
+            },
+            url: '<?= route('detailrujukankeluar') ?>',
+            error: function(data) {
+                spinner.hide()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops,silahkan coba lagi',
+                })
+            },
+            success: function(response) {
+                spinner.hide()
+                $('.viewrujukankeluar').html(response)
+            }
+        });
+    });
+    $('#tabelrujukankeluar_ranap').on('click', '.updaterujukankeluar', function() {
         spinner = $('#loader')
         spinner.show();
         noRujukan = $(this).attr('noRujukan')
@@ -156,7 +232,93 @@
             }
         });
     });
-    $('#tabelrujukankeluar').on('click', '.deleterujukankeluar', function() {
+    $('#tabelrujukankeluar_rajal').on('click', '.updaterujukankeluar', function() {
+        spinner = $('#loader')
+        spinner.show();
+        noRujukan = $(this).attr('noRujukan')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                noRujukan,
+            },
+            url: '<?= route('updaterujukankeluar') ?>',
+            error: function(data) {
+                spinner.hide()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops,silahkan coba lagi',
+                })
+            },
+            success: function(response) {
+                spinner.hide()
+                $('.formupdate').html(response)
+            }
+        });
+    });
+    $('#tabelrujukankeluar_ranap').on('click', '.deleterujukankeluar', function() {
+        noRujukan = $(this).attr('noRujukan')
+        Swal.fire({
+            title: 'Hapus Rujukan Keluar',
+            text: "Apakah anda ingin menghapus Rujukan " + noRujukan + " ?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d5',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Tidak'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Rujukan ' + noRujukan + ' akan dihapus ?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d5',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Tidak'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        spinner = $('#loader')
+                        spinner.show();
+                        $.ajax({
+                            async: true,
+                            dataType: 'Json',
+                            type: 'post',
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                                noRujukan,
+                            },
+                            url: '<?= route('deleterujukan') ?>',
+                            error: function(data) {
+                                spinner.hide()
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops,silahkan coba lagi',
+                                })
+                            },
+                            success: function(data) {
+                                spinner.hide()
+                                if (data.kode == 200) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Rujukan Berhasil dihapus !',
+                                    })
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: data.message,
+                                    })
+                                }
+                            }
+                        });
+                    }
+                })
+
+            }
+        })
+    });
+    $('#tabelrujukankeluar_rajal').on('click', '.deleterujukankeluar', function() {
         noRujukan = $(this).attr('noRujukan')
         Swal.fire({
             title: 'Hapus Rujukan Keluar',
