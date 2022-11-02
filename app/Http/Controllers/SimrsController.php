@@ -755,18 +755,18 @@ class SimrsController extends Controller
     public function Simpansep(Request $request)
     {
         //antrian
-        $mw = new antrianmarwan();
-        $day = $request->tglsep;
-        $today = strtoupper(Carbon::parse($day)->dayName);
-        $jampraktek = DB::select('select * from jkn_jadwal_dokter where kodedokter = ? and namahari = ?', [$request->kodedokterlayan, $today]);
-        if (empty($jampraktek)) {
-            $data = [
-                'kode' => 500,
-                'message' => 'Jadwal Dokter tidak ditemukan !'
-            ];
-            echo json_encode($data);
-            die;
-        }
+        // $mw = new antrianmarwan();
+        // $day = $request->tglsep;
+        // $today = strtoupper(Carbon::parse($day)->dayName);
+        // $jampraktek = DB::select('select * from jkn_jadwal_dokter where kodedokter = ? and namahari = ?', [$request->kodedokterlayan, $today]);
+        // if (empty($jampraktek)) {
+        //     $data = [
+        //         'kode' => 500,
+        //         'message' => 'Jadwal Dokter tidak ditemukan !'
+        //     ];
+        //     echo json_encode($data);
+        //     die;
+        // }
         //end antrian
         //ambil antrian         
         // if ($request->tujuankunjungan == 0) {
