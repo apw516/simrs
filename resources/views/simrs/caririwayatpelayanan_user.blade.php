@@ -14,7 +14,6 @@
     </thead>
     <tbody>
         @foreach ($datakunjungan as $d)
-        @if($d->pic == auth()->user()->id_simrs)
             <tr>
                 <td>{{ $d->no_rm }}</td>
                 {{-- <td>{{ $d->kode_kunjungan }}</td> --}}
@@ -41,7 +40,6 @@
                             class="bi bi-pencil-square text-sm"></i></button>
                 </td> --}}
             </tr>
-        @endif
         @endforeach
     </tbody>
 </table>
