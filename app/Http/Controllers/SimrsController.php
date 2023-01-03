@@ -943,6 +943,7 @@ class SimrsController extends Controller
                 'kelas' => 3,
                 'hak_kelas' => 3,
                 'pic' => auth()->user()->id_simrs,
+                'diagx' => $request->kodediagnosa. ' | ' .$request->namadiagnosa ,
                 'no_sep' => '',
                 'no_rujukan' => $request->nomorrujukan,
                 'id_alasan_masuk' => $request->alasanmasuk
