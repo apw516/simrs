@@ -917,6 +917,7 @@ class SimrsController extends Controller
                 'kelas' => $request->hakkelas,
                 'hak_kelas' => $request->hakkelas,
                 'crad' => $crad,
+                'diagx' => $request->kodediagnosa. ' | ' .$request->namadiagnosa ,
                 'pic' => auth()->user()->id_simrs,
                 'no_sep' => '',
             ];
