@@ -66,7 +66,7 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9']], function () {
     Route::get('/menucariprb', [SimrsController::class, 'menucariprb'])
         ->name('menucariprb'); //sidebar
     Route::get('/menudatakunjungan', [SimrsController::class, 'menudatakunjungan'])
-        ->name('menudatakunjungan'); //sidebar   
+        ->name('menudatakunjungan'); //sidebar
     Route::get('/menuhispelpes', [SimrsController::class, 'menuhispelpes'])
         ->name('menuhispelpes'); //sidebar
     Route::get('/menudataklaimjr', [SimrsController::class, 'menudataklaimjr'])
@@ -217,9 +217,9 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9']], function () {
         ->name('vclaimcarilistfinger'); //simrsindex
     Route::post('simrsvclaim/carikunjungansep_peserta', [VclaimController::class, 'datakunjungansep_peserta'])->name('vclaimcarikunjungansep_peserta'); //simrsindex
     Route::post('simrsvclaim/carikunjungansep', [VclaimController::class, 'datakunjungansep'])
-        ->name('vclaimcarikunjungansep'); //simrsindex    
+        ->name('vclaimcarikunjungansep'); //simrsindex
     Route::post('simrsvclaim/detailsep', [VclaimController::class, 'detailsep'])
-        ->name('vclaimdetailsep'); //simrsindex        
+        ->name('vclaimdetailsep'); //simrsindex
     Route::post('simrsvclaim/hapussep', [VclaimController::class, 'hapussep'])
         ->name('vclaimhapussep'); //simrsindex
     Route::post('simrsvclaim/listsuratkontrol_peserta', [VclaimController::class, 'listsuratkontrol_peserta'])->name('vclaimlistsuratkontrol_peserta');
@@ -331,6 +331,11 @@ Route::group(['middleware' => ['auth', 'hak_akses1:9']], function () {
         ->name('carisurkonranap'); //sidebar
     Route::post('/editkunjungan', [RanapController::class, 'editkunjungan'])
         ->name('editkunjungan'); //sidebar
+});
+//erm
+Route::group(['middleware' => ['auth','hak_akses:4']],function(){
+    Route::get('/indexperawat', [ErmController::class, 'indexPerawat'])
+    ->name('indexperawat'); //sidebar
 });
 
 

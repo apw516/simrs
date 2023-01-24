@@ -55,13 +55,18 @@ class RanapController extends Controller
         if($alasan == '6' || $alasan == 7){
             $alasanbrid = '4';//meninggal
             $stm = $request->suratmeninggal;
-            $dtm = $request->tglmeninggal;            
+            $dtm = $request->tglmeninggal;
+            $keterangan2 = 'SEP sudah dipulangkan, Pasien meninggal | ' . $stm;
+            DB::table('mt_pasien')->where('no_rm', $request->rm)->update(['DoL' => 0]);
         }else if($alasan == '9'){
             $alasanbrid = '3';
+            $keterangan2 = 'SEP sudah dipulangkan';
         }else if($alasan == '2'){
             $alasanbrid = '1';
+            $keterangan2 = 'SEP sudah dipulangkan';
         }else{
             $alasanbrid = '5';
+            $keterangan2 = 'SEP sudah dipulangkan';
         }
         $tglpulang = $request->tglpulang;
         $data = [
@@ -79,7 +84,7 @@ class RanapController extends Controller
         ];
         $pulang = $v->updatetglpulang($data);
         if($pulang->metaData->code == 200 ){
-            DB::table('ts_kunjungan')->where('kode_kunjungan', $kodekunjungan)->update(['keterangan2' => "SEP Sudah dipulangkan"]);
+            DB::table('ts_kunjungan')->where('kode_kunjungan', $kodekunjungan)->update(['keterangan2' => $keterangan2]);
         }
         echo json_encode($pulang);
     }
@@ -89,7 +94,7 @@ class RanapController extends Controller
         $bpjs = $request->bpjs;
         $periode = DB::select('SELECT DISTINCT DATE(tgl_masuk) as tgl_masuk from ts_kunjungan where no_rm = ? ORDER BY tgl_masuk desc LIMIT 5',[$rm]);
         $COUNTER = DB::select('SELECT DISTINCT counter from ts_kunjungan where no_rm = ?',[$rm]);
-        $all_licencies = collect();          
+        $all_licencies = collect();
         foreach($COUNTER as $key => $column ){
             $layanan = DB::select("CALL RINCIAN_BIAYA_FINAL('$rm','$column->counter','1','1')");
             $all_licencies = $all_licencies->merge($layanan);

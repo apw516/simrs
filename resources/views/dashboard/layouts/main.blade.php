@@ -32,6 +32,7 @@
         #my {
             zoom: 90%;
         }
+
         .preloader {
             position: fixed;
             top: 0;
@@ -50,10 +51,15 @@
             transform: translate(-50%, -50%);
             font: 14px arial;
         }
+
         .datepicker {
-      z-index: 1600 !important; /* has to be larger than 1050 */
-    }
-    .modal { overflow: auto !important; }
+            z-index: 1600 !important;
+            /* has to be larger than 1050 */
+        }
+
+        .modal {
+            overflow: auto !important;
+        }
     </style>
 </head>
 

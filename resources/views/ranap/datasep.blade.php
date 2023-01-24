@@ -56,7 +56,7 @@
                                 <button rm="{{ $d->no_rm }}" bpjs="{{ $d->no_Bpjs }}"
                                     class="badge badge-info infopasien" data-toggle="tooltip" data-placement="top"
                                     title="Info pasien ..."><i class="bi bi-info-square"></i></button>
-                                <button kodekunjungan="{{ $d->kode_kunjungan }}" tglpulang="{{ $d->tgl_keluar }}""
+                                <button rm="{{ $d->no_rm }}" kodekunjungan="{{ $d->kode_kunjungan }}" tglpulang="{{ $d->tgl_keluar }}""
                                     alasan="{{ $d->kode }}" nomorsep="{{ $d->no_sep }}"
                                     nama="{{ $d->nama }}" class="badge badge-warning pulangsep" data-toggle="tooltip"
                                     data-placement="top" title="Pulangkan SEP ..."><i class="bi bi-house-door"></i></button>
@@ -106,7 +106,7 @@
                                 <input readonly type="" class="form-control" id="nomorsep_meninggal">
                                 <input hidden type="" class="form-control" id="alasanmeninggal">
                                 <input hidden type="" class="form-control" id="kodekunjunganmeninggal">
-
+                                <input hidden type="" class="form-control" id="normmeninggal">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -160,6 +160,7 @@
                                 <input readonly type="" class="form-control" id="nomorsep_pulang">
                                 <input hidden type="" class="form-control" id="alasanpulang">
                                 <input hidden type="" class="form-control" id="kodekunjunganpulang">
+                                <input hidden type="" class="form-control" id="norm">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -333,19 +334,21 @@
             namapasien = $(this).attr('nama')
             alasan = $(this).attr('alasan')
             tglpulang = $(this).attr('tglpulang')
+            rm = $(this).attr('rm')
             if (alasan == 6 || alasan == 7) {
                 $("#modalpasienmeninggal").modal();
                 $('#alasanmeninggal').val(alasan)
                 $('#nomorsep_meninggal').val(nomorsurat)
                 $('#tanggal_pulangmeninggal').val(tglpulang)
                 $('#kodekunjunganmeninggal').val(kodekunjungan)
+                $('#normmeninggal').val(rm)
             } else {
                 $("#modalpasienpulang").modal();
                 $('#alasanpulang').val(alasan)
                 $('#nomorsep_pulang').val(nomorsurat)
                 $('#tanggal_pulangpasien').val(tglpulang)
                 $('#kodekunjunganpulang').val(kodekunjungan)
-
+                $('#norm').val(rm)
             }
 
         });
@@ -397,6 +400,7 @@
             tglpulang = $('#tanggal_pulangmeninggal').val()
             suratmeninggal = $('#nomorsuratmeninggal').val()
             tglmeninggal = $('#tanggalmeninggal').val()
+            rm = $('#normmeninggal').val()
             $.ajax({
                 type: 'post',
                 data: {
@@ -407,7 +411,8 @@
                     alasan,
                     tglpulang,
                     suratmeninggal,
-                    tglmeninggal
+                    tglmeninggal,
+                    rm
                 },
                 dataType: 'Json',
                 Async: true,
@@ -447,6 +452,7 @@
             alasan = $('#alasanpulang').val()
             nomorsurat = $('#nomorsep_pulang').val()
             tglpulang = $('#tanggal_pulangpasien').val()
+            rm = $('#norm').val()
             $.ajax({
                 type: 'post',
                 data: {
@@ -456,7 +462,8 @@
                     kodekunjungan,
                     alasan,
                     tglpulang,
-                    nolp
+                    nolp,
+                    rm
                 },
                 dataType: 'Json',
                 Async: true,

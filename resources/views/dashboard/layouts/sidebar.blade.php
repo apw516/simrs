@@ -49,7 +49,7 @@
                               Pendaftaran
                           </p>
                       </a>
-                  </li>                
+                  </li>
                   {{-- <li class="nav-item">
                       <a href="{{ route('pendaftaran') }}" class="nav-link @if($sidebar == '2') active @endif">
                           <i class="nav-icon fas fa-th"></i>
@@ -459,7 +459,7 @@
 
 
 
-{{-- 
+{{--
                   <li class="nav-item @if($sidebar == '4') menu-open @endif">
                       <a href="#" class="nav-link @if($sidebar == '4') active @endif">
                           <i class="nav-icon fas fa-chart-pie"></i>
