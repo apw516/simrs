@@ -110,6 +110,30 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Status Perkawinan</label>
+                        <select class="form-control" id="edit_statushubungan">
+                            <option value="">--Silahkan Pilih--</option>
+                            @foreach ($status as $a)
+                                <option value="{{ $a->ID }}" @if($data_pasien[0]['status_px'] == $a->ID) selected @endif>{{ $a->status_kawin }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Status Pasien</label>
+                        <select class="form-control" id="edit_statuspasien">
+                            <option value="1" @if($data_pasien[0]['DoL'] == 1) selected @endif>Hidup</option>
+                            <option value="2" @if($data_pasien[0]['DoL'] == 2) selected @endif>Meninggal</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
             <h5 class="mt-2 text-bold text-danger">Data keluarga</h5>
             <div class="row">
                 <div class="col-sm-11">
@@ -168,7 +192,7 @@
                         </textarea>
                         @else
                         <textarea class="form-control" id="edit_alamatkeluarga" aria-describedby="emailHelp">
-                            
+
                         </textarea>
                         @endif
                     </div>

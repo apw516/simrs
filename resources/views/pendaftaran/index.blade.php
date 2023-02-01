@@ -174,8 +174,7 @@
                                     <div class="col-sm-5">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Nomor KTP</label>
-                                            <input class="form-control" id="nomorktp"
-                                                placeholder="masukan nomor ktp ...">
+                                            <input class="form-control" id="nomorktp" placeholder="masukan nomor ktp ...">
                                         </div>
                                     </div>
                                     <div class="col-sm-5">
@@ -257,10 +256,34 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-12">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Nomor Telp</label>
                                             <input class="form-control" id="nomortelp" aria-describedby="emailHelp">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Status Perkawinan</label>
+                                            <select class="form-control" id="statushubungan">
+                                                <option value="">--Silahkan Pilih--</option>
+                                                @foreach ($status as $a)
+                                                    <option value="{{ $a->ID }}">{{ $a->status_kawin }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Status Pasien</label>
+                                            <select class="form-control" id="statuspasien">
+                                                <option selected value="1">Hidup</option>
+                                                <option value="2">Meninggal</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -450,6 +473,8 @@
             tanggallahir = $('#tanggallahir').val()
             jeniskelamin = $('#jeniskelamin').val()
             agama = $('#agama').val()
+            status = $('#statushubungan').val()
+            statuspasien = $('#statuspasien').val()
             pekerjaan = $('#pekerjaan').val()
             pendidikan = $('#pendidikan').val()
             nomortelp = $('#nomortelp').val()
@@ -482,6 +507,8 @@
                 $('#jeniskelamin').addClass('is-invalid')
             } else if (agama == '') {
                 $('#agama').addClass('is-invalid')
+            } else if (status == '') {
+                $('#statushubungan').addClass('is-invalid')
             } else if (pekerjaan == '') {
                 $('#pekerjaan').addClass('is-invalid')
             } else if (pendidikan == '') {
@@ -542,6 +569,8 @@
                         tanggallahir,
                         jeniskelamin,
                         agama,
+                        status,
+                        statuspasien,
                         pekerjaan,
                         pendidikan,
                         nomortelp,
@@ -591,6 +620,8 @@
             tanggallahir = $('#edit_tanggallahir').val()
             jeniskelamin = $('#edit_jeniskelamin').val()
             agama = $('#edit_agama').val()
+            status = $('#edit_statushubungan').val()
+            statuspasien = $('#edit_statuspasien').val()
             pekerjaan = $('#edit_pekerjaan').val()
             pendidikan = $('#edit_pendidikan').val()
             nomortelp = $('#edit_nomortelp').val()
@@ -625,6 +656,8 @@
                     tanggallahir,
                     jeniskelamin,
                     agama,
+                    status,
+                    statuspasien,
                     pekerjaan,
                     pendidikan,
                     nomortelp,

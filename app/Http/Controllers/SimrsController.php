@@ -38,6 +38,7 @@ use App\Models\mt_keluarga;
 use App\Models\mt_domisili;
 use App\Models\ts_rujukan;
 use App\Models\jkn_antrian;
+use App\Models\Status;
 use App\Models\tracer;
 
 class SimrsController extends Controller
@@ -57,6 +58,7 @@ class SimrsController extends Controller
             'sidebar' => $sidebar,
             'data_pasien' => Pasien::limit(200)->orderBy('tgl_entry', 'desc')->get(),
             'sidebar_m' => $sidebar_m,
+            'status' => Status::all(),
             'agama' => Agama::all(),
             'pekerjaan' => Pekerjaan::all(),
             'pendidikan' => Pendidikan::all(),
@@ -768,7 +770,7 @@ class SimrsController extends Controller
         //     die;
         // }
         //end antrian
-        //ambil antrian         
+        //ambil antrian
         // if ($request->tujuankunjungan == 0) {
         //     $nomorreferensi = $request->nomorrujukan;
         //     $tujuan = 1;
@@ -807,7 +809,7 @@ class SimrsController extends Controller
         //         $taskid_r = $mw->update_antrian($taskid);
         //     }
         // }
-        //END OF AMBIL ANTRIAN    
+        //END OF AMBIL ANTRIAN
         $dt = Carbon::now();
         $v = new VclaimModel();
         $nomorrujukan = trim($request->nomorrujukan);
@@ -1155,7 +1157,7 @@ class SimrsController extends Controller
                 DB::table('ts_layanan_header')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
                 DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
             }
-            //batal antrian 
+            //batal antrian
             // if (isset($antrian->metadata->code)) {
             //     $status_a = $antrian->metadata->code;
             //     if ($status_a == 200) {
@@ -1248,7 +1250,7 @@ class SimrsController extends Controller
             ];
             //insert ke tracer
             tracer::create($data_tracer);
-            //update antrian 
+            //update antrian
             // if (isset($antrian->metadata->code)) {
             //     $status_a = $antrian->metadata->code;
             //     if ($status_a == 200) {
@@ -1257,7 +1259,7 @@ class SimrsController extends Controller
             //         ->update(['nomorsep' => $sep->noSep, 'kode_kunjungan' => $ts_kunjungan->id ]);
             //     }
             // }
-            //end of update antrian           
+            //end of update antrian
             $pasien = Pasien::where('no_rm', '=', "$request->norm")->get();
             $data = [
                 'kode' => 200,
@@ -1273,7 +1275,7 @@ class SimrsController extends Controller
                 DB::table('ts_layanan_header')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
                 DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
             }
-            //batal antrian 
+            //batal antrian
             // if (isset($antrian->metadata->code)) {
             //     $status_a = $antrian->metadata->code;
             //     if ($status_a == 200) {
@@ -2133,7 +2135,7 @@ class SimrsController extends Controller
     }
     public function createLayanandetail()
     {
-        $q = DB::select('SELECT id,id_layanan_detail,RIGHT(id_layanan_detail,6) AS kd_max  FROM ts_layanan_detail 
+        $q = DB::select('SELECT id,id_layanan_detail,RIGHT(id_layanan_detail,6) AS kd_max  FROM ts_layanan_detail
         WHERE DATE(tgl_layanan_detail) = CURDATE()
         ORDER BY id DESC
         LIMIT 1');
@@ -2344,7 +2346,7 @@ class SimrsController extends Controller
         $pdf->Cell(10, 7, 'RSUD WALED KAB.CIREBON', 0, 1);
         $pdf->SetXY(155, 14);
         $pdf->Cell(10, 7, 'Tgl.   ' . $rujukan->response->rujukan->tglRujukan, 0, 1);
-        // dd($rujukan);       
+        // dd($rujukan);
 
         $pdf->SetFont('Arial', '', 12);
         $pdf->SetXY(10, 30);
@@ -3059,7 +3061,8 @@ class SimrsController extends Controller
             'tempat_lahir' => $request->tempatlahir,
             'tgl_lahir' => $request->tanggallahir,
             'gol_darah' => '',
-            'status_px' => '1',
+            'status_px' => $request->status,
+            'DoL' => $request->statuspasien,
             'agama' => $request->agama,
             'pendidikan' => $request->pendidikan,
             'pekerjaan' => $request->pekerjaan,
@@ -3133,7 +3136,8 @@ class SimrsController extends Controller
             'tempat_lahir' => $request->tempatlahir,
             'tgl_lahir' => $request->tanggallahir,
             'gol_darah' => '',
-            'status_px' => '1',
+            'status_px' => $request->status,
+            'DoL' => $request->statuspasien,
             'agama' => $request->agama,
             'pendidikan' => $request->pendidikan,
             'pekerjaan' => $request->pekerjaan,
@@ -3146,8 +3150,8 @@ class SimrsController extends Controller
             'alamat' => $request->alamat,
             'no_tlp' => $request->nomortelp,
             'no_hp' => $request->nomortelp,
-            'tgl_entry' => date('Y-m-d h:i:s'),
-            'pic' => auth()->user()->id_simrs,
+            'update_date' => date('Y-m-d h:i:s'),
+            'update_by' => auth()->user()->id_simrs,
             'kode_propinsi' => $request->provinsi,
             'kode_kabupaten' => $request->kabupaten,
             'kode_kecamatan' => $request->kecamatan,
@@ -3234,6 +3238,7 @@ class SimrsController extends Controller
             'domisili' => $domisili,
             'data_keluarga' => $keluarga,
             'agama' => Agama::all(),
+            'status' => Status::all(),
             'pekerjaan' => Pekerjaan::all(),
             'pendidikan' => Pendidikan::all(),
             'hubkel' => Hubkeluarga::all(),

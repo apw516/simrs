@@ -9,6 +9,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\BedmonitoringController;
 use App\Http\Controllers\RanapController;
+use App\Http\Controllers\ErmController;
 
 /*
 |--------------------------------------------------------------------------
@@ -333,9 +334,23 @@ Route::group(['middleware' => ['auth', 'hak_akses1:9']], function () {
         ->name('editkunjungan'); //sidebar
 });
 //erm
-Route::group(['middleware' => ['auth','hak_akses:4']],function(){
+Route::group(['middleware' => ['auth','hak_akses1:4']],function(){
     Route::get('/indexperawat', [ErmController::class, 'indexPerawat'])
     ->name('indexperawat'); //sidebar
+    Route::post('/ambildatapasienpoli', [ErmController::class, 'ambildatapasienpoli'])
+    ->name('ambildatapasienpoli'); //sidebar
+    Route::post('/ambildetailpasien', [ErmController::class, 'ambildetailpasien'])
+    ->name('ambildetailpasien'); //sidebar
+    Route::post('/ambilcatatanmedis_pasien', [ErmController::class, 'ambilcatatanmedis_pasien'])
+    ->name('ambilcatatanmedis_pasien'); //sidebar
+    Route::post('/formpemeriksaan_', [ErmController::class, 'formpemeriksaan_perawat'])
+    ->name('formpemeriksaan_'); //sidebar
+    Route::post('/simpanpemeriksaanperawat', [ErmController::class, 'simpanpemeriksaanperawat'])
+    ->name('simpanpemeriksaanperawat'); //sidebar
+    Route::post('/resumepasien', [ErmController::class, 'resumepasien'])
+    ->name('resumepasien'); //sidebar
+    Route::post('/simpanttdperawat', [ErmController::class, 'simpanttdperawat'])
+    ->name('simpanttdperawat'); //sidebar
 });
 
 
