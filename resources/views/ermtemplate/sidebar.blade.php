@@ -50,6 +50,14 @@
                         </p>
                     </a>
                 </li>
+                  <li class="nav-item">
+                    <a href="{{ route('indexdokter') }}" class="nav-link @if($sidebar == 'ermdokter') active @endif">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            ERM Dokter
+                        </p>
+                    </a>
+                </li>
                 @endif
                   <li class="nav-header"> <i class="nav-icon bi bi-person-circle mr-2"></i> INFO AKUN</li>
                   <li class="nav-item">

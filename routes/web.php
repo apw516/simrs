@@ -351,6 +351,34 @@ Route::group(['middleware' => ['auth','hak_akses1:4']],function(){
     ->name('resumepasien'); //sidebar
     Route::post('/simpanttdperawat', [ErmController::class, 'simpanttdperawat'])
     ->name('simpanttdperawat'); //sidebar
+
+    //dokter
+    Route::get('/indexdokter', [ErmController::class, 'indexdokter'])
+    ->name('indexdokter'); //sidebar
+    Route::post('/ambildatapasienpoli_dokter', [ErmController::class, 'ambildatapasienpoli_dokter'])
+    ->name('ambildatapasienpoli_dokter'); //sidebar
+    Route::post('/ambildetailpasien_dokter', [ErmController::class, 'ambildetailpasien_dokter'])
+    ->name('ambildetailpasien_dokter'); //sidebar
+    Route::post('/formpemeriksaan_dokter', [ErmController::class, 'formpemeriksaan_dokter'])
+    ->name('formpemeriksaan_dokter'); //sidebar
+    Route::post('/formpemeriksaan_khusus', [ErmController::class, 'formpemeriksaan_khusus'])
+    ->name('formpemeriksaan_khusus'); //sidebar
+    Route::post('/simpanpemeriksaandokter', [ErmController::class, 'simpanpemeriksaandokter'])
+    ->name('simpanpemeriksaandokter'); //sidebar
+    Route::post('/resumepasien_dokter', [ErmController::class, 'resumepasien_dokter'])
+    ->name('resumepasien_dokter'); //sidebar
+    Route::post('/simpanttddokter', [ErmController::class, 'simpanttddokter'])
+    ->name('simpanttddokter'); //sidebar
+    Route::post('/formtindakan', [ErmController::class, 'formtindakan'])
+    ->name('formtindakan'); //sidebar
+    Route::post('/gambartht1', [ErmController::class, 'gambartht1'])
+    ->name('gambartht1'); //sidebar
+    Route::post('/gambartht2', [ErmController::class, 'gambartht2'])
+    ->name('gambartht2'); //sidebar
+    Route::post('/simpantht_telingakanan', [ErmController::class, 'simpantht_telingakanan'])
+    ->name('simpantht_telingakanan'); //sidebar
+    Route::post('/simpanlayanan', [ErmController::class, 'simpanlayanan'])
+    ->name('simpanlayanan'); //sidebar
 });
 
 

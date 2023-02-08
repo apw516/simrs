@@ -46,7 +46,7 @@
                             <select class="form-control" id="bulansurkon">
                                 <option>-- Silahkan Pilih Bulan --</option>
                                 <option value="01">Januari</option>
-                                <option valie="02">Februari</option>
+                                <option value="02">Februari</option>
                                 <option value="03">Maret</option>
                                 <option value="04">April</option>
                                 <option value="05">Mei</option>

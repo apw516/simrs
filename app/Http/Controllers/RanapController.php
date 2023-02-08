@@ -114,7 +114,7 @@ class RanapController extends Controller
     {
         $v = new VclaimModel();
         // dd($request->bulan);
-        $detail = $v->ListRencanaKontrol_bycard($request->bulan, $request->tahun, $request->nobpjs, '2');
+        $detail = $v->ListRencanaKontrol_bycard($request->bulan, $request->tahun, $request->nobpjs, '1');
         return view('ranap.tabelsurkonranap', [
             'list' => $detail
         ]);
