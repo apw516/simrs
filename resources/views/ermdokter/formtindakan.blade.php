@@ -2,79 +2,85 @@
     <div class="card-header bg-success">Pilih Tindakan Medis</div>
     <div class="card-body">
         <div class="container-fluid">
-            @if(count($resume) > 0)
-            <div class="row">
-                <div class="col-md-5" style="margin-top:20px">
-                    <h5>Terapi / Tindakan Medis</h5>
-                    <table id="tabeltindakan" class="table table-hover table-sm">
-                        <thead>
-                            <th>Nama tindakan</th>
-                        </thead>
-                        <tbody>
-                            @foreach($layanan as $t)
-                            <tr class="pilihlayanan" namatindakan="{{ $t->Tindakan }}" tarif="{{ $t->tarif }}" kode="{{ $t->kode }}">
-                                <td>{{ $t->Tindakan }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-md-7" style="margin-top:20px">
-                    <div class="accordion" id="accordionExample">
-                        <div class="card">
-                            <div class="card-header bg-warning" id="headingOne">
-                                <h2 class="mb-0">
-                                    <button class="btn btn-link btn-block text-left text-dark btn-sm" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        Riwayat Tindakan Hari Ini
-                                    </button>
-                                </h2>
-                            </div>
-                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                                <div class="card-body">
-                                    <div id="tindakanhariini"></div>
-
-                                </div>
-                            </div>
-                        </div>
+            @if (count($resume) > 0)
+                <div class="row">
+                    <div class="col-md-5" style="margin-top:20px">
+                        <h5>Terapi / Tindakan Medis</h5>
+                        <table id="tabeltindakan" class="table table-hover table-sm">
+                            <thead>
+                                <th>Nama tindakan</th>
+                            </thead>
+                            <tbody>
+                                @foreach ($layanan as $t)
+                                    <tr class="pilihlayanan" namatindakan="{{ $t->Tindakan }}"
+                                        tarif="{{ $t->tarif }}" kode="{{ $t->kode }}">
+                                        <td>{{ $t->Tindakan }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="card">
-                        <div class="card-header bg-success">Tindakan / Layanan Pasien</div>
-                        <div class="card-body">
-                            <form action="" method="post" class="formtindakan">
-                                <div class="input_fields_wrap">
-                                    <div>
+                    <div class="col-md-7" style="margin-top:20px">
+                        <div class="accordion" id="accordionExample">
+                            <div class="card">
+                                <div class="card-header bg-warning" id="headingOne">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left text-dark btn-sm" type="button"
+                                            data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                                            aria-controls="collapseOne">
+                                            Riwayat Tindakan Hari Ini
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                                    data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        <div class="tindakanhariini">
+                                        </div>
                                     </div>
-                                    <button type="button" class="btn btn-warning mb-2 simpanlayanan" id="simpanlayanan">Simpan Tindakan</button>
                                 </div>
-                            </form>
+                            </div>
                         </div>
-                        <div class="card-footer">
-                            <p>pilih layanan untuk pasien</p>
+                        <div class="card">
+                            <div class="card-header bg-success">Tindakan / Layanan Pasien</div>
+                            <div class="card-body">
+                                <form action="" method="post" class="formtindakan">
+                                    <div class="input_fields_wrap">
+                                        <div>
+                                        </div>
+                                        <button type="button" class="btn btn-warning mb-2 simpanlayanan"
+                                            id="simpanlayanan">Simpan Tindakan</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer">
+                                <p>pilih layanan untuk pasien</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             @else
                 <div class="error-content">
-                  <h3><i class="fas fa-exclamation-triangle text-warning"></i> Oops! Assesmen awal medis belum diisi ...</h3>
-                  <p>
-                    Anda harus mengisi assesmen awal medis terlebih dulu ... </a>
-                  </p>
+                    <h3><i class="fas fa-exclamation-triangle text-warning"></i> Oops! Assesmen awal medis belum diisi
+                        ...</h3>
+                    <p>
+                        Anda harus mengisi assesmen awal medis terlebih dulu ... </a>
+                    </p>
                 </div>
             @endif
+        </div>
     </div>
-</div>
-<script>
-    $(function() {
-        $("#tabeltindakan").DataTable({
-            "responsive": false,
-            "lengthChange": false,
-            "pageLength": 10,
-            "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    <script>
+        $(function() {
+            $("#tabeltindakan").DataTable({
+                "responsive": false,
+                "lengthChange": false,
+                "pageLength": 10,
+                "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            });
         });
-    });
-    $('#tabeltindakan').on('click', '.pilihlayanan', function() {
+        $('#tabeltindakan').on('click', '.pilihlayanan', function() {
             var max_fields = 10; //maximum input boxes allowed
             var wrapper = $(".input_fields_wrap"); //Fields wrapper
             var x = 1; //initlal text box count
@@ -137,8 +143,28 @@
                             text: 'Data berhasil disimpan!',
                             footer: ''
                         })
+                        tindakanhariini()
                     }
                 }
             });
         });
-</script>
+        $(document).ready(function() {
+            tindakanhariini()
+        });
+        function tindakanhariini() {
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    kodekunjungan : $('#kodekunjungan').val()
+                },
+                url: '<?= route('tindakanhariini') ?>',
+                error: function(data) {
+                    alert('ok')
+                },
+                success: function(response) {
+                    $('.tindakanhariini').html(response)
+                }
+            });
+        }
+    </script>

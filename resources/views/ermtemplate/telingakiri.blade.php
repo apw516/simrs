@@ -1,7 +1,12 @@
 <input hidden type="text" id="telingakiri">
-<img id="gambarnya2" style="margin-top:50px" width="340px" src="{{ asset('public/img/telingakiri.png') }}"
+@if(count($cek1) > 0)
+<img id="gambarnya2" style="margin-top:50px" width="340px" height="320px" src="{{ $cek1[0]->gambar }}"
     onclick="showMarkerArea(this);" />
-<canvas hidden id="myCanvas2" width="500px" height="450px" style="border:1px solid #d3d3d3;">
+@else
+<img id="gambarnya2" style="margin-top:50px" width="340px" height="320px" src="{{ asset('public/img/telinakanan.png') }}"
+    onclick="showMarkerArea(this);" />
+@endif
+<canvas hidden id="myCanvas2" width="340px" height="320px" style="border:1px solid #d3d3d3;">
     Your browser does not support the HTML5 canvas tag.
 </canvas>
 <button type="button" class="btn btn-danger mt-2" onclick="batalgambar2()">batal</button>

@@ -258,7 +258,6 @@
                     </tr>
                 </tbody>
             </table>
-
             <button type="button" class="btn btn-danger float-right ml-2">Batal</button>
             <button type="button" class="btn btn-success float-right" onclick="simpanhasil()">Simpan</button>
         </form>

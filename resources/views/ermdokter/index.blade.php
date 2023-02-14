@@ -26,11 +26,15 @@
             $(document).ready(function() {
                 ambildatapasien()
             });
+
             function batalpilih() {
                 $(".formpasien").attr('hidden', true);
                 $(".vpasien").removeAttr('hidden', true);
             }
+
             function ambildatapasien() {
+                spinner = $('#loader')
+                spinner.show();
                 $.ajax({
                     type: 'post',
                     data: {
@@ -38,6 +42,7 @@
                     },
                     url: '<?= route('ambildatapasienpoli_dokter') ?>',
                     success: function(response) {
+                        spinner.hide()
                         $('.vpasien').html(response);
                     }
                 });

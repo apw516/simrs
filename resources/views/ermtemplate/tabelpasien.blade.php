@@ -14,9 +14,26 @@
                 <td>{{ $p->nama_pasien }}</td>
                 <td>{{ $p->nama_unit }}</td>
                 <td>{{ $p->nama_penjamin }}</td>
-                <td>@if($p->id_pemeriksaan_perawat != (NULL)) <button class="badge badge-success"> sudah diisi </button> @else <button class="badge badge-danger"> belum diisi </button> @endif</td>
                 <td>
-                    @if($p->id_pemeriksaan_dokter != (NULL)) <button class="badge badge-success"> sudah diisi </button> @else <button class="badge badge-danger"> belum diisi </button> @endif
+                    @if($p->id_pemeriksaan_perawat != ( NULL))
+                    @if($p->status_asskep == 0)
+                    <button class="badge badge-warning"> Belum ttd </button>
+
+                    @else
+                            <button class="badge badge-success"> sudah diisi </button>
+
+                    @endif
+                    @else <button class="badge badge-danger"> belum diisi </button> @endif
+                </td>
+                <td>
+                    @if($p->id_pemeriksaan_dokter != (NULL))
+                    @if($p->status_assdok == 0)
+                    <button class="badge badge-warning"> Belum ttd </button>
+                    @else
+                        <button class="badge badge-success"> sudah diisi </button>
+                    @endif
+                    @else <button class="badge badge-danger"> belum diisi </button>
+                    @endif
                 </td>
             </tr>
         @endforeach

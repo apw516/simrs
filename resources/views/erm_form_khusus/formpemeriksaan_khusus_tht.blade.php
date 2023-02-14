@@ -2,6 +2,7 @@
     <div class="card-header bg-danger">Form Pemeriksaan THT</div>
     <div class="card-body">
         @if (count($resume) > 0)
+            <input hidden type="text" class="form-control" id="idassesmen" value="{{ $resume[0]->id }}">
             <div class="accordion" id="accordionExample">
                 <div class="card">
                     <div class="card-header bg-warning" id="headingOne">
@@ -32,7 +33,6 @@
                                                                             <div class="form-group form-check">
                                                                                 <input type="checkbox"
                                                                                     class="form-check-input"
-                                                                                    id=""
                                                                                     name="{{ $p->nama_pemeriksaan }}"
                                                                                     value="1">
                                                                                 <label class="form-check-label"
@@ -41,6 +41,7 @@
                                                                         </div>
                                                                     @endif
                                                                 @endforeach
+                                                                <input class="form-control" name="ltketeranganlain">
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -63,8 +64,9 @@
                                                                         </div>
                                                                     @endif
                                                                 @endforeach
-                                                            </div>
+                                                                <input class="form-control" name="mtketeranganlain">
 
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -73,20 +75,23 @@
                                                             <div class="row">
                                                                 <div class="col-md-12">
                                                                     <label for="">Mukosa</label>
-                                                                    <input type="text" class="form-control">
+                                                                    <input type="text" class="form-control"
+                                                                        name="mukosa">
                                                                 </div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-md-12">
                                                                     <label for="">Oslkel</label>
-                                                                    <input type="text" class="form-control">
+                                                                    <input type="text" class="form-control"
+                                                                        name="oslkel">
                                                                 </div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-md-12">
                                                                     <label for="">Isthmus timpani/anterior
                                                                         timpani/posterior timpani</label>
-                                                                    <input type="text" class="form-control">
+                                                                    <input type="text" class="form-control"
+                                                                        name="Isthmus">
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -94,7 +99,7 @@
                                                     <tr>
                                                         <td>Lain - Lain</td>
                                                         <td>
-                                                            <textarea class="form-control"></textarea>
+                                                            <textarea class="form-control" name="keteranganlain"></textarea>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -106,8 +111,6 @@
                                                         </td>
                                                     </tr>
                                                 </table>
-                                                <button type="button"
-                                                    class="btn btn-success float-right mt-4 simpankanan">Simpan</button>
                                             </form>
                                         </div>
                                     </div>
@@ -117,91 +120,95 @@
                                         <div class="card-header text-bold">Telinga Kiri</div>
                                         <div class="card-body">
                                             <form action="" class="formtelingakiri">
-                                            <table class="table table-sm">
-                                                <tr>
-                                                    <td>Liang Telinga</td>
-                                                    <td>
-                                                        <div class="row">
-                                                            @foreach ($penyakit as $p)
-                                                                @if ($p->sub_organ == 'Liang Telinga')
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group form-check">
-                                                                            <input type="checkbox"
-                                                                                class="form-check-input" id=""
-                                                                                name="{{ $p->nama_pemeriksaan }}"
-                                                                                value="1">
-                                                                            <label class="form-check-label"
-                                                                                for="exampleCheck1">{{ $p->nama_pemeriksaan }}</label>
+                                                <table class="table table-sm">
+                                                    <tr>
+                                                        <td>Liang Telinga</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                @foreach ($penyakit as $p)
+                                                                    @if ($p->sub_organ == 'Liang Telinga')
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group form-check">
+                                                                                <input type="checkbox"
+                                                                                    class="form-check-input"
+                                                                                    name="{{ $p->nama_pemeriksaan }}"
+                                                                                    value="1">
+                                                                                <label class="form-check-label"
+                                                                                    for="exampleCheck1">{{ $p->nama_pemeriksaan }}</label>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                @endif
-                                                            @endforeach
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Membran Timpan</td>
-                                                    <td>
-                                                        <div class="row">
-                                                            @foreach ($penyakit as $p)
-                                                                @if ($p->sub_organ == 'Membran Timpani')
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group form-check">
-                                                                            <input type="checkbox"
-                                                                                class="form-check-input" id=""
-                                                                                name="{{ $p->nama_pemeriksaan }}"
-                                                                                value="1">
-                                                                            <label class="form-check-label"
-                                                                                for="exampleCheck1">{{ $p->nama_pemeriksaan }}</label>
+                                                                    @endif
+                                                                @endforeach
+                                                                <input class="form-control" name="ltketeranganlain">
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Membran Timpan</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                @foreach ($penyakit as $p)
+                                                                    @if ($p->sub_organ == 'Membran Timpani')
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group form-check">
+                                                                                <input type="checkbox"
+                                                                                    class="form-check-input"
+                                                                                    id=""
+                                                                                    name="{{ $p->nama_pemeriksaan }}"
+                                                                                    value="1">
+                                                                                <label class="form-check-label"
+                                                                                    for="exampleCheck1">{{ $p->nama_pemeriksaan }}</label>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                @endif
-                                                            @endforeach
-                                                        </div>
+                                                                    @endif
+                                                                @endforeach
+                                                                <input class="form-control" name="mtketeranganlain">
 
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Kavum Timpani</td>
-                                                    <td>
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <label for="">Mukosa</label>
-                                                                <input type="text" class="form-control">
                                                             </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <label for="">Oslkel</label>
-                                                                <input type="text" class="form-control">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kavum Timpani</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <label for="">Mukosa</label>
+                                                                    <input type="text" class="form-control"
+                                                                        name="mukosa">
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <label for="">Isthmus timpani/anterior
-                                                                    timpani/posterior timpani</label>
-                                                                <input type="text" class="form-control">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <label for="">Oslkel</label>
+                                                                    <input type="text" class="form-control"
+                                                                        name="oslkel">
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Lain - Lain</td>
-                                                    <td>
-                                                        <textarea class="form-control"></textarea>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Telinga Kiri</td>
-                                                    <td>
-                                                        <div class="gambar2">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <label for="">Isthmus timpani/anterior
+                                                                        timpani/posterior timpani</label>
+                                                                    <input type="text" class="form-control"
+                                                                        name="Isthmus">
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Lain - Lain</td>
+                                                        <td>
+                                                            <textarea class="form-control" name="keteranganlain"></textarea>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Telinga kanan</td>
+                                                        <td>
+                                                            <div class="gambar2">
 
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                            <button type="button"
-                                                    class="btn btn-success float-right mt-4 simpankiri">Simpan</button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
                                             </form>
                                         </div>
                                     </div>
@@ -213,7 +220,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <textarea class="form-control"></textarea>
+                                                <textarea class="form-control" id="kesimpulan" name="kesimpulan"></textarea>
                                             </td>
                                         </tr>
                                     </table>
@@ -225,10 +232,12 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <textarea class="form-control"></textarea>
+                                                <textarea class="form-control" id="anjuran" name="anjuran"></textarea>
                                             </td>
                                         </tr>
                                     </table>
+                                    <button type="button"
+                                        class="btn btn-lg btn-success float-right mt-2 simpanpemeriksaan">Simpan</button>
                                 </div>
                             </div>
                         </div>
@@ -252,6 +261,7 @@
                                     <div class="card">
                                         <div class="card-header text-bold">Hidung Kanan</div>
                                         <div class="card-body">
+                                            <form action="" class="formhidungkanan">
                                             <table class="table table-sm">
                                                 <tr>
                                                     <td>Kavum Nasi</td>
@@ -366,11 +376,11 @@
                                                 <tr>
                                                     <td>Lain - Lain</td>
                                                     <td>
-                                                        <textarea class="form-control"></textarea>
+                                                        <textarea class="form-control" name="lain-lain"></textarea>
                                                     </td>
                                                 </tr>
                                             </table>
-                                            <button class="btn btn-success">Simpan</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -378,6 +388,7 @@
                                     <div class="card">
                                         <div class="card-header text-bold">Hidung Kiri</div>
                                         <div class="card-body">
+                                            <form action="" class="formhidungkiri">
                                             <table class="table table-sm">
                                                 <tr>
                                                     <td>Kavum Nasi</td>
@@ -492,10 +503,11 @@
                                                 <tr>
                                                     <td>Lain - Lain</td>
                                                     <td>
-                                                        <textarea class="form-control"></textarea>
+                                                        <textarea class="form-control" name="lain-lain"></textarea>
                                                     </td>
                                                 </tr>
                                             </table>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -506,10 +518,11 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <textarea class="form-control"></textarea>
+                                                <textarea class="form-control" id="kesimpulanhidung" name="kesimpulanhidung"></textarea>
                                             </td>
                                         </tr>
                                     </table>
+                                    <button class="btn btn-success btn-lg float-right simpanpemeriksaan2">Simpan</button>
                                 </div>
                             </div>
                         </div>
@@ -530,7 +543,7 @@
 </div>
 <script src="{{ asset('public/marker/markerjs.js') }}"></script>
 <script>
-     $(document).ready(function() {
+    $(document).ready(function() {
         ambilgambar1()
         ambilgambar2()
 
@@ -539,6 +552,7 @@
                 type: 'post',
                 data: {
                     _token: "{{ csrf_token() }}",
+                    kodekunjungan : $('#kodekunjungan').val()
                 },
                 url: '<?= route('gambartht1') ?>',
                 error: function(data) {
@@ -555,6 +569,8 @@
                 type: 'post',
                 data: {
                     _token: "{{ csrf_token() }}",
+                    kodekunjungan : $('#kodekunjungan').val()
+
                 },
                 url: '<?= route('gambartht2') ?>',
                 error: function(data) {
@@ -567,6 +583,7 @@
         }
 
     });
+
     function showMarkerArea(target) {
         const markerArea = new markerjs2.MarkerArea(target);
         markerArea.addEventListener("render", (event) => (target.src = event.dataUrl));
@@ -592,27 +609,48 @@
     }
 </script>
 <script>
-    $(".simpankanan").click(function() {
+    $(".simpanpemeriksaan").click(function() {
+        var canvas1 = document.getElementById("myCanvas1");
+        var ctx1 = canvas1.getContext("2d");
+        var img1 = document.getElementById("gambarnya1");
+        ctx1.drawImage(img1, 10, 10);
+        var dataUrl1 = canvas1.toDataURL();
+        $('#telingakanan').val(dataUrl1)
+        telingakanan = $('#telingakanan').val()
+        var data1 = $('.formtelingakanan').serializeArray();
+
         var canvas = document.getElementById("myCanvas2");
         var ctx = canvas.getContext("2d");
-        var img = document.getElementById("gambarnya1");
+        var img = document.getElementById("gambarnya2");
         ctx.drawImage(img, 10, 10);
         var dataUrl = canvas.toDataURL();
-        $('#telingakanan').val(dataUrl)
-        telingakanan = $('#telingakanan').val()
-        var data = $('.formtelingakanan').serializeArray();
+        $('#telingakiri').val(dataUrl)
+        telingakiri = $('#telingakiri').val()
+        var data2 = $('.formtelingakiri').serializeArray();
+
         var kodekunjungan = $('#kodekunjungan').val()
+        var nomorrm = $('#nomorrm').val()
+        var idassesmen = $('#idassesmen').val()
+        var kesimpulan = $('#kesimpulan').val()
+        var anjuran = $('#anjuran').val()
+
         $.ajax({
             async: true,
             type: 'post',
             dataType: 'json',
             data: {
                 _token: "{{ csrf_token() }}",
-                data: JSON.stringify(data),
+                data1: JSON.stringify(data1),
+                data2: JSON.stringify(data2),
                 kodekunjungan: kodekunjungan,
-                telingakanan
+                telingakiri,
+                telingakanan,
+                idassesmen,
+                nomorrm,
+                kesimpulan,
+                anjuran
             },
-            url: '<?= route('simpantht_telingakanan') ?>',
+            url: '<?= route('simpantht_telinga') ?>',
             error: function(data) {
                 Swal.fire({
                     icon: 'error',
@@ -637,11 +675,57 @@
                         text: 'Data berhasil disimpan!',
                         footer: ''
                     })
-                    riwayattindakan_hariini()
-                    cek_resume()
                 }
             }
         });
-    });
+    })
+    $(".simpanpemeriksaan2").click(function(){
+        var data1 = $('.formhidungkanan').serializeArray();
+        var data2 = $('.formhidungkiri').serializeArray();
+        var kodekunjungan = $('#kodekunjungan').val()
+        var nomorrm = $('#nomorrm').val()
+        var idassesmen = $('#idassesmen').val()
+        var kesimpulan = $('#kesimpulanhidung').val()
+        $.ajax({
+            async: true,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                _token: "{{ csrf_token() }}",
+                data1: JSON.stringify(data1),
+                data2: JSON.stringify(data2),
+                kodekunjungan: kodekunjungan,
+                idassesmen,
+                nomorrm,
+                kesimpulan,
+            },
+            url: '<?= route('simpantht_hidung') ?>',
+            error: function(data) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Sepertinya ada masalah ...',
+                    footer: ''
+                })
+            },
+            success: function(data) {
+                console.log(data)
+                if (data.kode == 500) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: data.message,
+                        footer: ''
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'OK',
+                        text: 'Data berhasil disimpan!',
+                        footer: ''
+                    })
+                }
+            }
+        });
+    })
 </script>
-

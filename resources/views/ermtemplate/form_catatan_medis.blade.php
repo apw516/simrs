@@ -15,6 +15,9 @@
               <div id="collapse{{ $k->counter }}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                 <div class="card-body">
                     <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn btn-info mb-2 float-right"><i class="bi bi-printer"></i> Print</button>
+                        </div>
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header bg-warning text-bold">Assesmen awal Keperawatan</div>

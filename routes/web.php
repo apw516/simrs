@@ -375,10 +375,14 @@ Route::group(['middleware' => ['auth','hak_akses1:4']],function(){
     ->name('gambartht1'); //sidebar
     Route::post('/gambartht2', [ErmController::class, 'gambartht2'])
     ->name('gambartht2'); //sidebar
-    Route::post('/simpantht_telingakanan', [ErmController::class, 'simpantht_telingakanan'])
-    ->name('simpantht_telingakanan'); //sidebar
+    Route::post('/simpantht_telinga', [ErmController::class, 'simpantht_telinga'])
+    ->name('simpantht_telinga'); //sidebar
+    Route::post('/simpantht_hidung', [ErmController::class, 'simpantht_hidung'])
+    ->name('simpantht_hidung'); //sidebar
     Route::post('/simpanlayanan', [ErmController::class, 'simpanlayanan'])
     ->name('simpanlayanan'); //sidebar
+    Route::post('/tindakanhariini', [ErmController::class, 'tindakanhariini'])
+    ->name('tindakanhariini'); //sidebar
 });
 
 
