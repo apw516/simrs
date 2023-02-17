@@ -28,6 +28,9 @@ Route::get('/login', [LoginController::class, 'index'])->middleware('guest')->na
 Route::post('/login', [LoginController::class, 'authenticate']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('bedmonitoring', [BedmonitoringController::class, 'index'])->name('bedmonitoring');
+Route::post('/ambilcatatanmedis_pasien', [ErmController::class, 'ambilcatatanmedis_pasien'])
+->name('ambilcatatanmedis_pasien'); //sidebar
+Route::get('cetakresume/{kodekunjungan}', [ErmController::class, 'cetakresume']); //formpasien_bpjs
 
 Route::get('/register', [RegisterController::class, 'index'])->middleware('guest')->name('register');
 Route::post('/register', [RegisterController::class, 'Store']);
@@ -341,8 +344,6 @@ Route::group(['middleware' => ['auth','hak_akses1:4']],function(){
     ->name('ambildatapasienpoli'); //sidebar
     Route::post('/ambildetailpasien', [ErmController::class, 'ambildetailpasien'])
     ->name('ambildetailpasien'); //sidebar
-    Route::post('/ambilcatatanmedis_pasien', [ErmController::class, 'ambilcatatanmedis_pasien'])
-    ->name('ambilcatatanmedis_pasien'); //sidebar
     Route::post('/formpemeriksaan_', [ErmController::class, 'formpemeriksaan_perawat'])
     ->name('formpemeriksaan_'); //sidebar
     Route::post('/simpanpemeriksaanperawat', [ErmController::class, 'simpanpemeriksaanperawat'])
@@ -352,7 +353,8 @@ Route::group(['middleware' => ['auth','hak_akses1:4']],function(){
     Route::post('/simpanttdperawat', [ErmController::class, 'simpanttdperawat'])
     ->name('simpanttdperawat'); //sidebar
 
-    //dokter
+});
+Route::group(['middleware' => ['auth','hak_akses1:5']],function(){
     Route::get('/indexdokter', [ErmController::class, 'indexdokter'])
     ->name('indexdokter'); //sidebar
     Route::post('/ambildatapasienpoli_dokter', [ErmController::class, 'ambildatapasienpoli_dokter'])
@@ -383,6 +385,10 @@ Route::group(['middleware' => ['auth','hak_akses1:4']],function(){
     ->name('simpanlayanan'); //sidebar
     Route::post('/tindakanhariini', [ErmController::class, 'tindakanhariini'])
     ->name('tindakanhariini'); //sidebar
+    Route::post('/riwayattindakan', [ErmController::class, 'riwayattindakan'])
+    ->name('riwayattindakan'); //sidebar
+    Route::post('/pemeriksaankhususon', [ErmController::class, 'pemeriksaankhususon'])
+    ->name('pemeriksaankhususon'); //sidebar
 });
 
 

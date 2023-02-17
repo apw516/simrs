@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Codedge\Fpdf\Fpdf\Fpdf;
+use Codedge\Fpdf\Fpdf\pdf;
 use App\Models\assesmenawalperawat;
 use App\Models\assesmenawaldokter;
 use App\Models\ermtht_telinga;
@@ -411,7 +413,7 @@ class ErmController extends Controller
     public function simpanttdperawat(Request $request)
     {
         $data = [
-            // 'tanggalassemen' => $this->get_now(),
+            'tanggalassemen' => $this->get_now(),
             'status' => '1',
             'signature' => $request->signature
         ];
@@ -542,6 +544,7 @@ class ErmController extends Controller
                     'diskon_layanan' => $d['disc'],
                     'total_layanan' => $d['tarif'] * $d['qty'],
                     'grantotal_layanan' => $d['tarif'] * $d['qty'],
+                    'kode_dokter1' => auth()->user()->kode_paramedis,
                     'status_layanan_detail' => 'OPN',
                     'tgl_layanan_detail' => $now,
                     'tagihan_penjamin' => $tagihanpenjamin,
@@ -780,7 +783,6 @@ class ErmController extends Controller
                     'signature' => ''
                 ];
                 assesmenawaldokter::whereRaw('id_kunjungan = ?', array($kodekunjungan))->update($data);
-
             } else {
                 ermtht_telinga::create($datatelinga2);
             }
@@ -1119,5 +1121,290 @@ class ErmController extends Controller
         return view('ermdokter.riwayattindakan', compact([
             'riwayat_tindakan'
         ]));
+    }
+    public function riwayattindakan(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        $riwayat_tindakan = DB::connection('mysql4')->select("SELECT a.kode_kunjungan,b.id AS id_header,C.id AS id_detail,c.jumlah_layanan,b.kode_layanan_header,c.`kode_tarif_detail`,e.`NAMA_TARIF` FROM simrs_waled.ts_kunjungan a
+        RIGHT OUTER JOIN ts_layanan_header b ON a.kode_kunjungan = b.kode_kunjungan
+        RIGHT OUTER JOIN ts_layanan_detail c ON b.id = c.row_id_header
+        RIGHT OUTER JOIN mt_tarif_detail d ON c.kode_tarif_detail = d.`KODE_TARIF_DETAIL`
+        RIGHT OUTER JOIN mt_tarif_header e ON d.`KODE_TARIF_HEADER` = e.`KODE_TARIF_HEADER`
+        WHERE a.`kode_kunjungan` = ?", [$request->kodekunjungan]);
+        return view('ermdokter.riwayattindakan', compact([
+            'riwayat_tindakan'
+        ]));
+    }
+    public function pemeriksaankhususon(Request $request)
+    {
+        $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
+        if ($kunjungan[0]->kode_unit == '1019') {
+            $kanan = DB::SELECT('select * from erm_tht_telinga where kode_kunjungan = ? and keterangan = ?', [$request->kodekunjungan, 'telinga kanan']);
+            $kiri = DB::SELECT('select * from erm_tht_telinga where kode_kunjungan = ? and keterangan = ?', [$request->kodekunjungan, 'telinga kiri']);
+            $hidungkanan = DB::SELECT('select * from erm_tht_hidung where kode_kunjungan = ? and keterangan = ?', [$request->kodekunjungan, 'Hidung Kanan']);
+            $hidungkiri = DB::SELECT('select * from erm_tht_hidung where kode_kunjungan = ? and keterangan = ?', [$request->kodekunjungan, 'Hidung Kiri']);
+            return view('ermtemplate.hasilpemeriksaan_tht', compact([
+                'kanan',
+                'kiri',
+                'hidungkanan',
+                'hidungkiri',
+            ]));
+        }
+    }
+    public function cetakresume($kodekunjungan)
+    {
+        $k = DB::select('SELECT *,b.id as id_1, c.id as id_2,b.signature as signature_perawat,c.signature as signature_dokter,b.keluhanutama as keluhan_perawat,a.tgl_masuk,a.counter,fc_nama_unit1(a.kode_unit) AS nama_unit FROM ts_kunjungan a
+        LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`kode_kunjungan` = b.kode_kunjungan
+        LEFT OUTER JOIN assesmen_dokters c ON b.`id` = c.`id_asskep` where a.kode_kunjungan = ?', [$kodekunjungan]);
+
+        $pasien = DB::select('select *,fc_alamat(no_rm) as alamat_1,date(tgl_lahir) as tgl_lahir from mt_pasien where no_rm = ?', [$k[0]->no_rm]);
+        $pdf = new pdf('P', 'mm', 'Legal', $kodekunjungan);
+        $pdf->AddPage();
+        $pdf->SetTitle('Cetak Resume');
+        $pdf->SetMargins('15', '20', '10');
+
+        //keperawatan
+        $pdf->SetXY(16, 48);
+        $pdf->Cell(10, 7, 'Sumber Data', 0, 1);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY(45, 49);
+        $pdf->MultiCell(60, 5, ': ' . $k[0]->sumberdataperiksa);
+
+        $x = $pdf->GetX();
+        $y = $pdf->GetY();
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetXY($x+1, $y);
+        $pdf->Cell(10, 7, 'Keluhan Utama', 0, 1);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY($x+30, $y+1);
+        $pdf->MultiCell(60, 5, ': ' . $k[0]->keluhanutama);
+
+        $x = $pdf->GetX();
+        $y = $pdf->GetY();
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetXY($x+1, $y);
+        $pdf->Cell(10, 7, 'Tekanan Darah', 0, 1);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY($x+30, $y+1);
+        $pdf->MultiCell(60, 5, ': ' . $k[0]->tekanandarah. ' mmHg');
+
+        $x = $pdf->GetX();
+        $y = $pdf->GetY();
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetXY($x+1, $y);
+        $pdf->Cell(10, 7, 'Frekuensi Nadi', 0, 1);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY($x+30, $y+1);
+        $pdf->MultiCell(60, 5, ': ' . $k[0]->frekuensinadi. ' x/Menit');
+
+        $x = $pdf->GetX();
+        $y = $pdf->GetY();
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetXY($x+1, $y);
+        $pdf->Cell(10, 7, 'Frekuensi Nafas', 0, 1);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY($x+30, $y+1);
+        $pdf->MultiCell(60, 5, ': ' . $k[0]->frekuensinapas. ' x/Menit');
+
+        $x = $pdf->GetX();
+        $y = $pdf->GetY();
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetXY($x+1, $y);
+        $pdf->Cell(10, 7, 'Suhu Tubuh', 0, 1);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY($x+30, $y+1);
+        $pdf->MultiCell(45, 5, ': ' . $k[0]->suhutubuh. ' C');
+
+        $x = $pdf->GetX();
+        $y = $pdf->GetY();
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetXY($x+1, $y);
+        $pdf->Cell(10, 7, 'Riwayat Psikologis', 0, 1);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY($x+30, $y+1);
+        $pdf->MultiCell(45, 5, ': ' . $k[0]->Riwayatpsikologi);
+
+        $x = $pdf->GetX();
+        $y = $pdf->GetY();
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetXY($x+1, $y);
+        $pdf->Cell(10, 7, 'Keterangan', 0, 1);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY($x+30, $y+1);
+        $pdf->MultiCell(45, 5, ': ' . $k[0]->keterangan_riwayat_psikolog);
+
+        $x = $pdf->GetX();
+        $y = $pdf->GetY()+4;
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetXY($x+1, $y);
+        $pdf->Cell(10, 7, 'STATUS FUNGSIONAL', 0, 1);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY($x+35, $y+1);
+        $pdf->MultiCell(45, 5,'' );
+
+        $x = $pdf->GetX();
+        $y = $pdf->GetY();
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetXY($x+1, $y);
+        $pdf->Cell(10, 7, 'Penggunaan Alat Bantu', 0, 1);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY($x+35, $y+1);
+        $pdf->MultiCell(45, 5, ': ' . $k[0]->penggunaanalatbantu);
+
+        $x = $pdf->GetX();
+        $y = $pdf->GetY();
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetXY($x+1, $y);
+        $pdf->Cell(10, 7, 'Keterangan Alat Bantu', 0, 1);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY($x+35, $y+1);
+        $pdf->MultiCell(45, 5, ': ' . $k[0]->keterangan_alat_bantu);
+
+        $x = $pdf->GetX();
+        $y = $pdf->GetY();
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetXY($x+1, $y);
+        $pdf->Cell(10, 7, 'Cacat Tubuh', 0, 1);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY($x+35, $y+1);
+        $pdf->MultiCell(45, 5, ': ' . $k[0]->cacattubuh);
+
+        $x = $pdf->GetX();
+        $y = $pdf->GetY();
+        $pdf->SetFont('Arial', 'B', 7);
+        $pdf->SetXY($x+1, $y);
+        $pdf->Cell(10, 7, 'Keterangan Cacat Tubuh', 0, 1);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY($x+35, $y+1);
+        $pdf->MultiCell(45, 5, ': ' . $k[0]->keterangancacattubuh);
+
+        $x = $pdf->GetX();
+        $y = $pdf->GetY()+4;
+        $pdf->SetFont('Arial', 'B', 7);
+        $pdf->SetXY($x+1, $y);
+        $pdf->Cell(10, 7, 'ASSESMEN NYERI', 0, 1);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY($x+35, $y+1);
+        $pdf->MultiCell(45, 5, ' ');
+
+        $x = $pdf->GetX();
+        $y = $pdf->GetY();
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetXY($x+1, $y);
+        $pdf->Cell(10, 7, 'Keluhan Nyeri', 0, 1);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY($x+35, $y+1);
+        $pdf->MultiCell(45, 5, ': ' . $k[0]->Keluhannyeri);
+
+        $x = $pdf->GetX();
+        $y = $pdf->GetY();
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetXY($x+1, $y);
+        $pdf->Cell(10, 7, 'Skala Nyeri', 0, 1);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY($x+35, $y+1);
+        $pdf->MultiCell(45, 5, ': ' . $k[0]->skalenyeripasien);
+
+        $x = $pdf->GetX();
+        $y = $pdf->GetY()+4;
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetXY($x+1, $y);
+        $pdf->Cell(10, 7, 'ASSESMEN RESIKO JATUH', 0, 1);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY($x+35, $y+1);
+        $pdf->MultiCell(45, 5, '');
+
+        $x = $pdf->GetX();
+        $y = $pdf->GetY();
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetXY($x+1, $y);
+        $pdf->Cell(10, 7, 'Resiko Jatuh', 0, 1);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY($x+35, $y+1);
+        $pdf->MultiCell(45, 5, ': ' . $k[0]->resikojatuh);
+
+        $x = $pdf->GetX();
+        $y = $pdf->GetY()+4;
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetXY($x+1, $y);
+        $pdf->Cell(10, 7, 'SKRINING GIZI', 0, 1);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY($x+35, $y+1);
+        $pdf->MultiCell(45, 5, '');
+
+        $x = $pdf->GetX();
+        $y = $pdf->GetY();
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetXY($x+1, $y);
+        $pdf->MultiCell(45, 5, '1. Apakah pasien mengalami penurunan berat badan yang tidak diinginkan dalam 6 bulan terakhir ?  ');
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY($x+35, $y+20);
+        $pdf->MultiCell(45, 5, ': ' . $k[0]->Skrininggizi .' | '.  $k[0]->beratskrininggizi) ;
+
+        $x = $pdf->GetX();
+        $y = $pdf->GetY();
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetXY($x+1, $y);
+        $pdf->MultiCell(45, 5, '2. Apakah asupan makanan berkurang karena berkurangnya nafsu makan ?');
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY($x+35, $y+20);
+        $pdf->MultiCell(45, 5, ': ' . $k[0]->status_asupanmkanan);
+
+        $x = $pdf->GetX();
+        $y = $pdf->GetY();
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetXY($x+1, $y);
+        $pdf->MultiCell(45, 5, '3. Pasien dengan diagnosa khusus : Penyakit DM / Ginjal / Hati / Paru / Stroke / Kanker / Penurunan imunitas geriatri, lain lain...');
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY($x+35, $y+20);
+        $pdf->MultiCell(45, 5, ': ' . $k[0]->diagnosakhusus . ' | ' . $k[0]->penyakitlainpasien);
+
+        $x = $pdf->GetX();
+        $y = $pdf->GetY()+2;
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetXY($x+1, $y);
+        $pdf->MultiCell(45, 5, '4. Bila skor >= 2, pasien beresiko malnutrisi dilakukan pengkajian lanjut oleh ahli gizi');
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetXY($x+35, $y+20);
+        $pdf->MultiCell(45, 5, ': ' . $k[0]->resikomalnutrisi . ' | ' . $k[0]->tglpengkajianlanjutgizi);
+
+        // $x = $pdf->GetX();
+        // $y = $pdf->GetY()+2;
+        // $pdf->SetFont('Arial', 'B', 8);
+        // $pdf->SetXY($x+1, $y);
+        // $pdf->MultiCell(45, 5, 'Diagnosa Keperawatan');
+        // $pdf->SetFont('Arial', '', 8);
+        // $pdf->SetXY($x+35, $y+20);
+        // $pdf->MultiCell(45, 5, ': ' . $k[0]->diagnosakeperawatan);
+
+        // $x = $pdf->GetX();
+        // $y = $pdf->GetY()+2;
+        // $pdf->SetFont('Arial', 'B', 8);
+        // $pdf->SetXY($x+1, $y);
+        // $pdf->MultiCell(45, 5, 'Rencana Keperawatan/Kebidanan');
+        // $pdf->SetFont('Arial', '', 8);
+        // $pdf->SetXY($x+35, $y+20);
+        // $pdf->MultiCell(45, 5, ': ' . $k[0]->rencanakeperawatan);
+
+        // $x = $pdf->GetX();
+        // $y = $pdf->GetY()+2;
+        // $pdf->SetFont('Arial', 'B', 8);
+        // $pdf->SetXY($x+1, $y);
+        // $pdf->MultiCell(45, 5, 'Tindakan Keperawatan/Kebidanan');
+        // $pdf->SetFont('Arial', '', 8);
+        // $pdf->SetXY($x+35, $y+20);
+        // $pdf->MultiCell(45, 5, ': ' . $k[0]->tindakankeperawatan);
+
+        // $x = $pdf->GetX();
+        // $y = $pdf->GetY()+2;
+        // $pdf->SetFont('Arial', 'B', 8);
+        // $pdf->SetXY($x+1, $y);
+        // $pdf->MultiCell(45, 5, 'Evaluasi Keperawatan/Kebidanan');
+        // $pdf->SetFont('Arial', '', 8);
+        // $pdf->SetXY($x+35, $y+20);
+        // $pdf->MultiCell(45, 5, ': ' . $k[0]->evaluasikeperawatan);
+
+        $pdf->Output();
+        exit;
     }
 }

@@ -50,6 +50,8 @@
                         </p>
                     </a>
                 </li>
+                @endif
+                @if(auth()->user()->hak_akses == 1 || auth()->user()->hak_akses == 5)
                   <li class="nav-item">
                     <a href="{{ route('indexdokter') }}" class="nav-link @if($sidebar == 'ermdokter') active @endif">
                         <i class="nav-icon fas fa-th"></i>
