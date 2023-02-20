@@ -31,6 +31,14 @@ Route::get('bedmonitoring', [BedmonitoringController::class, 'index'])->name('be
 Route::post('/ambilcatatanmedis_pasien', [ErmController::class, 'ambilcatatanmedis_pasien'])
 ->name('ambilcatatanmedis_pasien'); //sidebar
 Route::get('cetakresume/{kodekunjungan}', [ErmController::class, 'cetakresume']); //formpasien_bpjs
+Route::post('ambilicd10', [ErmController::class, 'ambilicd10'])->name('ambilicd10'); //formpasien_bpjs
+Route::post('ambilicd10_banding', [ErmController::class, 'ambilicd10_banding'])->name('ambilicd10_banding'); //formpasien_bpjs
+Route::post('cariicd10', [ErmController::class, 'cariicd10'])->name('cariicd10'); //formpasien_bpjs
+Route::post('cariicd10_banding', [ErmController::class, 'cariicd10_banding'])->name('cariicd10_banding'); //formpasien_bpjs
+Route::post('ambilicd9', [ErmController::class, 'ambilicd9'])->name('ambilicd9'); //formpasien_bpjs
+Route::post('ambilicd9_banding', [ErmController::class, 'ambilicd9_banding'])->name('ambilicd9_banding'); //formpasien_bpjs
+Route::post('cariicd9', [ErmController::class, 'cariicd9'])->name('cariicd9'); //formpasien_bpjs
+Route::post('cariicd9_banding', [ErmController::class, 'cariicd9_banding'])->name('cariicd9_banding'); //formpasien_bpjs
 
 Route::get('/register', [RegisterController::class, 'index'])->middleware('guest')->name('register');
 Route::post('/register', [RegisterController::class, 'Store']);
@@ -389,6 +397,13 @@ Route::group(['middleware' => ['auth','hak_akses1:5']],function(){
     ->name('riwayattindakan'); //sidebar
     Route::post('/pemeriksaankhususon', [ErmController::class, 'pemeriksaankhususon'])
     ->name('pemeriksaankhususon'); //sidebar
+    Route::post('/gambarmatakanan', [ErmController::class, 'gambarmatakanan'])
+    ->name('gambarmatakanan'); //sidebar
+    Route::post('/gambarmatakiri', [ErmController::class, 'gambarmatakiri'])
+    ->name('gambarmatakiri'); //sidebar
+    Route::post('/simpanformmata', [ErmController::class, 'simpanformmata'])
+    ->name('simpanformmata'); //sidebar
+
 });
 
 

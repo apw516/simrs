@@ -213,6 +213,12 @@
                         </td>
                     </tr>
                     <tr>
+                        <td colspan="4" class="bg-secondary">Pemeriksaan Fisik</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"><textarea class="form-control" name="pemeriksaanfisik" >{{ $resume[0]->pemeriksaan_fisik }}</textarea></td>
+                    </tr>
+                    <tr>
                         <td colspan="4" class="bg-secondary">Pemeriksaan Umum</td>
                     </tr>
                     <tr>

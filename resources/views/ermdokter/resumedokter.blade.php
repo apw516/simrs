@@ -123,6 +123,12 @@
                     <td colspan="3">{{ $resume[0]->statusgeneralis }}</td>
                 </tr>
                 <tr>
+                    <td colspan="4" class="bg-info">Pemeriksaan Fisik</td>
+                </tr>
+                <tr>
+                    <td colspan="4">{{ $resume[0]->pemeriksaan_fisik }}</td>
+                </tr>
+                <tr>
                     <td colspan="4" class="bg-info">Pemeriksaan Umum</td>
                 </tr>
                 <tr>
@@ -152,249 +158,263 @@
                         <div class="card">
                             <div class="card-header bg-warning">Telinga Kanan</div>
                             <div class="card-body">
-                                @if($formkhusus['cek1'] > 0 )
-                                <table class="table table-sm">
-                                    <tr>
-                                        <td>Liang Telinga</td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            name="Lapang" value="1"
-                                                            @if ($formkhusus['telingakanan'][0]->LT_lapang == '1') checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Lapang
-                                                        </label>
+                                @if ($formkhusus['cek1'] > 0)
+                                    <table class="table table-sm">
+                                        <tr>
+                                            <td>Liang Telinga</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                name="Lapang" value="1"
+                                                                @if ($formkhusus['telingakanan'][0]->LT_lapang == '1') checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Lapang
+                                                            </label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            name="Sempit" value="1"
-                                                            @if ($formkhusus['telingakanan'][0]->LT_Sempit == '1') checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Sempit
-                                                        </label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                name="Sempit" value="1"
+                                                                @if ($formkhusus['telingakanan'][0]->LT_Sempit == '1') checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Sempit
+                                                            </label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            name="Destruksi" value="1"
-                                                            @if ($formkhusus['telingakanan'][0]->LT_dataSetestruksi == '1') checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Destruksi</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                name="Destruksi" value="1"
+                                                                @if ($formkhusus['telingakanan'][0]->LT_dataSetestruksi == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Destruksi</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            name="Serumen" value="1"
-                                                            @if ($formkhusus['telingakanan'][0]->LT_Serumen == '1') checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Serumen</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                name="Serumen" value="1"
+                                                                @if ($formkhusus['telingakanan'][0]->LT_Serumen == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Serumen</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            name="Sekret" value="1"
-                                                            @if ($formkhusus['telingakanan'][0]->LT_Sekret == '1') checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Sekret</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                name="Sekret" value="1"
+                                                                @if ($formkhusus['telingakanan'][0]->LT_Sekret == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Sekret</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            name="Jamur" value="1"
-                                                            @if ($formkhusus['telingakanan'][0]->LT_Sekret == '1') checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Jamur</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                name="Jamur" value="1"
+                                                                @if ($formkhusus['telingakanan'][0]->LT_Sekret == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Jamur</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            name="Kolesteatoma" value="1"
-                                                            @if ($formkhusus['telingakanan'][0]->LT_Sekret == '1') checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Kolesteatoma</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                name="Kolesteatoma" value="1"
+                                                                @if ($formkhusus['telingakanan'][0]->LT_Sekret == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Kolesteatoma</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            name="Massa atau Jaringan" name="Kolesteatoma"
-                                                            value="1"
-                                                            @if ($formkhusus['telingakanan'][0]->LT_Massa_Jaringan == '1') checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Massa atau
-                                                            Jaringan</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                name="Massa atau Jaringan" name="Kolesteatoma"
+                                                                value="1"
+                                                                @if ($formkhusus['telingakanan'][0]->LT_Massa_Jaringan == '1') checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Massa
+                                                                atau
+                                                                Jaringan</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            name="Benda Asing" value="1"
-                                                            @if ($formkhusus['telingakanan'][0]->LT_Benda_asing == '1') checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Benda
-                                                            Asing</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                name="Benda Asing" value="1"
+                                                                @if ($formkhusus['telingakanan'][0]->LT_Benda_asing == '1') checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Benda
+                                                                Asing</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            name="LT Lain-Lain" value="1"
-                                                            @if ($formkhusus['telingakanan'][0]->LT_Lain_lain == '1') checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">LT
-                                                            Lain-Lain</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                name="LT Lain-Lain" value="1"
+                                                                @if ($formkhusus['telingakanan'][0]->LT_Lain_lain == '1') checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">LT
+                                                                Lain-Lain</label>
+                                                        </div>
                                                     </div>
+                                                    <input class="form-control" name="ltketeranganlain"
+                                                        value="{{ $formkhusus['telingakanan'][0]->LT_Keterangan_lain }}">
                                                 </div>
-                                                <input class="form-control" name="ltketeranganlain"
-                                                    value="{{ $formkhusus['telingakanan'][0]->LT_Keterangan_lain }}">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Membran Timpan</td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            id="" name="Intak - Normal" value="1"
-                                                            @if ($formkhusus['telingakanan'][0]->MT_intak_normal) checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Intak -
-                                                            Normal</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Membran Timpan</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Intak - Normal" value="1"
+                                                                @if ($formkhusus['telingakanan'][0]->MT_intak_normal) checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Intak
+                                                                -
+                                                                Normal</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            id="" name="Intak - Hiperemis" value="1"
-                                                            @if ($formkhusus['telingakanan'][0]->MT_intak_hiperemis) checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Intak -
-                                                            Hiperemis</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Intak - Hiperemis"
+                                                                value="1"
+                                                                @if ($formkhusus['telingakanan'][0]->MT_intak_hiperemis) checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Intak
+                                                                -
+                                                                Hiperemis</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            id="" name="Intak - Bulging" value="1"
-                                                            @if ($formkhusus['telingakanan'][0]->MT_intak_bulging) checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Intak -
-                                                            Bulging</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Intak - Bulging" value="1"
+                                                                @if ($formkhusus['telingakanan'][0]->MT_intak_bulging) checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Intak
+                                                                -
+                                                                Bulging</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            id="" name="Intak - Retraksi" value="1"
-                                                            @if ($formkhusus['telingakanan'][0]->MT_intak_retraksi) checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Intak -
-                                                            Retraksi</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Intak - Retraksi" value="1"
+                                                                @if ($formkhusus['telingakanan'][0]->MT_intak_retraksi) checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Intak
+                                                                -
+                                                                Retraksi</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            id="" name="Intak - Sklerotik" value="1"
-                                                            @if ($formkhusus['telingakanan'][0]->MT_intak_sklerotik) checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Intak -
-                                                            Sklerotik</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Intak - Sklerotik"
+                                                                value="1"
+                                                                @if ($formkhusus['telingakanan'][0]->MT_intak_sklerotik) checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Intak
+                                                                -
+                                                                Sklerotik</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            id="" name="Perforasi - Sentral" value="1"
-                                                            @if ($formkhusus['telingakanan'][0]->MT_perforasi_sentral) checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Perforasi
-                                                            -
-                                                            Sentral</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Perforasi - Sentral"
+                                                                value="1"
+                                                                @if ($formkhusus['telingakanan'][0]->MT_perforasi_sentral) checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Perforasi
+                                                                -
+                                                                Sentral</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            id="" name="Perforasi - Atik" value="1"
-                                                            @if ($formkhusus['telingakanan'][0]->MT_perforasi_atik) checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Perforasi
-                                                            -
-                                                            Atik</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Perforasi - Atik" value="1"
+                                                                @if ($formkhusus['telingakanan'][0]->MT_perforasi_atik) checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Perforasi
+                                                                -
+                                                                Atik</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            id="" name="Perforasi - Marginal" value="1"
-                                                            @if ($formkhusus['telingakanan'][0]->MT_perforasi_marginal) checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Perforasi
-                                                            -
-                                                            Marginal</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Perforasi - Marginal"
+                                                                value="1"
+                                                                @if ($formkhusus['telingakanan'][0]->MT_perforasi_marginal) checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Perforasi
+                                                                -
+                                                                Marginal</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            id="" name="Perforasi - Lain-Lain"
-                                                            value="1"
-                                                            @if ($formkhusus['telingakanan'][0]->MT_perforasi_lain) checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Perforasi
-                                                            -
-                                                            Lain-Lain</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Perforasi - Lain-Lain"
+                                                                value="1"
+                                                                @if ($formkhusus['telingakanan'][0]->MT_perforasi_lain) checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Perforasi
+                                                                -
+                                                                Lain-Lain</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <input class="form-control" name="mtketeranganlain"
-                                                    value="{{ $formkhusus['telingakanan'][0]->MT_keterangan_lain }}">
+                                                    <input class="form-control" name="mtketeranganlain"
+                                                        value="{{ $formkhusus['telingakanan'][0]->MT_keterangan_lain }}">
 
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Kavum Timpani</td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <label for="">Mukosa</label>
-                                                    <input type="text" class="form-control" name="mukosa"
-                                                        value="{{ $formkhusus['telingakanan'][0]->MT_mukosa }}">
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <label for="">Oslkel</label>
-                                                    <input type="text" class="form-control" name="oslkel"
-                                                        value="{{ $formkhusus['telingakanan'][0]->MT_osikal }}">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Kavum Timpani</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label for="">Mukosa</label>
+                                                        <input type="text" class="form-control" name="mukosa"
+                                                            value="{{ $formkhusus['telingakanan'][0]->MT_mukosa }}">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <label for="">Isthmus
-                                                        timpani/anterior
-                                                        timpani/posterior timpani</label>
-                                                    <input type="text" class="form-control" name="Isthmus"
-                                                        value="{{ $formkhusus['telingakanan'][0]->MT_isthmus }}">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label for="">Oslkel</label>
+                                                        <input type="text" class="form-control" name="oslkel"
+                                                            value="{{ $formkhusus['telingakanan'][0]->MT_osikal }}">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Lain - Lain</td>
-                                        <td>
-                                            <textarea class="form-control" name="keteranganlain">{{ $formkhusus['telingakanan'][0]->lain_lain }}</textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Telinga kanan</td>
-                                        <td>
-                                            <div class="gambar1">
-                                                <img width="340px" height="320px"
-                                                    src="{{ $formkhusus['telingakanan'][0]->gambar }}"
-                                                    alt="">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label for="">Isthmus
+                                                            timpani/anterior
+                                                            timpani/posterior timpani</label>
+                                                        <input type="text" class="form-control" name="Isthmus"
+                                                            value="{{ $formkhusus['telingakanan'][0]->MT_isthmus }}">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lain - Lain</td>
+                                            <td>
+                                                <textarea class="form-control" name="keteranganlain">{{ $formkhusus['telingakanan'][0]->lain_lain }}</textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Telinga kanan</td>
+                                            <td>
+                                                <div class="gambar1">
+                                                    <img width="340px" height="320px"
+                                                        src="{{ $formkhusus['telingakanan'][0]->gambar }}"
+                                                        alt="">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 @else
                                     <h5 class="text-danger">Tidak ada pemeriksaan khusus</h5>
                                 @endif
@@ -405,274 +425,288 @@
                         <div class="card">
                             <div class="card-header bg-warning">Telinga Kiri</div>
                             <div class="card-body">
-                                @if($formkhusus['cek2'] > 0 )
-                                <table class="table table-sm">
-                                    <tr>
-                                        <td>Liang Telinga</td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            name="Lapang" value="1"
-                                                            @if ($formkhusus['telingakiri'][0]->LT_lapang == '1') checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Lapang
-                                                        </label>
+                                @if ($formkhusus['cek2'] > 0)
+                                    <table class="table table-sm">
+                                        <tr>
+                                            <td>Liang Telinga</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                name="Lapang" value="1"
+                                                                @if ($formkhusus['telingakiri'][0]->LT_lapang == '1') checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Lapang
+                                                            </label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            name="Sempit" value="1"
-                                                            @if ($formkhusus['telingakiri'][0]->LT_Sempit == '1') checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Sempit
-                                                        </label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                name="Sempit" value="1"
+                                                                @if ($formkhusus['telingakiri'][0]->LT_Sempit == '1') checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Sempit
+                                                            </label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            name="Destruksi" value="1"
-                                                            @if ($formkhusus['telingakiri'][0]->LT_dataSetestruksi == '1') checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Destruksi</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                name="Destruksi" value="1"
+                                                                @if ($formkhusus['telingakiri'][0]->LT_dataSetestruksi == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Destruksi</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            name="Serumen" value="1"
-                                                            @if ($formkhusus['telingakiri'][0]->LT_Serumen == '1') checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Serumen</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                name="Serumen" value="1"
+                                                                @if ($formkhusus['telingakiri'][0]->LT_Serumen == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Serumen</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            name="Sekret" value="1"
-                                                            @if ($formkhusus['telingakiri'][0]->LT_Sekret == '1') checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Sekret</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                name="Sekret" value="1"
+                                                                @if ($formkhusus['telingakiri'][0]->LT_Sekret == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Sekret</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            name="Jamur" value="1"
-                                                            @if ($formkhusus['telingakiri'][0]->LT_Sekret == '1') checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Jamur</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                name="Jamur" value="1"
+                                                                @if ($formkhusus['telingakiri'][0]->LT_Sekret == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Jamur</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            name="Kolesteatoma" value="1"
-                                                            @if ($formkhusus['telingakiri'][0]->LT_Sekret == '1') checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Kolesteatoma</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                name="Kolesteatoma" value="1"
+                                                                @if ($formkhusus['telingakiri'][0]->LT_Sekret == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Kolesteatoma</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            name="Massa atau Jaringan" name="Kolesteatoma"
-                                                            value="1"
-                                                            @if ($formkhusus['telingakiri'][0]->LT_Massa_Jaringan == '1') checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Massa atau
-                                                            Jaringan</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                name="Massa atau Jaringan" name="Kolesteatoma"
+                                                                value="1"
+                                                                @if ($formkhusus['telingakiri'][0]->LT_Massa_Jaringan == '1') checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Massa
+                                                                atau
+                                                                Jaringan</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            name="Benda Asing" value="1"
-                                                            @if ($formkhusus['telingakiri'][0]->LT_Benda_asing == '1') checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Benda
-                                                            Asing</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                name="Benda Asing" value="1"
+                                                                @if ($formkhusus['telingakiri'][0]->LT_Benda_asing == '1') checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Benda
+                                                                Asing</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            name="LT Lain-Lain" value="1"
-                                                            @if ($formkhusus['telingakiri'][0]->LT_Lain_lain == '1') checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">LT
-                                                            Lain-Lain</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                name="LT Lain-Lain" value="1"
+                                                                @if ($formkhusus['telingakiri'][0]->LT_Lain_lain == '1') checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">LT
+                                                                Lain-Lain</label>
+                                                        </div>
                                                     </div>
+                                                    <input class="form-control" name="ltketeranganlain"
+                                                        value="{{ $formkhusus['telingakiri'][0]->LT_Keterangan_lain }}">
                                                 </div>
-                                                <input class="form-control" name="ltketeranganlain"
-                                                    value="{{ $formkhusus['telingakiri'][0]->LT_Keterangan_lain }}">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Membran Timpan</td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            id="" name="Intak - Normal" value="1"
-                                                            @if ($formkhusus['telingakiri'][0]->MT_intak_normal) checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Intak -
-                                                            Normal</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Membran Timpan</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Intak - Normal" value="1"
+                                                                @if ($formkhusus['telingakiri'][0]->MT_intak_normal) checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Intak
+                                                                -
+                                                                Normal</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            id="" name="Intak - Hiperemis" value="1"
-                                                            @if ($formkhusus['telingakiri'][0]->MT_intak_hiperemis) checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Intak -
-                                                            Hiperemis</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Intak - Hiperemis"
+                                                                value="1"
+                                                                @if ($formkhusus['telingakiri'][0]->MT_intak_hiperemis) checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Intak
+                                                                -
+                                                                Hiperemis</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            id="" name="Intak - Bulging" value="1"
-                                                            @if ($formkhusus['telingakiri'][0]->MT_intak_bulging) checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Intak -
-                                                            Bulging</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Intak - Bulging" value="1"
+                                                                @if ($formkhusus['telingakiri'][0]->MT_intak_bulging) checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Intak
+                                                                -
+                                                                Bulging</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            id="" name="Intak - Retraksi" value="1"
-                                                            @if ($formkhusus['telingakiri'][0]->MT_intak_retraksi) checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Intak -
-                                                            Retraksi</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Intak - Retraksi" value="1"
+                                                                @if ($formkhusus['telingakiri'][0]->MT_intak_retraksi) checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Intak
+                                                                -
+                                                                Retraksi</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            id="" name="Intak - Sklerotik" value="1"
-                                                            @if ($formkhusus['telingakiri'][0]->MT_intak_sklerotik) checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Intak -
-                                                            Sklerotik</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Intak - Sklerotik"
+                                                                value="1"
+                                                                @if ($formkhusus['telingakiri'][0]->MT_intak_sklerotik) checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Intak
+                                                                -
+                                                                Sklerotik</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            id="" name="Perforasi - Sentral" value="1"
-                                                            @if ($formkhusus['telingakiri'][0]->MT_perforasi_sentral) checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Perforasi
-                                                            -
-                                                            Sentral</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Perforasi - Sentral"
+                                                                value="1"
+                                                                @if ($formkhusus['telingakiri'][0]->MT_perforasi_sentral) checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Perforasi
+                                                                -
+                                                                Sentral</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            id="" name="Perforasi - Atik" value="1"
-                                                            @if ($formkhusus['telingakiri'][0]->MT_perforasi_atik) checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Perforasi
-                                                            -
-                                                            Atik</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Perforasi - Atik" value="1"
+                                                                @if ($formkhusus['telingakiri'][0]->MT_perforasi_atik) checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Perforasi
+                                                                -
+                                                                Atik</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            id="" name="Perforasi - Marginal" value="1"
-                                                            @if ($formkhusus['telingakiri'][0]->MT_perforasi_marginal) checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Perforasi
-                                                            -
-                                                            Marginal</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Perforasi - Marginal"
+                                                                value="1"
+                                                                @if ($formkhusus['telingakiri'][0]->MT_perforasi_marginal) checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Perforasi
+                                                                -
+                                                                Marginal</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            id="" name="Perforasi - Lain-Lain"
-                                                            value="1"
-                                                            @if ($formkhusus['telingakiri'][0]->MT_perforasi_lain) checked @endif>
-                                                        <label class="form-check-label" for="exampleCheck1">Perforasi
-                                                            -
-                                                            Lain-Lain</label>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Perforasi - Lain-Lain"
+                                                                value="1"
+                                                                @if ($formkhusus['telingakiri'][0]->MT_perforasi_lain) checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Perforasi
+                                                                -
+                                                                Lain-Lain</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <input class="form-control" name="mtketeranganlain"
-                                                    value="{{ $formkhusus['telingakiri'][0]->MT_keterangan_lain }}">
+                                                    <input class="form-control" name="mtketeranganlain"
+                                                        value="{{ $formkhusus['telingakiri'][0]->MT_keterangan_lain }}">
 
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Kavum Timpani</td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <label for="">Mukosa</label>
-                                                    <input type="text" class="form-control" name="mukosa"
-                                                        value="{{ $formkhusus['telingakiri'][0]->MT_mukosa }}">
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <label for="">Oslkel</label>
-                                                    <input type="text" class="form-control" name="oslkel"
-                                                        value="{{ $formkhusus['telingakiri'][0]->MT_osikal }}">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Kavum Timpani</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label for="">Mukosa</label>
+                                                        <input type="text" class="form-control" name="mukosa"
+                                                            value="{{ $formkhusus['telingakiri'][0]->MT_mukosa }}">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <label for="">Isthmus
-                                                        timpani/anterior
-                                                        timpani/posterior timpani</label>
-                                                    <input type="text" class="form-control" name="Isthmus"
-                                                        value="{{ $formkhusus['telingakiri'][0]->MT_isthmus }}">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label for="">Oslkel</label>
+                                                        <input type="text" class="form-control" name="oslkel"
+                                                            value="{{ $formkhusus['telingakiri'][0]->MT_osikal }}">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Lain - Lain</td>
-                                        <td>
-                                            <textarea class="form-control" name="keteranganlain">{{ $formkhusus['telingakiri'][0]->lain_lain }}</textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Telinga kanan</td>
-                                        <td>
-                                            <div class="gambar1">
-                                                <img width="340px" height="320px"
-                                                    src="{{ $formkhusus['telingakiri'][0]->gambar }}"
-                                                    alt="">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label for="">Isthmus
+                                                            timpani/anterior
+                                                            timpani/posterior timpani</label>
+                                                        <input type="text" class="form-control" name="Isthmus"
+                                                            value="{{ $formkhusus['telingakiri'][0]->MT_isthmus }}">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lain - Lain</td>
+                                            <td>
+                                                <textarea class="form-control" name="keteranganlain">{{ $formkhusus['telingakiri'][0]->lain_lain }}</textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Telinga kanan</td>
+                                            <td>
+                                                <div class="gambar1">
+                                                    <img width="340px" height="320px"
+                                                        src="{{ $formkhusus['telingakiri'][0]->gambar }}"
+                                                        alt="">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 @else
-                                <h5 class="text-danger">Tidak ada pemeriksaan khusus</h5>
-                            @endif
+                                    <h5 class="text-danger">Tidak ada pemeriksaan khusus</h5>
+                                @endif
                             </div>
                         </div>
                     </div>
-                    @if($formkhusus['cek2'] > 0 )
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header bg-warning">Kesimpulan</div>
-                            <div class="card-body">
-                                {{ $formkhusus['telingakanan'][0]->kesimpulan}}
+                    @if ($formkhusus['cek2'] > 0)
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header bg-warning">Kesimpulan</div>
+                                <div class="card-body">
+                                    {{ $formkhusus['telingakanan'][0]->kesimpulan }}
+                                </div>
                             </div>
                         </div>
-                    </div>
                     @endif
-                    @if($formkhusus['cek2'] > 0 )
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header bg-warning">Anjuran</div>
-                            <div class="card-body">
-                                {{ $formkhusus['telingakanan'][0]->anjuran}}
+                    @if ($formkhusus['cek2'] > 0)
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header bg-warning">Anjuran</div>
+                                <div class="card-body">
+                                    {{ $formkhusus['telingakanan'][0]->anjuran }}
+                                </div>
                             </div>
                         </div>
-                    </div>
                     @endif
                 </div>
                 <div class="row mt-2">
@@ -680,254 +714,253 @@
                         <div class="card">
                             <div class="card-header bg-warning">Hidung Kanan</div>
                             <div class="card-body">
-                                @if($formkhusus['cek3'] > 0 )
-                                <table class="table table-sm">
-                                    <tr>
-                                        <td>Kavum Nasi</td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Lapang" value="1" @if($formkhusus['hidungkanan'][0]->KN_Lapang == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Lapang</label>
+                                @if ($formkhusus['cek3'] > 0)
+                                    <table class="table table-sm">
+                                        <tr>
+                                            <td>Kavum Nasi</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Lapang" value="1"
+                                                                @if ($formkhusus['hidungkanan'][0]->KN_Lapang == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Lapang</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Sempit" value="1"
+                                                                @if ($formkhusus['hidungkanan'][0]->KN_Sempit == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Sempit</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Mukosa Pucat" value="1"
+                                                                @if ($formkhusus['hidungkanan'][0]->KN_Mukosa_pucat == '1') checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Mukosa
+                                                                Pucat</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Mukosa Hiperemis" value="1"
+                                                                @if ($formkhusus['hidungkanan'][0]->KN_Mukosa_hiperemis == '1') checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Mukosa
+                                                                Hiperemis</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Kavum Nasi Mukosa Edema"
+                                                                value="1"
+                                                                @if ($formkhusus['hidungkanan'][0]->KN_Mukosa_edema == '1') checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Kavum
+                                                                Nasi Mukosa
+                                                                Edema</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Massa" value="1"
+                                                                @if ($formkhusus['hidungkanan'][0]->KN_Massa == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Massa</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Kavum Nasi Polip" value="1"
+                                                                @if ($formkhusus['hidungkanan'][0]->KN_Polip == '1') checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Kavum
+                                                                Nasi
+                                                                Polip</label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Sempit" value="1" @if($formkhusus['hidungkanan'][0]->KN_Sempit == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Sempit</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Konka Inferior</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Eutrofi" value="1"
+                                                                @if ($formkhusus['hidungkanan'][0]->KI_Eutrofi == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Eutrofi</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Hipertrofi" value="1"
+                                                                @if ($formkhusus['hidungkanan'][0]->KI_Hipertrofi == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Hipertrofi</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Atrofi" value="1"
+                                                                @if ($formkhusus['hidungkanan'][0]->KI_Atrofi == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Atrofi</label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Mukosa Pucat" value="1" @if($formkhusus['hidungkanan'][0]->KN_Mukosa_pucat == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Mukosa Pucat</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Meatus Medius</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Terbuka" value="1"
+                                                                @if ($formkhusus['hidungkanan'][0]->MM_Terbuka == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Terbuka</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Tertutup" value="1"
+                                                                @if ($formkhusus['hidungkanan'][0]->MM_Tertutup == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Tertutup</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Mukosa Edema" value="1"
+                                                                @if ($formkhusus['hidungkanan'][0]->MM_Mukosa_Edema == '1') checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Mukosa
+                                                                Edema</label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Mukosa Hiperemis" value="1" @if($formkhusus['hidungkanan'][0]->KN_Mukosa_hiperemis == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Mukosa
-                                                            Hiperemis</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Septum</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Septum Polip" value="1"
+                                                                @if ($formkhusus['hidungkanan'][0]->S_Polip == '1') checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Septum
+                                                                Polip</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Sekret" value="1"
+                                                                @if ($formkhusus['hidungkanan'][0]->S_Sekret == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Sekret</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Lurus" value="1"
+                                                                @if ($formkhusus['hidungkanan'][0]->S_Lurus == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Lurus</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Deviasi" value="1"
+                                                                @if ($formkhusus['hidungkanan'][0]->S_Deviasi == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Deviasi</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Spina" value="1"
+                                                                @if ($formkhusus['hidungkanan'][0]->S_Spina == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Spina</label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Kavum Nasi Mukosa Edema"
-                                                            value="1" @if($formkhusus['hidungkanan'][0]->KN_Mukosa_edema == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Kavum Nasi Mukosa
-                                                            Edema</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Nasofaring</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Normal" value="1"
+                                                                @if ($formkhusus['hidungkanan'][0]->N_Normal == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Normal</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Adenoid" value="1"
+                                                                @if ($formkhusus['hidungkanan'][0]->N_Adenoid == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Adenoid</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Keradangan" value="1"
+                                                                @if ($formkhusus['hidungkanan'][0]->N_Keradangan == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Keradangan</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Massa" value="1"
+                                                                @if ($formkhusus['hidungkanan'][0]->N_Massa == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Massa</label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Massa" value="1" @if($formkhusus['hidungkanan'][0]->KN_Massa == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Massa</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Kavum Nasi Polip" value="1" @if($formkhusus['hidungkanan'][0]->KN_Polip == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Kavum Nasi
-                                                            Polip</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Konka Inferior</td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Eutrofi" value="1" @if($formkhusus['hidungkanan'][0]->KI_Eutrofi == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Eutrofi</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Hipertrofi" value="1" @if($formkhusus['hidungkanan'][0]->KI_Hipertrofi == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Hipertrofi</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Atrofi" value="1" @if($formkhusus['hidungkanan'][0]->KI_Atrofi == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Atrofi</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Meatus Medius</td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Terbuka" value="1" @if($formkhusus['hidungkanan'][0]->MM_Terbuka == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Terbuka</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Tertutup" value="1" @if($formkhusus['hidungkanan'][0]->MM_Tertutup == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Tertutup</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Mukosa Edema" value="1" @if($formkhusus['hidungkanan'][0]->MM_Mukosa_Edema == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Mukosa Edema</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Septum</td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Septum Polip" value="1" @if($formkhusus['hidungkanan'][0]->S_Polip == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Septum Polip</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Sekret" value="1" @if($formkhusus['hidungkanan'][0]->S_Sekret == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Sekret</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Lurus" value="1" @if($formkhusus['hidungkanan'][0]->S_Lurus == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Lurus</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Deviasi" value="1" @if($formkhusus['hidungkanan'][0]->S_Deviasi == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Deviasi</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Spina" value="1" @if($formkhusus['hidungkanan'][0]->S_Spina == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Spina</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Nasofaring</td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Normal" value="1" @if($formkhusus['hidungkanan'][0]->N_Normal == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Normal</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Adenoid" value="1" @if($formkhusus['hidungkanan'][0]->N_Adenoid == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Adenoid</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Keradangan" value="1" @if($formkhusus['hidungkanan'][0]->N_Keradangan == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Keradangan</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Massa" value="1" @if($formkhusus['hidungkanan'][0]->N_Massa == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Massa</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Lain - Lain</td>
-                                        <td>
-                                            <textarea class="form-control" name="lain-lain">{{ $formkhusus['hidungkanan'][0]->lain_lain }}</textarea>
-                                        </td>
-                                    </tr>
-                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lain - Lain</td>
+                                            <td>
+                                                <textarea class="form-control" name="lain-lain">{{ $formkhusus['hidungkanan'][0]->lain_lain }}</textarea>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 @else
-                                <h5 class="text-danger">Tidak ada pemeriksaan khusus</h5>
+                                    <h5 class="text-danger">Tidak ada pemeriksaan khusus</h5>
                                 @endif
                             </div>
                         </div>
@@ -936,269 +969,600 @@
                         <div class="card">
                             <div class="card-header bg-warning">Hidung Kiri</div>
                             <div class="card-body">
-                                @if($formkhusus['cek4'] > 0 )
-                                <table class="table table-sm">
-                                    <tr>
-                                        <td>Kavum Nasi</td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Lapang" value="1" @if($formkhusus['hidungkiri'][0]->KN_Lapang == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Lapang</label>
+                                @if ($formkhusus['cek4'] > 0)
+                                    <table class="table table-sm">
+                                        <tr>
+                                            <td>Kavum Nasi</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Lapang" value="1"
+                                                                @if ($formkhusus['hidungkiri'][0]->KN_Lapang == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Lapang</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Sempit" value="1"
+                                                                @if ($formkhusus['hidungkiri'][0]->KN_Sempit == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Sempit</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Mukosa Pucat" value="1"
+                                                                @if ($formkhusus['hidungkiri'][0]->KN_Mukosa_pucat == '1') checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Mukosa
+                                                                Pucat</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Mukosa Hiperemis" value="1"
+                                                                @if ($formkhusus['hidungkiri'][0]->KN_Mukosa_hiperemis == '1') checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Mukosa
+                                                                Hiperemis</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Kavum Nasi Mukosa Edema"
+                                                                value="1"
+                                                                @if ($formkhusus['hidungkiri'][0]->KN_Mukosa_edema == '1') checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Kavum
+                                                                Nasi Mukosa
+                                                                Edema</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Massa" value="1"
+                                                                @if ($formkhusus['hidungkiri'][0]->KN_Massa == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Massa</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Kavum Nasi Polip" value="1"
+                                                                @if ($formkhusus['hidungkiri'][0]->KN_Polip == '1') checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Kavum
+                                                                Nasi
+                                                                Polip</label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Sempit" value="1" @if($formkhusus['hidungkiri'][0]->KN_Sempit == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Sempit</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Konka Inferior</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Eutrofi" value="1"
+                                                                @if ($formkhusus['hidungkiri'][0]->KI_Eutrofi == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Eutrofi</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Hipertrofi" value="1"
+                                                                @if ($formkhusus['hidungkiri'][0]->KI_Hipertrofi == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Hipertrofi</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Atrofi" value="1"
+                                                                @if ($formkhusus['hidungkiri'][0]->KI_Atrofi == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Atrofi</label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Mukosa Pucat" value="1" @if($formkhusus['hidungkiri'][0]->KN_Mukosa_pucat == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Mukosa Pucat</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Meatus Medius</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Terbuka" value="1"
+                                                                @if ($formkhusus['hidungkiri'][0]->MM_Terbuka == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Terbuka</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Tertutup" value="1"
+                                                                @if ($formkhusus['hidungkiri'][0]->MM_Tertutup == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Tertutup</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Mukosa Edema" value="1"
+                                                                @if ($formkhusus['hidungkiri'][0]->MM_Mukosa_Edema == '1') checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Mukosa
+                                                                Edema</label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Mukosa Hiperemis" value="1" @if($formkhusus['hidungkiri'][0]->KN_Mukosa_hiperemis == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Mukosa
-                                                            Hiperemis</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Septum</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Septum Polip" value="1"
+                                                                @if ($formkhusus['hidungkiri'][0]->S_Polip == '1') checked @endif>
+                                                            <label class="form-check-label" for="exampleCheck1">Septum
+                                                                Polip</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Sekret" value="1"
+                                                                @if ($formkhusus['hidungkiri'][0]->S_Sekret == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Sekret</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Lurus" value="1"
+                                                                @if ($formkhusus['hidungkiri'][0]->S_Lurus == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Lurus</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Deviasi" value="1"
+                                                                @if ($formkhusus['hidungkiri'][0]->S_Deviasi == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Deviasi</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Spina" value="1"
+                                                                @if ($formkhusus['hidungkiri'][0]->S_Spina == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Spina</label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Kavum Nasi Mukosa Edema"
-                                                            value="1" @if($formkhusus['hidungkiri'][0]->KN_Mukosa_edema == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Kavum Nasi Mukosa
-                                                            Edema</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Nasofaring</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Normal" value="1"
+                                                                @if ($formkhusus['hidungkiri'][0]->N_Normal == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Normal</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Adenoid" value="1"
+                                                                @if ($formkhusus['hidungkiri'][0]->N_Adenoid == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Adenoid</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Keradangan" value="1"
+                                                                @if ($formkhusus['hidungkiri'][0]->N_Keradangan == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Keradangan</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="" name="Massa" value="1"
+                                                                @if ($formkhusus['hidungkiri'][0]->N_Massa == '1') checked @endif>
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Massa</label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Massa" value="1" @if($formkhusus['hidungkiri'][0]->KN_Massa == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Massa</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Kavum Nasi Polip" value="1" @if($formkhusus['hidungkiri'][0]->KN_Polip == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Kavum Nasi
-                                                            Polip</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Konka Inferior</td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Eutrofi" value="1" @if($formkhusus['hidungkiri'][0]->KI_Eutrofi == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Eutrofi</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Hipertrofi" value="1" @if($formkhusus['hidungkiri'][0]->KI_Hipertrofi == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Hipertrofi</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Atrofi" value="1" @if($formkhusus['hidungkiri'][0]->KI_Atrofi == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Atrofi</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Meatus Medius</td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Terbuka" value="1" @if($formkhusus['hidungkiri'][0]->MM_Terbuka == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Terbuka</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Tertutup" value="1" @if($formkhusus['hidungkiri'][0]->MM_Tertutup == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Tertutup</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Mukosa Edema" value="1" @if($formkhusus['hidungkiri'][0]->MM_Mukosa_Edema == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Mukosa Edema</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Septum</td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Septum Polip" value="1" @if($formkhusus['hidungkiri'][0]->S_Polip == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Septum Polip</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Sekret" value="1" @if($formkhusus['hidungkiri'][0]->S_Sekret == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Sekret</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Lurus" value="1" @if($formkhusus['hidungkiri'][0]->S_Lurus == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Lurus</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Deviasi" value="1" @if($formkhusus['hidungkiri'][0]->S_Deviasi == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Deviasi</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Spina" value="1" @if($formkhusus['hidungkiri'][0]->S_Spina == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Spina</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Nasofaring</td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Normal" value="1" @if($formkhusus['hidungkiri'][0]->N_Normal == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Normal</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Adenoid" value="1" @if($formkhusus['hidungkiri'][0]->N_Adenoid == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Adenoid</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Keradangan" value="1" @if($formkhusus['hidungkiri'][0]->N_Keradangan == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Keradangan</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check">
-                                                        <input type="checkbox"
-                                                            class="form-check-input" id=""
-                                                            name="Massa" value="1" @if($formkhusus['hidungkiri'][0]->N_Massa == '1')checked @endif>
-                                                        <label class="form-check-label"
-                                                            for="exampleCheck1">Massa</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Lain - Lain</td>
-                                        <td>
-                                            <textarea class="form-control" name="lain-lain">{{ $formkhusus['hidungkiri'][0]->lain_lain }}</textarea>
-                                        </td>
-                                    </tr>
-                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lain - Lain</td>
+                                            <td>
+                                                <textarea class="form-control" name="lain-lain">{{ $formkhusus['hidungkiri'][0]->lain_lain }}</textarea>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 @else
-                                <h5 class="text-danger">Tidak ada pemeriksaan khusus</h5>
+                                    <h5 class="text-danger">Tidak ada pemeriksaan khusus</h5>
                                 @endif
                             </div>
                         </div>
                     </div>
-                    @if($formkhusus['cek3'] > 0 )
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header bg-warning">Kesimpulan</div>
-                            <div class="card-body">
-                                {{ $formkhusus['hidungkanan'][0]->kesimpulan}}
+                    @if ($formkhusus['cek3'] > 0)
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header bg-warning">Kesimpulan</div>
+                                <div class="card-body">
+                                    {{ $formkhusus['hidungkanan'][0]->kesimpulan }}
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            @elseif($formkhusus['keterangan'] == 'mata')
+                @if ($formkhusus['cek'] > 0)
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header bg-warning">Mata Kanan</div>
+                                <div class="card-body">
+                                    <img src="{{ $formkhusus['mata'][0]->matakanan }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header bg-warning">Mata Kanan</div>
+                                <div class="card-body">
+                                    <img src="{{ $formkhusus['mata'][0]->matakiri }}">
+                                </div>
                             </div>
                         </div>
                     </div>
-                    @endif
-                </div>
+                    <div class="col-md-12">
+                        <table class="table table-sm">
+                            <tr>
+                                <td rowspan="2">Visus Dasar</td>
+                                <td>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">OD</span>
+                                        </div>
+                                        <input readonly type="text" class="form-control" aria-label="Amount (to the nearest dollar)"
+                                            id="od_visus_dasar" name="od_visus_dasar" value="{{ $formkhusus['mata'][0]->vd_od }}">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">PINHOLE</span>
+                                        </div>
+                                        <input readonly type="text" class="form-control" aria-label="Amount (to the nearest dollar)"
+                                            name="od_pinhole_visus_dasar" id="od_pinhole_visus_dasar"
+                                            value="{{ $formkhusus['mata'][0]->vd_od_pinhole }}">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">OS</span>
+                                        </div>
+                                        <input readonly name="os_visus_dasar" id="os_visus_dasar" value="{{ $formkhusus['mata'][0]->vd_os }}" type="text"
+                                            class="form-control" aria-label="Amount (to the nearest dollar)">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">PINHOLE</span>
+                                        </div>
+                                        <input readonly name="os_pinhole_visus_dasar" id="os_pinhole_visus_dasar" type="text"
+                                            class="form-control" value="{{ $formkhusus['mata'][0]->vd_os_pinhole }}"
+                                            aria-label="Amount (to the nearest dollar)">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2">Refraktometer / streak</td>
+                                <td>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">OD : Sph</span>
+                                        </div>
+                                        <input readonly name="od_sph_refraktometer" value="{{ $formkhusus['mata'][0]->refraktometer_od_sph }}"
+                                            id="od_sph_refraktometer" type="text" class="form-control"
+                                            aria-label="Amount (to the nearest dollar)">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Cyl</span>
+                                        </div>
+                                        <input readonly type="text" value="{{ $formkhusus['mata'][0]->refraktometer_od_cyl }}" id="od_cyl_refraktometer"
+                                            name="od_cyl_refraktometer" class="form-control"
+                                            aria-label="Amount (to the nearest dollar)">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">X</span>
+                                        </div>
+                                        <input readonly id="od_x_refraktometer" value="{{ $formkhusus['mata'][0]->refraktometer_od_x }}"
+                                            name="od_x_refraktometer" type="text" class="form-control"
+                                            aria-label="Amount (to the nearest dollar)">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">OS : Sph</span>
+                                        </div>
+                                        <input readonly id="os_sph_refraktometer" value="{{ $formkhusus['mata'][0]->refraktometer_os_sph }}"
+                                            name="os_sph_refraktometer" type="text" class="form-control"
+                                            aria-label="Amount (to the nearest dollar)">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Cyl</span>
+                                        </div>
+                                        <input readonly id="os_cyl_refraktometer" value="{{ $formkhusus['mata'][0]->refraktometer_os_cyl }}"
+                                            name="os_cyl_refraktometer" type="text" class="form-control"
+                                            aria-label="Amount (to the nearest dollar)">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">X</span>
+                                        </div>
+                                        <input readonly id="os_x_refraktometer" value="{{ $formkhusus['mata'][0]->refraktometer_os_x }}"
+                                            name="os_x_refraktometer" type="text" class="form-control"
+                                            aria-label="Amount (to the nearest dollar)">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2">Lensometer</td>
+                                <td>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">OD : Sph</span>
+                                        </div>
+                                        <input readonly id="od_sph_Lensometer" value="{{ $formkhusus['mata'][0]->Lensometer_od_sph }}"
+                                            name="od_sph_Lensometer" type="text" class="form-control"
+                                            aria-label="Amount (to the nearest dollar)">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Cyl</span>
+                                        </div>
+                                        <input readonly id="od_cyl_Lensometer" value="{{ $formkhusus['mata'][0]->Lensometer_od_cyl }}"
+                                            name="od_cyl_Lensometer" type="text" class="form-control"
+                                            aria-label="Amount (to the nearest dollar)">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">X</span>
+                                        </div>
+                                        <input readonly id="od_x_Lensometer" value="{{ $formkhusus['mata'][0]->Lensometer_od_x }}" name="od_x_Lensometer"
+                                            type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">OS : Sph</span>
+                                        </div>
+                                        <input readonly id="os_sph_Lensometer" value="{{ $formkhusus['mata'][0]->Lensometer_os_sph }}"
+                                            name="os_sph_Lensometer" type="text" class="form-control"
+                                            aria-label="Amount (to the nearest dollar)">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Cyl</span>
+                                        </div>
+                                        <input readonly id="os_cyl_Lensometer" value="{{ $formkhusus['mata'][0]->Lensometer_os_cyl }}"
+                                            name="os_cyl_Lensometer" type="text" class="form-control"
+                                            aria-label="Amount (to the nearest dollar)">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">X</span>
+                                        </div>
+                                        <input readonly id="os_x_Lensometer" value="{{ $formkhusus['mata'][0]->Lensometer_os_x }}" name="os_x_Lensometer"
+                                            type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2">Koreksi penglihatan jauh</td>
+                                <td>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">VOD : Sph</span>
+                                        </div>
+                                        <input readonly id="vod_sph_kpj" value="{{ $formkhusus['mata'][0]->koreksipenglihatan_vod_sph }}" name="vod_sph_kpj"
+                                            type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Cyl</span>
+                                        </div>
+                                        <input readonly id="vod_cyl_kpj" value="{{ $formkhusus['mata'][0]->koreksipenglihatan_vod_cyl }}" name="vod_cyl_kpj"
+                                            type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">X</span>
+                                        </div>
+                                        <input readonly id="vod_x_kpj" value="{{ $formkhusus['mata'][0]->koreksipenglihatan_vod_x }}" name="vod_x_kpj"
+                                            type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">VOS : Sph</span>
+                                        </div>
+                                        <input readonly  type="text" id="vos_sph_kpj" value="{{ $formkhusus['mata'][0]->koreksipenglihatan_vos_sph }}"
+                                            name="vos_sph_kpj" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Cyl</span>
+                                        </div>
+                                        <input readonly id="vos_cyl_kpj" value="{{ $formkhusus['mata'][0]->koreksipenglihatan_vos_cyl }}" name="vos_cyl_kpj"
+                                            type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">X</span>
+                                        </div>
+                                        <input readonly id="vos_x_kpj" value="{{ $formkhusus['mata'][0]->koreksipenglihatan_vos_x }}" name="vos_x_kpj"
+                                            type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Tajam penglihatan dekat</td>
+                                <td colspan="3">
+                                    <textarea readonly class="form-control" id="penglihatan_dekat" name="penglihatan_dekat">{{ $formkhusus['mata'][0]->tajampenglihatandekat }}</textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Tekanan Intra Okular</td>
+                                <td colspan="3">
+                                    <textarea readonly class="form-control" id="tekanan_intra_okular" name="tekanan_intra_okular">{{ $formkhusus['mata'][0]->tekananintraokular }}</textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Catatan Pemeriksaan Lainnya</td>
+                                <td colspan="3">
+                                    <textarea readonly class="form-control" name="catatan_pemeriksaan_lainnya"
+                                        id="catatan_pemerikssaan_lainnya">{{ $formkhusus['mata'][0]->catatanpemeriksaanlain }}</textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Palpebra</td>
+                                <td colspan="3"><input class="form-control" readonly value="{{ $formkhusus['mata'][0]->palpebra }}" id="palpebra"
+                                        name="palpebra"></input></td>
+                            </tr>
+                            <tr>
+                                <td>Konjungtiva</td>
+                                <td colspan="3"><input class="form-control" readonly value="{{ $formkhusus['mata'][0]->konjungtiva }}" id="konjungtiva"
+                                        name="konjungtiva"></input></td>
+                            </tr>
+                            <tr>
+                                <td>Kornea</td>
+                                <td colspan="3"><input class="form-control" readonly value="{{ $formkhusus['mata'][0]->kornea }}" name="kornea"
+                                        id="kornea"></input></td>
+                            </tr>
+                            <tr>
+                                <td>Bilik Mata Depan</td>
+                                <td colspan="3"><input class="form-control" readonly value="{{ $formkhusus['mata'][0]->bilikmatadepan }}"
+                                        name="bilik_mata_depan" id="bilik_mata_depan"></input></td>
+                            </tr>
+                            <tr>
+                                <td>Pupil</td>
+                                <td colspan="3"><input class="form-control" readonly value="{{ $formkhusus['mata'][0]->pupil }}" id="pupil"
+                                        name="pupil"></input></td>
+                            </tr>
+                            <tr>
+                                <td>Iris</td>
+                                <td colspan="3"><input class="form-control" readonly value="{{ $formkhusus['mata'][0]->iris }}" name="iris"
+                                        id="iris"></input></td>
+                            </tr>
+                            <tr>
+                                <td>Lensa</td>
+                                <td colspan="3"><input class="form-control" readonly value="{{ $formkhusus['mata'][0]->lensa }}" name="lensa"
+                                        id="lensa"></input></td>
+                            </tr>
+                            <tr>
+                                <td>Funduskopi</td>
+                                <td colspan="3"><input class="form-control" readonly value="{{ $formkhusus['mata'][0]->funduskopi }}" name="funduskopi"
+                                        id="funduskopi"></input></td>
+                            </tr>
+                            <tr>
+                                <td>Status Oftalmologis Khusus</td>
+                                <td colspan="3">
+                                    <textarea readonly class="form-control" name="oftamologis" id="oftamologis">{{ $formkhusus['mata'][0]->status_oftamologis_khusus }}</textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Masalah Medis</td>
+                                <td colspan="3">
+                                    <textarea readonly class="form-control" name="masalahmedis" id="masalahmedis">{{ $formkhusus['mata'][0]->masalahmedis }}</textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Prognosis</td>
+                                <td colspan="3">
+                                    <textarea readonly class="form-control" name="prognosis" id="prognosis">{{ $formkhusus['mata'][0]->prognosis }}</textarea>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                @endif
             @endif
             <div class="card">
                 <div class="card-header bg-danger">Riwayat Tindakan</div>
@@ -1211,10 +1575,10 @@
                             <th>Jumlah</th>
                         </thead>
                         <tbody>
-                            @foreach ( $riwayat_tindakan as $r )
+                            @foreach ($riwayat_tindakan as $r)
                                 <tr>
-                                    <td>{{ $r->kode_layanan_header}}</td>
-                                    <td>{{ $r->id_detail}}</td>
+                                    <td>{{ $r->kode_layanan_header }}</td>
+                                    <td>{{ $r->id_detail }}</td>
                                     <td>{{ $r->NAMA_TARIF }}</td>
                                     <td>{{ $r->jumlah_layanan }}</td>
                                 </tr>
@@ -1233,21 +1597,24 @@
                         <td class="text-bold text-md">{{ $resume[0]->nama_dokter }}</td>
                         <td>
                             @if ($resume[0]->signature == '')
-                                <div id="signature-pad">
-                                    <div
-                                        style="border:solid 1px teal; width:360px;height:110px;padding:3px;position:relative;">
-                                        <div id="note" onmouseover="my_function();">tulis tanda tangan didalam
-                                            box ...
+                                @if ($resume[0]->pic == auth()->user()->id || $resume[0]->pic == '')
+                                    <div id="signature-pad">
+                                        <div
+                                            style="border:solid 1px teal; width:360px;height:110px;padding:3px;position:relative;">
+                                            <div id="note" onmouseover="my_function();">tulis tanda tangan
+                                                didalam
+                                                box ...
+                                            </div>
+                                            <canvas id="the_canvas" width="350px" height="100px"></canvas>
                                         </div>
-                                        <canvas id="the_canvas" width="350px" height="100px"></canvas>
+                                        <div style="margin:10px;">
+                                            <input hidden type="" id="signature" name="signature">
+                                            <button type="button" id="clear_btn" class="btn btn-danger"
+                                                data-action="clear"><span class="glyphicon glyphicon-remove"></span>
+                                                Clear</button>
+                                        </div>
                                     </div>
-                                    <div style="margin:10px;">
-                                        <input hidden type="" id="signature" name="signature">
-                                        <button type="button" id="clear_btn" class="btn btn-danger"
-                                            data-action="clear"><span class="glyphicon glyphicon-remove"></span>
-                                            Clear</button>
-                                    </div>
-                                </div>
+                                @endif
                             @else
                                 <img src="{{ $resume[0]->signature }}" alt="">
                             @endif
@@ -1256,7 +1623,9 @@
                 </tbody>
             </table>
             @if ($resume[0]->signature == '')
-                <button class="btn btn-success float-right" onclick="simpantandatangan()">Simpan</button>
+                @if ($resume[0]->pic == auth()->user()->id || $resume[0]->pic == '')
+                    <button class="btn btn-success float-right" onclick="simpantandatangan()">Simpan</button>
+                @endif
             @endif
         @else
             <div class="error-content">

@@ -36,6 +36,7 @@
             </div>
             <div class="card-body p-0">
                 <ul class="nav nav-pills flex-column">
+                    @if($pic == auth()->user()->id || $pic == '')
                     <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formpemeriksaandokter()">
                             <i class="fas fa-inbox mr-2"></i>Assesmen Awal Medis
@@ -51,6 +52,7 @@
                             <i class="fas fa-inbox mr-2"></i>Input Tindakan
                         </a>
                     </li>
+                    @endif
                     <li class="nav-item">
                         <a href="#" class="nav-link" onclick="resume()">
                             <i class="fas fa-filter mr-2"></i> Resume

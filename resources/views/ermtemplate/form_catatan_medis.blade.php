@@ -262,6 +262,13 @@
                                                         <td>{{ $k->statusgeneralis }}</td>
                                                     </tr>
                                                     <tr>
+                                                        <td colspan="4" class="text-bold bg-danger">Pemeriksaan Fisik
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">{{ $k->pemeriksaan_fisik }}</td>
+                                                    </tr>
+                                                    <tr>
                                                         <td colspan="4" class="text-bold bg-danger">Pemeriksaan Umum
                                                         </td>
                                                     </tr>
