@@ -10,6 +10,8 @@ use App\Models\assesmenawalperawat;
 use App\Models\assesmenawaldokter;
 use App\Models\ermtht_telinga;
 use App\Models\erm_tht_hidung;
+use App\Models\erm_gambar_gigi;
+use App\Models\erm_catatan_gambar;
 use App\Models\erm_mata_kanan_kiri;
 use App\Models\ts_layanan_detail_dummy;
 use App\Models\ts_layanan_header_dummy;
@@ -59,7 +61,7 @@ class ErmController extends Controller
     }
     public function ambildetailpasien_dokter(Request $request)
     {
-        $mt_pasien = DB::select('Select nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$request->rm]);
+        $mt_pasien = DB::select('Select no_rm,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$request->rm]);
         $kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$request->kode]);
         $pic = $request->pic;
         return view('ermdokter.formdokter', compact([
@@ -70,7 +72,7 @@ class ErmController extends Controller
     }
     public function ambildetailpasien(Request $request)
     {
-        $mt_pasien = DB::select('Select nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$request->rm]);
+        $mt_pasien = DB::select('Select no_rm,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$request->rm]);
         $kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$request->kode]);
         return view('ermperawat.formperawat', compact([
             'mt_pasien',
@@ -96,9 +98,15 @@ class ErmController extends Controller
                 'resume'
             ]));
         } else {
-            return view('ermperawat.formpemeriksaan', compact([
-                'kunjungan'
-            ]));
+            if ($kunjungan[0]->kode_unit == '1002') {
+                return view('ermperawat.formpemeriksaanigd', compact([
+                    'kunjungan'
+                ]));
+            } else {
+                return view('ermperawat.formpemeriksaan', compact([
+                    'kunjungan'
+                ]));
+            }
         }
     }
     public function formpemeriksaan_dokter(Request $request)
@@ -158,24 +166,29 @@ class ErmController extends Controller
                         'resume'
                     ]));
                 }
-            }
-            else if($unit == '1014'){
+            } else if ($unit == '1014') {
                 $cek = DB::SELECT('select * from erm_mata_kanan_kiri where id_assesmen_dokter = ?', [$resume[0]->id]);
-                if(count($cek) > 0){
-                    return view('erm_form_khusus.form_mata_edit',compact([
+                if (count($cek) > 0) {
+                    return view('erm_form_khusus.form_mata_edit', compact([
                         'resume',
                         'kunjungan',
                         'cek'
                     ]));
-                }else{
-                    return view('erm_form_khusus.form_mata',compact([
+                } else {
+                    return view('erm_form_khusus.form_mata', compact([
                         'resume',
                         'kunjungan'
                     ]));
-               }
-            }
-            else{
-                return view('erm_form_khusus.form_not_found');
+                }
+            } else if ($unit == '1007') {
+                return view('erm_form_khusus.form_gigi', compact([
+                    'resume',
+                    'kunjungan'
+                ]));
+            } else {
+                return view('erm_form_khusus.gambarbebas', compact([
+                    'resume'
+                ]));
             }
         } else {
             return view('ermtemplate.data1tidakditemukan');
@@ -442,7 +455,7 @@ class ErmController extends Controller
     public function resumepasien_dokter(Request $request)
     {
         $resume = DB::select('SELECT * from assesmen_dokters WHERE id_kunjungan = ? AND id_pasien = ?', [$request->kodekunjungan, $request->nomorrm]);
-        if(count($resume) > 0 ){
+        if (count($resume) > 0) {
             if ($resume[0]->kode_unit == '1019') {
                 $kanan = DB::SELECT('select * from erm_tht_telinga where kode_kunjungan = ? and keterangan = ?', [$request->kodekunjungan, 'telinga kanan']);
                 $kiri = DB::SELECT('select * from erm_tht_telinga where kode_kunjungan = ? and keterangan = ?', [$request->kodekunjungan, 'telinga kiri']);
@@ -459,20 +472,29 @@ class ErmController extends Controller
                     'hidungkiri' => $hidungkiri,
                     'cek4' => count($hidungkiri),
                 ];
-            }elseif($resume[0]->kode_unit == '1014'){
+            } elseif ($resume[0]->kode_unit == '1014') {
                 $mata = DB::SELECT('select * from erm_mata_kanan_kiri where kode_kunjungan = ?', [$request->kodekunjungan]);
                 $formkhusus = [
                     'keterangan' => 'mata',
                     'mata' => $mata,
                     'cek' => count($mata)
                 ];
-            }
-            else{
+            } else if ($resume[0]->kode_unit == '1007') {
+                $gigi = DB::SELECT('select * from erm_gambar_gigi where kode_kunjungan = ?', [$request->kodekunjungan]);
                 $formkhusus = [
-                    'keterangan' => '?',
+                    'keterangan' => 'gigi',
+                    'gigi' => $gigi,
+                    'cek' => count($gigi)
+                ];
+            } else {
+                $gambar = DB::SELECT('select * from erm_catatan_gambar where kode_kunjungan = ? and kode_unit = ?', [$request->kodekunjungan, auth()->user()->unit]);
+                $formkhusus = [
+                    'keterangan' => 'allin',
+                    'gambar' => $gambar,
+                    'cek' => count($gambar)
                 ];
             }
-        }else{
+        } else {
             // $formkhusus = [];
         }
         $riwayat_tindakan = DB::connection('mysql4')->select("SELECT a.kode_kunjungan,b.id AS id_header,C.id AS id_detail,c.jumlah_layanan,b.kode_layanan_header,c.`kode_tarif_detail`,e.`NAMA_TARIF` FROM simrs_waled.ts_kunjungan a
@@ -1074,7 +1096,7 @@ class ErmController extends Controller
             $value =  $nama['value'];
             $dataSet[$index] = $value;
         }
-       $datamata = [
+        $datamata = [
             'id_assesmen_dokter' => $request->idassesmen,
             'no_rm' => $request->nomorrm,
             'nama_dokter' => auth()->user()->nama,
@@ -1196,6 +1218,110 @@ class ErmController extends Controller
             die;
         }
     }
+    public function simpanformgigi(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        $datagigi = [
+            'id_assesmen_dokter' => $request->idassesmen,
+            'no_rm' => $request->nomorrm,
+            'nama_dokter' => auth()->user()->nama,
+            'id_dokter' => auth()->user()->id,
+            'kode_kunjungan' => $kodekunjungan,
+            'tgl_entry' => $this->get_now(),
+            'status' => '0',
+            'gambargigi' => $request->gambargigi
+        ];
+        try {
+            $cek = DB::select('select * from erm_gambar_gigi where id_assesmen_dokter = ? and kode_kunjungan = ?', [$request->idassesmen, $kodekunjungan]);
+            if (count($cek) > 0) {
+                $datagigi = [
+                    'id_assesmen_dokter' => $request->idassesmen,
+                    'no_rm' => $request->nomorrm,
+                    'nama_dokter' => auth()->user()->nama,
+                    'id_dokter' => auth()->user()->id,
+                    'kode_kunjungan' => $kodekunjungan,
+                    'tgl_update' => $this->get_now(),
+                    'status' => '0',
+                    'gambargigi' => $request->gambargigi
+                ];
+                erm_gambar_gigi::whereRaw('id_assesmen_dokter = ? and kode_kunjungan = ?', array($request->idassesmen, $kodekunjungan))->update($datagigi);
+            } else {
+                erm_gambar_gigi::create($datagigi);
+            }
+            $data = [
+                // 'tanggalassemen' => $this->get_now(),
+                'status' => '0',
+                'signature' => ''
+            ];
+            assesmenawaldokter::whereRaw('id_kunjungan = ?', array($kodekunjungan))->update($data);
+            $data = [
+                'kode' => 200,
+                'message' => 'Data berhasil disimpan !'
+            ];
+            echo json_encode($data);
+            die;
+        } catch (\Exception $e) {
+            $data = [
+                'kode' => 500,
+                'message' => $e->getMessage()
+            ];
+            echo json_encode($data);
+            die;
+        }
+    }
+    public function simpangambarbebas(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        $datapolos = [
+            'id_assesmen_dokter' => $request->idassesmen,
+            'no_rm' => $request->nomorrm,
+            'nama_dokter' => auth()->user()->nama,
+            'id_dokter' => auth()->user()->id,
+            'kode_kunjungan' => $kodekunjungan,
+            'tgl_entry' => $this->get_now(),
+            'status' => '0',
+            'kode_unit' => auth()->user()->unit,
+            'catatangambar' => $request->gambarpolos
+        ];
+        try {
+            $cek = DB::select('select * from erm_catatan_gambar where id_assesmen_dokter = ? and kode_kunjungan = ?', [$request->idassesmen, $kodekunjungan]);
+            if (count($cek) > 0) {
+                $datapolos = [
+                    'id_assesmen_dokter' => $request->idassesmen,
+                    'no_rm' => $request->nomorrm,
+                    'nama_dokter' => auth()->user()->nama,
+                    'id_dokter' => auth()->user()->id,
+                    'kode_kunjungan' => $kodekunjungan,
+                    'tgl_update' => $this->get_now(),
+                    'status' => '0',
+                    'kode_unit' => auth()->user()->unit,
+                    'catatangambar' => $request->gambarpolos
+                ];
+                erm_catatan_gambar::whereRaw('id_assesmen_dokter = ? and kode_kunjungan = ?', array($request->idassesmen, $kodekunjungan))->update($datapolos);
+            } else {
+                erm_catatan_gambar::create($datapolos);
+            }
+            $data = [
+                // 'tanggalassemen' => $this->get_now(),
+                'status' => '0',
+                'signature' => ''
+            ];
+            assesmenawaldokter::whereRaw('id_kunjungan = ?', array($kodekunjungan))->update($data);
+            $data = [
+                'kode' => 200,
+                'message' => 'Data berhasil disimpan !'
+            ];
+            echo json_encode($data);
+            die;
+        } catch (\Exception $e) {
+            $data = [
+                'kode' => 500,
+                'message' => $e->getMessage()
+            ];
+            echo json_encode($data);
+            die;
+        }
+    }
     public function createLayanandetail()
     {
         //dummy
@@ -1255,7 +1381,7 @@ class ErmController extends Controller
                 'hidungkanan',
                 'hidungkiri',
             ]));
-        }else if($kunjungan[0]->kode_unit == '1014'){
+        } else if ($kunjungan[0]->kode_unit == '1014') {
             $mata = DB::SELECT('select * from erm_mata_kanan_kiri where kode_kunjungan = ?', [$request->kodekunjungan]);
             $formkhusus = [
                 'keterangan' => 'mata',
@@ -1263,6 +1389,26 @@ class ErmController extends Controller
                 'cek' => count($mata)
             ];
             return view('ermtemplate.hasilpemeriksaan_mata', compact([
+                'formkhusus'
+            ]));
+        } else if ($kunjungan[0]->kode_unit == '1007') {
+            $gigi = DB::SELECT('select * from erm_gambar_gigi where kode_kunjungan = ?', [$request->kodekunjungan]);
+            $formkhusus = [
+                'keterangan' => 'gigi',
+                'gigi' => $gigi,
+                'cek' => count($gigi)
+            ];
+            return view('ermtemplate.hasilpemeriksaan_gigi', compact([
+                'formkhusus'
+            ]));
+        } else {
+            $gambar = DB::SELECT('select * from erm_catatan_gambar where kode_kunjungan = ? and kode_unit = ?', [$request->kodekunjungan, auth()->user()->unit]);
+            $formkhusus = [
+                'keterangan' => 'allin',
+                'gambar' => $gambar,
+                'cek' => count($gambar)
+            ];
+            return view('ermtemplate.hasilpemeriksaan_catatangambar', compact([
                 'formkhusus'
             ]));
         }
@@ -1289,199 +1435,199 @@ class ErmController extends Controller
         $x = $pdf->GetX();
         $y = $pdf->GetY();
         $pdf->SetFont('Arial', 'B', 8);
-        $pdf->SetXY($x+1, $y);
+        $pdf->SetXY($x + 1, $y);
         $pdf->Cell(10, 7, 'Keluhan Utama', 0, 1);
         $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY($x+30, $y+1);
+        $pdf->SetXY($x + 30, $y + 1);
         $pdf->MultiCell(60, 5, ': ' . $k[0]->keluhanutama);
 
         $x = $pdf->GetX();
         $y = $pdf->GetY();
         $pdf->SetFont('Arial', 'B', 8);
-        $pdf->SetXY($x+1, $y);
+        $pdf->SetXY($x + 1, $y);
         $pdf->Cell(10, 7, 'Tekanan Darah', 0, 1);
         $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY($x+30, $y+1);
-        $pdf->MultiCell(60, 5, ': ' . $k[0]->tekanandarah. ' mmHg');
+        $pdf->SetXY($x + 30, $y + 1);
+        $pdf->MultiCell(60, 5, ': ' . $k[0]->tekanandarah . ' mmHg');
 
         $x = $pdf->GetX();
         $y = $pdf->GetY();
         $pdf->SetFont('Arial', 'B', 8);
-        $pdf->SetXY($x+1, $y);
+        $pdf->SetXY($x + 1, $y);
         $pdf->Cell(10, 7, 'Frekuensi Nadi', 0, 1);
         $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY($x+30, $y+1);
-        $pdf->MultiCell(60, 5, ': ' . $k[0]->frekuensinadi. ' x/Menit');
+        $pdf->SetXY($x + 30, $y + 1);
+        $pdf->MultiCell(60, 5, ': ' . $k[0]->frekuensinadi . ' x/Menit');
 
         $x = $pdf->GetX();
         $y = $pdf->GetY();
         $pdf->SetFont('Arial', 'B', 8);
-        $pdf->SetXY($x+1, $y);
+        $pdf->SetXY($x + 1, $y);
         $pdf->Cell(10, 7, 'Frekuensi Nafas', 0, 1);
         $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY($x+30, $y+1);
-        $pdf->MultiCell(60, 5, ': ' . $k[0]->frekuensinapas. ' x/Menit');
+        $pdf->SetXY($x + 30, $y + 1);
+        $pdf->MultiCell(60, 5, ': ' . $k[0]->frekuensinapas . ' x/Menit');
 
         $x = $pdf->GetX();
         $y = $pdf->GetY();
         $pdf->SetFont('Arial', 'B', 8);
-        $pdf->SetXY($x+1, $y);
+        $pdf->SetXY($x + 1, $y);
         $pdf->Cell(10, 7, 'Suhu Tubuh', 0, 1);
         $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY($x+30, $y+1);
-        $pdf->MultiCell(45, 5, ': ' . $k[0]->suhutubuh. ' C');
+        $pdf->SetXY($x + 30, $y + 1);
+        $pdf->MultiCell(45, 5, ': ' . $k[0]->suhutubuh . ' C');
 
         $x = $pdf->GetX();
         $y = $pdf->GetY();
         $pdf->SetFont('Arial', 'B', 8);
-        $pdf->SetXY($x+1, $y);
+        $pdf->SetXY($x + 1, $y);
         $pdf->Cell(10, 7, 'Riwayat Psikologis', 0, 1);
         $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY($x+30, $y+1);
+        $pdf->SetXY($x + 30, $y + 1);
         $pdf->MultiCell(45, 5, ': ' . $k[0]->Riwayatpsikologi);
 
         $x = $pdf->GetX();
         $y = $pdf->GetY();
         $pdf->SetFont('Arial', 'B', 8);
-        $pdf->SetXY($x+1, $y);
+        $pdf->SetXY($x + 1, $y);
         $pdf->Cell(10, 7, 'Keterangan', 0, 1);
         $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY($x+30, $y+1);
+        $pdf->SetXY($x + 30, $y + 1);
         $pdf->MultiCell(45, 5, ': ' . $k[0]->keterangan_riwayat_psikolog);
 
         $x = $pdf->GetX();
-        $y = $pdf->GetY()+4;
+        $y = $pdf->GetY() + 4;
         $pdf->SetFont('Arial', 'B', 8);
-        $pdf->SetXY($x+1, $y);
+        $pdf->SetXY($x + 1, $y);
         $pdf->Cell(10, 7, 'STATUS FUNGSIONAL', 0, 1);
         $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY($x+35, $y+1);
-        $pdf->MultiCell(45, 5,'' );
+        $pdf->SetXY($x + 35, $y + 1);
+        $pdf->MultiCell(45, 5, '');
 
         $x = $pdf->GetX();
         $y = $pdf->GetY();
         $pdf->SetFont('Arial', 'B', 8);
-        $pdf->SetXY($x+1, $y);
+        $pdf->SetXY($x + 1, $y);
         $pdf->Cell(10, 7, 'Penggunaan Alat Bantu', 0, 1);
         $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY($x+35, $y+1);
+        $pdf->SetXY($x + 35, $y + 1);
         $pdf->MultiCell(45, 5, ': ' . $k[0]->penggunaanalatbantu);
 
         $x = $pdf->GetX();
         $y = $pdf->GetY();
         $pdf->SetFont('Arial', 'B', 8);
-        $pdf->SetXY($x+1, $y);
+        $pdf->SetXY($x + 1, $y);
         $pdf->Cell(10, 7, 'Keterangan Alat Bantu', 0, 1);
         $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY($x+35, $y+1);
+        $pdf->SetXY($x + 35, $y + 1);
         $pdf->MultiCell(45, 5, ': ' . $k[0]->keterangan_alat_bantu);
 
         $x = $pdf->GetX();
         $y = $pdf->GetY();
         $pdf->SetFont('Arial', 'B', 8);
-        $pdf->SetXY($x+1, $y);
+        $pdf->SetXY($x + 1, $y);
         $pdf->Cell(10, 7, 'Cacat Tubuh', 0, 1);
         $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY($x+35, $y+1);
+        $pdf->SetXY($x + 35, $y + 1);
         $pdf->MultiCell(45, 5, ': ' . $k[0]->cacattubuh);
 
         $x = $pdf->GetX();
         $y = $pdf->GetY();
         $pdf->SetFont('Arial', 'B', 7);
-        $pdf->SetXY($x+1, $y);
+        $pdf->SetXY($x + 1, $y);
         $pdf->Cell(10, 7, 'Keterangan Cacat Tubuh', 0, 1);
         $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY($x+35, $y+1);
+        $pdf->SetXY($x + 35, $y + 1);
         $pdf->MultiCell(45, 5, ': ' . $k[0]->keterangancacattubuh);
 
         $x = $pdf->GetX();
-        $y = $pdf->GetY()+4;
+        $y = $pdf->GetY() + 4;
         $pdf->SetFont('Arial', 'B', 7);
-        $pdf->SetXY($x+1, $y);
+        $pdf->SetXY($x + 1, $y);
         $pdf->Cell(10, 7, 'ASSESMEN NYERI', 0, 1);
         $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY($x+35, $y+1);
+        $pdf->SetXY($x + 35, $y + 1);
         $pdf->MultiCell(45, 5, ' ');
 
         $x = $pdf->GetX();
         $y = $pdf->GetY();
         $pdf->SetFont('Arial', 'B', 8);
-        $pdf->SetXY($x+1, $y);
+        $pdf->SetXY($x + 1, $y);
         $pdf->Cell(10, 7, 'Keluhan Nyeri', 0, 1);
         $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY($x+35, $y+1);
+        $pdf->SetXY($x + 35, $y + 1);
         $pdf->MultiCell(45, 5, ': ' . $k[0]->Keluhannyeri);
 
         $x = $pdf->GetX();
         $y = $pdf->GetY();
         $pdf->SetFont('Arial', 'B', 8);
-        $pdf->SetXY($x+1, $y);
+        $pdf->SetXY($x + 1, $y);
         $pdf->Cell(10, 7, 'Skala Nyeri', 0, 1);
         $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY($x+35, $y+1);
+        $pdf->SetXY($x + 35, $y + 1);
         $pdf->MultiCell(45, 5, ': ' . $k[0]->skalenyeripasien);
 
         $x = $pdf->GetX();
-        $y = $pdf->GetY()+4;
+        $y = $pdf->GetY() + 4;
         $pdf->SetFont('Arial', 'B', 8);
-        $pdf->SetXY($x+1, $y);
+        $pdf->SetXY($x + 1, $y);
         $pdf->Cell(10, 7, 'ASSESMEN RESIKO JATUH', 0, 1);
         $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY($x+35, $y+1);
+        $pdf->SetXY($x + 35, $y + 1);
         $pdf->MultiCell(45, 5, '');
 
         $x = $pdf->GetX();
         $y = $pdf->GetY();
         $pdf->SetFont('Arial', 'B', 8);
-        $pdf->SetXY($x+1, $y);
+        $pdf->SetXY($x + 1, $y);
         $pdf->Cell(10, 7, 'Resiko Jatuh', 0, 1);
         $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY($x+35, $y+1);
+        $pdf->SetXY($x + 35, $y + 1);
         $pdf->MultiCell(45, 5, ': ' . $k[0]->resikojatuh);
 
         $x = $pdf->GetX();
-        $y = $pdf->GetY()+4;
+        $y = $pdf->GetY() + 4;
         $pdf->SetFont('Arial', 'B', 8);
-        $pdf->SetXY($x+1, $y);
+        $pdf->SetXY($x + 1, $y);
         $pdf->Cell(10, 7, 'SKRINING GIZI', 0, 1);
         $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY($x+35, $y+1);
+        $pdf->SetXY($x + 35, $y + 1);
         $pdf->MultiCell(45, 5, '');
 
         $x = $pdf->GetX();
         $y = $pdf->GetY();
         $pdf->SetFont('Arial', 'B', 8);
-        $pdf->SetXY($x+1, $y);
+        $pdf->SetXY($x + 1, $y);
         $pdf->MultiCell(45, 5, '1. Apakah pasien mengalami penurunan berat badan yang tidak diinginkan dalam 6 bulan terakhir ?  ');
         $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY($x+35, $y+20);
-        $pdf->MultiCell(45, 5, ': ' . $k[0]->Skrininggizi .' | '.  $k[0]->beratskrininggizi) ;
+        $pdf->SetXY($x + 35, $y + 20);
+        $pdf->MultiCell(45, 5, ': ' . $k[0]->Skrininggizi . ' | ' .  $k[0]->beratskrininggizi);
 
         $x = $pdf->GetX();
         $y = $pdf->GetY();
         $pdf->SetFont('Arial', 'B', 8);
-        $pdf->SetXY($x+1, $y);
+        $pdf->SetXY($x + 1, $y);
         $pdf->MultiCell(45, 5, '2. Apakah asupan makanan berkurang karena berkurangnya nafsu makan ?');
         $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY($x+35, $y+20);
+        $pdf->SetXY($x + 35, $y + 20);
         $pdf->MultiCell(45, 5, ': ' . $k[0]->status_asupanmkanan);
 
         $x = $pdf->GetX();
         $y = $pdf->GetY();
         $pdf->SetFont('Arial', 'B', 8);
-        $pdf->SetXY($x+1, $y);
+        $pdf->SetXY($x + 1, $y);
         $pdf->MultiCell(45, 5, '3. Pasien dengan diagnosa khusus : Penyakit DM / Ginjal / Hati / Paru / Stroke / Kanker / Penurunan imunitas geriatri, lain lain...');
         $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY($x+35, $y+20);
+        $pdf->SetXY($x + 35, $y + 20);
         $pdf->MultiCell(45, 5, ': ' . $k[0]->diagnosakhusus . ' | ' . $k[0]->penyakitlainpasien);
 
         $x = $pdf->GetX();
-        $y = $pdf->GetY()+2;
+        $y = $pdf->GetY() + 2;
         $pdf->SetFont('Arial', 'B', 8);
-        $pdf->SetXY($x+1, $y);
+        $pdf->SetXY($x + 1, $y);
         $pdf->MultiCell(45, 5, '4. Bila skor >= 2, pasien beresiko malnutrisi dilakukan pengkajian lanjut oleh ahli gizi');
         $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY($x+35, $y+20);
+        $pdf->SetXY($x + 35, $y + 20);
         $pdf->MultiCell(45, 5, ': ' . $k[0]->resikomalnutrisi . ' | ' . $k[0]->tglpengkajianlanjutgizi);
 
         // $x = $pdf->GetX();
@@ -1526,80 +1672,80 @@ class ErmController extends Controller
     public function ambilicd10()
     {
         $icd10 = DB::select('SELECT * FROM mt_icd10 limit 50');
-        return view('ermtemplate.icd10kerja',compact([
+        return view('ermtemplate.icd10kerja', compact([
             'icd10'
         ]));
     }
     public function ambilicd10_banding()
     {
         $icd10 = DB::select('SELECT * FROM mt_icd10 limit 50');
-        return view('ermtemplate.icd10kerja_banding',compact([
+        return view('ermtemplate.icd10kerja_banding', compact([
             'icd10'
         ]));
     }
     public function ambilicd9()
     {
         $icd9 = DB::select('SELECT * FROM mt_icd9 limit 50');
-        return view('ermtemplate.icd9kerja',compact([
+        return view('ermtemplate.icd9kerja', compact([
             'icd9'
         ]));
     }
     public function ambilicd9_banding()
     {
         $icd9 = DB::select('SELECT * FROM mt_icd9 limit 50');
-        return view('ermtemplate.icd9banding',compact([
+        return view('ermtemplate.icd9banding', compact([
             'icd9'
         ]));
     }
     public function cariicd10(Request $request)
     {
         $icd10 = DB::table('mt_icd10')
-        ->select('*')
-        ->where('nama', 'like', '%' . $request->key . '%')
-        ->orWhere('diag', 'like', '%' . $request->key . '%')
-        ->limit('50')
-        ->get();
+            ->select('*')
+            ->where('nama', 'like', '%' . $request->key . '%')
+            ->orWhere('diag', 'like', '%' . $request->key . '%')
+            ->limit('50')
+            ->get();
         // $icd10 = DB::select('SELECT * FROM mt_icd10 where nama LIKE ?',['%'.$request->key.'%']);
-        return view('ermtemplate.icd10kerja_cari',compact([
+        return view('ermtemplate.icd10kerja_cari', compact([
             'icd10'
         ]));
     }
     public function cariicd10_banding(Request $request)
     {
         $icd10 = DB::table('mt_icd10')
-        ->select('*')
-        ->where('nama', 'like', '%' . $request->key . '%')
-        ->orWhere('diag', 'like', '%' . $request->key . '%')
-        ->limit('50')
-        ->get();
+            ->select('*')
+            ->where('nama', 'like', '%' . $request->key . '%')
+            ->orWhere('diag', 'like', '%' . $request->key . '%')
+            ->limit('50')
+            ->get();
         // $icd10 = DB::select('SELECT * FROM mt_icd10 where nama LIKE ?',['%'.$request->key.'%']);
-        return view('ermtemplate.icd10banding_cari',compact([
+        return view('ermtemplate.icd10banding_cari', compact([
             'icd10'
         ]));
     }
     public function cariicd9(Request $request)
     {
         $icd9 = DB::table('mt_icd9')
-        ->select('*')
-        ->where('nama_pendek', 'like', '%' . $request->key . '%')
-        ->orWhere('diag', 'like', '%' . $request->key . '%')
-        ->limit('50')
-        ->get();
+            ->select('*')
+            ->where('nama_pendek', 'like', '%' . $request->key . '%')
+            ->orWhere('diag', 'like', '%' . $request->key . '%')
+            ->limit('50')
+            ->get();
         // $icd10 = DB::select('SELECT * FROM mt_icd10 where nama LIKE ?',['%'.$request->key.'%']);
-        return view('ermtemplate.icd9kerja_cari',compact([
+        return view('ermtemplate.icd9kerja_cari', compact([
             'icd9'
         ]));
     }
     public function cariicd9_banding(Request $request)
     {
         $icd9 = DB::table('mt_icd9')
-        ->select('*')
-        ->where('nama_pendek', 'like', '%' . $request->key . '%')
-        ->orWhere('diag', 'like', '%' . $request->key . '%')
-        ->limit('50')
-        ->get();
+            ->select('*')
+            ->where('nama_pendek', 'like', '%' . $request->key . '%')
+            ->orWhere('diag', 'like', '%' . $request->key . '%')
+            ->limit('50')
+            ->get();
         // $icd10 = DB::select('SELECT * FROM mt_icd10 where nama LIKE ?',['%'.$request->key.'%']);
-        return view('ermtemplate.icd9banding_cari',compact([
+        return view('ermtemplate.icd9banding_cari', compact([
             'icd9'
         ]));
     }
@@ -1616,5 +1762,64 @@ class ErmController extends Controller
         return view('ermtemplate.matakiri', compact([
             'cek1'
         ]));
+    }
+    public function gambargigi(Request $request)
+    {
+        $cek1 = DB::select('select * from erm_gambar_gigi where kode_kunjungan = ?', [$request->kodekunjungan]);
+        return view('ermtemplate.gigi', compact([
+            'cek1'
+        ]));
+    }
+    public function gambarcatatan(Request $request)
+    {
+        $cek1 = DB::select('select * from erm_catatan_gambar where kode_kunjungan = ? and kode_unit = ?', [$request->kodekunjungan, auth()->user()->unit]);
+        return view('ermtemplate.gambarkosong', compact([
+            'cek1'
+        ]));
+    }
+    public function indexpelayanandokter()
+    {
+        $title = 'SIMRS - Riwayat Pelayanan Dokter';
+        $sidebar = 'pelayanandokter';
+        $sidebar_m = '2';
+        return view('ermdokter.index', compact([
+            'title',
+            'sidebar',
+            'sidebar_m'
+        ]));
+    }
+    public function formupload()
+    {
+        return view('ermtemplate.upload');
+    }
+    public function uploadgambarnya(Request $request)
+    {
+        $data = array();
+        if ($request->file('file')) {
+            $file = $request->file('file');
+            $filename = $request->nomorrm.'_'.$request->kodekunjungan.'_'.time() . '_' . $file->getClientOriginalName();
+            // File extension
+            $extension = $file->getClientOriginalExtension();
+            // File upload location
+            $location = '../files';
+
+            // Upload file
+            $file->move($location, $filename);
+
+            // File path
+            $filepath = url('../../files/' . $filename);
+
+            // Response
+            $data['success'] = 1;
+            $data['message'] = 'Uploaded Successfully!';
+            $data['filepath'] = $filepath;
+            $data['extension'] = $extension;
+        } else {
+            // Response
+            $data['success'] = 2;
+            $data['message'] = 'File not uploaded.';
+        }
+
+        return response()->json($data);
     }
 }

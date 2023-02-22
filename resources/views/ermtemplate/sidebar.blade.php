@@ -60,6 +60,14 @@
                         </p>
                     </a>
                 </li>
+                  <li class="nav-item">
+                    <a href="{{ route('indexpelayanandokter') }}" class="nav-link @if($sidebar == 'pelayanandokter') active @endif">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Riwayat Pelayanan
+                        </p>
+                    </a>
+                </li>
                 @endif
                   <li class="nav-header"> <i class="nav-icon bi bi-person-circle mr-2"></i> INFO AKUN</li>
                   <li class="nav-item">

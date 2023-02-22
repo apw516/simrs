@@ -9,7 +9,7 @@
                         alt="User profile picture">
                 </div>
 
-                <h3 class="text-bold profile-username text-center text-md">{{ $mt_pasien[0]->nama_px }}</h3>
+                <h3 class="text-bold profile-username text-center text-md">{{ $mt_pasien[0]->nama_px }} | {{  $mt_pasien[0]->no_rm }}</h3>
 
                 <p class="text-bold text-center text-xs"></p>
                 <p class="text-bold text-center text-xs">,

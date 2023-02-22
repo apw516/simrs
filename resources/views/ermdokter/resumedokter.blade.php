@@ -1563,6 +1563,32 @@
                         </table>
                     </div>
                 @endif
+            @elseif ($formkhusus['keterangan'] == 'gigi')
+                @if ($formkhusus['cek'] > 0)
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header bg-warning">Gambar Gigi</div>
+                                <div class="card-body">
+                                    <img src="{{ $formkhusus['gigi'][0]->gambargigi }}" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            @elseif($formkhusus['keterangan'] == 'allin')
+            @if ($formkhusus['cek'] > 0)
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header bg-warning">Catatan</div>
+                        <div class="card-body">
+                            <img src="{{ $formkhusus['gambar'][0]->catatangambar }}" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
             @endif
             <div class="card">
                 <div class="card-header bg-danger">Riwayat Tindakan</div>

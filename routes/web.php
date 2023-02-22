@@ -403,6 +403,22 @@ Route::group(['middleware' => ['auth','hak_akses1:5']],function(){
     ->name('gambarmatakiri'); //sidebar
     Route::post('/simpanformmata', [ErmController::class, 'simpanformmata'])
     ->name('simpanformmata'); //sidebar
+    Route::post('/simpanformgigi', [ErmController::class, 'simpanformgigi'])
+    ->name('simpanformgigi'); //sidebar
+    Route::post('/simpangambarbebas', [ErmController::class, 'simpangambarbebas'])
+    ->name('simpangambarbebas'); //sidebar
+    Route::post('/gambargigi', [ErmController::class, 'gambargigi'])
+    ->name('gambargigi'); //sidebar
+    Route::post('/gambarcatatan', [ErmController::class, 'gambarcatatan'])
+    ->name('gambarcatatan'); //sidebar
+    Route::post('/formupload', [ErmController::class, 'formupload'])
+    ->name('formupload'); //sidebar
+    Route::post('/uploadgambarnya', [ErmController::class, 'uploadgambarnya'])
+    ->name('uploadgambarnya'); //sidebar
+
+
+    Route::get('/indexpelayanandokter', [ErmController::class, 'indexpelayanandokter'])
+    ->name('indexpelayanandokter'); //sidebar
 
 });
 

@@ -9,7 +9,7 @@
                         alt="User profile picture">
                 </div>
 
-                <h3 class="text-bold profile-username text-center text-md">{{ $mt_pasien[0]->nama_px }}</h3>
+                <h3 class="text-bold profile-username text-center text-md">{{ $mt_pasien[0]->nama_px }} | {{ $mt_pasien[0]->no_rm  }}</h3>
 
                 <p class="text-bold text-center text-xs"></p>
                 <p class="text-bold text-center text-xs">,
@@ -50,6 +50,11 @@
                     <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="forminputtindakan()">
                             <i class="fas fa-inbox mr-2"></i>Input Tindakan
+                        </a>
+                    </li>
+                    <li class="nav-item" id="pemeriksaan">
+                        <a href="#" class="nav-link" onclick="formupload()">
+                            <i class="fas fa-inbox mr-2"></i>Upload Berkas
                         </a>
                     </li>
                     @endif
@@ -115,6 +120,22 @@
                 kodekunjungan
             },
             url: '<?= route('formpemeriksaan_khusus') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+            }
+        });
+    }
+    function formupload() {
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('formupload') ?>',
             success: function(response) {
                 $('.slide3').html(response);
             }
