@@ -496,7 +496,9 @@ class ErmController extends Controller
                 ];
             }
         } else {
-            // $formkhusus = [];
+            $formkhusus = [
+                'keterangan' => '',
+            ];
         }
         $riwayat_tindakan = DB::connection('mysql4')->select("SELECT a.kode_kunjungan,b.id AS id_header,C.id AS id_detail,c.jumlah_layanan,b.kode_layanan_header,c.`kode_tarif_detail`,e.`NAMA_TARIF` FROM simrs_waled.ts_kunjungan a
         RIGHT OUTER JOIN ts_layanan_header b ON a.kode_kunjungan = b.kode_kunjungan
@@ -505,7 +507,6 @@ class ErmController extends Controller
         RIGHT OUTER JOIN mt_tarif_header e ON d.`KODE_TARIF_HEADER` = e.`KODE_TARIF_HEADER`
         WHERE a.`kode_kunjungan` = ?", [$request->kodekunjungan]);
         $riwayat_upload = DB::select('select *,fc_nama_unit2(kode_unit) as nama_unit from erm_upload_gambar where kodekunjungan = ?', [$request->kodekunjungan]);
-        // dd($formkhusus);
         return view('ermdokter.resumedokter', compact([
             'resume',
             'formkhusus',
