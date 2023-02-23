@@ -415,6 +415,8 @@ Route::group(['middleware' => ['auth','hak_akses1:5']],function(){
     ->name('formupload'); //sidebar
     Route::post('/uploadgambarnya', [ErmController::class, 'uploadgambarnya'])
     ->name('uploadgambarnya'); //sidebar
+    Route::post('/riwayatupload', [ErmController::class, 'riwayatupload'])
+    ->name('riwayatupload'); //sidebar
 
 
     Route::get('/indexpelayanandokter', [ErmController::class, 'indexpelayanandokter'])

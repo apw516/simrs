@@ -13,6 +13,7 @@ use App\Models\erm_tht_hidung;
 use App\Models\erm_gambar_gigi;
 use App\Models\erm_catatan_gambar;
 use App\Models\erm_mata_kanan_kiri;
+use App\Models\erm_upload_gambar;
 use App\Models\ts_layanan_detail_dummy;
 use App\Models\ts_layanan_header_dummy;
 use Carbon\Carbon;
@@ -503,6 +504,7 @@ class ErmController extends Controller
         RIGHT OUTER JOIN mt_tarif_detail d ON c.kode_tarif_detail = d.`KODE_TARIF_DETAIL`
         RIGHT OUTER JOIN mt_tarif_header e ON d.`KODE_TARIF_HEADER` = e.`KODE_TARIF_HEADER`
         WHERE a.`kode_kunjungan` = ?", [$request->kodekunjungan]);
+        $riwayat_upload = DB::select('select *,fc_nama_unit2(kode_unit) as nama_unit from erm_upload_gambar where kodekunjungan = ?', [$request->kodekunjungan]);
         // dd($formkhusus);
         return view('ermdokter.resumedokter', compact([
             'resume',
@@ -1797,7 +1799,23 @@ class ErmController extends Controller
         $data = array();
         if ($request->file('file')) {
             $file = $request->file('file');
-            $filename = $request->nomorrm.'_'.$request->kodekunjungan.'_'.time() . '_' . $file->getClientOriginalName();
+            $filename = $request->nomorrm . '_' . $request->kodekunjungan . '_' . $file->getClientOriginalName();
+
+            $cek = DB::select('select * from erm_upload_gambar where kodekunjungan = ? and no_rm = ? and kode_unit = ? and  gambar = ?', [$request->kodekunjungan, $request->nomorrm, auth()->user()->unit, $filename]);
+            $uploadnya = [
+                'kodekunjungan' => $request->kodekunjungan,
+                'no_rm' => $request->nomorrm,
+                'kode_unit' => auth()->user()->unit,
+                'gambar' => $filename,
+                'tgl_upload' => $this->get_now(),
+                'pic' => auth()->user()->id,
+            ];
+
+            if (count($cek) > 0) {
+                erm_upload_gambar::whereRaw('kodekunjungan = ? and no_rm = ? and kode_unit = ? and gambar = ?', array([$request->kodekunjungan, $request->nomorrm, auth()->user()->unit, $filename]))->update($uploadnya);
+            } else {
+                erm_upload_gambar::create($uploadnya);
+            }
             // File extension
             $extension = $file->getClientOriginalExtension();
             // File upload location
@@ -1821,5 +1839,12 @@ class ErmController extends Controller
         }
 
         return response()->json($data);
+    }
+    public function riwayatupload(Request $request)
+    {
+        $cek = DB::select('select *,fc_nama_unit2(kode_unit) as nama_unit from erm_upload_gambar where kodekunjungan = ?', [$request->kodekunjungan]);
+        return view('ermdokter.riwayatupload',compact([
+            'cek'
+        ]));
     }
 }
