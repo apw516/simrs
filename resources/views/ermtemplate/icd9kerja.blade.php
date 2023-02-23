@@ -1,4 +1,4 @@
-<input id="pencarian" type="text" class="form-control" placeholder="ketik nama diagnosa ...">
+<input id="pencarianicd9kerja" type="text" class="form-control" placeholder="ketik nama diagnosa ...">
 <div class="table_icd9_kerja">
     <table id="tablediagnosa9" class="table table-sm table-bordered table-hover">
         <thead>
@@ -30,14 +30,25 @@
         nama = $(this).attr('nama')
         diagnosalama = $('#diagnosakerja').val()
         diagnosabaru = diag + ' | ' + nama
-        $('#diagnosakerja').val(diagnosalama + ' , ' + diagnosabaru)
+        if(diagnosalama == ''){
+            $('#diagnosakerja').val(diagnosabaru)
+        }else{
+            $('#diagnosakerja').val(diagnosalama + ' , '+ diagnosabaru)
+        }
+        Swal.fire({
+            icon: 'success',
+            title: 'OK',
+            text: 'Diagnosa berhasil dipilih',
+            footer: 'ermwaled2023'
+        })
+        $('#modalicd9kerja').modal('hide');
     })
-    $("#pencarian").keypress(function() {
+    $("#pencarianicd9kerja").keypress(function() {
         $.ajax({
             type: 'post',
             data: {
                 _token: "{{ csrf_token() }}",
-                key: $('#pencarian').val()
+                key: $('#pencarianicd9kerja').val()
             },
             url: '<?= route('cariicd9') ?>',
             success: function(response) {

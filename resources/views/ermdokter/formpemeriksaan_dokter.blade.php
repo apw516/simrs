@@ -239,7 +239,8 @@
                         <td colspan="2">
                             <textarea name="diagnosakerja" id="diagnosakerja" class="form-control">{{ $kunjungan[0]->diagx }}</textarea>
                         </td>
-                        <td><button type="button" class="btn btn-warning showmodalicdkerja" data-toggle="modal"
+                        <td>
+                            <button type="button" class="btn btn-warning showmodalicdkerja" data-toggle="modal"
                                 data-target="#modalicdkerja">ICD 10</button>
                             <button type="button" class="btn btn-danger showmodalicd9kerja" data-toggle="modal"
                                 data-target="#modalicd9kerja">ICD 9</button>
@@ -250,7 +251,8 @@
                         <td colspan="2">
                             <textarea name="diagnosabanding" id="diagnosabanding" class="form-control"></textarea>
                         </td>
-                        <td><button type="button" class="btn btn-warning showmodalicdbanding" data-toggle="modal"
+                        <td>
+                            <button type="button" class="btn btn-warning showmodalicdbanding" data-toggle="modal"
                                 data-target="#modalicdbanding">ICD 10</button>
                             <button type="button" class="btn btn-danger showmodalicd9banding" data-toggle="modal"
                                 data-target="#modalicd9banding">ICD 9</button>

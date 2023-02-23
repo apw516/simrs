@@ -1260,8 +1260,9 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">OD</span>
                                         </div>
-                                        <input readonly type="text" class="form-control" aria-label="Amount (to the nearest dollar)"
-                                            id="od_visus_dasar" name="od_visus_dasar" value="{{ $formkhusus['mata'][0]->vd_od }}">
+                                        <input readonly type="text" class="form-control"
+                                            aria-label="Amount (to the nearest dollar)" id="od_visus_dasar"
+                                            name="od_visus_dasar" value="{{ $formkhusus['mata'][0]->vd_od }}">
                                     </div>
                                 </td>
                                 <td>
@@ -1269,8 +1270,9 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">PINHOLE</span>
                                         </div>
-                                        <input readonly type="text" class="form-control" aria-label="Amount (to the nearest dollar)"
-                                            name="od_pinhole_visus_dasar" id="od_pinhole_visus_dasar"
+                                        <input readonly type="text" class="form-control"
+                                            aria-label="Amount (to the nearest dollar)" name="od_pinhole_visus_dasar"
+                                            id="od_pinhole_visus_dasar"
                                             value="{{ $formkhusus['mata'][0]->vd_od_pinhole }}">
                                     </div>
                                 </td>
@@ -1281,7 +1283,8 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">OS</span>
                                         </div>
-                                        <input readonly name="os_visus_dasar" id="os_visus_dasar" value="{{ $formkhusus['mata'][0]->vd_os }}" type="text"
+                                        <input readonly name="os_visus_dasar" id="os_visus_dasar"
+                                            value="{{ $formkhusus['mata'][0]->vd_os }}" type="text"
                                             class="form-control" aria-label="Amount (to the nearest dollar)">
                                     </div>
                                 </td>
@@ -1290,8 +1293,9 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">PINHOLE</span>
                                         </div>
-                                        <input readonly name="os_pinhole_visus_dasar" id="os_pinhole_visus_dasar" type="text"
-                                            class="form-control" value="{{ $formkhusus['mata'][0]->vd_os_pinhole }}"
+                                        <input readonly name="os_pinhole_visus_dasar" id="os_pinhole_visus_dasar"
+                                            type="text" class="form-control"
+                                            value="{{ $formkhusus['mata'][0]->vd_os_pinhole }}"
                                             aria-label="Amount (to the nearest dollar)">
                                     </div>
                                 </td>
@@ -1303,7 +1307,8 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">OD : Sph</span>
                                         </div>
-                                        <input readonly name="od_sph_refraktometer" value="{{ $formkhusus['mata'][0]->refraktometer_od_sph }}"
+                                        <input readonly name="od_sph_refraktometer"
+                                            value="{{ $formkhusus['mata'][0]->refraktometer_od_sph }}"
                                             id="od_sph_refraktometer" type="text" class="form-control"
                                             aria-label="Amount (to the nearest dollar)">
                                     </div>
@@ -1313,9 +1318,10 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Cyl</span>
                                         </div>
-                                        <input readonly type="text" value="{{ $formkhusus['mata'][0]->refraktometer_od_cyl }}" id="od_cyl_refraktometer"
-                                            name="od_cyl_refraktometer" class="form-control"
-                                            aria-label="Amount (to the nearest dollar)">
+                                        <input readonly type="text"
+                                            value="{{ $formkhusus['mata'][0]->refraktometer_od_cyl }}"
+                                            id="od_cyl_refraktometer" name="od_cyl_refraktometer"
+                                            class="form-control" aria-label="Amount (to the nearest dollar)">
                                     </div>
                                 </td>
                                 <td>
@@ -1323,7 +1329,8 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">X</span>
                                         </div>
-                                        <input readonly id="od_x_refraktometer" value="{{ $formkhusus['mata'][0]->refraktometer_od_x }}"
+                                        <input readonly id="od_x_refraktometer"
+                                            value="{{ $formkhusus['mata'][0]->refraktometer_od_x }}"
                                             name="od_x_refraktometer" type="text" class="form-control"
                                             aria-label="Amount (to the nearest dollar)">
                                     </div>
@@ -1335,7 +1342,8 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">OS : Sph</span>
                                         </div>
-                                        <input readonly id="os_sph_refraktometer" value="{{ $formkhusus['mata'][0]->refraktometer_os_sph }}"
+                                        <input readonly id="os_sph_refraktometer"
+                                            value="{{ $formkhusus['mata'][0]->refraktometer_os_sph }}"
                                             name="os_sph_refraktometer" type="text" class="form-control"
                                             aria-label="Amount (to the nearest dollar)">
                                     </div>
@@ -1345,7 +1353,8 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Cyl</span>
                                         </div>
-                                        <input readonly id="os_cyl_refraktometer" value="{{ $formkhusus['mata'][0]->refraktometer_os_cyl }}"
+                                        <input readonly id="os_cyl_refraktometer"
+                                            value="{{ $formkhusus['mata'][0]->refraktometer_os_cyl }}"
                                             name="os_cyl_refraktometer" type="text" class="form-control"
                                             aria-label="Amount (to the nearest dollar)">
                                     </div>
@@ -1355,7 +1364,8 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">X</span>
                                         </div>
-                                        <input readonly id="os_x_refraktometer" value="{{ $formkhusus['mata'][0]->refraktometer_os_x }}"
+                                        <input readonly id="os_x_refraktometer"
+                                            value="{{ $formkhusus['mata'][0]->refraktometer_os_x }}"
                                             name="os_x_refraktometer" type="text" class="form-control"
                                             aria-label="Amount (to the nearest dollar)">
                                     </div>
@@ -1368,7 +1378,8 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">OD : Sph</span>
                                         </div>
-                                        <input readonly id="od_sph_Lensometer" value="{{ $formkhusus['mata'][0]->Lensometer_od_sph }}"
+                                        <input readonly id="od_sph_Lensometer"
+                                            value="{{ $formkhusus['mata'][0]->Lensometer_od_sph }}"
                                             name="od_sph_Lensometer" type="text" class="form-control"
                                             aria-label="Amount (to the nearest dollar)">
                                     </div>
@@ -1378,7 +1389,8 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Cyl</span>
                                         </div>
-                                        <input readonly id="od_cyl_Lensometer" value="{{ $formkhusus['mata'][0]->Lensometer_od_cyl }}"
+                                        <input readonly id="od_cyl_Lensometer"
+                                            value="{{ $formkhusus['mata'][0]->Lensometer_od_cyl }}"
                                             name="od_cyl_Lensometer" type="text" class="form-control"
                                             aria-label="Amount (to the nearest dollar)">
                                     </div>
@@ -1388,8 +1400,10 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">X</span>
                                         </div>
-                                        <input readonly id="od_x_Lensometer" value="{{ $formkhusus['mata'][0]->Lensometer_od_x }}" name="od_x_Lensometer"
-                                            type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                        <input readonly id="od_x_Lensometer"
+                                            value="{{ $formkhusus['mata'][0]->Lensometer_od_x }}"
+                                            name="od_x_Lensometer" type="text" class="form-control"
+                                            aria-label="Amount (to the nearest dollar)">
                                     </div>
                                 </td>
                             </tr>
@@ -1399,7 +1413,8 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">OS : Sph</span>
                                         </div>
-                                        <input readonly id="os_sph_Lensometer" value="{{ $formkhusus['mata'][0]->Lensometer_os_sph }}"
+                                        <input readonly id="os_sph_Lensometer"
+                                            value="{{ $formkhusus['mata'][0]->Lensometer_os_sph }}"
                                             name="os_sph_Lensometer" type="text" class="form-control"
                                             aria-label="Amount (to the nearest dollar)">
                                     </div>
@@ -1409,7 +1424,8 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Cyl</span>
                                         </div>
-                                        <input readonly id="os_cyl_Lensometer" value="{{ $formkhusus['mata'][0]->Lensometer_os_cyl }}"
+                                        <input readonly id="os_cyl_Lensometer"
+                                            value="{{ $formkhusus['mata'][0]->Lensometer_os_cyl }}"
                                             name="os_cyl_Lensometer" type="text" class="form-control"
                                             aria-label="Amount (to the nearest dollar)">
                                     </div>
@@ -1419,8 +1435,10 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">X</span>
                                         </div>
-                                        <input readonly id="os_x_Lensometer" value="{{ $formkhusus['mata'][0]->Lensometer_os_x }}" name="os_x_Lensometer"
-                                            type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                        <input readonly id="os_x_Lensometer"
+                                            value="{{ $formkhusus['mata'][0]->Lensometer_os_x }}"
+                                            name="os_x_Lensometer" type="text" class="form-control"
+                                            aria-label="Amount (to the nearest dollar)">
                                     </div>
                                 </td>
                             </tr>
@@ -1431,8 +1449,10 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">VOD : Sph</span>
                                         </div>
-                                        <input readonly id="vod_sph_kpj" value="{{ $formkhusus['mata'][0]->koreksipenglihatan_vod_sph }}" name="vod_sph_kpj"
-                                            type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                        <input readonly id="vod_sph_kpj"
+                                            value="{{ $formkhusus['mata'][0]->koreksipenglihatan_vod_sph }}"
+                                            name="vod_sph_kpj" type="text" class="form-control"
+                                            aria-label="Amount (to the nearest dollar)">
                                     </div>
                                 </td>
                                 <td>
@@ -1440,8 +1460,10 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Cyl</span>
                                         </div>
-                                        <input readonly id="vod_cyl_kpj" value="{{ $formkhusus['mata'][0]->koreksipenglihatan_vod_cyl }}" name="vod_cyl_kpj"
-                                            type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                        <input readonly id="vod_cyl_kpj"
+                                            value="{{ $formkhusus['mata'][0]->koreksipenglihatan_vod_cyl }}"
+                                            name="vod_cyl_kpj" type="text" class="form-control"
+                                            aria-label="Amount (to the nearest dollar)">
                                     </div>
                                 </td>
                                 <td>
@@ -1449,8 +1471,10 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">X</span>
                                         </div>
-                                        <input readonly id="vod_x_kpj" value="{{ $formkhusus['mata'][0]->koreksipenglihatan_vod_x }}" name="vod_x_kpj"
-                                            type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                        <input readonly id="vod_x_kpj"
+                                            value="{{ $formkhusus['mata'][0]->koreksipenglihatan_vod_x }}"
+                                            name="vod_x_kpj" type="text" class="form-control"
+                                            aria-label="Amount (to the nearest dollar)">
                                     </div>
                                 </td>
                             </tr>
@@ -1460,8 +1484,10 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">VOS : Sph</span>
                                         </div>
-                                        <input readonly  type="text" id="vos_sph_kpj" value="{{ $formkhusus['mata'][0]->koreksipenglihatan_vos_sph }}"
-                                            name="vos_sph_kpj" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                        <input readonly type="text" id="vos_sph_kpj"
+                                            value="{{ $formkhusus['mata'][0]->koreksipenglihatan_vos_sph }}"
+                                            name="vos_sph_kpj" class="form-control"
+                                            aria-label="Amount (to the nearest dollar)">
                                     </div>
                                 </td>
                                 <td>
@@ -1469,8 +1495,10 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Cyl</span>
                                         </div>
-                                        <input readonly id="vos_cyl_kpj" value="{{ $formkhusus['mata'][0]->koreksipenglihatan_vos_cyl }}" name="vos_cyl_kpj"
-                                            type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                        <input readonly id="vos_cyl_kpj"
+                                            value="{{ $formkhusus['mata'][0]->koreksipenglihatan_vos_cyl }}"
+                                            name="vos_cyl_kpj" type="text" class="form-control"
+                                            aria-label="Amount (to the nearest dollar)">
                                     </div>
                                 </td>
                                 <td>
@@ -1478,8 +1506,10 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">X</span>
                                         </div>
-                                        <input readonly id="vos_x_kpj" value="{{ $formkhusus['mata'][0]->koreksipenglihatan_vos_x }}" name="vos_x_kpj"
-                                            type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                        <input readonly id="vos_x_kpj"
+                                            value="{{ $formkhusus['mata'][0]->koreksipenglihatan_vos_x }}"
+                                            name="vos_x_kpj" type="text" class="form-control"
+                                            aria-label="Amount (to the nearest dollar)">
                                     </div>
                                 </td>
                             </tr>
@@ -1498,48 +1528,55 @@
                             <tr>
                                 <td>Catatan Pemeriksaan Lainnya</td>
                                 <td colspan="3">
-                                    <textarea readonly class="form-control" name="catatan_pemeriksaan_lainnya"
-                                        id="catatan_pemerikssaan_lainnya">{{ $formkhusus['mata'][0]->catatanpemeriksaanlain }}</textarea>
+                                    <textarea readonly class="form-control" name="catatan_pemeriksaan_lainnya" id="catatan_pemerikssaan_lainnya">{{ $formkhusus['mata'][0]->catatanpemeriksaanlain }}</textarea>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Palpebra</td>
-                                <td colspan="3"><input class="form-control" readonly value="{{ $formkhusus['mata'][0]->palpebra }}" id="palpebra"
+                                <td colspan="3"><input class="form-control" readonly
+                                        value="{{ $formkhusus['mata'][0]->palpebra }}" id="palpebra"
                                         name="palpebra"></input></td>
                             </tr>
                             <tr>
                                 <td>Konjungtiva</td>
-                                <td colspan="3"><input class="form-control" readonly value="{{ $formkhusus['mata'][0]->konjungtiva }}" id="konjungtiva"
+                                <td colspan="3"><input class="form-control" readonly
+                                        value="{{ $formkhusus['mata'][0]->konjungtiva }}" id="konjungtiva"
                                         name="konjungtiva"></input></td>
                             </tr>
                             <tr>
                                 <td>Kornea</td>
-                                <td colspan="3"><input class="form-control" readonly value="{{ $formkhusus['mata'][0]->kornea }}" name="kornea"
+                                <td colspan="3"><input class="form-control" readonly
+                                        value="{{ $formkhusus['mata'][0]->kornea }}" name="kornea"
                                         id="kornea"></input></td>
                             </tr>
                             <tr>
                                 <td>Bilik Mata Depan</td>
-                                <td colspan="3"><input class="form-control" readonly value="{{ $formkhusus['mata'][0]->bilikmatadepan }}"
+                                <td colspan="3"><input class="form-control" readonly
+                                        value="{{ $formkhusus['mata'][0]->bilikmatadepan }}"
                                         name="bilik_mata_depan" id="bilik_mata_depan"></input></td>
                             </tr>
                             <tr>
                                 <td>Pupil</td>
-                                <td colspan="3"><input class="form-control" readonly value="{{ $formkhusus['mata'][0]->pupil }}" id="pupil"
+                                <td colspan="3"><input class="form-control" readonly
+                                        value="{{ $formkhusus['mata'][0]->pupil }}" id="pupil"
                                         name="pupil"></input></td>
                             </tr>
                             <tr>
                                 <td>Iris</td>
-                                <td colspan="3"><input class="form-control" readonly value="{{ $formkhusus['mata'][0]->iris }}" name="iris"
+                                <td colspan="3"><input class="form-control" readonly
+                                        value="{{ $formkhusus['mata'][0]->iris }}" name="iris"
                                         id="iris"></input></td>
                             </tr>
                             <tr>
                                 <td>Lensa</td>
-                                <td colspan="3"><input class="form-control" readonly value="{{ $formkhusus['mata'][0]->lensa }}" name="lensa"
+                                <td colspan="3"><input class="form-control" readonly
+                                        value="{{ $formkhusus['mata'][0]->lensa }}" name="lensa"
                                         id="lensa"></input></td>
                             </tr>
                             <tr>
                                 <td>Funduskopi</td>
-                                <td colspan="3"><input class="form-control" readonly value="{{ $formkhusus['mata'][0]->funduskopi }}" name="funduskopi"
+                                <td colspan="3"><input class="form-control" readonly
+                                        value="{{ $formkhusus['mata'][0]->funduskopi }}" name="funduskopi"
                                         id="funduskopi"></input></td>
                             </tr>
                             <tr>
@@ -1577,19 +1614,44 @@
                     </div>
                 @endif
             @elseif($formkhusus['keterangan'] == 'allin')
-            @if ($formkhusus['cek'] > 0)
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header bg-warning">Catatan</div>
-                        <div class="card-body">
-                            <img src="{{ $formkhusus['gambar'][0]->catatangambar }}" alt="">
+                @if ($formkhusus['cek'] > 0)
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header bg-warning">Catatan</div>
+                                <div class="card-body">
+                                    <img src="{{ $formkhusus['gambar'][0]->catatangambar }}" alt="">
+                                </div>
+                            </div>
                         </div>
                     </div>
+                @endif
+            @endif
+            <div class="card">
+                <div class="card-header bg-info">Riwayat Upload</div>
+                <div class="card-body">
+                    @if(count($riwayat_upload) > 0)
+                    <table class="table table-sm">
+                        <thead>
+                            <th>Nama File</th>
+                            <th>Unit</th>
+                            <th>Tanggal Upload</th>
+                        </thead>
+                        <tbody>
+                            @foreach ($riwayat_upload as $d )
+                                <tr>
+                                    <td><img width="20px" src="{{ url('../../files/'.$d->gambar) }}" alt="" class="mr-3"> {{ $d->gambar }}</td>
+                                    <td>{{ $d->nama_unit }}</td>
+                                    <td>{{ $d->tgl_upload }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    @else
+                    <h5>Tidak ada berkas yang diupload !</h5>
+                    @endif
                 </div>
             </div>
-        @endif
-            @endif
             <div class="card">
                 <div class="card-header bg-danger">Riwayat Tindakan</div>
                 <div class="card-body">

@@ -27,6 +27,17 @@
         nama = $(this).attr('nama')
         diagnosalama = $('#diagnosakerja').val()
         diagnosabaru = diag + ' | ' + nama
-        $('#diagnosakerja').val(diagnosalama + ' , '+ diagnosabaru)
+        if(diagnosalama == ''){
+            $('#diagnosakerja').val(diagnosabaru)
+        }else{
+            $('#diagnosakerja').val(diagnosalama + ' , '+ diagnosabaru)
+        }
+        Swal.fire({
+            icon: 'success',
+            title: 'OK',
+            text: 'Diagnosa berhasil dipilih',
+            footer: 'ermwaled2023'
+        })
+        $('#modalicdkerja').modal('hide');
     })
 </script>

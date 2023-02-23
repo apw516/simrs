@@ -1,6 +1,6 @@
 <input id="pencarian" type="text" class="form-control" placeholder="ketik nama diagnosa ...">
 <div class="table_icd10_kerja">
-    <table id="tablediagnosa10" class="table table-sm table-bordered table-hover">
+    <table id="tablediagnosa10_banding" class="table table-sm table-bordered table-hover">
         <thead>
             <th>Kode</th>
             <th>Nama</th>
@@ -17,7 +17,7 @@
 </div>
 <script>
     $(function() {
-        $("#tablediagnosa10").DataTable({
+        $("#tablediagnosa10_banding").DataTable({
             "responsive": true,
             "lengthChange": false,
             "autoWidth": true,
@@ -25,12 +25,23 @@
             "searching": false
         })
     });
-    $('#tablediagnosa10').on('click', '.pilihdiagnosakerja', function() {
+    $('#tablediagnosa10_banding').on('click', '.pilihdiagnosakerja', function() {
         diag = $(this).attr('diag')
         nama = $(this).attr('nama')
         diagnosalama = $('#diagnosabanding').val()
         diagnosabaru = diag + ' | ' + nama
-        $('#diagnosabanding').val(diagnosalama + ' , '+ diagnosabaru)
+        if(diagnosalama == ''){
+            $('#diagnosabanding').val(diagnosabaru)
+        }else{
+            $('#diagnosabanding').val(diagnosalama + ' , '+ diagnosabaru)
+        }
+        Swal.fire({
+            icon: 'success',
+            title: 'OK',
+            text: 'Diagnosa berhasil dipilih',
+            footer: 'ermwaled2023'
+        })
+        $('#modalicdbanding').modal('hide');
     })
     $("#pencarian").keypress(function() {
         $.ajax({

@@ -7,7 +7,7 @@
         </thead>
         <tbody>
             @foreach ($icd10 as $i)
-                <tr diag = {{ $i->diag }} nama = {{ $i->nama }} class="pilihdiagnosakerja">
+                <tr diag={{ $i->diag }} nama={{ $i->nama }} class="pilihdiagnosakerja">
                     <td>{{ $i->diag }}</td>
                     <td>{{ $i->nama }}</td>
                 </tr>
@@ -30,7 +30,18 @@
         nama = $(this).attr('nama')
         diagnosalama = $('#diagnosakerja').val()
         diagnosabaru = diag + ' | ' + nama
-        $('#diagnosakerja').val(diagnosalama + ' , '+ diagnosabaru)
+        if (diagnosalama == '') {
+            $('#diagnosakerja').val(diagnosabaru)
+        } else {
+            $('#diagnosakerja').val(diagnosalama + ' , ' + diagnosabaru)
+        }
+        Swal.fire({
+            icon: 'success',
+            title: 'OK',
+            text: 'Diagnosa berhasil dipilih',
+            footer: 'ermwaled2023'
+        })
+        $('#modalicdkerja').modal('hide');
     })
     $("#pencarian").keypress(function() {
         $.ajax({

@@ -236,23 +236,25 @@
                     <tr>
                         <td class="text-bold font-italic">Diagnosa Kerja</td>
                         <td colspan="2">
-                            <textarea name="diagnosakerja" class="form-control">{{ $resume[0]->diagnosakerja }}</textarea>
+                            <textarea name="diagnosakerja" id="diagnosakerja" class="form-control">{{ $resume[0]->diagnosakerja }}</textarea>
                         </td>
-                        <td><button type="button" class="btn btn-warning showmodalicd" data-toggle="modal"
-                                data-target="#modalicd">ICD 10</button>
-                            <button type="button" class="btn btn-danger showmodalicd9" data-toggle="modal"
-                                data-target="#modalicd9">ICD 9</button>
+                        <td>
+                            <button type="button" class="btn btn-warning showmodalicdkerja" data-toggle="modal"
+                            data-target="#modalicdkerja">ICD 10</button>
+                        <button type="button" class="btn btn-danger showmodalicd9kerja" data-toggle="modal"
+                            data-target="#modalicd9kerja">ICD 9</button>
                         </td>
                     </tr>
                     <tr>
                         <td class="text-bold font-italic">Diagnosa banding</td>
                         <td colspan="2">
-                            <textarea name="diagnosabanding" class="form-control">{{ $resume[0]->diagnosabanding }}</textarea>
+                            <textarea name="diagnosabanding" id="diagnosabanding" class="form-control">{{ $resume[0]->diagnosabanding }}</textarea>
                         </td>
-                        <td><button type="button" class="btn btn-warning showmodalicd" data-toggle="modal"
-                                data-target="#modalicd">ICD 10</button>
-                            <button type="button" class="btn btn-danger showmodalicd9" data-toggle="modal"
-                                data-target="#modalicd9">ICD 9</button>
+                        <td>
+                            <button type="button" class="btn btn-warning showmodalicdbanding" data-toggle="modal"
+                                data-target="#modalicdbanding">ICD 10</button>
+                            <button type="button" class="btn btn-danger showmodalicd9banding" data-toggle="modal"
+                                data-target="#modalicd9banding">ICD 9</button>
                         </td>
                     </tr>
                     <tr>
@@ -267,6 +269,97 @@
             <button type="button" class="btn btn-danger float-right ml-2">Batal</button>
             <button type="button" class="btn btn-success float-right" onclick="simpanhasil()">Simpan</button>
         </form>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalicdkerja" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Diagnosa Kerja - ICD 10</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="view_icd10_kerja">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalicd9kerja" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Diagnosa Kerja - ICD 9</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="view_icd9_kerja">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalicdbanding" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Diagnosa Banding - ICD 10</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="view_icd10_banding">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalicd9banding" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Diagnosa Banding - ICD 9</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="view_icd9_banding">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
 <link rel="stylesheet" href="{{ asset('public/dist/css/datepicker.css') }}" rel="stylesheet">
@@ -317,4 +410,64 @@
             }
         });
     }
+    $(".showmodalicdkerja").click(function() {
+        spinner = $('#loader');
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}"
+            },
+            url: '<?= route('ambilicd10') ?>',
+            success: function(response) {
+                $('.view_icd10_kerja').html(response);
+                spinner.hide()
+            }
+        });
+    });
+    $(".showmodalicd9kerja").click(function() {
+        spinner = $('#loader');
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}"
+            },
+            url: '<?= route('ambilicd9') ?>',
+            success: function(response) {
+                $('.view_icd9_kerja').html(response);
+                spinner.hide()
+            }
+        });
+    });
+    $(".showmodalicdbanding").click(function() {
+        spinner = $('#loader');
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}"
+            },
+            url: '<?= route('ambilicd10_banding') ?>',
+            success: function(response) {
+                $('.view_icd10_banding').html(response);
+                spinner.hide()
+            }
+        });
+    });
+    $(".showmodalicd9banding").click(function() {
+        spinner = $('#loader');
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}"
+            },
+            url: '<?= route('ambilicd9_banding') ?>',
+            success: function(response) {
+                $('.view_icd9_banding').html(response);
+                spinner.hide()
+            }
+        });
+    });
 </script>

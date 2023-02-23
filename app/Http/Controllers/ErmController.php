@@ -509,7 +509,8 @@ class ErmController extends Controller
         return view('ermdokter.resumedokter', compact([
             'resume',
             'formkhusus',
-            'riwayat_tindakan'
+            'riwayat_tindakan',
+            'riwayat_upload'
         ]));
     }
     public function simpanttdperawat(Request $request)
