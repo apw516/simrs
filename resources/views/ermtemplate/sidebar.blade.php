@@ -62,9 +62,18 @@
                 </li>
                   <li class="nav-item">
                     <a href="{{ route('indexpelayanandokter') }}" class="nav-link @if($sidebar == 'pelayanandokter') active @endif">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon fas bi bi-file-earmark-spreadsheet"></i>
                         <p>
                             Riwayat Pelayanan
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('indexpelayanandokter') }}" class="nav-link @if($sidebar == 'pelayanandokter') active @endif">
+                        {{-- <i class="nav-icon fas fa-th"></i> --}}
+                        <i class="nav-icon fas bi bi-search-heart"></i>
+                        <p>
+                            Cari Pasien
                         </p>
                     </a>
                 </li>

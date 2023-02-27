@@ -1664,12 +1664,14 @@
                         </thead>
                         <tbody>
                             @foreach ($riwayat_tindakan as $r)
+                            @if($r->status_header != '3')
                                 <tr>
                                     <td>{{ $r->kode_layanan_header }}</td>
                                     <td>{{ $r->id_detail }}</td>
                                     <td>{{ $r->NAMA_TARIF }}</td>
                                     <td>{{ $r->jumlah_layanan }}</td>
                                 </tr>
+                            @endif
                             @endforeach
                         </tbody>
                     </table>

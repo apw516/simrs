@@ -578,7 +578,7 @@
                         <td>Telinga kiri</td>
                         <td>
                             <div class="gambar1">
-                                <img src="{{ $kanan[0]->gambar }}" alt="">
+                                <img src="{{ $kiri[0]->gambar }}" alt="">
                             </div>
                         </td>
                     </tr>

@@ -360,6 +360,8 @@ Route::group(['middleware' => ['auth','hak_akses1:4']],function(){
     ->name('resumepasien'); //sidebar
     Route::post('/simpanttdperawat', [ErmController::class, 'simpanttdperawat'])
     ->name('simpanttdperawat'); //sidebar
+    Route::post('/gambarnyeri', [ErmController::class, 'gambarnyeri'])
+    ->name('gambarnyeri'); //sidebar
 
 });
 Route::group(['middleware' => ['auth','hak_akses1:5']],function(){
@@ -417,6 +419,8 @@ Route::group(['middleware' => ['auth','hak_akses1:5']],function(){
     ->name('uploadgambarnya'); //sidebar
     Route::post('/riwayatupload', [ErmController::class, 'riwayatupload'])
     ->name('riwayatupload'); //sidebar
+    Route::post('/batalheaderlayanan', [ErmController::class, 'batalheaderlayanan'])
+    ->name('batalheaderlayanan'); //sidebar
 
 
     Route::get('/indexpelayanandokter', [ErmController::class, 'indexpelayanandokter'])
