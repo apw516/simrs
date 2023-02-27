@@ -43,7 +43,8 @@ Route::post('/pemeriksaankhususon', [ErmController::class, 'pemeriksaankhususon'
     ->name('pemeriksaankhususon'); //sidebar
 Route::post('/riwayattindakan', [ErmController::class, 'riwayattindakan'])
     ->name('riwayattindakan'); //sidebar
-
+Route::post('/riwayatupload', [ErmController::class, 'riwayatupload'])
+    ->name('riwayatupload'); //sidebar
 Route::get('/register', [RegisterController::class, 'index'])->middleware('guest')->name('register');
 Route::post('/register', [RegisterController::class, 'Store']);
 
@@ -417,8 +418,6 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5']], function () {
         ->name('formupload'); //sidebar
     Route::post('/uploadgambarnya', [ErmController::class, 'uploadgambarnya'])
         ->name('uploadgambarnya'); //sidebar
-    Route::post('/riwayatupload', [ErmController::class, 'riwayatupload'])
-        ->name('riwayatupload'); //sidebar
     Route::post('/batalheaderlayanan', [ErmController::class, 'batalheaderlayanan'])
         ->name('batalheaderlayanan'); //sidebar
 
