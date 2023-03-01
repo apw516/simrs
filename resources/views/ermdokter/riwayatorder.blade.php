@@ -57,7 +57,7 @@
                         idheader,
                         kodelayananheader
                     },
-                    url: '<?= route('batalheaderlayanan') ?>',
+                    url: '<?= route('batalheaderlayanan_order') ?>',
                     error: function(data) {
                         Swal.fire({
                             icon: 'error',
@@ -81,7 +81,7 @@
                                 text: data.message,
                                 footer: ''
                             })
-                            tindakanhariini()
+                            orderhari_ini()
                         }
                     }
                 });

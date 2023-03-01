@@ -303,6 +303,12 @@
                                                 <button class="btn btn-success riwayatupload mt-4"
                                                     kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
                                                     data-target="#modalriwayatupload">Riwayat Upload</button>
+                                                <button class="btn btn-warning riwayatorder mt-4"
+                                                    kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
+                                                    data-target="#modalriwayatorder">Riwayat Order Penunjang</button>
+                                                <button class="btn btn-warning riwayatorderfarmasi mt-4"
+                                                    kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
+                                                    data-target="#modalriwayatorderfarmasi">Riwayat Order Farmasi</button>
                                                 <table class="table table-sm table-bordered mt-4">
                                                     <thead>
                                                         <th>Tanggal assesmen</th>
@@ -402,7 +408,78 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalriwayatorder" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Riwayat Order</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="vro">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalriwayatorderfarmasi" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Riwayat Order</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="vrof">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
+    $(".riwayatorderfarmasi").on('click', function(event) {
+        kodekunjungan = $(this).attr('kodekunjungan')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('riwayatorderfarmasi2') ?>',
+            success: function(response) {
+                $('.vrof').html(response);
+            }
+        });
+    });
+    $(".riwayatorder").on('click', function(event) {
+        kodekunjungan = $(this).attr('kodekunjungan')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('riwayatorder2') ?>',
+            success: function(response) {
+                $('.vro').html(response);
+            }
+        });
+    });
     $(".riwayattindakan").on('click', function(event) {
         kodekunjungan = $(this).attr('kodekunjungan')
         $.ajax({
@@ -411,7 +488,7 @@
                 _token: "{{ csrf_token() }}",
                 kodekunjungan
             },
-            url: '<?= route('riwayattindakan') ?>',
+            url: '<?= route('riwayattindakan2') ?>',
             success: function(response) {
                 $('.riwayattindakan_m').html(response);
             }

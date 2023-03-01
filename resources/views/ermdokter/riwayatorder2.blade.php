@@ -9,13 +9,7 @@
     <tbody>
         @foreach ($riwayat_tindakan as $r)
             <tr @if($r->status_layanan_header == '3') class="bg-danger"  @endif >
-                <td>
-                    @if($r->status_layanan_header != '3')
-                    <button id="{{ $r->id_header }}" kodelayananheader="{{ $r->kode_layanan_header }}"
-                        class="badge badge-danger returheader" data-toggle="tooltip" data-placement="top"
-                        title="retur header ..."><i class="bi bi-trash"></i></button>
-                        @endif
-                    {{ $r->kode_layanan_header }}</td>
+                <td>{{ $r->kode_layanan_header }}</td>
                 <td>{{ $r->id_detail }}</td>
                 <td>{{ $r->NAMA_TARIF }}</td>
                 <td>{{ $r->jumlah_layanan }}</td>

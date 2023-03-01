@@ -53,6 +53,16 @@
                         </a>
                     </li>
                     <li class="nav-item" id="pemeriksaan">
+                        <a href="#" class="nav-link" onclick="orderpenunjang()">
+                            <i class="fas fa-inbox mr-2"></i>Order Penunjang
+                        </a>
+                    </li>
+                    <li class="nav-item" id="pemeriksaan">
+                        <a href="#" class="nav-link" onclick="orderfarmasi()">
+                            <i class="fas fa-inbox mr-2"></i>Order Farmasi
+                        </a>
+                    </li>
+                    <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formupload()">
                             <i class="fas fa-inbox mr-2"></i>Upload Berkas
                         </a>
@@ -136,6 +146,38 @@
                 kodekunjungan
             },
             url: '<?= route('formupload') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+            }
+        });
+    }
+    function orderfarmasi() {
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('formorderfarmasi') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+            }
+        });
+    }
+    function orderpenunjang() {
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('formorderpenunjang') ?>',
             success: function(response) {
                 $('.slide3').html(response);
             }

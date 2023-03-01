@@ -23,7 +23,6 @@ use App\Http\Controllers\ErmController;
 */
 
 Route::get('/', [LoginController::class, 'index']);
-
 Route::get('/login', [LoginController::class, 'index'])->middleware('guest')->name('login');
 Route::post('/login', [LoginController::class, 'authenticate']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -43,6 +42,12 @@ Route::post('/pemeriksaankhususon', [ErmController::class, 'pemeriksaankhususon'
     ->name('pemeriksaankhususon'); //sidebar
 Route::post('/riwayattindakan', [ErmController::class, 'riwayattindakan'])
     ->name('riwayattindakan'); //sidebar
+Route::post('/riwayattindakan2', [ErmController::class, 'riwayattindakan2'])
+    ->name('riwayattindakan2'); //sidebar
+Route::post('/riwayatorder2', [ErmController::class, 'riwayatorder2'])
+    ->name('riwayatorder2'); //sidebar
+Route::post('/riwayatorderfarmasi2', [ErmController::class, 'riwayatorderfarmasi2'])
+    ->name('riwayatorderfarmasi2'); //sidebar
 Route::post('/riwayatupload', [ErmController::class, 'riwayatupload'])
     ->name('riwayatupload'); //sidebar
 Route::get('/register', [RegisterController::class, 'index'])->middleware('guest')->name('register');
@@ -400,6 +405,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5']], function () {
         ->name('simpanlayanan'); //sidebar
     Route::post('/tindakanhariini', [ErmController::class, 'tindakanhariini'])
         ->name('tindakanhariini'); //sidebar
+    Route::post('/orderobathariini', [ErmController::class, 'orderobathariini'])
+        ->name('orderobathariini'); //sidebar
     Route::post('/gambarmatakanan', [ErmController::class, 'gambarmatakanan'])
         ->name('gambarmatakanan'); //sidebar
     Route::post('/gambarmatakiri', [ErmController::class, 'gambarmatakiri'])
@@ -416,10 +423,26 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5']], function () {
         ->name('gambarcatatan'); //sidebar
     Route::post('/formupload', [ErmController::class, 'formupload'])
         ->name('formupload'); //sidebar
+    Route::post('/formorderpenunjang', [ErmController::class, 'formorderpenunjang'])
+        ->name('formorderpenunjang'); //sidebar
     Route::post('/uploadgambarnya', [ErmController::class, 'uploadgambarnya'])
         ->name('uploadgambarnya'); //sidebar
     Route::post('/batalheaderlayanan', [ErmController::class, 'batalheaderlayanan'])
         ->name('batalheaderlayanan'); //sidebar
+    Route::post('/batalheaderlayanan_order', [ErmController::class, 'batalheaderlayanan_order'])
+        ->name('batalheaderlayanan_order'); //sidebar
+    Route::post('/ambilform', [ErmController::class, 'ambilform'])
+        ->name('ambilform'); //sidebar
+    Route::post('/simpanorder', [ErmController::class, 'simpanorder'])
+        ->name('simpanorder'); //sidebar
+    Route::post('/simpanorderfarmasi', [ErmController::class, 'simpanorderfarmasi'])
+        ->name('simpanorderfarmasi'); //sidebar
+    Route::post('/orderhari_ini', [ErmController::class, 'orderhari_ini'])
+        ->name('orderhari_ini'); //sidebar
+    Route::post('/formorderfarmasi', [ErmController::class, 'formorderfarmasi'])
+        ->name('formorderfarmasi'); //sidebar
+    Route::post('/cariobat', [ErmController::class, 'cariobat'])
+        ->name('cariobat'); //sidebar
 
 
     Route::get('/indexpelayanandokter', [ErmController::class, 'indexpelayanandokter'])

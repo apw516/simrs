@@ -1677,6 +1677,58 @@
                     </table>
                 </div>
             </div>
+            <div class="card">
+                <div class="card-header bg-danger">Riwayat Order Penunjang</div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <thead>
+                            <th>Kode layanan header</th>
+                            <th>Kode layanan detail</th>
+                            <th>Nama Tindakan</th>
+                            <th>Jumlah</th>
+                        </thead>
+                        <tbody>
+                            @foreach ($riwayat_order as $r)
+                            @if($r->status_header != '3')
+                                <tr>
+                                    <td>{{ $r->kode_layanan_header }}</td>
+                                    <td>{{ $r->id_detail }}</td>
+                                    <td>{{ $r->NAMA_TARIF }}</td>
+                                    <td>{{ $r->jumlah_layanan }}</td>
+                                </tr>
+                            @endif
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header bg-danger">Riwayat Order Farmasi</div>
+                <div class="card-body">
+                    <table id="tabelorder_farmasi" class="table table-sm table-hover">
+                        <thead>
+                            <th>Nama Obat</th>
+                            <th>Jenis</th>
+                            <th>Satuan</th>
+                            <th>Jumlah</th>
+                            <th>Keterangan</th>
+                        </thead>
+                        <tbody>
+                            @foreach ($riwayat_order_f as $r)
+                            @if($r->status_layanan_header != '3')
+                                <tr>
+                                    <td>{{ $r->nama_barang }}</td>
+                                    <td>{{ $r->kategori_resep }}</td>
+                                    <td>{{ $r->satuan_barang }}</td>
+                                    <td>{{ $r->jumlah_layanan }}</td>
+                                    <td>{{ $r->aturan_pakai }}</td>
+                                </tr>
+                            @endif
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <table class="table mt-4">
                 <thead>
                     <th>Nama Dokter</th>

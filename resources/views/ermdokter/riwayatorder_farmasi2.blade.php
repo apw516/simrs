@@ -1,46 +1,39 @@
-<table id="tabelriwayattindakan_tdy" class="table table-sm table-bordered text-xs">
+<table id="tabelorder_farmasi" class="table table-sm table-hover">
     <thead>
-        <th>Kode Header</th>
-        <th>Kode Detail</th>
-        <th>Nama Layanan</th>
+        <th>Nama Obat</th>
+        <th>Jenis</th>
+        <th>Satuan</th>
         <th>Jumlah</th>
-        <th>status</th>
+        <th>Keterangan</th>
     </thead>
     <tbody>
-        @foreach ($riwayat_tindakan as $r)
-            <tr @if($r->status_layanan_header == '3') class="bg-danger"  @endif >
-                <td>
-                    @if($r->status_layanan_header != '3')
-                    <button id="{{ $r->id_header }}" kodelayananheader="{{ $r->kode_layanan_header }}"
-                        class="badge badge-danger returheader" data-toggle="tooltip" data-placement="top"
-                        title="retur header ..."><i class="bi bi-trash"></i></button>
-                        @endif
-                    {{ $r->kode_layanan_header }}</td>
-                <td>{{ $r->id_detail }}</td>
-                <td>{{ $r->NAMA_TARIF }}</td>
+        @foreach ($riwayat_order as $r)
+            <tr @if($r->status_layanan_header == '3') class="bg-danger"  @endif>
+                <td>{{ $r->nama_barang }}</td>
+                <td>{{ $r->kategori_resep }}</td>
+                <td>{{ $r->satuan_barang }}</td>
                 <td>{{ $r->jumlah_layanan }}</td>
-                <td>@if($r->status_layanan_header == '3') Batal @else Aktif @endif </td>
+                <td>{{ $r->aturan_pakai }}</td>
             </tr>
         @endforeach
     </tbody>
 </table>
 <script>
     $(function() {
-        $("#tabelriwayattindakan_tdy").DataTable({
-            "responsive": true,
+        $("#tabelorder_farmasi").DataTable({
+            "responsive": false,
             "lengthChange": false,
-            "autoWidth": true,
-            "pageLength": 5,
-            "searching": false,
-            "order" :[4,'asc']
-        })
+            "pageLength": 10,
+            "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        });
     });
-    $('#tabelriwayattindakan_tdy').on('click', '.returheader', function() {
+    $('#tabelorder_farmasi').on('click', '.returheader', function() {
         idheader = $(this).attr('id')
         kodelayananheader = $(this).attr('kodelayananheader')
         Swal.fire({
             title: 'Anda yakin ?',
-            text: "Semua layanan dengan kode header " + kodelayananheader + " akan dibatalkan / retur ...",
+            text: "Semua order dengan kode header " + kodelayananheader + " akan dibatalkan / retur ...",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -57,7 +50,7 @@
                         idheader,
                         kodelayananheader
                     },
-                    url: '<?= route('batalheaderlayanan') ?>',
+                    url: '<?= route('batalheaderlayanan_order') ?>',
                     error: function(data) {
                         Swal.fire({
                             icon: 'error',
@@ -81,7 +74,7 @@
                                 text: data.message,
                                 footer: ''
                             })
-                            tindakanhariini()
+                            orderobathariini()
                         }
                     }
                 });
