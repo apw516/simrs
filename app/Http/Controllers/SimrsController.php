@@ -789,9 +789,10 @@ class SimrsController extends Controller
             "jampraktek" => $jampraktek[0]->jadwal,
             "jeniskunjungan" => "$tujuan",
             "nomorreferensi" => "$nomorreferensi",
-            "method" => "OFF",
+            "method" => "Bridging",
             "kode_kunjungan" => "",
-            "nomorsep" => ""
+            "nomorsep" => "",
+            "user" => auth()->user()->nama
         ];
         $antrian = $mw->ambilantrean($data_antrian);
         $kodebooking = 0;
