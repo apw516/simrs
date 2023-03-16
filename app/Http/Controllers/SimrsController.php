@@ -818,7 +818,7 @@ class SimrsController extends Controller
         // $d = $this->createLayanandetail();
         // dd($d);
         //cek sudah daftar belum
-        //cek_kronis sp_cari_riwayat_kronis_terakhir
+        //cek_kronis
         //cek pasien aktif
         $cekrujukan = $v->carirujukan_byno($request->nomorrujukan);
         if ($cekrujukan->metaData->code == 201) {
