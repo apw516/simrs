@@ -633,7 +633,8 @@
         var idassesmen = $('#idassesmen').val()
         var kesimpulan = $('#kesimpulan').val()
         var anjuran = $('#anjuran').val()
-
+        spinner = $('#loader')
+        spinner.show();
         $.ajax({
             async: true,
             type: 'post',
@@ -652,6 +653,7 @@
             },
             url: '<?= route('simpantht_telinga') ?>',
             error: function(data) {
+                spinner.hide()
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -660,7 +662,7 @@
                 })
             },
             success: function(data) {
-                console.log(data)
+                spinner.hide()
                 if (data.kode == 500) {
                     Swal.fire({
                         icon: 'error',
@@ -686,6 +688,8 @@
         var nomorrm = $('#nomorrm').val()
         var idassesmen = $('#idassesmen').val()
         var kesimpulan = $('#kesimpulanhidung').val()
+        spinner = $('#loader')
+        spinner.show();
         $.ajax({
             async: true,
             type: 'post',
@@ -701,6 +705,7 @@
             },
             url: '<?= route('simpantht_hidung') ?>',
             error: function(data) {
+                spinner.hide()
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -709,7 +714,7 @@
                 })
             },
             success: function(data) {
-                console.log(data)
+                spinner.hide()
                 if (data.kode == 500) {
                     Swal.fire({
                         icon: 'error',

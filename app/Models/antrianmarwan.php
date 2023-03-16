@@ -20,11 +20,11 @@ class antrianmarwan extends Model
             'Connection' => 'keep-alive'
         );
         return $response;
-    }       
+    }
     public function ambilantrean($data_antrian)
     {
         $client = new Client();
-        $header = $this->header();       
+        $header = $this->header();
         $url = 'http://192.168.2.30/antrian/api/wsrs/ambil_antrian';
         try{
             $response = $client->request('POST', $url, [
@@ -35,12 +35,12 @@ class antrianmarwan extends Model
             return $response;
         }catch(ClientException){
             return 'RTO';
-        }          
+        }
     }
     public function batalantrian($data_batal_antrian)
     {
         $client = new Client();
-        $header = $this->header();       
+        $header = $this->header();
         $url = 'http://192.168.2.30/antrian/api/wsrs/batal_antrian';
         try{
             $response = $client->request('POST', $url, [
@@ -51,13 +51,13 @@ class antrianmarwan extends Model
             return $response;
         }catch(ClientException){
             return 'RTO';
-        }          
+        }
     }
     public function update_antrian($taskid)
     {
         $client = new Client();
-        $header = $this->header();       
-        $url = 'http://192.168.2.30/antrian/api/antrian/update';
+        $header = $this->header();
+        $url = 'http://192.168.2.30/antrian/api/wsrs/update_antrean_pendaftaran';
         try{
             $response = $client->request('POST', $url, [
                 'headers' => $header,
@@ -67,7 +67,7 @@ class antrianmarwan extends Model
             return $response;
         }catch(ClientException){
             return 'RTO';
-        }          
+        }
     }
     // function antrian2($data_antrian)
     // {

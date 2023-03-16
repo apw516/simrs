@@ -43,7 +43,7 @@
                       </ul>
                   </li>
                   @if (auth()->user()->hak_akses == 1 || auth()->user()->hak_akses == 4)
-                      <li class="nav-item">
+                      {{-- <li class="nav-item">
                           <a href="{{ route('indexperawat') }}"
                               class="nav-link @if ($sidebar == 'ermperawat') active @endif">
                               <i class="nav-icon fas fa-th"></i>
@@ -51,7 +51,7 @@
                                   ERM Perawat
                               </p>
                           </a>
-                      </li>
+                      </li> --}}
                   @endif
                   @if (auth()->user()->hak_akses == 1 || auth()->user()->hak_akses == 2)
                       <li class="nav-item">
@@ -106,6 +106,15 @@
                               <i class="nav-icon fas fa-th"></i>
                               <p style="font-size:12px">
                                   Riwayat SEP
+                              </p>
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a href="{{ route('menucaripasien') }}"
+                              class="nav-link @if ($title == 'SIMRS - PENCARIAN PASIEN') active @endif">
+                              <i class="nav-icon fas fa-th"></i>
+                              <p style="font-size:12px">
+                                  Buka Kunjungan
                               </p>
                           </a>
                       </li>

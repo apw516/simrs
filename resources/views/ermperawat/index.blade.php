@@ -33,6 +33,8 @@
             }
 
             function ambildatapasien() {
+                $(".formpasien").attr('hidden', true);
+                $(".vpasien").removeAttr('hidden', true);
                 spinner = $('#loader')
                 spinner.show();
                 $.ajax({

@@ -15,24 +15,25 @@
                 <td>{{ $p->nama_unit }}</td>
                 <td>{{ $p->nama_penjamin }}</td>
                 <td>
-                    @if($p->id_pemeriksaan_perawat != ( NULL))
-                    @if($p->status_asskep == 0)
-                    <button class="badge badge-warning"> Belum ttd </button>
-
-                    @else
+                    @if ($p->id_pemeriksaan_perawat != null)
+                        @if ($p->status_asskep == 0)
+                            <button class="badge badge-warning"> Belum ttd </button>
+                        @else
                             <button class="badge badge-success"> sudah diisi </button>
-
+                        @endif
+                    @else
+                        <button class="badge badge-danger"> belum diisi </button>
                     @endif
-                    @else <button class="badge badge-danger"> belum diisi </button> @endif
                 </td>
                 <td>
-                    @if($p->id_pemeriksaan_dokter != (NULL))
-                    @if($p->status_assdok == 0)
-                    <button class="badge badge-warning"> Belum ttd </button>
+                    @if ($p->id_pemeriksaan_dokter != null)
+                        @if ($p->status_assdok == 0)
+                            <button class="badge badge-warning"> Belum ttd </button>
+                        @else
+                            <button class="badge badge-success"> sudah diisi </button>
+                        @endif
                     @else
-                        <button class="badge badge-success"> sudah diisi </button>
-                    @endif
-                    @else <button class="badge badge-danger"> belum diisi </button>
+                        <button class="badge badge-danger"> belum diisi </button>
                     @endif
                 </td>
             </tr>
@@ -54,6 +55,8 @@
         kode = $(this).attr('kodekunjungan')
         $(".formpasien").removeAttr('hidden', true);
         $(".vpasien").attr('hidden', true);
+        spinner = $('#loader')
+        spinner.show();
         $.ajax({
             type: 'post',
             data: {
@@ -64,6 +67,7 @@
             url: '<?= route('ambildetailpasien') ?>',
             success: function(response) {
                 $('.formpasien').html(response);
+                spinner.hide();
             }
         });
     });

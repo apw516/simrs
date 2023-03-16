@@ -1706,6 +1706,8 @@
 </script>
 <script>
     $(".simpanpemeriksaan").click(function() {
+        spinner = $('#loader')
+        spinner.show();
         var canvas1 = document.getElementById("myCanvas1");
         var ctx1 = canvas1.getContext("2d");
         var img1 = document.getElementById("gambarnya1");
@@ -1748,6 +1750,7 @@
             },
             url: '<?= route('simpantht_telinga') ?>',
             error: function(data) {
+                spinner.hide()
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -1756,7 +1759,7 @@
                 })
             },
             success: function(data) {
-                console.log(data)
+                spinner.hide()
                 if (data.kode == 500) {
                     Swal.fire({
                         icon: 'error',
@@ -1776,6 +1779,8 @@
         });
     })
     $(".simpanpemeriksaan2").click(function(){
+        spinner = $('#loader')
+        spinner.show();
         var data1 = $('.formhidungkanan').serializeArray();
         var data2 = $('.formhidungkiri').serializeArray();
         var kodekunjungan = $('#kodekunjungan').val()
@@ -1797,6 +1802,7 @@
             },
             url: '<?= route('simpantht_hidung') ?>',
             error: function(data) {
+                spinner.hide()
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -1805,7 +1811,7 @@
                 })
             },
             success: function(data) {
-                console.log(data)
+                spinner.hide()
                 if (data.kode == 500) {
                     Swal.fire({
                         icon: 'error',

@@ -109,6 +109,8 @@
         $(".simpanlayanan").click(function() {
             var data = $('.formtindakan').serializeArray();
             var kodekunjungan = $('#kodekunjungan').val()
+            spinner = $('#loader')
+            spinner.show();
             $.ajax({
                 async: true,
                 type: 'post',
@@ -120,6 +122,7 @@
                 },
                 url: '<?= route('simpanlayanan') ?>',
                 error: function(data) {
+                    spinner.hide()
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -128,7 +131,7 @@
                     })
                 },
                 success: function(data) {
-                    console.log(data)
+                    spinner.hide()
                     if (data.kode == 500) {
                         Swal.fire({
                             icon: 'error',
@@ -151,12 +154,13 @@
         $(document).ready(function() {
             tindakanhariini()
         });
+
         function tindakanhariini() {
             $.ajax({
                 type: 'post',
                 data: {
                     _token: "{{ csrf_token() }}",
-                    kodekunjungan : $('#kodekunjungan').val()
+                    kodekunjungan: $('#kodekunjungan').val()
                 },
                 url: '<?= route('tindakanhariini') ?>',
                 error: function(data) {

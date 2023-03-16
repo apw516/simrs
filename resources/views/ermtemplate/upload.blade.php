@@ -45,6 +45,8 @@
         });
     }
     function uploadFile() {
+        spinner = $('#loader')
+        spinner.show();
         var files = $('#fileupload')[0].files;
         var fd = new FormData();
         kodekunjungan = $('#kodekunjungan').val()
@@ -62,6 +64,7 @@
             data: fd,
             url: '<?= route('uploadgambarnya') ?>',
             error: function(data) {
+                spinner.hide()
                 Swal.fire({
                     icon: 'error',
                     title: 'Ooops....',
@@ -70,6 +73,7 @@
                 })
             },
             success: function(data) {
+                spinner.hide()
                 if (data.kode == 500) {
                     Swal.fire({
                         icon: 'error',

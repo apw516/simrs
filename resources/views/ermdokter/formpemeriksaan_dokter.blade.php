@@ -375,6 +375,8 @@
 
     function simpanhasil() {
         var data = $('.formpemeriksaandokter').serializeArray();
+        spinner = $('#loader')
+        spinner.show();
         $.ajax({
             async: true,
             type: 'post',
@@ -385,6 +387,7 @@
             },
             url: '<?= route('simpanpemeriksaandokter') ?>',
             error: function(data) {
+                spinner.hide()
                 Swal.fire({
                     icon: 'error',
                     title: 'Ooops....',
@@ -393,6 +396,7 @@
                 })
             },
             success: function(data) {
+                spinner.hide()
                 if (data.kode == 500) {
                     Swal.fire({
                         icon: 'error',

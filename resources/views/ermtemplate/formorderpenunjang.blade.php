@@ -2,6 +2,18 @@
     <div class="card-header bg-warning">Order Penunjang</div>
     <div class="card-body">
         <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Diagnosa Pemeriksaan Penunjang</label>
+                    <input type="text" id="diagnosapemeriksaanpenunjang" class="form-control">
+                  </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Tanggal Pemeriksaan Penunjang</label>
+                    <input type="date" id="tanggalperiksapenunjang" value="03/06/2023" class="form-control">
+                  </div>
+            </div>
             <div class="col-md-12">
                 <div class="form-group">
                     <label for="exampleFormControlSelect1">Pilih Unit Penunjang</label>
@@ -36,7 +48,14 @@
         kodekunjungan = $('#kodekunjungan').val()
         id = $('#pilihpenunjang').val()
         nomorrm = $('#nomorrm').val()
-        $.ajax({
+        diagx = $('#diagnosapemeriksaanpenunjang').val()
+        tanggalperiksa = $('#tanggalperiksapenunjang').val()
+        if(diagx == ''){
+            alert('Silahkan isi diagnosa ...')
+        }else if(tanggalperiksa == ''){
+            alert('Silahkan isi tanggal periksa ...')
+        }else{
+            $.ajax({
             type: 'post',
             data: {
                 _token: "{{ csrf_token() }}",
@@ -49,6 +68,7 @@
                 $('.formnya').html(response);
             }
         });
+        }
     }
     $(document).ready(function() {
             orderhari_ini()

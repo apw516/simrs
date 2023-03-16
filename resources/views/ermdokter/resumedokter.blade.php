@@ -1798,6 +1798,8 @@
     }
 
     function simpantandatangan() {
+        spinner = $('#loader')
+        spinner.show();
         kodekunjungan = $('#kodekunjungan').val()
         var canvas = document.getElementById("the_canvas");
         var dataUrl = canvas.toDataURL();
@@ -1819,6 +1821,7 @@
             },
             url: '<?= route('simpanttddokter') ?>',
             error: function(data) {
+                spinner.hide()
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -1827,6 +1830,7 @@
                 })
             },
             success: function(data) {
+                spinner.hide()
                 if (data.kode == '502') {
                     Swal.fire({
                         icon: 'error',
@@ -1835,6 +1839,7 @@
                         footer: 'ermwaled2023'
                     })
                 } else {
+                    resume()
                     Swal.fire({
                         icon: 'success',
                         title: 'OK',

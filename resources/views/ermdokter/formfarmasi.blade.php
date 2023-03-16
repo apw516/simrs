@@ -80,6 +80,8 @@
     <script>
         $('#pencarianobat').on('input', function() {
             var kodekunjungan = $('#kodekunjungan').val()
+            spinner = $('#loader')
+            spinner.show();
             $.ajax({
                 type: 'post',
                 data: {
@@ -90,6 +92,7 @@
                 url: '<?= route('cariobat') ?>',
                 success: function(response) {
                     $('.tableobat').html(response);
+                    spinner.hide()
                 }
             });
         });
@@ -106,6 +109,8 @@
         $(".simpanlayanan").click(function() {
             var data = $('.formtindakan').serializeArray();
             var kodekunjungan = $('#kodekunjungan').val()
+            spinner = $('#loader')
+            spinner.show();
             $.ajax({
                 async: true,
                 type: 'post',
@@ -117,6 +122,7 @@
                 },
                 url: '<?= route('simpanorderfarmasi') ?>',
                 error: function(data) {
+                    spinner.hide()
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -125,7 +131,7 @@
                     })
                 },
                 success: function(data) {
-                    console.log(data)
+                    spinner.hide()
                     if (data.kode == 500) {
                         Swal.fire({
                             icon: 'error',
@@ -150,6 +156,8 @@
         });
 
         function orderobathariini() {
+            spinner = $('#loader')
+            spinner.show();
             $.ajax({
                 type: 'post',
                 data: {
@@ -162,6 +170,7 @@
                 },
                 success: function(response) {
                     $('.tindakanhariini').html(response)
+                    spinner.hide()
                 }
             });
         }

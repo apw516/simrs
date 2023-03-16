@@ -110,6 +110,10 @@
             var data = $('.formtindakan').serializeArray();
             var kodekunjungan = $('#kodekunjungan').val()
             id = $('#pilihpenunjang').val()
+            diagnosapenunjang = $('#diagnosapemeriksaanpenunjang').val()
+            tglperiksa = $('#tanggalperiksapenunjang').val()
+            spinner = $('#loader')
+            spinner.show();
             $.ajax({
                 async: true,
                 type: 'post',
@@ -118,10 +122,13 @@
                     _token: "{{ csrf_token() }}",
                     data: JSON.stringify(data),
                     kodekunjungan: kodekunjungan,
-                    id
+                    id,
+                    diagnosapenunjang,
+                    tglperiksa
                 },
                 url: '<?= route('simpanorder') ?>',
                 error: function(data) {
+                    spinner.hide()
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -130,7 +137,7 @@
                     })
                 },
                 success: function(data) {
-                    console.log(data)
+                    spinner.hide()
                     if (data.kode == 500) {
                         Swal.fire({
                             icon: 'error',

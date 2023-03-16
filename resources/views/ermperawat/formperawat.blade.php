@@ -1,4 +1,4 @@
-<button class="btn btn-danger" onclick="batalpilih()">Kembali</button>
+<button class="btn btn-danger" onclick="ambildatapasien()">Kembali</button>
 <div class="row mt-3">
     <div class="col-md-3">
         <!-- Profile Image -->
@@ -66,6 +66,8 @@
     })
 
     function formcatatanmedis(rm) {
+        spinner = $('#loader')
+        spinner.show();
         $.ajax({
             type: 'post',
             data: {
@@ -75,10 +77,13 @@
             url: '<?= route('ambilcatatanmedis_pasien') ?>',
             success: function(response) {
                 $('.slide3').html(response);
+                spinner.hide()
             }
         });
     }
     function formpemeriksaan() {
+        spinner = $('#loader')
+        spinner.show();
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
         $.ajax({
@@ -91,6 +96,7 @@
             url: '<?= route('formpemeriksaan_') ?>',
             success: function(response) {
                 $('.slide3').html(response);
+                spinner.hide()
             }
         });
     }
@@ -98,6 +104,8 @@
     {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
         $.ajax({
             type: 'post',
             data: {
@@ -108,6 +116,7 @@
             url: '<?= route('resumepasien') ?>',
             success: function(response) {
                 $('.slide3').html(response);
+                spinner.hide()
             }
         });
     }

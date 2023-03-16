@@ -343,6 +343,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:3']], function () {
         ->name('simpanlayanan'); //formpasien_bpjs
 });
 Route::group(['middleware' => ['auth', 'hak_akses1:9']], function () {
+    Route::get('/menucaripasien', [RanapController::class, 'menucaripasien'])
+        ->name('menucaripasien'); //sidebar
     Route::get('/datasepranap', [RanapController::class, 'Index'])
         ->name('datasepranap'); //sidebar
     Route::post('/ranapupdatesep', [RanapController::class, 'UpdateSEP'])
@@ -353,6 +355,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:9']], function () {
         ->name('carisurkonranap'); //sidebar
     Route::post('/editkunjungan', [RanapController::class, 'editkunjungan'])
         ->name('editkunjungan'); //sidebar
+    Route::post('/simpanajuan', [RanapController::class, 'simpanajuan'])
+        ->name('simpanajuan'); //sidebar
 });
 //erm
 Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {

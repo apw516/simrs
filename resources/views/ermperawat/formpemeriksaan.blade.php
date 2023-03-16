@@ -484,6 +484,8 @@
           }).datepicker('update', new Date());
       });
     function simpanhasil() {
+        spinner = $('#loader')
+        spinner.show();
         var data = $('.formpemeriksaanperawat').serializeArray();
         $.ajax({
             async: true,
@@ -495,6 +497,7 @@
             },
             url: '<?= route('simpanpemeriksaanperawat') ?>',
             error: function(data) {
+                spinner.hide()
                 Swal.fire({
                     icon: 'error',
                     title: 'Ooops....',
@@ -503,6 +506,7 @@
                 })
             },
             success: function(data) {
+                spinner.hide()
                 if (data.kode == 500) {
                     Swal.fire({
                         icon: 'error',

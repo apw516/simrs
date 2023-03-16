@@ -1,4 +1,4 @@
-<button class="btn btn-danger" onclick="batalpilih()">Kembali</button>
+<button class="btn btn-danger" onclick="ambildatapasien()">Kembali</button>
 <div class="row mt-3">
     <div class="col-md-3">
         <!-- Profile Image -->
@@ -91,6 +91,8 @@
         formcatatanmedis(rm)
     })
     function formcatatanmedis(rm) {
+        spinner = $('#loader')
+        spinner.show();
         $.ajax({
             type: 'post',
             data: {
@@ -100,12 +102,15 @@
             url: '<?= route('ambilcatatanmedis_pasien') ?>',
             success: function(response) {
                 $('.slide3').html(response);
+                spinner.hide()
             }
         });
     }
     function formpemeriksaandokter() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
         $.ajax({
             type: 'post',
             data: {
@@ -116,12 +121,15 @@
             url: '<?= route('formpemeriksaan_dokter') ?>',
             success: function(response) {
                 $('.slide3').html(response);
+                spinner.hide()
             }
         });
     }
     function formpemeriksaankhusus() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
         $.ajax({
             type: 'post',
             data: {
@@ -131,6 +139,7 @@
             },
             url: '<?= route('formpemeriksaan_khusus') ?>',
             success: function(response) {
+                spinner.hide()
                 $('.slide3').html(response);
             }
         });
@@ -138,6 +147,8 @@
     function formupload() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
         $.ajax({
             type: 'post',
             data: {
@@ -148,12 +159,15 @@
             url: '<?= route('formupload') ?>',
             success: function(response) {
                 $('.slide3').html(response);
+                spinner.hide()
             }
         });
     }
     function orderfarmasi() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
         $.ajax({
             type: 'post',
             data: {
@@ -164,12 +178,15 @@
             url: '<?= route('formorderfarmasi') ?>',
             success: function(response) {
                 $('.slide3').html(response);
+                spinner.hide()
             }
         });
     }
     function orderpenunjang() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
         $.ajax({
             type: 'post',
             data: {
@@ -180,12 +197,15 @@
             url: '<?= route('formorderpenunjang') ?>',
             success: function(response) {
                 $('.slide3').html(response);
+                spinner.hide()
             }
         });
     }
     function forminputtindakan() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
         $.ajax({
             type: 'post',
             data: {
@@ -196,6 +216,7 @@
             url: '<?= route('formtindakan') ?>',
             success: function(response) {
                 $('.slide3').html(response);
+                spinner.hide()
             }
         });
     }
@@ -203,6 +224,8 @@
     {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
         $.ajax({
             type: 'post',
             data: {
@@ -213,6 +236,7 @@
             url: '<?= route('resumepasien_dokter') ?>',
             success: function(response) {
                 $('.slide3').html(response);
+                spinner.hide()
             }
         });
     }
