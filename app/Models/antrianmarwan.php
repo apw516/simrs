@@ -25,7 +25,7 @@ class antrianmarwan extends Model
     {
         $client = new Client();
         $header = $this->header();
-        $url = 'http://192.168.2.30/antrian/api/wsrs/ambil_antrian';
+        $url = 'http://192.168.2.30/simrs/api/wsrs/ambil_antrian';
         try{
             $response = $client->request('POST', $url, [
                 'headers' => $header,
@@ -41,7 +41,7 @@ class antrianmarwan extends Model
     {
         $client = new Client();
         $header = $this->header();
-        $url = 'http://192.168.2.30/antrian/api/wsrs/batal_antrian';
+        $url = 'http://192.168.2.30/simrs/api/wsrs/batal_antrian';
         try{
             $response = $client->request('POST', $url, [
                 'headers' => $header,
@@ -57,7 +57,7 @@ class antrianmarwan extends Model
     {
         $client = new Client();
         $header = $this->header();
-        $url = 'http://192.168.2.30/antrian/api/wsrs/update_antrean_pendaftaran';
+        $url = 'http://192.168.2.30/simrs/api/wsrs/update_antrean_pendaftaran';
         try{
             $response = $client->request('POST', $url, [
                 'headers' => $header,
