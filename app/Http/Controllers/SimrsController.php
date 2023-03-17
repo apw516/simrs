@@ -794,20 +794,22 @@ class SimrsController extends Controller
             "nomorsep" => "",
             "user" => auth()->user()->nama
         ];
-        $antrian = $mw->ambilantrean($data_antrian);
-        $kodebooking = 0;
-        if (isset($antrian->metadata->code)) {
-            $status_a = $antrian->metadata->code;
-            if ($status_a == 200) {
-                $time = Carbon::now();
-                $timestamp = $time->timestamp * 1000;
-                $kodebooking = $antrian->response->kodebooking;
-                $taskid = [
-                    "kodebooking" => "$kodebooking",
-                    "taskid" => "3",
-                    "waktu" => $timestamp
-                ];
-                $taskid_r = $mw->update_antrian($taskid);
+        if ($request->kodepolitujuan != 'HDL') {
+            $antrian = $mw->ambilantrean($data_antrian);
+            $kodebooking = 0;
+            if (isset($antrian->metadata->code)) {
+                $status_a = $antrian->metadata->code;
+                if ($status_a == 200) {
+                    $time = Carbon::now();
+                    $timestamp = $time->timestamp * 1000;
+                    $kodebooking = $antrian->response->kodebooking;
+                    $taskid = [
+                        "kodebooking" => "$kodebooking",
+                        "taskid" => "3",
+                        "waktu" => $timestamp
+                    ];
+                    $taskid_r = $mw->update_antrian($taskid);
+                }
             }
         }
         //END OF AMBIL ANTRIAN
@@ -920,7 +922,7 @@ class SimrsController extends Controller
                 'kelas' => $request->hakkelas,
                 'hak_kelas' => $request->hakkelas,
                 'crad' => $crad,
-                'diagx' => $request->kodediagnosa. ' | ' .$request->namadiagnosa ,
+                'diagx' => $request->kodediagnosa . ' | ' . $request->namadiagnosa,
                 'pic' => auth()->user()->id_simrs,
                 'no_sep' => '',
             ];
@@ -946,7 +948,7 @@ class SimrsController extends Controller
                 'kelas' => 3,
                 'hak_kelas' => 3,
                 'pic' => auth()->user()->id_simrs,
-                'diagx' => $request->kodediagnosa. ' | ' .$request->namadiagnosa ,
+                'diagx' => $request->kodediagnosa . ' | ' . $request->namadiagnosa,
                 'no_sep' => '',
                 'no_rujukan' => $request->nomorrujukan,
                 'id_alasan_masuk' => $request->alasanmasuk
@@ -1159,15 +1161,17 @@ class SimrsController extends Controller
                 DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
             }
             //batal antrian
-            if (isset($antrian->metadata->code)) {
-                $status_a = $antrian->metadata->code;
-                if ($status_a == 200) {
-                    $kodebooking = $antrian->response->kodebooking;
-                    $batal = [
-                        "kodebooking" => "$kodebooking",
-                        "keterangan" => "system error"
-                    ];
-                    $mw->batalantrian($batal);
+            if ($request->kodepolitujuan != 'HDL') {
+                if (isset($antrian->metadata->code)) {
+                    $status_a = $antrian->metadata->code;
+                    if ($status_a == 200) {
+                        $kodebooking = $antrian->response->kodebooking;
+                        $batal = [
+                            "kodebooking" => "$kodebooking",
+                            "keterangan" => "system error"
+                        ];
+                        $mw->batalantrian($batal);
+                    }
                 }
             }
             //end of batal antrian
@@ -1252,12 +1256,14 @@ class SimrsController extends Controller
             //insert ke tracer
             tracer::create($data_tracer);
             //update antrian marwan
-            if (isset($antrian->metadata->code)) {
-                $status_a = $antrian->metadata->code;
-                if ($status_a == 200) {
-                    $kodebooking = $antrian->response->kodebooking;
-                    jkn_antrian::where('kodebooking', $kodebooking)
-                    ->update(['nomorsep' => $sep->noSep, 'kode_kunjungan' => $ts_kunjungan->id ]);
+            if ($request->kodepolitujuan != 'HDL') {
+                if (isset($antrian->metadata->code)) {
+                    $status_a = $antrian->metadata->code;
+                    if ($status_a == 200) {
+                        $kodebooking = $antrian->response->kodebooking;
+                        jkn_antrian::where('kodebooking', $kodebooking)
+                            ->update(['nomorsep' => $sep->noSep, 'kode_kunjungan' => $ts_kunjungan->id]);
+                    }
                 }
             }
             //end of update antrian
@@ -1277,6 +1283,7 @@ class SimrsController extends Controller
                 DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
             }
             //batal antrian
+            if($request->kodepolitujuan != 'HDL'){
             if (isset($antrian->metadata->code)) {
                 $status_a = $antrian->metadata->code;
                 if ($status_a == 200) {
@@ -1288,6 +1295,7 @@ class SimrsController extends Controller
                     $mw->batalantrian($batal);
                 }
             }
+        }
             //end of batal antrian
             $data = [
                 'kode' => 201,
