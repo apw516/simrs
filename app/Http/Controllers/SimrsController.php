@@ -374,6 +374,20 @@ class SimrsController extends Controller
     {
         $v = new VclaimModel();
         $noka = $v->get_peserta_noka($request->nomorbpjs, date('Y-m-d'));
+        try {
+            $noka = $v->get_peserta_noka($request->nomorbpjs, date('Y-m-d'));
+        } catch (\Exception $e) {
+            $err = $e->getMessage();
+            echo "<div class='alert alert-danger' role='alert'> $err </div>";
+            die;
+        }
+
+        $status_code = $noka->metaData->code;
+        $status_message = $noka->metaData->message;
+        if($status_code != 200){
+            echo "<div class='alert alert-danger' role='alert'> $status_message </div>";
+            die;
+        }
         $cek_rm = DB::select('select * from ts_kunjungan where no_rm = ? and status_kunjungan = 1', [$request->nomorrm]);
         $total = count($cek_rm);
         if ($total > 0) {
@@ -381,6 +395,7 @@ class SimrsController extends Controller
         } else {
             $tanggal_k = 0;
         }
+
         return view('pendaftaran.form_pasien_bpjs', [
             'data_peserta' => $noka,
             'riwayat_kunjungan' => DB::select("CALL SP_RIWAYAT_KUNJUNGAN_PX('$request->nomorrm')"),
@@ -757,61 +772,61 @@ class SimrsController extends Controller
     public function Simpansep(Request $request)
     {
         //antrian
-        $mw = new antrianmarwan();
-        $day = $request->tglsep;
-        $today = strtoupper(Carbon::parse($day)->dayName);
-        $jampraktek = DB::select('select * from jkn_jadwal_dokter where kodedokter = ? and namahari = ?', [$request->kodedokterlayan, $today]);
-        if (empty($jampraktek)) {
-            $data = [
-                'kode' => 500,
-                'message' => 'Jadwal Dokter tidak ditemukan !'
-            ];
-            echo json_encode($data);
-            die;
-        }
+        // $mw = new antrianmarwan();
+        // $day = $request->tglsep;
+        // $today = strtoupper(Carbon::parse($day)->dayName);
+        // $jampraktek = DB::select('select * from jkn_jadwal_dokter where kodedokter = ? and namahari = ?', [$request->kodedokterlayan, $today]);
+        // if (empty($jampraktek)) {
+        //     $data = [
+        //         'kode' => 500,
+        //         'message' => 'Jadwal Dokter tidak ditemukan !'
+        //     ];
+        //     echo json_encode($data);
+        //     die;
+        // }
         //end antrian
         //ambil antrian
-        if ($request->tujuankunjungan == 0) {
-            $nomorreferensi = $request->nomorrujukan;
-            $tujuan = 1;
-        } else if ($request->tujuankunjungan == 2) {
-            $nomorreferensi = $request->suratkontrol;
-            $tujuan = 3;
-        }
-        $data_antrian = [
-            "nomorkartu" => "$request->nomorkartu",
-            "nik" => "$request->nik",
-            "nohp" => "$request->nomortelepon",
-            "kodepoli" => "$request->kodepolitujuan",
-            "norm" => "$request->norm",
-            "tanggalperiksa" => "$request->tglsep",
-            "kodedokter" => $request->kodedokterlayan,
-            "jampraktek" => $jampraktek[0]->jadwal,
-            "jeniskunjungan" => "$tujuan",
-            "nomorreferensi" => "$nomorreferensi",
-            "method" => "Bridging",
-            "kode_kunjungan" => "",
-            "nomorsep" => "",
-            "user" => auth()->user()->nama
-        ];
-        if ($request->kodepolitujuan != 'HDL') {
-            $antrian = $mw->ambilantrean($data_antrian);
-            $kodebooking = 0;
-            if (isset($antrian->metadata->code)) {
-                $status_a = $antrian->metadata->code;
-                if ($status_a == 200) {
-                    $time = Carbon::now();
-                    $timestamp = $time->timestamp * 1000;
-                    $kodebooking = $antrian->response->kodebooking;
-                    $taskid = [
-                        "kodebooking" => "$kodebooking",
-                        "taskid" => "3",
-                        "waktu" => $timestamp
-                    ];
-                    $taskid_r = $mw->update_antrian($taskid);
-                }
-            }
-        }
+        // if ($request->tujuankunjungan == 0) {
+        //     $nomorreferensi = $request->nomorrujukan;
+        //     $tujuan = 1;
+        // } else if ($request->tujuankunjungan == 2) {
+        //     $nomorreferensi = $request->suratkontrol;
+        //     $tujuan = 3;
+        // }
+        // $data_antrian = [
+        //     "nomorkartu" => "$request->nomorkartu",
+        //     "nik" => "$request->nik",
+        //     "nohp" => "$request->nomortelepon",
+        //     "kodepoli" => "$request->kodepolitujuan",
+        //     "norm" => "$request->norm",
+        //     "tanggalperiksa" => "$request->tglsep",
+        //     "kodedokter" => $request->kodedokterlayan,
+        //     "jampraktek" => $jampraktek[0]->jadwal,
+        //     "jeniskunjungan" => "$tujuan",
+        //     "nomorreferensi" => "$nomorreferensi",
+        //     "method" => "Bridging",
+        //     "kode_kunjungan" => "",
+        //     "nomorsep" => "",
+        //     "user" => auth()->user()->nama
+        // ];
+        // if ($request->kodepolitujuan != 'HDL') {
+        //     $antrian = $mw->ambilantrean($data_antrian);
+        //     $kodebooking = 0;
+        //     if (isset($antrian->metadata->code)) {
+        //         $status_a = $antrian->metadata->code;
+        //         if ($status_a == 200) {
+        //             $time = Carbon::now();
+        //             $timestamp = $time->timestamp * 1000;
+        //             $kodebooking = $antrian->response->kodebooking;
+        //             $taskid = [
+        //                 "kodebooking" => "$kodebooking",
+        //                 "taskid" => "3",
+        //                 "waktu" => $timestamp
+        //             ];
+        //             $taskid_r = $mw->update_antrian($taskid);
+        //         }
+        //     }
+        // }
         //END OF AMBIL ANTRIAN
         $dt = Carbon::now();
         $v = new VclaimModel();
@@ -1161,19 +1176,19 @@ class SimrsController extends Controller
                 DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
             }
             //batal antrian
-            if ($request->kodepolitujuan != 'HDL') {
-                if (isset($antrian->metadata->code)) {
-                    $status_a = $antrian->metadata->code;
-                    if ($status_a == 200) {
-                        $kodebooking = $antrian->response->kodebooking;
-                        $batal = [
-                            "kodebooking" => "$kodebooking",
-                            "keterangan" => "system error"
-                        ];
-                        $mw->batalantrian($batal);
-                    }
-                }
-            }
+            // if ($request->kodepolitujuan != 'HDL') {
+            //     if (isset($antrian->metadata->code)) {
+            //         $status_a = $antrian->metadata->code;
+            //         if ($status_a == 200) {
+            //             $kodebooking = $antrian->response->kodebooking;
+            //             $batal = [
+            //                 "kodebooking" => "$kodebooking",
+            //                 "keterangan" => "system error"
+            //             ];
+            //             $mw->batalantrian($batal);
+            //         }
+            //     }
+            // }
             //end of batal antrian
             $data = [
                 'kode' => 500,
@@ -1256,16 +1271,16 @@ class SimrsController extends Controller
             //insert ke tracer
             tracer::create($data_tracer);
             //update antrian marwan
-            if ($request->kodepolitujuan != 'HDL') {
-                if (isset($antrian->metadata->code)) {
-                    $status_a = $antrian->metadata->code;
-                    if ($status_a == 200) {
-                        $kodebooking = $antrian->response->kodebooking;
-                        jkn_antrian::where('kodebooking', $kodebooking)
-                            ->update(['nomorsep' => $sep->noSep, 'kode_kunjungan' => $ts_kunjungan->id]);
-                    }
-                }
-            }
+            // if ($request->kodepolitujuan != 'HDL') {
+            //     if (isset($antrian->metadata->code)) {
+            //         $status_a = $antrian->metadata->code;
+            //         if ($status_a == 200) {
+            //             $kodebooking = $antrian->response->kodebooking;
+            //             jkn_antrian::where('kodebooking', $kodebooking)
+            //                 ->update(['nomorsep' => $sep->noSep, 'kode_kunjungan' => $ts_kunjungan->id]);
+            //         }
+            //     }
+            // }
             //end of update antrian
             $pasien = Pasien::where('no_rm', '=', "$request->norm")->get();
             $data = [
@@ -1283,19 +1298,19 @@ class SimrsController extends Controller
                 DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
             }
             //batal antrian
-            if($request->kodepolitujuan != 'HDL'){
-            if (isset($antrian->metadata->code)) {
-                $status_a = $antrian->metadata->code;
-                if ($status_a == 200) {
-                    $kodebooking = $antrian->response->kodebooking;
-                    $batal = [
-                        "kodebooking" => "$kodebooking",
-                        "keterangan" => "system error"
-                    ];
-                    $mw->batalantrian($batal);
-                }
-            }
-        }
+        //     if($request->kodepolitujuan != 'HDL'){
+        //     if (isset($antrian->metadata->code)) {
+        //         $status_a = $antrian->metadata->code;
+        //         if ($status_a == 200) {
+        //             $kodebooking = $antrian->response->kodebooking;
+        //             $batal = [
+        //                 "kodebooking" => "$kodebooking",
+        //                 "keterangan" => "system error"
+        //             ];
+        //             $mw->batalantrian($batal);
+        //         }
+        //     }
+        // }
             //end of batal antrian
             $data = [
                 'kode' => 201,
