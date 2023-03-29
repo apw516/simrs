@@ -8,6 +8,7 @@
         "php": "^8.0.2",
         "barryvdh/laravel-dompdf": "^1.0",
         "codedge/laravel-fpdf": "^1.8",
+        "geekcom/phpjasper": "^3.1",
         "guzzlehttp/guzzle": "^7.4",
         "itsgoingd/clockwork": "^5.1",
         "laravel/framework": "^9.2",
@@ -15,6 +16,7 @@
         "laravel/tinker": "^2.7",
         "mike42/escpos-php": "^3.0",
         "nullpunkt/lz-string-php": "^1.3",
+        "simitgroup/phpjasperxml": "^2.0",
         "simplesoftwareio/simple-qrcode": "~4"
     },
     "require-dev": {
