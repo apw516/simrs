@@ -2,7 +2,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="index3.html" class="brand-link">
-          <img width="100%" src="{{ asset('public/img/logo.png')}}" alt="AdminLTE Logo" class=""
+          <img width="100%" src="{{ asset('public/img/LOGO2.png')}}" alt="AdminLTE Logo" class=""
               style="opacity: .8">
           {{-- <span class="brand-text font-weight-light">SEMERUSMART</span> --}}
       </a>
@@ -10,12 +10,13 @@
       <!-- Sidebar -->
       <div class="sidebar">
           <!-- Sidebar user panel (optional) -->
-          <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+          <div class="user-panel mt-5 pb-3 mb-3 d-flex">
               <div class="image">
                   <img src="{{ asset('public/img/logouser.png') }}" class="img-circle elevation-2" alt="User Image">
               </div>
               <div class="info">
-                  <a href="#" class="d-block">{{ auth()->user()->username }}</a>
+                  {{-- <a href="#" class="d-block">{{ auth()->user()->nama }}</a> --}}
+                  <marquee class="text-light" width="200" height="30">{{ auth()->user()->nama }}</marquee>
               </div>
           </div>
           <!-- Sidebar Menu -->
@@ -51,7 +52,7 @@
                     </a>
                 </li>
                 @endif
-                @if(auth()->user()->hak_akses == 1 || auth()->user()->hak_akses == 5)
+                @if(auth()->user()->hak_akses == 1 || auth()->user()->hak_akses == 5 )
                   <li class="nav-item">
                     <a href="{{ route('indexdokter') }}" class="nav-link @if($sidebar == 'ermdokter') active @endif">
                         <i class="nav-icon fas fa-th"></i>
@@ -60,16 +61,18 @@
                         </p>
                     </a>
                 </li>
+                @endif
+                @if(auth()->user()->hak_akses == 1 || auth()->user()->hak_akses == 4  || auth()->user()->hak_akses == 5 )
                   <li class="nav-item">
                     <a href="{{ route('indexpelayanandokter') }}" class="nav-link @if($sidebar == 'pelayanandokter') active @endif">
                         <i class="nav-icon fas bi bi-file-earmark-spreadsheet"></i>
                         <p>
-                            Riwayat Pelayanan
+                            Riwayat Pemeriksaan
                         </p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('indexpelayanandokter') }}" class="nav-link @if($sidebar == 'pelayanandokter') active @endif">
+                    <a href="{{ route('riwayatpemeriksaan_byrm') }}" class="nav-link @if($sidebar == 'caripasien_resume') active @endif">
                         {{-- <i class="nav-icon fas fa-th"></i> --}}
                         <i class="nav-icon fas bi bi-search-heart"></i>
                         <p>

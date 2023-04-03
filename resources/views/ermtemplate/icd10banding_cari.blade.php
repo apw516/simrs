@@ -1,4 +1,4 @@
-<table id="tablediagnosa101" class="table table-sm table-bordered table-hover">
+<table id="tablediagnosa1012" class="table table-sm table-bordered table-hover">
     <thead>
         <th>Kode</th>
         <th>Nama</th>
@@ -14,7 +14,7 @@
 </table>
 <script>
       $(function() {
-        $("#tablediagnosa101").DataTable({
+        $("#tablediagnosa1012").DataTable({
             "responsive": true,
             "lengthChange": false,
             "autoWidth": true,
@@ -22,7 +22,7 @@
             "searching": false
         })
     });
-    $('#tablediagnosa101').on('click', '.pilihdiagnosakerja', function() {
+    $('#tablediagnosa1012').on('click', '.pilihdiagnosakerja', function() {
         diag = $(this).attr('diag')
         nama = $(this).attr('nama')
         diagnosalama = $('#diagnosabanding').val()

@@ -31,15 +31,7 @@
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-control" name="namakeluarga" id="namakeluarga"
-                                placeholder="Nama Keluarga ...">
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <div class="form-group">
-                                <select class="form-control" id="hubungankeluarga" name="hubungankeluarga">
-                                    <option value="suami">Suami</option>
-                                    <option value="istri">Istri</option>
-                                </select>
-                            </div>
+                                placeholder="Nama Keluarga ..." value="{{ $resume2[0]->keterangan_sumberdata}}">
                         </div>
                     </td>
                 </tr>
@@ -57,7 +49,7 @@
                             <label class="form-check-label" for="inlineRadio2">Rujukan</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <textarea class="form-control" name="keteranganasalmasuk" id="keteranganasalmasuk" placeholder="Keterangan ..."></textarea>
+                            <textarea class="form-control" name="keteranganasalmasuk" id="keteranganasalmasuk" placeholder="Keterangan ...">{{ $resume2[0]->keterangan_asal_masuk }}</textarea>
                         </div>
                     </td>
                 </tr>
@@ -359,7 +351,7 @@
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="neurosensorik"
                                                     id="neurosensorik" value="Tidak Ada"
-                                                    @if ($resume2[0]->neurosensorik == 'Normal') checked @endif>
+                                                    @if ($resume2[0]->neurosensorik == 'Tidak Ada') checked @endif>
                                                 <label class="form-check-label" for="inlineRadio1">Tidak Ada</label>
                                             </div>
                                             <div class="form-check form-check-inline">

@@ -108,12 +108,12 @@ class ErmController extends Controller
         } else {
             if ($kunjungan[0]->kode_unit == '1002') {
                 $resume2 = DB::select('SELECT * from erm_assesmen_keperawatan_igd WHERE kode_kunjungan = ?', [$request->kodekunjungan]);
-                if(count($resume2) > 0){
+                if (count($resume2) > 0) {
                     return view('ermperawat.formpemeriksaanigd_edit', compact([
                         'kunjungan',
                         'resume2'
                     ]));
-                }else{
+                } else {
                     return view('ermperawat.formpemeriksaanigd', compact([
                         'kunjungan'
                     ]));
@@ -207,6 +207,12 @@ class ErmController extends Controller
                 ]));
             }
         } else {
+            if ($unit == '1002') {
+                $resume = DB::select('SELECT * from erm_assesmen_keperawatan_igd WHERE kode_kunjungan = ?', [$request->kodekunjungan]);
+                return view('erm_form_khusus.formgambar_igd', compact([
+                    'resume'
+                ]));
+            }
             return view('ermtemplate.data1tidakditemukan');
         }
     }
@@ -1977,15 +1983,59 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
             'cek1'
         ]));
     }
+    public function gambarcatatan_igd(Request $request)
+    {
+        $cek1 = DB::select('select * from erm_catatan_gambar where kode_kunjungan = ? and kode_unit = ?', [$request->kodekunjungan, auth()->user()->unit]);
+        return view('ermtemplate.gambarnyeri', compact([
+            'cek1'
+        ]));
+    }
     public function indexpelayanandokter()
     {
         $title = 'SIMRS - Riwayat Pelayanan Dokter';
         $sidebar = 'pelayanandokter';
         $sidebar_m = '2';
-        return view('ermdokter.index', compact([
+        return view('ermdokter.indexpelayanan', compact([
             'title',
             'sidebar',
             'sidebar_m'
+        ]));
+    }
+    public function riwayatpemeriksaan_byrm()
+    {
+        $title = 'SIMRS - Riwayat Pelayanan Dokter';
+        $sidebar = 'caripasien_resume';
+        $sidebar_m = '2';
+        return view('ermdokter.riwayatpasien_rm', compact([
+            'title',
+            'sidebar',
+            'sidebar_m'
+        ]));
+    }
+    public function ambilriwayat_pasien()
+    {
+        $now = date('Y-m-d');
+        $d2 = date('Y-m-d', strtotime('-7 days'));
+        $data = DB::select('SELECT a.tanggalkunjungan,a.no_rm,fc_nama_px(a.no_rm) AS nama,a.keluhanutama,a.namapemeriksa AS nama_perawat,b.nama_dokter AS nama_dokter FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b ON a.id = b.id_asskep WHERE a.kode_unit = ? AND DATE(a.tanggalkunjungan) BETWEEN ? AND ?',[ auth()->user()->unit,$d2,$now]);
+        return view('ermtemplate.riwayatpemeriksaan',compact([
+            'data'
+        ]));
+    }
+    public function ambilriwayat_pasien_cari(Request $request)
+    {
+        $now = $request->tanggalakhir;
+        $d2 = $request->tanggalawal;
+        $data = DB::select('SELECT a.tanggalkunjungan,a.no_rm,fc_nama_px(a.no_rm) AS nama,a.keluhanutama,a.namapemeriksa AS nama_perawat,b.nama_dokter AS nama_dokter FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b ON a.id = b.id_asskep WHERE a.kode_unit = ? AND DATE(a.tanggalkunjungan) BETWEEN ? AND ?',[ auth()->user()->unit,$d2,$now]);
+        return view('ermtemplate.riwayatpemeriksaan',compact([
+            'data'
+        ]));
+    }
+    public function ambilriwayat_pasien_byrm(Request $request)
+    {
+        $nomorrm = $request->nomorm;
+        $data = DB::select('SELECT a.tanggalkunjungan,a.no_rm,fc_nama_px(a.no_rm) AS nama,a.keluhanutama,a.namapemeriksa AS nama_perawat,b.nama_dokter AS nama_dokter FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b ON a.id = b.id_asskep WHERE a.no_rm = ?',[$nomorrm]);
+        return view('ermtemplate.riwayatpemeriksaan',compact([
+            'data'
         ]));
     }
     public function formupload()

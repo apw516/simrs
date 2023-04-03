@@ -55,6 +55,16 @@ Route::post('/register', [RegisterController::class, 'Store']);
 
 Route::post('/formpemeriksaan_khusus', [ErmController::class, 'formpemeriksaan_khusus'])
 ->name('formpemeriksaan_khusus'); //sidebar
+Route::post('/ambilriwayat_pasien', [ErmController::class, 'ambilriwayat_pasien'])
+->name('ambilriwayat_pasien'); //sidebar
+Route::post('/ambilriwayat_pasien_cari', [ErmController::class, 'ambilriwayat_pasien_cari'])
+->name('ambilriwayat_pasien_cari'); //sidebar
+Route::get('/indexpelayanandokter', [ErmController::class, 'indexpelayanandokter'])
+->name('indexpelayanandokter'); //sidebar
+Route::get('/riwayatpemeriksaan_byrm', [ErmController::class, 'riwayatpemeriksaan_byrm'])
+->name('riwayatpemeriksaan_byrm'); //sidebar
+Route::post('/ambilriwayat_pasien_byrm', [ErmController::class, 'ambilriwayat_pasien_byrm'])
+->name('ambilriwayat_pasien_byrm'); //sidebar
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9']], function () {
@@ -379,6 +389,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('simpanttdperawat'); //sidebar
     Route::post('/gambarnyeri', [ErmController::class, 'gambarnyeri'])
         ->name('gambarnyeri'); //sidebar
+    Route::post('/gambarcatatan_igd', [ErmController::class, 'gambarcatatan_igd'])
+        ->name('gambarcatatan_igd'); //sidebar
 });
 Route::group(['middleware' => ['auth', 'hak_akses1:5']], function () {
     Route::get('/indexdokter', [ErmController::class, 'indexdokter'])
@@ -447,11 +459,6 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5']], function () {
         ->name('formorderfarmasi'); //sidebar
     Route::post('/cariobat', [ErmController::class, 'cariobat'])
         ->name('cariobat'); //sidebar
-
-
-    Route::get('/indexpelayanandokter', [ErmController::class, 'indexpelayanandokter'])
-        ->name('indexpelayanandokter'); //sidebar
-
 });
 
 

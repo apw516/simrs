@@ -2,7 +2,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="index3.html" class="brand-link">
-          <img width="100%" src="{{ asset('public/img/logo.png') }}" alt="AdminLTE Logo" class=""
+          <img width="100%" height="80%" src="{{ asset('public/img/LOGO2.png') }}" alt="AdminLTE Logo" class=""
               style="opacity: .8">
           {{-- <span class="brand-text font-weight-light">SEMERUSMART</span> --}}
       </a>
@@ -10,7 +10,7 @@
       <!-- Sidebar -->
       <div class="sidebar">
           <!-- Sidebar user panel (optional) -->
-          <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+          <div class="user-panel mt-5 pb-3 mb-3 d-flex">
               <div class="image">
                   <img src="{{ asset('public/img/logouser.png') }}" class="img-circle elevation-2" alt="User Image">
               </div>

@@ -1,7 +1,7 @@
-<input id="pencarian" type="text" class="form-control" placeholder="ketik nama diagnosa ...">
-<div class="table_icd10_kerja">
-    <table id="tablediagnosa10_banding" class="table table-sm table-bordered table-hover">
-        <thead>
+<input id="pencarian_diagnosa_banding_icd10" type="text" class="form-control" placeholder="ketik nama diagnosa ...">
+<div class="table_icd10_kerja2">
+    {{-- <table id="tablediagnosa10_banding" class="table table-sm table-bordered table-hover"> --}}
+        {{-- <thead>
             <th>Kode</th>
             <th>Nama</th>
         </thead>
@@ -13,7 +13,7 @@
                 </tr>
             @endforeach
         </tbody>
-    </table>
+    </table> --}}
 </div>
 <script>
     $(function() {
@@ -43,16 +43,16 @@
         })
         $('#modalicdbanding').modal('hide');
     })
-    $("#pencarian").keypress(function() {
+    $("#pencarian_diagnosa_banding_icd10").keypress(function() {
         $.ajax({
             type: 'post',
             data: {
                 _token: "{{ csrf_token() }}",
-                key: $('#pencarian').val()
+                key: $('#pencarian_diagnosa_banding_icd10').val()
             },
             url: '<?= route('cariicd10_banding') ?>',
             success: function(response) {
-                $('.table_icd10_kerja').html(response);
+                $('.table_icd10_kerja2').html(response);
             }
         });
     });
