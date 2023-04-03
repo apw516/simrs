@@ -53,6 +53,9 @@ Route::post('/riwayatupload', [ErmController::class, 'riwayatupload'])
 Route::get('/register', [RegisterController::class, 'index'])->middleware('guest')->name('register');
 Route::post('/register', [RegisterController::class, 'Store']);
 
+Route::post('/formpemeriksaan_khusus', [ErmController::class, 'formpemeriksaan_khusus'])
+->name('formpemeriksaan_khusus'); //sidebar
+
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9']], function () {
     Route::get('/pendaftaran', [SimrsController::class, 'Pendaftaran'])
@@ -376,7 +379,6 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('simpanttdperawat'); //sidebar
     Route::post('/gambarnyeri', [ErmController::class, 'gambarnyeri'])
         ->name('gambarnyeri'); //sidebar
-
 });
 Route::group(['middleware' => ['auth', 'hak_akses1:5']], function () {
     Route::get('/indexdokter', [ErmController::class, 'indexdokter'])
@@ -387,8 +389,6 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5']], function () {
         ->name('ambildetailpasien_dokter'); //sidebar
     Route::post('/formpemeriksaan_dokter', [ErmController::class, 'formpemeriksaan_dokter'])
         ->name('formpemeriksaan_dokter'); //sidebar
-    Route::post('/formpemeriksaan_khusus', [ErmController::class, 'formpemeriksaan_khusus'])
-        ->name('formpemeriksaan_khusus'); //sidebar
     Route::post('/simpanpemeriksaandokter', [ErmController::class, 'simpanpemeriksaandokter'])
         ->name('simpanpemeriksaandokter'); //sidebar
     Route::post('/resumepasien_dokter', [ErmController::class, 'resumepasien_dokter'])

@@ -41,6 +41,13 @@
                             <i class="fas fa-inbox mr-2"></i>Assesmen Awal Keperawatan
                         </a>
                     </li>
+                    @if(auth()->user()->unit == '1002')
+                    <li class="nav-item" id="pemeriksaan">
+                        <a href="#" class="nav-link" onclick="formpemeriksaankhusus()">
+                            <i class="fas fa-inbox mr-2"></i>Penandaan Gambar
+                        </a>
+                    </li>
+                    @endif
                     <li class="nav-item">
                         <a href="#" class="nav-link" onclick="resume()">
                             <i class="fas fa-filter mr-2"></i> Resume
@@ -97,6 +104,25 @@
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()
+            }
+        });
+    }
+    function formpemeriksaankhusus() {
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('formpemeriksaan_khusus') ?>',
+            success: function(response) {
+                spinner.hide()
+                $('.slide3').html(response);
             }
         });
     }
