@@ -41,13 +41,13 @@
                             <i class="fas fa-inbox mr-2"></i>Assesmen Awal Keperawatan
                         </a>
                     </li>
-                    @if(auth()->user()->unit == '1002')
+                    {{-- @if(auth()->user()->unit == '1002')
                     <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formpemeriksaankhusus()">
                             <i class="fas fa-inbox mr-2"></i>Penandaan Gambar
                         </a>
                     </li>
-                    @endif
+                    @endif --}}
                     <li class="nav-item">
                         <a href="#" class="nav-link" onclick="resume()">
                             <i class="fas fa-filter mr-2"></i> Resume

@@ -51,12 +51,19 @@ class ErmController extends Controller
     }
     public function ambildatapasienpoli()
     {
-        $pasienpoli = DB::select('SELECT a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan WHERE a.status_kunjungan = ? AND DATE(a.tgl_masuk) = CURDATE() AND a.`kode_unit` = ?', [
-            '1', auth()->user()->unit
-        ]);
-        return view('ermtemplate.tabelpasien', compact([
-            'pasienpoli'
-        ]));
+        if( auth()->user()->unit == '1002'){
+            $pasienigd = DB::select('SELECT * from mt_pasien_igd');
+            return view('ermtemplate.tabelpasienigd',compact([
+                'pasienigd'
+            ]));
+        }else{
+            $pasienpoli = DB::select('SELECT a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan WHERE a.status_kunjungan = ? AND DATE(a.tgl_masuk) = CURDATE() AND a.`kode_unit` = ?', [
+                '1', auth()->user()->unit
+            ]);
+            return view('ermtemplate.tabelpasien', compact([
+                'pasienpoli'
+            ]));
+        }
     }
     public function ambildatapasienpoli_dokter()
     {
@@ -106,23 +113,23 @@ class ErmController extends Controller
                 'resume'
             ]));
         } else {
-            if ($kunjungan[0]->kode_unit == '1002') {
-                $resume2 = DB::select('SELECT * from erm_assesmen_keperawatan_igd WHERE kode_kunjungan = ?', [$request->kodekunjungan]);
-                if (count($resume2) > 0) {
-                    return view('ermperawat.formpemeriksaanigd_edit', compact([
-                        'kunjungan',
-                        'resume2'
-                    ]));
-                } else {
-                    return view('ermperawat.formpemeriksaanigd', compact([
-                        'kunjungan'
-                    ]));
-                }
-            } else {
-                return view('ermperawat.formpemeriksaan', compact([
-                    'kunjungan'
-                ]));
-            }
+            // if ($kunjungan[0]->kode_unit == '1002') {
+            //     $resume2 = DB::select('SELECT * from erm_assesmen_keperawatan_igd WHERE kode_kunjungan = ?', [$request->kodekunjungan]);
+            //     if (count($resume2) > 0) {
+            //         return view('ermperawat.formpemeriksaanigd_edit', compact([
+            //             'kunjungan',
+            //             'resume2'
+            //         ]));
+            //     } else {
+            //         return view('ermperawat.formpemeriksaanigd', compact([
+            //             'kunjungan'
+            //         ]));
+            //     }
+            // } else {
+            return view('ermperawat.formpemeriksaan', compact([
+                'kunjungan'
+            ]));
+            // }
         }
     }
     public function formpemeriksaan_dokter(Request $request)
@@ -208,8 +215,8 @@ class ErmController extends Controller
             }
         } else {
             if ($unit == '1002') {
-                $resume = DB::select('SELECT * from erm_assesmen_keperawatan_igd WHERE kode_kunjungan = ?', [$request->kodekunjungan]);
-                return view('erm_form_khusus.formgambar_igd', compact([
+                $resume = DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE kode_kunjungan = ?', [$request->kodekunjungan]);
+                return view('erm_form_khusus.gambarbebas', compact([
                     'resume'
                 ]));
             }
@@ -218,365 +225,444 @@ class ErmController extends Controller
     }
     public function simpanpemeriksaanperawat(Request $request)
     {
-        if (auth()->user()->unit == '1002') {
-            $data = json_decode($_POST['data'], true);
-            foreach ($data as $nama) {
-                $index =  $nama['name'];
-                $value =  $nama['value'];
-                $dataSet[$index] = $value;
-            }
-            if (isset($dataSet['jlnnafas']) == true) {
-                $jalan_nafas = '1';
-            } else {
-                $jalan_nafas = '0';
-            }
-            if (isset($dataSet['polanafas']) == true) {
-                $pola_nafas = '1';
-            } else {
-                $pola_nafas = '0';
-            }
-            if (isset($dataSet['pertukarangas']) == true) {
-                $pertukaran_gas = '1';
-            } else {
-                $pertukaran_gas = '0';
-            }
-            if (isset($dataSet['sirkulasi']) == true) {
-                $sirkulasi = '1';
-            } else {
-                $sirkulasi = '0';
-            }
-            if (isset($dataSet['perfusijaringan']) == true) {
-                $perfusijaringan = '1';
-            } else {
-                $perfusijaringan = '0';
-            }
-            if (isset($dataSet['hipertermia']) == true) {
-                $hipertermia = '1';
-            } else {
-                $hipertermia = '0';
-            }
-            if (isset($dataSet['keseimbangancairan']) == true) {
-                $keseimbangancairan = '1';
-            } else {
-                $keseimbangancairan = '0';
-            }
-            if (isset($dataSet['integritaskulit']) == true) {
-                $integritaskulit = '1';
-            } else {
-                $integritaskulit = '0';
-            }
-            if (isset($dataSet['aktualtakut']) == true) {
-                $aktualtakut = '1';
-            } else {
-                $aktualtakut = '0';
-            }
-            if (isset($dataSet['toksik']) == true) {
-                $toksik = '1';
-            } else {
-                $toksik = '0';
-            }
-            if (isset($dataSet['cederajatuh']) == true) {
-                $cederajatuh = '1';
-            } else {
-                $cederajatuh = '0';
-            }
-            if (isset($dataSet['nyeri']) == true) {
-                $nyeri = '1';
-            } else {
-                $nyeri = '0';
-            }
+        // if (auth()->user()->unit == '1002') {
+        //     $data = json_decode($_POST['data'], true);
+        //     foreach ($data as $nama) {
+        //         $index =  $nama['name'];
+        //         $value =  $nama['value'];
+        //         $dataSet[$index] = $value;
+        //     }
+        //     if (isset($dataSet['jlnnafas']) == true) {
+        //         $jalan_nafas = '1';
+        //     } else {
+        //         $jalan_nafas = '0';
+        //     }
+        //     if (isset($dataSet['polanafas']) == true) {
+        //         $pola_nafas = '1';
+        //     } else {
+        //         $pola_nafas = '0';
+        //     }
+        //     if (isset($dataSet['pertukarangas']) == true) {
+        //         $pertukaran_gas = '1';
+        //     } else {
+        //         $pertukaran_gas = '0';
+        //     }
+        //     if (isset($dataSet['sirkulasi']) == true) {
+        //         $sirkulasi = '1';
+        //     } else {
+        //         $sirkulasi = '0';
+        //     }
+        //     if (isset($dataSet['perfusijaringan']) == true) {
+        //         $perfusijaringan = '1';
+        //     } else {
+        //         $perfusijaringan = '0';
+        //     }
+        //     if (isset($dataSet['hipertermia']) == true) {
+        //         $hipertermia = '1';
+        //     } else {
+        //         $hipertermia = '0';
+        //     }
+        //     if (isset($dataSet['keseimbangancairan']) == true) {
+        //         $keseimbangancairan = '1';
+        //     } else {
+        //         $keseimbangancairan = '0';
+        //     }
+        //     if (isset($dataSet['integritaskulit']) == true) {
+        //         $integritaskulit = '1';
+        //     } else {
+        //         $integritaskulit = '0';
+        //     }
+        //     if (isset($dataSet['aktualtakut']) == true) {
+        //         $aktualtakut = '1';
+        //     } else {
+        //         $aktualtakut = '0';
+        //     }
+        //     if (isset($dataSet['toksik']) == true) {
+        //         $toksik = '1';
+        //     } else {
+        //         $toksik = '0';
+        //     }
+        //     if (isset($dataSet['cederajatuh']) == true) {
+        //         $cederajatuh = '1';
+        //     } else {
+        //         $cederajatuh = '0';
+        //     }
+        //     if (isset($dataSet['nyeri']) == true) {
+        //         $nyeri = '1';
+        //     } else {
+        //         $nyeri = '0';
+        //     }
 
-            if (isset($dataSet['infus']) == true) {
-                $infus = '1';
+        //     if (isset($dataSet['infus']) == true) {
+        //         $infus = '1';
+        //     } else {
+        //         $infus = '0';
+        //     }
+        //     if (isset($dataSet['lab']) == true) {
+        //         $lab = '1';
+        //     } else {
+        //         $lab = '0';
+        //     }
+        //     if (isset($dataSet['ekg']) == true) {
+        //         $ekg = '1';
+        //     } else {
+        //         $ekg = '0';
+        //     }
+        //     if (isset($dataSet['oksigenasi']) == true) {
+        //         $oksigenasi = '1';
+        //     } else {
+        //         $oksigenasi = '0';
+        //     }
+        //     if (isset($dataSet['nebulizer']) == true) {
+        //         $nebulizer = '1';
+        //     } else {
+        //         $nebulizer = '0';
+        //     }
+        //     if (isset($dataSet['saturasioksigen']) == true) {
+        //         $saturasioksigen = '1';
+        //     } else {
+        //         $saturasioksigen = '0';
+        //     }
+        //     if (isset($dataSet['ngt']) == true) {
+        //         $ngt = '1';
+        //     } else {
+        //         $ngt = '0';
+        //     }
+        //     if (isset($dataSet['mengumbahlambung']) == true) {
+        //         $mengumbahlambung = '1';
+        //     } else {
+        //         $mengumbahlambung = '0';
+        //     }
+        //     if (isset($dataSet['kateter']) == true) {
+        //         $kateter = '1';
+        //     } else {
+        //         $kateter = '0';
+        //     }
+        //     if (isset($dataSet['defibrilasi']) == true) {
+        //         $defibrilasi = '1';
+        //     } else {
+        //         $defibrilasi = '0';
+        //     }
+        //     if (isset($dataSet['mayo']) == true) {
+        //         $mayo = '1';
+        //     } else {
+        //         $mayo = '0';
+        //     }
+        //     if (isset($dataSet['ett']) == true) {
+        //         $ett = '1';
+        //     } else {
+        //         $ett = '0';
+        //     }
+        //     if (isset($dataSet['suction']) == true) {
+        //         $suction = '1';
+        //     } else {
+        //         $suction = '0';
+        //     }
+        //     if (isset($dataSet['eksplorasi']) == true) {
+        //         $eksplorasi = '1';
+        //     } else {
+        //         $eksplorasi = '0';
+        //     }
+        //     if (isset($dataSet['obat']) == true) {
+        //         $obat = '1';
+        //     } else {
+        //         $obat = '0';
+        //     }
+        //     $data = [
+        //         'counter' => $dataSet['counter'],
+        //         'no_rm' => $dataSet['nomorrm'],
+        //         'kode_unit' => $dataSet['unit'],
+        //         'kode_kunjungan' => $dataSet['kodekunjungan'],
+        //         'tanggal_kunjungan' => $dataSet['tanggalkunjungan'],
+        //         'tanggal_periksa' => $dataSet['tanggalassesmen'],
+        //         'sumberdata' => $dataSet['sumberdata'],
+        //         'keterangan_sumberdata' => $dataSet['namakeluarga'],
+        //         'asalmasuk' => $dataSet['asalmasuk'],
+        //         'keterangan_asal_masuk' => $dataSet['keteranganasalmasuk'],
+        //         'caramasuk' => $dataSet['caramasuk'],
+        //         'subyektifanamnesis' => $dataSet['subyektifanamnesis'],
+        //         'tekanan_darah' => $dataSet['tekanandarah'],
+        //         'frekuensi_nadi' => $dataSet['frekuensinadi'],
+        //         'frekuensi_nafas' => $dataSet['frekuensinafas'],
+        //         'suhu' => $dataSet['suhutubuh'],
+        //         'berat_badan' => $dataSet['beratbadan'],
+        //         'tinggi_badan' => $dataSet['tinggibadan'],
+        //         'keadaan_umum' => $dataSet['keadaanumum'],
+        //         'kesadaran' => $dataSet['kesadaran'],
+        //         'tekanan_intrakranial' => $dataSet['tekananintrakranial'],
+        //         'pupil' => $dataSet['pupil'],
+        //         'neurosensorik' => $dataSet['neurosensorik'],
+        //         'integumen' => $dataSet['integumen'],
+        //         'turgorkulit' => $dataSet['turgorkulit'],
+        //         'edema' => $dataSet['edema'],
+        //         'mukosa_mulut' => $dataSet['mukosamulut'],
+        //         'jumlahperdarahan' => $dataSet['jumlah_perdarahan'],
+        //         'warnaperdarahan' => $dataSet['warna_perdarahan'],
+        //         'intoksikasi' => $dataSet['intoksikasi'],
+        //         'frekuensi_bab' => $dataSet['frekuensibab'],
+        //         'frekuensi_bak' => $dataSet['frekuensibak'],
+        //         'konsistensi_bab' => $dataSet['konsistensibab'],
+        //         'konsistensi_bak' => $dataSet['konsistensibak'],
+        //         'warna_bab' => $dataSet['warnabab'],
+        //         'warna_bak' => $dataSet['warnabak'],
+        //         'kecemasan' => $dataSet['kecemasan'],
+        //         'mekanisme' => $dataSet['mekanisme'],
+        //         'keluhan_nyeri' => $dataSet['adakeluhannyeri'],
+        //         'skalanyeri' => $dataSet['skalanyeripasien'],
+        //         'nyeri_berpindah' => $dataSet['nyeriberipindah'],
+        //         'lama_nyeri' => $dataSet['lamanyeri'],
+        //         'rasa_nyeri' => $dataSet['rasanyeri'],
+        //         'seberapa_sering_nyeri' => $dataSet['seberapaseringnyeri'],
+        //         'durasi_nyeri' => $dataSet['durasinyeri'],
+        //         'yang_meredakan_nyeri' => $dataSet['peredanyeri'],
+        //         'riwayat_jatuh_dewasa' => $dataSet['riwayat_jatuh_dewasa'],
+        //         'diagnosis_sekunder_dewasa' => $dataSet['diagnosissekunder_dewasa'],
+        //         'alat_bantu_dewasa' => $dataSet['alatbantu_dewasa'],
+        //         'terpasang_infus_dewasa' => $dataSet['terpasanginfus_dewasa'],
+        //         'gaya_berjalan' => $dataSet['gayaberjalan_dewasa'],
+        //         'status_mental' => $dataSet['statusmental'],
+        //         'umur_anak' => $dataSet['umur_anak'],
+        //         'jeniskelamin_anak' => $dataSet['jeniskelaminanak'],
+        //         'diagnosa_anak' => $dataSet['diagnosa_anak'],
+        //         'gangguan_kognitif_anak' => $dataSet['gangguankognitif_anak'],
+        //         'faktorlingkungan_anak' => $dataSet['faktorlingkungan_anak'],
+        //         'responanestesi_anak' => $dataSet['responanestesi_anak'],
+        //         'penggunaanobat_anak' => $dataSet['penggunaanobatobatan_anak'],
+        //         'penurunan_bb_dewasa' => $dataSet['apakahadapenurunanbb'],
+        //         'berat_penurunan_bb_dewasa' => $dataSet['beratpenurunan'],
+        //         'apakah_asupan_makanan_buruk_dewasa' => $dataSet['apakahasupanmakanburuk'],
+        //         'sakit_berat_dewasa' => $dataSet['Sakitberat'],
+        //         'apakahpasienkurus_anak' => $dataSet['pasientampakkurus'],
+        //         'penurunanbb_anak' => $dataSet['penurunanbb_anak'],
+        //         'diaremuntahkurangmakanan_anak' => $dataSet['kondisilain'],
+        //         'penyakitlain_anak' => $dataSet['penyakitlain_anak'],
+        //         'keterangan_diagnosa' => $dataSet['diagnosakeperawatan'],
+        //         'rencana_keperawatan' => $dataSet['rencanakeperawatan'],
+        //         'tindakan_keperawatan' => $dataSet['tindakankeperawatan'],
+        //         'evaluasi_keperawatan' => $dataSet['evaluasikeperawatan'],
+        //         'risiko_bersihan_jalan_nafas_tidak_efektif' => $jalan_nafas,
+        //         'risikopolanafastidakefektif' => $pola_nafas,
+        //         'risikogangguanpertukarangas' => $pertukaran_gas,
+        //         'risikogangguansirkulasi' => $sirkulasi,
+        //         'risikogangguanperfusijaringan' => $perfusijaringan,
+        //         'hipertermia' => $hipertermia,
+        //         'risikogangguankeseimbangancairan' => $keseimbangancairan,
+        //         'risikogangguanintegritaskulit' => $integritaskulit,
+        //         'risikocemas' => $aktualtakut,
+        //         'Risikopenyebarantoksik' => $toksik,
+        //         'Risikocedera' => $cederajatuh,
+        //         'Nyeri' => $nyeri,
+        //         'kol_infus' => $infus,
+        //         'kol_lab' => $lab,
+        //         'kol_ekg' => $ekg,
+        //         'kol_oksigenasi' => $oksigenasi,
+        //         'kol_nebulizer' => $nebulizer,
+        //         'kol_saturasi_oksigen' => $saturasioksigen,
+        //         'kol_ngt' => $ngt,
+        //         'kol_mengumbah_lambung' => $mengumbahlambung,
+        //         'kol_kateter' => $kateter,
+        //         'kol_defibrilasi' => $defibrilasi,
+        //         'kol_mayo' => $mayo,
+        //         'kol_ett' => $ett,
+        //         'kol_suction' => $suction,
+        //         'kol_explorasi' => $eksplorasi,
+        //         'kol_obat' => $obat,
+        //         'id_pemeriksa' => auth()->user()->id,
+        //         'nama_pemeriksa' => auth()->user()->nama,
+        //         'status' => '0',
+        //         'signature' => ''
+        //     ];
+        //     try {
+        //         $cek = DB::select('SELECT * from erm_assesmen_keperawatan_igd WHERE tanggal_kunjungan = ? AND no_rm = ? AND kode_unit = ?', [$dataSet['tanggalkunjungan'], $dataSet['nomorrm'], $dataSet['unit']]);
+        //         if (count($cek) > 0) {
+        //             $cek2 = DB::select('SELECT * from assesmen_dokters WHERE tgl_kunjungan = ? AND id_pasien = ? AND kode_unit = ?', [$dataSet['tanggalkunjungan'], $dataSet['nomorrm'], $dataSet['unit']]);
+        //             if (count($cek2) > 0) {
+        //                 $data = [
+        //                     'kode' => 500,
+        //                     'message' => 'Dokter sudah mengisi assesmen awal medis ... !'
+        //                 ];
+        //                 echo json_encode($data);
+        //                 die;
+        //             } else {
+        //                 assesmenawalperawat_igd::whereRaw('no_rm = ? and kode_unit = ? and tanggal_kunjungan = ?', array($dataSet['nomorrm'],  $dataSet['unit'], $dataSet['tanggalkunjungan']))->update($data);
+        //                 $data = [
+        //                     'kode' => 200,
+        //                     'message' => 'Data berhasil diupdate !'
+        //                 ];
+        //                 echo json_encode($data);
+        //                 die;
+        //             }
+        //         } else {
+        //             $erm_assesmen = assesmenawalperawat_igd::create($data);
+        //         }
+        //         $data = [
+        //             'kode' => 200,
+        //             'message' => 'Data berhasil disimpan !'
+        //         ];
+        //         echo json_encode($data);
+        //         die;
+        //     } catch (\Exception $e) {
+        //         $data = [
+        //             'kode' => 500,
+        //             'message' => $e->getMessage()
+        //         ];
+        //         echo json_encode($data);
+        //         die;
+        //     }
+        //     //igd
+        // } else {
+        $data = json_decode($_POST['data'], true);
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+        $data = [
+            'counter' => $dataSet['counter'],
+            'no_rm' => $dataSet['nomorrm'],
+            'kode_unit' => $dataSet['unit'],
+            'kode_kunjungan' => $dataSet['kodekunjungan'],
+            'tanggalkunjungan' => $dataSet['tanggalkunjungan'],
+            'sumberdataperiksa' => $dataSet['sumberdata'],
+            'keluhanutama' => trim($dataSet['keluhanutama']),
+            'tekanandarah' => $dataSet['tekanandarah'],
+            'frekuensinadi' => $dataSet['frekuensinadi'],
+            'frekuensinapas' => $dataSet['frekuensinafas'],
+            'suhutubuh' => $dataSet['suhutubuh'],
+            'Riwayatpsikologi' => $dataSet['riwayatpsikologis'],
+            'keterangan_riwayat_psikolog' => $dataSet['keteranganriwayatpsikologislainnya'],
+            'penggunaanalatbantu' => $dataSet['alatbantu'],
+            'keterangan_alat_bantu' => $dataSet['keteranganalatbantulain'],
+            'cacattubuh' => $dataSet['cacattubuh'],
+            'keterangancacattubuh' => $dataSet['keterangancacattubuhlainnya'],
+            'Keluhannyeri' => $dataSet['pasienmengeluhnyeri'],
+            'skalenyeripasien' => $dataSet['skalanyeripasien'],
+            'resikojatuh' => $dataSet['resikojatuh'],
+            'Skrininggizi' => $dataSet['penurunanbb'],
+            'beratskrininggizi' => $dataSet['beratpenurunan'],
+            'status_asupanmkanan' => $dataSet['asupanmakanan'],
+            'penyakitlainpasien' => $dataSet['keterangandiagnosalain'],
+            'diagnosakhusus' => $dataSet['diagnosakhusus'],
+            'resikomalnutrisi' => $dataSet['kajianlanjutgizi'],
+            'diagnosakeperawatan' => $dataSet['diagnosakeperawatan'],
+            'rencanakeperawatan' => $dataSet['rencanakeperawatan'],
+            'tindakankeperawatan' => $dataSet['tindakankeperawatan'],
+            'evaluasikeperawatan' => $dataSet['evaluasikeperawatan'],
+            'namapemeriksa' => auth()->user()->nama,
+            'idpemeriksa' => auth()->user()->id,
+            'status' => '0',
+            'signature' => ''
+        ];
+        try {
+            $cek = DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE tanggalkunjungan = ? AND no_rm = ? AND kode_unit = ?', [$dataSet['tanggalkunjungan'], $dataSet['nomorrm'], $dataSet['unit']]);
+            if (count($cek) > 0) {
+                $cek2 = DB::select('SELECT * from assesmen_dokters WHERE tgl_kunjungan = ? AND id_pasien = ? AND kode_unit = ?', [$dataSet['tanggalkunjungan'], $dataSet['nomorrm'], $dataSet['unit']]);
+                if (count($cek2) > 0) {
+                    $data = [
+                        'kode' => 500,
+                        'message' => 'Dokter sudah mengisi assesmen awal medis ... !'
+                    ];
+                    echo json_encode($data);
+                    die;
+                } else {
+                    assesmenawalperawat::whereRaw('no_rm = ? and kode_unit = ? and tanggalkunjungan = ?', array($dataSet['nomorrm'],  $dataSet['unit'], $dataSet['tanggalkunjungan']))->update($data);
+                }
             } else {
-                $infus = '0';
-            }
-            if (isset($dataSet['lab']) == true) {
-                $lab = '1';
-            } else {
-                $lab = '0';
-            }
-            if (isset($dataSet['ekg']) == true) {
-                $ekg = '1';
-            } else {
-                $ekg = '0';
-            }
-            if (isset($dataSet['oksigenasi']) == true) {
-                $oksigenasi = '1';
-            } else {
-                $oksigenasi = '0';
-            }
-            if (isset($dataSet['nebulizer']) == true) {
-                $nebulizer = '1';
-            } else {
-                $nebulizer = '0';
-            }
-            if (isset($dataSet['saturasioksigen']) == true) {
-                $saturasioksigen = '1';
-            } else {
-                $saturasioksigen = '0';
-            }
-            if (isset($dataSet['ngt']) == true) {
-                $ngt = '1';
-            } else {
-                $ngt = '0';
-            }
-            if (isset($dataSet['mengumbahlambung']) == true) {
-                $mengumbahlambung = '1';
-            } else {
-                $mengumbahlambung = '0';
-            }
-            if (isset($dataSet['kateter']) == true) {
-                $kateter = '1';
-            } else {
-                $kateter = '0';
-            }
-            if (isset($dataSet['defibrilasi']) == true) {
-                $defibrilasi = '1';
-            } else {
-                $defibrilasi = '0';
-            }
-            if (isset($dataSet['mayo']) == true) {
-                $mayo = '1';
-            } else {
-                $mayo = '0';
-            }
-            if (isset($dataSet['ett']) == true) {
-                $ett = '1';
-            } else {
-                $ett = '0';
-            }
-            if (isset($dataSet['suction']) == true) {
-                $suction = '1';
-            } else {
-                $suction = '0';
-            }
-            if (isset($dataSet['eksplorasi']) == true) {
-                $eksplorasi = '1';
-            } else {
-                $eksplorasi = '0';
-            }
-            if (isset($dataSet['obat']) == true) {
-                $obat = '1';
-            } else {
-                $obat = '0';
+                $erm_assesmen = assesmenawalperawat::create($data);
             }
             $data = [
-                'counter' => $dataSet['counter'],
-                'no_rm' => $dataSet['nomorrm'],
-                'kode_unit' => $dataSet['unit'],
-                'kode_kunjungan' => $dataSet['kodekunjungan'],
-                'tanggal_kunjungan' => $dataSet['tanggalkunjungan'],
-                'tanggal_periksa' => $dataSet['tanggalassesmen'],
-                'sumberdata' => $dataSet['sumberdata'],
-                'keterangan_sumberdata' => $dataSet['namakeluarga'],
-                'asalmasuk' => $dataSet['asalmasuk'],
-                'keterangan_asal_masuk' => $dataSet['keteranganasalmasuk'],
-                'caramasuk' => $dataSet['caramasuk'],
-                'subyektifanamnesis' => $dataSet['subyektifanamnesis'],
-                'tekanan_darah' => $dataSet['tekanandarah'],
-                'frekuensi_nadi' => $dataSet['frekuensinadi'],
-                'frekuensi_nafas' => $dataSet['frekuensinafas'],
-                'suhu' => $dataSet['suhutubuh'],
-                'berat_badan' => $dataSet['beratbadan'],
-                'tinggi_badan' => $dataSet['tinggibadan'],
-                'keadaan_umum' => $dataSet['keadaanumum'],
-                'kesadaran' => $dataSet['kesadaran'],
-                'tekanan_intrakranial' => $dataSet['tekananintrakranial'],
-                'pupil' => $dataSet['pupil'],
-                'neurosensorik' => $dataSet['neurosensorik'],
-                'integumen' => $dataSet['integumen'],
-                'turgorkulit' => $dataSet['turgorkulit'],
-                'edema' => $dataSet['edema'],
-                'mukosa_mulut' => $dataSet['mukosamulut'],
-                'jumlahperdarahan' => $dataSet['jumlah_perdarahan'],
-                'warnaperdarahan' => $dataSet['warna_perdarahan'],
-                'intoksikasi' => $dataSet['intoksikasi'],
-                'frekuensi_bab' => $dataSet['frekuensibab'],
-                'frekuensi_bak' => $dataSet['frekuensibak'],
-                'konsistensi_bab' => $dataSet['konsistensibab'],
-                'konsistensi_bak' => $dataSet['konsistensibak'],
-                'warna_bab' => $dataSet['warnabab'],
-                'warna_bak' => $dataSet['warnabak'],
-                'kecemasan' => $dataSet['kecemasan'],
-                'mekanisme' => $dataSet['mekanisme'],
-                'keluhan_nyeri' => $dataSet['adakeluhannyeri'],
-                'skalanyeri' => $dataSet['skalanyeripasien'],
-                'nyeri_berpindah' => $dataSet['nyeriberipindah'],
-                'lama_nyeri' => $dataSet['lamanyeri'],
-                'rasa_nyeri' => $dataSet['rasanyeri'],
-                'seberapa_sering_nyeri' => $dataSet['seberapaseringnyeri'],
-                'durasi_nyeri' => $dataSet['durasinyeri'],
-                'yang_meredakan_nyeri' => $dataSet['peredanyeri'],
-                'riwayat_jatuh_dewasa' => $dataSet['riwayat_jatuh_dewasa'],
-                'diagnosis_sekunder_dewasa' => $dataSet['diagnosissekunder_dewasa'],
-                'alat_bantu_dewasa' => $dataSet['alatbantu_dewasa'],
-                'terpasang_infus_dewasa' => $dataSet['terpasanginfus_dewasa'],
-                'gaya_berjalan' => $dataSet['gayaberjalan_dewasa'],
-                'status_mental' => $dataSet['statusmental'],
-                'umur_anak' => $dataSet['umur_anak'],
-                'jeniskelamin_anak' => $dataSet['jeniskelaminanak'],
-                'diagnosa_anak' => $dataSet['diagnosa_anak'],
-                'gangguan_kognitif_anak' => $dataSet['gangguankognitif_anak'],
-                'faktorlingkungan_anak' => $dataSet['faktorlingkungan_anak'],
-                'responanestesi_anak' => $dataSet['responanestesi_anak'],
-                'penggunaanobat_anak' => $dataSet['penggunaanobatobatan_anak'],
-                'penurunan_bb_dewasa' => $dataSet['apakahadapenurunanbb'],
-                'berat_penurunan_bb_dewasa' => $dataSet['beratpenurunan'],
-                'apakah_asupan_makanan_buruk_dewasa' => $dataSet['apakahasupanmakanburuk'],
-                'sakit_berat_dewasa' => $dataSet['Sakitberat'],
-                'apakahpasienkurus_anak' => $dataSet['pasientampakkurus'],
-                'penurunanbb_anak' => $dataSet['penurunanbb_anak'],
-                'diaremuntahkurangmakanan_anak' => $dataSet['kondisilain'],
-                'penyakitlain_anak' => $dataSet['penyakitlain_anak'],
-                'keterangan_diagnosa' => $dataSet['diagnosakeperawatan'],
-                'rencana_keperawatan' => $dataSet['rencanakeperawatan'],
-                'tindakan_keperawatan' => $dataSet['tindakankeperawatan'],
-                'evaluasi_keperawatan' => $dataSet['evaluasikeperawatan'],
-                'risiko_bersihan_jalan_nafas_tidak_efektif' => $jalan_nafas,
-                'risikopolanafastidakefektif' => $pola_nafas,
-                'risikogangguanpertukarangas' => $pertukaran_gas,
-                'risikogangguansirkulasi' => $sirkulasi,
-                'risikogangguanperfusijaringan' => $perfusijaringan,
-                'hipertermia' => $hipertermia,
-                'risikogangguankeseimbangancairan' => $keseimbangancairan,
-                'risikogangguanintegritaskulit' => $integritaskulit,
-                'risikocemas' => $aktualtakut,
-                'Risikopenyebarantoksik' => $toksik,
-                'Risikocedera' => $cederajatuh,
-                'Nyeri' => $nyeri,
-                'kol_infus' => $infus,
-                'kol_lab' => $lab,
-                'kol_ekg' => $ekg,
-                'kol_oksigenasi' => $oksigenasi,
-                'kol_nebulizer' => $nebulizer,
-                'kol_saturasi_oksigen' => $saturasioksigen,
-                'kol_ngt' => $ngt,
-                'kol_mengumbah_lambung' => $mengumbahlambung,
-                'kol_kateter' => $kateter,
-                'kol_defibrilasi' => $defibrilasi,
-                'kol_mayo' => $mayo,
-                'kol_ett' => $ett,
-                'kol_suction' => $suction,
-                'kol_explorasi' => $eksplorasi,
-                'kol_obat' => $obat,
-                'id_pemeriksa' => auth()->user()->id,
-                'nama_pemeriksa' => auth()->user()->nama,
-                'status' => '0',
-                'signature' => ''
+                'kode' => 200,
+                'message' => 'Data berhasil disimpan !'
             ];
-            try {
-                $cek = DB::select('SELECT * from erm_assesmen_keperawatan_igd WHERE tanggal_kunjungan = ? AND no_rm = ? AND kode_unit = ?', [$dataSet['tanggalkunjungan'], $dataSet['nomorrm'], $dataSet['unit']]);
-                if (count($cek) > 0) {
-                    $cek2 = DB::select('SELECT * from assesmen_dokters WHERE tgl_kunjungan = ? AND id_pasien = ? AND kode_unit = ?', [$dataSet['tanggalkunjungan'], $dataSet['nomorrm'], $dataSet['unit']]);
-                    if (count($cek2) > 0) {
-                        $data = [
-                            'kode' => 500,
-                            'message' => 'Dokter sudah mengisi assesmen awal medis ... !'
-                        ];
-                        echo json_encode($data);
-                        die;
-                    } else {
-                        assesmenawalperawat_igd::whereRaw('no_rm = ? and kode_unit = ? and tanggal_kunjungan = ?', array($dataSet['nomorrm'],  $dataSet['unit'], $dataSet['tanggalkunjungan']))->update($data);
-                        $data = [
-                            'kode' => 200,
-                            'message' => 'Data berhasil diupdate !'
-                        ];
-                        echo json_encode($data);
-                        die;
-                    }
+            echo json_encode($data);
+            die;
+        } catch (\Exception $e) {
+            $data = [
+                'kode' => 500,
+                'message' => $e->getMessage()
+            ];
+            echo json_encode($data);
+            die;
+        }
+        // }
+    }
+    public function simpanpemeriksaanperawat_igd(Request $request)
+    {
+
+        $data = json_decode($_POST['data'], true);
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+        $data = [
+            // 'counter' => $dataSet['counter'],
+            'nama_pasien' => $dataSet['namapasien'],
+            'alamat' => $dataSet['alamat'],
+            'no_rm' => $dataSet['koderegistrasi'],
+            'kode_unit' => '1002',
+            // 'kode_kunjungan' => $dataSet['kodekunjungan'],
+            'tanggalkunjungan' => $dataSet['tanggalkunjungan'],
+            'sumberdataperiksa' => $dataSet['sumberdata'],
+            'keluhanutama' => trim($dataSet['keluhanutama']),
+            'tekanandarah' => $dataSet['tekanandarah'],
+            'frekuensinadi' => $dataSet['frekuensinadi'],
+            'frekuensinapas' => $dataSet['frekuensinafas'],
+            'suhutubuh' => $dataSet['suhutubuh'],
+            'Riwayatpsikologi' => $dataSet['riwayatpsikologis'],
+            'keterangan_riwayat_psikolog' => $dataSet['keteranganriwayatpsikologislainnya'],
+            'penggunaanalatbantu' => $dataSet['alatbantu'],
+            'keterangan_alat_bantu' => $dataSet['keteranganalatbantulain'],
+            'cacattubuh' => $dataSet['cacattubuh'],
+            'keterangancacattubuh' => $dataSet['keterangancacattubuhlainnya'],
+            'Keluhannyeri' => $dataSet['pasienmengeluhnyeri'],
+            'skalenyeripasien' => $dataSet['skalanyeripasien'],
+            'resikojatuh' => $dataSet['resikojatuh'],
+            'Skrininggizi' => $dataSet['penurunanbb'],
+            'beratskrininggizi' => $dataSet['beratpenurunan'],
+            'status_asupanmkanan' => $dataSet['asupanmakanan'],
+            'penyakitlainpasien' => $dataSet['keterangandiagnosalain'],
+            'diagnosakhusus' => $dataSet['diagnosakhusus'],
+            'resikomalnutrisi' => $dataSet['kajianlanjutgizi'],
+            'diagnosakeperawatan' => $dataSet['diagnosakeperawatan'],
+            'rencanakeperawatan' => $dataSet['rencanakeperawatan'],
+            'tindakankeperawatan' => $dataSet['tindakankeperawatan'],
+            'evaluasikeperawatan' => $dataSet['evaluasikeperawatan'],
+            'namapemeriksa' => auth()->user()->nama,
+            'idpemeriksa' => auth()->user()->id,
+            'status' => '0',
+            'signature' => ''
+        ];
+        try {
+            $cek = DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE tanggalkunjungan = ? AND no_rm = ?', [$dataSet['tanggalkunjungan'], $dataSet['koderegistrasi']]);
+            if (count($cek) > 0) {
+                $cek2 = DB::select('SELECT * from assesmen_dokters WHERE tgl_kunjungan = ? AND id_pasien = ? AND kode_unit = ?', [$dataSet['tanggalkunjungan'], $dataSet['nomorrm'], $dataSet['unit']]);
+                if (count($cek2) > 0) {
+                    $data = [
+                        'kode' => 500,
+                        'message' => 'Dokter sudah mengisi assesmen awal medis ... !'
+                    ];
+                    echo json_encode($data);
+                    die;
                 } else {
-                    $erm_assesmen = assesmenawalperawat_igd::create($data);
+                    assesmenawalperawat::whereRaw('no_rm = ? and kode_unit = ? and tanggalkunjungan = ?', array($dataSet['nomorrm'],  $dataSet['unit'], $dataSet['tanggalkunjungan']))->update($data);
                 }
-                $data = [
-                    'kode' => 200,
-                    'message' => 'Data berhasil disimpan !'
-                ];
-                echo json_encode($data);
-                die;
-            } catch (\Exception $e) {
-                $data = [
-                    'kode' => 500,
-                    'message' => $e->getMessage()
-                ];
-                echo json_encode($data);
-                die;
-            }
-            //igd
-        } else {
-            $data = json_decode($_POST['data'], true);
-            foreach ($data as $nama) {
-                $index =  $nama['name'];
-                $value =  $nama['value'];
-                $dataSet[$index] = $value;
+            } else {
+                $erm_assesmen = assesmenawalperawat::create($data);
             }
             $data = [
-                'counter' => $dataSet['counter'],
-                'no_rm' => $dataSet['nomorrm'],
-                'kode_unit' => $dataSet['unit'],
-                'kode_kunjungan' => $dataSet['kodekunjungan'],
-                'tanggalkunjungan' => $dataSet['tanggalkunjungan'],
-                'sumberdataperiksa' => $dataSet['sumberdata'],
-                'keluhanutama' => trim($dataSet['keluhanutama']),
-                'tekanandarah' => $dataSet['tekanandarah'],
-                'frekuensinadi' => $dataSet['frekuensinadi'],
-                'frekuensinapas' => $dataSet['frekuensinafas'],
-                'suhutubuh' => $dataSet['suhutubuh'],
-                'Riwayatpsikologi' => $dataSet['riwayatpsikologis'],
-                'keterangan_riwayat_psikolog' => $dataSet['keteranganriwayatpsikologislainnya'],
-                'penggunaanalatbantu' => $dataSet['alatbantu'],
-                'keterangan_alat_bantu' => $dataSet['keteranganalatbantulain'],
-                'cacattubuh' => $dataSet['cacattubuh'],
-                'keterangancacattubuh' => $dataSet['keterangancacattubuhlainnya'],
-                'Keluhannyeri' => $dataSet['pasienmengeluhnyeri'],
-                'skalenyeripasien' => $dataSet['skalanyeripasien'],
-                'resikojatuh' => $dataSet['resikojatuh'],
-                'Skrininggizi' => $dataSet['penurunanbb'],
-                'beratskrininggizi' => $dataSet['beratpenurunan'],
-                'status_asupanmkanan' => $dataSet['asupanmakanan'],
-                'penyakitlainpasien' => $dataSet['keterangandiagnosalain'],
-                'diagnosakhusus' => $dataSet['diagnosakhusus'],
-                'resikomalnutrisi' => $dataSet['kajianlanjutgizi'],
-                'diagnosakeperawatan' => $dataSet['diagnosakeperawatan'],
-                'rencanakeperawatan' => $dataSet['rencanakeperawatan'],
-                'tindakankeperawatan' => $dataSet['tindakankeperawatan'],
-                'evaluasikeperawatan' => $dataSet['evaluasikeperawatan'],
-                'namapemeriksa' => auth()->user()->nama,
-                'idpemeriksa' => auth()->user()->id,
-                'status' => '0',
-                'signature' => ''
+                'kode' => 200,
+                'message' => 'Data berhasil disimpan !'
             ];
-            try {
-                $cek = DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE tanggalkunjungan = ? AND no_rm = ? AND kode_unit = ?', [$dataSet['tanggalkunjungan'], $dataSet['nomorrm'], $dataSet['unit']]);
-                if (count($cek) > 0) {
-                    $cek2 = DB::select('SELECT * from assesmen_dokters WHERE tgl_kunjungan = ? AND id_pasien = ? AND kode_unit = ?', [$dataSet['tanggalkunjungan'], $dataSet['nomorrm'], $dataSet['unit']]);
-                    if (count($cek2) > 0) {
-                        $data = [
-                            'kode' => 500,
-                            'message' => 'Dokter sudah mengisi assesmen awal medis ... !'
-                        ];
-                        echo json_encode($data);
-                        die;
-                    } else {
-                        assesmenawalperawat::whereRaw('no_rm = ? and kode_unit = ? and tanggalkunjungan = ?', array($dataSet['nomorrm'],  $dataSet['unit'], $dataSet['tanggalkunjungan']))->update($data);
-                    }
-                } else {
-                    $erm_assesmen = assesmenawalperawat::create($data);
-                }
-                $data = [
-                    'kode' => 200,
-                    'message' => 'Data berhasil disimpan !'
-                ];
-                echo json_encode($data);
-                die;
-            } catch (\Exception $e) {
-                $data = [
-                    'kode' => 500,
-                    'message' => $e->getMessage()
-                ];
-                echo json_encode($data);
-                die;
-            }
+            echo json_encode($data);
+            die;
+        } catch (\Exception $e) {
+            $data = [
+                'kode' => 500,
+                'message' => $e->getMessage()
+            ];
+            echo json_encode($data);
+            die;
         }
     }
     public function simpanpemeriksaandokter(Request $request)
@@ -2016,8 +2102,12 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
     {
         $now = date('Y-m-d');
         $d2 = date('Y-m-d', strtotime('-7 days'));
-        $data = DB::select('SELECT a.tanggalkunjungan,a.no_rm,fc_nama_px(a.no_rm) AS nama,a.keluhanutama,a.namapemeriksa AS nama_perawat,b.nama_dokter AS nama_dokter FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b ON a.id = b.id_asskep WHERE a.kode_unit = ? AND DATE(a.tanggalkunjungan) BETWEEN ? AND ?',[ auth()->user()->unit,$d2,$now]);
-        return view('ermtemplate.riwayatpemeriksaan',compact([
+        if(auth()->user()->unit == '1002'){
+            $data = DB::select('SELECT a.tanggalkunjungan,a.no_rm,a.nama_pasien AS nama,a.keluhanutama,a.namapemeriksa AS nama_perawat,b.nama_dokter AS nama_dokter FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b ON a.id = b.id_asskep WHERE a.kode_unit = ? AND DATE(a.tanggalkunjungan) BETWEEN ? AND ?', [auth()->user()->unit, $d2, $now]);
+        }else{
+            $data = DB::select('SELECT a.tanggalkunjungan,a.no_rm,fc_nama_px(a.no_rm) AS nama,a.keluhanutama,a.namapemeriksa AS nama_perawat,b.nama_dokter AS nama_dokter FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b ON a.id = b.id_asskep WHERE a.kode_unit = ? AND DATE(a.tanggalkunjungan) BETWEEN ? AND ?', [auth()->user()->unit, $d2, $now]);
+        }
+        return view('ermtemplate.riwayatpemeriksaan', compact([
             'data'
         ]));
     }
@@ -2025,16 +2115,16 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
     {
         $now = $request->tanggalakhir;
         $d2 = $request->tanggalawal;
-        $data = DB::select('SELECT a.tanggalkunjungan,a.no_rm,fc_nama_px(a.no_rm) AS nama,a.keluhanutama,a.namapemeriksa AS nama_perawat,b.nama_dokter AS nama_dokter FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b ON a.id = b.id_asskep WHERE a.kode_unit = ? AND DATE(a.tanggalkunjungan) BETWEEN ? AND ?',[ auth()->user()->unit,$d2,$now]);
-        return view('ermtemplate.riwayatpemeriksaan',compact([
+        $data = DB::select('SELECT a.tanggalkunjungan,a.no_rm,fc_nama_px(a.no_rm) AS nama,a.keluhanutama,a.namapemeriksa AS nama_perawat,b.nama_dokter AS nama_dokter FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b ON a.id = b.id_asskep WHERE a.kode_unit = ? AND DATE(a.tanggalkunjungan) BETWEEN ? AND ?', [auth()->user()->unit, $d2, $now]);
+        return view('ermtemplate.riwayatpemeriksaan', compact([
             'data'
         ]));
     }
     public function ambilriwayat_pasien_byrm(Request $request)
     {
         $nomorrm = $request->nomorm;
-        $data = DB::select('SELECT a.tanggalkunjungan,a.no_rm,fc_nama_px(a.no_rm) AS nama,a.keluhanutama,a.namapemeriksa AS nama_perawat,b.nama_dokter AS nama_dokter FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b ON a.id = b.id_asskep WHERE a.no_rm = ?',[$nomorrm]);
-        return view('ermtemplate.riwayatpemeriksaan',compact([
+        $data = DB::select('SELECT a.tanggalkunjungan,a.no_rm,fc_nama_px(a.no_rm) AS nama,a.keluhanutama,a.namapemeriksa AS nama_perawat,b.nama_dokter AS nama_dokter FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b ON a.id = b.id_asskep WHERE a.no_rm = ?', [$nomorrm]);
+        return view('ermtemplate.riwayatpemeriksaan', compact([
             'data'
         ]));
     }
@@ -2510,5 +2600,42 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
         }
         date_default_timezone_set('Asia/Jakarta');
         return 'OR' . $kode . date('ymd') . $kd;
+    }
+    public function ambilformasskep()
+    {
+        $date = $this->get_now();
+        return view('ermperawat.formasskep_igd',compact([
+            'date'
+        ]));
+    }
+    public function generatekode_igd()
+    {
+        // erm_kode_regis_igd
+        $kode = $this->generatekode();
+        $back = [
+            'kode' => 200,
+            'kode' => $kode
+        ];
+        echo json_encode($back);
+        die;
+    }
+    public function generatekode()
+    {
+        //dummy
+        $q = DB::select('SELECT id,koderegis,RIGHT(koderegis,3) AS kd_max  FROM erm_kode_regis_igd
+        WHERE DATE(tanggal_generate) = CURDATE()
+        ORDER BY id DESC
+        LIMIT 1');
+        $kd = "";
+        if (count($q) > 0) {
+            foreach ($q as $k) {
+                $tmp = ((int) $k->kd_max) + 1;
+                $kd = sprintf("%06s", $tmp);
+            }
+        } else {
+            $kd = "001";
+        }
+        date_default_timezone_set('Asia/Jakarta');
+        return 'IGD' . date('ymd') . $kd;
     }
 }

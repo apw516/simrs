@@ -58,7 +58,6 @@
         var dataUrl1 = canvas1.toDataURL();
         $('#gambarpolos').val(dataUrl1)
         gambarpolos = $('#gambarpolos').val()
-
         var kodekunjungan = $('#kodekunjungan').val()
         var nomorrm = $('#nomorrm').val()
         var idassesmen = $('#idassesmen').val()
@@ -73,7 +72,7 @@
                 idassesmen,
                 nomorrm
             },
-            url: '<?= route('simpangambarbebas') ?>',
+            url: '<?= route('simpangambar_igd') ?>',
             error: function(data) {
                 Swal.fire({
                     icon: 'error',

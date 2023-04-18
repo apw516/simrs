@@ -19,14 +19,16 @@ class LoginController extends Controller
             'username' => ['required'],
             'password' => ['required'],
         ]);
-
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             if(auth()->user()->hak_akses == 4){
                 return redirect()->intended('indexperawat');
             }else if(auth()->user()->hak_akses == 5){
                 return redirect()->intended('indexdokter');
-            }else{
+            }else if(auth()->user()->hak_akses == 99){
+                return redirect()->intended('antrianigd');
+            }
+            else{
                 return redirect()->intended('dashboard');
             }
         }

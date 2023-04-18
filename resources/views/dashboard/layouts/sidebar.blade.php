@@ -510,82 +510,34 @@
                               </ul>
                           </li>
                       </div>
-
-
-
-                      {{--
-                  <li class="nav-item @if ($sidebar == '4') menu-open @endif">
-                      <a href="#" class="nav-link @if ($sidebar == '4') active @endif">
-                          <i class="nav-icon fas fa-chart-pie"></i>
-                          <p>
-                              Vclaim 2.0
-                              <i class="right fas fa-angle-left"></i>
-                          </p>
-                      </a>
-                      <ul class="nav nav-treeview">
-                          <li class="nav-item">
-                              <a href="{{ route('vclaimsep')}}" class="nav-link @if ($sidebar_m == '4.1') active @endif">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>SEP</p>
-                              </a>
-                          </li>
-                          <li class="nav-item">
-                              <a href="{{ route('vclaimsurakontrol')}}" class="nav-link @if ($sidebar_m == '4.2') active @endif">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>SURAT KONTROL</p>
-                              </a>
-                          </li>
-                          <li class="nav-item">
-                              <a href="{{ route('rujukan')}}" class="nav-link @if ($sidebar_m == '4.3') active @endif">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>RUJUKAN</p>
-                              </a>
-                          </li>
-                          <li class="nav-item">
-                              <a href="{{ route('vclaimreferensi') }}" class="nav-link @if ($sidebar_m == '4.4') active @endif">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>REFERENSI</p>
-                              </a>
-                          </li>
-                      </ul>
-                  </li> --}}
                   @endif
-                  {{-- <li class="nav-item">
-                      <a href="#" class="nav-link">
-                          <i class="nav-icon fas fa-tree"></i>
-                          <p>
-                              Rekamedis
-                              <i class="fas fa-angle-left right"></i>
-                          </p>
-                      </a>
-                      <ul class="nav nav-treeview">
-                          <li class="nav-item">
-                              <a href="pages/UI/modals.html" class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Modals & Alerts</p>
-                              </a>
-                          </li>
-                          <li class="nav-item">
-                              <a href="pages/UI/navbar.html" class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Navbar & Tabs</p>
-                              </a>
-                          </li>
-                          <li class="nav-item">
-                              <a href="pages/UI/timeline.html" class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Timeline</p>
-                              </a>
-                          </li>
-                          <li class="nav-item">
-                              <a href="pages/UI/ribbons.html" class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Ribbons</p>
-                              </a>
-                          </li>
-                      </ul>
-                  </li>
-                 --}}
+                  @if (auth()->user()->hak_akses == 3)
+                      <li class="nav-header"></i>PENUNJANG</li>
+                      <li class="nav-item">
+                          <a href="{{ route('ordermasuk') }}"
+                              class="nav-link @if ($sidebar_m == 6) active @endif"">
+                              <i class="bi bi-bag nav-icon"></i>
+                              {{-- <i class="bi bi-person-lines-fill nav-icon"></i> --}}
+                              <p>ORDER MASUK</p>
+                              <input hidden  type="text" id="value1">
+                              <input hidden  type="text" id="value2">
+                              <span hidden class="badge badge-danger right orderan"></span>
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a href="" class="nav-link">
+                              {{-- <i class="bi bi-person-lines-fill nav-icon"></i> --}}
+                              <i class="bi bi-search  nav-icon"></i>
+                              <p>CARI PASIEN</p>
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a href="" class="nav-link">
+                              <i class="bi bi-graph-up-arrow nav-icon"></i>
+                              <p>RIWAYAT PELAYANAN</p>
+                          </a>
+                      </li>
+                  @endif
                   <li class="nav-header"> <i class="nav-icon bi bi-person-circle mr-2"></i> INFO AKUN</li>
                   <li class="nav-item">
                       <a href="" class="nav-link">
@@ -605,3 +557,41 @@
       </div>
       <!-- /.sidebar -->
   </aside>
+  <script>
+    //   var intervalID = setInterval(function() {
+    //       reload_order();
+    //       const element = document.getElementById("not");
+    //       element.remove();
+    //   }, 5000);
+
+    //   function reload_order() {
+    //       $.ajax({
+    //           async: true,
+    //           type: 'post',
+    //           dataType: 'json',
+    //           data: {
+    //               _token: "{{ csrf_token() }}"
+    //           },
+    //           url: '<?= route('reloadorder') ?>',
+    //           error: function(data) {
+    //               Swal.fire({
+    //                   icon: 'error',
+    //                   title: 'Ooops....',
+    //                   text: 'Sepertinya ada masalah......',
+    //                   footer: ''
+    //               })
+    //           },
+    //           success: function(data) {
+    //               if (data.total > 0) {
+    //                   $('.orderan').removeAttr('hidden')
+    //                    var wrapper = $(".orderan"); //Fields wrapper
+    //               $(wrapper).append(
+    //                   '<div id="not">' + data.total + '</div>'
+    //               );
+    //               } else {
+    //                   $('.orderan').Attr('hidden')
+    //               }
+    //           }
+    //       });
+    //   }
+  </script>

@@ -2219,25 +2219,4 @@
             }
         });
     }
-
-    $(document).ready(function() {
-        ambilgambar1()
-
-        function ambilgambar1() {
-            $.ajax({
-                type: 'post',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    kodekunjungan: $('#kodekunjungan').val()
-                },
-                url: '<?= route('gambarnyeri') ?>',
-                error: function(data) {
-                    alert('ok')
-                },
-                success: function(response) {
-                    $('.gambarnyeri').html(response)
-                }
-            });
-        }
-    });
 </script>

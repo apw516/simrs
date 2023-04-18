@@ -55,6 +55,7 @@
         kode = $(this).attr('kodekunjungan')
         $(".formpasien").removeAttr('hidden', true);
         $(".vpasien").attr('hidden', true);
+        $(".btnasskep").attr('hidden', true);
         spinner = $('#loader')
         spinner.show();
         $.ajax({

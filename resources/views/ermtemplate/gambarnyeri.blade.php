@@ -1,14 +1,14 @@
 <div class="card">
     <div class="card-header  bg-warning">Penandaan Lokasi Nyeri</div>
     <div class="card-body">
-        <input hidden type="text" id="gambargigi">
-        {{-- @if(count($cek1) > 0)
-        <img id="gambarnya1" style="margin-top:50px" width="600px" height="400px" src="{{ $cek1[0]->gambargigi }}"
+        <input hidden type="text" id="gambarpolos">
+        @if(count($cek1) > 0)
+        <img id="gambarnya1" style="margin-top:50px" width="600px" height="400px" src="{{ $cek1[0]->catatangambar }}"
             onclick="showMarkerArea(this);" />
-        @else --}}
+        @else
         <img id="gambarnya1" style="margin-top:50px" width="600px" height="400px" src="{{ asset('public/img/penandaannyeri.png') }}"
             onclick="showMarkerArea(this);" />
-        {{-- @endif --}}
+        @endif
         <canvas hidden id="myCanvas1" width="600px" height="400px" style="border:1px solid #d3d3d3;">
             Your browser does not support the HTML5 canvas tag.
         </canvas>
@@ -31,7 +31,7 @@
                 data: {
                     _token: "{{ csrf_token() }}",
                 },
-                url: '<?= route('gambargigi') ?>',
+                url: '<?= route('gambarcatatan_igd') ?>',
                 error: function(data) {
                     alert('ok')
                 },

@@ -13,12 +13,20 @@
 
         <section class="content">
             <div class="container-fluid">
+                {{-- @if(auth()->user()->unit == '1002')
+                <button class="btn btn-success btnasskep" onclick="ambilform()"><i class="bi bi-file-earmark-ruled mr-2"></i>
+                    Form Assesmen Awal</button>
+                @endif --}}
                 <div class="vpasien">
 
                 </div>
             </div>
             <div class="container-fluid">
+                <div hidden class="formigd">
+
+                </div>
                 <div hidden class="formpasien">
+
                 </div>
             </div>
         </section>
@@ -35,6 +43,7 @@
             function ambildatapasien() {
                 $(".formpasien").attr('hidden', true);
                 $(".vpasien").removeAttr('hidden', true);
+                $(".btnasskep").removeAttr('hidden', true);
                 spinner = $('#loader')
                 spinner.show();
                 $.ajax({
@@ -46,6 +55,34 @@
                     success: function(response) {
                         spinner.hide();
                         $('.vpasien').html(response);
+                    }
+                });
+            }
+
+            function bataligd()
+            {
+                $(".formpasien").attr('hidden', true);
+                $(".vpasien").removeAttr('hidden', true);
+                $(".btnasskep").removeAttr('hidden', true);
+                $(".formigd").attr('hidden', true);
+                ambildatapasien()
+            }
+
+            function ambilform() {
+                $(".vpasien").attr('hidden', true);
+                $(".btnasskep").attr('hidden', true);
+                $(".formigd").removeAttr('hidden', true);
+                spinner = $('#loader')
+                spinner.show();
+                $.ajax({
+                    type: 'post',
+                    data: {
+                        _token: "{{ csrf_token() }}"
+                    },
+                    url: '<?= route('ambilformasskep') ?>',
+                    success: function(response) {
+                        $('.formigd').html(response);
+                        spinner.hide();
                     }
                 });
             }

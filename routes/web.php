@@ -10,6 +10,8 @@ use App\Http\Controllers\BillingController;
 use App\Http\Controllers\BedmonitoringController;
 use App\Http\Controllers\RanapController;
 use App\Http\Controllers\ErmController;
+use App\Http\Controllers\PenunjangController;
+use App\Http\Controllers\AntrianIgd;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +23,7 @@ use App\Http\Controllers\ErmController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 
 Route::get('/', [LoginController::class, 'index']);
 Route::get('/login', [LoginController::class, 'index'])->middleware('guest')->name('login');
@@ -54,17 +57,26 @@ Route::get('/register', [RegisterController::class, 'index'])->middleware('guest
 Route::post('/register', [RegisterController::class, 'Store']);
 
 Route::post('/formpemeriksaan_khusus', [ErmController::class, 'formpemeriksaan_khusus'])
-->name('formpemeriksaan_khusus'); //sidebar
+    ->name('formpemeriksaan_khusus'); //sidebar
 Route::post('/ambilriwayat_pasien', [ErmController::class, 'ambilriwayat_pasien'])
-->name('ambilriwayat_pasien'); //sidebar
+    ->name('ambilriwayat_pasien'); //sidebar
 Route::post('/ambilriwayat_pasien_cari', [ErmController::class, 'ambilriwayat_pasien_cari'])
-->name('ambilriwayat_pasien_cari'); //sidebar
+    ->name('ambilriwayat_pasien_cari'); //sidebar
 Route::get('/indexpelayanandokter', [ErmController::class, 'indexpelayanandokter'])
-->name('indexpelayanandokter'); //sidebar
+    ->name('indexpelayanandokter'); //sidebar
 Route::get('/riwayatpemeriksaan_byrm', [ErmController::class, 'riwayatpemeriksaan_byrm'])
-->name('riwayatpemeriksaan_byrm'); //sidebar
+    ->name('riwayatpemeriksaan_byrm'); //sidebar
 Route::post('/ambilriwayat_pasien_byrm', [ErmController::class, 'ambilriwayat_pasien_byrm'])
-->name('ambilriwayat_pasien_byrm'); //sidebar
+    ->name('ambilriwayat_pasien_byrm'); //sidebar
+Route::post('/simpangambar_igd', [ErmController::class, 'simpangambarbebas'])
+    ->name('simpangambar_igd'); //sidebar
+Route::post('/gambarcatatan', [ErmController::class, 'gambarcatatan'])
+    ->name('gambarcatatan'); //sidebar
+
+
+    //reloadorder
+    Route::post('/reloadorder', [PenunjangController::class, 'reloadorder'])
+        ->name('reloadorder'); //sidebar
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9']], function () {
@@ -338,6 +350,17 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1']], function () {
         ->name('vclaimcaridataklaim');
 });
 Route::group(['middleware' => ['auth', 'hak_akses1:3']], function () {
+    Route::get('/ordermasuk', [PenunjangController::class, 'index'])
+        ->name('ordermasuk'); //sidebar
+    Route::post('/ambildetailorder', [PenunjangController::class, 'ambildetailorder'])
+        ->name('ambildetailorder'); //sidebar
+    Route::post('/terimaordernya', [PenunjangController::class, 'terimaordernya'])
+        ->name('terimaordernya'); //sidebar
+
+    Route::post('/ambildataorderan', [PenunjangController::class, 'ambildataorderan'])
+        ->name('ambildataorderan'); //sidebar
+
+
     Route::get('/Billing', [BillingController::class, 'Billing'])
         ->name('Billing'); //sidebar
     Route::post('/Formlayanan', [BillingController::class, 'Formlayanan'])
@@ -383,6 +406,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('formpemeriksaan_'); //sidebar
     Route::post('/simpanpemeriksaanperawat', [ErmController::class, 'simpanpemeriksaanperawat'])
         ->name('simpanpemeriksaanperawat'); //sidebar
+    Route::post('/simpanpemeriksaanperawat_igd', [ErmController::class, 'simpanpemeriksaanperawat_igd'])
+        ->name('simpanpemeriksaanperawat_igd'); //sidebar
     Route::post('/resumepasien', [ErmController::class, 'resumepasien'])
         ->name('resumepasien'); //sidebar
     Route::post('/simpanttdperawat', [ErmController::class, 'simpanttdperawat'])
@@ -391,6 +416,13 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('gambarnyeri'); //sidebar
     Route::post('/gambarcatatan_igd', [ErmController::class, 'gambarcatatan_igd'])
         ->name('gambarcatatan_igd'); //sidebar
+
+    Route::post('/ambilformasskep', [ErmController::class, 'ambilformasskep'])
+        ->name('ambilformasskep'); //sidebar
+    Route::post('/generatekode_igd', [ErmController::class, 'generatekode_igd'])
+        ->name('generatekode_igd'); //sidebar
+
+
 });
 Route::group(['middleware' => ['auth', 'hak_akses1:5']], function () {
     Route::get('/indexdokter', [ErmController::class, 'indexdokter'])
@@ -435,8 +467,6 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5']], function () {
         ->name('simpangambarbebas'); //sidebar
     Route::post('/gambargigi', [ErmController::class, 'gambargigi'])
         ->name('gambargigi'); //sidebar
-    Route::post('/gambarcatatan', [ErmController::class, 'gambarcatatan'])
-        ->name('gambarcatatan'); //sidebar
     Route::post('/formupload', [ErmController::class, 'formupload'])
         ->name('formupload'); //sidebar
     Route::post('/formorderpenunjang', [ErmController::class, 'formorderpenunjang'])
@@ -461,6 +491,12 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5']], function () {
         ->name('cariobat'); //sidebar
 });
 
+Route::group(['middleware' => ['auth','hak_akses1:99']],function () {
+    Route::get('/antrianigd', [AntrianIgd::class, 'index']);
+Route::post('/ambildatapasien_igd', [AntrianIgd::class, 'datapasien_igd'])->name('ambildatapasien_igd');
+Route::post('/simpanpemeriksaanperawat_igd', [AntrianIgd::class, 'simpanpasien'])->name('simpanpemeriksaanperawat_igd');
+
+});
 
 
 
