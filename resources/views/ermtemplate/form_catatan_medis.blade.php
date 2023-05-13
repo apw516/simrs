@@ -293,6 +293,15 @@
                                                         <td>{{ $k->rencanakerja }}</td>
                                                     </tr>
                                                 </table>
+                                                <div class="card">
+                                                    <div class="card-header bg-danger">Hasil Pemeriksaan khusus</div>
+                                                    <div class="card-body">
+                                                        {{ $k->pemeriksaan_khusus }} <br><br>
+                                                        {{ $k->pemeriksaan_khusus_2 }}<br><br>
+                                                        <img src="{{ $k->gambar_1}}" alt=""><br><br>
+                                                        <img src="{{ $k->gambar_2}}" alt=""><br><br>
+                                                    </div>
+                                                </div>
                                                 <button class="btn btn-info riwayattindakan mt-4"
                                                     kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
                                                     data-target="#modalriwayattindakan">Riwayat Tindakan</button>

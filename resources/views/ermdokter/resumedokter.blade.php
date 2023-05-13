@@ -408,8 +408,7 @@
                                             <td>Telinga kanan</td>
                                             <td>
                                                 <div class="gambar1">
-                                                    <img width="340px" height="320px"
-                                                        src="{{ $formkhusus['telingakanan'][0]->gambar }}"
+                                                    <img src="{{ $resume[0]->gambar_1}}"
                                                         alt="">
                                                 </div>
                                             </td>
@@ -672,11 +671,10 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>Telinga kanan</td>
+                                            <td>Telinga Kiri</td>
                                             <td>
                                                 <div class="gambar1">
-                                                    <img width="340px" height="320px"
-                                                        src="{{ $formkhusus['telingakiri'][0]->gambar }}"
+                                                    <img src="{{ $resume[0]->gambar_2}}"
                                                         alt="">
                                                 </div>
                                             </td>

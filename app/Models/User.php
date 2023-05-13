@@ -20,12 +20,14 @@ class User extends Authenticatable
      */
     protected $connection = 'mysql3';
     protected $table='user';
-    protected $fillable = [
-        'nama_user',
-        'username',
-        'password',
-        'kode_unit'
-    ];
+    // protected $fillable = [
+    //     'nama_user',
+    //     'username',
+    //     'password',
+    //     'kode_unit'
+    // ];
+    protected $guarded = ['id'];
+
 
     /**
      * The attributes that should be hidden for serialization.

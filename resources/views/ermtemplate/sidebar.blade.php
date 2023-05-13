@@ -83,7 +83,7 @@
                 @endif
                   <li class="nav-header"> <i class="nav-icon bi bi-person-circle mr-2"></i> INFO AKUN</li>
                   <li class="nav-item">
-                      <a href="" class="nav-link">
+                      <a href="{{ route('profil')}}" class="nav-link  @if($sidebar == 'profil') active @endif">
                         <i class="bi bi-person-lines-fill nav-icon"></i>
                           <p>Profil</p>
                       </a>

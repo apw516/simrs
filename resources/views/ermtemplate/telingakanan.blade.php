@@ -1,6 +1,6 @@
 <input hidden type="text" id="telingakanan">
 @if(count($cek1) > 0)
-<img id="gambarnya1" style="margin-top:50px" width="340px" height="320px" src="{{ $cek1[0]->gambar }}"
+<img id="gambarnya1" style="margin-top:50px" width="340px" height="320px" src="{{ $cek1[0]->gambar_1 }}"
     onclick="showMarkerArea(this);" />
 @else
 <img id="gambarnya1" style="margin-top:50px" width="340px" height="320px" src="{{ asset('public/img/telinakanan.png') }}"

@@ -15,7 +15,8 @@
                   <img src="{{ asset('public/img/logouser.png') }}" class="img-circle elevation-2" alt="User Image">
               </div>
               <div class="info">
-                  <a href="#" class="d-block">{{ auth()->user()->username }}</a>
+                  {{-- <a href="#" class="d-block">{{ auth()->user()->nama }}</a> --}}
+                  <marquee class="text-light" width="200" height="30">{{ auth()->user()->nama }}</marquee>
               </div>
           </div>
           <!-- Sidebar Menu -->
@@ -540,7 +541,7 @@
                   @endif
                   <li class="nav-header"> <i class="nav-icon bi bi-person-circle mr-2"></i> INFO AKUN</li>
                   <li class="nav-item">
-                      <a href="" class="nav-link">
+                      <a href="{{ route('profil')}}" class="nav-link">
                           <i class="bi bi-person-lines-fill nav-icon"></i>
                           <p>Profil</p>
                       </a>

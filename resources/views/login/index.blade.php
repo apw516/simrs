@@ -36,7 +36,7 @@
                             <input type="password" class="form-control" id="password" name="password">
                         </div>
                         <input type="submit" value="Log In" class="btn btn-block btn-success">
-                        <span class="d-block text-center my-4"><a href="/register">Register</a></span>
+                        <span class="d-block text-center my-4"><a href="{{ route('register')}}">Register</a></span>
                         <span class="d-block text-center my-4 text-muted">&mdash; view dashboard &mdash;</span>
                         <div class="social-login text-center">
                             <a href="#" class="facebook">

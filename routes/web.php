@@ -26,8 +26,10 @@ use App\Http\Controllers\AntrianIgd;
 
 
 Route::get('/', [LoginController::class, 'index']);
+// Route::get('/register', [LoginController::class, 'register'])->name('/register');
 Route::get('/login', [LoginController::class, 'index'])->middleware('guest')->name('login');
 Route::post('/login', [LoginController::class, 'authenticate']);
+Route::post('/gantipassword', [LoginController::class, 'gantipassword'])->name('gantipassword');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('bedmonitoring', [BedmonitoringController::class, 'index'])->name('bedmonitoring');
 Route::post('/ambilcatatanmedis_pasien', [ErmController::class, 'ambilcatatanmedis_pasien'])
@@ -53,7 +55,9 @@ Route::post('/riwayatorderfarmasi2', [ErmController::class, 'riwayatorderfarmasi
     ->name('riwayatorderfarmasi2'); //sidebar
 Route::post('/riwayatupload', [ErmController::class, 'riwayatupload'])
     ->name('riwayatupload'); //sidebar
+
 Route::get('/register', [RegisterController::class, 'index'])->middleware('guest')->name('register');
+Route::get('/profil', [RegisterController::class, 'profil'])->name('profil');
 Route::post('/register', [RegisterController::class, 'Store']);
 
 Route::post('/formpemeriksaan_khusus', [ErmController::class, 'formpemeriksaan_khusus'])

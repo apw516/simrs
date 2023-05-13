@@ -1,11 +1,12 @@
 <div class="card">
     <div class="card-header bg-warning">Order Penunjang</div>
     <div class="card-body">
+        @if(count($assdok) > 0)
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="exampleFormControlSelect1">Diagnosa Pemeriksaan Penunjang</label>
-                    <input type="text" id="diagnosapemeriksaanpenunjang" class="form-control">
+                    <input type="text" id="diagnosapemeriksaanpenunjang" class="form-control" value="{{ $assdok[0]->diagnosakerja }}">
                   </div>
             </div>
             <div class="col-md-6">
@@ -40,6 +41,15 @@
                 </div>
             </div>
         </div>
+        @else
+        <div class="error-content">
+            <h3><i class="fas fa-exclamation-triangle text-warning"></i> Oops! Assesmen awal medis belum diisi
+                ...</h3>
+            <p>
+                Anda harus mengisi assesmen awal medis terlebih dulu ... </a>
+            </p>
+        </div>
+        @endif
     </div>
 </div>
 <script>

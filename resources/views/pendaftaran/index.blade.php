@@ -98,7 +98,6 @@
                 </div>
             </div>
         </div>
-
         <div class="container">
             <div class="vpasien">
                 <table id="tabelpasienbaru" class="table table-bordered table-sm table-striped table-hover">

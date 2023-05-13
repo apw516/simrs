@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <img src="/auth/images/undraw_remotely_2j6y.svg" alt="Image" class="img-fluid">
+                <img src="{{ asset('public/auth/images/BG.svg')}}" alt="Image" class="img-fluid">
             </div>
             <div class="col-md-6 contents">
                 <div class="row justify-content-center">
@@ -25,13 +25,13 @@
                                 </div>
                             @endif
                         </div>
-                        <form action="/register" method="post">
+                        <form action="{{ route('register')}}" method="post">
                             @csrf
                             <div class="form-group first mb-2">
                                 <label for="username">Nama lengkap</label>
                                 <input type="text" class="form-control @error('nama') is-invalid @enderror"
-                                    id="nama_user" name="nama_user" autofocus required value="{{ old('nama') }}">
-                                @error('username')
+                                    id="nama" name="nama" autofocus required value="{{ old('nama') }}">
+                                @error('nama')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -43,19 +43,17 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group first mt-2">
+                            {{-- <div class="form-group first mt-2">
                                 <label for="username">Unit Kerja</label>
                                 <input type="text" class="form-control @error('kode_unit') is-invalid @enderror"
                                     id="kode_unit" name="kode_unit" required value="{{ old('kode_unit') }}">
-                            </div>
+                            </div> --}}
                             <div class="form-group last mt-2 mb-4">
                                 <label for="password">Password</label>
                                 <input type="password" class="form-control" id="password" name="password">
                             </div>
-                            <input type="submit" value="Register" class="btn btn-block btn-primary">
-                            <span class="d-block text-center my-4">Login</span>
-                            <span class="d-block text-center my-4 text-muted">&mdash; view dashboard &mdash;</span>
-
+                            <input type="submit" value="Register" class="btn btn-block btn-success">
+                            <span class="d-block text-center my-4"><a href="{{ route('login')}}">Login</a></span>
                             <div class="social-login text-center">
                                 <a href="#" class="facebook">
                                     <span class="icon-facebook mr-3"></span>
