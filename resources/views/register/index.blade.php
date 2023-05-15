@@ -35,7 +35,7 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group first">
+                            <div class="form-group first mb-2">
                                 <label for="username">Username</label>
                                 <input type="text" class="form-control @error('username') is-invalid @enderror"
                                     id="username" name="username" required value="{{ old('usernaname') }}">
@@ -43,11 +43,15 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            {{-- <div class="form-group first mt-2">
-                                <label for="username">Unit Kerja</label>
-                                <input type="text" class="form-control @error('kode_unit') is-invalid @enderror"
-                                    id="kode_unit" name="kode_unit" required value="{{ old('kode_unit') }}">
-                            </div> --}}
+                            <div class="form-group first">
+                                {{-- <label for="exampleFormControlSelect1">Pilih Unit Kerja</label> --}}
+                                <select class="form-control" style="background-color:rgb(234, 238, 243)" id="unit" name="unit">
+                                  <option>Pilih Unit Kerja</option>
+                                  @foreach ($unit as $u )
+                                  <option value="{{ $u->kode_unit }}">{{ $u->nama_unit }}</option>
+                                  @endforeach
+                                </select>
+                              </div>
                             <div class="form-group last mt-2 mb-4">
                                 <label for="password">Password</label>
                                 <input type="password" class="form-control" id="password" name="password">

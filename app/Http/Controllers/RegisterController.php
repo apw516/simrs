@@ -11,8 +11,10 @@ class RegisterController extends Controller
 {
     public function index()
     {
+        $unit = DB::select('SELECT * from mt_unit');
         return view('register.index',[
-            'title' => 'Register'
+            'title' => 'Register',
+            'unit' => $unit
         ]);
     }
     public function store(Request $request)
@@ -21,7 +23,7 @@ class RegisterController extends Controller
          validate([
             'nama' => 'required|max:255',
             'username' => ['required','min:3','max:255','unique:user'],
-            // 'kode_unit' =>'required',
+            'unit' =>'required',
             'password' => 'required|min:5|max:255'
         ]);
         // dd($validateData);

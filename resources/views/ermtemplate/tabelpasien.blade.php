@@ -1,5 +1,6 @@
 <table id="tablepasienpoli" class="table table-sm table-hover text-xs">
     <thead>
+        <th>Antrian</th>
         <th>Nomor RM</th>
         <th>Nama Pasien</th>
         <th>Unit</th>
@@ -10,6 +11,7 @@
     <tbody>
         @foreach ($pasienpoli as $p)
             <tr class="pilihpasien" rm="{{ $p->no_rm }}" kodekunjungan="{{ $p->kode_kunjungan }}">
+                <td>{{ $p->antrian }}</td>
                 <td>{{ $p->no_rm }}</td>
                 <td>{{ $p->nama_pasien }}</td>
                 <td>{{ $p->nama_unit }}</td>
