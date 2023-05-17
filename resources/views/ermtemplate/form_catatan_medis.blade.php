@@ -18,10 +18,15 @@
                         data-parent="#accordionExample">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-12">
-                                    <button class="btn btn-info mb-2 float-right cetakresume" kodekunjungan="{{ $k->id_kunjungan }}"><i class="bi bi-printer"></i>
-                                        Print</button>
-                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-secondary mb-2 float-right cetakresumedok ml-2" rm="{{ $k->no_rm }}" counter="{{ $k->counter }}" kodekunjungan="{{ $k->id_kunjungan }}"><i class="bi bi-printer"></i>
+                                        Download assesmen awal keperawatan </button>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <button class="btn btn-secondary mb-2 float-right cetakresumesus" kodekunjungan="{{ $k->id_kunjungan }}"><i class="bi bi-printer"></i>
+                                            Download assesmen awal medis</button>
+                                        </div>
                                 <div class="col-md-6">
                                     <div class="card">
                                         <div class="card-header bg-warning text-bold">Assesmen awal Keperawatan</div>
@@ -292,6 +297,10 @@
                                                         <td class="text-bold font-italic">Rencana Kerja</td>
                                                         <td>{{ $k->rencanakerja }}</td>
                                                     </tr>
+                                                    <tr>
+                                                        <td class="text-bold font-italic">Tindak Lanjut</td>
+                                                        <td>{{ $k->tindak_lanjut }} | {{ $k->keterangan_tindak_lanjut }}</td>
+                                                    </tr>
                                                 </table>
                                                 <div class="card">
                                                     <div class="card-header bg-danger">Hasil Pemeriksaan khusus</div>
@@ -305,10 +314,10 @@
                                                 <button class="btn btn-info riwayattindakan mt-4"
                                                     kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
                                                     data-target="#modalriwayattindakan">Riwayat Tindakan</button>
-                                                <button class="btn btn-danger hasilpemeriksaankhusus mt-4"
+                                                {{-- <button class="btn btn-danger hasilpemeriksaankhusus mt-4"
                                                     kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
                                                     data-target="#modalhasilpemeriksaankhusus">Hasil Pemeriksaan
-                                                    Khusus</button>
+                                                    Khusus</button> --}}
                                                 <button class="btn btn-success riwayatupload mt-4"
                                                     kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
                                                     data-target="#modalriwayatupload">Riwayat Upload</button>
@@ -531,8 +540,15 @@
             }
         });
     });
-    $(".cetakresume").on('click', function(event) {
+    $(".cetakresumesus").on('click', function(event) {
+        rm = $(this).attr('rm')
+        counter = $(this).attr('counter')
         kodekunjungan = $(this).attr('kodekunjungan')
         window.open('cetakresume/' + kodekunjungan);
+    })
+    $(".cetakresumedok").on('click', function(event) {
+        rm = $(this).attr('rm')
+        counter = $(this).attr('counter')
+        window.open('cetakresumeperawat/' + rm  + '/' + counter);
     })
 </script>

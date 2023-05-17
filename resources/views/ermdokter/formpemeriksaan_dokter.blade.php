@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header bg-info">Assesmen Awal Medis</div>
-    <div class="card-body">
+    <div class="card-body table-responsive p-5" style="height: 757Px">
         <form action="" class="formpemeriksaandokter">
             <input hidden type="text" name="kodekunjungan" class="form-control"
                 value="{{ $kunjungan[0]->kode_kunjungan }}">
@@ -237,7 +237,7 @@
                     <tr>
                         <td class="text-bold font-italic">Diagnosa Kerja</td>
                         <td colspan="2">
-                            <textarea name="diagnosakerja" id="diagnosakerja" class="form-control">{{ $kunjungan[0]->diagx }}</textarea>
+                            <textarea name="diagnosakerja" id="diagnosakerja" class="form-control"></textarea>
                         </td>
                         <td>
                             <button type="button" class="btn btn-warning showmodalicdkerja" data-toggle="modal"
@@ -411,6 +411,7 @@
                         text: data.message,
                         footer: ''
                     })
+                    formpemeriksaankhusus()
                 }
             }
         });

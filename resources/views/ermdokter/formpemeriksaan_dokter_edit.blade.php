@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header bg-info">Assesmen Awal Medis</div>
-    <div class="card-body">
+    <div class="card-body  table-responsive p-5" style="height: 757Px">
         <form action="" class="formpemeriksaandokter">
             <input hidden type="text" name="kodekunjungan" class="form-control"
                 value="{{ $kunjungan[0]->kode_kunjungan }}">
@@ -94,6 +94,7 @@
                             </div>
                         </td>
                     </tr>
+                    @if($kunjungan[0]->counter == 1)
                     <tr>
                         <td colspan="4" class="bg-secondary">Riwayat Kesehatan</td>
                     </tr>
@@ -212,6 +213,7 @@
                             <input type="text" class="form-control" name="statusgeneralis" id="statusgeneralis" value="{{ $resume[0]->statusgeneralis }}">
                         </td>
                     </tr>
+                    @endif
                     <tr>
                         <td colspan="4" class="bg-secondary">Pemeriksaan Fisik</td>
                     </tr>
@@ -410,6 +412,7 @@
                         text: data.message,
                         footer: ''
                     })
+                    formpemeriksaankhusus()
                 }
             }
         });

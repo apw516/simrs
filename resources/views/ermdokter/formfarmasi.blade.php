@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header bg-success">Pilih Order Farmasi</div>
-    <div class="card-body">
+    <div class="card-body table-responsive p-5" style="height: 757Px">
         <div class="container-fluid">
             @if (count($resume) > 0)
                 <div class="row">
@@ -31,10 +31,17 @@
                             <div class="card-body">
                                 <form action="" method="post" class="formtindakan">
                                     <div class="input_fields_wrap">
-                                        <div>
+                                        <div class="fi">
                                         </div>
+                                        <button type="button" class="btn btn-info float-right" data-toggle="modal" data-target="#modaltemplate" onclick="ambilresep()">template resep</button>
                                         <button type="button" class="btn btn-warning mb-2 simpanlayanan"
                                             id="simpanlayanan">Simpan Tindakan</button>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="simpantemplate" onclick="showname()">
+                                            <label class="form-check-label" for="exampleCheck1">ceklis, untuk simpan
+                                                resep sebagai template</label>
+                                        </div>
+                                        <input hidden type="text" class="form-control col-md-3 mb-3" id="namaresep" name="namaresep" placeholder="isi nama resep ...">
                                     </div>
                                 </form>
                             </div>
@@ -77,11 +84,63 @@
             @endif
         </div>
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modaltemplate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Template Resep</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="vtemplateresep">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        $('#pencarianobat').on('input', function() {
-            var kodekunjungan = $('#kodekunjungan').val()
+        function showname()
+        {
+            a = $('#simpantemplate:checked').val()
+           if(a == 'on'){
+            $('#namaresep').removeAttr('Hidden',true)
+           }else{
+            $('#namaresep').attr('Hidden',true)
+           }
+        }
+        function ambilresep()
+        {
             spinner = $('#loader')
             spinner.show();
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    kodekunjungan: $('#kodekunjungan').val()
+                },
+                url: '<?= route('ambilresep') ?>',
+                error: function(data) {
+                    alert('ok')
+                },
+                success: function(response) {
+                    $('.vtemplateresep').html(response)
+                    spinner.hide()
+                }
+            });
+        }
+        $('#pencarianobat').on('input', function() {
+            var kodekunjungan = $('#kodekunjungan').val()
+            // spinner = $('#loader')
+            // spinner.show();
             $.ajax({
                 type: 'post',
                 data: {
@@ -92,7 +151,7 @@
                 url: '<?= route('cariobat') ?>',
                 success: function(response) {
                     $('.tableobat').html(response);
-                    spinner.hide()
+                    // spinner.hide()
                 }
             });
         });
@@ -109,6 +168,8 @@
         $(".simpanlayanan").click(function() {
             var data = $('.formtindakan').serializeArray();
             var kodekunjungan = $('#kodekunjungan').val()
+            var simpantemplate = $('#simpantemplate:checked').val()
+            var namaresep = $('#namaresep').val()
             spinner = $('#loader')
             spinner.show();
             $.ajax({
@@ -119,6 +180,8 @@
                     _token: "{{ csrf_token() }}",
                     data: JSON.stringify(data),
                     kodekunjungan: kodekunjungan,
+                    simpantemplate,
+                    namaresep
                 },
                 url: '<?= route('simpanorderfarmasi') ?>',
                 error: function(data) {

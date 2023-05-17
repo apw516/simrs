@@ -18,7 +18,7 @@
                 <td>
                     @if ($p->id_pemeriksaan_perawat != null)
                         @if ($p->status_asskep == 0)
-                            <button class="badge badge-warning"> Belum ttd </button>
+                            <button class="badge badge-warning"> Belum validasi </button>
                         @else
                             <button class="badge badge-success"> sudah diisi </button>
                         @endif
@@ -29,7 +29,7 @@
                 <td>
                     @if ($p->id_pemeriksaan_dokter != null)
                         @if ($p->status_assdok == 0)
-                            <button class="badge badge-warning"> Belum ttd </button>
+                            <button class="badge badge-warning"> Belum validasi </button>
                              | {{ $p->nama_dokter }}
                         @else
                             <button class="badge badge-success"> sudah diisi </button>

@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header bg-danger">Catatan </div>
-    <div class="card-body">
+    <div class="card-body table-responsive p-5" style="height: 757Px">
         @if (count($resume) > 0)
             <form action="" class="catatan">
                 <input hidden type="text" class="form-control" id="idassesmen" value="{{ $resume[0]->id }}">

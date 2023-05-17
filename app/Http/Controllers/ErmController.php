@@ -20,6 +20,8 @@ use App\Models\ts_layanan_detail_dummy;
 use App\Models\ts_layanan_header_dummy;
 use App\Models\ts_layanan_header_order;
 use App\Models\ts_layanan_detail_order;
+use App\Models\templateresep;
+use App\Models\templateresep_detail;
 use App\Models\erm_order_penunjang;
 use Carbon\Carbon;
 use simitsdk\phpjasperxml\PHPJasperXML;
@@ -543,6 +545,10 @@ class ErmController extends Controller
             'signature' => ''
         ];
         try {
+            $data_k = [
+                'keluhanutama' =>  trim($dataSet['keluhanutama'])
+            ];
+            assesmenawalperawat::whereRaw('id = ?', array($dataSet['idasskep']))->update($data_k);
             $cek = DB::select('SELECT * from assesmen_dokters WHERE tgl_kunjungan = ? AND id_pasien = ? AND kode_unit = ?', [$dataSet['tanggalkunjungan'], $dataSet['nomorrm'], $dataSet['unit']]);
             if (count($cek) > 0) {
                 $data = [
@@ -704,7 +710,7 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
         $data = [
             'tanggalassemen' => $this->get_now(),
             'status' => '1',
-            'signature' => $request->signature
+            'signature' => 'SUDAH DIVALIDASI'
         ];
         assesmenawalperawat::whereRaw('kode_kunjungan = ?', array($request->kodekunjungan))->update($data);
         $data = [
@@ -719,7 +725,7 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
         $data = [
             // 'tanggalassemen' => $this->get_now(),
             'status' => '1',
-            'signature' => $request->signature
+            'signature' => 'SUDAH VALIDASI'
         ];
         $data2 = [
             // 'tanggalassemen' => $this->get_now(),
@@ -1534,9 +1540,9 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
         $matakiri = $request->matakiri;
         try {
             $cek = DB::select('select * from erm_mata_kanan_kiri where id_assesmen_dokter = ? and kode_kunjungan = ?', [$request->idassesmen, $kodekunjungan]);
-            $hasil_pemeriksaan_khusus = "visus dasar : "." OD : " . $dataSet['od_visus_dasar'] . " OD PINHOLE : " . $dataSet['od_pinhole_visus_dasar'] . " OS : " . $dataSet['os_visus_dasar'] .  " OS PINHOLE : " . $dataSet['os_pinhole_visus_dasar'] ." | Refraktometer / streak : "."  OD : Sph : " . $dataSet['od_sph_refraktometer'] . " Cyl : " . $dataSet['od_cyl_refraktometer'] . " X : ". $dataSet['od_x_refraktometer'] . "  OS : Sph  : " . $dataSet['os_sph_refraktometer'] . " Cyl : " . $dataSet['os_cyl_refraktometer'] . " X : ". $dataSet['os_x_refraktometer'] . " Lensometer : " . "  OD : Sph  :" . $dataSet['od_sph_Lensometer'] . " Cyl : " . $dataSet['od_cyl_Lensometer'] . " X : " . $dataSet['od_x_Lensometer'] . "  OS : Sph : " . $dataSet['os_sph_Lensometer'] . " Cyl : " . $dataSet['os_cyl_Lensometer'] . " X : " . $dataSet['os_x_Lensometer'] ." | Koreksi penglihatan jauh : " . "  VOD : Sph : " . $dataSet['vod_sph_kpj'] . " Cyl : " . $dataSet['vod_cyl_kpj'] . " X : " . $dataSet['vod_x_kpj'] . "  VOS : Sph  : " . $dataSet['vos_sph_kpj'] . " Cyl : " . $dataSet['vos_cyl_kpj'] . "X :" .$dataSet['vos_x_kpj'] . " | Tajam penglihatan dekat : " . $dataSet['penglihatan_dekat'] . " | Tekanan Intra Okular : " . $dataSet['tekanan_intra_okular'] . " | Catatan Pemeriksaan Lainnya : " . $dataSet['catatan_pemeriksaan_lainnya'] . " | Palpebra : " . $dataSet['palpebra'] . " | Konjungtiva : " . $dataSet['konjungtiva'] . "| Kornea : " . $dataSet['kornea'] . " | Bilik Mata Depan : " . $dataSet['bilik_mata_depan'] . " | pupil : ".$dataSet['pupil'] . " | Iris : " . $dataSet['iris'] . " | Lensa : " . $dataSet['lensa'] . " | funduskopi : " . $dataSet['funduskopi'] . " | Status Oftalmologis Khusus : ". $dataSet['oftamologis']. "| Masalah Medis : ". $dataSet['masalahmedis'] . " | Prognosis : ". $dataSet['prognosis'];
+            $hasil_pemeriksaan_khusus = "visus dasar : " . " OD : " . $dataSet['od_visus_dasar'] . " OD PINHOLE : " . $dataSet['od_pinhole_visus_dasar'] . " OS : " . $dataSet['os_visus_dasar'] .  " OS PINHOLE : " . $dataSet['os_pinhole_visus_dasar'] . " | Refraktometer / streak : " . "  OD : Sph : " . $dataSet['od_sph_refraktometer'] . " Cyl : " . $dataSet['od_cyl_refraktometer'] . " X : " . $dataSet['od_x_refraktometer'] . "  OS : Sph  : " . $dataSet['os_sph_refraktometer'] . " Cyl : " . $dataSet['os_cyl_refraktometer'] . " X : " . $dataSet['os_x_refraktometer'] . " Lensometer : " . "  OD : Sph  :" . $dataSet['od_sph_Lensometer'] . " Cyl : " . $dataSet['od_cyl_Lensometer'] . " X : " . $dataSet['od_x_Lensometer'] . "  OS : Sph : " . $dataSet['os_sph_Lensometer'] . " Cyl : " . $dataSet['os_cyl_Lensometer'] . " X : " . $dataSet['os_x_Lensometer'] . " | Koreksi penglihatan jauh : " . "  VOD : Sph : " . $dataSet['vod_sph_kpj'] . " Cyl : " . $dataSet['vod_cyl_kpj'] . " X : " . $dataSet['vod_x_kpj'] . "  VOS : Sph  : " . $dataSet['vos_sph_kpj'] . " Cyl : " . $dataSet['vos_cyl_kpj'] . "X :" . $dataSet['vos_x_kpj'] . " | Tajam penglihatan dekat : " . $dataSet['penglihatan_dekat'] . " | Tekanan Intra Okular : " . $dataSet['tekanan_intra_okular'] . " | Catatan Pemeriksaan Lainnya : " . $dataSet['catatan_pemeriksaan_lainnya'] . " | Palpebra : " . $dataSet['palpebra'] . " | Konjungtiva : " . $dataSet['konjungtiva'] . "| Kornea : " . $dataSet['kornea'] . " | Bilik Mata Depan : " . $dataSet['bilik_mata_depan'] . " | pupil : " . $dataSet['pupil'] . " | Iris : " . $dataSet['iris'] . " | Lensa : " . $dataSet['lensa'] . " | funduskopi : " . $dataSet['funduskopi'] . " | Status Oftalmologis Khusus : " . $dataSet['oftamologis'] . "| Masalah Medis : " . $dataSet['masalahmedis'] . " | Prognosis : " . $dataSet['prognosis'];
 
-            $data_mata = ['gambar_1' => $matakanan, 'gambar_2' => $matakiri, 'pemeriksaan_khusus' => $hasil_pemeriksaan_khusus ];
+            $data_mata = ['gambar_1' => $matakanan, 'gambar_2' => $matakiri, 'pemeriksaan_khusus' => $hasil_pemeriksaan_khusus];
             assesmenawaldokter::whereRaw('id = ?', array($request->idassesmen))->update($data_mata);
             if (count($cek) > 0) {
                 $datamata = [
@@ -1928,8 +1934,33 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
         $QUERY->execute();
         $data = $QUERY->fetchAll();
         // $filename = __DIR__ . '/cppt_fix.jrxml';
-        $filename = 'C:\xampp\htdocs\simrs\public\report/cppt_fix.jrxml';
-        // dd($filename);
+        $filename = 'C:\cetakanerm\cppt_fi1x.jrxml';
+        $config = ['driver' => 'array', 'data' => $data];
+        $report = new PHPJasperXML();
+        $report->load_xml_file($filename)
+            ->setDataSource($config)
+            ->export('Pdf');
+    }
+    public function cetakresumeperawat($rm,$counter)
+    {
+        $PDO = DB::connection()->getPdo();
+        $QUERY = $PDO->prepare("CALL SP_ASSESMEN_KEPERAWATAN_RAJAL_DEWASA('$rm','$counter')");
+        $QUERY->execute();
+        $data = $QUERY->fetchAll();
+        $filename = 'C:\cetakanerm\RESUME_PERAWAT.jrxml';
+        $config = ['driver' => 'array', 'data' => $data];
+        $report = new PHPJasperXML();
+        $report->load_xml_file($filename)
+            ->setDataSource($config)
+            ->export('Pdf');
+    }
+    public function cetakresumedokter($rm,$counter)
+    {
+        $PDO = DB::connection()->getPdo();
+        $QUERY = $PDO->prepare("CALL SP_ASSESMEN_KEPERAWATAN_RAJAL_DEWASA('$rm','$counter')");
+        $QUERY->execute();
+        $data = $QUERY->fetchAll();
+        $filename = 'C:\cetakanerm\RESUME_PERAWAT.jrxml';
         $config = ['driver' => 'array', 'data' => $data];
         $report = new PHPJasperXML();
         $report->load_xml_file($filename)
@@ -2418,6 +2449,7 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
     }
     public function simpanorderfarmasi(Request $request)
     {
+        $simpantemplate = $request->simpantemplate;
         $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
         $dt = Carbon::now()->timezone('Asia/Jakarta');
         $date = $dt->toDateString();
@@ -2445,7 +2477,46 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
                 $arrayindex[] = $dataSet;
             }
         }
-
+        if ($simpantemplate == 'on') {
+            if ($request->namaresep == '') {
+                $back = [
+                    'kode' => 500,
+                    'message' => 'Nama Resep tidak boleh kosong !'
+                ];
+                echo json_encode($back);
+                die;
+            }
+            $obatnya = '';
+            foreach ($arrayindex as $d) {
+                if ($obatnya == '') {
+                    $obatbaru = $obatnya . "nama obat : " . $d['namaobat'] . " , jumlah : " . $d['jumlah'] . " " . $d['satuan'] . " , " . "aturan pakai : " . $d['aturanpakai'] . " , " . " signa : " . $d['signa'] . " , " . " keterangan : " . $d['keterangan'] . " , " . " kategori resep : " . $d['jenis'];
+                } else {
+                    $obatbaru = $obatnya . " | " . "nama obat : " . $d['namaobat'] . ", jumlah : " . $d['jumlah'] . " " . $d['satuan'] . " , " . "aturan pakai : " . $d['aturanpakai'] . " , " . " signa : " . $d['signa'] . " , " . " keterangan : " . $d['keterangan'] . " , " . " kategori resep : " . $d['jenis'];
+                }
+                $obatnya = $obatbaru;
+            }
+            $dataresep = [
+                'nama_resep' => $request->namaresep,
+                'keterangan' => $obatnya,
+                'user' => auth()->user()->kode_paramedis,
+                'tgl_entry' => $this->get_now()
+            ];
+            $id_resep = templateresep::create($dataresep);
+            foreach ($arrayindex as $d) {
+                $detailresep = [
+                    'id_template' => $id_resep->id,
+                    'nama_barang' => $d['namaobat'],
+                    'kode_barang' => $d['kodebarang'],
+                    'aturan_pakai' => $d['aturanpakai'],
+                    'jenis' => $d['jenis'],
+                    'satuan' => $d['satuan'],
+                    'jumlah' => $d['jumlah'],
+                    'signa' => $d['signa'],
+                    'keterangan' => $d['keterangan'],
+                ];
+                $detailresep = templateresep_detail::create($detailresep);
+            }
+        }
         try {
             $kode_unit = $unit;
             //dummy
@@ -2480,6 +2551,7 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
             //simpan ke layanan header
             //dummy
             $ts_layanan_header = ts_layanan_header_order::create($data_layanan_header);
+
             foreach ($arrayindex as $d) {
                 // if ($penjamin == 'P01') {
                 //     $tagihanpenjamin = 0;
@@ -2620,5 +2692,45 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
         }
         date_default_timezone_set('Asia/Jakarta');
         return 'IGD' . date('ymd') . $kd;
+    }
+    public function ambilresep(Request $request)
+    {
+        $user = auth()->user()->kode_paramedis;
+        $resep = DB::SELECT('select * from ts_template_resep where user = ?', [$user]);
+        return view('ermtemplate.tabel_resep', compact(
+            'resep'
+        ));
+    }
+    public function ambilresep_detail(Request $request)
+    {
+        $resep = DB::SELECT('select * from erm_ts_resep_detail where id_template = ?', [$request->id]);
+        return view('ermtemplate.reseptemplatedetail', compact(
+            'resep'
+        ));
+    }
+    public function tindaklanjut_dokter(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        $resume = db::select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
+        return view('ermdokter.tindaklanjut', compact([
+            'resume'
+        ]));
+    }
+    public function simpantindaklanjut(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        $pilihan = $request->pilih;
+        $ket = $request->ket;
+        $data_u = [
+            'tindak_lanjut' => $pilihan,
+            'keterangan_tindak_lanjut' => $ket,
+        ];
+        assesmenawaldokter::whereRaw('id_kunjungan = ?', $kodekunjungan)->update($data_u);
+        $back = [
+            'kode' => 200,
+            'message' => ''
+        ];
+        echo json_encode($back);
+        die;
     }
 }

@@ -523,6 +523,7 @@
                         text: data.message,
                         footer: ''
                     })
+                    resume()
                 }
             }
         });

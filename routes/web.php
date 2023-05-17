@@ -35,6 +35,7 @@ Route::get('bedmonitoring', [BedmonitoringController::class, 'index'])->name('be
 Route::post('/ambilcatatanmedis_pasien', [ErmController::class, 'ambilcatatanmedis_pasien'])
     ->name('ambilcatatanmedis_pasien'); //sidebar
 Route::get('cetakresume/{kodekunjungan}', [ErmController::class, 'cetakresume']); //formpasien_bpjs
+Route::get('cetakresumeperawat/{rm}/{counter}', [ErmController::class, 'cetakresumeperawat']); //formpasien_bpjs
 Route::post('ambilicd10', [ErmController::class, 'ambilicd10'])->name('ambilicd10'); //formpasien_bpjs
 Route::post('ambilicd10_banding', [ErmController::class, 'ambilicd10_banding'])->name('ambilicd10_banding'); //formpasien_bpjs
 Route::post('cariicd10', [ErmController::class, 'cariicd10'])->name('cariicd10'); //formpasien_bpjs
@@ -55,6 +56,10 @@ Route::post('/riwayatorderfarmasi2', [ErmController::class, 'riwayatorderfarmasi
     ->name('riwayatorderfarmasi2'); //sidebar
 Route::post('/riwayatupload', [ErmController::class, 'riwayatupload'])
     ->name('riwayatupload'); //sidebar
+Route::post('/ambilresep', [ErmController::class, 'ambilresep'])
+    ->name('ambilresep'); //sidebar
+Route::post('/ambilresep_detail', [ErmController::class, 'ambilresep_detail'])
+    ->name('ambilresep_detail'); //sidebar
 
 Route::get('/register', [RegisterController::class, 'index'])->middleware('guest')->name('register');
 Route::get('/profil', [RegisterController::class, 'profil'])->name('profil');
@@ -493,6 +498,12 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5']], function () {
         ->name('formorderfarmasi'); //sidebar
     Route::post('/cariobat', [ErmController::class, 'cariobat'])
         ->name('cariobat'); //sidebar
+    Route::post('/tindaklanjut_dokter', [ErmController::class, 'tindaklanjut_dokter'])
+        ->name('tindaklanjut_dokter'); //sidebar
+    Route::post('/form_konsul_poli', [ErmController::class, 'form_konsul_poli'])
+        ->name('form_konsul_poli'); //sidebar
+    Route::post('/simpantindaklanjut', [ErmController::class, 'simpantindaklanjut'])
+        ->name('simpantindaklanjut'); //sidebar
 });
 
 Route::group(['middleware' => ['auth','hak_akses1:99']],function () {

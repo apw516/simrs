@@ -227,7 +227,7 @@
                     </td>
                 </tr>
             </table>
-            <table class="table mt-4">
+            {{-- <table class="table mt-4">
                 <thead>
                     <th>Nama Perawat</th>
                     <th>Tanda Tangan</th>
@@ -258,9 +258,19 @@
                         </td>
                     </tr>
                 </tbody>
-            </table>
+            </table> --}}
             @if ($resume[0]->signature == '')
-                <button class="btn btn-success float-right" onclick="simpantandatangan()">Simpan</button>
+                <div class="jumbotron">
+                    <h1 class="display-4">HALLO, {{ auth()->user()->nama }} !</h1>
+                    <p class="lead">Anda telah mengisi form assesmen awal keperawatan rawat jalan ... </p>
+                    <hr class="my-4">
+                    <p>Pastikan data sudah terisi dengan benar.</p>
+                    <a class="btn btn-success btn-lg" href="#" role="button"
+                        onclick="simpantandatangan()">Simpan</a>
+                </div>
+                {{-- <button class="btn btn-success float-right" onclick="simpantandatangan()">Simpan</button> --}}
+            @else
+                <button class="btn btn-danger float-right" onclick="ambildatapasien()()">Kembali</button>
             @endif
         @else
             <h5>Data tidak ditemukan !</h5>
@@ -269,71 +279,84 @@
 </div>
 <script type="text/javascript" src="{{ asset('public/signature/js/signature.js') }}"></script>
 <script>
-    var wrapper = document.getElementById("signature-pad");
-    var clearButton = wrapper.querySelector("[data-action=clear]");
-    var canvas = wrapper.querySelector("canvas");
-    var el_note = document.getElementById("note");
-    var signaturePad;
-    signaturePad = new SignaturePad(canvas);
-    clearButton.addEventListener("click", function(event) {
-        document.getElementById("note").innerHTML = "The signature should be inside box";
-        signaturePad.clear();
-    });
+    // var wrapper = document.getElementById("signature-pad");
+    // var clearButton = wrapper.querySelector("[data-action=clear]");
+    // var canvas = wrapper.querySelector("canvas");
+    // var el_note = document.getElementById("note");
+    // var signaturePad;
+    // signaturePad = new SignaturePad(canvas);
+    // clearButton.addEventListener("click", function(event) {
+    //     document.getElementById("note").innerHTML = "The signature should be inside box";
+    //     signaturePad.clear();
+    // });
 
-    function my_function() {
-        document.getElementById("note").innerHTML = "";
-    }
+    // function my_function() {
+    //     document.getElementById("note").innerHTML = "";s
+    // }
 
     function simpantandatangan() {
-        spinner = $('#loader')
-        spinner.show();
-        kodekunjungan = $('#kodekunjungan').val()
-        var canvas = document.getElementById("the_canvas");
-        var dataUrl = canvas.toDataURL();
-        if (dataUrl ==
-            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV4AAABkCAYAAADOvVhlAAADOklEQVR4Xu3UwQkAAAgDMbv/0m5xr7hAIcjtHAECBAikAkvXjBEgQIDACa8nIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECDweoABlt2MJjgAAAABJRU5ErkJggg=='
-        ) {
-            dataUrl = ''
-        }
-        document.getElementById("signature").value = dataUrl;
-        signature = $('#signature').val()
-        $.ajax({
-            async: true,
-            type: 'post',
-            dataType: 'json',
-            data: {
-                _token: "{{ csrf_token() }}",
-                kodekunjungan: kodekunjungan,
-                signature
-            },
-            url: '<?= route('simpanttdperawat') ?>',
-            error: function(data) {
-                spinner.hide()
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Something went wrong!',
-                    footer: 'ermwaled2023'
-                })
-            },
-            success: function(data) {
-                spinner.hide()
-                if (data.kode == '502') {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops',
-                        text: data.message,
-                        footer: 'ermwaled2023'
-                    })
-                } else {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'OK',
-                        text: data.message,
-                        footer: 'ermwaled2023'
-                    })
-                }
+        Swal.fire({
+            icon: 'warning',
+            title: 'Anda yakin data sudah benar ?',
+            showDenyButton: true,
+            confirmButtonText: 'Ya',
+            denyButtonText: `Cek lagi ...`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                spinner = $('#loader')
+                spinner.show();
+                kodekunjungan = $('#kodekunjungan').val()
+                // var canvas = document.getElementById("the_canvas");
+                // var dataUrl = canvas.toDataURL();
+                // if (dataUrl ==
+                //     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV4AAABkCAYAAADOvVhlAAADOklEQVR4Xu3UwQkAAAgDMbv/0m5xr7hAIcjtHAECBAikAkvXjBEgQIDACa8nIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECDweoABlt2MJjgAAAABJRU5ErkJggg=='
+                // ) {
+                //     dataUrl = ''
+                // }
+                // document.getElementById("signature").value = dataUrl;
+                // signature = $('#signature').val()
+                $.ajax({
+                    async: true,
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        kodekunjungan: kodekunjungan,
+                        // signature
+                    },
+                    url: '<?= route('simpanttdperawat') ?>',
+                    error: function(data) {
+                        spinner.hide()
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                            footer: 'ermwaled2023'
+                        })
+                    },
+                    success: function(data) {
+                        spinner.hide()
+                        if (data.kode == '502') {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops',
+                                text: data.message,
+                                footer: 'ermwaled2023'
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'OK',
+                                text: data.message,
+                                footer: 'ermwaled2023'
+                            })
+                            ambildatapasien()
+                        }
+                    }
+                });
+            } else if (result.isDenied) {
+                resume()
             }
-        });
+        })
     }
 </script>

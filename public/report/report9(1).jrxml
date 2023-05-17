@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report9" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6ad85f3d-ead0-4b20-a21d-4eaf85373481">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="psql">
+		<![CDATA[{CALL SP_ASSESMEN_KEPERAWATAN_RAJAL_DEWASA('23974497',3)}]]>
+	</queryString>
+	<field name="NO_RM" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NAMA_PX" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TGL_LAHIR" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="jENIS_KELAMIN" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="COUNTER" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NAMA_POLI" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TGL_DAN_JAM_KUNJUNGAN" class="java.sql.Timestamp"/>
+	<field name="TGL_DAN_JAM_KAJIAN" class="java.sql.Timestamp"/>
+	<field name="SUMBER_DATA" class="java.lang.String"/>
+	<field name="KELUHAN_UTAMA" class="java.lang.String"/>
+	<field name="TTV_TEKANAN_DARAH" class="java.lang.String"/>
+	<field name="TTV_FREK_NAPAS" class="java.lang.String"/>
+	<field name="TTV_FREK_NADI" class="java.lang.String"/>
+	<field name="TTV_SUHU" class="java.lang.String"/>
+	<field name="PEKERJAAN" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TINGGAL_BERSAMA" class="java.lang.String"/>
+	<field name="SUKU" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="AGAMA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="RIWAYAT_PSIKOLOGIS" class="java.lang.String"/>
+	<field name="RIWAYAT_PSIKOLOGIS_KETERANGAN" class="java.lang.String"/>
+	<field name="STATUS_FUNGSIONAL_ALAT_BANTU" class="java.lang.String"/>
+	<field name="STATUS_FUNGSIONAL_ALAT_BANTU_KETERANGAN" class="java.lang.String"/>
+	<field name="STATUS_FUNGSIONAL_CACAT_TUBUH" class="java.lang.String"/>
+	<field name="STATUS_FUNGSIONAL_CACAT_TUBUH_KETERANGAN" class="java.lang.String"/>
+	<field name="ASS_NYERI_KELUHAN_NYERI" class="java.lang.String"/>
+	<field name="ASS_NYERI_SKORE" class="java.lang.String"/>
+	<field name="ASS_RESIKO_JATUH" class="java.lang.String"/>
+	<field name="1_SKRINING_GIZI" class="java.lang.String"/>
+	<field name="1_SKRINING_GIZI_BERAT_BADAN_SKOR" class="java.lang.String"/>
+	<field name="1_SKRINING_GIZI_BERAT_BADAN" class="java.lang.String"/>
+	<field name="2_SKRINING_GIZI_ASUPAN" class="java.lang.String"/>
+	<field name="2_SKRINING_GIZI_ASUPAN_SKOR" class="java.lang.String"/>
+	<field name="3_SKRINING_GIZI_MAL_NUTRISI" class="java.lang.String"/>
+	<field name="3_SKRINING_GIZI_PENYAKIT_LAIN_PASIEN" class="java.lang.String"/>
+	<field name="4_SKRINING_GIZI_TOTAL" class="java.lang.String"/>
+	<field name="4_SKRINING_GIZI_TGL_PENGKAJIAN_LANJUTAN" class="java.lang.String"/>
+	<field name="DIAGNOSA_KEPERAWATAN" class="java.lang.String"/>
+	<field name="RENCANA_KEPERAWATAN" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TINDAKAN_KEPERAWATAN" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="EVALUASI_KEPERAWATAN" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NAMA_ASSESMEN" class="java.lang.String"/>
+	<field name="TTD_ASSEMEN" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<textField>
+				<reportElement x="25" y="9" width="100" height="20" uuid="5d0ef3b5-c6ec-4545-8e0d-78149a8f2d20"/>
+				<textFieldExpression><![CDATA[$F{NO_RM}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="47" y="38" width="100" height="20" uuid="d836a001-1412-4628-b2af-193afffe8556"/>
+				<textFieldExpression><![CDATA[$F{NAMA_PX}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="236" y="21" width="100" height="20" uuid="ad4b6e89-f8c7-435e-bd53-d8475148099f"/>
+				<textFieldExpression><![CDATA[$F{jENIS_KELAMIN}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

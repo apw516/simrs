@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header bg-info">Resume</div>
-    <div class="card-body">
+    <div class="card-body table-responsive p-5" style="height: 757Px">
         @if (count($resume) > 0)
             <table class="table table-sm">
                 <tr>
@@ -150,6 +150,10 @@
                 <tr>
                     <td>Rencana Kerja</td>
                     <td colspan="3">{{ $resume[0]->rencanakerja }}</td>
+                </tr>
+                <tr>
+                    <td>Tindak Lanjut</td>
+                    <td colspan="3">{{ $resume[0]->tindak_lanjut }} | {{ $resume[0]->keterangan_tindak_lanjut }}</td>
                 </tr>
             </table>
             @if ($formkhusus['keterangan'] == 'tht')
@@ -408,8 +412,7 @@
                                             <td>Telinga kanan</td>
                                             <td>
                                                 <div class="gambar1">
-                                                    <img src="{{ $resume[0]->gambar_1}}"
-                                                        alt="">
+                                                    <img src="{{ $resume[0]->gambar_1 }}" alt="">
                                                 </div>
                                             </td>
                                         </tr>
@@ -674,8 +677,7 @@
                                             <td>Telinga Kiri</td>
                                             <td>
                                                 <div class="gambar1">
-                                                    <img src="{{ $resume[0]->gambar_2}}"
-                                                        alt="">
+                                                    <img src="{{ $resume[0]->gambar_2 }}" alt="">
                                                 </div>
                                             </td>
                                         </tr>
@@ -1628,25 +1630,26 @@
             <div class="card">
                 <div class="card-header bg-info">Riwayat Upload</div>
                 <div class="card-body">
-                    @if(count($riwayat_upload) > 0)
-                    <table class="table table-sm">
-                        <thead>
-                            <th>Nama File</th>
-                            <th>Unit</th>
-                            <th>Tanggal Upload</th>
-                        </thead>
-                        <tbody>
-                            @foreach ($riwayat_upload as $d )
-                                <tr>
-                                    <td><img width="20px" src="{{ url('../../files/'.$d->gambar) }}" alt="" class="mr-3"> {{ $d->gambar }}</td>
-                                    <td>{{ $d->nama_unit }}</td>
-                                    <td>{{ $d->tgl_upload }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    @if (count($riwayat_upload) > 0)
+                        <table class="table table-sm">
+                            <thead>
+                                <th>Nama File</th>
+                                <th>Unit</th>
+                                <th>Tanggal Upload</th>
+                            </thead>
+                            <tbody>
+                                @foreach ($riwayat_upload as $d)
+                                    <tr>
+                                        <td><img width="20px" src="{{ url('../../files/' . $d->gambar) }}"
+                                                alt="" class="mr-3"> {{ $d->gambar }}</td>
+                                        <td>{{ $d->nama_unit }}</td>
+                                        <td>{{ $d->tgl_upload }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     @else
-                    <h5>Tidak ada berkas yang diupload !</h5>
+                        <h5>Tidak ada berkas yang diupload !</h5>
                     @endif
                 </div>
             </div>
@@ -1662,14 +1665,14 @@
                         </thead>
                         <tbody>
                             @foreach ($riwayat_tindakan as $r)
-                            @if($r->status_header != '3')
-                                <tr>
-                                    <td>{{ $r->kode_layanan_header }}</td>
-                                    <td>{{ $r->id_detail }}</td>
-                                    <td>{{ $r->NAMA_TARIF }}</td>
-                                    <td>{{ $r->jumlah_layanan }}</td>
-                                </tr>
-                            @endif
+                                @if ($r->status_header != '3')
+                                    <tr>
+                                        <td>{{ $r->kode_layanan_header }}</td>
+                                        <td>{{ $r->id_detail }}</td>
+                                        <td>{{ $r->NAMA_TARIF }}</td>
+                                        <td>{{ $r->jumlah_layanan }}</td>
+                                    </tr>
+                                @endif
                             @endforeach
                         </tbody>
                     </table>
@@ -1687,14 +1690,14 @@
                         </thead>
                         <tbody>
                             @foreach ($riwayat_order as $r)
-                            @if($r->status_header != '3')
-                                <tr>
-                                    <td>{{ $r->kode_layanan_header }}</td>
-                                    <td>{{ $r->id_detail }}</td>
-                                    <td>{{ $r->NAMA_TARIF }}</td>
-                                    <td>{{ $r->jumlah_layanan }}</td>
-                                </tr>
-                            @endif
+                                @if ($r->status_header != '3')
+                                    <tr>
+                                        <td>{{ $r->kode_layanan_header }}</td>
+                                        <td>{{ $r->id_detail }}</td>
+                                        <td>{{ $r->NAMA_TARIF }}</td>
+                                        <td>{{ $r->jumlah_layanan }}</td>
+                                    </tr>
+                                @endif
                             @endforeach
                         </tbody>
                     </table>
@@ -1713,21 +1716,21 @@
                         </thead>
                         <tbody>
                             @foreach ($riwayat_order_f as $r)
-                            @if($r->status_layanan_header != '3')
-                                <tr>
-                                    <td>{{ $r->nama_barang }}</td>
-                                    <td>{{ $r->kategori_resep }}</td>
-                                    <td>{{ $r->satuan_barang }}</td>
-                                    <td>{{ $r->jumlah_layanan }}</td>
-                                    <td>{{ $r->aturan_pakai }}</td>
-                                </tr>
-                            @endif
+                                @if ($r->status_layanan_header != '3')
+                                    <tr>
+                                        <td>{{ $r->nama_barang }}</td>
+                                        <td>{{ $r->kategori_resep }}</td>
+                                        <td>{{ $r->satuan_barang }}</td>
+                                        <td>{{ $r->jumlah_layanan }}</td>
+                                        <td>{{ $r->aturan_pakai }}</td>
+                                    </tr>
+                                @endif
                             @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
-            <table class="table mt-4">
+            {{-- <table class="table mt-4">
                 <thead>
                     <th>Nama Dokter</th>
                     <th>Tanda Tangan</th>
@@ -1761,11 +1764,23 @@
                         </td>
                     </tr>
                 </tbody>
-            </table>
+            </table> --}}
             @if ($resume[0]->signature == '')
                 @if ($resume[0]->pic == auth()->user()->id || $resume[0]->pic == '')
-                    <button class="btn btn-success float-right" onclick="simpantandatangan()">Simpan</button>
+                    {{-- <button class="btn btn-success float-right" onclick="simpantandatangan()">Simpan</button> --}}
+                    <div class="jumbotron">
+                        <h1 class="display-2 mb-3">Terima Kasih !</h1>
+                        <p class="lead">Anda telah mengisi form assesmen medis rawat jalan ... </p>
+                        <p class="lead">Tindak lanjut pasien <br>
+                            {{ $resume[0]->tindak_lanjut }} | keterangan : {{ $resume[0]->keterangan_tindak_lanjut }} </p>
+                        <hr class="my-4">
+                        <p>Pastikan data sudah terisi dengan benar.</p>
+                        <a class="btn btn-success btn-lg" href="#" role="button"
+                            onclick="simpantandatangan()">Simpan</a>
+                    </div>
                 @endif
+            @else
+                <button class="btn btn-danger float-right" onclick="ambildatapasien()">Kembali</button>
             @endif
         @else
             <div class="error-content">
@@ -1780,72 +1795,85 @@
 </div>
 <script type="text/javascript" src="{{ asset('public/signature/js/signature.js') }}"></script>
 <script>
-    var wrapper = document.getElementById("signature-pad");
-    var clearButton = wrapper.querySelector("[data-action=clear]");
-    var canvas = wrapper.querySelector("canvas");
-    var el_note = document.getElementById("note");
-    var signaturePad;
-    signaturePad = new SignaturePad(canvas);
-    clearButton.addEventListener("click", function(event) {
-        document.getElementById("note").innerHTML = "The signature should be inside box";
-        signaturePad.clear();
-    });
+    // var wrapper = document.getElementById("signature-pad");
+    // var clearButton = wrapper.querySelector("[data-action=clear]");
+    // var canvas = wrapper.querySelector("canvas");
+    // var el_note = document.getElementById("note");
+    // var signaturePad;
+    // signaturePad = new SignaturePad(canvas);
+    // clearButton.addEventListener("click", function(event) {
+    //     document.getElementById("note").innerHTML = "The signature should be inside box";
+    //     signaturePad.clear();
+    // });
 
-    function my_function() {
-        document.getElementById("note").innerHTML = "";
-    }
+    // function my_function() {
+    //     document.getElementById("note").innerHTML = "";
+    // }
 
     function simpantandatangan() {
-        spinner = $('#loader')
-        spinner.show();
         kodekunjungan = $('#kodekunjungan').val()
-        var canvas = document.getElementById("the_canvas");
-        var dataUrl = canvas.toDataURL();
-        if (dataUrl ==
-            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV4AAABkCAYAAADOvVhlAAADOklEQVR4Xu3UwQkAAAgDMbv/0m5xr7hAIcjtHAECBAikAkvXjBEgQIDACa8nIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECDweoABlt2MJjgAAAABJRU5ErkJggg=='
-        ) {
-            dataUrl = ''
-        }
-        document.getElementById("signature").value = dataUrl;
-        signature = $('#signature').val()
-        $.ajax({
-            async: true,
-            type: 'post',
-            dataType: 'json',
-            data: {
-                _token: "{{ csrf_token() }}",
-                kodekunjungan: kodekunjungan,
-                signature
-            },
-            url: '<?= route('simpanttddokter') ?>',
-            error: function(data) {
-                spinner.hide()
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Something went wrong!',
-                    footer: 'ermwaled2023'
-                })
-            },
-            success: function(data) {
-                spinner.hide()
-                if (data.kode == '502') {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops',
-                        text: data.message,
-                        footer: 'ermwaled2023'
-                    })
-                } else {
-                    resume()
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'OK',
-                        text: data.message,
-                        footer: 'ermwaled2023'
-                    })
-                }
+        // var canvas = document.getElementById("the_canvas");
+        // var dataUrl = canvas.toDataURL();
+        // if (dataUrl ==
+        //     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV4AAABkCAYAAADOvVhlAAADOklEQVR4Xu3UwQkAAAgDMbv/0m5xr7hAIcjtHAECBAikAkvXjBEgQIDACa8nIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECDweoABlt2MJjgAAAABJRU5ErkJggg=='
+        // ) {
+        //     dataUrl = ''
+        // }
+        // document.getElementById("signature").value = dataUrl;
+        // signature = $('#signature').val()
+        Swal.fire({
+            icon: 'warning',
+            title: 'Anda yakin data sudah benar ?',
+            showDenyButton: true,
+            confirmButtonText: 'Ya',
+            denyButtonText: `Cek lagi ...`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                spinner = $('#loader')
+                spinner.show();
+                $.ajax({
+                    async: true,
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        kodekunjungan: kodekunjungan,
+                        // signature
+                    },
+                    url: '<?= route('simpanttddokter') ?>',
+                    error: function(data) {
+                        spinner.hide()
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                            footer: 'ermwaled2023'
+                        })
+                    },
+                    success: function(data) {
+                        spinner.hide()
+                        if (data.kode == '502') {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops',
+                                text: data.message,
+                                footer: 'ermwaled2023'
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'OK',
+                                text: data.message,
+                                footer: 'ermwaled2023'
+                            })
+                            ambildatapasien()
+                        }
+                    }
+                });
+            } else if (result.isDenied) {
+                resume()
             }
-        });
+        })
+
     }
 </script>
