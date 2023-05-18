@@ -10,4 +10,11 @@
     PDFObject.embed("http://192.168.2.74/smartlab_waled/his/his_report?hisno=LAB230518000147", "#example1");
 </script> --}}
 {{-- {{ asset('/laraview/#../folder-name/the-pdf-file.pdf') }} --}}
-<iframe src ="//192.168.2.74/smartlab_waled/his/his_report?hisno=LAB230518000147" width="1000px" height="600px"></iframe>
+@foreach ($cek as $c )
+<div class="card">
+    <div class="card-header">{{ $c->kode_layanan_header }}</div>
+    <div class="card-body">
+        <iframe src ="//192.168.2.74/smartlab_waled/his/his_report?hisno={{ $c->kode_layanan_header }}" width="1000px" height="600px"></iframe>
+    </div>
+</div>
+@endforeach
