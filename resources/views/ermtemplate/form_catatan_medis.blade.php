@@ -17,16 +17,27 @@
                     <div id="collapse{{ $k->counter }}" class="collapse" aria-labelledby="headingOne"
                         data-parent="#accordionExample">
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <button class="btn btn-secondary mb-2 float-right cetakresumedok ml-2" rm="{{ $k->no_rm }}" counter="{{ $k->counter }}" kodekunjungan="{{ $k->id_kunjungan }}"><i class="bi bi-printer"></i>
-                                        Download assesmen awal keperawatan </button>
-                                    </div>
-                                    <div class="col-md-6">
+                            <div class="row mb-4 justify-content-end">
+                                <div class="btn-group mr-2" role="group" aria-label="First group">
+                                    <button type="button" class="btn btn-secondary"><i class="bi bi-eye mr-2"></i> Hasil Expertisi Radiologi</button>
+                                    <button type="button" class="btn btn-secondary lihathasil_lab" kodekunjungan="{{ $k->kodek }}" data-toggle="modal" data-target="#modalhasil_lab"><i class="bi bi-eye mr-2"></i>Hasil Laboratorium</button>
+                                    <button type="button" class="btn btn-secondary cetakresumesus" kodekunjungan="{{ $k->kodek }}"><i class="bi bi-printer mr-2"></i>Assesmen Awal Keperawatan</button>
+                                    <button type="button" class="btn btn-secondary cetakresumedok" rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"><i class="bi bi-printer mr-2"></i>Assesmen Awal Medis</button>
+                                  </div>
 
-                                        <button class="btn btn-secondary mb-2 float-right cetakresumesus" kodekunjungan="{{ $k->id_kunjungan }}"><i class="bi bi-printer"></i>
-                                            Download assesmen awal medis</button>
-                                        </div>
+                                {{-- <div class="col-md-4">
+                                    <button class="btn btn-secondary mb-2 float-right cetakresumedok ml-2"
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                        kodekunjungan_asskep="{{ $k->kodek }}"><i class="bi bi-printer"></i>
+                                        Download assesmen awal keperawatan </button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-secondary mb-2 float-right cetakresumesus"
+                                        kodekunjungan="{{ $k->kodek }}"><i class="bi bi-printer"></i>
+                                        Download assesmen awal medis</button>
+                                </div> --}}
+                            </div>
+                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="card">
                                         <div class="card-header bg-warning text-bold">Assesmen awal Keperawatan</div>
@@ -274,7 +285,8 @@
                                                         <td colspan="4">{{ $k->pemeriksaan_fisik }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="4" class="text-bold bg-danger">Pemeriksaan Umum
+                                                        <td colspan="4" class="text-bold bg-danger">Pemeriksaan
+                                                            Umum
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -299,7 +311,8 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="text-bold font-italic">Tindak Lanjut</td>
-                                                        <td>{{ $k->tindak_lanjut }} | {{ $k->keterangan_tindak_lanjut }}</td>
+                                                        <td>{{ $k->tindak_lanjut }} |
+                                                            {{ $k->keterangan_tindak_lanjut }}</td>
                                                     </tr>
                                                 </table>
                                                 <div class="card">
@@ -307,8 +320,8 @@
                                                     <div class="card-body">
                                                         {{ $k->pemeriksaan_khusus }} <br><br>
                                                         {{ $k->pemeriksaan_khusus_2 }}<br><br>
-                                                        <img src="{{ $k->gambar_1}}" alt=""><br><br>
-                                                        <img src="{{ $k->gambar_2}}" alt=""><br><br>
+                                                        <img src="{{ $k->gambar_1 }}" alt=""><br><br>
+                                                        <img src="{{ $k->gambar_2 }}" alt=""><br><br>
                                                     </div>
                                                 </div>
                                                 <button class="btn btn-info riwayattindakan mt-4"
@@ -326,7 +339,8 @@
                                                     data-target="#modalriwayatorder">Riwayat Order Penunjang</button>
                                                 <button class="btn btn-warning riwayatorderfarmasi mt-4"
                                                     kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
-                                                    data-target="#modalriwayatorderfarmasi">Riwayat Order Farmasi</button>
+                                                    data-target="#modalriwayatorderfarmasi">Riwayat Order
+                                                    Farmasi</button>
                                                 <table class="table table-sm table-bordered mt-4">
                                                     <thead>
                                                         <th>Tanggal assesmen</th>
@@ -469,6 +483,29 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalhasil_lab" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Hasil Laboratorium</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="vhlab">
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <script>
     $(".riwayatorderfarmasi").on('click', function(event) {
         kodekunjungan = $(this).attr('kodekunjungan')
@@ -549,6 +586,27 @@
     $(".cetakresumedok").on('click', function(event) {
         rm = $(this).attr('rm')
         counter = $(this).attr('counter')
-        window.open('cetakresumeperawat/' + rm  + '/' + counter);
+        window.open('cetakresumeperawat/' + rm + '/' + counter);
+    })
+    $(".lihathasil_lab").on('click', function(event) {
+        kodekunjungan = $(this).attr('kodekunjungan')
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('lihathasillab') ?>',
+            error: function(data) {
+                spinner.hide();
+                alert('error')
+            },
+            success: function(response) {
+                spinner.hide();
+                $('.vhlab').html(response);
+            }
+        });
     })
 </script>

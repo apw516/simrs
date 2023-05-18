@@ -94,28 +94,28 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
+                    <tr @if($kunjungan[0]->counter > 1) hidden @endif>
                         <td colspan="4" class="bg-secondary">Riwayat Kesehatan</td>
                     </tr>
-                    <tr>
+                    <tr @if($kunjungan[0]->counter > 1) hidden @endif>
                         <td class="text-bold font-italic">Riwayat Kehamilan (bagi pasien wanita) </td>
                         <td colspan="3">
                             <textarea name="riwayatkehamilan" cols="10" rows="4" class="form-control"></textarea>
                         </td>
                     </tr>
-                    <tr>
+                    <tr @if($kunjungan[0]->counter > 1) hidden @endif>
                         <td class="text-bold font-italic">Riwayat Kelahiran (bagi pasien anak) </td>
                         <td colspan="3">
                             <textarea name="riwayatkelahiran" cols="10" rows="4" class="form-control"></textarea>
                         </td>
                     </tr>
-                    <tr>
+                    <tr @if($kunjungan[0]->counter > 1) hidden @endif>
                         <td class="text-bold font-italic">Riwayat Penyakit Sekarang</td>
                         <td colspan="3">
                             <textarea name="riwayatpenyakitsekarang" cols="10" rows="4" class="form-control"></textarea>
                         </td>
                     </tr>
-                    <tr>
+                    <tr @if($kunjungan[0]->counter > 1) hidden @endif>
                         <td class="text-bold font-italic">Riwayat Penyakit Dahulu</td>
                         <td colspan="3">
                             <div class="row">
@@ -186,7 +186,7 @@
                             <textarea name="ketriwayatlain" id="ketriwayatlain" class="form-control" placeholder="keterangan lain - lain"></textarea>
                         </td>
                     </tr>
-                    <tr>
+                    <tr @if($kunjungan[0]->counter > 1) hidden @endif>
                         <td class="text-bold font-italic">Riwayat Alergi</td>
                         <td colspan="3">
                             <div class="row">
@@ -207,7 +207,7 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
+                    <tr @if($kunjungan[0]->counter > 1) hidden @endif>
                         <td class="text-bold font-italic">Status Generalis</td>
                         <td>
                             <input type="text" class="form-control" name="statusgeneralis" id="statusgeneralis">

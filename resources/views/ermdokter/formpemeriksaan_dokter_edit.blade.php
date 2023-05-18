@@ -94,29 +94,28 @@
                             </div>
                         </td>
                     </tr>
-                    @if($kunjungan[0]->counter == 1)
-                    <tr>
+                    <tr @if($kunjungan[0]->counter > 1) hidden @endif>
                         <td colspan="4" class="bg-secondary">Riwayat Kesehatan</td>
                     </tr>
-                    <tr>
+                    <tr @if($kunjungan[0]->counter > 1) hidden @endif>
                         <td class="text-bold font-italic">Riwayat Kehamilan (bagi pasien wanita) </td>
                         <td colspan="3">
                             <textarea name="riwayatkehamilan" cols="10" rows="4" class="form-control">{{ $resume[0]->riwayat_kehamilan_pasien_wanita }}</textarea>
                         </td>
                     </tr>
-                    <tr>
+                    <tr @if($kunjungan[0]->counter > 1) hidden @endif>
                         <td class="text-bold font-italic">Riwayat Kelahiran (bagi pasien anak) </td>
                         <td colspan="3">
                             <textarea name="riwayatkelahiran" cols="10" rows="4" class="form-control">{{ $resume[0]->riwyat_kelahiran_pasien_anak }}</textarea>
                         </td>
                     </tr>
-                    <tr>
+                    <tr @if($kunjungan[0]->counter > 1) hidden @endif>
                         <td class="text-bold font-italic">Riwayat Penyakit Sekarang</td>
                         <td colspan="3">
                             <textarea name="riwayatpenyakitsekarang" cols="10" rows="4" class="form-control">{{ $resume[0]->riwyat_penyakit_sekarang }}</textarea>
                         </td>
                     </tr>
-                    <tr>
+                    <tr @if($kunjungan[0]->counter > 1) hidden @endif>
                         <td class="text-bold font-italic">Riwayat Penyakit Dahulu</td>
                         <td colspan="3">
                             <div class="row">
@@ -186,7 +185,7 @@
                                 <textarea name="ketriwayatlain" id="ketriwayatlain" class="form-control" placeholder="keterangan lain - lain">{{ $resume[0]->ket_riwayatlain }}</textarea>
                         </td>
                     </tr>
-                    <tr>
+                    <tr @if($kunjungan[0]->counter > 1) hidden @endif>
                         <td class="text-bold font-italic">Riwayat Alergi</td>
                         <td colspan="3">
                             <div class="row">
@@ -207,13 +206,12 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
+                    <tr @if($kunjungan[0]->counter > 1) hidden @endif>
                         <td class="text-bold font-italic">Status Generalis</td>
                         <td>
                             <input type="text" class="form-control" name="statusgeneralis" id="statusgeneralis" value="{{ $resume[0]->statusgeneralis }}">
                         </td>
                     </tr>
-                    @endif
                     <tr>
                         <td colspan="4" class="bg-secondary">Pemeriksaan Fisik</td>
                     </tr>

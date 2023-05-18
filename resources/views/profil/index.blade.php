@@ -1,4 +1,4 @@
-@extends('ermtemplate.main')
+@extends('dashboard.layouts.main')
 @section('container')
     <div class="content-header">
         <div class="container-fluid">
@@ -37,11 +37,13 @@
                                             </li>
                                             <li hidden class="list-group-item">
                                                 <b>Password Lama</b> <a class="float-right"><input type="text"
-                                                        name="id" id="id" class="form-control" value="{{ $datauser[0]->id }}"></a>
+                                                        name="id" id="id" class="form-control"
+                                                        value="{{ $datauser[0]->id }}"></a>
                                             </li>
                                             <li hidden class="list-group-item">
                                                 <b>Password Lama</b> <a class="float-right"><input type="password"
-                                                        name="passwordlama" id="passwordlama" value="" class="form-control"></a>
+                                                        name="passwordlama" id="passwordlama" value=""
+                                                        class="form-control"></a>
                                             </li>
                                             <li class="list-group-item">
                                                 <b>Password Baru</b> <a class="float-right"><input type="password"

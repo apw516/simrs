@@ -60,8 +60,8 @@ class ErmController extends Controller
             ]));
         } else {
             $pasienpoli = DB::select('SELECT IFNULL(d.nomorantrean, TIME(a.`tgl_masuk`)) AS antrian,d.`nomorantrean`,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan LEFT OUTER JOIN jkn_antrian d ON a.`kode_kunjungan` = d.`kode_kunjungan`
-             WHERE a.status_kunjungan = ? AND DATE(a.tgl_masuk) = CURDATE() AND a.`kode_unit` = ?', [
-                '1', auth()->user()->unit
+             WHERE a.status_kunjungan = ? AND DATE(a.tgl_masuk) = ? AND a.`kode_unit` = ?', [
+                '2','2023-5-16' ,auth()->user()->unit
             ]);
             return view('ermtemplate.tabelpasien', compact([
                 'pasienpoli'
@@ -70,8 +70,8 @@ class ErmController extends Controller
     }
     public function ambildatapasienpoli_dokter()
     {
-        $pasienpoli = DB::select('SELECT a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok,c.nama_dokter as nama_dokter,c.pic as id_dokter FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan WHERE a.status_kunjungan = ? AND DATE(a.tgl_masuk) = CURDATE() AND a.`kode_unit` = ?', [
-            '1', auth()->user()->unit
+        $pasienpoli = DB::select('SELECT a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok,c.nama_dokter as nama_dokter,c.pic as id_dokter FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan WHERE a.status_kunjungan = ? AND DATE(a.tgl_masuk) = ? AND a.`kode_unit` = ?', [
+            '2','2023-5-15' , auth()->user()->unit
         ]);
 
         return view('ermtemplate.tabelpasien_dokter', compact([
@@ -100,7 +100,7 @@ class ErmController extends Controller
     }
     public function ambilcatatanmedis_pasien(Request $request)
     {
-        $kunjungan = DB::select('SELECT *,b.id as id_1, c.id as id_2,b.signature as signature_perawat,c.signature as signature_dokter,b.keluhanutama as keluhan_perawat,a.tgl_masuk,a.counter,fc_nama_unit1(a.kode_unit) AS nama_unit FROM ts_kunjungan a
+        $kunjungan = DB::select('SELECT *,a.kode_kunjungan as kodek,a.no_rm as no_rm_k,b.id as id_1, c.id as id_2,b.signature as signature_perawat,c.signature as signature_dokter,b.keluhanutama as keluhan_perawat,a.tgl_masuk,a.counter,fc_nama_unit1(a.kode_unit) AS nama_unit FROM ts_kunjungan a
         LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`kode_kunjungan` = b.kode_kunjungan
         LEFT OUTER JOIN assesmen_dokters c ON b.`id` = c.`id_asskep` where a.no_rm = ? ORDER BY a.counter desc', [$request->rm]);
         return view('ermtemplate.form_catatan_medis', compact([
@@ -1934,7 +1934,7 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
         $QUERY->execute();
         $data = $QUERY->fetchAll();
         // $filename = __DIR__ . '/cppt_fix.jrxml';
-        $filename = 'C:\cetakanerm\cppt_fi1x.jrxml';
+        $filename = 'C:\cetakanerm\cppt_fix.jrxml';
         $config = ['driver' => 'array', 'data' => $data];
         $report = new PHPJasperXML();
         $report->load_xml_file($filename)
@@ -1942,19 +1942,6 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
             ->export('Pdf');
     }
     public function cetakresumeperawat($rm,$counter)
-    {
-        $PDO = DB::connection()->getPdo();
-        $QUERY = $PDO->prepare("CALL SP_ASSESMEN_KEPERAWATAN_RAJAL_DEWASA('$rm','$counter')");
-        $QUERY->execute();
-        $data = $QUERY->fetchAll();
-        $filename = 'C:\cetakanerm\RESUME_PERAWAT.jrxml';
-        $config = ['driver' => 'array', 'data' => $data];
-        $report = new PHPJasperXML();
-        $report->load_xml_file($filename)
-            ->setDataSource($config)
-            ->export('Pdf');
-    }
-    public function cetakresumedokter($rm,$counter)
     {
         $PDO = DB::connection()->getPdo();
         $QUERY = $PDO->prepare("CALL SP_ASSESMEN_KEPERAWATAN_RAJAL_DEWASA('$rm','$counter')");
@@ -2732,5 +2719,17 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
         ];
         echo json_encode($back);
         die;
+    }
+    public function lihathasillab(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        $cek = DB::select('select * from ts_layanan_header where kode_kunjungan = ? and kode_unit = ?',[$kodekunjungan,'3002']);
+        if(count($cek) == 0){
+            echo "<h4 class='text-danger'> Tidak Ada Hasil Laboratorium ...</h5>";
+        }else{
+            return view('ermtemplate.view_hasil_lab',compact(
+                ['cek']
+            ));
+        }
     }
 }

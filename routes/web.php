@@ -60,6 +60,8 @@ Route::post('/ambilresep', [ErmController::class, 'ambilresep'])
     ->name('ambilresep'); //sidebar
 Route::post('/ambilresep_detail', [ErmController::class, 'ambilresep_detail'])
     ->name('ambilresep_detail'); //sidebar
+Route::post('/lihathasillab', [ErmController::class, 'lihathasillab'])
+    ->name('lihathasillab'); //sidebar
 
 Route::get('/register', [RegisterController::class, 'index'])->middleware('guest')->name('register');
 Route::get('/profil', [RegisterController::class, 'profil'])->name('profil');

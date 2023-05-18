@@ -520,8 +520,8 @@
                               <i class="bi bi-bag nav-icon"></i>
                               {{-- <i class="bi bi-person-lines-fill nav-icon"></i> --}}
                               <p>ORDER MASUK</p>
-                              <input hidden  type="text" id="value1">
-                              <input hidden  type="text" id="value2">
+                              <input hidden type="text" id="value1">
+                              <input hidden type="text" id="value2">
                               <span hidden class="badge badge-danger right orderan"></span>
                           </a>
                       </li>
@@ -539,9 +539,56 @@
                           </a>
                       </li>
                   @endif
+
+                  @if (auth()->user()->hak_akses == 4 || auth()->user()->hak_akses == 5)
+                      @if (auth()->user()->hak_akses == 1 || auth()->user()->hak_akses == 4)
+                          <li class="nav-item">
+                              <a href="{{ route('indexperawat') }}"
+                                  class="nav-link @if ($sidebar == 'ermperawat') active @endif">
+                                  <i class="nav-icon fas fa-th"></i>
+                                  <p>
+                                      ERM Perawat
+                                  </p>
+                              </a>
+                          </li>
+                      @endif
+                      @if (auth()->user()->hak_akses == 1 || auth()->user()->hak_akses == 5)
+                          <li class="nav-item">
+                              <a href="{{ route('indexdokter') }}"
+                                  class="nav-link @if ($sidebar == 'ermdokter') active @endif">
+                                  <i class="nav-icon fas fa-th"></i>
+                                  <p>
+                                      ERM Dokter
+                                  </p>
+                              </a>
+                          </li>
+                      @endif
+                      @if (auth()->user()->hak_akses == 1 || auth()->user()->hak_akses == 4 || auth()->user()->hak_akses == 5)
+                          <li class="nav-item">
+                              <a href="{{ route('indexpelayanandokter') }}"
+                                  class="nav-link @if ($sidebar == 'pelayanandokter') active @endif">
+                                  <i class="nav-icon fas bi bi-file-earmark-spreadsheet"></i>
+                                  <p>
+                                      Riwayat Pemeriksaan
+                                  </p>
+                              </a>
+                          </li>
+                          <li class="nav-item">
+                              <a href="{{ route('riwayatpemeriksaan_byrm') }}"
+                                  class="nav-link @if ($sidebar == 'caripasien_resume') active @endif">
+                                  {{-- <i class="nav-icon fas fa-th"></i> --}}
+                                  <i class="nav-icon fas bi bi-search-heart"></i>
+                                  <p>
+                                      Cari Pasien
+                                  </p>
+                              </a>
+                          </li>
+                      @endif
+
+                  @endif
                   <li class="nav-header"> <i class="nav-icon bi bi-person-circle mr-2"></i> INFO AKUN</li>
                   <li class="nav-item">
-                      <a href="{{ route('profil')}}" class="nav-link">
+                      <a href="{{ route('profil') }}" class="nav-link">
                           <i class="bi bi-person-lines-fill nav-icon"></i>
                           <p>Profil</p>
                       </a>
@@ -559,40 +606,40 @@
       <!-- /.sidebar -->
   </aside>
   <script>
-    //   var intervalID = setInterval(function() {
-    //       reload_order();
-    //       const element = document.getElementById("not");
-    //       element.remove();
-    //   }, 5000);
+      //   var intervalID = setInterval(function() {
+      //       reload_order();
+      //       const element = document.getElementById("not");
+      //       element.remove();
+      //   }, 5000);
 
-    //   function reload_order() {
-    //       $.ajax({
-    //           async: true,
-    //           type: 'post',
-    //           dataType: 'json',
-    //           data: {
-    //               _token: "{{ csrf_token() }}"
-    //           },
-    //           url: '<?= route('reloadorder') ?>',
-    //           error: function(data) {
-    //               Swal.fire({
-    //                   icon: 'error',
-    //                   title: 'Ooops....',
-    //                   text: 'Sepertinya ada masalah......',
-    //                   footer: ''
-    //               })
-    //           },
-    //           success: function(data) {
-    //               if (data.total > 0) {
-    //                   $('.orderan').removeAttr('hidden')
-    //                    var wrapper = $(".orderan"); //Fields wrapper
-    //               $(wrapper).append(
-    //                   '<div id="not">' + data.total + '</div>'
-    //               );
-    //               } else {
-    //                   $('.orderan').Attr('hidden')
-    //               }
-    //           }
-    //       });
-    //   }
+      //   function reload_order() {
+      //       $.ajax({
+      //           async: true,
+      //           type: 'post',
+      //           dataType: 'json',
+      //           data: {
+      //               _token: "{{ csrf_token() }}"
+      //           },
+      //           url: '<?= route('reloadorder') ?>',
+      //           error: function(data) {
+      //               Swal.fire({
+      //                   icon: 'error',
+      //                   title: 'Ooops....',
+      //                   text: 'Sepertinya ada masalah......',
+      //                   footer: ''
+      //               })
+      //           },
+      //           success: function(data) {
+      //               if (data.total > 0) {
+      //                   $('.orderan').removeAttr('hidden')
+      //                    var wrapper = $(".orderan"); //Fields wrapper
+      //               $(wrapper).append(
+      //                   '<div id="not">' + data.total + '</div>'
+      //               );
+      //               } else {
+      //                   $('.orderan').Attr('hidden')
+      //               }
+      //           }
+      //       });
+      //   }
   </script>
