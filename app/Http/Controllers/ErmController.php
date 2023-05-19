@@ -100,11 +100,13 @@ class ErmController extends Controller
     }
     public function ambilcatatanmedis_pasien(Request $request)
     {
+        $rm = $request->rm;
         $kunjungan = DB::select('SELECT *,a.kode_kunjungan as kodek,a.no_rm as no_rm_k,b.id as id_1, c.id as id_2,b.signature as signature_perawat,c.signature as signature_dokter,b.keluhanutama as keluhan_perawat,a.tgl_masuk,a.counter,fc_nama_unit1(a.kode_unit) AS nama_unit FROM ts_kunjungan a
         LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`kode_kunjungan` = b.kode_kunjungan
         LEFT OUTER JOIN assesmen_dokters c ON b.`id` = c.`id_asskep` where a.no_rm = ? ORDER BY a.counter desc', [$request->rm]);
         return view('ermtemplate.form_catatan_medis', compact([
-            'kunjungan'
+            'kunjungan',
+            'rm'
         ]));
     }
     public function formpemeriksaan_perawat(Request $request)
@@ -2738,6 +2740,18 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
             echo "<h4 class='text-danger'> Tidak Ada Hasil Expertisi ...</h5>";
         }else{
             return view('ermtemplate.view_hasil_ex',compact(
+                ['cek']
+            ));
+        }
+    }
+    public function lihathasil_scanrm(Request $request)
+    {
+        $rm = $request->rm;
+        $cek = DB::select('select * from jkn_scan_file_rm where norm = ?',[$rm]);
+        if(count($cek) == 0){
+            echo "<h4 class='text-danger'> Tidak Ada Hasil Scan ...</h5>";
+        }else{
+            return view('ermtemplate.view_hasil_scan',compact(
                 ['cek']
             ));
         }

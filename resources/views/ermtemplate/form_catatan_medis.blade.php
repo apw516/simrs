@@ -1,6 +1,8 @@
 <div class="card">
     <div class="card-header bg-info">Catatan Medis Pasien</div>
     <div class="card-body">
+        <button class="btn btn-warning mb-2 scanrm_liat" rm="{{ $rm }}" data-toggle="modal" data-target="#modalscan_rm"><i
+                class="bi bi-journal-text"></i> BERKAS RM SCAN</button>
         <div class="accordion" id="accordionExample">
             @foreach ($kunjungan as $k)
                 <div class="card">
@@ -19,7 +21,8 @@
                         <div class="card-body">
                             <div class="row mb-4 justify-content-end">
                                 <div class="btn-group mr-2" role="group" aria-label="First group">
-                                    <button type="button" class="btn btn-secondary lihathasil_ex" kodekunjungan="{{ $k->kodek }}" data-toggle="modal"
+                                    <button type="button" class="btn btn-secondary lihathasil_ex"
+                                        kodekunjungan="{{ $k->kodek }}" data-toggle="modal"
                                         data-target="#modalhasil_ex"><i class="bi bi-eye mr-2"></i>
                                         Hasil Expertisi Radiologi</button>
                                     <button type="button" class="btn btn-secondary lihathasil_lab"
@@ -27,7 +30,8 @@
                                         data-target="#modalhasil_lab"><i class="bi bi-eye mr-2"></i>Hasil
                                         Laboratorium</button>
                                     <button type="button" class="btn btn-secondary cetakresumesus"
-                                    rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"><i class="bi bi-printer mr-2"></i>Assesmen
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"><i
+                                            class="bi bi-printer mr-2"></i>Assesmen
                                         Awal Keperawatan</button>
                                     <button type="button" class="btn btn-secondary cetakresumedok"
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"><i
@@ -225,25 +229,30 @@
                                                         <td>{{ $k->suhu_tubuh }} °C</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="4" class="text-bold bg-danger">Riwayat Kesehatan
+                                                        <td colspan="4" class="text-bold bg-danger">Riwayat
+                                                            Kesehatan
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="text-bold font-italic">Riwayat Kehamilan (bagi pasien
+                                                        <td class="text-bold font-italic">Riwayat Kehamilan (bagi
+                                                            pasien
                                                             wanita)</td>
                                                         <td>{{ $k->riwayat_kehamilan_pasien_wanita }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="text-bold font-italic">Riwayat Kelahiran (bagi pasien
+                                                        <td class="text-bold font-italic">Riwayat Kelahiran (bagi
+                                                            pasien
                                                             anak) </td>
                                                         <td>{{ $k->riwyat_kelahiran_pasien_anak }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="text-bold font-italic">Riwayat Penyakit Sekarang</td>
+                                                        <td class="text-bold font-italic">Riwayat Penyakit Sekarang
+                                                        </td>
                                                         <td>{{ $k->riwyat_penyakit_sekarang }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="4" class="text-bold bg-danger">Riwayat Penyakit
+                                                        <td colspan="4" class="text-bold bg-danger">Riwayat
+                                                            Penyakit
                                                             Dahulu</td>
                                                     </tr>
                                                     <tr>
@@ -536,6 +545,29 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="modalscan_rm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">BERKAS RM SCAN</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="vrm_lama">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(".riwayatorderfarmasi").on('click', function(event) {
         kodekunjungan = $(this).attr('kodekunjungan')
@@ -656,6 +688,27 @@
             success: function(response) {
                 spinner.hide();
                 $('.vhex').html(response);
+            }
+        });
+    })
+    $(".scanrm_liat").on('click', function(event) {
+        rm = $(this).attr('rm')
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm
+            },
+            url: '<?= route('lihathasil_scanrm') ?>',
+            error: function(data) {
+                spinner.hide();
+                alert('error')
+            },
+            success: function(response) {
+                spinner.hide();
+                $('.vrm_lama').html(response);
             }
         });
     })
