@@ -562,7 +562,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -647,7 +646,7 @@
     $(".cetakresumedok").on('click', function(event) {
         rm = $(this).attr('rm')
         counter = $(this).attr('counter')
-        window.open('cetakresumeperawat/' + rm + '/' + counter);
+        window.open('cetakresumedokter/' + rm + '/' + counter);
     })
     $(".lihathasil_lab").on('click', function(event) {
         kodekunjungan = $(this).attr('kodekunjungan')

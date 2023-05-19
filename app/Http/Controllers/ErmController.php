@@ -1941,6 +1941,19 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
             ->setDataSource($config)
             ->export('Pdf');
     }
+    public function cetakresumedokter($rm,$counter)
+    {
+        $PDO = DB::connection()->getPdo();
+        $QUERY = $PDO->prepare("CALL SP_ASSESMEN_KEPERAWATAN_RAJAL_DEWASA('$rm','$counter')");
+        $QUERY->execute();
+        $data = $QUERY->fetchAll();
+        $filename = 'C:\cetakanerm\RESUME_DOKTER.jrxml';
+        $config = ['driver' => 'array', 'data' => $data];
+        $report = new PHPJasperXML();
+        $report->load_xml_file($filename)
+            ->setDataSource($config)
+            ->export('Pdf');
+    }
     public function cetakresume($rm,$counter)
     {
         $PDO = DB::connection()->getPdo();
