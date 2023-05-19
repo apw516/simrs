@@ -2733,7 +2733,7 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
     public function lihathasilex(Request $request)
     {
         $kodekunjungan = $request->kodekunjungan;
-        $cek = DB::select('select *,date(tgl_baca) as tanggalnya from ts_hasil_expertisi where kode_kunjungan = ?',[$kodekunjungan]);
+        $cek = DB::select('select *,date(tgl_baca) as tanggalnya,fc_acc_number_ris(id_detail) as acc_number from ts_hasil_expertisi where kode_kunjungan = ?',[$kodekunjungan]);
         if(count($cek) == 0){
             echo "<h4 class='text-danger'> Tidak Ada Hasil Expertisi ...</h5>";
         }else{
