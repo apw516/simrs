@@ -27,7 +27,7 @@
                                         data-target="#modalhasil_lab"><i class="bi bi-eye mr-2"></i>Hasil
                                         Laboratorium</button>
                                     <button type="button" class="btn btn-secondary cetakresumesus"
-                                        kodekunjungan="{{ $k->kodek }}"><i class="bi bi-printer mr-2"></i>Assesmen
+                                    rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"><i class="bi bi-printer mr-2"></i>Assesmen
                                         Awal Keperawatan</button>
                                     <button type="button" class="btn btn-secondary cetakresumedok"
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"><i
@@ -610,8 +610,7 @@
     $(".cetakresumesus").on('click', function(event) {
         rm = $(this).attr('rm')
         counter = $(this).attr('counter')
-        kodekunjungan = $(this).attr('kodekunjungan')
-        window.open('cetakresume/' + kodekunjungan);
+        window.open('cetakresumeperawat/' + rm + '/' + counter);
     })
     $(".cetakresumedok").on('click', function(event) {
         rm = $(this).attr('rm')

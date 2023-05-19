@@ -1926,22 +1926,20 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
             ]));
         }
     }
-    public function cetakresume($kodekunjungan)
+    public function cetakresumeperawat($rm,$counter)
     {
         $PDO = DB::connection()->getPdo();
-        $QUERY = $PDO->prepare("SELECT *,fc_nama_px(a.`no_rm`) AS nama_pasien,fc_alamat(a.`no_rm`) AS alamat,fc_nama_unit1(a.`kode_unit`) AS unit  FROM erm_hasil_assesmen_keperawatan_rajal a
-        LEFT OUTER JOIN assesmen_dokters b ON a.id = b.`id_asskep` WHERE a.`kode_kunjungan` = $kodekunjungan");
+        $QUERY = $PDO->prepare("CALL SP_ASSESMEN_KEPERAWATAN_RAJAL_DEWASA('$rm','$counter')");
         $QUERY->execute();
         $data = $QUERY->fetchAll();
-        // $filename = __DIR__ . '/cppt_fix.jrxml';
-        $filename = 'C:\cetakanerm\cppt_fix.jrxml';
+        $filename = 'C:\cetakanerm\RESUME_PERAWAT.jrxml';
         $config = ['driver' => 'array', 'data' => $data];
         $report = new PHPJasperXML();
         $report->load_xml_file($filename)
             ->setDataSource($config)
             ->export('Pdf');
     }
-    public function cetakresumeperawat($rm,$counter)
+    public function cetakresume($rm,$counter)
     {
         $PDO = DB::connection()->getPdo();
         $QUERY = $PDO->prepare("CALL SP_ASSESMEN_KEPERAWATAN_RAJAL_DEWASA('$rm','$counter')");
@@ -2735,13 +2733,13 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
     public function lihathasilex(Request $request)
     {
         $kodekunjungan = $request->kodekunjungan;
-        $cek = DB::select('select * from ts_hasil_expertisi where kode_kunjungan = ?',[$kodekunjungan]);
-        // if(count($cek) == 0){
-        //     echo "<h4 class='text-danger'> Tidak Ada Hasil Expertisi ...</h5>";
-        // }else{
+        $cek = DB::select('select *,date(tgl_baca) as tanggalnya from ts_hasil_expertisi where kode_kunjungan = ?',[$kodekunjungan]);
+        if(count($cek) == 0){
+            echo "<h4 class='text-danger'> Tidak Ada Hasil Expertisi ...</h5>";
+        }else{
             return view('ermtemplate.view_hasil_ex',compact(
                 ['cek']
             ));
-        // }
+        }
     }
 }
