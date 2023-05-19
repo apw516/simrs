@@ -2732,4 +2732,16 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
             ));
         }
     }
+    public function lihathasilex(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        $cek = DB::select('select * from ts_hasil_expertisi where kode_kunjungan = ?',[$kodekunjungan]);
+        // if(count($cek) == 0){
+        //     echo "<h4 class='text-danger'> Tidak Ada Hasil Expertisi ...</h5>";
+        // }else{
+            return view('ermtemplate.view_hasil_ex',compact(
+                ['cek']
+            ));
+        // }
+    }
 }

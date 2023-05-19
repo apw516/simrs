@@ -19,11 +19,20 @@
                         <div class="card-body">
                             <div class="row mb-4 justify-content-end">
                                 <div class="btn-group mr-2" role="group" aria-label="First group">
-                                    <button type="button" class="btn btn-secondary"><i class="bi bi-eye mr-2"></i> Hasil Expertisi Radiologi</button>
-                                    <button type="button" class="btn btn-secondary lihathasil_lab" kodekunjungan="{{ $k->kodek }}" data-toggle="modal" data-target="#modalhasil_lab"><i class="bi bi-eye mr-2"></i>Hasil Laboratorium</button>
-                                    <button type="button" class="btn btn-secondary cetakresumesus" kodekunjungan="{{ $k->kodek }}"><i class="bi bi-printer mr-2"></i>Assesmen Awal Keperawatan</button>
-                                    <button type="button" class="btn btn-secondary cetakresumedok" rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"><i class="bi bi-printer mr-2"></i>Assesmen Awal Medis</button>
-                                  </div>
+                                    <button type="button" class="btn btn-secondary lihathasil_ex" kodekunjungan="{{ $k->kodek }}" data-toggle="modal"
+                                        data-target="#modalhasil_ex"><i class="bi bi-eye mr-2"></i>
+                                        Hasil Expertisi Radiologi</button>
+                                    <button type="button" class="btn btn-secondary lihathasil_lab"
+                                        kodekunjungan="{{ $k->kodek }}" data-toggle="modal"
+                                        data-target="#modalhasil_lab"><i class="bi bi-eye mr-2"></i>Hasil
+                                        Laboratorium</button>
+                                    <button type="button" class="btn btn-secondary cetakresumesus"
+                                        kodekunjungan="{{ $k->kodek }}"><i class="bi bi-printer mr-2"></i>Assesmen
+                                        Awal Keperawatan</button>
+                                    <button type="button" class="btn btn-secondary cetakresumedok"
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"><i
+                                            class="bi bi-printer mr-2"></i>Assesmen Awal Medis</button>
+                                </div>
 
                                 {{-- <div class="col-md-4">
                                     <button class="btn btn-secondary mb-2 float-right cetakresumedok ml-2"
@@ -278,7 +287,8 @@
                                                         <td>{{ $k->statusgeneralis }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="4" class="text-bold bg-danger">Pemeriksaan Fisik
+                                                        <td colspan="4" class="text-bold bg-danger">Pemeriksaan
+                                                            Fisik
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -486,25 +496,45 @@
 <!-- Modal -->
 <div class="modal fade" id="modalhasil_lab" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Hasil Laboratorium</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="vhlab">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hasil Laboratorium</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="vhlab">
 
-          </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalhasil_ex" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hasil Expertise</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="vhex">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     $(".riwayatorderfarmasi").on('click', function(event) {
@@ -606,6 +636,27 @@
             success: function(response) {
                 spinner.hide();
                 $('.vhlab').html(response);
+            }
+        });
+    })
+    $(".lihathasil_ex").on('click', function(event) {
+        kodekunjungan = $(this).attr('kodekunjungan')
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('lihathasilex') ?>',
+            error: function(data) {
+                spinner.hide();
+                alert('error')
+            },
+            success: function(response) {
+                spinner.hide();
+                $('.vhex').html(response);
             }
         });
     })
