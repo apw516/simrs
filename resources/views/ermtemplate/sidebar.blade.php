@@ -63,14 +63,14 @@
                 </li>
                 @endif
                 @if(auth()->user()->hak_akses == 1 || auth()->user()->hak_akses == 4  || auth()->user()->hak_akses == 5 )
-                  <li class="nav-item">
+                  {{-- <li class="nav-item">
                     <a href="{{ route('indexpelayanandokter') }}" class="nav-link @if($sidebar == 'pelayanandokter') active @endif">
                         <i class="nav-icon fas bi bi-file-earmark-spreadsheet"></i>
                         <p>
                             Riwayat Pemeriksaan
                         </p>
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a href="{{ route('riwayatpemeriksaan_byrm') }}" class="nav-link @if($sidebar == 'caripasien_resume') active @endif">
                         {{-- <i class="nav-icon fas fa-th"></i> --}}
