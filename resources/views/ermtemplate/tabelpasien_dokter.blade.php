@@ -1,5 +1,6 @@
 <table id="tablepasienpoli" class="table table-sm table-hover text-xs">
     <thead>
+        <th>Tanggal Masuk</th>
         <th>Nomor RM</th>
         <th>Nama Pasien</th>
         <th>Unit</th>
@@ -11,6 +12,7 @@
         @foreach ($pasienpoli as $p)
             <tr class="pilihpasien" rm="{{ $p->no_rm }}" kodekunjungan="{{ $p->kode_kunjungan }}"
                 pic="{{ $p->id_dokter }}">
+                <td>{{ $p->tgl_masuk }}</td>
                 <td>{{ $p->no_rm }}</td>
                 <td>{{ $p->nama_pasien }}</td>
                 <td>{{ $p->nama_unit }}</td>
@@ -59,6 +61,7 @@
         pic = $(this).attr('pic')
         $(".formpasien").removeAttr('hidden', true);
         $(".vpasien").attr('hidden', true);
+        $(".boxcari").attr('hidden', true);
         $.ajax({
             type: 'post',
             data: {

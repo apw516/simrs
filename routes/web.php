@@ -416,6 +416,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('indexperawat'); //sidebar
     Route::post('/ambildatapasienpoli', [ErmController::class, 'ambildatapasienpoli'])
         ->name('ambildatapasienpoli'); //sidebar
+    Route::post('/ambildatapasienpoli_cari', [ErmController::class, 'ambildatapasienpoli_cari'])
+        ->name('ambildatapasienpoli_cari'); //sidebar
     Route::post('/ambildetailpasien', [ErmController::class, 'ambildetailpasien'])
         ->name('ambildetailpasien'); //sidebar
     Route::post('/formpemeriksaan_', [ErmController::class, 'formpemeriksaan_perawat'])
@@ -445,6 +447,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5']], function () {
         ->name('indexdokter'); //sidebar
     Route::post('/ambildatapasienpoli_dokter', [ErmController::class, 'ambildatapasienpoli_dokter'])
         ->name('ambildatapasienpoli_dokter'); //sidebar
+    Route::post('/ambildatapasienpoli_dokter_cari', [ErmController::class, 'ambildatapasienpoli_dokter_cari'])
+        ->name('ambildatapasienpoli_dokter_cari'); //sidebar
     Route::post('/ambildetailpasien_dokter', [ErmController::class, 'ambildetailpasien_dokter'])
         ->name('ambildetailpasien_dokter'); //sidebar
     Route::post('/formpemeriksaan_dokter', [ErmController::class, 'formpemeriksaan_dokter'])

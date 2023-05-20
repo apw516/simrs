@@ -1,5 +1,6 @@
 <table id="tablepasienpoli" class="table table-sm table-hover text-xs">
     <thead>
+        <th>Tgl Masuk</th>
         <th>Antrian</th>
         <th>Nomor RM</th>
         <th>Nama Pasien</th>
@@ -11,6 +12,7 @@
     <tbody>
         @foreach ($pasienpoli as $p)
             <tr class="pilihpasien" rm="{{ $p->no_rm }}" kodekunjungan="{{ $p->kode_kunjungan }}">
+                <td>{{ $p->tgl_masuk }}</td>
                 <td>{{ $p->antrian }}</td>
                 <td>{{ $p->no_rm }}</td>
                 <td>{{ $p->nama_pasien }}</td>
@@ -58,6 +60,7 @@
         $(".formpasien").removeAttr('hidden', true);
         $(".vpasien").attr('hidden', true);
         $(".btnasskep").attr('hidden', true);
+        $(".boxcari").attr('hidden', true);
         spinner = $('#loader')
         spinner.show();
         $.ajax({
