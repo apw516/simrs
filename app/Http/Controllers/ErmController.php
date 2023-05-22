@@ -853,6 +853,7 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
                     $tagihanpenjamin = $d['tarif'] * $d['qty'];
                     $tagihanpribadi = 0;
                 }
+                $total_tarif = $d['tarif'] * $d['qty'];
                 $id_detail = $this->createLayanandetail();
                 $save_detail = [
                     'id_layanan_detail' => $id_detail,
@@ -861,8 +862,8 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
                     'total_tarif' => $d['tarif'],
                     'jumlah_layanan' => $d['qty'],
                     'diskon_layanan' => $d['disc'],
-                    'total_layanan' => $d['tarif'] * $d['qty'],
-                    'grantotal_layanan' => $d['tarif'] * $d['qty'],
+                    'total_layanan' => $total_tarif,
+                    'grantotal_layanan' => $total_tarif,
                     'kode_dokter1' => auth()->user()->kode_paramedis,
                     'status_layanan_detail' => 'OPN',
                     'tgl_layanan_detail' => $now,
@@ -872,7 +873,7 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
                     'row_id_header' => $ts_layanan_header->id
                 ];
                 $ts_layanan_detail = ts_layanan_detail_dummy::create($save_detail);
-                $grand_total_tarif = $grand_total_tarif + $d['tarif'];
+                $grand_total_tarif = $grand_total_tarif + $total_tarif;
             }
             if ($penjamin == 'P01') {
                 //dummy
