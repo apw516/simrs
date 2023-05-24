@@ -33,7 +33,7 @@ class ErmController extends Controller
     {
         $title = 'SIMRS - ERM';
         $sidebar = 'ermdokter';
-        $sidebar_m = '2'
+        $sidebar_m = '2';
         return view('ermdokter.index', compact([
             'title',
             'sidebar',
