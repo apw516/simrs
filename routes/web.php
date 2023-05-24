@@ -26,6 +26,7 @@ use App\Http\Controllers\AntrianIgd;
 
 
 Route::get('/', [LoginController::class, 'index']);
+Route::get('datauser', [LoginController::class, 'datauser'])->middleware('auth')->name('datauser');
 // Route::get('/register', [LoginController::class, 'register'])->name('/register');
 Route::get('/login', [LoginController::class, 'index'])->middleware('guest')->name('login');
 Route::post('/login', [LoginController::class, 'authenticate']);
@@ -70,7 +71,10 @@ Route::post('/lihathasil_scanrm', [ErmController::class, 'lihathasil_scanrm'])
 
 Route::get('/register', [RegisterController::class, 'index'])->middleware('guest')->name('register');
 Route::get('/profil', [RegisterController::class, 'profil'])->name('profil');
-Route::post('/register', [RegisterController::class, 'Store']);
+Route::post('/ambiltabeldatauser', [LoginController::class, 'ambiltabeldatauser'])->name('ambiltabeldatauser');
+Route::post('/ambildatauser_edit', [LoginController::class, 'ambildatauser_edit'])->name('ambildatauser_edit');
+Route::post('/simpanedit_user', [LoginController::class, 'simpanedit_user'])->name('simpanedit_user');
+Route::post('/register', [LoginController::class, 'Store']);
 
 Route::post('/formpemeriksaan_khusus', [ErmController::class, 'formpemeriksaan_khusus'])
     ->name('formpemeriksaan_khusus'); //sidebar

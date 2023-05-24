@@ -33,7 +33,7 @@ class ErmController extends Controller
     {
         $title = 'SIMRS - ERM';
         $sidebar = 'ermdokter';
-        $sidebar_m = '2';
+        $sidebar_m = '2'
         return view('ermdokter.index', compact([
             'title',
             'sidebar',
@@ -725,14 +725,19 @@ WHERE a.`kode_kunjungan` = ?
 AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
 
         $riwayat_upload = DB::select('select *,fc_nama_unit2(kode_unit) as nama_unit from erm_upload_gambar where kodekunjungan = ?', [$request->kodekunjungan]);
-        return view('ermdokter.resumedokter', compact([
-            'resume',
-            'formkhusus',
-            'riwayat_tindakan',
-            'riwayat_order',
-            'riwayat_upload',
-            'riwayat_order_f'
-        ]));
+        if(count($resume) > 0){
+
+            return view('ermdokter.resumedokter', compact([
+                'resume',
+                'formkhusus',
+                'riwayat_tindakan',
+                'riwayat_order',
+                'riwayat_upload',
+                'riwayat_order_f'
+            ]));
+        }else{
+            return view('ermtemplate.data1tidakditemukan');
+        }
     }
     public function simpanttdperawat(Request $request)
     {
@@ -777,11 +782,15 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
         $layanan = $request->layanan;
         $kelas = $kunjungan[0]->kelas;
         $layanan = $this->carilayanan($kelas, $layanan, $unit);
-        return view('ermdokter.formtindakan', compact([
-            'kunjungan',
-            'resume',
-            'layanan'
-        ]));
+        if(count($resume)  > 0){
+            return view('ermdokter.formtindakan', compact([
+                'kunjungan',
+                'resume',
+                'layanan'
+            ]));
+        }else{
+            return view('ermtemplate.data1tidakditemukan');
+        }
     }
     public function get_now()
     {
@@ -1972,7 +1981,7 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
     public function cetakresumedokter($rm,$counter)
     {
         $PDO = DB::connection()->getPdo();
-        $QUERY = $PDO->prepare("CALL SP_ASSESMEN_KEPERAWATAN_RAJAL_DEWASA('$rm','$counter')");
+        $QUERY = $PDO->prepare("CALL SP_ASSESMEN_DOKTER_MEDIS_RAWAT_JALAN('$rm','$counter')");
         $QUERY->execute();
         $data = $QUERY->fetchAll();
         $filename = 'C:\cetakanerm\RESUME_DOKTER.jrxml';
@@ -2190,9 +2199,14 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
     public function formorderpenunjang(Request $request)
     {
         $assdok = DB::select('select * from assesmen_dokters where id_kunjungan = ?', [$request->kodekunjungan]);
-        return view('ermtemplate.formorderpenunjang', compact([
-            'assdok'
-        ]));
+        if(count($assdok) > 0){
+
+            return view('ermtemplate.formorderpenunjang', compact([
+                'assdok'
+            ]));
+        }else{
+            return view('ermtemplate.data1tidakditemukan');
+        }
     }
     public function ambilform(Request $request)
     {
@@ -2659,11 +2673,16 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
         $layanan = $request->layanan;
         $kelas = $kunjungan[0]->kelas;
         $layanan = $this->carilayanan($kelas, $layanan, $unit);
-        return view('ermdokter.formfarmasi', compact([
-            'kunjungan',
-            'resume',
-            'layanan'
-        ]));
+        if(count($resume) > 0){
+
+            return view('ermdokter.formfarmasi', compact([
+                'kunjungan',
+                'resume',
+                'layanan'
+            ]));
+        }else{
+            return view('ermtemplate.data1tidakditemukan');
+        }
     }
     public function cariobat(Request $request)
     {
@@ -2756,9 +2775,14 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
     {
         $kodekunjungan = $request->kodekunjungan;
         $resume = db::select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
-        return view('ermdokter.tindaklanjut', compact([
-            'resume'
-        ]));
+        if(count($resume) > 0){
+
+            return view('ermdokter.tindaklanjut', compact([
+                'resume'
+            ]));
+        }else{
+            return view('ermtemplate.data1tidakditemukan');
+        }
     }
     public function simpantindaklanjut(Request $request)
     {

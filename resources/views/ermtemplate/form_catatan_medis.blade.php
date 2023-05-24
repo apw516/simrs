@@ -6,9 +6,9 @@
         <div class="accordion" id="accordionExample">
             @foreach ($kunjungan as $k)
                 <div class="card">
-                    <div class="card-header bg-success" id="headingOne">
+                    <div class="card-header" style="background-color: rgba(110, 245, 137, 0.745)" id="headingOne">
                         <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left text-light text-bold" type="button"
+                            <button class="btn btn-link btn-block text-left text-dark text-bold" type="button"
                                 data-toggle="collapse" data-target="#collapse{{ $k->counter }}" aria-expanded="true"
                                 aria-controls="collapseOne">
                                 Kunjungan Ke - {{ $k->counter }} | {{ $k->nama_unit }} <p class="float-right">
@@ -109,12 +109,12 @@
                                                         <td class="text-bold font-italic">Keterangan</td>
                                                         <td>{{ $k->skalenyeripasien }}</td>
                                                     </tr>
-                                                    <tr>
+                                                    {{-- <tr>
                                                         <td class="text-bold font-italic">Cacat Tubuh</td>
                                                         <td>{{ $k->cacattubuh }}</td>
                                                         <td class="text-bold font-italic">Keterangan</td>
                                                         <td>{{ $k->keterangancacattubuh }}</td>
-                                                    </tr>
+                                                    </tr> --}}
                                                     <tr>
                                                         <td colspan="4" class="text-bold bg-warning">Assesmen resiko
                                                             jatuh</td>

@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="card-header bg-info">Assesmen Awal Medis</div>
+    <div class="card-header bg-info">Catatan Perkembangan Pasien Terintegrasi ( CPPT )</div>
     <div class="card-body table-responsive p-5" style="height: 757Px">
         <form action="" class="formpemeriksaandokter">
             <input hidden type="text" name="kodekunjungan" class="form-control"

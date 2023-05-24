@@ -38,7 +38,7 @@
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formpemeriksaan()">
-                            <i class="fas fa-inbox mr-2"></i>Assesmen Awal Keperawatan
+                            <i class="fas fa-inbox mr-2"></i>Catatan Perkembangan Pasien Terintegrasi ( CPPT )
                         </a>
                     </li>
                     {{-- @if(auth()->user()->unit == '1002')

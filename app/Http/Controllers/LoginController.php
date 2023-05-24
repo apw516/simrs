@@ -65,4 +65,56 @@ class LoginController extends Controller
         return redirect('/login');
         // }
     }
+    public function LoginController(Request $request){
+
+    }
+    public function datauser()
+    {
+        $title = 'SIMRS - ERM';
+        $sidebar = 'datauser';
+        $sidebar_m = '2';
+        $paramedis = DB::select('select *,fc_nama_unit1(unit) as nama_unit from mt_paramedis');
+        return view('profil.datauser', compact([
+            'title',
+            'sidebar',
+            'sidebar_m',
+            'paramedis'
+        ]));
+    }
+    public function ambiltabeldatauser()
+    {
+        $datauser = DB::select('select *,fc_nama_unit1(unit) as nama_unit FROM USER ORDER BY id DESC');
+        return view('profil.tableuser',compact([
+            'datauser'
+        ]));
+    }
+    public function ambildatauser_edit(Request $request){
+        $id = $request->id;
+        $datauser = DB::select('select *,fc_nama_unit1(unit) as nama_unit from user where id = ?',[$id]);
+        $unit = DB::select('select * from mt_unit');
+        return view('profil.form_user_edit',compact(['datauser','unit']));
+    }
+    public function simpanedit_user(Request $request){
+        $data = json_decode($_POST['data'], true);
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+        $datauser = [
+            'id_simrs' => $dataSet['id_simrs'],
+            'username' => $dataSet['username'],
+            'nama' => $dataSet['nama'],
+            'hak_akses' => $dataSet['hak_akses'],
+            'unit' => $dataSet['unit'],
+            'kode_paramedis' => $dataSet['kodeparamedis'],
+        ];
+        User::whereRaw('id = ?', array($dataSet['id']))->update($datauser);
+        $data = [
+            'kode' => 200,
+            'message' => 'Data berhasil disimpan !'
+        ];
+        echo json_encode($data);
+        die;
+    }
 }

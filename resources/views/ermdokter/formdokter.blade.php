@@ -39,7 +39,7 @@
                     @if($pic == auth()->user()->id || $pic == '')
                     <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formpemeriksaandokter()">
-                            <i class="fas fa-inbox mr-2"></i>Assesmen Awal Medis
+                            <i class="fas fa-inbox mr-2"></i>Catatan Perkembangan Pasien Terintegrasi ( CPPT )
                         </a>
                     </li>
                     <li class="nav-item" id="pemeriksaan">
