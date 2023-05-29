@@ -2232,7 +2232,6 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
         if ($request->file('file')) {
             $file = $request->file('file');
             $filename = $request->nomorrm . '_' . $request->kodekunjungan . '_' . $file->getClientOriginalName();
-
             $cek = DB::select('select * from erm_upload_gambar where kodekunjungan = ? and no_rm = ? and kode_unit = ? and  gambar = ?', [$request->kodekunjungan, $request->nomorrm, auth()->user()->unit, $filename]);
             $uploadnya = [
                 'kodekunjungan' => $request->kodekunjungan,
