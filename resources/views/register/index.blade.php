@@ -56,7 +56,7 @@
                                 <label for="password">Password</label>
                                 <input type="password" class="form-control" id="password" name="password">
                             </div>
-                            <input type="submit" value="Register" class="btn btn-block btn-success">
+                            <input type="submit" value="" class="btn btn-block btn-success">
                             <span class="d-block text-center my-4"><a href="{{ route('login')}}">Login</a></span>
                             <div class="social-login text-center">
                                 <a href="#" class="facebook">

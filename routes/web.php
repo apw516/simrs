@@ -74,7 +74,7 @@ Route::get('/profil', [RegisterController::class, 'profil'])->name('profil');
 Route::post('/ambiltabeldatauser', [LoginController::class, 'ambiltabeldatauser'])->name('ambiltabeldatauser');
 Route::post('/ambildatauser_edit', [LoginController::class, 'ambildatauser_edit'])->name('ambildatauser_edit');
 Route::post('/simpanedit_user', [LoginController::class, 'simpanedit_user'])->name('simpanedit_user');
-Route::post('/register', [LoginController::class, 'Store']);
+Route::post('/register', [RegisterController::class, 'Store']);
 
 Route::post('/formpemeriksaan_khusus', [ErmController::class, 'formpemeriksaan_khusus'])
     ->name('formpemeriksaan_khusus'); //sidebar
