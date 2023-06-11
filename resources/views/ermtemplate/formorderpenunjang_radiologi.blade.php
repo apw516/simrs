@@ -2,11 +2,11 @@
     <div class="card-header bg-success">Pilih Layanan Radiologi</div>
     <div class="card-body">
         <div class="container-fluid">
-            @if (count($resume) > 0)
+            {{-- @if (count($resume) > 0) --}}
                 <div class="row">
                     <div class="col-md-5" style="margin-top:20px">
                         <h5>Terapi / Tindakan Medis</h5>
-                        <table id="tabeltindakan" class="table table-hover table-sm">
+                        <table id="tabellayananpenunjang" class="table table-hover table-sm">
                             <thead>
                                 <th>Nama tindakan</th>
                             </thead>
@@ -59,7 +59,7 @@
                         </div>
                     </div>
                 </div>
-            @else
+            {{-- @else
                 <div class="error-content">
                     <h3><i class="fas fa-exclamation-triangle text-warning"></i> Oops! Assesmen awal medis belum diisi
                         ...</h3>
@@ -67,12 +67,12 @@
                         Anda harus mengisi assesmen awal medis terlebih dulu ... </a>
                     </p>
                 </div>
-            @endif
+            @endif --}}
         </div>
     </div>
     <script>
         $(function() {
-            $("#tabeltindakan").DataTable({
+            $("#tabellayananpenunjang").DataTable({
                 "responsive": false,
                 "lengthChange": false,
                 "pageLength": 10,
@@ -80,7 +80,7 @@
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             });
         });
-        $('#tabeltindakan').on('click', '.pilihlayanan', function() {
+        $('#tabellayananpenunjang').on('click', '.pilihlayanan', function() {
             if ($(this).attr('status') == 1) {
                 Swal.fire({
                     icon: 'error',

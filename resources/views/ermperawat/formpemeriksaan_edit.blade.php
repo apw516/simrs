@@ -166,6 +166,33 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td class="text-bold font-italic">Berat badan</td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control"
+                                                    placeholder="Berat Badan Pasien ..." name="beratbadan"
+                                                    id="beratbadan" aria-label="Recipient's username"
+                                                    aria-describedby="basic-addon2"
+                                                    value="{{ $resume[0]->beratbadan }}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" id="basic-addon2">x/menit</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-bold font-italic"></td>
+                                        <td>
+                                            {{-- <div class="input-group">
+                                                <input type="text" class="form-control"
+                                                    placeholder="Suhu tubuh pasien ..." aria-label="Suhu tubuh pasien"
+                                                    name="suhutubuh" id="suhutubuh" aria-describedby="basic-addon2"
+                                                    value="{{ $resume[0]->suhutubuh }}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" id="basic-addon2">°C</span>
+                                                </div>
+                                            </div>
+                                        </td> --}}
+                                    </tr>
+                                    <tr>
                                         <td class="text-bold font-italic">Riwayat Psikologis</td>
                                         <td colspan="3">
                                             <div class="form-check form-check-inline">

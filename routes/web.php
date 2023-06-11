@@ -95,7 +95,7 @@ Route::post('/gambarcatatan', [ErmController::class, 'gambarcatatan'])
 
 
     //reloadorder
-    Route::post('/reloadorder', [PenunjangController::class, 'reloadorder'])
+Route::post('/reloadorder', [PenunjangController::class, 'reloadorder'])
         ->name('reloadorder'); //sidebar
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
@@ -519,6 +519,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5']], function () {
         ->name('form_konsul_poli'); //sidebar
     Route::post('/simpantindaklanjut', [ErmController::class, 'simpantindaklanjut'])
         ->name('simpantindaklanjut'); //sidebar
+    Route::post('hapustemplateresep', [ErmController::class, 'hapustemplateresep'])
+        ->name('hapustemplateresep'); //sidebar
 });
 
 Route::group(['middleware' => ['auth','hak_akses1:99']],function () {

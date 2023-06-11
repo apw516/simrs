@@ -235,7 +235,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="text-bold font-italic">Diagnosa Kerja</td>
+                        <td class="text-bold font-italic">Diagnosa Primer</td>
                         <td colspan="2">
                             <textarea name="diagnosakerja" id="diagnosakerja" class="form-control"></textarea>
                         </td>
@@ -247,7 +247,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="text-bold font-italic">Diagnosa banding</td>
+                        <td class="text-bold font-italic">Diagnosa Sekunder</td>
                         <td colspan="2">
                             <textarea name="diagnosabanding" id="diagnosabanding" class="form-control"></textarea>
                         </td>

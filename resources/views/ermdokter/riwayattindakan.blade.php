@@ -27,7 +27,7 @@
 <script>
     $(function() {
         $("#tabelriwayattindakan_tdy").DataTable({
-            "responsive": true,
+            "responsive": false,
             "lengthChange": false,
             "autoWidth": true,
             "pageLength": 5,

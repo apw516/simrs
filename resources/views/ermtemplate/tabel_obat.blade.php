@@ -61,7 +61,7 @@
             timer: 1200
         })
         var max_fields = 10; //maximum input boxes allowed
-        var wrapper = $(".input_fields_wrap"); //Fields wrapper
+        var wrapper = $(".input_fields_wrap2"); //Fields wrapper
         var x = 1; //initlal text box count
         kode = $(this).attr('kode')
         namaobat = $(this).attr('namaobat')
