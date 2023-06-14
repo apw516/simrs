@@ -47,11 +47,11 @@
                             <i class="fas fa-inbox mr-2"></i>Catatan Perkembangan Pasien Terintegrasi ( CPPT )
                         </a>
                     </li>
-                    <li class="nav-item" id="pemeriksaan">
+                    {{-- <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formpemeriksaankhusus()">
                             <i class="fas fa-inbox mr-2"></i>Pemeriksaan Khusus
                         </a>
-                    </li>
+                    </li> --}}
                     {{-- <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="forminputtindakan()">
                             <i class="fas fa-inbox mr-2"></i>Input Tindakan

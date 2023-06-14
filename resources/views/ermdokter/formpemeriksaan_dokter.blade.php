@@ -240,10 +240,10 @@
                             <textarea name="diagnosakerja" id="diagnosakerja" class="form-control"></textarea>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-warning showmodalicdkerja" data-toggle="modal"
+                            {{-- <button type="button" class="btn btn-warning showmodalicdkerja" data-toggle="modal"
                                 data-target="#modalicdkerja">ICD 10</button>
                             <button type="button" class="btn btn-danger showmodalicd9kerja" data-toggle="modal"
-                                data-target="#modalicd9kerja">ICD 9</button>
+                                data-target="#modalicd9kerja">ICD 9</button> --}}
                         </td>
                     </tr>
                     <tr>

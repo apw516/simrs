@@ -22,7 +22,7 @@
                         @if ($p->status_asskep == 0)
                             <button class="badge badge-warning"> Belum validasi </button>
                         @else
-                            <button class="badge badge-success"> sudah diisi </button>
+                            <button class="badge badge-success"> sudah diisi </button> | {{ $p->namapemeriksa }}
                         @endif
                     @else
                         <button class="badge badge-danger"> belum diisi </button>

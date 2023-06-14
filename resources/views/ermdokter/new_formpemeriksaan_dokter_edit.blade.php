@@ -49,67 +49,78 @@
                                         <div class="row">
                                             <div class="col-md-3">
                                                 <div class="form-group form-check">
-                                                    <input @if ($resume[0]->hipertensi == 1) checked @endif type="checkbox"
-                                                        class="form-check-input" id="hipertensi" name="hipertensi"
-                                                        value="1">
-                                                    <label class="form-check-label" for="exampleCheck1">Hipertensi</label>
+                                                    <input @if ($resume[0]->hipertensi == 1) checked @endif
+                                                        type="checkbox" class="form-check-input" id="hipertensi"
+                                                        name="hipertensi" value="1">
+                                                    <label class="form-check-label"
+                                                        for="exampleCheck1">Hipertensi</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group form-check">
-                                                    <input @if ($resume[0]->kencingmanis == 1) checked @endif type="checkbox"
-                                                        class="form-check-input" id="kencingmanis" name="kencingmanis"
-                                                        value="1">
-                                                    <label class="form-check-label" for="exampleCheck1">Kencing Manis</label>
+                                                    <input @if ($resume[0]->kencingmanis == 1) checked @endif
+                                                        type="checkbox" class="form-check-input" id="kencingmanis"
+                                                        name="kencingmanis" value="1">
+                                                    <label class="form-check-label" for="exampleCheck1">Kencing
+                                                        Manis</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group form-check">
-                                                    <input @if ($resume[0]->jantung == 1) checked @endif type="checkbox"
-                                                        class="form-check-input" id="jantung" name="jantung" value="1">
+                                                    <input @if ($resume[0]->jantung == 1) checked @endif
+                                                        type="checkbox" class="form-check-input" id="jantung"
+                                                        name="jantung" value="1">
                                                     <label class="form-check-label" for="exampleCheck1">Jantung</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group form-check">
-                                                    <input @if ($resume[0]->stroke == 1) checked @endif type="checkbox"
-                                                        class="form-check-input" id="stroke" name="stroke" value="1">
+                                                    <input @if ($resume[0]->stroke == 1) checked @endif
+                                                        type="checkbox" class="form-check-input" id="stroke"
+                                                        name="stroke" value="1">
                                                     <label class="form-check-label" for="exampleCheck1">Stroke</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group form-check">
-                                                    <input @if ($resume[0]->hepatitis == 1) checked @endif type="checkbox"
-                                                        class="form-check-input" id="hepatitis" name="hepatitis" value="1">
-                                                    <label class="form-check-label" for="exampleCheck1">Hepatitis</label>
+                                                    <input @if ($resume[0]->hepatitis == 1) checked @endif
+                                                        type="checkbox" class="form-check-input" id="hepatitis"
+                                                        name="hepatitis" value="1">
+                                                    <label class="form-check-label"
+                                                        for="exampleCheck1">Hepatitis</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group form-check">
-                                                    <input @if ($resume[0]->asthma == 1) checked @endif type="checkbox"
-                                                        class="form-check-input" id="asthma" name="asthma" value="1">
+                                                    <input @if ($resume[0]->asthma == 1) checked @endif
+                                                        type="checkbox" class="form-check-input" id="asthma"
+                                                        name="asthma" value="1">
                                                     <label class="form-check-label" for="exampleCheck1">Asthma</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group form-check">
-                                                    <input @if ($resume[0]->ginjal == 1) checked @endif type="checkbox"
-                                                        class="form-check-input" id="ginjal" name="ginjal" value="1">
+                                                    <input @if ($resume[0]->ginjal == 1) checked @endif
+                                                        type="checkbox" class="form-check-input" id="ginjal"
+                                                        name="ginjal" value="1">
                                                     <label class="form-check-label" for="exampleCheck1">Ginjal</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group form-check">
-                                                    <input @if ($resume[0]->tbparu == 1) checked @endif type="checkbox"
-                                                        class="form-check-input" id="tb" name="tb" value="1">
-                                                    <label class="form-check-label" for="exampleCheck1">TB Paru</label>
+                                                    <input @if ($resume[0]->tbparu == 1) checked @endif
+                                                        type="checkbox" class="form-check-input" id="tb"
+                                                        name="tb" value="1">
+                                                    <label class="form-check-label" for="exampleCheck1">TB
+                                                        Paru</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group form-check">
                                                     <input type="checkbox" class="form-check-input" id="riwayatlain"
                                                         name="riwayatlain" value="1">
-                                                    <label class="form-check-label" for="exampleCheck1">Lain-lain</label>
+                                                    <label class="form-check-label"
+                                                        for="exampleCheck1">Lain-lain</label>
                                                 </div>
                                             </div>
                                             <textarea name="ketriwayatlain" id="ketriwayatlain" class="form-control" placeholder="keterangan lain - lain">{{ $resume[0]->ket_riwayatlain }}</textarea>
@@ -120,8 +131,8 @@
                                     <td colspan="3">
                                         <div class="row">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input ml-2 mr-3" type="radio" name="alergi"
-                                                    id="alergi" value="Tidak Ada" checked>
+                                                <input class="form-check-input ml-2 mr-3" type="radio"
+                                                    name="alergi" id="alergi" value="Tidak Ada" checked>
                                                 <label class="form-check-label" for="inlineRadio1">Tidak Ada</label>
                                             </div>
                                             <div class="form-check form-check-inline">
@@ -140,8 +151,8 @@
                                 <tr>
                                     <td class="text-bold font-italic">Status Generalis</td>
                                     <td>
-                                        <input type="text" class="form-control" name="statusgeneralis" id="statusgeneralis"
-                                            value="{{ $resume[0]->statusgeneralis }}">
+                                        <input type="text" class="form-control" name="statusgeneralis"
+                                            id="statusgeneralis" value="{{ $resume[0]->statusgeneralis }}">
                                     </td>
                                 </tr>
                             </table>
@@ -325,6 +336,12 @@
                             <textarea class="form-control" name="rencanakerja">{{ $resume[0]->rencanakerja }}</textarea>
                         </td>
                     </tr>
+                    <tr>
+                        <td class="text-bold font-italic">Tindakan Medis</td>
+                        <td colspan="3">
+                            <textarea class="form-control" name="tindakanmedis">{{ $resume[0]->tindakanmedis }}</textarea>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </form>
@@ -379,15 +396,15 @@
             <div class="card">
                 <div class="card-header bg-success" id="headingOne">
                     <h2 class="mb-0">
-                        <button class="btn btn-link text-light btn-block text-left" type="button" data-toggle="collapse"
-                            data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <button class="btn btn-link text-light btn-block text-left" type="button"
+                            data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                            aria-controls="collapseOne">
                             <i class="bi bi-ticket-detailed mr-1 ml-1"></i> TINDAKAN MEDIS YANG DILAKUKAN
                         </button>
                     </h2>
                 </div>
 
-                <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
-                    data-parent="#accordionExample">
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-5" style="margin-top:20px">
@@ -451,8 +468,8 @@
                         <div class="row">
                             <div class="col-md-12" style="margin-top:20px">
                                 <h5>Silahkan Cari Obat</h5>
-                                <input type="text" class="form-control form-control-lg pencarianobat" id="pencarianobat"
-                                    placeholder="Cari nama obat">
+                                <input type="text" class="form-control form-control-lg pencarianobat"
+                                    id="pencarianobat" placeholder="Cari nama obat">
                                 <div class="tableobat">
 
                                 </div>
@@ -488,15 +505,2269 @@
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                    <div class="card">
-                                        <div class="card-header bg-dark">Riwayat Order Obat Hari ini</div>
-                                        <div class="card-body">
-                                            <div class="orderobathariini">
-                                            </div>
+                                <div class="card">
+                                    <div class="card-header bg-dark">Riwayat Order Obat Hari ini</div>
+                                    <div class="card-body">
+                                        <div class="orderobathariini">
                                         </div>
                                     </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- pemeriksaankhusus --}}
+            <div class="card">
+                <div class="card-header bg-danger" id="headingTwo2">
+                    <h2 class="mb-0">
+                        <button class="btn btn-block text-left text-light collapsed" type="button"
+                            data-toggle="collapse" data-target="#collapseTwo2" aria-expanded="false"
+                            aria-controls="collapseTwo2">
+                            <i class="bi bi-ticket-detailed mr-1 ml-1"></i> PEMERIKSAAN KHUSUS
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseTwo2" class="collapse" aria-labelledby="headingTwo2"
+                    data-parent="#accordionExample">
+                    <div class="card-body">
+                        @if (auth()->user()->unit == '1014')
+                            <form action="" class="formpemeriksaankhusus">
+                                <input hidden type="text" class="form-control" id="idassesmen" value="">
+                                @if(count($k1) > 0)
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td colspan="4">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="gambar1">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="2">Visus Dasar</td>
+                                        <td>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">OD</span>
+                                                </div>
+                                                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)"
+                                                    id="od_visus_dasar" name="od_visus_dasar" value="{{ $k1[0]->vd_od }}">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">PINHOLE</span>
+                                                </div>
+                                                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)"
+                                                    name="od_pinhole_visus_dasar" id="od_pinhole_visus_dasar"
+                                                    value="{{ $k1[0]->vd_od_pinhole }}">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">OS</span>
+                                                </div>
+                                                <input name="os_visus_dasar" id="os_visus_dasar" value="{{ $k1[0]->vd_os }}" type="text"
+                                                    class="form-control" aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">PINHOLE</span>
+                                                </div>
+                                                <input name="os_pinhole_visus_dasar" id="os_pinhole_visus_dasar" type="text"
+                                                    class="form-control" value="{{ $k1[0]->vd_os_pinhole }}"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="2">Refraktometer / streak</td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">OD : Sph</span>
+                                                </div>
+                                                <input name="od_sph_refraktometer" value="{{ $k1[0]->refraktometer_od_sph }}"
+                                                    id="od_sph_refraktometer" type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Cyl</span>
+                                                </div>
+                                                <input type="text" value="{{ $k1[0]->refraktometer_od_cyl }}" id="od_cyl_refraktometer"
+                                                    name="od_cyl_refraktometer" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">X</span>
+                                                </div>
+                                                <input id="od_x_refraktometer" value="{{ $k1[0]->refraktometer_od_x }}"
+                                                    name="od_x_refraktometer" type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">OS : Sph</span>
+                                                </div>
+                                                <input id="os_sph_refraktometer" value="{{ $k1[0]->refraktometer_os_sph }}"
+                                                    name="os_sph_refraktometer" type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Cyl</span>
+                                                </div>
+                                                <input id="os_cyl_refraktometer" value="{{ $k1[0]->refraktometer_os_cyl }}"
+                                                    name="os_cyl_refraktometer" type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">X</span>
+                                                </div>
+                                                <input id="os_x_refraktometer" value="{{ $k1[0]->refraktometer_os_x }}"
+                                                    name="os_x_refraktometer" type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="2">Lensometer</td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">OD : Sph</span>
+                                                </div>
+                                                <input id="od_sph_Lensometer" value="{{ $k1[0]->Lensometer_od_sph }}"
+                                                    name="od_sph_Lensometer" type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Cyl</span>
+                                                </div>
+                                                <input id="od_cyl_Lensometer" value="{{ $k1[0]->Lensometer_od_cyl }}"
+                                                    name="od_cyl_Lensometer" type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">X</span>
+                                                </div>
+                                                <input id="od_x_Lensometer" value="{{ $k1[0]->Lensometer_od_x }}" name="od_x_Lensometer"
+                                                    type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">OS : Sph</span>
+                                                </div>
+                                                <input id="os_sph_Lensometer" value="{{ $k1[0]->Lensometer_os_sph }}"
+                                                    name="os_sph_Lensometer" type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Cyl</span>
+                                                </div>
+                                                <input id="os_cyl_Lensometer" value="{{ $k1[0]->Lensometer_os_cyl }}"
+                                                    name="os_cyl_Lensometer" type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">X</span>
+                                                </div>
+                                                <input id="os_x_Lensometer" value="{{ $k1[0]->Lensometer_os_x }}" name="os_x_Lensometer"
+                                                    type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="2">Koreksi penglihatan jauh</td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">VOD : Sph</span>
+                                                </div>
+                                                <input id="vod_sph_kpj" value="{{ $k1[0]->koreksipenglihatan_vod_sph }}" name="vod_sph_kpj"
+                                                    type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Cyl</span>
+                                                </div>
+                                                <input id="vod_cyl_kpj" value="{{ $k1[0]->koreksipenglihatan_vod_cyl }}" name="vod_cyl_kpj"
+                                                    type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">X</span>
+                                                </div>
+                                                <input id="vod_x_kpj" value="{{ $k1[0]->koreksipenglihatan_vod_x }}" name="vod_x_kpj"
+                                                    type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">VOS : Sph</span>
+                                                </div>
+                                                <input  type="text" id="vos_sph_kpj" value="{{ $k1[0]->koreksipenglihatan_vos_sph }}"
+                                                    name="vos_sph_kpj" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Cyl</span>
+                                                </div>
+                                                <input id="vos_cyl_kpj" value="{{ $k1[0]->koreksipenglihatan_vos_cyl }}" name="vos_cyl_kpj"
+                                                    type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">X</span>
+                                                </div>
+                                                <input id="vos_x_kpj" value="{{ $k1[0]->koreksipenglihatan_vos_x }}" name="vos_x_kpj"
+                                                    type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tajam penglihatan dekat</td>
+                                        <td colspan="3">
+                                            <textarea class="form-control" id="penglihatan_dekat" name="penglihatan_dekat">{{ $k1[0]->tajampenglihatandekat }}</textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tekanan Intra Okular</td>
+                                        <td colspan="3">
+                                            <textarea class="form-control" id="tekanan_intra_okular" name="tekanan_intra_okular">{{ $k1[0]->tekananintraokular }}</textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Catatan Pemeriksaan Lainnya</td>
+                                        <td colspan="3">
+                                            <textarea class="form-control" name="catatan_pemeriksaan_lainnya"
+                                                id="catatan_pemerikssaan_lainnya">{{ $k1[0]->catatanpemeriksaanlain }}</textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Palpebra</td>
+                                        <td colspan="3"><input class="form-control" value="{{ $k1[0]->palpebra }}" id="palpebra"
+                                                name="palpebra"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Konjungtiva</td>
+                                        <td colspan="3"><input class="form-control" value="{{ $k1[0]->konjungtiva }}" id="konjungtiva"
+                                                name="konjungtiva"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kornea</td>
+                                        <td colspan="3"><input class="form-control" value="{{ $k1[0]->kornea }}" name="kornea"
+                                                id="kornea"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bilik Mata Depan</td>
+                                        <td colspan="3"><input class="form-control" value="{{ $k1[0]->bilikmatadepan }}"
+                                                name="bilik_mata_depan" id="bilik_mata_depan"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pupil</td>
+                                        <td colspan="3"><input class="form-control" value="{{ $k1[0]->pupil }}" id="pupil"
+                                                name="pupil"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Iris</td>
+                                        <td colspan="3"><input class="form-control" value="{{ $k1[0]->iris }}" name="iris"
+                                                id="iris"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lensa</td>
+                                        <td colspan="3"><input class="form-control" value="{{ $k1[0]->lensa }}" name="lensa"
+                                                id="lensa"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Funduskopi</td>
+                                        <td colspan="3"><input class="form-control" value="{{ $k1[0]->funduskopi }}" name="funduskopi"
+                                                id="funduskopi"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Status Oftalmologis Khusus</td>
+                                        <td colspan="3">
+                                            <textarea class="form-control" name="oftamologis" id="oftamologis">{{ $k1[0]->status_oftamologis_khusus }}</textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Masalah Medis</td>
+                                        <td colspan="3">
+                                            <textarea class="form-control" name="masalahmedis" id="masalahmedis">{{ $k1[0]->masalahmedis }}</textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Prognosis</td>
+                                        <td colspan="3">
+                                            <textarea class="form-control" name="prognosis" id="prognosis">{{ $k1[0]->prognosis }}</textarea>
+                                        </td>
+                                    </tr>
+                                </table>
+                                @else
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td colspan="4">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="gambar1">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="2">Visus Dasar</td>
+                                        <td>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">OD</span>
+                                                </div>
+                                                <input type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)" id="od_visus_dasar"
+                                                    name="od_visus_dasar" value="">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">PINHOLE</span>
+                                                </div>
+                                                <input type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)"
+                                                    name="od_pinhole_visus_dasar" id="od_pinhole_visus_dasar"
+                                                    value="">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">OS</span>
+                                                </div>
+                                                <input name="os_visus_dasar" id="os_visus_dasar" value=""
+                                                    type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">PINHOLE</span>
+                                                </div>
+                                                <input name="os_pinhole_visus_dasar" id="os_pinhole_visus_dasar"
+                                                    type="text" class="form-control" value=""
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="2">Refraktometer / streak</td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">OD : Sph</span>
+                                                </div>
+                                                <input name="od_sph_refraktometer" value=""
+                                                    id="od_sph_refraktometer" type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Cyl</span>
+                                                </div>
+                                                <input type="text" value="" id="od_cyl_refraktometer"
+                                                    name="od_cyl_refraktometer" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">X</span>
+                                                </div>
+                                                <input id="od_x_refraktometer" value=""
+                                                    name="od_x_refraktometer" type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">OS : Sph</span>
+                                                </div>
+                                                <input id="os_sph_refraktometer" value=""
+                                                    name="os_sph_refraktometer" type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Cyl</span>
+                                                </div>
+                                                <input id="os_cyl_refraktometer" value=""
+                                                    name="os_cyl_refraktometer" type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">X</span>
+                                                </div>
+                                                <input id="os_x_refraktometer" value=""
+                                                    name="os_x_refraktometer" type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="2">Lensometer</td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">OD : Sph</span>
+                                                </div>
+                                                <input id="od_sph_Lensometer" value="" name="od_sph_Lensometer"
+                                                    type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Cyl</span>
+                                                </div>
+                                                <input id="od_cyl_Lensometer" value="" name="od_cyl_Lensometer"
+                                                    type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">X</span>
+                                                </div>
+                                                <input id="od_x_Lensometer" value="" name="od_x_Lensometer"
+                                                    type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">OS : Sph</span>
+                                                </div>
+                                                <input id="os_sph_Lensometer" value="" name="os_sph_Lensometer"
+                                                    type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Cyl</span>
+                                                </div>
+                                                <input id="os_cyl_Lensometer" value="" name="os_cyl_Lensometer"
+                                                    type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">X</span>
+                                                </div>
+                                                <input id="os_x_Lensometer" value="" name="os_x_Lensometer"
+                                                    type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="2">Koreksi penglihatan jauh</td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">VOD : Sph</span>
+                                                </div>
+                                                <input id="vod_sph_kpj" value="" name="vod_sph_kpj"
+                                                    type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Cyl</span>
+                                                </div>
+                                                <input id="vod_cyl_kpj" value="" name="vod_cyl_kpj"
+                                                    type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">X</span>
+                                                </div>
+                                                <input id="vod_x_kpj" value="" name="vod_x_kpj" type="text"
+                                                    class="form-control" aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">VOS : Sph</span>
+                                                </div>
+                                                <input type="text" id="vos_sph_kpj" value=""
+                                                    name="vos_sph_kpj" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Cyl</span>
+                                                </div>
+                                                <input id="vos_cyl_kpj" value="" name="vos_cyl_kpj"
+                                                    type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">X</span>
+                                                </div>
+                                                <input id="vos_x_kpj" value="" name="vos_x_kpj" type="text"
+                                                    class="form-control" aria-label="Amount (to the nearest dollar)">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tajam penglihatan dekat</td>
+                                        <td colspan="3">
+                                            <textarea class="form-control" id="penglihatan_dekat" name="penglihatan_dekat"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tekanan Intra Okular</td>
+                                        <td colspan="3">
+                                            <textarea class="form-control" id="tekanan_intra_okular" name="tekanan_intra_okular"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Catatan Pemeriksaan Lainnya</td>
+                                        <td colspan="3">
+                                            <textarea class="form-control" name="catatan_pemeriksaan_lainnya" id="catatan_pemerikssaan_lainnya"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Palpebra</td>
+                                        <td colspan="3"><input class="form-control" value="" id="palpebra"
+                                                name="palpebra"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Konjungtiva</td>
+                                        <td colspan="3"><input class="form-control" value=""
+                                                id="konjungtiva" name="konjungtiva"></input>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kornea</td>
+                                        <td colspan="3"><input class="form-control" value="" name="kornea"
+                                                id="kornea"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bilik Mata Depan</td>
+                                        <td colspan="3"><input class="form-control" value=""
+                                                name="bilik_mata_depan" id="bilik_mata_depan"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pupil</td>
+                                        <td colspan="3"><input class="form-control" value="" id="pupil"
+                                                name="pupil"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Iris</td>
+                                        <td colspan="3"><input class="form-control" value="" name="iris"
+                                                id="iris"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lensa</td>
+                                        <td colspan="3"><input class="form-control" value="" name="lensa"
+                                                id="lensa"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Funduskopi</td>
+                                        <td colspan="3"><input class="form-control" value=""
+                                                name="funduskopi" id="funduskopi"></input>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Status Oftalmologis Khusus</td>
+                                        <td colspan="3">
+                                            <textarea class="form-control" value="" name="oftamologis" id="oftamologis"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Masalah Medis</td>
+                                        <td colspan="3">
+                                            <textarea class="form-control" value="" name="masalahmedis" id="masalahmedis"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Prognosis</td>
+                                        <td colspan="3">
+                                            <textarea class="form-control" value="" name="prognosis" id="prognosis"></textarea>
+                                        </td>
+                                    </tr>
+                                </table>
+                                @endif
+                            </form>
+                        @elseif(auth()->user()->unit == '1019')
+                            {{-- <form class="formpemeriksaankhusus"> --}}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="gambar1">
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card-header bg-dark">Telinga Kanan</div>
+                                    <div class="card-body">
+                                        <form action="" class="formtelingakanan">
+                                            @if(count($k1) > 0)
+                                            <table class="table table-sm">
+                                                <tr>
+                                                    <td>Liang Telinga</td>
+                                                    <td>
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-check">
+                                                                    <input type="checkbox"
+                                                                        class="form-check-input" name="Lapang"
+                                                                        value="1"
+                                                                        @if ($k1['0']->LT_lapang == 1) checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="exampleCheck1">Lapang </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-check">
+                                                                    <input type="checkbox"
+                                                                        class="form-check-input" name="Sempit"
+                                                                        value="1"
+                                                                        @if ($k1['0']->LT_Sempit == 1) checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="exampleCheck1">Sempit </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-check">
+                                                                    <input type="checkbox"
+                                                                        class="form-check-input"
+                                                                        name="Destruksi" value="1"
+                                                                        @if ($k1['0']->LT_dataSetestruksi == 1) checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="exampleCheck1">Destruksi</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-check">
+                                                                    <input type="checkbox"
+                                                                        class="form-check-input" name="Serumen"
+                                                                        value="1"
+                                                                        @if ($k1['0']->LT_Serumen == 1) checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="exampleCheck1">Serumen</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-check">
+                                                                    <input type="checkbox"
+                                                                        class="form-check-input" name="Sekret"
+                                                                        value="1"
+                                                                        @if ($k1['0']->LT_Sekret == 1) checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="exampleCheck1">Sekret</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-check">
+                                                                    <input type="checkbox"
+                                                                        class="form-check-input" name="Jamur"
+                                                                        value="1"
+                                                                        @if ($k1['0']->LT_Jamur == 1) checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="exampleCheck1">Jamur</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-check">
+                                                                    <input type="checkbox"
+                                                                        class="form-check-input"
+                                                                        name="Kolesteatoma" value="1"
+                                                                        @if ($k1['0']->LT_Kolesteatoma == 1) checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="exampleCheck1">Kolesteatoma</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-check">
+                                                                    <input type="checkbox"
+                                                                        class="form-check-input"
+                                                                        name="Massa atau Jaringan"
+                                                                        value="1"
+                                                                        @if ($k1['0']->LT_Massa_Jaringan == 1) checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="exampleCheck1">Massa atau
+                                                                        Jaringan</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-check">
+                                                                    <input type="checkbox"
+                                                                        class="form-check-input"
+                                                                        name="Benda Asing" value="1"
+                                                                        @if ($k1['0']->LT_Benda_asing == 1) checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="exampleCheck1">Benda
+                                                                        Asing</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-check">
+                                                                    <input type="checkbox"
+                                                                        class="form-check-input"
+                                                                        name="LT Lain-Lain" value="1"
+                                                                        @if ($k1['0']->LT_Lain_lain == 1) checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="exampleCheck1">LT
+                                                                        Lain-Lain</label>
+                                                                </div>
+                                                            </div>
+                                                            <input class="form-control"
+                                                                name="ltketeranganlain"
+                                                                value="{{ $k1['0']->LT_Keterangan_lain }}">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Membran Timpan</td>
+                                                    <td>
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-check">
+                                                                    <input type="checkbox"
+                                                                        class="form-check-input"
+                                                                        id="" name="Intak - Normal"
+                                                                        value="1"
+                                                                        @if ($k1['0']->MT_intak_normal) checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="exampleCheck1">Intak -
+                                                                        Normal</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-check">
+                                                                    <input type="checkbox"
+                                                                        class="form-check-input"
+                                                                        id=""
+                                                                        name="Intak - Hiperemis"
+                                                                        value="1"
+                                                                        @if ($k1['0']->MT_intak_hiperemis) checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="exampleCheck1">Intak -
+                                                                        Hiperemis</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-check">
+                                                                    <input type="checkbox"
+                                                                        class="form-check-input"
+                                                                        id="" name="Intak - Bulging"
+                                                                        value="1"
+                                                                        @if ($k1['0']->MT_intak_bulging) checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="exampleCheck1">Intak -
+                                                                        Bulging</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-check">
+                                                                    <input type="checkbox"
+                                                                        class="form-check-input"
+                                                                        id="" name="Intak - Retraksi"
+                                                                        value="1"
+                                                                        @if ($k1['0']->MT_intak_retraksi) checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="exampleCheck1">Intak -
+                                                                        Retraksi</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-check">
+                                                                    <input type="checkbox"
+                                                                        class="form-check-input"
+                                                                        id=""
+                                                                        name="Intak - Sklerotik"
+                                                                        value="1"
+                                                                        @if ($k1['0']->MT_intak_sklerotik) checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="exampleCheck1">Intak -
+                                                                        Sklerotik</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-check">
+                                                                    <input type="checkbox"
+                                                                        class="form-check-input"
+                                                                        id=""
+                                                                        name="Perforasi - Sentral"
+                                                                        value="1"
+                                                                        @if ($k1['0']->MT_perforasi_sentral) checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="exampleCheck1">Perforasi -
+                                                                        Sentral</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-check">
+                                                                    <input type="checkbox"
+                                                                        class="form-check-input"
+                                                                        id="" name="Perforasi - Atik"
+                                                                        value="1"
+                                                                        @if ($k1['0']->MT_perforasi_atik) checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="exampleCheck1">Perforasi -
+                                                                        Atik</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-check">
+                                                                    <input type="checkbox"
+                                                                        class="form-check-input"
+                                                                        id=""
+                                                                        name="Perforasi - Marginal"
+                                                                        value="1"
+                                                                        @if ($k1['0']->MT_perforasi_marginal) checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="exampleCheck1">Perforasi -
+                                                                        Marginal</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-check">
+                                                                    <input type="checkbox"
+                                                                        class="form-check-input"
+                                                                        id=""
+                                                                        name="Perforasi - Lain-Lain"
+                                                                        value="1"
+                                                                        @if ($k1['0']->MT_perforasi_lain) checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="exampleCheck1">Perforasi -
+                                                                        Lain-Lain</label>
+                                                                </div>
+                                                            </div>
+                                                            <input class="form-control"
+                                                                name="mtketeranganlain"
+                                                                value="{{ $k1['0']->MT_keterangan_lain }}">
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Kavum Timpani</td>
+                                                    <td>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label for="">Mukosa</label>
+                                                                <input type="text" class="form-control"
+                                                                    name="mukosa"
+                                                                    value="{{ $k1['0']->MT_mukosa }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label for="">Oslkel</label>
+                                                                <input type="text" class="form-control"
+                                                                    name="oslkel"
+                                                                    value="{{ $k1['0']->MT_osikal }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label for="">Isthmus
+                                                                    timpani/anterior
+                                                                    timpani/posterior timpani</label>
+                                                                <input type="text" class="form-control"
+                                                                    name="Isthmus"
+                                                                    value="{{ $k1['0']->MT_isthmus }}">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Lain - Lain</td>
+                                                    <td>
+                                                        <textarea class="form-control" name="keteranganlain">{{ $k1['0']->lain_lain }}</textarea>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            @else
+                                            <table class="table table-sm table-responsive">
+                                                <tr>
+                                                    <td>Liang Telinga</td>
+                                                    <td>
+                                                        <div class="row">
+                                                            @foreach ($penyakit as $p)
+                                                                @if ($p->sub_organ == 'Liang Telinga')
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group form-check">
+                                                                            <input type="checkbox"
+                                                                                class="form-check-input"
+                                                                                name="{{ $p->nama_pemeriksaan }}"
+                                                                                value="1">
+                                                                            <label class="form-check-label"
+                                                                                for="exampleCheck1">{{ $p->nama_pemeriksaan }}</label>
+                                                                        </div>
+                                                                    </div>
+                                                                @endif
+                                                            @endforeach
+                                                            <input class="form-control"
+                                                                name="ltketeranganlain">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Membran Timpan</td>
+                                                    <td>
+                                                        <div class="row">
+                                                            @foreach ($penyakit as $p)
+                                                                @if ($p->sub_organ == 'Membran Timpani')
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group form-check">
+                                                                            <input type="checkbox"
+                                                                                class="form-check-input"
+                                                                                id=""
+                                                                                name="{{ $p->nama_pemeriksaan }}"
+                                                                                value="1">
+                                                                            <label class="form-check-label"
+                                                                                for="exampleCheck1">{{ $p->nama_pemeriksaan }}</label>
+                                                                        </div>
+                                                                    </div>
+                                                                @endif
+                                                            @endforeach
+                                                            <input class="form-control"
+                                                                name="mtketeranganlain">
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Kavum Timpani</td>
+                                                    <td>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label for="">Mukosa</label>
+                                                                <input type="text" class="form-control"
+                                                                    name="mukosa">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label for="">Oslkel</label>
+                                                                <input type="text" class="form-control"
+                                                                    name="oslkel">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label for="">Isthmus timpani/anterior
+                                                                    timpani/posterior timpani</label>
+                                                                <input type="text" class="form-control"
+                                                                    name="Isthmus">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Lain - Lain</td>
+                                                    <td>
+                                                        <textarea class="form-control" name="keteranganlain"></textarea>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            @endif
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card-header bg-dark">Telinga Kiri</div>
+                                    <div class="card-body">
+                                        <form action="" class="formtelingakiri">
+                                            @if(count($k1) > 0)
+                                                <table class="table table-sm">
+                                                    <tr>
+                                                        <td>Liang Telinga</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" name="Lapang"
+                                                                            value="1"
+                                                                            @if ($k1['1']->LT_lapang == 1) checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Lapang </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" name="Sempit"
+                                                                            value="1"
+                                                                            @if ($k1['1']->LT_Sempit == 1) checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Sempit </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input"
+                                                                            name="Destruksi" value="1"
+                                                                            @if ($k1['1']->LT_dataSetestruksi == 1) checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Destruksi</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" name="Serumen"
+                                                                            value="1"
+                                                                            @if ($k1['1']->LT_Serumen == 1) checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Serumen</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" name="Sekret"
+                                                                            value="1"
+                                                                            @if ($k1['1']->LT_Sekret == 1) checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Sekret</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" name="Jamur"
+                                                                            value="1"
+                                                                            @if ($k1['1']->LT_Jamur == 1) checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Jamur</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input"
+                                                                            name="Kolesteatoma" value="1"
+                                                                            @if ($k1['1']->LT_Kolesteatoma == 1) checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Kolesteatoma</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input"
+                                                                            name="Massa atau Jaringan"
+                                                                            value="1"
+                                                                            @if ($k1['1']->LT_Massa_Jaringan == 1) checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Massa atau
+                                                                            Jaringan</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input"
+                                                                            name="Benda Asing" value="1"
+                                                                            @if ($k1['1']->LT_Benda_asing == 1) checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Benda
+                                                                            Asing</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input"
+                                                                            name="LT Lain-Lain" value="1"
+                                                                            @if ($k1['1']->LT_Lain_lain == 1) checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">LT
+                                                                            Lain-Lain</label>
+                                                                    </div>
+                                                                </div>
+                                                                <input class="form-control"
+                                                                    name="ltketeranganlain"
+                                                                    value="{{ $k1['1']->LT_Keterangan_lain }}">
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Membran Timpan</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input"
+                                                                            id="" name="Intak - Normal"
+                                                                            value="1"
+                                                                            @if ($k1['1']->MT_intak_normal) checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Intak -
+                                                                            Normal</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input"
+                                                                            id=""
+                                                                            name="Intak - Hiperemis"
+                                                                            value="1"
+                                                                            @if ($k1['1']->MT_intak_hiperemis) checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Intak -
+                                                                            Hiperemis</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input"
+                                                                            id="" name="Intak - Bulging"
+                                                                            value="1"
+                                                                            @if ($k1['1']->MT_intak_bulging) checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Intak -
+                                                                            Bulging</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input"
+                                                                            id="" name="Intak - Retraksi"
+                                                                            value="1"
+                                                                            @if ($k1['1']->MT_intak_retraksi) checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Intak -
+                                                                            Retraksi</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input"
+                                                                            id=""
+                                                                            name="Intak - Sklerotik"
+                                                                            value="1"
+                                                                            @if ($k1['1']->MT_intak_sklerotik) checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Intak -
+                                                                            Sklerotik</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input"
+                                                                            id=""
+                                                                            name="Perforasi - Sentral"
+                                                                            value="1"
+                                                                            @if ($k1['1']->MT_perforasi_sentral) checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Perforasi -
+                                                                            Sentral</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input"
+                                                                            id="" name="Perforasi - Atik"
+                                                                            value="1"
+                                                                            @if ($k1['1']->MT_perforasi_atik) checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Perforasi -
+                                                                            Atik</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input"
+                                                                            id=""
+                                                                            name="Perforasi - Marginal"
+                                                                            value="1"
+                                                                            @if ($k1['1']->MT_perforasi_marginal) checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Perforasi -
+                                                                            Marginal</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input"
+                                                                            id=""
+                                                                            name="Perforasi - Lain-Lain"
+                                                                            value="1"
+                                                                            @if ($k1['1']->MT_perforasi_lain) checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Perforasi -
+                                                                            Lain-Lain</label>
+                                                                    </div>
+                                                                </div>
+                                                                <input class="form-control"
+                                                                    name="mtketeranganlain"
+                                                                    value="{{ $k1['1']->MT_keterangan_lain }}">
+
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kavum Timpani</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <label for="">Mukosa</label>
+                                                                    <input type="text" class="form-control"
+                                                                        name="mukosa"
+                                                                        value="{{ $k1['1']->MT_mukosa }}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <label for="">Oslkel</label>
+                                                                    <input type="text" class="form-control"
+                                                                        name="oslkel"
+                                                                        value="{{ $k1['1']->MT_osikal }}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <label for="">Isthmus
+                                                                        timpani/anterior
+                                                                        timpani/posterior timpani</label>
+                                                                    <input type="text" class="form-control"
+                                                                        name="Isthmus"
+                                                                        value="{{ $k1['1']->MT_isthmus }}">
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Lain - Lain</td>
+                                                        <td>
+                                                            <textarea class="form-control" name="keteranganlain">{{ $k1['1']->lain_lain }}</textarea>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                @else
+                                                <table class="table table-sm table-responsive">
+                                                    <tr>
+                                                        <td>Liang Telinga</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                @foreach ($penyakit as $p)
+                                                                    @if ($p->sub_organ == 'Liang Telinga')
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group form-check">
+                                                                                <input type="checkbox"
+                                                                                    class="form-check-input"
+                                                                                    name="{{ $p->nama_pemeriksaan }}"
+                                                                                    value="1">
+                                                                                <label class="form-check-label"
+                                                                                    for="exampleCheck1">{{ $p->nama_pemeriksaan }}</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
+                                                                @endforeach
+                                                                <input class="form-control"
+                                                                    name="ltketeranganlain">
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Membran Timpan</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                @foreach ($penyakit as $p)
+                                                                    @if ($p->sub_organ == 'Membran Timpani')
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group form-check">
+                                                                                <input type="checkbox"
+                                                                                    class="form-check-input"
+                                                                                    id=""
+                                                                                    name="{{ $p->nama_pemeriksaan }}"
+                                                                                    value="1">
+                                                                                <label class="form-check-label"
+                                                                                    for="exampleCheck1">{{ $p->nama_pemeriksaan }}</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
+                                                                @endforeach
+                                                                <input class="form-control"
+                                                                    name="mtketeranganlain">
+
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kavum Timpani</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <label for="">Mukosa</label>
+                                                                    <input type="text" class="form-control"
+                                                                        name="mukosa">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <label for="">Oslkel</label>
+                                                                    <input type="text" class="form-control"
+                                                                        name="oslkel">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <label for="">Isthmus timpani/anterior
+                                                                        timpani/posterior timpani</label>
+                                                                    <input type="text" class="form-control"
+                                                                        name="Isthmus">
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Lain - Lain</td>
+                                                        <td>
+                                                            <textarea class="form-control" name="keteranganlain"></textarea>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                @endif
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <form action="" class="formanjurantelinga">
+                                        @if(count($k1) > 0)
+                                        <table class="table table-sm">
+                                            <tr>
+                                                <td>Kesimpulan</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <textarea class="form-control" id="kesimpulan" name="kesimpulan">{{ $k1['1']->kesimpulan }}</textarea>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Anjuran</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <textarea class="form-control" id="anjuran" name="anjuran">{{ $k1['1']->anjuran }}</textarea>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        @else
+                                        <table class="table table-sm">
+                                            <tr>
+                                                <td>Kesimpulan</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <textarea class="form-control" id="kesimpulan" name="kesimpulan"></textarea>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Anjuran</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <textarea class="form-control" id="anjuran" name="anjuran"></textarea>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        @endif
+                                    </form>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header text-bold bg-dark">Hidung Kanan</div>
+                                        <div class="card-body">
+                                            <form action="" class="formhidungkanan">
+                                                @if(count($k2) > 0)
+                                                <table class="table table-sm">
+                                                    <tr>
+                                                        <td>Kavum Nasi</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Lapang" value="1" @if($k2[0]->KN_Lapang == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Lapang</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Sempit" value="1" @if($k2[0]->KN_Sempit == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Sempit</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Mukosa Pucat" value="1" @if($k2[0]->KN_Mukosa_pucat == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Mukosa Pucat</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Mukosa Hiperemis" value="1" @if($k2[0]->KN_Mukosa_hiperemis == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Mukosa
+                                                                            Hiperemis</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Kavum Nasi Mukosa Edema"
+                                                                            value="1" @if($k2[0]->KN_Mukosa_edema == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Kavum Nasi Mukosa
+                                                                            Edema</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Massa" value="1" @if($k2[0]->KN_Massa == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Massa</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Kavum Nasi Polip" value="1" @if($k2[0]->KN_Polip == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Kavum Nasi
+                                                                            Polip</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Konka Inferior</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Eutrofi" value="1" @if($k2[0]->KI_Eutrofi == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Eutrofi</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Hipertrofi" value="1" @if($k2[0]->KI_Hipertrofi == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Hipertrofi</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Atrofi" value="1" @if($k2[0]->KI_Atrofi == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Atrofi</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Meatus Medius</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Terbuka" value="1" @if($k2[0]->MM_Terbuka == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Terbuka</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Tertutup" value="1" @if($k2[0]->MM_Tertutup == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Tertutup</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Mukosa Edema" value="1" @if($k2[0]->MM_Mukosa_Edema == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Mukosa Edema</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Septum</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Septum Polip" value="1" @if($k2[0]->S_Polip == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Septum Polip</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Sekret" value="1" @if($k2[0]->S_Sekret == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Sekret</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Lurus" value="1" @if($k2[0]->S_Lurus == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Lurus</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Deviasi" value="1" @if($k2[0]->S_Deviasi == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Deviasi</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Spina" value="1" @if($k2[0]->S_Spina == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Spina</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Nasofaring</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Normal" value="1" @if($k2[0]->N_Normal == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Normal</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Adenoid" value="1" @if($k2[0]->N_Adenoid == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Adenoid</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Keradangan" value="1" @if($k2[0]->N_Keradangan == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Keradangan</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Massa" value="1" @if($k2[0]->N_Massa == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Massa</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Lain - Lain</td>
+                                                        <td>
+                                                            <textarea class="form-control" name="lain-lain">{{ $k2[0]->lain_lain }}</textarea>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                @else
+                                                <table class="table table-sm">
+                                                    <tr>
+                                                        <td>Kavum Nasi</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                @foreach ($penyakit as $p)
+                                                                    @if ($p->sub_organ == 'Kavum Nasi')
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group form-check">
+                                                                                <input type="checkbox"
+                                                                                    class="form-check-input"
+                                                                                    id=""
+                                                                                    name="{{ $p->nama_pemeriksaan }}"
+                                                                                    value="1">
+                                                                                <label class="form-check-label"
+                                                                                    for="exampleCheck1">{{ $p->nama_pemeriksaan }}</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
+                                                                @endforeach
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Konka Inferior</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                @foreach ($penyakit as $p)
+                                                                    @if ($p->sub_organ == 'Konka Interior')
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group form-check">
+                                                                                <input type="checkbox"
+                                                                                    class="form-check-input"
+                                                                                    id=""
+                                                                                    name="{{ $p->nama_pemeriksaan }}"
+                                                                                    value="1">
+                                                                                <label class="form-check-label"
+                                                                                    for="exampleCheck1">{{ $p->nama_pemeriksaan }}</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
+                                                                @endforeach
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Meatus Medius</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                @foreach ($penyakit as $p)
+                                                                    @if ($p->sub_organ == 'Meatus Medius')
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group form-check">
+                                                                                <input type="checkbox"
+                                                                                    class="form-check-input"
+                                                                                    id=""
+                                                                                    name="{{ $p->nama_pemeriksaan }}"
+                                                                                    value="1">
+                                                                                <label class="form-check-label"
+                                                                                    for="exampleCheck1">{{ $p->nama_pemeriksaan }}</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
+                                                                @endforeach
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Septum</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                @foreach ($penyakit as $p)
+                                                                    @if ($p->sub_organ == 'Septum')
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group form-check">
+                                                                                <input type="checkbox"
+                                                                                    class="form-check-input"
+                                                                                    id=""
+                                                                                    name="{{ $p->nama_pemeriksaan }}"
+                                                                                    value="1">
+                                                                                <label class="form-check-label"
+                                                                                    for="exampleCheck1">{{ $p->nama_pemeriksaan }}</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
+                                                                @endforeach
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Nasofaring</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                @foreach ($penyakit as $p)
+                                                                    @if ($p->sub_organ == 'Nasofaring')
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group form-check">
+                                                                                <input type="checkbox"
+                                                                                    class="form-check-input"
+                                                                                    id=""
+                                                                                    name="{{ $p->nama_pemeriksaan }}"
+                                                                                    value="1">
+                                                                                <label class="form-check-label"
+                                                                                    for="exampleCheck1">{{ $p->nama_pemeriksaan }}</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
+                                                                @endforeach
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Lain - Lain</td>
+                                                        <td>
+                                                            <textarea class="form-control" name="lain-lain" id="lain-lain"></textarea>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                @endif
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header text-bold bg-dark">Hidung Kiri</div>
+                                        <div class="card-body">
+                                            <form action="" class="formhidungkiri">
+                                                @if(count($k2) > 0)
+                                                <table class="table table-sm">
+                                                    <tr>
+                                                        <td>Kavum Nasi</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Lapang" value="1" @if($k2[1]->KN_Lapang == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Lapang</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Sempit" value="1" @if($k2[1]->KN_Sempit == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Sempit</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Mukosa Pucat" value="1" @if($k2[1]->KN_Mukosa_pucat == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Mukosa Pucat</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Mukosa Hiperemis" value="1" @if($k2[1]->KN_Mukosa_hiperemis == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Mukosa
+                                                                            Hiperemis</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Kavum Nasi Mukosa Edema"
+                                                                            value="1" @if($k2[1]->KN_Mukosa_edema == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Kavum Nasi Mukosa
+                                                                            Edema</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Massa" value="1" @if($k2[1]->KN_Massa == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Massa</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Kavum Nasi Polip" value="1" @if($k2[1]->KN_Polip == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Kavum Nasi
+                                                                            Polip</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Konka Inferior</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Eutrofi" value="1" @if($k2[1]->KI_Eutrofi == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Eutrofi</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Hipertrofi" value="1" @if($k2[1]->KI_Hipertrofi == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Hipertrofi</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Atrofi" value="1" @if($k2[1]->KI_Atrofi == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Atrofi</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Meatus Medius</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Terbuka" value="1" @if($k2[1]->MM_Terbuka == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Terbuka</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Tertutup" value="1" @if($k2[1]->MM_Tertutup == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Tertutup</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Mukosa Edema" value="1" @if($k2[1]->MM_Mukosa_Edema == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Mukosa Edema</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Septum</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Septum Polip" value="1" @if($k2[1]->S_Polip == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Septum Polip</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Sekret" value="1" @if($k2[1]->S_Sekret == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Sekret</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Lurus" value="1" @if($k2[1]->S_Lurus == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Lurus</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Deviasi" value="1" @if($k2[1]->S_Deviasi == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Deviasi</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Spina" value="1" @if($k2[1]->S_Spina == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Spina</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Nasofaring</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Normal" value="1" @if($k2[1]->N_Normal == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Normal</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Adenoid" value="1" @if($k2[1]->N_Adenoid == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Adenoid</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Keradangan" value="1" @if($k2[1]->N_Keradangan == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Keradangan</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input" id=""
+                                                                            name="Massa" value="1" @if($k2[1]->N_Massa == '1')checked @endif>
+                                                                        <label class="form-check-label"
+                                                                            for="exampleCheck1">Massa</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Lain - Lain</td>
+                                                        <td>
+                                                            <textarea class="form-control" name="lain-lain">{{ $k2[1]->lain_lain }}</textarea>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                @else
+                                                <table class="table table-sm">
+                                                    <tr>
+                                                        <td>Kavum Nasi</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                @foreach ($penyakit as $p)
+                                                                    @if ($p->sub_organ == 'Kavum Nasi')
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group form-check">
+                                                                                <input type="checkbox"
+                                                                                    class="form-check-input"
+                                                                                    id=""
+                                                                                    name="{{ $p->nama_pemeriksaan }}"
+                                                                                    value="1">
+                                                                                <label class="form-check-label"
+                                                                                    for="exampleCheck1">{{ $p->nama_pemeriksaan }}</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
+                                                                @endforeach
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Konka Inferior</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                @foreach ($penyakit as $p)
+                                                                    @if ($p->sub_organ == 'Konka Interior')
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group form-check">
+                                                                                <input type="checkbox"
+                                                                                    class="form-check-input"
+                                                                                    id=""
+                                                                                    name="{{ $p->nama_pemeriksaan }}"
+                                                                                    value="1">
+                                                                                <label class="form-check-label"
+                                                                                    for="exampleCheck1">{{ $p->nama_pemeriksaan }}</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
+                                                                @endforeach
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Meatus Medius</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                @foreach ($penyakit as $p)
+                                                                    @if ($p->sub_organ == 'Meatus Medius')
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group form-check">
+                                                                                <input type="checkbox"
+                                                                                    class="form-check-input"
+                                                                                    id=""
+                                                                                    name="{{ $p->nama_pemeriksaan }}"
+                                                                                    value="1">
+                                                                                <label class="form-check-label"
+                                                                                    for="exampleCheck1">{{ $p->nama_pemeriksaan }}</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
+                                                                @endforeach
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Septum</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                @foreach ($penyakit as $p)
+                                                                    @if ($p->sub_organ == 'Septum')
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group form-check">
+                                                                                <input type="checkbox"
+                                                                                    class="form-check-input"
+                                                                                    id=""
+                                                                                    name="{{ $p->nama_pemeriksaan }}"
+                                                                                    value="1">
+                                                                                <label class="form-check-label"
+                                                                                    for="exampleCheck1">{{ $p->nama_pemeriksaan }}</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
+                                                                @endforeach
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Nasofaring</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                @foreach ($penyakit as $p)
+                                                                    @if ($p->sub_organ == 'Nasofaring')
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group form-check">
+                                                                                <input type="checkbox"
+                                                                                    class="form-check-input"
+                                                                                    id=""
+                                                                                    name="{{ $p->nama_pemeriksaan }}"
+                                                                                    value="1">
+                                                                                <label class="form-check-label"
+                                                                                    for="exampleCheck1">{{ $p->nama_pemeriksaan }}</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
+                                                                @endforeach
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Lain - Lain</td>
+                                                        <td>
+                                                            <textarea class="form-control" name="lain-lain" id="lain-lain"></textarea>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                @endif
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <form action="" class="formkesimpulanhidung">
+                                        @if(count($k2) > 0)
+                                        <table class="table table-sm">
+                                            <tr>
+                                                <td>Kesimpulan</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <textarea class="form-control" id="kesimpulanhidung" name="kesimpulanhidung">{{ $k2[0]->kesimpulan}}</textarea>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        @else
+                                        <table class="table table-sm">
+                                            <tr>
+                                                <td>Kesimpulan</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <textarea class="form-control" id="kesimpulanhidung" name="kesimpulanhidung"></textarea>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        @endif
+                                    </form>
+                                </div>
+                            </div>
+                            {{-- </form> --}}
+                        @else
+                            <form action="" class="formpemeriksaankhusus">
+                                <div class="col-md-12">
+                                    <div class="gambar1">
+
+                                    </div>
+                                </div>
+                            </form>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -757,7 +3028,8 @@
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="modaltemplate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modaltemplate" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -789,15 +3061,29 @@
     });
 
     function simpanhasil() {
-        spinner = $('#loader')
-        spinner.show();
+        var canvas1 = document.getElementById("myCanvas1");
+        var ctx1 = canvas1.getContext("2d");
+        var img1 = document.getElementById("gambarnya1");
+        ctx1.drawImage(img1, 10, 10);
+        var dataUrl1 = canvas1.toDataURL();
+        $('#gambarcoret').val(dataUrl1)
+        gambar = $('#gambarcoret').val()
         var data = $('.formpemeriksaandokter').serializeArray();
         var datatindakan = $('.formtindakan').serializeArray();
-        var datatindaklanjut = $('.formtindaklanjut').serializeArray();
         var formobat_farmasi = $('.formobat_farmasi').serializeArray();
+        var datatindaklanjut = $('.formtindaklanjut').serializeArray();
+        var formpemeriksaankhusus = $('.formpemeriksaankhusus').serializeArray();
+        var formtelingakanan = $('.formtelingakanan').serializeArray();
+        var formtelingakiri = $('.formtelingakiri').serializeArray();
+        var formanjurantelinga = $('.formanjurantelinga').serializeArray();
+        var formhidungkanan = $('.formhidungkanan').serializeArray();
+        var formhidungkiri = $('.formhidungkiri').serializeArray();
+        var formkesimpulanhidung = $('.formkesimpulanhidung').serializeArray();
         var simpantemplate = $('#simpantemplate:checked').val()
         var namaresep = $('#namaresep').val()
         var kodekunjungan = $('#kodekunjungan').val()
+        spinner = $('#loader')
+        spinner.show();
         $.ajax({
             async: true,
             type: 'post',
@@ -808,9 +3094,17 @@
                 datatindakan: JSON.stringify(datatindakan),
                 datatindaklanjut: JSON.stringify(datatindaklanjut),
                 formobat_farmasi: JSON.stringify(formobat_farmasi),
+                formpemeriksaankhusus: JSON.stringify(formpemeriksaankhusus),
                 simpantemplate,
                 namaresep,
-                kodekunjungan
+                kodekunjungan,
+                gambar,
+                formtelingakanan: JSON.stringify(formtelingakanan),
+                formtelingakiri: JSON.stringify(formtelingakiri),
+                formanjurantelinga: JSON.stringify(formanjurantelinga),
+                formhidungkanan: JSON.stringify(formhidungkanan),
+                formhidungkiri: JSON.stringify(formhidungkiri),
+                formkesimpulanhidung: JSON.stringify(formkesimpulanhidung)
             },
             url: '<?= route('simpanpemeriksaandokter') ?>',
             error: function(data) {
@@ -1043,4 +3337,48 @@
             }
         });
     }
+
+    function showMarkerArea(target) {
+        const markerArea = new markerjs2.MarkerArea(target);
+        markerArea.addEventListener("render", (event) => (target.src = event.dataUrl));
+        markerArea.show();
+    }
+    $(document).ready(function() {
+        ambilgambar()
+    })
+
+    function resetgambar() {
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan: $('#kodekunjungan').val()
+            },
+            url: '<?= route('ambilgambarpemeriksaan_reset') ?>',
+            error: function(data) {
+                alert('ok')
+            },
+            success: function(response) {
+                $('.gambar1').html(response)
+            }
+        });
+    }
+
+    function ambilgambar() {
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan: $('#kodekunjungan').val()
+            },
+            url: '<?= route('ambilgambarpemeriksaan') ?>',
+            error: function(data) {
+                alert('ok')
+            },
+            success: function(response) {
+                $('.gambar1').html(response)
+            }
+        });
+    }
 </script>
+<script src="{{ asset('public/marker/markerjs2.js') }}"></script>

@@ -152,12 +152,19 @@
                     <td colspan="3">{{ $resume[0]->rencanakerja }}</td>
                 </tr>
                 <tr>
+                    <td>Tindakan Medis</td>
+                    <td colspan="3">{{ $resume[0]->tindakanmedis }}</td>
+                </tr>
+                <tr>
                     <td>Tindak Lanjut</td>
                     <td colspan="3">{{ $resume[0]->tindak_lanjut }} | {{ $resume[0]->keterangan_tindak_lanjut }}</td>
                 </tr>
             </table>
             @if ($formkhusus['keterangan'] == 'tht')
                 <div class="row mt-2">
+                    <div class="col-md-12">
+                        <img src="{{ $resume[0]->gambar_1 }}" alt="">
+                    </div>
                     <div class="col-md-6">
                         <div class="card">
                             <div class="card-header bg-warning">Telinga Kanan</div>
@@ -406,14 +413,6 @@
                                             <td>Lain - Lain</td>
                                             <td>
                                                 <textarea class="form-control" name="keteranganlain">{{ $formkhusus['telingakanan'][0]->lain_lain }}</textarea>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Telinga kanan</td>
-                                            <td>
-                                                <div class="gambar1">
-                                                    <img src="{{ $resume[0]->gambar_1 }}" alt="">
-                                                </div>
                                             </td>
                                         </tr>
                                     </table>
@@ -671,14 +670,6 @@
                                             <td>Lain - Lain</td>
                                             <td>
                                                 <textarea class="form-control" name="keteranganlain">{{ $formkhusus['telingakiri'][0]->lain_lain }}</textarea>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Telinga Kiri</td>
-                                            <td>
-                                                <div class="gambar1">
-                                                    <img src="{{ $resume[0]->gambar_2 }}" alt="">
-                                                </div>
                                             </td>
                                         </tr>
                                     </table>
@@ -1233,24 +1224,9 @@
                 </div>
             @elseif($formkhusus['keterangan'] == 'mata')
                 @if ($formkhusus['cek'] > 0)
-                    <div class="row mt-2">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header bg-warning">Mata Kanan</div>
-                                <div class="card-body">
-                                    <img src="{{ $formkhusus['mata'][0]->matakanan }}">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header bg-warning">Mata Kanan</div>
-                                <div class="card-body">
-                                    <img src="{{ $formkhusus['mata'][0]->matakiri }}">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-md-12">
+                    <img src="{{ $resume[0]->gambar_1 }}" alt="">
+                </div>
                     <div class="col-md-12">
                         <table class="table table-sm">
                             <tr>
@@ -1607,25 +1583,23 @@
                             <div class="card">
                                 <div class="card-header bg-warning">Gambar Gigi</div>
                                 <div class="card-body">
-                                    <img src="{{ $formkhusus['gigi'][0]->gambargigi }}" alt="">
+                                    <img src="{{ $resume[0]->gambar_1 }}" alt="">
                                 </div>
                             </div>
                         </div>
                     </div>
                 @endif
-            @elseif($formkhusus['keterangan'] == 'allin')
-                @if ($formkhusus['cek'] > 0)
+            @else
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header bg-warning">Catatan</div>
                                 <div class="card-body">
-                                    <img src="{{ $formkhusus['gambar'][0]->catatangambar }}" alt="">
+                                    <img src="{{ $resume[0]->gambar_1 }}" alt="">
                                 </div>
                             </div>
                         </div>
                     </div>
-                @endif
             @endif
             <div class="card">
                 <div class="card-header bg-info">Riwayat Upload</div>

@@ -329,6 +329,10 @@
                                                         <td>{{ $k->rencanakerja }}</td>
                                                     </tr>
                                                     <tr>
+                                                        <td class="text-bold font-italic">Tindakan Medis</td>
+                                                        <td>{{ $k->tindakanmedis }}</td>
+                                                    </tr>
+                                                    <tr>
                                                         <td class="text-bold font-italic">Tindak Lanjut</td>
                                                         <td>{{ $k->tindak_lanjut }} |
                                                             {{ $k->keterangan_tindak_lanjut }}</td>
@@ -339,8 +343,8 @@
                                                     <div class="card-body">
                                                         {{ $k->pemeriksaan_khusus }} <br><br>
                                                         {{ $k->pemeriksaan_khusus_2 }}<br><br>
-                                                        <img src="{{ $k->gambar_1 }}" alt=""><br><br>
-                                                        <img src="{{ $k->gambar_2 }}" alt=""><br><br>
+                                                        <img width="80%"src="{{ $k->gambar_1 }}" alt=""><br><br>
+                                                        {{-- <img src="{{ $k->gambar_2 }}" alt=""><br><br> --}}
                                                     </div>
                                                 </div>
                                                 <button class="btn btn-info riwayattindakan mt-4"
