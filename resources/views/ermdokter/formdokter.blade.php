@@ -67,11 +67,11 @@
                             <i class="fas fa-inbox mr-2"></i>Order Farmasi
                         </a>
                     </li> --}}
-                    <li class="nav-item" id="pemeriksaan">
+                    {{-- <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formupload()">
                             <i class="fas fa-inbox mr-2"></i>Upload Berkas
                         </a>
-                    </li>
+                    </li> --}}
                     {{-- <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formtindaklanjut()">
                             <i class="fas fa-inbox mr-2"></i>Tindak Lanjut

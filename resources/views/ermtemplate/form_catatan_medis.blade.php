@@ -333,6 +333,10 @@
                                                         <td>{{ $k->tindakanmedis }}</td>
                                                     </tr>
                                                     <tr>
+                                                        <td class="text-bold font-italic">Order Farmasi</td>
+                                                        <td>{{ $k->resepobat }}</td>
+                                                    </tr>
+                                                    <tr>
                                                         <td class="text-bold font-italic">Tindak Lanjut</td>
                                                         <td>{{ $k->tindak_lanjut }} |
                                                             {{ $k->keterangan_tindak_lanjut }}</td>
@@ -360,10 +364,10 @@
                                                 <button class="btn btn-warning riwayatorder mt-4"
                                                     kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
                                                     data-target="#modalriwayatorder">Riwayat Order Penunjang</button>
-                                                <button class="btn btn-warning riwayatorderfarmasi mt-4"
+                                                {{-- <button class="btn btn-warning riwayatorderfarmasi mt-4"
                                                     kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
                                                     data-target="#modalriwayatorderfarmasi">Riwayat Order
-                                                    Farmasi</button>
+                                                    Farmasi</button> --}}
                                                 <table class="table table-sm table-bordered mt-4">
                                                     <thead>
                                                         <th>Tanggal assesmen</th>

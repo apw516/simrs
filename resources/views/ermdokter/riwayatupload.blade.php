@@ -1,21 +1,22 @@
 @if (count($cek) > 0)
     <table class="table table-sm table-hover" id="tabelgbr">
         <thead>
-            <th>Nama File</th>
+            <th>Nama</th>
+            <th>File</th>
             <th>Unit</th>
             <th>Tanggal Upload</th>
             <th>Action</th>
         </thead>
         <tbody>
             @foreach ($cek as $d)
-                <tr class="klikklik" url="{{ url('../../files/' . $d->gambar) }}">
+                <tr class="klikklik2" url="{{ url('../../files/' . $d->gambar) }}">
+                    <td>{{ $d->nama }}</td>
                     <td><img width="20px" src="{{ url('../../files/' . $d->gambar) }}" alt="" class="mr-3">
                         {{ $d->gambar }}</td>
                     <td>{{ $d->nama_unit }}</td>
                     <td>{{ $d->tgl_upload }}</td>
                     <td>
-                        <button class="badge badge-danger">Hapus</button>
-                        <button class="badge badge-danger">lihat</button>
+                        <button class="badge badge-danger hapus" id="{{ $d->id }}">Hapus</button>
                     </td>
                 </tr>
             @endforeach
@@ -49,6 +50,51 @@
         $("#modalgambar").modal()
         url = $(this).attr('url')
         wrapper = $(".imageviewer")
-        $(wrapper).append('<img src='+ url + '>');
+        $(wrapper).append('<img src=' + url + '>');
     })
+    $('#tabelgbr').on('click', '.hapus', function() {
+        id = $(this).attr('id')
+        kodekunjungan = $('#kodekunjungan').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            async: true,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                _token: "{{ csrf_token() }}",
+                id,
+                // signature
+            },
+            url: '<?= route('hapusgambarupload') ?>',
+            error: function(data) {
+                spinner.hide()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                    footer: 'ermwaled2023'
+                })
+            },
+            success: function(data) {
+                spinner.hide()
+                if (data.kode == '502') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops',
+                        text: data.message,
+                        footer: 'ermwaled2023'
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'OK',
+                        text: data.message,
+                        footer: 'ermwaled2023'
+                    })
+                }
+                riwayatupload(kodekunjungan)
+            }
+        });
+    });
 </script>

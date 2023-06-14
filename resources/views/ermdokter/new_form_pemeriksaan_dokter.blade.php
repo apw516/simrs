@@ -357,6 +357,23 @@
                 </tbody>
             </table>
         </form>
+        <form action="" class="formfarmasi">
+            <div class="card">
+                <div class="card-header bg-light">Order Farmasi <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate" onclick="ambilresep()">Template
+                        resep</button></div>
+                <div class="card-body">
+                    <div class="form-group mt-2">
+                        <label for="exampleInputEmail1">Resep</label>
+                        <textarea rows="10" type="text" class="form-control" id="resepobat" name="resepobat"
+                            aria-describedby="emailHelp" placeholder="Silahkan tulis resep anda ...."></textarea>
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="simpantemplate" name="simpantemplate">
+                        <label class="form-check-label" for="exampleCheck1">Simpan sebagai template</label>
+                    </div>
+                </div>
+            </div>
+        </form>
         <form action="" class="formtindaklanjut">
             <div class="card">
                 <div class="card-header bg-secondary">Tindak Lanjut</div>
@@ -452,9 +469,8 @@
                     </div>
                 </div>
             </div>
-
             {{-- farmasi --}}
-            <div class="card">
+            {{-- <div class="card">
                 <div class="card-header bg-warning" id="headingTwo">
                     <h2 class="mb-0">
                         <button class="btn btn-block text-left text-dark collapsed" type="button"
@@ -486,8 +502,6 @@
                                                 <button type="button" class="btn btn-info float-right"
                                                     data-toggle="modal" data-target="#modaltemplate"
                                                     onclick="ambilresep()">template resep</button>
-                                                {{-- <button type="button" class="btn btn-warning mb-2 simpanlayanan"
-                                                id="simpanlayanan">Simpan Tindakan</button> --}}
                                                 <div class="form-group form-check">
                                                     <input type="checkbox" class="form-check-input"
                                                         id="simpantemplate" onclick="showname()">
@@ -508,7 +522,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             {{-- pemeriksaankhusus --}}
             <div class="card">
                 <div class="card-header bg-danger" id="headingTwo2">
@@ -888,8 +902,7 @@
                                                                     </div>
                                                                 @endif
                                                             @endforeach
-                                                            <input class="form-control"
-                                                                name="ltketeranganlain">
+                                                            <input class="form-control" name="ltketeranganlain">
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -912,8 +925,7 @@
                                                                     </div>
                                                                 @endif
                                                             @endforeach
-                                                            <input class="form-control"
-                                                                name="mtketeranganlain">
+                                                            <input class="form-control" name="mtketeranganlain">
 
                                                         </div>
                                                     </td>
@@ -978,8 +990,7 @@
                                                                     </div>
                                                                 @endif
                                                             @endforeach
-                                                            <input class="form-control"
-                                                                name="ltketeranganlain">
+                                                            <input class="form-control" name="ltketeranganlain">
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -1002,8 +1013,7 @@
                                                                     </div>
                                                                 @endif
                                                             @endforeach
-                                                            <input class="form-control"
-                                                                name="mtketeranganlain">
+                                                            <input class="form-control" name="mtketeranganlain">
 
                                                         </div>
                                                     </td>
@@ -1658,7 +1668,7 @@
         var formhidungkiri = $('.formhidungkiri').serializeArray();
         var formkesimpulanhidung = $('.formkesimpulanhidung').serializeArray();
         var simpantemplate = $('#simpantemplate:checked').val()
-        var namaresep = $('#namaresep').val()
+        var resepobat = $('#resepobat').val()
         var kodekunjungan = $('#kodekunjungan').val()
         spinner = $('#loader')
         spinner.show();
@@ -1674,7 +1684,7 @@
                 formobat_farmasi: JSON.stringify(formobat_farmasi),
                 formpemeriksaankhusus: JSON.stringify(formpemeriksaankhusus),
                 simpantemplate,
-                namaresep,
+                resepobat,
                 kodekunjungan,
                 gambar,
                 formtelingakanan: JSON.stringify(formtelingakanan),

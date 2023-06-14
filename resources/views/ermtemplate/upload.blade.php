@@ -4,6 +4,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="namafile" id="namafile" placeholder="Masukan nama file ...">
                     <input type="file" class="form-control" name="fileupload" id="fileupload">
                     <input hidden type="text" class="form-control" name="kodeunitnya" id="kodeunitnya"
                         value="{{ auth()->user()->unit }}">
@@ -50,11 +51,13 @@
         var files = $('#fileupload')[0].files;
         var fd = new FormData();
         kodekunjungan = $('#kodekunjungan').val()
+        namafile = $('#namafile').val()
         nomorrm = $('#nomorrm').val()
         fd.append('file', files[0]);
         fd.append('_token', "{{ csrf_token() }}");
         fd.append('kodekunjungan', kodekunjungan);
         fd.append('nomorrm', nomorrm);
+        fd.append('namafile', namafile);
         $.ajax({
             async: true,
             type: 'post',

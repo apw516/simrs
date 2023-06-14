@@ -53,6 +53,11 @@
                         </a>
                     </li>
                     @endif --}}
+                     <li class="nav-item" id="pemeriksaan">
+                        <a href="#" class="nav-link" onclick="formupload()">
+                            <i class="fas fa-inbox mr-2"></i>Upload Berkas
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link" onclick="resume()">
                             <i class="fas fa-filter mr-2"></i> Resume
@@ -128,6 +133,25 @@
             success: function(response) {
                 spinner.hide()
                 $('.slide3').html(response);
+            }
+        });
+    }
+    function formupload() {
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('formupload') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
             }
         });
     }

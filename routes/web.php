@@ -94,9 +94,9 @@ Route::post('/gambarcatatan', [ErmController::class, 'gambarcatatan'])
     ->name('gambarcatatan'); //sidebar
 
 
-    //reloadorder
+//reloadorder
 Route::post('/reloadorder', [PenunjangController::class, 'reloadorder'])
-        ->name('reloadorder'); //sidebar
+    ->name('reloadorder'); //sidebar
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9']], function () {
@@ -443,8 +443,12 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('ambilformasskep'); //sidebar
     Route::post('/generatekode_igd', [ErmController::class, 'generatekode_igd'])
         ->name('generatekode_igd'); //sidebar
-
-
+    Route::post('/formupload', [ErmController::class, 'formupload'])
+        ->name('formupload'); //sidebar
+    Route::post('/uploadgambarnya', [ErmController::class, 'uploadgambarnya'])
+        ->name('uploadgambarnya'); //sidebar
+    Route::post('/hapusgambarupload', [ErmController::class, 'hapusgambarupload'])
+        ->name('hapusgambarupload'); //sidebar
 });
 Route::group(['middleware' => ['auth', 'hak_akses1:5']], function () {
     Route::get('/indexdokter', [ErmController::class, 'indexdokter'])
@@ -491,12 +495,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5']], function () {
         ->name('simpangambarbebas'); //sidebar
     Route::post('/gambargigi', [ErmController::class, 'gambargigi'])
         ->name('gambargigi'); //sidebar
-    Route::post('/formupload', [ErmController::class, 'formupload'])
-        ->name('formupload'); //sidebar
     Route::post('/formorderpenunjang', [ErmController::class, 'formorderpenunjang'])
         ->name('formorderpenunjang'); //sidebar
-    Route::post('/uploadgambarnya', [ErmController::class, 'uploadgambarnya'])
-        ->name('uploadgambarnya'); //sidebar
     Route::post('/batalheaderlayanan', [ErmController::class, 'batalheaderlayanan'])
         ->name('batalheaderlayanan'); //sidebar
     Route::post('/batalheaderlayanan_order', [ErmController::class, 'batalheaderlayanan_order'])
@@ -527,11 +527,10 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5']], function () {
         ->name('ambilgambarpemeriksaan_reset'); //sidebar
 });
 
-Route::group(['middleware' => ['auth','hak_akses1:99']],function () {
+Route::group(['middleware' => ['auth', 'hak_akses1:99']], function () {
     Route::get('/antrianigd', [AntrianIgd::class, 'index']);
-Route::post('/ambildatapasien_igd', [AntrianIgd::class, 'datapasien_igd'])->name('ambildatapasien_igd');
-Route::post('/simpanpemeriksaanperawat_igd', [AntrianIgd::class, 'simpanpasien'])->name('simpanpemeriksaanperawat_igd');
-
+    Route::post('/ambildatapasien_igd', [AntrianIgd::class, 'datapasien_igd'])->name('ambildatapasien_igd');
+    Route::post('/simpanpemeriksaanperawat_igd', [AntrianIgd::class, 'simpanpasien'])->name('simpanpemeriksaanperawat_igd');
 });
 
 

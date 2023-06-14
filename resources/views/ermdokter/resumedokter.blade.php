@@ -156,6 +156,10 @@
                     <td colspan="3">{{ $resume[0]->tindakanmedis }}</td>
                 </tr>
                 <tr>
+                    <td>Order Farmasi</td>
+                    <td colspan="3">{{ $resume[0]->resepobat }}</td>
+                </tr>
+                <tr>
                     <td>Tindak Lanjut</td>
                     <td colspan="3">{{ $resume[0]->tindak_lanjut }} | {{ $resume[0]->keterangan_tindak_lanjut }}</td>
                 </tr>
@@ -1677,7 +1681,7 @@
                     </table>
                 </div>
             </div>
-            <div class="card">
+            {{-- <div class="card">
                 <div class="card-header bg-danger">Riwayat Order Farmasi</div>
                 <div class="card-body">
                     <table id="tabelorder_farmasi" class="table table-sm table-hover">
@@ -1703,7 +1707,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div> --}}
             {{-- <table class="table mt-4">
                 <thead>
                     <th>Nama Dokter</th>

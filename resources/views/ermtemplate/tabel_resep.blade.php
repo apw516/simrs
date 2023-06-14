@@ -1,16 +1,14 @@
 <table id="tabeltemplate" class="table table-sm table-bordered table-hover">
     <thead>
-        <th>Nama Resep</th>
         <th>Detail Resep</th>
         <th>---</th>
     </thead>
     <tbody>
         @foreach ($resep as $r)
             <tr>
-                <td>{{ $r->nama_resep }}</td>
                 <td>{{ $r->keterangan }}</td>
                 <td>
-                    <button class="badge badge-info pilihresep" kode="{{ $r->id }}">Pilih</button>
+                    <button class="badge badge-info pilihresep" kode="{{ $r->keterangan }}">Pilih</button>
                     <button class="badge badge-danger hapusresep" kode="{{ $r->id }}">hapus</button>
                 </td>
             </tr>
@@ -29,30 +27,14 @@
     });
     $('#tabeltemplate').on('click', '.pilihresep', function() {
         id = $(this).attr('kode')
-        Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'Template berhasil dipilih !',
-            showConfirmButton: false,
-            timer: 1200
-        })
-        spinner = $('#loader')
-        spinner.show();
-        $.ajax({
-            type: 'post',
-            data: {
-                _token: "{{ csrf_token() }}",
-                id
-            },
-            url: '<?= route('ambilresep_detail') ?>',
-            error: function(data) {
-                alert('ok')
-            },
-            success: function(response) {
-                $('.fi').html(response)
-                spinner.hide()
-            }
-        });
+        reseplama = $('#resepobat').val()
+        count = reseplama.trim().length
+        if(count > 0){
+            resepbaru = reseplama + '\n' + id
+        }else{
+            resepbaru = id
+        }
+        $('#resepobat').val(resepbaru)
         $('#modaltemplate').modal('hide')
     });
     $('#tabeltemplate').on('click', '.hapusresep', function() {
