@@ -463,7 +463,7 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="card">
+            <div class="card">
                 <div class="card-header bg-warning" id="headingTwo">
                     <h2 class="mb-0">
                         <button class="btn btn-link  text-dark btn-block text-left collapsed" type="button"
@@ -524,7 +524,7 @@
                         </div>
                     </div>
                 </div>
-            </div> --}}
+            </div>
 
             {{-- pemeriksaankhusus --}}
             <div class="card">
