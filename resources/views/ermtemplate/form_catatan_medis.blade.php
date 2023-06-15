@@ -3,6 +3,8 @@
     <div class="card-body">
         <button class="btn btn-warning mb-2 scanrm_liat" rm="{{ $rm }}" data-toggle="modal" data-target="#modalscan_rm"><i
                 class="bi bi-journal-text"></i> BERKAS RM SCAN</button>
+        <button class="btn btn-danger mb-2 liatberkasluar" rm="{{ $rm }}" data-toggle="modal" data-target="#modalberkasluar"><i
+                class="bi bi-journal-text"></i> BERKAS DARI LUAR</button>
         <div class="accordion" id="accordionExample">
             @foreach ($kunjungan as $k)
                 <div class="card">
@@ -574,6 +576,27 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalberkasluar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">BERKAS DARI LUAR</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="vberkasluar">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     $(".riwayatorderfarmasi").on('click', function(event) {
@@ -716,6 +739,27 @@
             success: function(response) {
                 spinner.hide();
                 $('.vrm_lama').html(response);
+            }
+        });
+    })
+    $(".liatberkasluar").on('click', function(event) {
+        rm = $(this).attr('rm')
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm
+            },
+            url: '<?= route('vberkasluar') ?>',
+            error: function(data) {
+                spinner.hide();
+                alert('error')
+            },
+            success: function(response) {
+                spinner.hide();
+                $('.vberkasluar').html(response);
             }
         });
     })

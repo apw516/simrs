@@ -252,120 +252,112 @@
                                             -30 hari )</td>
                                     </tr>
                                     <tr>
-                                        <td>Face</td>
+                                        <td>Ekspresi wajah</td>
                                         <td>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio"
-                                                    name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                <label class="form-check-label" for="inlineRadio1">Tidak ada
-                                                    ekspresi khusus , senyum</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio"
-                                                    name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                <label class="form-check-label" for="inlineRadio2">Menyeringai,
-                                                    Mengerutkan dahi, tampak tidak tertarik ( kadang - kadang
-                                                    )</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio"
-                                                    name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                <label class="form-check-label" for="inlineRadio2">Dagu
-                                                    gemetar,gerutu,berulang ( sering )</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Leg ( Posisi Kaki )</td>
-                                        <td>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio"
-                                                    name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                <label class="form-check-label" for="inlineRadio1">Posisi normal atau
-                                                    santai</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio"
-                                                    name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                <label class="form-check-label" for="inlineRadio2">Gelisah,
-                                                    tegang</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio"
-                                                    name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                <label class="form-check-label" for="inlineRadio2">Menendang, kaki
-                                                    tertekuk</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Activity</td>
-                                        <td>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio"
-                                                    name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                <label class="form-check-label" for="inlineRadio1">Berbaring tenang,
-                                                    posisi normal, gerakan mudah</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio"
-                                                    name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                <label class="form-check-label" for="inlineRadio2">Menggeliat, tidak
-                                                    bisa diam, tegang</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio"
-                                                    name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                <label class="form-check-label" for="inlineRadio2">Kaku atau
-                                                    tegang</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Cry ( Menangis )</td>
-                                        <td>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio"
-                                                    name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                <label class="form-check-label" for="inlineRadio1">Tidak
-                                                    menangis</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio"
-                                                    name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                <label class="form-check-label" for="inlineRadio2">Merintih, merengek,
-                                                    kadang - kadang mengeluh </label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio"
-                                                    name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                <label class="form-check-label" for="inlineRadio2">Terus menaning atau
-                                                    teriak</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Consolabity</td>
-                                        <td>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio"
-                                                    name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                    name="ekspresiwajah" id="ekspresiwajah" value="Rileks" checked>
                                                 <label class="form-check-label" for="inlineRadio1">Rileks</label>
                                             </div>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio"
-                                                    name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                <label class="form-check-label" for="inlineRadio2">Dapat ditengakan
-                                                    dengan sentuhan pelukan, bujukan, dialihkan</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio"
-                                                    name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                <label class="form-check-label" for="inlineRadio2">Sering mengeluh,
-                                                    sulit dibujuk</label>
+                                                    name="ekspresiwajah" id="ekspresiwajah" value="Meringis">
+                                                <label class="form-check-label" for="inlineRadio2">Meringis</label>
                                             </div>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td>Menangis</td>
+                                        <td>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                    name="Menangis" id="Menangis" value="Tidak menangis" checked>
+                                                <label class="form-check-label" for="inlineRadio1">Tidak menangis</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                    name="Menangis" id="Menangis" value="Meringis">
+                                                <label class="form-check-label" for="inlineRadio2">Meringis</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                    name="Menangis" id="Menangis" value="Menangis keras">
+                                                <label class="form-check-label" for="inlineRadio2">Menangis keras</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pola nafas</td>
+                                        <td>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                    name="polanafas" id="polanafas" value="Rileks" checked>
+                                                <label class="form-check-label" for="inlineRadio1">Rileks</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                    name="polanafas" id="polanafas" value="Perubahan pola nafas">
+                                                <label class="form-check-label" for="inlineRadio2">Perubahan pola nafas</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lengan</td>
+                                        <td>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                    name="Lengan" id="Lengan" value="Rileks" checked>
+                                                <label class="form-check-label" for="inlineRadio1">Rileks</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                    name="Lengan" id="Lengan" value="Fleksi">
+                                                <label class="form-check-label" for="inlineRadio2">Fleksi</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kaki</td>
+                                        <td>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                    name="Kaki" id="Kaki" value="Rileks" checked>
+                                                <label class="form-check-label" for="inlineRadio1">Rileks</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                    name="Kaki" id="Kaki" value="Fleksi">
+                                                <label class="form-check-label" for="inlineRadio2">Fleksi</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Keadaan terangsang</td>
+                                        <td>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                    name="Keadaan_terangsang" id="Keadaan_terangsang" value="-" checked>
+                                                <label class="form-check-label" for="inlineRadio2">-</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                    name="Keadaan_terangsang" id="Keadaan_terangsang" value="Tidur">
+                                                <label class="form-check-label" for="inlineRadio1">Tidur</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                    name="Keadaan_terangsang" id="Keadaan_terangsang" value="Bangun">
+                                                <label class="form-check-label" for="inlineRadio2">Bangun</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                    name="Keadaan_terangsang" id="Keadaan_terangsang" value="Rewel">
+                                                <label class="form-check-label" for="inlineRadio2">Rewel</label>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+
                                 </tbody>
                             </table>
                         </div>

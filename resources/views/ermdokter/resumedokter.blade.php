@@ -1605,7 +1605,7 @@
                         </div>
                     </div>
             @endif
-            <div class="card">
+            {{-- <div class="card">
                 <div class="card-header bg-info">Riwayat Upload</div>
                 <div class="card-body">
                     @if (count($riwayat_upload) > 0)
@@ -1630,7 +1630,7 @@
                         <h5>Tidak ada berkas yang diupload !</h5>
                     @endif
                 </div>
-            </div>
+            </div> --}}
             <div class="card">
                 <div class="card-header bg-danger">Riwayat Tindakan</div>
                 <div class="card-body">

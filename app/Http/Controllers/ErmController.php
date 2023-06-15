@@ -370,6 +370,12 @@ class ErmController extends Controller
             'Activity' => $dataSet['Activity'],
             'Cry' => $dataSet['Cry'],
             'Consolabity' => $dataSet['Consolabity'],
+            'ekspresiwajah' => $dataSet['ekspresiwajah'],
+            'menangis' =>$dataSet['Menangis'],
+            'polanafas' =>$dataSet['polanafas'],
+            'lengan' =>$dataSet['Lengan'],
+            'kaki' =>$dataSet['Kaki'],
+            'keadaanterangsang' =>$dataSet['Keadaan_terangsang'],
             'resikojatuh' => $dataSet['resikojatuh'],
             'Skrininggizi' => $dataSet['penurunanbb'],
             'beratskrininggizi' => $dataSet['beratpenurunan'],
@@ -3763,6 +3769,19 @@ AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$request->kodekunjungan]);
         } else {
             return view('ermtemplate.view_hasil_scan', compact(
                 ['cek']
+            ));
+        }
+    }
+    public function vberkasluar(Request $request)
+    {
+        $rm = $request->rm;
+        $cek = DB::select('select * from erm_upload_gambar where no_rm = ?', [$rm]);
+        $url = url('../../files/');
+        if (count($cek) == 0) {
+            echo "<h4 class='text-danger'> Tidak ada berkas dari luar yang diupload ...</h5>";
+        } else {
+            return view('ermtemplate.view_berkas_luar', compact(
+                ['cek','url']
             ));
         }
     }
