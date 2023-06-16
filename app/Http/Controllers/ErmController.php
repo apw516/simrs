@@ -676,6 +676,7 @@ class ErmController extends Controller
             'signature' => ''
         ];
         $nomorrm = $dataSet['nomorrm'];
+        $diagnosakerja = $dataSet['rencanakerja'];
         try {
             $data_k = [
                 'keluhanutama' =>  trim($dataSet['keluhanutama'])
@@ -1153,7 +1154,7 @@ class ErmController extends Controller
                         'pic' => auth()->user()->id,
                         'unit_pengirim' => auth()->user()->unit,
                         'tgl_periksa' => $this->get_now(),
-                        'diagnosa' => $kunjungan[0]->diagx,
+                        'diagnosa' => $diagnosakerja,
                         'dok_kirim' => auth()->user()->kode_paramedis,
                         'status_layanan' => '3',
                         'status_retur' => 'OPN',

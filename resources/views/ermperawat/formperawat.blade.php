@@ -58,6 +58,11 @@
                             <i class="fas fa-inbox mr-2"></i>Upload Berkas
                         </a>
                     </li>
+                     <li class="nav-item" id="pemeriksaan">
+                        <a href="#" class="nav-link" onclick="goto_suratkontrol()">
+                            <i class="fas fa-inbox mr-2"></i>Buat Surat Kontrol
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link" onclick="resume()">
                             <i class="fas fa-filter mr-2"></i> Resume
@@ -174,5 +179,9 @@
                 spinner.hide()
             }
         });
+    }
+    function goto_suratkontrol()
+    {
+        window.open("https://www.w3schools.com");
     }
 </script>
