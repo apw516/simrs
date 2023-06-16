@@ -4,7 +4,7 @@
         <button class="btn btn-warning mb-2 scanrm_liat" rm="{{ $rm }}" data-toggle="modal" data-target="#modalscan_rm"><i
                 class="bi bi-journal-text"></i> BERKAS RM SCAN</button>
         <button class="btn btn-danger mb-2 liatberkasluar" rm="{{ $rm }}" data-toggle="modal" data-target="#modalberkasluar"><i
-                class="bi bi-journal-text"></i> BERKAS DARI LUAR</button>
+                class="bi bi-journal-text"></i> BERKAS LAIN</button>
         <div class="accordion" id="accordionExample">
             @foreach ($kunjungan as $k)
                 <div class="card">
@@ -66,6 +66,10 @@
                                                     <tr>
                                                         <td class="text-bold font-italic">Keluhan Utama</td>
                                                         <td>{{ $k->keluhan_perawat }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-bold font-italic">Umur</td>
+                                                        <td>{{ $k->usia }} tahun</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="text-bold font-italic">Tekanan Darah</td>
@@ -328,15 +332,26 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="text-bold font-italic">Rencana Kerja</td>
-                                                        <td>{{ $k->rencanakerja }}</td>
+                                                        <td>{{ $k->rencanakerja }} <br>
+                                                            <button class="btn btn-warning riwayatorder mt-4"
+                                                            kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
+                                                            data-target="#modalriwayatorder">Riwayat Order Penunjang</button>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td class="text-bold font-italic">Tindakan Medis</td>
-                                                        <td>{{ $k->tindakanmedis }}</td>
+                                                        <td>{{ $k->tindakanmedis }}<br>
+                                                            <button class="btn btn-info riwayattindakan mt-4"
+                                                            kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
+                                                            data-target="#modalriwayattindakan">Riwayat Tindakan</button>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td class="text-bold font-italic">Order Farmasi</td>
-                                                        <td>{{ $k->resepobat }}</td>
+                                                        <td>  <button class="btn btn-warning riwayatorderfarmasi mt-4"
+                                                            kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
+                                                            data-target="#modalriwayatorderfarmasi">Riwayat Order
+                                                            Farmasi</button></td>
                                                     </tr>
                                                     <tr>
                                                         <td class="text-bold font-italic">Tindak Lanjut</td>
@@ -353,23 +368,19 @@
                                                         {{-- <img src="{{ $k->gambar_2 }}" alt=""><br><br> --}}
                                                     </div>
                                                 </div>
-                                                <button class="btn btn-info riwayattindakan mt-4"
+                                                {{-- <button class="btn btn-info riwayattindakan mt-4"
                                                     kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
-                                                    data-target="#modalriwayattindakan">Riwayat Tindakan</button>
+                                                    data-target="#modalriwayattindakan">Riwayat Tindakan</button> --}}
                                                 {{-- <button class="btn btn-danger hasilpemeriksaankhusus mt-4"
                                                     kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
                                                     data-target="#modalhasilpemeriksaankhusus">Hasil Pemeriksaan
                                                     Khusus</button> --}}
-                                                <button class="btn btn-success riwayatupload mt-4"
+                                                {{-- <button class="btn btn-success riwayatupload mt-4"
                                                     kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
-                                                    data-target="#modalriwayatupload">Riwayat Upload</button>
-                                                <button class="btn btn-warning riwayatorder mt-4"
+                                                    data-target="#modalriwayatupload">Riwayat Upload</button> --}}
+                                                {{-- <button class="btn btn-warning riwayatorder mt-4"
                                                     kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
-                                                    data-target="#modalriwayatorder">Riwayat Order Penunjang</button>
-                                                {{-- <button class="btn btn-warning riwayatorderfarmasi mt-4"
-                                                    kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
-                                                    data-target="#modalriwayatorderfarmasi">Riwayat Order
-                                                    Farmasi</button> --}}
+                                                    data-target="#modalriwayatorder">Riwayat Order Penunjang</button> --}}
                                                 <table class="table table-sm table-bordered mt-4">
                                                     <thead>
                                                         <th>Tanggal assesmen</th>

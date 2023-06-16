@@ -1,8 +1,8 @@
-<table id="tabelorder_farmasi" class="table table-sm table-hover">
+<table id="tabelorder_farmasi2" class="table table-sm table-hover">
     <thead>
         <th>Nama Obat</th>
-        <th>Jenis</th>
-        <th>Satuan</th>
+        {{-- <th>Jenis</th>
+        <th>Satuan</th> --}}
         <th>Jumlah</th>
         <th>Keterangan</th>
     </thead>
@@ -15,9 +15,9 @@
                         class="badge badge-danger returheader" data-toggle="tooltip" data-placement="top"
                         title="retur header ..."><i class="bi bi-trash"></i></button>
                         @endif
-                    {{ $r->nama_barang }}</td>
-                <td>{{ $r->kategori_resep }}</td>
-                <td>{{ $r->satuan_barang }}</td>
+                    {{ $r->kode_barang }}</td>
+                {{-- <td>{{ $r->kategori_resep }}</td>
+                <td>{{ $r->satuan_barang }}</td> --}}
                 <td>{{ $r->jumlah_layanan }}</td>
                 <td>{{ $r->aturan_pakai }}</td>
             </tr>
@@ -26,15 +26,15 @@
 </table>
 <script>
     $(function() {
-        $("#tabelorder_farmasi").DataTable({
+        $("#tabelorder_farmasi2").DataTable({
             "responsive": false,
             "lengthChange": false,
-            "pageLength": 10,
+            "pageLength": 5,
             "autoWidth": false,
             "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
         });
     });
-    $('#tabelorder_farmasi').on('click', '.returheader', function() {
+    $('#tabelorder_farmasi2').on('click', '.returheader', function() {
         idheader = $(this).attr('id')
         kodelayananheader = $(this).attr('kodelayananheader')
         Swal.fire({

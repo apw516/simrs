@@ -444,16 +444,16 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="text-bold font-italic"></td>
+                                        <td class="text-bold font-italic">Umur</td>
                                         <td>
-                                            {{-- <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Suhu tubuh pasien ..."
-                                                aria-label="Suhu tubuh pasien" name="suhutubuh" id="suhutubuh"
-                                                aria-describedby="basic-addon2">
+                                            <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Umur pasien ..."
+                                                aria-label="Suhu tubuh pasien" name="usia" id="usia"
+                                                aria-describedby="basic-addon2" value="{{ $usiatahun }}">
                                             <div class="input-group-append">
-                                                <span class="input-group-text" id="basic-addon2">°C</span>
+                                                <span class="input-group-text" id="basic-addon2"></span>
                                             </div>
-                                        </div> --}}
+                                        </div>
                                         </td>
                                     </tr>
                                     <tr>

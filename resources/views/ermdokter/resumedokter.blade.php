@@ -12,6 +12,10 @@
                     <td colspan="3">{{ $resume[0]->keluhan_pasien }}</td>
                 </tr>
                 <tr>
+                    <td>Umur</td>
+                    <td colspan="3">{{ $resume[0]->umur }} tahun</td>
+                </tr>
+                <tr>
                     <td colspan="4">Tanda - Tanda Vital</td>
                 </tr>
                 <tr>
@@ -157,7 +161,30 @@
                 </tr>
                 <tr>
                     <td>Order Farmasi</td>
-                    <td colspan="3">{{ $resume[0]->resepobat }}</td>
+                    <td colspan="3">
+                        <table id="tabelorder_farmasi" class="table table-sm table-hover">
+                            <thead>
+                                <th>Nama Obat</th>
+                                <th>Jenis</th>
+                                <th>Satuan</th>
+                                <th>Jumlah</th>
+                                <th>Keterangan</th>
+                            </thead>
+                            <tbody>
+                                @foreach ($riwayat_order_f as $r)
+                                    @if ($r->status_layanan_header != '3')
+                                        <tr>
+                                            <td>{{ $r->kode_barang }}</td>
+                                            <td>{{ $r->kategori_resep }}</td>
+                                            <td>{{ $r->satuan_barang }}</td>
+                                            <td>{{ $r->jumlah_layanan }}</td>
+                                            <td>{{ $r->aturan_pakai }}</td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </td>
                 </tr>
                 <tr>
                     <td>Tindak Lanjut</td>
@@ -1684,28 +1711,7 @@
             {{-- <div class="card">
                 <div class="card-header bg-danger">Riwayat Order Farmasi</div>
                 <div class="card-body">
-                    <table id="tabelorder_farmasi" class="table table-sm table-hover">
-                        <thead>
-                            <th>Nama Obat</th>
-                            <th>Jenis</th>
-                            <th>Satuan</th>
-                            <th>Jumlah</th>
-                            <th>Keterangan</th>
-                        </thead>
-                        <tbody>
-                            @foreach ($riwayat_order_f as $r)
-                                @if ($r->status_layanan_header != '3')
-                                    <tr>
-                                        <td>{{ $r->nama_barang }}</td>
-                                        <td>{{ $r->kategori_resep }}</td>
-                                        <td>{{ $r->satuan_barang }}</td>
-                                        <td>{{ $r->jumlah_layanan }}</td>
-                                        <td>{{ $r->aturan_pakai }}</td>
-                                    </tr>
-                                @endif
-                            @endforeach
-                        </tbody>
-                    </table>
+
                 </div>
             </div> --}}
             {{-- <table class="table mt-4">

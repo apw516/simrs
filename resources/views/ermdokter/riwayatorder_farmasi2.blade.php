@@ -1,17 +1,13 @@
 <table id="tabelorder_farmasi" class="table table-sm table-hover">
     <thead>
         <th>Nama Obat</th>
-        <th>Jenis</th>
-        <th>Satuan</th>
         <th>Jumlah</th>
         <th>Keterangan</th>
     </thead>
     <tbody>
         @foreach ($riwayat_order as $r)
             <tr @if($r->status_layanan_header == '3') class="bg-danger"  @endif>
-                <td>{{ $r->nama_barang }}</td>
-                <td>{{ $r->kategori_resep }}</td>
-                <td>{{ $r->satuan_barang }}</td>
+                <td>{{ $r->kode_barang }}</td>
                 <td>{{ $r->jumlah_layanan }}</td>
                 <td>{{ $r->aturan_pakai }}</td>
             </tr>

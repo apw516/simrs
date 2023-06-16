@@ -110,7 +110,7 @@
                               </p>
                           </a>
                       </li>
-                      <li class="nav-item">
+                      {{-- <li class="nav-item">
                           <a href="{{ route('menucaripasien') }}"
                               class="nav-link @if ($title == 'SIMRS - PENCARIAN PASIEN') active @endif">
                               <i class="nav-icon fas fa-th"></i>
@@ -118,7 +118,7 @@
                                   Buka Kunjungan
                               </p>
                           </a>
-                      </li>
+                      </li> --}}
                       {{-- <li class="nav-item">
                     <a href="{{ route('Billing') }}" class="nav-link @if ($sidebar == '2') active @endif">
                         <i class="nav-icon fas fa-th"></i>

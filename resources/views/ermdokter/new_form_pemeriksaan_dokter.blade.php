@@ -283,9 +283,16 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="text-bold font-italic"></td>
+                        <td class="text-bold font-italic">Umur</td>
                         <td>
-
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Umur pasien ..."
+                                    aria-label="Suhu tubuh pasien" name="usia" id="usia"
+                                    aria-describedby="basic-addon2" value="{{ $resume_perawat[0]->usia }}">
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="basic-addon2"></span>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -357,7 +364,7 @@
                 </tbody>
             </table>
         </form>
-        <form action="" class="formfarmasi">
+        {{-- <form action="" class="formfarmasi">
             <div class="card">
                 <div class="card-header bg-light">Order Farmasi <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate" onclick="ambilresep()">Template
                         resep</button></div>
@@ -373,7 +380,29 @@
                     </div>
                 </div>
             </div>
-        </form>
+        </form> --}}
+        <div class="card">
+            <div class="card-header bg-light">Order Farmasi <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate" onclick="ambilresep()">Template resep</button></div>
+            <div class="card-body">
+                <div class="form-group mt-2">
+                    <button type="button" class="btn btn-success tambahobat" onclick="addform()">+ Tambah Obat</button>
+                </div>
+                <form action="" method="post" class="arrayobat">
+                <div class="formobatfarmasi2">
+
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input"
+                        id="simpantemplate" onclick="showname()">
+                    <label class="form-check-label" for="exampleCheck1">ceklis, untuk
+                        simpan
+                        resep sebagai template</label>
+                </div>
+                <input hidden type="text" class="form-control col-md-3 mb-3"
+                    id="namaresep" name="namaresep" placeholder="isi nama resep ...">
+                </form>
+            </div>
+        </div>
         <form action="" class="formtindaklanjut">
             <div class="card">
                 <div class="card-header bg-secondary">Tindak Lanjut</div>
@@ -1647,7 +1676,6 @@
             todayHighlight: true,
         }).datepicker('update', new Date());
     });
-
     function simpanhasil() {
         var canvas1 = document.getElementById("myCanvas1");
         var ctx1 = canvas1.getContext("2d");
@@ -1659,6 +1687,7 @@
         var data = $('.formpemeriksaandokter').serializeArray();
         var datatindakan = $('.formtindakan').serializeArray();
         var formobat_farmasi = $('.formobat_farmasi').serializeArray();
+        var formobatfarmasi2 = $('.arrayobat').serializeArray();
         var datatindaklanjut = $('.formtindaklanjut').serializeArray();
         var formpemeriksaankhusus = $('.formpemeriksaankhusus').serializeArray();
         var formtelingakanan = $('.formtelingakanan').serializeArray();
@@ -1668,7 +1697,7 @@
         var formhidungkiri = $('.formhidungkiri').serializeArray();
         var formkesimpulanhidung = $('.formkesimpulanhidung').serializeArray();
         var simpantemplate = $('#simpantemplate:checked').val()
-        var resepobat = $('#resepobat').val()
+        var namaresep = $('#namaresep').val()
         var kodekunjungan = $('#kodekunjungan').val()
         spinner = $('#loader')
         spinner.show();
@@ -1682,9 +1711,10 @@
                 datatindakan: JSON.stringify(datatindakan),
                 datatindaklanjut: JSON.stringify(datatindaklanjut),
                 formobat_farmasi: JSON.stringify(formobat_farmasi),
+                formobatfarmasi2: JSON.stringify(formobatfarmasi2),
                 formpemeriksaankhusus: JSON.stringify(formpemeriksaankhusus),
                 simpantemplate,
-                resepobat,
+                namaresep,
                 kodekunjungan,
                 gambar,
                 formtelingakanan: JSON.stringify(formtelingakanan),
@@ -1725,6 +1755,7 @@
             }
         });
     }
+
     $(".showmodalicdkerja").click(function() {
         spinner = $('#loader');
         spinner.show();
@@ -1785,14 +1816,10 @@
             }
         });
     });
-
     function batalisi() {
         rm = $('#nomorrm').val()
         formcatatanmedis(rm)
     }
-
-
-
     $(function() {
         $("#tabeltindakan").DataTable({
             "responsive": false,
@@ -1842,9 +1869,6 @@
         }
 
     });
-
-
-
     function showname() {
         a = $('#simpantemplate:checked').val()
         if (a == 'on') {
@@ -1917,7 +1941,6 @@
             }
         });
     }
-
     function ambilgambar() {
         $.ajax({
             type: 'post',
@@ -1933,6 +1956,24 @@
                 $('.gambar1').html(response)
             }
         });
+    }
+    function addform()
+    {
+        var max_fields = 10;
+        var wrapper = $(".formobatfarmasi2"); //Fields wrapper
+        var x = 1
+        if (x < max_fields) { //max input box allowed
+                x++; //text box increment
+                $(wrapper).append(
+                    '<div class="form-row text-xs"><div class="form-group col-md-2"><label for="">Nama Obat</label><input type="" class="form-control form-control-sm text-xs" id="" name="namaobat" value=""><input hidden readonly type="" class="form-control form-control-sm" id="" name="kodebarang" value="""></div><div class="form-group col-md-2"><label for="inputPassword4">Aturan Pakai</label><input type="" class="form-control form-control-sm" id="" name="aturanpakai" value=""></div><div class="form-group col-md-1"><label for="inputPassword4">Jumlah</label><input type="" class="form-control form-control-sm" id="" name="jumlah" value="0"></div><div class="form-group col-md-1"><label for="inputPassword4">Signa</label><input type="" class="form-control form-control-sm" id="" name="signa" value="0"></div><div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type="" class="form-control form-control-sm" id="" name="keterangan" value=""></div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i></div>'
+                );
+                $(wrapper).on("click", ".remove_field", function(e) { //user click on remove
+                    kode = $(this).attr('kode2')
+                    e.preventDefault();
+                    $(this).parent('div').remove();
+                    x--;
+                })
+            }
     }
 </script>
 <script src="{{ asset('public/marker/markerjs2.js') }}"></script>

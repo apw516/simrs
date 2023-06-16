@@ -3600,4 +3600,10 @@ class SimrsController extends Controller
         $update = ts_kunjungan::where('kode_kunjungan', $request->kode)->update($data);
         echo json_encode('ok');
     }
+    public function kontakkami(){
+        $title = 'SIRAMAH';
+        $sidebar = '2';
+        $sidebar_m = '2';
+        return view('kontakkami.index', compact(['title','sidebar','sidebar_m']));
+    }
 }

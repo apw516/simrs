@@ -14,6 +14,10 @@
                         <td class="text-bold">Keluhan Utama</td>
                         <td class="font-italic">{{ $resume[0]->keluhanutama }}</td>
                     </tr>
+                    <tr>
+                        <td class="text-bold">Umur</td>
+                        <td class="font-italic">{{ $resume[0]->usia }} tahun</td>
+                    </tr>
                 </table>
                 <table class="table text-sm">
                     <thead>

@@ -94,6 +94,8 @@ Route::post('/simpangambar_igd', [ErmController::class, 'simpangambarbebas'])
     ->name('simpangambar_igd'); //sidebar
 Route::post('/gambarcatatan', [ErmController::class, 'gambarcatatan'])
     ->name('gambarcatatan'); //sidebar
+Route::get('/kontakkami', [SimrsController::class, 'kontakkami'])
+    ->name('kontakkami'); //sidebar
 
 
 //reloadorder
