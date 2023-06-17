@@ -42,6 +42,17 @@ class ErmController extends Controller
             'sidebar_m'
         ]));
     }
+    public function indexdokter_ro(Request $request)
+    {
+        $title = 'SIMRS - ERM';
+        $sidebar = 'ermdokter_ro';
+        $sidebar_m = '2';
+        return view('ermdokter.index', compact([
+            'title',
+            'sidebar',
+            'sidebar_m'
+        ]));
+    }
     public function indexPerawat(Request $request)
     {
         $title = 'SIMRS - ERM';
@@ -78,7 +89,7 @@ class ErmController extends Controller
                 'pasienigd'
             ]));
         } else {
-            $pasienpoli = DB::select('SELECT IFNULL(d.nomorantrean, TIME(a.`tgl_masuk`)) AS antrian,d.`nomorantrean`,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan LEFT OUTER JOIN jkn_antrian d ON a.`kode_kunjungan` = d.`kode_kunjungan`
+            $pasienpoli = DB::select('SELECT IFNULL(d.nomorantrean, TIME(a.`tgl_masuk`)) AS antrian,d.`nomorantrean`,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,b.namapemeriksa,c.nama_dokter,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan LEFT OUTER JOIN jkn_antrian d ON a.`kode_kunjungan` = d.`kode_kunjungan`
              WHERE a.`kode_unit` = ? AND DATE(a.tgl_masuk) BETWEEN ? AND ?', [
                 auth()->user()->unit, $request->tgl_awal, $request->tgl_akhir
             ]);
@@ -89,23 +100,41 @@ class ErmController extends Controller
     }
     public function ambildatapasienpoli_dokter()
     {
-        $pasienpoli = DB::select('SELECT b.namapemeriksa,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok,c.nama_dokter as nama_dokter,c.pic as id_dokter FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan WHERE a.status_kunjungan = ? AND DATE(a.tgl_masuk) =  CURDATE() AND a.`kode_unit` = ?', [
-            '1', auth()->user()->unit
-        ]);
 
-        return view('ermtemplate.tabelpasien_dokter', compact([
-            'pasienpoli'
-        ]));
+        if(auth()->user()->hak_akses == 7){
+            $pasienpoli = DB::select('SELECT b.namapemeriksa,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok,d.id AS id_pk,c.nama_dokter as nama_dokter,c.pic as id_dokter FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan LEFT OUTER JOIN erm_mata_kanan_kiri d ON b.`id` = d.id_asskep WHERE a.status_kunjungan = ? AND DATE(a.tgl_masuk) =  CURDATE() AND a.`kode_unit` = ?', [
+                '1', auth()->user()->unit
+            ]);
+            return view('ermtemplate.tabelpasien_dokter_ro', compact([
+                'pasienpoli'
+            ]));
+        }else{
+            $pasienpoli = DB::select('SELECT b.namapemeriksa,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok,c.nama_dokter as nama_dokter,c.pic as id_dokter FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan WHERE a.status_kunjungan = ? AND DATE(a.tgl_masuk) =  CURDATE() AND a.`kode_unit` = ?', [
+                '1', auth()->user()->unit
+            ]);
+            return view('ermtemplate.tabelpasien_dokter', compact([
+                'pasienpoli'
+            ]));
+        }
     }
     public function ambildatapasienpoli_dokter_cari(Request $request)
     {
-        $pasienpoli = DB::select('SELECT a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok,c.nama_dokter as nama_dokter,c.pic as id_dokter FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan WHERE a.`kode_unit` = ? AND DATE(a.tgl_masuk) BETWEEN ? AND ?', [
-            auth()->user()->unit, $request->tgl_awal, $request->tgl_akhir
-        ]);
 
-        return view('ermtemplate.tabelpasien_dokter', compact([
-            'pasienpoli'
-        ]));
+        if(auth()->user()->hak_akses == 7){
+            $pasienpoli = DB::select('SELECT b.namapemeriksa,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok,d.id AS id_pk,c.nama_dokter as nama_dokter,c.pic as id_dokter FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan LEFT OUTER JOIN erm_mata_kanan_kiri d ON b.`id` = d.id_asskep  WHERE a.`kode_unit` = ? AND DATE(a.tgl_masuk) BETWEEN ? AND ?', [
+                auth()->user()->unit, $request->tgl_awal, $request->tgl_akhir
+            ]);
+            return view('ermtemplate.tabelpasien_dokter_ro', compact([
+                'pasienpoli'
+            ]));
+        }else{
+            $pasienpoli = DB::select('SELECT b.namapemeriksa,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok,c.nama_dokter as nama_dokter,c.pic as id_dokter FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan WHERE a.`kode_unit` = ? AND DATE(a.tgl_masuk) BETWEEN ? AND ?', [
+                auth()->user()->unit, $request->tgl_awal, $request->tgl_akhir
+            ]);
+            return view('ermtemplate.tabelpasien_dokter', compact([
+                'pasienpoli'
+            ]));
+        }
     }
     public function ambildetailpasien_dokter(Request $request)
     {
@@ -115,12 +144,21 @@ class ErmController extends Controller
         $unit = auth()->user()->unit;
         $last_assdok = DB::select('SELECT * FROM assesmen_dokters
         WHERE id = (SELECT MAX(id) FROM assesmen_dokters WHERE id_pasien = ? AND kode_unit = ? ) AND id_pasien = ? AND kode_unit = ?', [$request->rm, $unit, $request->rm, $unit]);
-        return view('ermdokter.formdokter', compact([
-            'mt_pasien',
-            'kunjungan',
-            'pic',
-            'last_assdok'
-        ]));
+        if(auth()->user()->hak_akses == 7){
+            return view('ermperawat.form_ro_mata',compact([
+                'mt_pasien',
+                'kunjungan',
+                'pic',
+                'last_assdok'
+            ]));
+        }else{
+            return view('ermdokter.formdokter', compact([
+                'mt_pasien',
+                'kunjungan',
+                'pic',
+                'last_assdok'
+            ]));
+        }
     }
     public function ambildetailpasien(Request $request)
     {
@@ -145,6 +183,84 @@ class ErmController extends Controller
             'kunjungan',
             'rm'
         ]));
+    }
+    public function form_pemeriksaan_ro(Request $request)
+    {
+        $resume_perawat = DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE kode_kunjungan = ?', [$request->kodekunjungan]);
+        if(count($resume_perawat) > 0){
+            $hasil_ro = DB::select('SELECT * from erm_mata_kanan_kiri WHERE id_asskep = ?', [$resume_perawat[0]->id]);
+        }else{
+            $hasil_ro = [];
+        }
+        return view('ermperawat.isi_form_ro',compact(['resume_perawat','hasil_ro']));
+    }
+    public function simpanpemeriksaan_ro(Request $request)
+    {
+        $data = json_decode($_POST['formro'], true);
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+        $kodekunjungan = $dataSet['kodekunjungan'];
+        $id = $dataSet['idassesmen'];
+        $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$kodekunjungan]);
+        $datamata = [
+            'no_rm' => $kunjungan[0]->no_rm,
+            'kode_kunjungan' => $kodekunjungan,
+            'id_asskep' => $id,
+            'tgl_entry' => $this->get_now(),
+            'status' => '0',
+            'vd_od' => $dataSet['od_visus_dasar'],
+            'vd_od_pinhole' => $dataSet['od_pinhole_visus_dasar'],
+            'vd_os' => $dataSet['os_visus_dasar'],
+            'vd_os_pinhole' => $dataSet['os_pinhole_visus_dasar'],
+            'refraktometer_od_sph' => $dataSet['od_sph_refraktometer'],
+            'refraktometer_od_cyl' => $dataSet['od_cyl_refraktometer'],
+            'refraktometer_od_x' => $dataSet['od_x_refraktometer'],
+            'refraktometer_os_sph' => $dataSet['os_sph_refraktometer'],
+            'refraktometer_os_cyl' => $dataSet['os_cyl_refraktometer'],
+            'refraktometer_os_x' => $dataSet['os_x_refraktometer'],
+            'Lensometer_od_sph' => $dataSet['od_sph_Lensometer'],
+            'Lensometer_od_cyl' => $dataSet['od_cyl_Lensometer'],
+            'Lensometer_od_x' => $dataSet['od_x_Lensometer'],
+            'Lensometer_os_sph' => $dataSet['os_sph_Lensometer'],
+            'Lensometer_os_cyl' => $dataSet['os_cyl_Lensometer'],
+            'Lensometer_os_x' => $dataSet['os_x_Lensometer'],
+            'koreksipenglihatan_vod_sph' => $dataSet['vod_sph_kpj'],
+            'koreksipenglihatan_vod_cyl' => $dataSet['vod_cyl_kpj'],
+            'koreksipenglihatan_vod_x' => $dataSet['vod_x_kpj'],
+            'koreksipenglihatan_vos_sph' => $dataSet['vos_sph_kpj'],
+            'koreksipenglihatan_vos_cyl' => $dataSet['vos_cyl_kpj'],
+            'koreksipenglihatan_vos_x' => $dataSet['vos_x_kpj'],
+            'tajampenglihatandekat' => $dataSet['penglihatan_dekat'],
+            'tekananintraokular' => $dataSet['tekanan_intra_okular'],
+            'catatanpemeriksaanlain' => $dataSet['catatan_pemeriksaan_lainnya'],
+            'palpebra' => $dataSet['palpebra'],
+            'konjungtiva' => $dataSet['konjungtiva'],
+            'kornea' => $dataSet['kornea'],
+            'bilikmatadepan' => $dataSet['bilik_mata_depan'],
+            'pupil' => $dataSet['pupil'],
+            'iris' => $dataSet['iris'],
+            'lensa' => $dataSet['lensa'],
+            'funduskopi' => $dataSet['funduskopi'],
+            'status_oftamologis_khusus' => $dataSet['oftamologis'],
+            'masalahmedis' => $dataSet['masalahmedis'],
+            'prognosis' => $dataSet['prognosis'],
+        ];
+        $cekmata = DB::select('select * from erm_mata_kanan_kiri where id_asskep = ?', [$id]);
+        if (count($cekmata) > 0) {
+            erm_mata_kanan_kiri::whereRaw('id_asskep = ?', array($id))->update($datamata);
+        } else {
+            erm_mata_kanan_kiri::create($datamata);
+        }
+
+        $data = [
+            'kode' => 200,
+            'message' => 'Data berhasil disimpan !'
+        ];
+        echo json_encode($data);
+        die;
     }
     public function formpemeriksaan_perawat(Request $request)
     {
@@ -210,13 +326,19 @@ class ErmController extends Controller
             } else if ($resume_perawat[0]->status == 0) {
                 return view('ermtemplate.datatidakditemukan');
             } else {
+                if($unit == '1014'){
+                    $hasil_ro = DB::select('select * from erm_mata_kanan_kiri where id_asskep = ? ', [$resume_perawat[0]->id]);
+                }else{
+                    $hasil_ro = [];
+                }
                 return view('ermdokter.new_form_pemeriksaan_dokter', compact([
                     'kunjungan',
                     'resume_perawat',
                     'layanan',
                     'last_assdok',
                     'first_assdok',
-                    'penyakit'
+                    'penyakit',
+                    'hasil_ro'
                 ]));
             }
         } else {
@@ -546,7 +668,7 @@ class ErmController extends Controller
             $value =  $nama['value'];
             $dataSet[$index] = $value;
         }
-
+        $id_asskep = $dataSet['idasskep'];
         $diagnosakerja = preg_replace("/[^A-Za-z]/", "", $dataSet['diagnosakerja']);
         $cekdiagnosa =  strlen($diagnosakerja);
         $cekorderfarmasi = preg_replace("/[^A-Za-z]/", "", $request->resepobat);
@@ -1254,10 +1376,12 @@ class ErmController extends Controller
                     'status_oftamologis_khusus' => $dataSet['oftamologis'],
                     'masalahmedis' => $dataSet['masalahmedis'],
                     'prognosis' => $dataSet['prognosis'],
+                    'id_asskep' =>  $id_asskep
                 ];
-                $cekmata = DB::select('select * from erm_mata_kanan_kiri where id_assesmen_dokter = ?', [$id_assesmen]);
+
+                $cekmata = DB::select('select * from erm_mata_kanan_kiri where id_asskep = ?', [$id_asskep]);
                 if (count($cekmata) > 0) {
-                    erm_mata_kanan_kiri::whereRaw('id_assesmen_dokter = ?', array($request->idassesmen))->update($datamata);
+                    erm_mata_kanan_kiri::whereRaw('id_asskep = ?', array($id_asskep))->update($datamata);
                 } else {
                     erm_mata_kanan_kiri::create($datamata);
                 }

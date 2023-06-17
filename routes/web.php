@@ -454,9 +454,15 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
     Route::post('/hapusgambarupload', [ErmController::class, 'hapusgambarupload'])
         ->name('hapusgambarupload'); //sidebar
 });
-Route::group(['middleware' => ['auth', 'hak_akses1:5']], function () {
+Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
     Route::get('/indexdokter', [ErmController::class, 'indexdokter'])
         ->name('indexdokter'); //sidebar
+    Route::get('/indexdokter_ro', [ErmController::class, 'indexdokter_ro'])
+        ->name('indexdokter_ro'); //sidebar
+    Route::post('/form_pemeriksaan_ro', [ErmController::class, 'form_pemeriksaan_ro'])
+        ->name('form_pemeriksaan_ro'); //sidebar
+    Route::post('/simpanpemeriksaan_ro', [ErmController::class, 'simpanpemeriksaan_ro'])
+        ->name('simpanpemeriksaan_ro'); //sidebar
     Route::post('/ambildatapasienpoli_dokter', [ErmController::class, 'ambildatapasienpoli_dokter'])
         ->name('ambildatapasienpoli_dokter'); //sidebar
     Route::post('/ambildatapasienpoli_dokter_cari', [ErmController::class, 'ambildatapasienpoli_dokter_cari'])

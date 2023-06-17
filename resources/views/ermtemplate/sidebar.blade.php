@@ -62,6 +62,16 @@
                     </a>
                 </li>
                 @endif
+                @if(auth()->user()->hak_akses == 1 || auth()->user()->hak_akses == 7 )
+                  <li class="nav-item">
+                    <a href="{{ route('indexdokter_ro') }}" class="nav-link @if($sidebar == 'ermdokter_ro') active @endif">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            RO MATA
+                        </p>
+                    </a>
+                </li>
+                @endif
                 @if(auth()->user()->hak_akses == 1 || auth()->user()->hak_akses == 4  || auth()->user()->hak_akses == 5 )
                   {{-- <li class="nav-item">
                     <a href="{{ route('indexpelayanandokter') }}" class="nav-link @if($sidebar == 'pelayanandokter') active @endif">

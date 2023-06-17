@@ -182,6 +182,6 @@
     }
     function goto_suratkontrol()
     {
-        window.open("https://www.w3schools.com");
+        window.open("http://192.168.2.30/siramah/kunjunganPoliklinik");
     }
 </script>

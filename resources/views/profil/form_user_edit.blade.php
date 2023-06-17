@@ -21,6 +21,7 @@
             <option value="4" @if($datauser[0]->hak_akses == 4) selected @endif>PERAWAT POLIKLINIK</option>2
             <option value="5" @if($datauser[0]->hak_akses == 5) selected @endif>DOKTER</option>
             <option value="6" @if($datauser[0]->hak_akses == 6) selected @endif>ADMIN PENUNJANG</option>
+            <option value="6" @if($datauser[0]->hak_akses == 7) selected @endif>RO MATA</option>
             <option value="9" @if($datauser[0]->hak_akses == 9) selected @endif>ADMIN RANAP</option>
             {{-- <option value="99">5</option> --}}
         </select>
