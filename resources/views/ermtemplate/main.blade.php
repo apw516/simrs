@@ -59,7 +59,8 @@
     </style>
 </head>
 
-<body id="my" class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<body id="my" class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed sidebar-collapse">
+    <div class="wrapper">">
     <div class="preloader" id="loader">
         <div class="loading">
             <img src="{{ asset('public/img/fb.gif') }}" width="80">
