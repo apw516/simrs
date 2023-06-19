@@ -325,7 +325,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="text-bold font-italic">Rencana Kerja</td>
+                        <td class="text-bold font-italic">Rencana Terapi </td>
                         <td colspan="3">
                             <textarea class="form-control" name="rencanakerja">{{ $resume[0]->rencanakerja }}</textarea>
                         </td>
@@ -352,6 +352,7 @@
                     <button type="button" class="btn btn-success tambahobat" onclick="addform()">+ Tambah
                         Obat</button>
                 </div>
+                <input hidden type="text" value="" id="jumlahform">
                 <form action="" method="post" class="arrayobat">
                     <div class="formobatfarmasi2">
 
@@ -3417,14 +3418,42 @@
 
     });
 
+    // function addform() {
+    //     var max_fields = 10;
+    //     var wrapper = $(".formobatfarmasi2"); //Fields wrapper
+    //     var x = 1
+    //     if (x < max_fields) { //max input box allowed
+    //         x++; //text box increment
+    //         $(wrapper).append(
+    //             '<div class="form-row text-xs"><div class="form-group col-md-2"><label for="">Nama Obat</label><input type="" class="form-control form-control-sm text-xs" id="" name="namaobat" value=""><input hidden readonly type="" class="form-control form-control-sm" id="" name="kodebarang" value="""></div><div class="form-group col-md-2"><label for="inputPassword4">Aturan Pakai</label><input type="" class="form-control form-control-sm" id="" name="aturanpakai" value=""></div><div class="form-group col-md-1"><label for="inputPassword4">Jumlah</label><input type="" class="form-control form-control-sm" id="" name="jumlah" value="0"></div><div class="form-group col-md-1"><label for="inputPassword4">Signa</label><input type="" class="form-control form-control-sm" id="" name="signa" value="0"></div><div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type="" class="form-control form-control-sm" id="" name="keterangan" value=""></div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i></div>'
+    //         );
+    //         $(wrapper).on("click", ".remove_field", function(e) { //user click on remove
+    //             kode = $(this).attr('kode2')
+    //             e.preventDefault();
+    //             $(this).parent('div').remove();
+    //             x--;
+    //         })
+    //     }
+    // }
+
     function addform() {
         var max_fields = 10;
         var wrapper = $(".formobatfarmasi2"); //Fields wrapper
         var x = 1
+        jlh = $('#jumlahform').val()
+        cek = document.getElementById('jumlahform').value
+        if (cek === '') {
+            jlh1 = $('#jumlahform').val(1)
+        } else {
+            cek = parseInt(document.getElementById('jumlahform').value)
+            jlh2 = $('#jumlahform').val(cek + 1)
+        }
+        nomor = parseInt(document.getElementById('jumlahform').value)
         if (x < max_fields) { //max input box allowed
-            x++; //text box increment
+            nama = 'namaobat'+nomor
+            aturan = 'aturanpakai'+nomor
             $(wrapper).append(
-                '<div class="form-row text-xs"><div class="form-group col-md-2"><label for="">Nama Obat</label><input type="" class="form-control form-control-sm text-xs" id="" name="namaobat" value=""><input hidden readonly type="" class="form-control form-control-sm" id="" name="kodebarang" value="""></div><div class="form-group col-md-2"><label for="inputPassword4">Aturan Pakai</label><input type="" class="form-control form-control-sm" id="" name="aturanpakai" value=""></div><div class="form-group col-md-1"><label for="inputPassword4">Jumlah</label><input type="" class="form-control form-control-sm" id="" name="jumlah" value="0"></div><div class="form-group col-md-1"><label for="inputPassword4">Signa</label><input type="" class="form-control form-control-sm" id="" name="signa" value="0"></div><div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type="" class="form-control form-control-sm" id="" name="keterangan" value=""></div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i></div>'
+                '<div class="form-row text-xs"><div class="form-group col-md-2"><label for="">Nama Obat</label><input type="" class="form-control form-control-sm text-xs" id="'+nama+'" name="namaobat" value=""><input hidden readonly type="" class="form-control form-control-sm" id="" name="kodebarang" value="""></div><div class="form-group col-md-2"><label for="inputPassword4">Aturan Pakai</label><input type="" class="form-control form-control-sm" id="'+ aturan +'" name="aturanpakai" value=""></div><div class="form-group col-md-1"><label for="inputPassword4">Jumlah</label><input type="" class="form-control form-control-sm" id="" name="jumlah" value="0"></div><div class="form-group col-md-1"><label for="inputPassword4">Signa</label><input type="" class="form-control form-control-sm" id="" name="signa" value="0"></div><div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type="" class="form-control form-control-sm" id="" name="keterangan" value=""></div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i></div>'
             );
             $(wrapper).on("click", ".remove_field", function(e) { //user click on remove
                 kode = $(this).attr('kode2')
@@ -3432,6 +3461,13 @@
                 $(this).parent('div').remove();
                 x--;
             })
+            $('#'+nama).autocomplete({
+                source: "<?= route('cariobat') ?>",
+                select: function(event, ui) {
+                    $('[id="namaobat"]').val(ui.item.label);
+                    $('[id="'+aturan+'"]').val(ui.item.aturan);
+                }
+            });
         }
     }
 

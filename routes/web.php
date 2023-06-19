@@ -455,6 +455,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('hapusgambarupload'); //sidebar
 });
 Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
+    Route::get('/cariobat', [ErmController::class, 'cariobat_form'])
+    ->name('cariobat'); //formpasien_bpjs
     Route::get('/indexdokter', [ErmController::class, 'indexdokter'])
         ->name('indexdokter'); //sidebar
     Route::get('/indexdokter_ro', [ErmController::class, 'indexdokter_ro'])

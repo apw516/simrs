@@ -350,7 +350,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="text-bold font-italic">Rencana Kerja</td>
+                        <td class="text-bold font-italic">Rencana Terapi</td>
                         <td colspan="3">
                             <textarea class="form-control" name="rencanakerja"></textarea>
                         </td>
@@ -382,24 +382,27 @@
             </div>
         </form> --}}
         <div class="card">
-            <div class="card-header bg-light">Order Farmasi <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate" onclick="ambilresep()">Template resep</button></div>
+            <div class="card-header bg-light">Order Farmasi <button type="button"
+                    class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
+                    onclick="ambilresep()">Template resep</button></div>
             <div class="card-body">
                 <div class="form-group mt-2">
-                    <button type="button" class="btn btn-success tambahobat" onclick="addform()">+ Tambah Obat</button>
+                    <button type="button" class="btn btn-success tambahobat" onclick="addform()">+ Tambah
+                        Obat</button>
                 </div>
+                <input hidden type="text" value="" id="jumlahform">
                 <form action="" method="post" class="arrayobat">
-                <div class="formobatfarmasi2">
+                    <div class="formobatfarmasi2">
 
-                </div>
-                <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input"
-                        id="simpantemplate" onclick="showname()">
-                    <label class="form-check-label" for="exampleCheck1">ceklis, untuk
-                        simpan
-                        resep sebagai template</label>
-                </div>
-                <input hidden type="text" class="form-control col-md-3 mb-3"
-                    id="namaresep" name="namaresep" placeholder="isi nama resep ...">
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="simpantemplate" onclick="showname()">
+                        <label class="form-check-label" for="exampleCheck1">ceklis, untuk
+                            simpan
+                            resep sebagai template</label>
+                    </div>
+                    <input hidden type="text" class="form-control col-md-3 mb-3" id="namaresep" name="namaresep"
+                        placeholder="isi nama resep ...">
                 </form>
             </div>
         </div>
@@ -568,699 +571,708 @@
                     <div class="card-body">
                         @if (auth()->user()->unit == '1014')
                             <form action="" class="formpemeriksaankhusus">
-                                @if(count($hasil_ro) == 0)
-                                <input hidden type="text" class="form-control" id="id_asskep" name="id_asskep" value="">
-                                <table class="table table-sm">
-                                    <tr>
-                                        <td colspan="4">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="gambar1">
+                                @if (count($hasil_ro) == 0)
+                                    <input hidden type="text" class="form-control" id="id_asskep"
+                                        name="id_asskep" value="">
+                                    <table class="table table-sm">
+                                        <tr>
+                                            <td colspan="4">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="gambar1">
 
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td rowspan="2">Visus Dasar</td>
-                                        <td>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">OD</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="2">Visus Dasar</td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">OD</span>
+                                                    </div>
+                                                    <input type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)"
+                                                        id="od_visus_dasar" name="od_visus_dasar" value="">
                                                 </div>
-                                                <input type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)" id="od_visus_dasar"
-                                                    name="od_visus_dasar" value="">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">PINHOLE</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">PINHOLE</span>
+                                                    </div>
+                                                    <input type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)"
+                                                        name="od_pinhole_visus_dasar" id="od_pinhole_visus_dasar"
+                                                        value="">
                                                 </div>
-                                                <input type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)"
-                                                    name="od_pinhole_visus_dasar" id="od_pinhole_visus_dasar"
-                                                    value="">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">OS</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">OS</span>
+                                                    </div>
+                                                    <input name="os_visus_dasar" id="os_visus_dasar" value=""
+                                                        type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input name="os_visus_dasar" id="os_visus_dasar" value=""
-                                                    type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">PINHOLE</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">PINHOLE</span>
+                                                    </div>
+                                                    <input name="os_pinhole_visus_dasar" id="os_pinhole_visus_dasar"
+                                                        type="text" class="form-control" value=""
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input name="os_pinhole_visus_dasar" id="os_pinhole_visus_dasar"
-                                                    type="text" class="form-control" value=""
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td rowspan="2">Refraktometer / streak</td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">OD : Sph</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="2">Refraktometer / streak</td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">OD : Sph</span>
+                                                    </div>
+                                                    <input name="od_sph_refraktometer" value=""
+                                                        id="od_sph_refraktometer" type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input name="od_sph_refraktometer" value=""
-                                                    id="od_sph_refraktometer" type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">Cyl</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Cyl</span>
+                                                    </div>
+                                                    <input type="text" value="" id="od_cyl_refraktometer"
+                                                        name="od_cyl_refraktometer" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input type="text" value="" id="od_cyl_refraktometer"
-                                                    name="od_cyl_refraktometer" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">X</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">X</span>
+                                                    </div>
+                                                    <input id="od_x_refraktometer" value=""
+                                                        name="od_x_refraktometer" type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="od_x_refraktometer" value=""
-                                                    name="od_x_refraktometer" type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">OS : Sph</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">OS : Sph</span>
+                                                    </div>
+                                                    <input id="os_sph_refraktometer" value=""
+                                                        name="os_sph_refraktometer" type="text"
+                                                        class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="os_sph_refraktometer" value=""
-                                                    name="os_sph_refraktometer" type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">Cyl</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Cyl</span>
+                                                    </div>
+                                                    <input id="os_cyl_refraktometer" value=""
+                                                        name="os_cyl_refraktometer" type="text"
+                                                        class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="os_cyl_refraktometer" value=""
-                                                    name="os_cyl_refraktometer" type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">X</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">X</span>
+                                                    </div>
+                                                    <input id="os_x_refraktometer" value=""
+                                                        name="os_x_refraktometer" type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="os_x_refraktometer" value=""
-                                                    name="os_x_refraktometer" type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td rowspan="2">Lensometer</td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">OD : Sph</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="2">Lensometer</td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">OD : Sph</span>
+                                                    </div>
+                                                    <input id="od_sph_Lensometer" value=""
+                                                        name="od_sph_Lensometer" type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="od_sph_Lensometer" value="" name="od_sph_Lensometer"
-                                                    type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">Cyl</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Cyl</span>
+                                                    </div>
+                                                    <input id="od_cyl_Lensometer" value=""
+                                                        name="od_cyl_Lensometer" type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="od_cyl_Lensometer" value="" name="od_cyl_Lensometer"
-                                                    type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">X</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">X</span>
+                                                    </div>
+                                                    <input id="od_x_Lensometer" value="" name="od_x_Lensometer"
+                                                        type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="od_x_Lensometer" value="" name="od_x_Lensometer"
-                                                    type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">OS : Sph</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">OS : Sph</span>
+                                                    </div>
+                                                    <input id="os_sph_Lensometer" value=""
+                                                        name="os_sph_Lensometer" type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="os_sph_Lensometer" value="" name="os_sph_Lensometer"
-                                                    type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">Cyl</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Cyl</span>
+                                                    </div>
+                                                    <input id="os_cyl_Lensometer" value=""
+                                                        name="os_cyl_Lensometer" type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="os_cyl_Lensometer" value="" name="os_cyl_Lensometer"
-                                                    type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">X</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">X</span>
+                                                    </div>
+                                                    <input id="os_x_Lensometer" value="" name="os_x_Lensometer"
+                                                        type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="os_x_Lensometer" value="" name="os_x_Lensometer"
-                                                    type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td rowspan="2">Koreksi penglihatan jauh</td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">VOD : Sph</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="2">Koreksi penglihatan jauh</td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">VOD : Sph</span>
+                                                    </div>
+                                                    <input id="vod_sph_kpj" value="" name="vod_sph_kpj"
+                                                        type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="vod_sph_kpj" value="" name="vod_sph_kpj"
-                                                    type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">Cyl</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Cyl</span>
+                                                    </div>
+                                                    <input id="vod_cyl_kpj" value="" name="vod_cyl_kpj"
+                                                        type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="vod_cyl_kpj" value="" name="vod_cyl_kpj"
-                                                    type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">X</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">X</span>
+                                                    </div>
+                                                    <input id="vod_x_kpj" value="" name="vod_x_kpj"
+                                                        type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="vod_x_kpj" value="" name="vod_x_kpj" type="text"
-                                                    class="form-control" aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">VOS : Sph</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">VOS : Sph</span>
+                                                    </div>
+                                                    <input type="text" id="vos_sph_kpj" value=""
+                                                        name="vos_sph_kpj" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input type="text" id="vos_sph_kpj" value=""
-                                                    name="vos_sph_kpj" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">Cyl</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Cyl</span>
+                                                    </div>
+                                                    <input id="vos_cyl_kpj" value="" name="vos_cyl_kpj"
+                                                        type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="vos_cyl_kpj" value="" name="vos_cyl_kpj"
-                                                    type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">X</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">X</span>
+                                                    </div>
+                                                    <input id="vos_x_kpj" value="" name="vos_x_kpj"
+                                                        type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="vos_x_kpj" value="" name="vos_x_kpj" type="text"
-                                                    class="form-control" aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tajam penglihatan dekat</td>
-                                        <td colspan="3">
-                                            <textarea class="form-control" id="penglihatan_dekat" name="penglihatan_dekat"></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tekanan Intra Okular</td>
-                                        <td colspan="3">
-                                            <textarea class="form-control" id="tekanan_intra_okular" name="tekanan_intra_okular"></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Catatan Pemeriksaan Lainnya</td>
-                                        <td colspan="3">
-                                            <textarea class="form-control" name="catatan_pemeriksaan_lainnya" id="catatan_pemerikssaan_lainnya"></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Palpebra</td>
-                                        <td colspan="3"><input class="form-control" value="" id="palpebra"
-                                                name="palpebra"></input></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Konjungtiva</td>
-                                        <td colspan="3"><input class="form-control" value=""
-                                                id="konjungtiva" name="konjungtiva"></input>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Kornea</td>
-                                        <td colspan="3"><input class="form-control" value="" name="kornea"
-                                                id="kornea"></input></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Bilik Mata Depan</td>
-                                        <td colspan="3"><input class="form-control" value=""
-                                                name="bilik_mata_depan" id="bilik_mata_depan"></input></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Pupil</td>
-                                        <td colspan="3"><input class="form-control" value="" id="pupil"
-                                                name="pupil"></input></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Iris</td>
-                                        <td colspan="3"><input class="form-control" value="" name="iris"
-                                                id="iris"></input></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Lensa</td>
-                                        <td colspan="3"><input class="form-control" value="" name="lensa"
-                                                id="lensa"></input></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Funduskopi</td>
-                                        <td colspan="3"><input class="form-control" value=""
-                                                name="funduskopi" id="funduskopi"></input>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Status Oftalmologis Khusus</td>
-                                        <td colspan="3">
-                                            <textarea class="form-control" value="" name="oftamologis" id="oftamologis"></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Masalah Medis</td>
-                                        <td colspan="3">
-                                            <textarea class="form-control" value="" name="masalahmedis" id="masalahmedis"></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Prognosis</td>
-                                        <td colspan="3">
-                                            <textarea class="form-control" value="" name="prognosis" id="prognosis"></textarea>
-                                        </td>
-                                    </tr>
-                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tajam penglihatan dekat</td>
+                                            <td colspan="3">
+                                                <textarea class="form-control" id="penglihatan_dekat" name="penglihatan_dekat"></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tekanan Intra Okular</td>
+                                            <td colspan="3">
+                                                <textarea class="form-control" id="tekanan_intra_okular" name="tekanan_intra_okular"></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Catatan Pemeriksaan Lainnya</td>
+                                            <td colspan="3">
+                                                <textarea class="form-control" name="catatan_pemeriksaan_lainnya" id="catatan_pemerikssaan_lainnya"></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Palpebra</td>
+                                            <td colspan="3"><input class="form-control" value=""
+                                                    id="palpebra" name="palpebra"></input></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Konjungtiva</td>
+                                            <td colspan="3"><input class="form-control" value=""
+                                                    id="konjungtiva" name="konjungtiva"></input>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Kornea</td>
+                                            <td colspan="3"><input class="form-control" value=""
+                                                    name="kornea" id="kornea"></input></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Bilik Mata Depan</td>
+                                            <td colspan="3"><input class="form-control" value=""
+                                                    name="bilik_mata_depan" id="bilik_mata_depan"></input></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Pupil</td>
+                                            <td colspan="3"><input class="form-control" value=""
+                                                    id="pupil" name="pupil"></input></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Iris</td>
+                                            <td colspan="3"><input class="form-control" value=""
+                                                    name="iris" id="iris"></input></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lensa</td>
+                                            <td colspan="3"><input class="form-control" value=""
+                                                    name="lensa" id="lensa"></input></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Funduskopi</td>
+                                            <td colspan="3"><input class="form-control" value=""
+                                                    name="funduskopi" id="funduskopi"></input>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Status Oftalmologis Khusus</td>
+                                            <td colspan="3">
+                                                <textarea class="form-control" value="" name="oftamologis" id="oftamologis"></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Masalah Medis</td>
+                                            <td colspan="3">
+                                                <textarea class="form-control" value="" name="masalahmedis" id="masalahmedis"></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Prognosis</td>
+                                            <td colspan="3">
+                                                <textarea class="form-control" value="" name="prognosis" id="prognosis"></textarea>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 @else
-                                <input hidden type="text" class="form-control" id="id_asskep" name="id_asskep" value="{{ $hasil_ro[0]->id_asskep}}">
-                                <table class="table table-sm">
-                                    <tr>
-                                        <td colspan="4">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="gambar1">
+                                    <input hidden type="text" class="form-control" id="id_asskep"
+                                        name="id_asskep" value="{{ $hasil_ro[0]->id_asskep }}">
+                                    <table class="table table-sm">
+                                        <tr>
+                                            <td colspan="4">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="gambar1">
 
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td rowspan="2">Visus Dasar</td>
-                                        <td>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">OD</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="2">Visus Dasar</td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">OD</span>
+                                                    </div>
+                                                    <input type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)"
+                                                        id="od_visus_dasar" name="od_visus_dasar"
+                                                        value="{{ $hasil_ro[0]->vd_od }}">
                                                 </div>
-                                                <input type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)"
-                                                    id="od_visus_dasar" name="od_visus_dasar"
-                                                    value="{{ $hasil_ro[0]->vd_od }}">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">PINHOLE</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">PINHOLE</span>
+                                                    </div>
+                                                    <input type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)"
+                                                        name="od_pinhole_visus_dasar" id="od_pinhole_visus_dasar"
+                                                        value="{{ $hasil_ro[0]->vd_od_pinhole }}">
                                                 </div>
-                                                <input type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)"
-                                                    name="od_pinhole_visus_dasar" id="od_pinhole_visus_dasar"
-                                                    value="{{ $hasil_ro[0]->vd_od_pinhole }}">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">OS</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">OS</span>
+                                                    </div>
+                                                    <input name="os_visus_dasar" id="os_visus_dasar"
+                                                        value="{{ $hasil_ro[0]->vd_os }}" type="text"
+                                                        class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input name="os_visus_dasar" id="os_visus_dasar"
-                                                    value="{{ $hasil_ro[0]->vd_os }}" type="text"
-                                                    class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">PINHOLE</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">PINHOLE</span>
+                                                    </div>
+                                                    <input name="os_pinhole_visus_dasar" id="os_pinhole_visus_dasar"
+                                                        type="text" class="form-control"
+                                                        value="{{ $hasil_ro[0]->vd_os_pinhole }}"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input name="os_pinhole_visus_dasar" id="os_pinhole_visus_dasar"
-                                                    type="text" class="form-control"
-                                                    value="{{ $hasil_ro[0]->vd_os_pinhole }}"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td rowspan="2">Refraktometer / streak</td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">OD : Sph</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="2">Refraktometer / streak</td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">OD : Sph</span>
+                                                    </div>
+                                                    <input name="od_sph_refraktometer"
+                                                        value="{{ $hasil_ro[0]->refraktometer_od_sph }}"
+                                                        id="od_sph_refraktometer" type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input name="od_sph_refraktometer"
-                                                    value="{{ $hasil_ro[0]->refraktometer_od_sph }}"
-                                                    id="od_sph_refraktometer" type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">Cyl</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Cyl</span>
+                                                    </div>
+                                                    <input type="text"
+                                                        value="{{ $hasil_ro[0]->refraktometer_od_cyl }}"
+                                                        id="od_cyl_refraktometer" name="od_cyl_refraktometer"
+                                                        class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input type="text" value="{{ $hasil_ro[0]->refraktometer_od_cyl }}"
-                                                    id="od_cyl_refraktometer" name="od_cyl_refraktometer"
-                                                    class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">X</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">X</span>
+                                                    </div>
+                                                    <input id="od_x_refraktometer"
+                                                        value="{{ $hasil_ro[0]->refraktometer_od_x }}"
+                                                        name="od_x_refraktometer" type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="od_x_refraktometer"
-                                                    value="{{ $hasil_ro[0]->refraktometer_od_x }}"
-                                                    name="od_x_refraktometer" type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">OS : Sph</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">OS : Sph</span>
+                                                    </div>
+                                                    <input id="os_sph_refraktometer"
+                                                        value="{{ $hasil_ro[0]->refraktometer_os_sph }}"
+                                                        name="os_sph_refraktometer" type="text"
+                                                        class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="os_sph_refraktometer"
-                                                    value="{{ $hasil_ro[0]->refraktometer_os_sph }}"
-                                                    name="os_sph_refraktometer" type="text"
-                                                    class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">Cyl</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Cyl</span>
+                                                    </div>
+                                                    <input id="os_cyl_refraktometer"
+                                                        value="{{ $hasil_ro[0]->refraktometer_os_cyl }}"
+                                                        name="os_cyl_refraktometer" type="text"
+                                                        class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="os_cyl_refraktometer"
-                                                    value="{{ $hasil_ro[0]->refraktometer_os_cyl }}"
-                                                    name="os_cyl_refraktometer" type="text"
-                                                    class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">X</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">X</span>
+                                                    </div>
+                                                    <input id="os_x_refraktometer"
+                                                        value="{{ $hasil_ro[0]->refraktometer_os_x }}"
+                                                        name="os_x_refraktometer" type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="os_x_refraktometer"
-                                                    value="{{ $hasil_ro[0]->refraktometer_os_x }}"
-                                                    name="os_x_refraktometer" type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td rowspan="2">Lensometer</td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">OD : Sph</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="2">Lensometer</td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">OD : Sph</span>
+                                                    </div>
+                                                    <input id="od_sph_Lensometer"
+                                                        value="{{ $hasil_ro[0]->Lensometer_od_sph }}"
+                                                        name="od_sph_Lensometer" type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="od_sph_Lensometer"
-                                                    value="{{ $hasil_ro[0]->Lensometer_od_sph }}"
-                                                    name="od_sph_Lensometer" type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">Cyl</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Cyl</span>
+                                                    </div>
+                                                    <input id="od_cyl_Lensometer"
+                                                        value="{{ $hasil_ro[0]->Lensometer_od_cyl }}"
+                                                        name="od_cyl_Lensometer" type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="od_cyl_Lensometer"
-                                                    value="{{ $hasil_ro[0]->Lensometer_od_cyl }}"
-                                                    name="od_cyl_Lensometer" type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">X</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">X</span>
+                                                    </div>
+                                                    <input id="od_x_Lensometer"
+                                                        value="{{ $hasil_ro[0]->Lensometer_od_x }}"
+                                                        name="od_x_Lensometer" type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="od_x_Lensometer" value="{{ $hasil_ro[0]->Lensometer_od_x }}"
-                                                    name="od_x_Lensometer" type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">OS : Sph</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">OS : Sph</span>
+                                                    </div>
+                                                    <input id="os_sph_Lensometer"
+                                                        value="{{ $hasil_ro[0]->Lensometer_os_sph }}"
+                                                        name="os_sph_Lensometer" type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="os_sph_Lensometer"
-                                                    value="{{ $hasil_ro[0]->Lensometer_os_sph }}"
-                                                    name="os_sph_Lensometer" type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">Cyl</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Cyl</span>
+                                                    </div>
+                                                    <input id="os_cyl_Lensometer"
+                                                        value="{{ $hasil_ro[0]->Lensometer_os_cyl }}"
+                                                        name="os_cyl_Lensometer" type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="os_cyl_Lensometer"
-                                                    value="{{ $hasil_ro[0]->Lensometer_os_cyl }}"
-                                                    name="os_cyl_Lensometer" type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">X</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">X</span>
+                                                    </div>
+                                                    <input id="os_x_Lensometer"
+                                                        value="{{ $hasil_ro[0]->Lensometer_os_x }}"
+                                                        name="os_x_Lensometer" type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="os_x_Lensometer" value="{{ $hasil_ro[0]->Lensometer_os_x }}"
-                                                    name="os_x_Lensometer" type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td rowspan="2">Koreksi penglihatan jauh</td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">VOD : Sph</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="2">Koreksi penglihatan jauh</td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">VOD : Sph</span>
+                                                    </div>
+                                                    <input id="vod_sph_kpj"
+                                                        value="{{ $hasil_ro[0]->koreksipenglihatan_vod_sph }}"
+                                                        name="vod_sph_kpj" type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="vod_sph_kpj"
-                                                    value="{{ $hasil_ro[0]->koreksipenglihatan_vod_sph }}"
-                                                    name="vod_sph_kpj" type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">Cyl</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Cyl</span>
+                                                    </div>
+                                                    <input id="vod_cyl_kpj"
+                                                        value="{{ $hasil_ro[0]->koreksipenglihatan_vod_cyl }}"
+                                                        name="vod_cyl_kpj" type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="vod_cyl_kpj"
-                                                    value="{{ $hasil_ro[0]->koreksipenglihatan_vod_cyl }}"
-                                                    name="vod_cyl_kpj" type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">X</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">X</span>
+                                                    </div>
+                                                    <input id="vod_x_kpj"
+                                                        value="{{ $hasil_ro[0]->koreksipenglihatan_vod_x }}"
+                                                        name="vod_x_kpj" type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="vod_x_kpj"
-                                                    value="{{ $hasil_ro[0]->koreksipenglihatan_vod_x }}"
-                                                    name="vod_x_kpj" type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">VOS : Sph</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">VOS : Sph</span>
+                                                    </div>
+                                                    <input type="text" id="vos_sph_kpj"
+                                                        value="{{ $hasil_ro[0]->koreksipenglihatan_vos_sph }}"
+                                                        name="vos_sph_kpj" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input type="text" id="vos_sph_kpj"
-                                                    value="{{ $hasil_ro[0]->koreksipenglihatan_vos_sph }}"
-                                                    name="vos_sph_kpj" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">Cyl</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Cyl</span>
+                                                    </div>
+                                                    <input id="vos_cyl_kpj"
+                                                        value="{{ $hasil_ro[0]->koreksipenglihatan_vos_cyl }}"
+                                                        name="vos_cyl_kpj" type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="vos_cyl_kpj"
-                                                    value="{{ $hasil_ro[0]->koreksipenglihatan_vos_cyl }}"
-                                                    name="vos_cyl_kpj" type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">X</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">X</span>
+                                                    </div>
+                                                    <input id="vos_x_kpj"
+                                                        value="{{ $hasil_ro[0]->koreksipenglihatan_vos_x }}"
+                                                        name="vos_x_kpj" type="text" class="form-control"
+                                                        aria-label="Amount (to the nearest dollar)">
                                                 </div>
-                                                <input id="vos_x_kpj"
-                                                    value="{{ $hasil_ro[0]->koreksipenglihatan_vos_x }}"
-                                                    name="vos_x_kpj" type="text" class="form-control"
-                                                    aria-label="Amount (to the nearest dollar)">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tajam penglihatan dekat</td>
-                                        <td colspan="3">
-                                            <textarea class="form-control" id="penglihatan_dekat" name="penglihatan_dekat">{{ $hasil_ro[0]->tajampenglihatandekat }}</textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tekanan Intra Okular</td>
-                                        <td colspan="3">
-                                            <textarea class="form-control" id="tekanan_intra_okular" name="tekanan_intra_okular">{{ $hasil_ro[0]->tekananintraokular }}</textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Catatan Pemeriksaan Lainnya</td>
-                                        <td colspan="3">
-                                            <textarea class="form-control" name="catatan_pemeriksaan_lainnya" id="catatan_pemerikssaan_lainnya">{{ $hasil_ro[0]->catatanpemeriksaanlain }}</textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Palpebra</td>
-                                        <td colspan="3"><input class="form-control"
-                                                value="{{ $hasil_ro[0]->palpebra }}" id="palpebra"
-                                                name="palpebra"></input></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Konjungtiva</td>
-                                        <td colspan="3"><input class="form-control"
-                                                value="{{ $hasil_ro[0]->konjungtiva }}" id="konjungtiva"
-                                                name="konjungtiva"></input></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Kornea</td>
-                                        <td colspan="3"><input class="form-control"
-                                                value="{{ $hasil_ro[0]->kornea }}" name="kornea"
-                                                id="kornea"></input></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Bilik Mata Depan</td>
-                                        <td colspan="3"><input class="form-control"
-                                                value="{{ $hasil_ro[0]->bilikmatadepan }}" name="bilik_mata_depan"
-                                                id="bilik_mata_depan"></input></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Pupil</td>
-                                        <td colspan="3"><input class="form-control"
-                                                value="{{ $hasil_ro[0]->pupil }}" id="pupil"
-                                                name="pupil"></input></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Iris</td>
-                                        <td colspan="3"><input class="form-control"
-                                                value="{{ $hasil_ro[0]->iris }}" name="iris"
-                                                id="iris"></input></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Lensa</td>
-                                        <td colspan="3"><input class="form-control"
-                                                value="{{ $hasil_ro[0]->lensa }}" name="lensa"
-                                                id="lensa"></input></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Funduskopi</td>
-                                        <td colspan="3"><input class="form-control"
-                                                value="{{ $hasil_ro[0]->funduskopi }}" name="funduskopi"
-                                                id="funduskopi"></input></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Status Oftalmologis Khusus</td>
-                                        <td colspan="3">
-                                            <textarea class="form-control" name="oftamologis" id="oftamologis">{{ $hasil_ro[0]->status_oftamologis_khusus }}</textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Masalah Medis</td>
-                                        <td colspan="3">
-                                            <textarea class="form-control" name="masalahmedis" id="masalahmedis">{{ $hasil_ro[0]->masalahmedis }}</textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Prognosis</td>
-                                        <td colspan="3">
-                                            <textarea class="form-control" name="prognosis" id="prognosis">{{ $hasil_ro[0]->prognosis }}</textarea>
-                                        </td>
-                                    </tr>
-                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tajam penglihatan dekat</td>
+                                            <td colspan="3">
+                                                <textarea class="form-control" id="penglihatan_dekat" name="penglihatan_dekat">{{ $hasil_ro[0]->tajampenglihatandekat }}</textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tekanan Intra Okular</td>
+                                            <td colspan="3">
+                                                <textarea class="form-control" id="tekanan_intra_okular" name="tekanan_intra_okular">{{ $hasil_ro[0]->tekananintraokular }}</textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Catatan Pemeriksaan Lainnya</td>
+                                            <td colspan="3">
+                                                <textarea class="form-control" name="catatan_pemeriksaan_lainnya" id="catatan_pemerikssaan_lainnya">{{ $hasil_ro[0]->catatanpemeriksaanlain }}</textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Palpebra</td>
+                                            <td colspan="3"><input class="form-control"
+                                                    value="{{ $hasil_ro[0]->palpebra }}" id="palpebra"
+                                                    name="palpebra"></input></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Konjungtiva</td>
+                                            <td colspan="3"><input class="form-control"
+                                                    value="{{ $hasil_ro[0]->konjungtiva }}" id="konjungtiva"
+                                                    name="konjungtiva"></input></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Kornea</td>
+                                            <td colspan="3"><input class="form-control"
+                                                    value="{{ $hasil_ro[0]->kornea }}" name="kornea"
+                                                    id="kornea"></input></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Bilik Mata Depan</td>
+                                            <td colspan="3"><input class="form-control"
+                                                    value="{{ $hasil_ro[0]->bilikmatadepan }}"
+                                                    name="bilik_mata_depan" id="bilik_mata_depan"></input></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Pupil</td>
+                                            <td colspan="3"><input class="form-control"
+                                                    value="{{ $hasil_ro[0]->pupil }}" id="pupil"
+                                                    name="pupil"></input></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Iris</td>
+                                            <td colspan="3"><input class="form-control"
+                                                    value="{{ $hasil_ro[0]->iris }}" name="iris"
+                                                    id="iris"></input></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lensa</td>
+                                            <td colspan="3"><input class="form-control"
+                                                    value="{{ $hasil_ro[0]->lensa }}" name="lensa"
+                                                    id="lensa"></input></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Funduskopi</td>
+                                            <td colspan="3"><input class="form-control"
+                                                    value="{{ $hasil_ro[0]->funduskopi }}" name="funduskopi"
+                                                    id="funduskopi"></input></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Status Oftalmologis Khusus</td>
+                                            <td colspan="3">
+                                                <textarea class="form-control" name="oftamologis" id="oftamologis">{{ $hasil_ro[0]->status_oftamologis_khusus }}</textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Masalah Medis</td>
+                                            <td colspan="3">
+                                                <textarea class="form-control" name="masalahmedis" id="masalahmedis">{{ $hasil_ro[0]->masalahmedis }}</textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Prognosis</td>
+                                            <td colspan="3">
+                                                <textarea class="form-control" name="prognosis" id="prognosis">{{ $hasil_ro[0]->prognosis }}</textarea>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 @endif
                             </form>
                         @elseif(auth()->user()->unit == '1019')
@@ -1948,6 +1960,7 @@
             todayHighlight: true,
         }).datepicker('update', new Date());
     });
+
     function simpanhasil() {
         var canvas1 = document.getElementById("myCanvas1");
         var ctx1 = canvas1.getContext("2d");
@@ -2088,6 +2101,7 @@
             }
         });
     });
+
     function batalisi() {
         rm = $('#nomorrm').val()
         formcatatanmedis(rm)
@@ -2141,6 +2155,7 @@
         }
 
     });
+
     function showname() {
         a = $('#simpantemplate:checked').val()
         if (a == 'on') {
@@ -2213,6 +2228,7 @@
             }
         });
     }
+
     function ambilgambar() {
         $.ajax({
             type: 'post',
@@ -2229,23 +2245,40 @@
             }
         });
     }
-    function addform()
-    {
+
+    function addform() {
         var max_fields = 10;
         var wrapper = $(".formobatfarmasi2"); //Fields wrapper
         var x = 1
+        jlh = $('#jumlahform').val()
+        cek = document.getElementById('jumlahform').value
+        if (cek === '') {
+            jlh1 = $('#jumlahform').val(1)
+        } else {
+            cek = parseInt(document.getElementById('jumlahform').value)
+            jlh2 = $('#jumlahform').val(cek + 1)
+        }
+        nomor = parseInt(document.getElementById('jumlahform').value)
         if (x < max_fields) { //max input box allowed
-                x++; //text box increment
-                $(wrapper).append(
-                    '<div class="form-row text-xs"><div class="form-group col-md-2"><label for="">Nama Obat</label><input type="" class="form-control form-control-sm text-xs" id="" name="namaobat" value=""><input hidden readonly type="" class="form-control form-control-sm" id="" name="kodebarang" value="""></div><div class="form-group col-md-2"><label for="inputPassword4">Aturan Pakai</label><input type="" class="form-control form-control-sm" id="" name="aturanpakai" value=""></div><div class="form-group col-md-1"><label for="inputPassword4">Jumlah</label><input type="" class="form-control form-control-sm" id="" name="jumlah" value="0"></div><div class="form-group col-md-1"><label for="inputPassword4">Signa</label><input type="" class="form-control form-control-sm" id="" name="signa" value="0"></div><div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type="" class="form-control form-control-sm" id="" name="keterangan" value=""></div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i></div>'
-                );
-                $(wrapper).on("click", ".remove_field", function(e) { //user click on remove
-                    kode = $(this).attr('kode2')
-                    e.preventDefault();
-                    $(this).parent('div').remove();
-                    x--;
-                })
-            }
+            nama = 'namaobat'+nomor
+            aturan = 'aturanpakai'+nomor
+            $(wrapper).append(
+                '<div class="form-row text-xs"><div class="form-group col-md-2"><label for="">Nama Obat</label><input type="" class="form-control form-control-sm text-xs" id="'+nama+'" name="namaobat" value=""><input hidden readonly type="" class="form-control form-control-sm" id="" name="kodebarang" value="""></div><div class="form-group col-md-2"><label for="inputPassword4">Aturan Pakai</label><input type="" class="form-control form-control-sm" id="'+ aturan +'" name="aturanpakai" value=""></div><div class="form-group col-md-1"><label for="inputPassword4">Jumlah</label><input type="" class="form-control form-control-sm" id="" name="jumlah" value="0"></div><div class="form-group col-md-1"><label for="inputPassword4">Signa</label><input type="" class="form-control form-control-sm" id="" name="signa" value="0"></div><div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type="" class="form-control form-control-sm" id="" name="keterangan" value=""></div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i></div>'
+            );
+            $(wrapper).on("click", ".remove_field", function(e) { //user click on remove
+                kode = $(this).attr('kode2')
+                e.preventDefault();
+                $(this).parent('div').remove();
+                x--;
+            })
+            $('#'+nama).autocomplete({
+                source: "<?= route('cariobat') ?>",
+                select: function(event, ui) {
+                    $('[id="namaobat"]').val(ui.item.label);
+                    $('[id="'+aturan+'"]').val(ui.item.aturan);
+                }
+            });
+        }
     }
 </script>
 <script src="{{ asset('public/marker/markerjs2.js') }}"></script>

@@ -22,10 +22,13 @@ use App\Models\ts_layanan_header_order;
 use App\Models\ts_layanan_detail_order;
 use App\Models\templateresep;
 use App\Models\templateresep_detail;
+use App\Models\Barang;
 use App\Models\erm_order_penunjang;
+use App\Models\ts_kunjungan;
 use Carbon\Carbon;
 use simitsdk\phpjasperxml\PHPJasperXML;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Dokter;
 use File;
 
 
@@ -648,8 +651,6 @@ class ErmController extends Controller
         $datatindaklanjut = json_decode($_POST['datatindaklanjut'], true);
         $formobat_farmasi = json_decode($_POST['formobat_farmasi'], true);
         $formobatfarmasi2 = json_decode($_POST['formobatfarmasi2'], true);
-
-
         if (count($datatindaklanjut) == 1) {
             $data = [
                 'kode' => 500,
@@ -805,6 +806,7 @@ class ErmController extends Controller
             ];
             assesmenawalperawat::whereRaw('id = ?', array($dataSet['idasskep']))->update($data_k);
             $cek = DB::select('SELECT * from assesmen_dokters WHERE tgl_kunjungan = ? AND id_pasien = ? AND kode_unit = ?', [$dataSet['tanggalkunjungan'], $dataSet['nomorrm'], $dataSet['unit']]);
+            $kodekunjungan = $dataSet['kodekunjungan'];
             if (count($cek) > 0) {
                 $data = [
                     'counter' => $dataSet['counter'],
@@ -1798,6 +1800,8 @@ class ErmController extends Controller
                 $datagambar = ['gambar_1' => $gambar];
                 assesmenawaldokter::whereRaw('id = ?', array($id_assesmen))->update($datagambar);
             }
+            ts_kunjungan::whereRaw('kode_kunjungan = ?', array($kodekunjungan))->update([
+                'kode_paramedis' => auth()->user()->kode_paramedis]);
             $data = [
                 'kode' => 200,
                 'message' => 'Data berhasil disimpan !'
@@ -4050,5 +4054,18 @@ class ErmController extends Controller
         $kodekunjungan = $request->kodekunjungan;
         $data = DB::select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
         return view('ermtemplate.formgambar_reset', compact('unit', 'data'));
+    }
+    public function cariobat_form(Request $request)
+    {
+        $r = $request['term'];
+        $result = Barang::where('nama_generik', 'LIKE', "%{$r}%")->where('act', '=', '1')->get();
+        if (count($result) > 0) {
+            foreach ($result as $row)
+                $arr_result[] = array(
+                    'label' => $row['nama_barang'],
+                    'aturan' => $row['aturan_pakai']
+                );
+            echo json_encode($arr_result);
+        }
     }
 }
