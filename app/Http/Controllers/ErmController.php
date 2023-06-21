@@ -1878,6 +1878,12 @@ class ErmController extends Controller
         }else{
             $erm_assesmen = assesmenawaldokter::create($assdok);
         }
+        $data = [
+            'kode' => 200,
+            'message' => 'Data berhasil disimpan !'
+        ];
+        echo json_encode($data);
+        die;
 
     }
     public function resumepasien(Request $request)

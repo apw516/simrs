@@ -272,34 +272,34 @@
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Pemeriksaan Fisik dan Uji Fungsi</label>
-                    <textarea type="password" class="form-control" id="pemeriksaanfisik" name="pemeriksaanfisik" rows="4"></textarea>
+                    <textarea type="text" class="form-control" id="pemeriksaanfisik" name="pemeriksaanfisik" rows="4"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Diagnosis Medis ( ICD 10)</label>
-                    <input type="password" class="form-control" id="diagnosismedis" name="diagnosismedis"
+                    <input type="text" class="form-control" id="diagnosismedis" name="diagnosismedis"
                         rows="4">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Diagnosis fungsi ( ICD 10)</label>
-                    <input type="password" class="form-control" id="diagnosisfungsi" name="diagnosisfungsi"
+                    <input type="text" class="form-control" id="diagnosisfungsi" name="diagnosisfungsi"
                         rows="4">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Pemeriksaan Penunjang</label>
-                    <textarea type="password" class="form-control" id="pemeriksaanpenunjang" name="pemeriksaanpenunjang"
+                    <textarea type="text" class="form-control" id="pemeriksaanpenunjang" name="pemeriksaanpenunjang"
                         rows="4"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Tata Laksana KFR ( ICD 9CM )</label>
-                    <textarea type="password" class="form-control" id="tatalaksankfr" name="tatalaksankfr" rows="4"></textarea>
+                    <textarea type="text" class="form-control" id="tatalaksankfr" name="tatalaksankfr" rows="4"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Anjuran</label>
-                    <textarea type="password" class="form-control" id="anjuran" name="anjuran" rows="2"></textarea>
+                    <textarea type="text" class="form-control" id="anjuran" name="anjuran" rows="2"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Evaluasi</label>
-                    <textarea type="password" class="form-control" id="evaluasi" name="evaluasi" rows="2"></textarea>
+                    <textarea type="text" class="form-control" id="evaluasi" name="evaluasi" rows="2"></textarea>
                 </div>
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-4 float-sm-left pt-0">Suspek Penyakit Akibat Kerja</legend>

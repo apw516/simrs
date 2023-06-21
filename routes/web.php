@@ -110,6 +110,10 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9']], function () {
         ->name('pendaftaran2'); //sidebar
     Route::get('/menusepvalidasi', [SimrsController::class, 'menusepvalidasi'])
         ->name('menusepvalidasi'); //sidebar
+    Route::get('/datapasienranap', [SimrsController::class, 'datapasienranap'])
+        ->name('datapasienranap'); //sidebar
+    Route::post('/lihatcatatanpasien', [SimrsController::class, 'lihatcatatanpasien'])
+        ->name('lihatcatatanpasien'); //sidebar
     Route::get('/menucarisep', [SimrsController::class, 'Menucarisep'])
         ->name('menucarisep'); //sidebar
     Route::get('/menulisttglpulang', [SimrsController::class, 'menulisttglpulang'])

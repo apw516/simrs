@@ -3600,10 +3600,40 @@ class SimrsController extends Controller
         $update = ts_kunjungan::where('kode_kunjungan', $request->kode)->update($data);
         echo json_encode('ok');
     }
-    public function kontakkami(){
+    public function kontakkami()
+    {
         $title = 'SIRAMAH';
         $sidebar = '2';
         $sidebar_m = '2';
-        return view('kontakkami.index', compact(['title','sidebar','sidebar_m']));
+        return view('kontakkami.index', compact(['title', 'sidebar', 'sidebar_m']));
+    }
+    public function datapasienranap()
+    {
+        $title = 'SIMRS - Data Pasien';
+        $sidebar = '2';
+        $sidebar_m = '2';
+        $user = auth()->user()->unit;
+        $datapasien = DB::select('SELECT kode_kunjungan,keterangan2,a.no_rm,d.no_Bpjs,no_sep,fc_nama_px(a.no_rm) AS nama ,tgl_masuk,DATE(tgl_keluar) as tgl_keluar,fc_nama_unit1(kode_unit) AS unit,kamar,no_bed,b.nama_penjamin,c.alasan_pulang,c.kode
+            FROM ts_kunjungan a
+            LEFT JOIN mt_penjamin b ON b.kode_penjamin = a.kode_penjamin
+            LEFT JOIN mt_alasan_pulang c ON c.kode = a.id_alasan_pulang
+            LEFT JOIN mt_pasien d ON a.no_rm = d.no_rm
+            WHERE kode_unit = ? and status_kunjungan = ?', [$user, 1]);
+        return view('ranap.datapasien', compact([
+            'title', 'sidebar', 'sidebar_m','datapasien'
+        ]));
+    }
+    public function lihatcatatanpasien(Request $request)
+    {
+        $rm = $request->rm;
+        $kunjungan = DB::select('SELECT *,a.kode_kunjungan as kodek,a.no_rm as no_rm_k,b.id as id_1, c.id as id_2,b.signature as signature_perawat,c.signature as signature_dokter,b.keluhanutama as keluhan_perawat,a.tgl_masuk,a.counter,fc_nama_unit1(a.kode_unit) AS nama_unit FROM ts_kunjungan a
+        LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`kode_kunjungan` = b.kode_kunjungan
+        LEFT OUTER JOIN assesmen_dokters c ON b.`id` = c.`id_asskep` where a.no_rm = ? ORDER BY a.counter desc', [$request->rm]);
+        $mt_pasien = DB::select('Select no_rm,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$request->rm]);
+        return view('ermtemplate.form_catatan_medis_ranap', compact([
+            'kunjungan',
+            'rm',
+            'mt_pasien',
+        ]));
     }
 }

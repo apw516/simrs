@@ -93,11 +93,20 @@
                 @endif --}}
                   @if (auth()->user()->hak_akses == '9')
                       <li class="nav-item">
+                          <a href="{{ route('datapasienranap') }}"
+                              class="nav-link @if ($title == 'SIMRS - Data Pasien') active @endif">
+                              <i class="nav-icon fas fa-th"></i>
+                              <p style="font-size:12px">
+                                  Data Pasien
+                              </p>
+                          </a>
+                      </li>
+                      <li class="nav-item">
                           <a href="{{ route('datasepranap') }}"
                               class="nav-link @if ($title == 'SIMRS -SEP RAWAT INAP') active @endif">
                               <i class="nav-icon fas fa-th"></i>
                               <p style="font-size:12px">
-                                  Data Pasien Rawat Inap
+                                  Data Pasien Pulang
                               </p>
                           </a>
                       </li>
