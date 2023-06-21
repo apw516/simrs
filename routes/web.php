@@ -475,6 +475,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('formpemeriksaan_dokter'); //sidebar
     Route::post('/simpanpemeriksaandokter', [ErmController::class, 'simpanpemeriksaandokter'])
         ->name('simpanpemeriksaandokter'); //sidebar
+    Route::post('/simpanpemeriksaandokter_fisio', [ErmController::class, 'simpanpemeriksaandokter_fisio'])
+        ->name('simpanpemeriksaandokter_fisio'); //sidebar
     Route::post('/resumepasien_dokter', [ErmController::class, 'resumepasien_dokter'])
         ->name('resumepasien_dokter'); //sidebar
     Route::post('/simpanttddokter', [ErmController::class, 'simpanttddokter'])

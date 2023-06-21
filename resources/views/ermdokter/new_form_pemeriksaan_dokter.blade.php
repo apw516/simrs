@@ -2271,13 +2271,13 @@
                 $(this).parent('div').remove();
                 x--;
             })
-            $('#'+nama).autocomplete({
-                source: "<?= route('cariobat') ?>",
-                select: function(event, ui) {
-                    $('[id="namaobat"]').val(ui.item.label);
-                    $('[id="'+aturan+'"]').val(ui.item.aturan);
-                }
-            });
+            // $('#'+nama).autocomplete({
+            //     source: "<?= route('cariobat') ?>",
+            //     select: function(event, ui) {
+            //         $('[id="namaobat"]').val(ui.item.label);
+            //         $('[id="'+aturan+'"]').val(ui.item.aturan);
+            //     }
+            // });
         }
     }
 </script>
