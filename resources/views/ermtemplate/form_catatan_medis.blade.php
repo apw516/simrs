@@ -11,14 +11,14 @@
                     <div class="card-header" style="background-color: rgba(110, 245, 137, 0.745)" id="headingOne">
                         <h2 class="mb-0">
                             <button class="btn btn-link btn-block text-left text-dark text-bold" type="button"
-                                data-toggle="collapse" data-target="#collapse{{ $k->counter }}" aria-expanded="true"
+                                data-toggle="collapse" data-target="#collapse{{ $k->kode_kunjungan }}" aria-expanded="true"
                                 aria-controls="collapseOne">
                                 Kunjungan Ke - {{ $k->counter }} | {{ $k->nama_unit }} <p class="float-right">
                                     {{ $k->tgl_masuk }}</p>
                             </button>
                         </h2>
                     </div>
-                    <div id="collapse{{ $k->counter }}" class="collapse" aria-labelledby="headingOne"
+                    <div id="collapse{{ $k->kode_kunjungan }}" class="collapse" aria-labelledby="headingOne"
                         data-parent="#accordionExample">
                         <div class="card-body">
                             <div class="row mb-4 justify-content-end">
