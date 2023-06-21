@@ -57,11 +57,13 @@
                             <i class="fas fa-inbox mr-2"></i>Input Tindakan
                         </a>
                     </li> --}}
+                    @if(auth()->user()->unit != '1028')
                     <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="orderpenunjang()">
                             <i class="fas fa-inbox mr-2"></i>Order Penunjang
                         </a>
                     </li>
+                    @endif
                     {{-- <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="orderfarmasi()">
                             <i class="fas fa-inbox mr-2"></i>Order Farmasi
