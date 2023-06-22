@@ -21,11 +21,11 @@
                     <form class="form-inline">
                         <div class="form-group mx-sm-3 mb-2">
                             <label for="inputPassword2" class="sr-only"></label>
-                            <input type="date" class="form-control" id="tglawal" placeholder="Password">
+                            <input type="date" class="form-control" id="tglawal" placeholder="Password" value="{{ $now }}">
                         </div>
                         <div class="form-group mx-sm-3 mb-2">
                             <label for="inputPassword2" class="sr-only">Password</label>
-                            <input type="date" class="form-control" id="tglakhir" placeholder="Password">
+                            <input type="date" class="form-control" id="tglakhir" placeholder="Password"  value="{{ $now }}">
                         </div>
                         <button type="button" class="btn btn-primary mb-2" onclick="caripasien_erm()">Cari Pasien</button>
                     </form>

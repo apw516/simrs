@@ -41,11 +41,24 @@
             </div>
             <div class="card-body p-0">
                 <ul class="nav nav-pills flex-column">
+                    @if(auth()->user()->unit != '1028')
                     <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formpemeriksaan()">
                             <i class="fas fa-inbox mr-2"></i>Catatan Perkembangan Pasien Terintegrasi ( CPPT )
                         </a>
                     </li>
+                    @else
+                    <li class="nav-item" id="pemeriksaan">
+                        <a href="#" class="nav-link" onclick="formpemeriksaan_fisio()">
+                            <i class="fas fa-inbox mr-2"></i>CPPT Fisioterapi
+                        </a>
+                    </li>
+                    <li class="nav-item" id="pemeriksaan">
+                        <a href="#" class="nav-link" onclick="formpemeriksaan_wicara()">
+                            <i class="fas fa-inbox mr-2"></i>CPPT Terapiwicara
+                        </a>
+                    </li>
+                    @endif
                     {{-- @if(auth()->user()->unit == '1002')
                     <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formpemeriksaankhusus()">
@@ -116,6 +129,44 @@
                 kodekunjungan
             },
             url: '<?= route('formpemeriksaan_') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    function formpemeriksaan_fisio() {
+        spinner = $('#loader')
+        spinner.show();
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('formpemeriksaan_fisio') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    function formpemeriksaan_wicara() {
+        spinner = $('#loader')
+        spinner.show();
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('formpemeriksaan_wicara') ?>',
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()

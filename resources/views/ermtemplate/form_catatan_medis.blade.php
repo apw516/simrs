@@ -13,7 +13,7 @@
                             <button class="btn btn-link btn-block text-left text-dark text-bold" type="button"
                                 data-toggle="collapse" data-target="#collapse{{ $k->kode_kunjungan }}" aria-expanded="true"
                                 aria-controls="collapseOne">
-                                Kunjungan Ke - {{ $k->counter }} | {{ $k->nama_unit }} <p class="float-right">
+                                Kunjungan Ke - {{ $k->counter }} | {{ $k->nama_unit }} @if($k->kode_unit == '1028') | {{ $k->keterangan_cppt }} @endif<p class="float-right">
                                     {{ $k->tgl_masuk }}</p>
                             </button>
                         </h2>
@@ -212,7 +212,8 @@
                                     <div class="card">
                                         <div class="card-header bg-danger text-bold">Assesmen awal Medis</div>
                                         @if ($k->id_2 != null)
-                                            <div class="card-body">
+                                        <div class="card-body">
+                                                @if($k->kode_unit != '1028')
                                                 <table class="table table-sm text-sm">
                                                     <tr>
                                                         <td class="text-bold font-italic">Sumber Data</td>
@@ -368,19 +369,6 @@
                                                         {{-- <img src="{{ $k->gambar_2 }}" alt=""><br><br> --}}
                                                     </div>
                                                 </div>
-                                                {{-- <button class="btn btn-info riwayattindakan mt-4"
-                                                    kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
-                                                    data-target="#modalriwayattindakan">Riwayat Tindakan</button> --}}
-                                                {{-- <button class="btn btn-danger hasilpemeriksaankhusus mt-4"
-                                                    kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
-                                                    data-target="#modalhasilpemeriksaankhusus">Hasil Pemeriksaan
-                                                    Khusus</button> --}}
-                                                {{-- <button class="btn btn-success riwayatupload mt-4"
-                                                    kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
-                                                    data-target="#modalriwayatupload">Riwayat Upload</button> --}}
-                                                {{-- <button class="btn btn-warning riwayatorder mt-4"
-                                                    kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
-                                                    data-target="#modalriwayatorder">Riwayat Order Penunjang</button> --}}
                                                 <table class="table table-sm table-bordered mt-4">
                                                     <thead>
                                                         <th>Tanggal assesmen</th>
@@ -398,6 +386,66 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
+                                                @else
+                                                <table class="table table-striped">
+                                                    <tr>
+                                                        <td colspan="2" class="text-center bg-dark">Layanann Fisik dan Rehabilitasi</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Anamnesa</td>
+                                                        <td>: {{ $k->anamnesa}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Pemeriksaan Fisik dan Uji Fungsi</td>
+                                                        <td>: {{ $k->pemeriksaan_fisik}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Diagnosa Medis ( ICD 10 )</td>
+                                                        <td>: {{ $k->diagnosakerja}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Diagnosa Fungsi ( ICD 10 )</td>
+                                                        <td>: {{ $k->diagnosabanding}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Pemeriksaan Penunjang</td>
+                                                        <td>: {{ $k->rencanakerja}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tata Laksana KFR ( ICD 9CM )</td>
+                                                        <td>: {{ $k->tatalaksana_kfr}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Anjuran</td>
+                                                        <td>: {{ $k->anjuran}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Evaluasi</td>
+                                                        <td>: {{ $k->evaluasi}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Suspek Penyakit Akibat Kerja</td>
+                                                        <td>: {{ $k->riwayatlain}} | {{ $k->ket_riwayatlain}}</td>
+                                                    </tr>
+                                                </table>
+                                                <table class="table table-sm table-bordered mt-4">
+                                                    <thead>
+                                                        <th>Tanggal assesmen</th>
+                                                        <th>Nama Pemeriksa</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>{{ $k->tgl_pemeriksaan }}</td>
+                                                            <td>
+                                                                <img src="{{ $k->signature_dokter }}"
+                                                                    alt=""><br>
+                                                                <p class="text-center">{{ $k->nama_dokter }}
+                                                                </p>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                @endif
                                             </div>
                                         @else
                                             <div class="card-body">

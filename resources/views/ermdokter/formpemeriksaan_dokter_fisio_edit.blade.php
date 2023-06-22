@@ -95,63 +95,68 @@
                 </tbody>
             </table>
             @endif
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Anamnesa</label>
-                    <textarea type="text" class="form-control" id="anamnesa" name="anamnesa" rows="5"
-                        aria-describedby="emailHelp">{{ $last_assdok[0]->anamnesa }}</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Pemeriksaan Fisik dan Uji Fungsi</label>
-                    <textarea type="password" class="form-control" id="pemeriksaanfisik" name="pemeriksaanfisik" rows="4">{{ $last_assdok[0]->pemeriksaan_fisik }}</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Diagnosis Medis ( ICD 10)</label>
-                    <input type="text" class="form-control" id="diagnosismedis" name="diagnosismedis"
-                        rows="4" value="{{ $last_assdok[0]->diagnosakerja }}">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Diagnosis fungsi ( ICD 10)</label>
-                    <input type="texrt" class="form-control" id="diagnosisfungsi" name="diagnosisfungsi"
-                        rows="4" value="{{ $last_assdok[0]->diagnosabanding }}">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Pemeriksaan Penunjang</label>
-                    <textarea type="text" class="form-control" id="pemeriksaanpenunjang" name="pemeriksaanpenunjang"
-                        rows="4">{{ $last_assdok[0]->rencanakerja }}</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Tata Laksana KFR ( ICD 9CM )</label>
-                    <textarea type="password" class="form-control" id="tatalaksankfr" name="tatalaksankfr" rows="4">{{ $last_assdok[0]->tatalaksana_kfr }}</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Anjuran</label>
-                    <textarea type="password" class="form-control" id="anjuran" name="anjuran" rows="2">{{ $last_assdok[0]->anjuran }}</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Evaluasi</label>
-                    <textarea type="password" class="form-control" id="evaluasi" name="evaluasi" rows="2">{{ $last_assdok[0]->evaluasi }}</textarea>
-                </div>
-                <fieldset class="form-group row">
-                    <legend class="col-form-label col-sm-4 float-sm-left pt-0">Suspek Penyakit Akibat Kerja</legend>
-                    <div class="col-sm-8">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="supekpenyakit" id="supekpenyakit"
-                                value="Ya" @if($last_assdok[0]->riwayatlain =='Ya')checked @endif>
-                            <label class="form-check-label" for="gridRadios1">
-                                Ya
-                            </label>
-                            <input type="text" class="form-control form-control-sm" id="keterangansuspek"
-                                name="keterangansuspek" value="{{ $last_assdok[0]->ket_riwayatlain }}">
-                        </div>
-                        <div class="form-check mt-2">
-                            <input class="form-check-input" type="radio" name="supekpenyakit" id="supekpenyakit"
-                                value="Tidak" @if($last_assdok[0]->riwayatlain =='Tidak')checked @endif>
-                            <label class="form-check-label" for="gridRadios2">
-                                Tidak
-                            </label>
-                        </div>
+            <div class="card">
+                <div class="card-header text-bold bg-dark">LAYANAN FISIK DAN REHABILITASI</div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Anamnesa</label>
+                        <textarea type="text" class="form-control" id="anamnesa" name="anamnesa" rows="5"
+                            aria-describedby="emailHelp">{{ $last_assdok[0]->anamnesa }}</textarea>
                     </div>
-                </fieldset>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Pemeriksaan Fisik dan Uji Fungsi</label>
+                        <textarea type="password" class="form-control" id="pemeriksaanfisik" name="pemeriksaanfisik" rows="4">{{ $last_assdok[0]->pemeriksaan_fisik }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Diagnosis Medis ( ICD 10)</label>
+                        <input type="text" class="form-control" id="diagnosismedis" name="diagnosismedis"
+                            rows="4" value="{{ $last_assdok[0]->diagnosakerja }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Diagnosis fungsi ( ICD 10)</label>
+                        <input type="texrt" class="form-control" id="diagnosisfungsi" name="diagnosisfungsi"
+                            rows="4" value="{{ $last_assdok[0]->diagnosabanding }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Pemeriksaan Penunjang</label>
+                        <textarea type="text" class="form-control" id="pemeriksaanpenunjang" name="pemeriksaanpenunjang"
+                            rows="4">{{ $last_assdok[0]->rencanakerja }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Tata Laksana KFR ( ICD 9CM )</label>
+                        <textarea type="password" class="form-control" id="tatalaksankfr" name="tatalaksankfr" rows="4">{{ $last_assdok[0]->tatalaksana_kfr }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Anjuran</label>
+                        <textarea type="password" class="form-control" id="anjuran" name="anjuran" rows="2">{{ $last_assdok[0]->anjuran }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Evaluasi</label>
+                        <textarea type="password" class="form-control" id="evaluasi" name="evaluasi" rows="2">{{ $last_assdok[0]->evaluasi }}</textarea>
+                    </div>
+                    <fieldset class="form-group row">
+                        <legend class="col-form-label col-sm-4 float-sm-left pt-0">Suspek Penyakit Akibat Kerja</legend>
+                        <div class="col-sm-8">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="supekpenyakit" id="supekpenyakit"
+                                    value="Ya" @if($last_assdok[0]->riwayatlain =='Ya')checked @endif>
+                                <label class="form-check-label" for="gridRadios1">
+                                    Ya
+                                </label>
+                                <input type="text" class="form-control form-control-sm" id="keterangansuspek"
+                                    name="keterangansuspek" value="{{ $last_assdok[0]->ket_riwayatlain }}">
+                            </div>
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="radio" name="supekpenyakit" id="supekpenyakit"
+                                    value="Tidak" @if($last_assdok[0]->riwayatlain =='Tidak')checked @endif>
+                                <label class="form-check-label" for="gridRadios2">
+                                    Tidak
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
         </form>
         <button type="button" class="btn btn-danger float-right ml-1" onclick="simpanhasil()">Batal</button>
         <button type="button" class="btn btn-success float-right" onclick="simpanhasil()">Simpan</button>

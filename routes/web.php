@@ -434,6 +434,10 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('ambildetailpasien'); //sidebar
     Route::post('/formpemeriksaan_', [ErmController::class, 'formpemeriksaan_perawat'])
         ->name('formpemeriksaan_'); //sidebar
+    Route::post('/formpemeriksaan_fisio', [ErmController::class, 'formpemeriksaan_perawat_fisio'])
+        ->name('formpemeriksaan_fisio'); //sidebar
+    Route::post('/formpemeriksaan_wicara', [ErmController::class, 'formpemeriksaan_perawat_wicara'])
+        ->name('formpemeriksaan_wicara'); //sidebar
     Route::post('/simpanpemeriksaanperawat', [ErmController::class, 'simpanpemeriksaanperawat'])
         ->name('simpanpemeriksaanperawat'); //sidebar
     Route::post('/simpanpemeriksaanperawat_igd', [ErmController::class, 'simpanpemeriksaanperawat_igd'])
