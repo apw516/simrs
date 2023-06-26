@@ -14,7 +14,7 @@
                 pic="">
                 <td>{{ $p->tgl_masuk }}</td>
                 <td>{{ $p->no_rm }}</td>
-                <td>{{ $p->nama_pasien }}</td>
+                <td>{{ $p->nama_pasien }} @if($p->ref_kunjungan != 0 || $p->ref_kunjungan != NULL )| <button class="badge badge-warning">PASIEN KONSUL </button>@endif</td>
                 <td>{{ $p->nama_unit }}</td>
                 <td>{{ $p->nama_penjamin }}</td>
                 <td>
