@@ -6,19 +6,22 @@
         <button class="btn btn-danger mb-2 liatberkasluar" rm="{{ $rm }}" data-toggle="modal" data-target="#modalberkasluar"><i
                 class="bi bi-journal-text"></i> BERKAS LAIN</button>
         <div class="accordion" id="accordionExample">
+            @php
+            $urutan = 1;
+        @endphp
             @foreach ($kunjungan as $k)
                 <div class="card">
-                    <div class="card-header" style="background-color: rgba(110, 245, 137, 0.745)" id="headingOne">
+                    <div class="card-header" style="background-color: rgba(110, 245, 137, 0.745)" id="headingOne{{ $k->kode_kunjungan }}{{ $urutan }}">
                         <h2 class="mb-0">
                             <button class="btn btn-link btn-block text-left text-dark text-bold" type="button"
-                                data-toggle="collapse" data-target="#collapse{{ $k->kode_kunjungan }}" aria-expanded="true"
+                                data-toggle="collapse" data-target="#collapse{{ $k->kode_kunjungan }}{{ $urutan }}" aria-expanded="true"
                                 aria-controls="collapseOne">
                                 Kunjungan Ke - {{ $k->counter }} | {{ $k->nama_unit }} @if($k->kode_unit == '1028') | {{ $k->keterangan_cppt }} @endif<p class="float-right">
                                     {{ $k->tgl_masuk }}</p>
                             </button>
                         </h2>
                     </div>
-                    <div id="collapse{{ $k->kode_kunjungan }}" class="collapse" aria-labelledby="headingOne"
+                    <div id="collapse{{ $k->kode_kunjungan }}{{ $urutan }}" class="collapse" aria-labelledby="headingOne{{ $k->kode_kunjungan }}{{ $urutan }}"
                         data-parent="#accordionExample">
                         <div class="card-body">
                             <div class="row mb-4 justify-content-end">
@@ -171,15 +174,19 @@
                                                         <td>{{ $k->diagnosakeperawatan }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Rencana Keperawatan/Kebidanan</td>
+                                                        <td>Rencana Keperawatan/Kebidanan/Terapis</td>
                                                         <td>{{ $k->rencanakeperawatan }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Tindakan Keperawatan/Kebidanan</td>
-                                                        <td>{{ $k->tindakankeperawatan }}</td>
+                                                        <td>Tindakan Keperawatan/Kebidanan/Terapis</td>
+                                                        <td>{{ $k->tindakankeperawatan }}<br>
+                                                            <button class="btn btn-info riwayattindakan mt-4"
+                                                            kodekunjungan="{{ $k->kode_kunjungan }}" data-toggle="modal"
+                                                            data-target="#modalriwayattindakan">Riwayat Tindakan</button>
+                                                        </td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Evaluasi Keperawatan/Kebidanan</td>
+                                                        <td>Evaluasi Keperawatan/Kebidanan/Terapis</td>
                                                         <td>{{ $k->evaluasikeperawatan }}</td>
                                                     </tr>
                                                 </table>
@@ -427,6 +434,13 @@
                                                         <td>Suspek Penyakit Akibat Kerja</td>
                                                         <td>: {{ $k->riwayatlain}} | {{ $k->ket_riwayatlain}}</td>
                                                     </tr>
+                                                    <tr>
+                                                        <td class="text-bold font-italic">Order Farmasi</td>
+                                                        <td>  <button class="btn btn-warning riwayatorderfarmasi mt-4"
+                                                            kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
+                                                            data-target="#modalriwayatorderfarmasi">Riwayat Order
+                                                            Farmasi</button></td>
+                                                    </tr>
                                                 </table>
                                                 <table class="table table-sm table-bordered mt-4">
                                                     <thead>
@@ -458,6 +472,9 @@
                         </div>
                     </div>
                 </div>
+                @php
+                    $urutan = $urutan + 1;
+                @endphp
             @endforeach
         </div>
     </div>

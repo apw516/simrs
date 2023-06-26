@@ -1267,10 +1267,60 @@
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn btn-danger float-right ml-2"
-                onclick="ambildatapasien()">Batal</button>
-            <button type="button" class="btn btn-success float-right" onclick="simpanhasil()">Simpan</button>
         </form>
+        <div class="card">
+            <div class="card-header bg-success">INPUT TINDAKAN</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-5" style="margin-top:20px">
+                        <h5>Terapi / Tindakan Medis</h5>
+                        <table id="tabeltindakan" class="table table-hover table-sm">
+                            <thead>
+                                <th>Nama tindakan</th>
+                            </thead>
+                            <tbody>
+                                @foreach ($layanan as $t)
+                                    <tr class="pilihlayanan" namatindakan="{{ $t->Tindakan }}"
+                                        tarif="{{ $t->tarif }}" kode="{{ $t->kode }}"
+                                        id="{{ $t->kode }}">
+                                        <td>{{ $t->Tindakan }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-7" style="margin-top:20px">
+                        <div class="card">
+                            <div class="card-header bg-info">Riwayat Tindakan Hari ini</div>
+                            <div class="card-body">
+                                <div class="vriwayattindakan">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header bg-dark">Tindakan / Layanan Pasien</div>
+                            <div class="card-body">
+                                <form action="" method="post" class="formtindakan">
+                                    <div class="input_fields_wrap">
+                                        <div>
+                                        </div>
+                                        {{-- <button type="button" class="btn btn-warning mb-2 simpanlayanan"
+                                        id="simpanlayanan">Simpan Tindakan</button> --}}
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer">
+                                <p>pilih layanan untuk pasien</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-danger float-right ml-2"
+            onclick="ambildatapasien()">Batal</button>
+        <button type="button" class="btn btn-success float-right" onclick="simpanhasil()">Simpan</button>
     </div>
 </div>
 <link rel="stylesheet" href="{{ asset('public/dist/css/datepicker.css') }}" rel="stylesheet">
@@ -1282,11 +1332,11 @@
             todayHighlight: true,
         }).datepicker('update', new Date());
     });
-
     function simpanhasil() {
         spinner = $('#loader')
         spinner.show();
         var data = $('.formpemeriksaanperawat').serializeArray();
+        var data2 = $('.formtindakan').serializeArray();
         keterangan = $('#keterangancppt').val()
         $.ajax({
             async: true,
@@ -1295,6 +1345,7 @@
             data: {
                 _token: "{{ csrf_token() }}",
                 data: JSON.stringify(data),
+                data2: JSON.stringify(data2),
                 keterangan
             },
             url: '<?= route('simpanpemeriksaanperawat') ?>',
@@ -1325,6 +1376,74 @@
                     })
                     resume()
                 }
+            }
+        });
+    }
+    $(function() {
+        $("#tabeltindakan").DataTable({
+            "responsive": false,
+            "lengthChange": false,
+            "pageLength": 10,
+            "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        });
+    });
+    $('#tabeltindakan').on('click', '.pilihlayanan', function() {
+        if ($(this).attr('status') == 1) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Layanan sudah dipilih !',
+                text: 'Silahkan isi jumlah layanan jika layanan lebih dari 1 ...',
+                footer: ''
+            })
+        } else {
+            $(this).attr("status", "1");
+            var max_fields = 10; //maximum input boxes allowed
+            var wrapper = $(".input_fields_wrap"); //Fields wrapper
+            var x = 1; //initlal text box count
+            kode = $(this).attr('kode')
+            namatindakan = $(this).attr('namatindakan')
+            tarif = $(this).attr('tarif')
+            // e.preventDefault();
+            if (x < max_fields) { //max input box allowed
+                x++; //text box increment
+                $(wrapper).append(
+                    '<div class="form-row text-xs"><div class="form-group col-md-5"><label for="">Tindakan</label><input readonly type="" class="form-control form-control-sm" id="" name="namatindakan" value="' +
+                    namatindakan +
+                    '"><input hidden readonly type="" class="form-control form-control-sm" id="" name="kodelayanan" value="' +
+                    kode +
+                    '"></div><div class="form-group col-md-2"><label for="inputPassword4">Tarif</label><input readonly type="" class="form-control form-control-sm" id="" name="tarif" value="' +
+                    tarif +
+                    '"></div><div class="form-group col-md-1"><label for="inputPassword4">Jumlah</label><input type="" class="form-control form-control-sm" id="" name="qty" value="1"></div><div class="form-group col-md-1"><label for="inputPassword4">Disc</label><input type="" class="form-control form-control-sm" id="" name="disc" value="0"></div><div class="form-group col-md-1"><label for="inputPassword4">Cyto</label><input type="" class="form-control form-control-sm" id="" name="cyto" value="0"></div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger" kode2="' +
+                    kode + '"></i></div>'
+                );
+                $(wrapper).on("click", ".remove_field", function(e) { //user click on remove
+                    kode = $(this).attr('kode2')
+                    $('#' + kode).removeAttr('status', true)
+                    e.preventDefault();
+                    $(this).parent('div').remove();
+                    x--;
+                })
+            }
+        }
+    });
+    $(document).ready(function() {
+        tindakanhariini()
+    });
+    function tindakanhariini() {
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan: $('#kodekunjungan').val(),
+                keterangan: $('#keterangancppt').val(),
+            },
+            url: '<?= route('tindakanhariini_terapi') ?>',
+            error: function(data) {
+                alert('ok')
+            },
+            success: function(response) {
+                $('.vriwayattindakan').html(response)
             }
         });
     }

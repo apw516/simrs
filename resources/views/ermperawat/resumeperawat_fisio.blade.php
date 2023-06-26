@@ -1,9 +1,11 @@
 <div class="card">
     <div class="card-header bg-info">Resume Rehabilitasi Medis</div>
     <div class="card-body">
-        @foreach ($resume as $r )
+        <div class="row">
+            @foreach ($resume as $r )
+            <div class="col-md-6">
             <div class="card">
-                <div class="card-header">{{ $r->keterangan_cppt }}</div>
+                <div class="card-header bg-dark">{{ $r->keterangan_cppt }}</div>
                 <div class="card-body">
                     <div class="card">
                         <div class="card-header text-bold text-lg" style="background-color: rgba(110, 245, 137, 0.745)"><i class="bi bi-plus-lg text-bold mr-3"></i> ( S ) SUBJECTIVE</div>
@@ -260,7 +262,10 @@
                     </div>
                 </div>
             </div>
+        </div>
         @endforeach
+        </div>
+
         @if (count($resume) > 0)
             @if ($resume[0]->signature == '')
                 <div class="jumbotron">

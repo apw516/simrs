@@ -188,7 +188,8 @@
                 </tr>
                 <tr>
                     <td>Tindak Lanjut</td>
-                    <td colspan="3">{{ $resume[0]->tindak_lanjut }} | {{ $resume[0]->keterangan_tindak_lanjut }}</td>
+                    <td colspan="3">{{ $resume[0]->tindak_lanjut }} | {{ $resume[0]->keterangan_tindak_lanjut }}
+                    </td>
                 </tr>
             </table>
             @if ($formkhusus['keterangan'] == 'tht')
@@ -1255,9 +1256,9 @@
                 </div>
             @elseif($formkhusus['keterangan'] == 'mata')
                 @if ($formkhusus['cek'] > 0)
-                <div class="col-md-12">
-                    <img src="{{ $resume[0]->gambar_1 }}" alt="">
-                </div>
+                    <div class="col-md-12">
+                        <img src="{{ $resume[0]->gambar_1 }}" alt="">
+                    </div>
                     <div class="col-md-12">
                         <table class="table table-sm">
                             <tr>
@@ -1621,16 +1622,16 @@
                     </div>
                 @endif
             @else
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header bg-warning">Catatan</div>
-                                <div class="card-body">
-                                    <img src="{{ $resume[0]->gambar_1 }}" alt="">
-                                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header bg-warning">Catatan</div>
+                            <div class="card-body">
+                                <img src="{{ $resume[0]->gambar_1 }}" alt="">
                             </div>
                         </div>
                     </div>
+                </div>
             @endif
             {{-- <div class="card">
                 <div class="card-header bg-info">Riwayat Upload</div>
@@ -1756,7 +1757,8 @@
                         <h1 class="display-2 mb-3">Terima Kasih !</h1>
                         <p class="lead">Anda telah mengisi form assesmen medis rawat jalan ... </p>
                         <p class="lead">Tindak lanjut pasien <br>
-                            {{ $resume[0]->tindak_lanjut }} | keterangan : {{ $resume[0]->keterangan_tindak_lanjut }} </p>
+                            {{ $resume[0]->tindak_lanjut }} | keterangan : {{ $resume[0]->keterangan_tindak_lanjut }}
+                        </p>
                         <hr class="my-4">
                         <p>Pastikan data sudah terisi dengan benar.</p>
                         <a class="btn btn-success btn-lg" href="#" role="button"

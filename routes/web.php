@@ -450,7 +450,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('gambarnyeri'); //sidebar
     Route::post('/gambarcatatan_igd', [ErmController::class, 'gambarcatatan_igd'])
         ->name('gambarcatatan_igd'); //sidebar
-
+        Route::post('/tindakanhariini_terapi', [ErmController::class, 'terapi_tindakanhariini'])
+        ->name('tindakanhariini_terapi'); //sidebar
     Route::post('/ambilformasskep', [ErmController::class, 'ambilformasskep'])
         ->name('ambilformasskep'); //sidebar
     Route::post('/generatekode_igd', [ErmController::class, 'generatekode_igd'])
@@ -461,6 +462,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('uploadgambarnya'); //sidebar
     Route::post('/hapusgambarupload', [ErmController::class, 'hapusgambarupload'])
         ->name('hapusgambarupload'); //sidebar
+        Route::post('/batalheaderlayanan_terapi', [ErmController::class, 'batalheaderlayanan'])
+        ->name('batalheaderlayanan_terapi'); //sidebar
 });
 Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
     Route::get('/cariobat', [ErmController::class, 'cariobat_form'])

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ts_layanan_detail_order extends Model
 {
     use HasFactory;
-    protected $connection = 'mysql2';
+    protected $connection = 'mysql4';
     protected $table = 'ts_layanan_detail_order';
     protected $guarded = ['id'];
 }
