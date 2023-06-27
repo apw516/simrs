@@ -224,7 +224,7 @@ class ErmController extends Controller
         $rm = $request->rm;
         $kunjungan = DB::select('SELECT *,b.kode_unit,a.kode_kunjungan as kodek,a.no_rm as no_rm_k,b.id as id_1, c.id as id_2,b.signature as signature_perawat,c.signature as signature_dokter,b.keluhanutama as keluhan_perawat,a.tgl_masuk,a.counter,fc_nama_unit1(a.kode_unit) AS nama_unit FROM ts_kunjungan a
         LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`kode_kunjungan` = b.kode_kunjungan
-        LEFT OUTER JOIN assesmen_dokters c ON a.`kode_kunjungan` = c.`id_kunjungan` where a.no_rm = ? ORDER BY a.counter desc', [$request->rm]);
+        LEFT OUTER JOIN assesmen_dokters c ON a.`kode_kunjungan` = c.`id_kunjungan` where a.no_rm = ? and a.status_kunjungan != ? ORDER BY a.counter desc', [$request->rm,8]);
         return view('ermtemplate.form_catatan_medis', compact([
             'kunjungan',
             'rm'
