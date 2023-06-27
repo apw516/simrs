@@ -47,6 +47,11 @@
                             <i class="fas fa-inbox mr-2"></i>Catatan Perkembangan Pasien Terintegrasi ( CPPT )
                         </a>
                     </li>
+                    {{-- <li class="nav-item" id="pemeriksaan">
+                        <a href="#" class="nav-link" onclick="formtindaklanjut()">
+                            <i class="fas fa-inbox mr-2"></i>Form Tindak Lanjut
+                        </a>
+                    </li> --}}
                     @else
                     <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formpemeriksaan_fisio()">
@@ -110,6 +115,25 @@
                 rm
             },
             url: '<?= route('ambilcatatanmedis_pasien') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    function formtindaklanjut() {
+        spinner = $('#loader')
+        spinner.show();
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('formtindaklanjut') ?>',
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()

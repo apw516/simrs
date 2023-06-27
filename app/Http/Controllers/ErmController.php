@@ -691,9 +691,9 @@ class ErmController extends Controller
                     $cek_layanan_header = count(DB::connection('mysql4')->SELECT('select id from ts_layanan_header where kode_kunjungan = ?', [$dataSet['kodekunjungan']]));
                     $kodekunjungan = $dataSet['kodekunjungan'];
                     $penjamin = $kunjungan[0]->kode_penjamin;
-                    if($request->keterangan == 'FISIOTERAPI'){
+                    if ($request->keterangan == 'FISIOTERAPI') {
                         $kodeunit = '3009';
-                    }else{
+                    } else {
                         $kodeunit = '3010';
                     }
                     $unit = DB::select('select * from mt_unit where kode_unit = ?', [$kodeunit]);
@@ -854,7 +854,7 @@ class ErmController extends Controller
                 } else {
                     $erm_assesmen = assesmenawalperawat::create($data2);
                 }
-                assesmenawalperawat::whereRaw('kode_kunjungan = ?', array($dataSet['kodekunjungan']))->update(['signature' => '','status' => '0']);
+                assesmenawalperawat::whereRaw('kode_kunjungan = ?', array($dataSet['kodekunjungan']))->update(['signature' => '', 'status' => '0']);
                 $data = [
                     'kode' => 200,
                     'message' => 'Data berhasil disimpan !'
@@ -2195,7 +2195,7 @@ class ErmController extends Controller
             $id_assesmen = $erm_assesmen->id;
         }
         $diagnosakerja = $dataSet['diagnosismedis'];
-        if(count($dataobat) > 1){
+        if (count($dataobat) > 1) {
             $simpantemplate = $request->simpantemplate;
             $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
             $dt = Carbon::now()->timezone('Asia/Jakarta');
@@ -2320,7 +2320,7 @@ class ErmController extends Controller
                 die;
             }
         }
-        assesmenawaldokter::whereRaw('id_kunjungan = ?', array($request->kodekunjungan))->update(['signature' => '','status' => '0']);
+        assesmenawaldokter::whereRaw('id_kunjungan = ?', array($request->kodekunjungan))->update(['signature' => '', 'status' => '0']);
         $data = [
             'kode' => 200,
             'message' => 'Data berhasil disimpan !'
@@ -3512,9 +3512,9 @@ class ErmController extends Controller
     {
         $kodekunjungan = $request->kodekunjungan;
         $keterangan = $request->keterangan;
-        if($keterangan == 'FISIOTERAPI'){
+        if ($keterangan == 'FISIOTERAPI') {
             $kodeunit = '3009';
-        }else{
+        } else {
             $kodeunit = '3010';
         }
 
@@ -3523,7 +3523,7 @@ class ErmController extends Controller
         RIGHT OUTER JOIN ts_layanan_detail c ON b.id = c.row_id_header
         RIGHT OUTER JOIN mt_tarif_detail d ON c.kode_tarif_detail = d.`KODE_TARIF_DETAIL`
         RIGHT OUTER JOIN mt_tarif_header e ON d.`KODE_TARIF_HEADER` = e.`KODE_TARIF_HEADER`
-        WHERE a.`kode_kunjungan` = ? AND b.kode_unit = ?", [$request->kodekunjungan,$kodeunit]);
+        WHERE a.`kode_kunjungan` = ? AND b.kode_unit = ?", [$request->kodekunjungan, $kodeunit]);
         return view('ermperawat.riwayatterapi', compact([
             'riwayat_tindakan'
         ]));
@@ -3907,7 +3907,6 @@ class ErmController extends Controller
     {
         $assdok = DB::select('select * from assesmen_dokters where id_kunjungan = ?', [$request->kodekunjungan]);
         if (count($assdok) > 0) {
-
             return view('ermtemplate.formorderpenunjang', compact([
                 'assdok'
             ]));
@@ -4611,5 +4610,61 @@ class ErmController extends Controller
                 );
             echo json_encode($arr_result);
         }
+    }
+    public function formtindaklanjut(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        $assdok = DB::select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
+        if (count($assdok) > 0) {
+            return view('ermtemplate.formtindaklanjut', compact([
+                'assdok'
+            ]));
+        } else {
+            return view('ermtemplate.dokterbelummengisi');
+        }
+    }
+    public function formsurkon(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        $jenis = $request->jenis;
+        $assdok = DB::select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
+        if ($jenis == 'konsul') {
+            return view('ermtemplate.formkonsul', compact([
+                'jenis',
+                'assdok'
+            ]));
+        }
+    }
+    public function simpankonsul(Request $request)
+    {
+        $data = json_decode($_POST['data'], true);
+        $kodekunjungan = $request->kodekunjungan;
+        $jenis = $request->jenis;
+        foreach ($data as $nama) {
+            $index = $nama['name'];
+            $value = $nama['value'];
+            $dataSet[$index] = $value;
+        }
+        $assdok = DB::select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
+        $kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+        $unit = DB::select('select * from mt_unit where kode_unit = ?', [$dataSet['idpolitujuan']]);
+        $data_ts_kunjungan = [
+            'counter' => $kunjungan[0]->counter,
+            'no_rm' => $kunjungan[0]->no_rm,
+            'ref_kunjungan' => $kodekunjungan,
+            'kode_unit' => $dataSet['idpolitujuan'],
+            'kode_paramedis' => '',
+            'prefix_kunjungan' => $unit[0]->prefix_unit,
+            'tgl_masuk' => $this->get_now(),
+            'status_kunjungan' => '1',
+            'kode_penjamin' => $kunjungan[0]->kode_penjamin,
+            'id_alasan_masuk' => '7',
+            'hak_kelas' => $kunjungan[0]->hak_kelas,
+            'diagx' => $assdok[0]->diagnosakerja,
+            'pic' => auth()->user()->id,
+            'no_sep' => '',
+        ];
+        $ts_kunjungan = ts_kunjungan::create($data_ts_kunjungan);
+        dd($data_ts_kunjungan);
     }
 }

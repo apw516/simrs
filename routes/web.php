@@ -436,6 +436,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('formpemeriksaan_'); //sidebar
     Route::post('/formpemeriksaan_fisio', [ErmController::class, 'formpemeriksaan_perawat_fisio'])
         ->name('formpemeriksaan_fisio'); //sidebar
+    Route::post('/formtindaklanjut', [ErmController::class, 'formtindaklanjut'])
+        ->name('formtindaklanjut'); //sidebar
     Route::post('/formpemeriksaan_wicara', [ErmController::class, 'formpemeriksaan_perawat_wicara'])
         ->name('formpemeriksaan_wicara'); //sidebar
     Route::post('/simpanpemeriksaanperawat', [ErmController::class, 'simpanpemeriksaanperawat'])
@@ -450,7 +452,7 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('gambarnyeri'); //sidebar
     Route::post('/gambarcatatan_igd', [ErmController::class, 'gambarcatatan_igd'])
         ->name('gambarcatatan_igd'); //sidebar
-        Route::post('/tindakanhariini_terapi', [ErmController::class, 'terapi_tindakanhariini'])
+    Route::post('/tindakanhariini_terapi', [ErmController::class, 'terapi_tindakanhariini'])
         ->name('tindakanhariini_terapi'); //sidebar
     Route::post('/ambilformasskep', [ErmController::class, 'ambilformasskep'])
         ->name('ambilformasskep'); //sidebar
@@ -462,12 +464,18 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('uploadgambarnya'); //sidebar
     Route::post('/hapusgambarupload', [ErmController::class, 'hapusgambarupload'])
         ->name('hapusgambarupload'); //sidebar
-        Route::post('/batalheaderlayanan_terapi', [ErmController::class, 'batalheaderlayanan'])
+    Route::post('/batalheaderlayanan_terapi', [ErmController::class, 'batalheaderlayanan'])
         ->name('batalheaderlayanan_terapi'); //sidebar
+    Route::post('/formsurkon', [ErmController::class, 'formsurkon'])
+        ->name('formsurkon'); //sidebar
+    Route::post('simpankonsul', [ErmController::class, 'simpankonsul'])
+        ->name('simpankonsul'); //sidebar
+    Route::get('caripoli_konsul', [SimrsController::class, 'Caripoli_rs'])
+        ->name('caripoli_konsul'); //formpasien_bpjs
 });
 Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
     Route::get('/cariobat', [ErmController::class, 'cariobat_form'])
-    ->name('cariobat'); //formpasien_bpjs
+        ->name('cariobat'); //formpasien_bpjs
     Route::get('/indexdokter', [ErmController::class, 'indexdokter'])
         ->name('indexdokter'); //sidebar
     Route::get('/indexdokter_ro', [ErmController::class, 'indexdokter_ro'])
