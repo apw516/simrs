@@ -11,7 +11,9 @@
                 value="{{ $usia_hari }}">
             <input hidden type="text" name="keterangancppt" id="keterangancppt" class="form-control"
                 value="{{ $resume[0]->keterangan_cppt }}">
-            <div class="accordion" id="accordionExample">
+            <input hidden readonly type="text" name="tanggalkunjungan" class="form-control"
+                value="{{ $kunjungan[0]->tgl_masuk }}">
+            {{-- <div class="accordion" id="accordionExample">
                 <div class="card">
                     <div class="card-header" style="background-color: rgba(110, 245, 137, 0.745)" id="headingOne">
                         <h2 class="mb-0">
@@ -799,7 +801,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <table @if($usia_hari >= 4383) hidden @endif class="table">
+                            <table @if ($usia_hari >= 4383) hidden @endif class="table">
                                 <tr>
                                     <td colspan="2" class="bg-secondary">Assesmen Resiko Jatuh</td>
                                 </tr>
@@ -1055,7 +1057,7 @@
                                     </td>
                                 </tr>
                             </table>
-                            <table @if($usia_hari >= 4383) hidden @endif class="table">
+                            <table @if ($usia_hari >= 4383) hidden @endif class="table">
                                 <tr>
                                     <td colspan="2" class="bg-secondary">Skrining Gizi</td>
                                 </tr>
@@ -1266,6 +1268,12 @@
                         </div>
                     </div>
                 </div>
+            </div> --}}
+            <div class="card">
+                <div class="card-header bg-success">Hasil Pemeriksaan</div>
+                <div class="card-body">
+                    <textarea cols="30" rows="10" class="form-control" name="hasilpemeriksaan" id="hasilpemeriksaan">{{ $resume[0]->tindakankeperawatan }}</textarea>
+                </div>
             </div>
         </form>
         <div class="card">
@@ -1318,9 +1326,8 @@
                 </div>
             </div>
         </div>
-            <button type="button" class="btn btn-danger float-right ml-2"
-                onclick="ambildatapasien()">Batal</button>
-            <button type="button" class="btn btn-success float-right" onclick="simpanhasil()">Simpan</button>
+        <button type="button" class="btn btn-danger float-right ml-2" onclick="ambildatapasien()">Batal</button>
+        <button type="button" class="btn btn-success float-right" onclick="simpanhasil()">Simpan</button>
     </div>
 </div>
 <link rel="stylesheet" href="{{ asset('public/dist/css/datepicker.css') }}" rel="stylesheet">
@@ -1423,6 +1430,7 @@
     $(document).ready(function() {
         tindakanhariini()
     });
+
     function tindakanhariini() {
         $.ajax({
             type: 'post',

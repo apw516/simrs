@@ -61,6 +61,7 @@
                                         <div class="card-header bg-warning text-bold">Assesmen awal Keperawatan</div>
                                         @if ($k->id_1 != null)
                                             <div class="container">
+                                                @if($k->kode_unit != '1028')
                                                 <table class="table table-sm text-sm">
                                                     <tr>
                                                         <td class="text-bold font-italic">Sumber Data</td>
@@ -190,6 +191,14 @@
                                                         <td>{{ $k->evaluasikeperawatan }}</td>
                                                     </tr>
                                                 </table>
+                                                @else
+                                                <div class="card mt-3">
+                                                    <div class="card-header bg-success ">Hasil Pemeriksaan</div>
+                                                    <div class="card-body">
+                                                        {{ $k->tindakankeperawatan }}
+                                                    </div>
+                                                </div>
+                                                @endif
                                                 <table class="table table-sm table-bordered">
                                                     <thead>
                                                         <th>Tanggal assesmen</th>

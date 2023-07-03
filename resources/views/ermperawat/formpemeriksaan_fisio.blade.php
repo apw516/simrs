@@ -11,7 +11,9 @@
                 value="{{ $usia_hari }}">
             <input hidden type="text" name="keterangancppt" id="keterangancppt" class="form-control"
                 value="FISIOTERAPI">
-            <div class="accordion" id="accordionExample">
+            <input hidden readonly type="text" name="tanggalkunjungan" class="form-control"
+                value="{{ $kunjungan[0]->tgl_masuk }}">
+            {{-- <div class="accordion" id="accordionExample">
                 <div class="card">
                     <div class="card-header" style="background-color: rgba(110, 245, 137, 0.745)" id="headingOne">
                         <h2 class="mb-0">
@@ -59,12 +61,11 @@
                                     </td>
                                 </tr>
                             </table>
-                            <table  @if($usia_hari < 30 || $usia_hari >= 1095) hidden @endif class="table text-md">
+                            <table  @if ($usia_hari < 30 || $usia_hari >= 1095) hidden @endif class="table text-md">
                                 <thead>
                                     <th colspan="4" class="text-center bg-warning">Assesmen Nyeri</th>
                                 </thead>
                                 <tbody>
-                                    {{-- @elseif($usia_hari >= 30 || $usia_hari == 1095) --}}
                                     <tr>
                                         <td colspan="2" class="bg-secondary">Metode FLACC Scale ( Pasien 1 - 3
                                             tahun )</td>
@@ -207,15 +208,13 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    {{-- @endif --}}
                                 </tbody>
                             </table>
-                            <table  @if($usia_hari < 1095) hidden @endif class="table text-md">
+                            <table  @if ($usia_hari < 1095) hidden @endif class="table text-md">
                                 <thead>
                                     <th colspan="4" class="text-center bg-warning">Assesmen Nyeri</th>
                                 </thead>
                                 <tbody>
-                                    {{-- @if ($usia_hari > 1095) --}}
                                     <tr>
                                         <td class="text-bold font-italic">Pasien Mengeluh Nyeri </td>
                                         <td colspan="3">
@@ -244,7 +243,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <table @if($usia_hari > 30) hidden @endif  class="table text-md">
+                            <table @if ($usia_hari > 30) hidden @endif  class="table text-md">
                                 <thead>
                                     <th colspan="4" class="text-center bg-warning">Assesmen Nyeri</th>
                                 </thead>
@@ -560,7 +559,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                                <table @if($usia_hari < 4383) hidden @endif class="table">
+                                <table @if ($usia_hari < 4383) hidden @endif class="table">
                                     <thead>
                                         <th colspan="4" class="text-center bg-warning">Assesmen Resiko Jatuh</th>
                                     </thead>
@@ -631,7 +630,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <table @if($usia_hari < 4383) hidden @endif  class="table">
+                                <table @if ($usia_hari < 4383) hidden @endif  class="table">
                                     <thead>
                                         <th colspan="4" class="text-center bg-warning">Skrinning Gizi</th>
                                     </thead>
@@ -755,7 +754,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <table @if($usia_hari >= 4383) hidden @endif class="table">
+                                <table @if ($usia_hari >= 4383) hidden @endif class="table">
                                     <tr>
                                         <td colspan="2" class="bg-secondary">Assesmen Resiko Jatuh</td>
                                     </tr>
@@ -1011,7 +1010,7 @@
                                         </td>
                                     </tr>
                                 </table>
-                                <table @if($usia_hari >= 4383) hidden @endif class="table">
+                                <table @if ($usia_hari >= 4383) hidden @endif class="table">
                                     <tr>
                                         <td colspan="2" class="bg-secondary">Skrining Gizi</td>
                                     </tr>
@@ -1216,6 +1215,13 @@
                         </div>
                     </div>
                 </div>
+            </div> --}}
+            <div class="card">
+                <div class="card-header bg-success">Hasil Pemeriksaan</div>
+                <div class="card-body">
+                    <textarea cols="30" rows="10" class="form-control" name="hasilpemeriksaan"
+                        id="hasilpemeriksaan"></textarea>
+                </div>
             </div>
         </form>
         <div class="card">
@@ -1231,8 +1237,7 @@
                             <tbody>
                                 @foreach ($layanan as $t)
                                     <tr class="pilihlayanan" namatindakan="{{ $t->Tindakan }}"
-                                        tarif="{{ $t->tarif }}" kode="{{ $t->kode }}"
-                                        id="{{ $t->kode }}">
+                                        tarif="{{ $t->tarif }}" kode="{{ $t->kode }}" id="{{ $t->kode }}">
                                         <td>{{ $t->Tindakan }}</td>
                                     </tr>
                                 @endforeach
@@ -1247,8 +1252,6 @@
                                     <div class="input_fields_wrap">
                                         <div>
                                         </div>
-                                        {{-- <button type="button" class="btn btn-warning mb-2 simpanlayanan"
-                                        id="simpanlayanan">Simpan Tindakan</button> --}}
                                     </div>
                                 </form>
                             </div>
@@ -1260,8 +1263,8 @@
                 </div>
             </div>
         </div>
-            <button type="button" class="btn btn-danger float-right ml-2" onclick="batalisi()">Batal</button>
-            <button type="button" class="btn btn-success float-right" onclick="simpanhasil()">Simpan</button>
+        <button type="button" class="btn btn-danger float-right ml-2" onclick="batalisi()">Batal</button>
+        <button type="button" class="btn btn-success float-right" onclick="simpanhasil()">Simpan</button>
     </div>
 </div>
 <link rel="stylesheet" href="{{ asset('public/dist/css/datepicker.css') }}" rel="stylesheet">

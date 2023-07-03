@@ -11,7 +11,9 @@
                 value="{{ $usia_hari }}">
             <input hidden type="text" name="keterangancppt" id="keterangancppt" class="form-control"
                 value="{{ $resume[0]->keterangan_cppt }}">
-            <div class="accordion" id="accordionExample">
+                <input hidden readonly type="text" name="tanggalkunjungan" class="form-control"
+                value="{{ $kunjungan[0]->tgl_masuk }}">
+            {{-- <div class="accordion" id="accordionExample">
                 <div class="card">
                     <div class="card-header" style="background-color: rgba(110, 245, 137, 0.745)" id="headingOne">
                         <h2 class="mb-0">
@@ -1265,6 +1267,13 @@
                             </table>
                         </div>
                     </div>
+                </div>
+            </div> --}}
+            <div class="card">
+                <div class="card-header bg-success">Hasil Pemeriksaan</div>
+                <div class="card-body">
+                    <textarea cols="30" rows="10" class="form-control" name="hasilpemeriksaan"
+                        id="hasilpemeriksaan">{{ $resume[0]->tindakankeperawatan}}</textarea>
                 </div>
             </div>
         </form>

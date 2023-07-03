@@ -111,14 +111,15 @@ class ErmController extends Controller
             if (auth()->user()->unit == '1028') {
                 $pasienpoli = DB::select('SELECT IFNULL(d.nomorantrean, TIME(a.`tgl_masuk`)) AS antrian,d.`nomorantrean`,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.ref_kunjungan,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,(SELECT COUNT(id) FROM erm_hasil_assesmen_keperawatan_rajal b WHERE b.kode_kunjungan = a.`kode_kunjungan`) AS cek ,(SELECT COUNT(id) FROM assesmen_dokters b WHERE b.id_kunjungan = a.`kode_kunjungan`) AS cek2 FROM ts_kunjungan a LEFT OUTER JOIN jkn_antrian d ON a.`kode_kunjungan` = d.`kode_kunjungan`
                WHERE a.`kode_unit` = ? AND DATE(a.tgl_masuk) BETWEEN ? AND ? AND status_kunjungan != ?', [
-                    auth()->user()->unit, $request->tgl_awal, $request->tgl_akhir,'8']);
+                    auth()->user()->unit, $request->tgl_awal, $request->tgl_akhir, '8'
+                ]);
                 return view('ermtemplate.tabelpasien_fisio_perawat', compact([
                     'pasienpoli'
                 ]));
             } else {
                 $pasienpoli = DB::select('SELECT IFNULL(d.nomorantrean, TIME(a.`tgl_masuk`)) AS antrian,d.`nomorantrean`,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.ref_kunjungan,b.namapemeriksa,c.nama_dokter,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan LEFT OUTER JOIN jkn_antrian d ON a.`kode_kunjungan` = d.`kode_kunjungan`
                  WHERE a.`kode_unit` = ? AND DATE(a.tgl_masuk) BETWEEN ? AND ? AND status_kunjungan != ?', [
-                    auth()->user()->unit, $request->tgl_awal, $request->tgl_akhir,8
+                    auth()->user()->unit, $request->tgl_awal, $request->tgl_akhir, 8
                 ]);
                 return view('ermtemplate.tabelpasien', compact([
                     'pasienpoli'
@@ -158,7 +159,7 @@ class ErmController extends Controller
 
         if (auth()->user()->hak_akses == 7) {
             $pasienpoli = DB::select('SELECT b.namapemeriksa,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.`kode_kunjungan`,a.`tgl_masuk`,a.ref_kunjungan,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok,d.id AS id_pk,c.nama_dokter as nama_dokter,c.pic as id_dokter FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan LEFT OUTER JOIN erm_mata_kanan_kiri d ON b.`id` = d.id_asskep  WHERE a.`kode_unit` = ? AND DATE(a.tgl_masuk) BETWEEN ? AND ? AND status_kunjungan != ?', [
-                auth()->user()->unit, $request->tgl_awal, $request->tgl_akhir,8
+                auth()->user()->unit, $request->tgl_awal, $request->tgl_akhir, 8
             ]);
             return view('ermtemplate.tabelpasien_dokter_ro', compact([
                 'pasienpoli'
@@ -166,14 +167,14 @@ class ErmController extends Controller
         } else {
             if (auth()->user()->unit == '1028') {
                 $pasienpoli = DB::select('SELECT a.ref_kunjungan,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,(SELECT COUNT(id) FROM assesmen_dokters b WHERE b.id_kunjungan = a.`kode_kunjungan`) AS cek,(SELECT COUNT(id) FROM erm_hasil_assesmen_keperawatan_rajal b WHERE b.kode_kunjungan = a.`kode_kunjungan`) AS cek2 FROM ts_kunjungan a  WHERE a.`kode_unit` = ? AND DATE(a.tgl_masuk) BETWEEN ? AND ? AND status_kunjungan != ?',  [
-                    auth()->user()->unit, $request->tgl_awal, $request->tgl_akhir,8
+                    auth()->user()->unit, $request->tgl_awal, $request->tgl_akhir, 8
                 ]);
                 return view('ermtemplate.tabelpasien_dokter_fisio', compact([
                     'pasienpoli'
                 ]));
             } else {
                 $pasienpoli = DB::select('SELECT b.namapemeriksa,a.ref_kunjungan,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok,c.nama_dokter as nama_dokter,c.pic as id_dokter FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan WHERE a.`kode_unit` = ? AND DATE(a.tgl_masuk) BETWEEN ? AND ? AND status_kunjungan != ?', [
-                    auth()->user()->unit, $request->tgl_awal, $request->tgl_akhir,8
+                    auth()->user()->unit, $request->tgl_awal, $request->tgl_akhir, 8
                 ]);
                 return view('ermtemplate.tabelpasien_dokter', compact([
                     'pasienpoli'
@@ -223,7 +224,7 @@ class ErmController extends Controller
         $rm = $request->rm;
         $kunjungan = DB::select('SELECT *,b.kode_unit,a.kode_kunjungan as kodek,a.no_rm as no_rm_k,b.id as id_1, c.id as id_2,b.signature as signature_perawat,c.signature as signature_dokter,b.keluhanutama as keluhan_perawat,a.tgl_masuk,a.counter,fc_nama_unit1(a.kode_unit) AS nama_unit FROM ts_kunjungan a
         LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`kode_kunjungan` = b.kode_kunjungan
-        LEFT OUTER JOIN assesmen_dokters c ON a.`kode_kunjungan` = c.`id_kunjungan` where a.no_rm = ? and a.status_kunjungan != ? ORDER BY a.counter desc', [$request->rm,8]);
+        LEFT OUTER JOIN assesmen_dokters c ON a.`kode_kunjungan` = c.`id_kunjungan` where a.no_rm = ? and a.status_kunjungan != ? ORDER BY a.counter desc', [$request->rm, 8]);
         return view('ermtemplate.form_catatan_medis', compact([
             'kunjungan',
             'rm'
@@ -567,115 +568,117 @@ class ErmController extends Controller
             $value =  $nama['value'];
             $dataSet[$index] = $value;
         }
-        if ($dataSet['keluhanutama'] == '') {
-            $data = [
-                'kode' => 500,
-                'message' => 'Keluhan pasien harus diisi !'
-            ];
-            echo json_encode($data);
-            die;
-        }
-        if ($dataSet['tekanandarah'] == '') {
-            $data = [
-                'kode' => 500,
-                'message' => 'Tekanan darah pasien harus diisi !'
-            ];
-            echo json_encode($data);
-            die;
-        }
-        if ($dataSet['frekuensinadi'] == '') {
-            $data = [
-                'kode' => 500,
-                'message' => 'Frekuensi nadi pasien harus diisi !'
-            ];
-            echo json_encode($data);
-            die;
-        }
-        if ($dataSet['frekuensinafas'] == '') {
-            $data = [
-                'kode' => 500,
-                'message' => 'Frekuensi nafas pasien harus diisi !'
-            ];
-            echo json_encode($data);
-            die;
-        }
-        if ($dataSet['suhutubuh'] == '') {
-            $data = [
-                'kode' => 500,
-                'message' => 'suhu tubuh pasien harus diisi !'
-            ];
-            echo json_encode($data);
-            die;
-        }
-        if ($dataSet['beratbadan'] == '') {
-            $data = [
-                'kode' => 500,
-                'message' => 'berat badan pasien harus diisi !'
-            ];
-            echo json_encode($data);
-            die;
-        }
+        if (auth()->user()->unit != '1028') {
+            if ($dataSet['keluhanutama'] == '') {
+                $data = [
+                    'kode' => 500,
+                    'message' => 'Keluhan pasien harus diisi !'
+                ];
+                echo json_encode($data);
+                die;
+            }
+            if ($dataSet['tekanandarah'] == '') {
+                $data = [
+                    'kode' => 500,
+                    'message' => 'Tekanan darah pasien harus diisi !'
+                ];
+                echo json_encode($data);
+                die;
+            }
+            if ($dataSet['frekuensinadi'] == '') {
+                $data = [
+                    'kode' => 500,
+                    'message' => 'Frekuensi nadi pasien harus diisi !'
+                ];
+                echo json_encode($data);
+                die;
+            }
+            if ($dataSet['frekuensinafas'] == '') {
+                $data = [
+                    'kode' => 500,
+                    'message' => 'Frekuensi nafas pasien harus diisi !'
+                ];
+                echo json_encode($data);
+                die;
+            }
+            if ($dataSet['suhutubuh'] == '') {
+                $data = [
+                    'kode' => 500,
+                    'message' => 'suhu tubuh pasien harus diisi !'
+                ];
+                echo json_encode($data);
+                die;
+            }
+            if ($dataSet['beratbadan'] == '') {
+                $data = [
+                    'kode' => 500,
+                    'message' => 'berat badan pasien harus diisi !'
+                ];
+                echo json_encode($data);
+                die;
+            }
 
-        $data = [
-            'counter' => $dataSet['counter'],
-            'no_rm' => $dataSet['nomorrm'],
-            'kode_unit' => $dataSet['unit'],
-            'kode_kunjungan' => $dataSet['kodekunjungan'],
-            'tanggalkunjungan' => $dataSet['tanggalkunjungan'],
-            'sumberdataperiksa' => $dataSet['sumberdata'],
-            'keluhanutama' => trim($dataSet['keluhanutama']),
-            'tekanandarah' => $dataSet['tekanandarah'],
-            'frekuensinadi' => $dataSet['frekuensinadi'],
-            'frekuensinapas' => $dataSet['frekuensinafas'],
-            'suhutubuh' => $dataSet['suhutubuh'],
-            'beratbadan' => $dataSet['beratbadan'],
-            'Riwayatpsikologi' => $dataSet['riwayatpsikologis'],
-            'keterangan_riwayat_psikolog' => $dataSet['keteranganriwayatpsikologislainnya'],
-            'penggunaanalatbantu' => $dataSet['alatbantu'],
-            'keterangan_alat_bantu' => $dataSet['keteranganalatbantulain'],
-            'cacattubuh' => $dataSet['cacattubuh'],
-            'keterangancacattubuh' => $dataSet['keterangancacattubuhlainnya'],
-            'Keluhannyeri' => $dataSet['pasienmengeluhnyeri'],
-            'skalenyeripasien' => $dataSet['skalanyeripasien'],
-            'face' => $dataSet['Face'],
-            'leg' => $dataSet['Leg'],
-            'Activity' => $dataSet['Activity'],
-            'Cry' => $dataSet['Cry'],
-            'Consolabity' => $dataSet['Consolabity'],
-            'ekspresiwajah' => $dataSet['ekspresiwajah'],
-            'menangis' => $dataSet['Menangis'],
-            'polanafas' => $dataSet['polanafas'],
-            'lengan' => $dataSet['Lengan'],
-            'kaki' => $dataSet['Kaki'],
-            'keadaanterangsang' => $dataSet['Keadaan_terangsang'],
-            'resikojatuh' => $dataSet['resikojatuh'],
-            'Skrininggizi' => $dataSet['penurunanbb'],
-            'beratskrininggizi' => $dataSet['beratpenurunan'],
-            'status_asupanmkanan' => $dataSet['asupanmakanan'],
-            'penyakitlainpasien' => $dataSet['keterangandiagnosalain'],
-            'diagnosakhusus' => $dataSet['diagnosakhusus'],
-            'resikomalnutrisi' => $dataSet['kajianlanjutgizi'],
-            'diagnosakeperawatan' => $dataSet['diagnosakeperawatan'],
-            'rencanakeperawatan' => $dataSet['rencanakeperawatan'],
-            'tindakankeperawatan' => $dataSet['tindakankeperawatan'],
-            'evaluasikeperawatan' => $dataSet['evaluasikeperawatan'],
-            'namapemeriksa' => auth()->user()->nama,
-            'idpemeriksa' => auth()->user()->id,
-            'status' => '0',
-            'signature' => '',
-            'umur' => $dataSet['umur'],
-            'jeniskelamin' => $dataSet['jeniskelamin'],
-            'diagnosis' => $dataSet['diagnosis'],
-            'gangguankoginitf' => $dataSet['Gangguan_Kognitif'],
-            'faktorlingkungan' => $dataSet['Faktor_Lingkungan'],
-            'responterhadapoperasi' => $dataSet['respon_thd_op'],
-            'penggunaanobat' => $dataSet['Penggunaan_Obat'],
-            'anaktampakkurus' => $dataSet['anaktampakkurus'],
-            'adapenurunanbbanak' => $dataSet['adapenurunanbbanak'],
-            'anakadadiare' => $dataSet['anakadadiare'],
-            'faktormalnutrisianak' => $dataSet['faktormalnutrisianak'],
-            'usia' => $dataSet['usia'],
-        ];
+            $data = [
+                'counter' => $dataSet['counter'],
+                'no_rm' => $dataSet['nomorrm'],
+                'kode_unit' => $dataSet['unit'],
+                'kode_kunjungan' => $dataSet['kodekunjungan'],
+                'tanggalkunjungan' => $dataSet['tanggalkunjungan'],
+                'sumberdataperiksa' => $dataSet['sumberdata'],
+                'keluhanutama' => trim($dataSet['keluhanutama']),
+                'tekanandarah' => $dataSet['tekanandarah'],
+                'frekuensinadi' => $dataSet['frekuensinadi'],
+                'frekuensinapas' => $dataSet['frekuensinafas'],
+                'suhutubuh' => $dataSet['suhutubuh'],
+                'beratbadan' => $dataSet['beratbadan'],
+                'Riwayatpsikologi' => $dataSet['riwayatpsikologis'],
+                'keterangan_riwayat_psikolog' => $dataSet['keteranganriwayatpsikologislainnya'],
+                'penggunaanalatbantu' => $dataSet['alatbantu'],
+                'keterangan_alat_bantu' => $dataSet['keteranganalatbantulain'],
+                'cacattubuh' => $dataSet['cacattubuh'],
+                'keterangancacattubuh' => $dataSet['keterangancacattubuhlainnya'],
+                'Keluhannyeri' => $dataSet['pasienmengeluhnyeri'],
+                'skalenyeripasien' => $dataSet['skalanyeripasien'],
+                'face' => $dataSet['Face'],
+                'leg' => $dataSet['Leg'],
+                'Activity' => $dataSet['Activity'],
+                'Cry' => $dataSet['Cry'],
+                'Consolabity' => $dataSet['Consolabity'],
+                'ekspresiwajah' => $dataSet['ekspresiwajah'],
+                'menangis' => $dataSet['Menangis'],
+                'polanafas' => $dataSet['polanafas'],
+                'lengan' => $dataSet['Lengan'],
+                'kaki' => $dataSet['Kaki'],
+                'keadaanterangsang' => $dataSet['Keadaan_terangsang'],
+                'resikojatuh' => $dataSet['resikojatuh'],
+                'Skrininggizi' => $dataSet['penurunanbb'],
+                'beratskrininggizi' => $dataSet['beratpenurunan'],
+                'status_asupanmkanan' => $dataSet['asupanmakanan'],
+                'penyakitlainpasien' => $dataSet['keterangandiagnosalain'],
+                'diagnosakhusus' => $dataSet['diagnosakhusus'],
+                'resikomalnutrisi' => $dataSet['kajianlanjutgizi'],
+                'diagnosakeperawatan' => $dataSet['diagnosakeperawatan'],
+                'rencanakeperawatan' => $dataSet['rencanakeperawatan'],
+                'tindakankeperawatan' => $dataSet['tindakankeperawatan'],
+                'evaluasikeperawatan' => $dataSet['evaluasikeperawatan'],
+                'namapemeriksa' => auth()->user()->nama,
+                'idpemeriksa' => auth()->user()->id,
+                'status' => '0',
+                'signature' => '',
+                'umur' => $dataSet['umur'],
+                'jeniskelamin' => $dataSet['jeniskelamin'],
+                'diagnosis' => $dataSet['diagnosis'],
+                'gangguankoginitf' => $dataSet['Gangguan_Kognitif'],
+                'faktorlingkungan' => $dataSet['Faktor_Lingkungan'],
+                'responterhadapoperasi' => $dataSet['respon_thd_op'],
+                'penggunaanobat' => $dataSet['Penggunaan_Obat'],
+                'anaktampakkurus' => $dataSet['anaktampakkurus'],
+                'adapenurunanbbanak' => $dataSet['adapenurunanbbanak'],
+                'anakadadiare' => $dataSet['anakadadiare'],
+                'faktormalnutrisianak' => $dataSet['faktormalnutrisianak'],
+                'usia' => $dataSet['usia'],
+            ];
+        }
         try {
             if (auth()->user()->unit == '1028') {
                 //fisioterapi
@@ -791,59 +794,11 @@ class ErmController extends Controller
                     'kode_unit' => $dataSet['unit'],
                     'kode_kunjungan' => $dataSet['kodekunjungan'],
                     'tanggalkunjungan' => $dataSet['tanggalkunjungan'],
-                    'sumberdataperiksa' => $dataSet['sumberdata'],
-                    'keluhanutama' => trim($dataSet['keluhanutama']),
-                    'tekanandarah' => $dataSet['tekanandarah'],
-                    'frekuensinadi' => $dataSet['frekuensinadi'],
-                    'frekuensinapas' => $dataSet['frekuensinafas'],
-                    'suhutubuh' => $dataSet['suhutubuh'],
-                    'beratbadan' => $dataSet['beratbadan'],
-                    'Riwayatpsikologi' => $dataSet['riwayatpsikologis'],
-                    'keterangan_riwayat_psikolog' => $dataSet['keteranganriwayatpsikologislainnya'],
-                    'penggunaanalatbantu' => $dataSet['alatbantu'],
-                    'keterangan_alat_bantu' => $dataSet['keteranganalatbantulain'],
-                    'cacattubuh' => $dataSet['cacattubuh'],
-                    'keterangancacattubuh' => $dataSet['keterangancacattubuhlainnya'],
-                    'Keluhannyeri' => $dataSet['pasienmengeluhnyeri'],
-                    'skalenyeripasien' => $dataSet['skalanyeripasien'],
-                    'face' => $dataSet['Face'],
-                    'leg' => $dataSet['Leg'],
-                    'Activity' => $dataSet['Activity'],
-                    'Cry' => $dataSet['Cry'],
-                    'Consolabity' => $dataSet['Consolabity'],
-                    'ekspresiwajah' => $dataSet['ekspresiwajah'],
-                    'menangis' => $dataSet['Menangis'],
-                    'polanafas' => $dataSet['polanafas'],
-                    'lengan' => $dataSet['Lengan'],
-                    'kaki' => $dataSet['Kaki'],
-                    'keadaanterangsang' => $dataSet['Keadaan_terangsang'],
-                    'resikojatuh' => $dataSet['resikojatuh'],
-                    'Skrininggizi' => $dataSet['penurunanbb'],
-                    'beratskrininggizi' => $dataSet['beratpenurunan'],
-                    'status_asupanmkanan' => $dataSet['asupanmakanan'],
-                    'penyakitlainpasien' => $dataSet['keterangandiagnosalain'],
-                    'diagnosakhusus' => $dataSet['diagnosakhusus'],
-                    'resikomalnutrisi' => $dataSet['kajianlanjutgizi'],
-                    'diagnosakeperawatan' => $dataSet['diagnosakeperawatan'],
-                    'rencanakeperawatan' => $dataSet['rencanakeperawatan'],
-                    'tindakankeperawatan' => $dataSet['tindakankeperawatan'],
-                    'evaluasikeperawatan' => $dataSet['evaluasikeperawatan'],
+                    'tindakankeperawatan' => $dataSet['hasilpemeriksaan'],
                     'namapemeriksa' => auth()->user()->nama,
                     'idpemeriksa' => auth()->user()->id,
                     'status' => '0',
                     'signature' => '',
-                    'umur' => $dataSet['umur'],
-                    'jeniskelamin' => $dataSet['jeniskelamin'],
-                    'diagnosis' => $dataSet['diagnosis'],
-                    'gangguankoginitf' => $dataSet['Gangguan_Kognitif'],
-                    'faktorlingkungan' => $dataSet['Faktor_Lingkungan'],
-                    'responterhadapoperasi' => $dataSet['respon_thd_op'],
-                    'penggunaanobat' => $dataSet['Penggunaan_Obat'],
-                    'anaktampakkurus' => $dataSet['anaktampakkurus'],
-                    'adapenurunanbbanak' => $dataSet['adapenurunanbbanak'],
-                    'anakadadiare' => $dataSet['anakadadiare'],
-                    'faktormalnutrisianak' => $dataSet['faktormalnutrisianak'],
-                    'usia' => $dataSet['usia'],
                     'keterangan_cppt' => $request->keterangan
                 ];
                 $cek = DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE tanggalkunjungan = ? AND no_rm = ? AND kode_unit = ? AND keterangan_cppt = ?', [$dataSet['tanggalkunjungan'], $dataSet['nomorrm'], $dataSet['unit'], $request->keterangan]);
