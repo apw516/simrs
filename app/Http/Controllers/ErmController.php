@@ -4796,6 +4796,7 @@ class ErmController extends Controller
             'prefix_kunjungan' => $unit[0]->prefix_unit,
             'tgl_masuk' => $this->get_now(),
             'status_kunjungan' => '1',
+            'kelas' => 3,
             'kode_penjamin' => $kunjungan[0]->kode_penjamin,
             'id_alasan_masuk' => '7',
             'hak_kelas' => $kunjungan[0]->hak_kelas,
