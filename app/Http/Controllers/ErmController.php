@@ -443,15 +443,27 @@ class ErmController extends Controller
                         $k1 = [];
                         $k2 = [];
                     }
-                    return view('ermdokter.new_formpemeriksaan_dokter_edit', compact([
-                        'kunjungan',
-                        'resume',
-                        'resume_perawat',
-                        'layanan',
-                        'penyakit',
-                        'k1',
-                        'k2'
-                    ]));
+                    if ($unit == '1026') {
+                        //jika anestesi
+                        return view('ermdokter.new_form_pemeriksaan_dokter_anestesi_edit', compact([
+                            'kunjungan',
+                            'resume',
+                            'resume_perawat',
+                            'layanan',
+                            'last_assdok',
+                            'first_assdok'
+                        ]));
+                    } else {
+                        return view('ermdokter.new_formpemeriksaan_dokter_edit', compact([
+                            'kunjungan',
+                            'resume',
+                            'resume_perawat',
+                            'layanan',
+                            'penyakit',
+                            'k1',
+                            'k2'
+                        ]));
+                    }
                 } else if ($resume_perawat[0]->status == 0) {
                     return view('ermtemplate.datatidakditemukan');
                 } else {
@@ -460,15 +472,29 @@ class ErmController extends Controller
                     } else {
                         $hasil_ro = [];
                     }
-                    return view('ermdokter.new_form_pemeriksaan_dokter', compact([
-                        'kunjungan',
-                        'resume_perawat',
-                        'layanan',
-                        'last_assdok',
-                        'first_assdok',
-                        'penyakit',
-                        'hasil_ro'
-                    ]));
+
+                    if ($unit == '1026') {
+                        //jika anestesi
+                        return view('ermdokter.new_form_pemeriksaan_dokter_anestesi', compact([
+                            'kunjungan',
+                            'resume_perawat',
+                            'layanan',
+                            'last_assdok',
+                            'first_assdok',
+                            'penyakit',
+                            'hasil_ro'
+                        ]));
+                    } else {
+                        return view('ermdokter.new_form_pemeriksaan_dokter', compact([
+                            'kunjungan',
+                            'resume_perawat',
+                            'layanan',
+                            'last_assdok',
+                            'first_assdok',
+                            'penyakit',
+                            'hasil_ro'
+                        ]));
+                    }
                 }
             } else {
                 return view('ermtemplate.datatidakditemukan');
@@ -1029,6 +1055,7 @@ class ErmController extends Controller
                 die;
             }
         };
+
         if ($dataSet['kesadaran'] == 'Composmentis') {
             $kesadaran = 'Composmentis';
         } else {
@@ -2282,12 +2309,161 @@ class ErmController extends Controller
         echo json_encode($data);
         die;
     }
+    public function simpanpemeriksaandokter_anesetesi(Request $request)
+    {
+        if (empty($dataSet['hipertensi'])) {
+            $hipertensi = 0;
+        } else {
+            $hipertensi = $dataSet['hipertensi'];
+        };
+
+        if (empty($dataSet['kencingmanis'])) {
+            $kencingmanis = 0;
+        } else {
+            $kencingmanis = $dataSet['kencingmanis'];
+        };
+
+        if (empty($dataSet['jantung'])) {
+            $jantung = 0;
+        } else {
+            $jantung = $dataSet['jantung'];
+        };
+
+        if (empty($dataSet['stroke'])) {
+            $stroke = 0;
+        } else {
+            $stroke = $dataSet['stroke'];
+        };
+
+        if (empty($dataSet['hepatitis'])) {
+            $hepatitis = 0;
+        } else {
+            $hepatitis = $dataSet['hepatitis'];
+        };
+
+        if (empty($dataSet['asthma'])) {
+            $asthma = 0;
+        } else {
+            $asthma = $dataSet['asthma'];
+        };
+
+        if (empty($dataSet['ginjal'])) {
+            $ginjal = 0;
+        } else {
+            $ginjal = $dataSet['ginjal'];
+        };
+
+        if (empty($dataSet['tb'])) {
+            $tb = 0;
+        } else {
+            $tb = $dataSet['tb'];
+        };
+
+        if (empty($dataSet['riwayatlain'])) {
+            $riwayatlain = 0;
+        } else {
+            $riwayatlain = $dataSet['riwayatlain'];
+            if ($dataSet['ketriwayatlain'] == '') {
+                $data = [
+                    'kode' => 502,
+                    'message' => 'Isi keterangan riwayat lain ...'
+                ];
+                echo json_encode($data);
+                die;
+            }
+        };
+
+        $data = json_decode($_POST['data'], true);
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+        $cek = DB::select('SELECT * from assesmen_dokters WHERE tgl_kunjungan = ? AND id_pasien = ? AND kode_unit = ?', [$dataSet['tanggalkunjungan'], $dataSet['nomorrm'], $dataSet['unit']]);
+        $data = [
+            'counter' => $dataSet['counter'],
+            'kode_unit' => $dataSet['unit'],
+            'id_kunjungan' => $dataSet['kodekunjungan'],
+            'id_pasien' => $dataSet['nomorrm'],
+            'id_asskep' => $dataSet['idasskep'],
+            'pic' => auth()->user()->id,
+            'nama_dokter' => auth()->user()->nama,
+            'tgl_kunjungan' => $dataSet['tanggalkunjungan'],
+            'tgl_pemeriksaan' => $this->get_now(),
+            'sumber_data' => $dataSet['sumberdata'],
+            'tekanan_darah' => $dataSet['tekanandarah'],
+            'frekuensi_nadi' => $dataSet['frekuensinadi'],
+            'frekuensi_nafas' => $dataSet['frekuensinafas'],
+            'beratbadan' => $dataSet['beratbadan'],
+            'suhu_tubuh' => $dataSet['suhutubuh'],
+            'riwayat_alergi' =>  $dataSet['alergi'],
+            'keterangan_alergi' =>  $dataSet['ketalergi'],
+            'riwayat_kehamilan_pasien_wanita' => $dataSet['riwayatkehamilan'],
+            'riwyat_kelahiran_pasien_anak' => $dataSet['riwayatkelahiran'],
+            'riwyat_penyakit_sekarang' => $dataSet['riwayatpenyakitsekarang'],
+            'hipertensi' => $hipertensi,
+            'kencingmanis' => $kencingmanis,
+            'jantung' => $jantung,
+            'stroke' => $stroke,
+            'hepatitis' => $hepatitis,
+            'asthma' => $asthma,
+            'ginjal' => $ginjal,
+            'tbparu' => $tb,
+            'riwayatlain' => $riwayatlain,
+            'ket_riwayatlain' => $dataSet['ketriwayatlain'],
+            'statusgeneralis' => $dataSet['statusgeneralis'],
+            'diagnosakerja' => trim($dataSet['diagnosawd']),
+            'diagnosabanding' => $dataSet['dasardiagnosa'],
+            'tindakanmedis' => trim($dataSet['tindakankedokteran']),
+            'indikasitindakan' => trim($dataSet['indikasitindakan']),
+            'tatacara' => trim($dataSet['tatacara']),
+            'tujuan' => trim($dataSet['tujuan']),
+            'resiko' => trim($dataSet['resiko']),
+            'komplikasi' => trim($dataSet['komplikasi']),
+            'prognosis' => trim($dataSet['prognosis']),
+            'alternatif' => trim($dataSet['alternatif']),
+            'lainlain' => trim($dataSet['lainlain']),
+            'keluhan_pasien' => trim($dataSet['keluhanutama']),
+            'umur' => $dataSet['usia'],
+            'tgl_entry' => $this->get_now(),
+            'status' => '0',
+            'signature' => ''
+        ];
+        if (count($cek) > 0) {
+            assesmenawaldokter::whereRaw('id_pasien = ? and kode_unit = ? and id_kunjungan = ?', array($dataSet['nomorrm'],  $dataSet['unit'], $dataSet['kodekunjungan']))->update($data);
+            $id_assesmen = $cek[0]->id;
+        } else {
+            $erm_assesmen = assesmenawaldokter::create($data);
+        }
+        $data = [
+            'kode' => 200,
+            'message' => 'Data berhasil disimpan !'
+        ];
+        echo json_encode($data);
+        die;
+    }
     public function resumepasien(Request $request)
     {
         $resume = DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE kode_kunjungan = ? AND no_rm = ?', [$request->kodekunjungan, $request->nomorrm]);
         if (auth()->user()->unit == '1028') {
+            $riwayat_tindakan_f = DB::connection('mysql4')->select("SELECT b.status_layanan AS status_layanan_header,a.kode_kunjungan,b.id AS id_header,C.id AS id_detail,c.jumlah_layanan,b.kode_layanan_header,c.`kode_tarif_detail`,e.`NAMA_TARIF` FROM simrs_waled.ts_kunjungan a
+            RIGHT OUTER JOIN ts_layanan_header b ON a.kode_kunjungan = b.kode_kunjungan
+            RIGHT OUTER JOIN ts_layanan_detail c ON b.id = c.row_id_header
+            RIGHT OUTER JOIN mt_tarif_detail d ON c.kode_tarif_detail = d.`KODE_TARIF_DETAIL`
+            RIGHT OUTER JOIN mt_tarif_header e ON d.`KODE_TARIF_HEADER` = e.`KODE_TARIF_HEADER`
+            WHERE a.`kode_kunjungan` = ? AND b.kode_unit = ?", [$request->kodekunjungan, '3009']);
+
+            $riwayat_tindakan_w = DB::connection('mysql4')->select("SELECT b.status_layanan AS status_layanan_header,a.kode_kunjungan,b.id AS id_header,C.id AS id_detail,c.jumlah_layanan,b.kode_layanan_header,c.`kode_tarif_detail`,e.`NAMA_TARIF` FROM simrs_waled.ts_kunjungan a
+            RIGHT OUTER JOIN ts_layanan_header b ON a.kode_kunjungan = b.kode_kunjungan
+            RIGHT OUTER JOIN ts_layanan_detail c ON b.id = c.row_id_header
+            RIGHT OUTER JOIN mt_tarif_detail d ON c.kode_tarif_detail = d.`KODE_TARIF_DETAIL`
+            RIGHT OUTER JOIN mt_tarif_header e ON d.`KODE_TARIF_HEADER` = e.`KODE_TARIF_HEADER`
+            WHERE a.`kode_kunjungan` = ? AND b.kode_unit = ?", [$request->kodekunjungan, '3010']);
+
             return view('ermperawat.resumeperawat_fisio', compact([
-                'resume'
+                'resume',
+                'riwayat_tindakan_w',
+                'riwayat_tindakan_f'
             ]));
         } else {
             return view('ermperawat.resumeperawat', compact([
@@ -2363,6 +2539,10 @@ class ErmController extends Controller
                 return view('ermdokter.resumedokter_fisio', compact([
                     'resume',
                     'riwayat_order_f'
+                ]));
+            } else if (auth()->user()->unit == '1026') {
+                return view('ermdokter.resumedokter_anestesi', compact([
+                    'resume'
                 ]));
             } else {
                 return view('ermdokter.resumedokter', compact([
@@ -3471,7 +3651,6 @@ class ErmController extends Controller
         } else {
             $kodeunit = '3010';
         }
-
         $riwayat_tindakan = DB::connection('mysql4')->select("SELECT b.status_layanan AS status_layanan_header,a.kode_kunjungan,b.id AS id_header,C.id AS id_detail,c.jumlah_layanan,b.kode_layanan_header,c.`kode_tarif_detail`,e.`NAMA_TARIF` FROM simrs_waled.ts_kunjungan a
         RIGHT OUTER JOIN ts_layanan_header b ON a.kode_kunjungan = b.kode_kunjungan
         RIGHT OUTER JOIN ts_layanan_detail c ON b.id = c.row_id_header

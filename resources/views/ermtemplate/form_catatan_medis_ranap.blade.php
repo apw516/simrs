@@ -146,12 +146,6 @@
                                                                 <td class="text-bold font-italic">Keterangan</td>
                                                                 <td>{{ $k->skalenyeripasien }}</td>
                                                             </tr>
-                                                            {{-- <tr>
-                                            <td class="text-bold font-italic">Cacat Tubuh</td>
-                                            <td>{{ $k->cacattubuh }}</td>
-                                            <td class="text-bold font-italic">Keterangan</td>
-                                            <td>{{ $k->keterangancacattubuh }}</td>
-                                        </tr> --}}
                                                             <tr>
                                                                 <td colspan="4" class="text-bold bg-warning">Assesmen
                                                                     resiko
@@ -251,6 +245,77 @@
                                                 <div class="card-header bg-danger text-bold">Assesmen awal Medis</div>
                                                 @if ($k->id_2 != null)
                                                     <div class="card-body">
+                                                        @if($k->kode_unit == '1026')
+                                                        <table class="table table-striped">
+                                                            <thead>
+                                                                <th>Jenis Informasi</th>
+                                                                <th>Isi Informasi</th>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>Diagnosa ( WD & DD )</td>
+                                                                    <td>{{ $k->diagnosakerja }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Dasar Diagnosa</td>
+                                                                    <td>{{ $k->diagnosabanding }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Tindakan Kedokteran</td>
+                                                                    <td>{{ $k->tindakanmedis }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Indikasi tindakan</td>
+                                                                    <td>{{ $k->indikasitindakan }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Tata cara</td>
+                                                                    <td>{{ $k->tatacara }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Tujuan</td>
+                                                                    <td>{{ $k->tujuan }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Resiko</td>
+                                                                    <td>{{ $k->resiko }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Komplikasi</td>
+                                                                    <td>{{ $k->komplikasi }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Prognosis</td>
+                                                                    <td>{{ $k->prognosis }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Alternatif dan resiko</td>
+                                                                    <td>{{ $k->alternatif }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Lain - lain</td>
+                                                                    <td>{{ $k->lainlain  }}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <table class="table table-sm table-bordered mt-4">
+                                                            <thead>
+                                                                <th>Tanggal assesmen</th>
+                                                                <th>Nama Pemeriksa</th>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>{{ $k->tgl_pemeriksaan }}</td>
+                                                                    <td>
+                                                                        <img src="{{ $k->signature_dokter }}"
+                                                                            alt=""><br>
+                                                                        <p class="text-center">{{ $k->nama_dokter }}
+                                                                        </p>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        @else
                                                         <table class="table table-sm text-sm">
                                                             <tr>
                                                                 <td class="text-bold font-italic">Sumber Data</td>
@@ -420,19 +485,6 @@
                                                                 {{-- <img src="{{ $k->gambar_2 }}" alt=""><br><br> --}}
                                                             </div>
                                                         </div>
-                                                        {{-- <button class="btn btn-info riwayattindakan mt-4"
-                                        kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
-                                        data-target="#modalriwayattindakan">Riwayat Tindakan</button> --}}
-                                                        {{-- <button class="btn btn-danger hasilpemeriksaankhusus mt-4"
-                                        kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
-                                        data-target="#modalhasilpemeriksaankhusus">Hasil Pemeriksaan
-                                        Khusus</button> --}}
-                                                        {{-- <button class="btn btn-success riwayatupload mt-4"
-                                        kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
-                                        data-target="#modalriwayatupload">Riwayat Upload</button> --}}
-                                                        {{-- <button class="btn btn-warning riwayatorder mt-4"
-                                        kodekunjungan="{{ $k->id_kunjungan }}" data-toggle="modal"
-                                        data-target="#modalriwayatorder">Riwayat Order Penunjang</button> --}}
                                                         <table class="table table-sm table-bordered mt-4">
                                                             <thead>
                                                                 <th>Tanggal assesmen</th>
@@ -450,6 +502,7 @@
                                                                 </tr>
                                                             </tbody>
                                                         </table>
+                                                        @endif
                                                     </div>
                                                 @else
                                                     <div class="card-body">

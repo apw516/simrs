@@ -293,6 +293,62 @@
                 </div>
             @endforeach
         </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">Tindakan Fisioterapi</div>
+                    <div class="card-body">
+                        <table id="tabelriwayattindakan_tdy" class="table table-sm table-bordered text-xs">
+                            <thead>
+                                <th>Kode Header</th>
+                                <th>Kode Detail</th>
+                                <th>Nama Layanan</th>
+                                <th>Jumlah</th>
+                                <th>status</th>
+                            </thead>
+                            <tbody>
+                                @foreach ($riwayat_tindakan_f as $r)
+                                    <tr @if($r->status_layanan_header == '3') class="bg-danger"  @endif >
+                                        <td>{{ $r->kode_layanan_header }}</td>
+                                        <td>{{ $r->id_detail }}</td>
+                                        <td>{{ $r->NAMA_TARIF }}</td>
+                                        <td>{{ $r->jumlah_layanan }}</td>
+                                        <td>@if($r->status_layanan_header == '3') Batal @else Aktif @endif </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">Tindakan Terapiwicara</div>
+                    <div class="card-body">
+                        <table id="tabelriwayattindakan_tdy" class="table table-sm table-bordered text-xs">
+                            <thead>
+                                <th>Kode Header</th>
+                                <th>Kode Detail</th>
+                                <th>Nama Layanan</th>
+                                <th>Jumlah</th>
+                                <th>status</th>
+                            </thead>
+                            <tbody>
+                                @foreach ($riwayat_tindakan_w as $r)
+                                    <tr @if($r->status_layanan_header == '3') class="bg-danger"  @endif >
+                                        <td>{{ $r->kode_layanan_header }}</td>
+                                        <td>{{ $r->id_detail }}</td>
+                                        <td>{{ $r->NAMA_TARIF }}</td>
+                                        <td>{{ $r->jumlah_layanan }}</td>
+                                        <td>@if($r->status_layanan_header == '3') Batal @else Aktif @endif </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
         @if (count($resume) > 0)
             @if ($resume[0]->signature == '')
                 <div class="jumbotron">

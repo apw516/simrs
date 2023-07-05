@@ -13,6 +13,10 @@
                 <label for="exampleInputPassword1">Diagnosa</label>
                 <input type="text" class="form-control" id="diagnosakonsul" name="diagnosakonsul" value="{{ $assdok[0]->diagnosakerja }}">
             </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Keterangan</label>
+                <textarea type="text" class="form-control" id="keterangankonsul" name="keterangankonsul"></textarea>
+            </div>
         </form>
         <button class="btn btn-success" onclick="simpankonsul()">Simpan</button>
     </div>

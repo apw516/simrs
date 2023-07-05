@@ -1303,7 +1303,6 @@
                             <div class="card-header bg-info">Riwayat Tindakan Hari ini</div>
                             <div class="card-body">
                                 <div class="vriwayattindakan">
-
                                 </div>
                             </div>
                         </div>
