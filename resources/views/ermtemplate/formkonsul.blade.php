@@ -1,3 +1,4 @@
+
 <div class="card">
     <div class="card-header bg-dark">FORM KONSUL</div>
     <div class="card-body">
@@ -5,17 +6,19 @@
         <form method="post" class="formkonsulan">
             <div class="form-group">
                 <label for="exampleInputEmail1">Poli Tujuan</label>
-                <input style="z-index: 1600 !important;" type="text" class="form-control" id="politujuan" name="politujuan"
+                <input style="z-index: 1600 !important;" type="text" class="form-control" id="politujuan"
+                    name="politujuan" aria-describedby="emailHelp">
+                <input hidden type="text" class="form-control" id="idpolitujuan" name="idpolitujuan"
                     aria-describedby="emailHelp">
-                <input hidden type="text" class="form-control" id="idpolitujuan" name="idpolitujuan" aria-describedby="emailHelp">
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">Diagnosa</label>
-                <input type="text" class="form-control" id="diagnosakonsul" name="diagnosakonsul" value="{{ $assdok[0]->diagnosakerja }}">
+                <input type="text" class="form-control" id="diagnosakonsul" name="diagnosakonsul"
+                    value="{{ $assdok[0]->diagnosakerja }}">
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">Keterangan</label>
-                <textarea type="text" class="form-control" id="keterangankonsul" name="keterangankonsul"></textarea>
+                <textarea type="text" class="form-control" id="keterangankonsul" name="keterangankonsul">{{ $assdok[0]->tindak_lanjut }}</textarea>
             </div>
         </form>
         <button class="btn btn-success" onclick="simpankonsul()">Simpan</button>
@@ -34,8 +37,8 @@
             }
         });
     });
-    function simpankonsul()
-    {
+
+    function simpankonsul() {
         var data = $('.formkonsulan').serializeArray();
         jenis = $('#jenis').val()
         kodekunjungan = $('#kodekunjungan').val()
@@ -73,6 +76,7 @@
                         text: data.message,
                         footer: ''
                     })
+                    formtindaklanjut()
                 }
             }
         });

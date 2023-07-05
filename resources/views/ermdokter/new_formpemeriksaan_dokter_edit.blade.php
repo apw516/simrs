@@ -1,7 +1,10 @@
 <div class="card">
     <div class="card-header bg-info">Catatan Perkembangan Pasien Terintegrasi ( CPPT ) <button
             class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
-            data-target="#modalresumeperawat"><i class="bi bi-eye mr-1"></i> Hasil Assesmen Keperawatan</button></div>
+            data-target="#modalresumeperawat"><i class="bi bi-eye mr-1"></i> Hasil Assesmen Keperawatan</button>@if ($kunjungan[0]->ref_kunjungan != '0')
+            <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
+                data-target="#modalcatatankonsul"><i class="bi bi-eye mr-1"></i> Catatan Konsul</button>
+        @endif</div>
     <div class="card-body  table-responsive p-5" style="height: 757Px">
         <form action="" class="formpemeriksaandokter">
             <input hidden type="text" name="kodekunjungan" class="form-control"
@@ -3199,6 +3202,38 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalcatatankonsul" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Catatan Konsul</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="jumbotron">
+                    <h1 class="display-4">Hello {{ auth()->user()->nama }} </h1><br>
+                    <p class="lead">Dokter Pengirim : {{ $kunjungan[0]->dokter_kirim }}</p>
+                    <p class="lead">Poliklinik Pengirim : {{ $kunjungan[0]->poli_asal }}</p>
+                    <p class="lead">Mohon Konsul</p>
+                    <p class="lead">Pasien dengan : <br>RM {{ $kunjungan[0]->no_rm }} |
+                        {{ $kunjungan[0]->nama_pasien }} | {{ $kunjungan[0]->diagx }} <br><br>
+                        Keterangan <br>
+                        {{ $kunjungan[0]->keterangan3 }}
+                    </p>
+                    <hr class="my-4">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <link rel="stylesheet" href="{{ asset('public/dist/css/datepicker.css') }}" rel="stylesheet">
 <script src="{{ asset('public/dist/js/bootstrap-datepicker.js') }}"></script>
 <script>

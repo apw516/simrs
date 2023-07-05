@@ -25,10 +25,12 @@ use App\Models\templateresep_detail;
 use App\Models\Barang;
 use App\Models\erm_order_penunjang;
 use App\Models\ts_kunjungan;
+use App\Models\ts_kunjungan2;
 use Carbon\Carbon;
 use simitsdk\phpjasperxml\PHPJasperXML;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Dokter;
+use App\Models\mt_unit;
 use File;
 
 
@@ -418,7 +420,7 @@ class ErmController extends Controller
     }
     public function formpemeriksaan_dokter(Request $request)
     {
-        $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
+        $kunjungan = DB::select('select *,fc_nama_px(no_rm) as nama_pasien,fc_nama_paramedis(ref_paramedis) AS dokter_kirim,fc_nama_unit1(ref_unit) AS poli_asal from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
         $resume_perawat = DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE kode_kunjungan = ?', [$request->kodekunjungan]);
         $resume = DB::select('SELECT * from assesmen_dokters WHERE id_kunjungan = ?', [$request->kodekunjungan]);
         $unit = auth()->user()->unit;
@@ -4748,9 +4750,11 @@ class ErmController extends Controller
     {
         $kodekunjungan = $request->kodekunjungan;
         $assdok = DB::select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
+        $cek_konsul  = DB::connection('mysql4')->select('select *,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where ref_kunjungan = ? and status_kunjungan != ?', [$kodekunjungan,'8']);
         if (count($assdok) > 0) {
             return view('ermtemplate.formtindaklanjut', compact([
-                'assdok'
+                'assdok',
+                'cek_konsul'
             ]));
         } else {
             return view('ermtemplate.dokterbelummengisi');
@@ -4764,7 +4768,7 @@ class ErmController extends Controller
         if ($jenis == 'konsul') {
             return view('ermtemplate.formkonsul', compact([
                 'jenis',
-                'assdok'
+                'assdok',
             ]));
         }
     }
@@ -4786,7 +4790,9 @@ class ErmController extends Controller
             'no_rm' => $kunjungan[0]->no_rm,
             'ref_kunjungan' => $kodekunjungan,
             'kode_unit' => $dataSet['idpolitujuan'],
-            'kode_paramedis' => '',
+            'kode_paramedis' => '0',
+            'ref_unit' => $kunjungan[0]->kode_unit,
+            'ref_paramedis' => $kunjungan[0]->kode_paramedis,
             'prefix_kunjungan' => $unit[0]->prefix_unit,
             'tgl_masuk' => $this->get_now(),
             'status_kunjungan' => '1',
@@ -4794,10 +4800,81 @@ class ErmController extends Controller
             'id_alasan_masuk' => '7',
             'hak_kelas' => $kunjungan[0]->hak_kelas,
             'diagx' => $assdok[0]->diagnosakerja,
+            'keterangan3' => $dataSet['keterangankonsul'],
             'pic' => auth()->user()->id,
             'no_sep' => '',
         ];
-        $ts_kunjungan = ts_kunjungan::create($data_ts_kunjungan);
-        dd($data_ts_kunjungan);
+        $kodeunit = $dataSet['idpolitujuan'];
+        $r = DB::connection('mysql4')->select("CALL GET_NOMOR_LAYANAN_HEADER('$kodeunit')");
+        $kode_layanan_header = $r[0]->no_trx_layanan;
+        if ($kode_layanan_header == "") {
+            $year = date('y');
+            $kode_layanan_header = $unit[0]->prefix_unit . $year . date('m') . date('d') . '000001';
+            DB::connection('mysql4')->select('insert into mt_nomor_trx (tgl,no_trx_layanan,unit) values (?,?,?)', [date('Y-m-d h:i:s'), $kode_layanan_header, $kodeunit]);
+        }
+        $ts_kunjungan = ts_kunjungan2::create($data_ts_kunjungan);
+        $tarif = DB::select('select * from mt_tarif_detail where KODE_TARIF_DETAIL = ?', [$unit[0]->kode_tarif_konsul . '3']);
+        //bpjs kode tipe transaksi 2 kalo umum 1
+        $get_kunjungan_pref = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+        if ($get_kunjungan_pref[0]->kode_penjamin == 'P01') {
+            $kode_tipe_transaksi = 1;
+            $tagihan_pribadi =  $tarif[0]->TOTAL_TARIF_CURRENT;
+            $tagihan_penjamin = 0;
+        } else {
+            $kode_tipe_transaksi = 2;
+            $tagihan_pribadi = 0;
+            $tagihan_penjamin =  $tarif[0]->TOTAL_TARIF_CURRENT;
+        }
+        $data_layanan_header = [
+            'kode_layanan_header' => $kode_layanan_header,
+            'tgl_entry' =>   $this->get_now(),
+            'kode_kunjungan' => $ts_kunjungan->id,
+            'kode_unit' => $kodeunit,
+            'kode_tipe_transaksi' => $kode_tipe_transaksi,
+            'pic' => auth()->user()->id,
+            'status_layanan' => '1',
+            'status_retur' => 'OPN',
+            'status_pembayaran' => 'OPN'
+        ];
+        //data yg diinsert ke ts_layanan_header
+        //simpan ke layanan header
+        $ts_layanan_header = ts_layanan_header_dummy::create($data_layanan_header);
+        $id_detail1 = $this->createLayanandetail();
+        $save_detail1 = [
+            'id_layanan_detail' => $id_detail1,
+            'kode_layanan_header' => $kode_layanan_header,
+            'kode_tarif_detail' => $unit[0]->kode_tarif_konsul . '3',
+            'total_tarif' => $tarif[0]->TOTAL_TARIF_CURRENT,
+            'jumlah_layanan' => '1',
+            'diskon_layanan' => '0',
+            'total_layanan' => $tarif[0]->TOTAL_TARIF_CURRENT,
+            'grantotal_layanan' => $tarif[0]->TOTAL_TARIF_CURRENT,
+            'status_layanan_detail' => 'OPN',
+            'tgl_layanan_detail' => $this->get_now(),
+            'tagihan_penjamin' => $tagihan_penjamin,
+            'tagihan_pribadi' => $tagihan_pribadi,
+            'tgl_layanan_detail_2' => $this->get_now(),
+            'row_id_header' => $ts_layanan_header->id
+        ];
+        $ts_layanan_detail = ts_layanan_detail_dummy::create($save_detail1);
+        ts_layanan_header_dummy::where('kode_kunjungan', $ts_kunjungan->id)
+            ->update(['status_layanan' => 2, 'total_layanan' => $tarif[0]->TOTAL_TARIF_CURRENT, 'tagihan_penjamin' => $tagihan_penjamin, 'tagihan_pribadi' => $tagihan_pribadi]);
+        $data = [
+            'kode' => 200,
+            'message' => 'Data berhasil disimpan !'
+        ];
+        echo json_encode($data);
+        die;
+    }
+    public function batalkonsul(Request $request)
+    {
+        $kode = $request->kode;
+        ts_kunjungan2::where('kode_kunjungan', $kode)->update(['status_kunjungan' => '8']);
+        $data = [
+            'kode' => 200,
+            'message' => 'Data berhasil disimpan !'
+        ];
+        echo json_encode($data);
+        die;
     }
 }

@@ -470,6 +470,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('formsurkon'); //sidebar
     Route::post('simpankonsul', [ErmController::class, 'simpankonsul'])
         ->name('simpankonsul'); //sidebar
+    Route::post('batalkonsul', [ErmController::class, 'batalkonsul'])
+        ->name('batalkonsul'); //sidebar
     Route::get('caripoli_konsul', [SimrsController::class, 'Caripoli_rs'])
         ->name('caripoli_konsul'); //formpasien_bpjs
 });
