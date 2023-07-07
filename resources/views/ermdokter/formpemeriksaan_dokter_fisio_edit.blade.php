@@ -1,5 +1,9 @@
 <div class="card">
-    <div class="card-header bg-info">Catatan Perkembangan Pasien Terintegrasi</div>
+    <div class="card-header bg-info">Catatan Perkembangan Pasien Terintegrasi @if ($kunjungan[0]->ref_kunjungan != '0')
+            <button class="btn btn-warning ml-2" data-toggle="modal" data-target="#modalcatatankonsul"><i
+                    class="bi bi-eye mr-1"></i> Catatan Konsul</button>
+        @endif
+    </div>
     <div class="card-body">
         <form class="formpemeriksaan_fisio">
             <input hidden type="text" name="kodekunjungan" id="kodekunjungan" class="form-control"
@@ -199,6 +203,38 @@
         <button type="button" class="btn btn-success float-right" onclick="simpanhasil()">Simpan</button>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalcatatankonsul" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Catatan Konsul</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="jumbotron">
+                    <h1 class="display-4">Hello {{ auth()->user()->nama }} </h1><br>
+                    <p class="lead">Dokter Pengirim : {{ $kunjungan[0]->dokter_kirim }}</p>
+                    <p class="lead">Poliklinik Pengirim : {{ $kunjungan[0]->poli_asal }}</p>
+                    <p class="lead">Mohon Konsul</p>
+                    <p class="lead">Pasien dengan : <br>RM {{ $kunjungan[0]->no_rm }} |
+                        {{ $kunjungan[0]->nama_pasien }} | {{ $kunjungan[0]->diagx }} <br><br>
+                        Keterangan <br>
+                        {{ $kunjungan[0]->keterangan3 }}
+                    </p>
+                    <hr class="my-4">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     function simpanhasil() {
         var data = $('.formpemeriksaan_fisio').serializeArray();
@@ -278,6 +314,7 @@
     $(document).ready(function() {
         orderobathariini()
     });
+
     function addform() {
         var max_fields = 10;
         var wrapper = $(".formobatfarmasi2"); //Fields wrapper
@@ -292,10 +329,14 @@
         }
         nomor = parseInt(document.getElementById('jumlahform').value)
         if (x < max_fields) { //max input box allowed
-            nama = 'namaobat'+nomor
-            aturan = 'aturanpakai'+nomor
+            nama = 'namaobat' + nomor
+            aturan = 'aturanpakai' + nomor
             $(wrapper).append(
-                '<div class="form-row text-xs"><div class="form-group col-md-2"><label for="">Nama Obat</label><input type="" class="form-control form-control-sm text-xs" id="'+nama+'" name="namaobat" value=""><input hidden readonly type="" class="form-control form-control-sm" id="" name="kodebarang" value="""></div><div class="form-group col-md-2"><label for="inputPassword4">Aturan Pakai</label><input type="" class="form-control form-control-sm" id="'+ aturan +'" name="aturanpakai" value=""></div><div class="form-group col-md-1"><label for="inputPassword4">Jumlah</label><input type="" class="form-control form-control-sm" id="" name="jumlah" value="0"></div><div class="form-group col-md-1"><label for="inputPassword4">Signa</label><input type="" class="form-control form-control-sm" id="" name="signa" value="0"></div><div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type="" class="form-control form-control-sm" id="" name="keterangan" value=""></div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i></div>'
+                '<div class="form-row text-xs"><div class="form-group col-md-2"><label for="">Nama Obat</label><input type="" class="form-control form-control-sm text-xs" id="' +
+                nama +
+                '" name="namaobat" value=""><input hidden readonly type="" class="form-control form-control-sm" id="" name="kodebarang" value="""></div><div class="form-group col-md-2"><label for="inputPassword4">Aturan Pakai</label><input type="" class="form-control form-control-sm" id="' +
+                aturan +
+                '" name="aturanpakai" value=""></div><div class="form-group col-md-1"><label for="inputPassword4">Jumlah</label><input type="" class="form-control form-control-sm" id="" name="jumlah" value="0"></div><div class="form-group col-md-1"><label for="inputPassword4">Signa</label><input type="" class="form-control form-control-sm" id="" name="signa" value="0"></div><div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type="" class="form-control form-control-sm" id="" name="keterangan" value=""></div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i></div>'
             );
             $(wrapper).on("click", ".remove_field", function(e) { //user click on remove
                 kode = $(this).attr('kode2')
@@ -310,6 +351,15 @@
             //         $('[id="'+aturan+'"]').val(ui.item.aturan);
             //     }
             // });
+        }
+    }
+
+    function showname() {
+        a = $('#simpantemplate:checked').val()
+        if (a == 'on') {
+            $('#namaresep').removeAttr('Hidden', true)
+        } else {
+            $('#namaresep').attr('Hidden', true)
         }
     }
 </script>

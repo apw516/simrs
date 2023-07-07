@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header bg-info">Catatan Perkembangan Pasien Terintegrasi @if ($kunjungan[0]->ref_kunjungan != '0')
-        <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
+        <button class="btn btn-warning ml-2" data-toggle="modal"
             data-target="#modalcatatankonsul"><i class="bi bi-eye mr-1"></i> Catatan Konsul</button>
     @endif</div>
     <div class="card-body">
@@ -543,6 +543,14 @@
             //         $('[id="'+aturan+'"]').val(ui.item.aturan);
             //     }
             // });
+        }
+    }
+    function showname() {
+        a = $('#simpantemplate:checked').val()
+        if (a == 'on') {
+            $('#namaresep').removeAttr('Hidden', true)
+        } else {
+            $('#namaresep').attr('Hidden', true)
         }
     }
 </script>
