@@ -306,7 +306,7 @@
                     </tr>
                     <tr>
                         <td colspan="4">
-                            <textarea class="form-control" name="pemeriksaanfisik"></textarea>
+                            <textarea class="form-control" name="pemeriksaanfisik">@if (count($last_assdok) > 0){{ $last_assdok[0]->pemeriksaan_fisik }} @endif</textarea>
                         </td>
                     </tr>
                     <tr>
@@ -315,7 +315,7 @@
                     <tr>
                         <td class="text-bold font-italic">Keadaan Umum</td>
                         <td colspan="3">
-                            <textarea class="form-control" name="keadaanumum"></textarea>
+                            <textarea class="form-control" name="keadaanumum">@if (count($last_assdok) > 0){{ $last_assdok[0]->keadaanumum }}  @endif</textarea>
                         </td>
                     </tr>
                     <tr>
@@ -358,13 +358,13 @@
                     <tr>
                         <td class="text-bold font-italic">Rencana Terapi</td>
                         <td colspan="3">
-                            <textarea class="form-control" name="rencanakerja"></textarea>
+                            <textarea class="form-control" name="rencanakerja">@if (count($last_assdok) > 0){{ $last_assdok[0]->rencanakerja }} @endif</textarea>
                         </td>
                     </tr>
                     <tr>
                         <td class="text-bold font-italic">Tindakan Medis</td>
                         <td colspan="3">
-                            <textarea class="form-control" name="tindakanmedis"></textarea>
+                            <textarea class="form-control" name="tindakanmedis">@if (count($last_assdok) > 0){{ $last_assdok[0]->tindakanmedis }} @endif</textarea>
                         </td>
                     </tr>
                 </tbody>
