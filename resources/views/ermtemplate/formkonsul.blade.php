@@ -18,7 +18,7 @@
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">Keterangan</label>
-                <textarea type="text" class="form-control" id="keterangankonsul" name="keterangankonsul">{{ $assdok[0]->tindak_lanjut }}</textarea>
+                <textarea type="text" class="form-control" id="keterangankonsul" name="keterangankonsul">{{ $assdok[0]->keterangan_tindak_lanjut }}</textarea>
             </div>
         </form>
         <button class="btn btn-success" onclick="simpankonsul()">Simpan</button>
