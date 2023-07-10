@@ -562,6 +562,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('ambilgambarpemeriksaan'); //sidebar
     Route::post('ambilgambarpemeriksaan_reset', [ErmController::class, 'ambilgambarpemeriksaan_reset'])
         ->name('ambilgambarpemeriksaan_reset'); //sidebar
+    Route::post('riwayatkonsul', [ErmController::class, 'riwayatkonsul'])
+        ->name('riwayatkonsul'); //sidebar
 });
 
 Route::group(['middleware' => ['auth', 'hak_akses1:99']], function () {

@@ -306,7 +306,9 @@
                     </tr>
                     <tr>
                         <td colspan="4">
-                            <textarea class="form-control" name="pemeriksaanfisik">@if (count($last_assdok) > 0){{ $last_assdok[0]->pemeriksaan_fisik }} @endif</textarea>
+                            <textarea class="form-control" name="pemeriksaanfisik">
+@if (count($last_assdok) > 0){{ $last_assdok[0]->pemeriksaan_fisik }} @endif
+</textarea>
                         </td>
                     </tr>
                     <tr>
@@ -315,7 +317,9 @@
                     <tr>
                         <td class="text-bold font-italic">Keadaan Umum</td>
                         <td colspan="3">
-                            <textarea class="form-control" name="keadaanumum">@if (count($last_assdok) > 0){{ $last_assdok[0]->keadaanumum }}  @endif</textarea>
+                            <textarea class="form-control" name="keadaanumum">
+@if (count($last_assdok) > 0){{ $last_assdok[0]->keadaanumum }}  @endif
+</textarea>
                         </td>
                     </tr>
                     <tr>
@@ -358,13 +362,17 @@
                     <tr>
                         <td class="text-bold font-italic">Rencana Terapi</td>
                         <td colspan="3">
-                            <textarea class="form-control" name="rencanakerja">@if (count($last_assdok) > 0){{ $last_assdok[0]->rencanakerja }} @endif</textarea>
+                            <textarea class="form-control" name="rencanakerja">
+@if (count($last_assdok) > 0){{ $last_assdok[0]->rencanakerja }} @endif
+</textarea>
                         </td>
                     </tr>
                     <tr>
                         <td class="text-bold font-italic">Tindakan Medis</td>
                         <td colspan="3">
-                            <textarea class="form-control" name="tindakanmedis">@if (count($last_assdok) > 0){{ $last_assdok[0]->tindakanmedis }} @endif</textarea>
+                            <textarea class="form-control" name="tindakanmedis">
+@if (count($last_assdok) > 0){{ $last_assdok[0]->tindakanmedis }} @endif
+</textarea>
                         </td>
                     </tr>
                 </tbody>
@@ -414,7 +422,9 @@
         </div>
         <form action="" class="formtindaklanjut">
             <div class="card">
-                <div class="card-header bg-secondary">Tindak Lanjut</div>
+                <div class="card-header bg-light">Tindak Lanjut <button type="button"
+                        class="btn btn-success float-right riwayatkonsul" data-toggle="modal"
+                        data-target="#modalriwayatkonsul">Riwayat Konsul</button></div>
                 <div class="card-body">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="pilihtindaklanjut"
@@ -1990,6 +2000,30 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="modalriwayatkonsul" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Riwayat Konsul</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="view_riwayat_konsul">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <link rel="stylesheet" href="{{ asset('public/dist/css/datepicker.css') }}" rel="stylesheet">
 <script src="{{ asset('public/dist/js/bootstrap-datepicker.js') }}"></script>
 <script>
@@ -2079,7 +2113,19 @@
             }
         });
     }
-
+    $(".riwayatkonsul").click(function() {
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}"
+            },
+            url: '<?= route('riwayatkonsul') ?>',
+            success: function(response) {
+                $('.view_riwayat_konsul').html(response);
+                spinner.hide()
+            }
+        });
+    })
     $(".showmodalicdkerja").click(function() {
         spinner = $('#loader');
         spinner.show();

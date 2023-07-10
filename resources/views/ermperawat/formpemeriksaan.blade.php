@@ -38,13 +38,13 @@
                                     <td colspan="3">
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="sumberdata"
-                                                id="sumberdata" value="Pasien Sendiri" checked>
+                                                id="sumberdata" value="Pasien Sendiri" @if(count($p_konsul) > 0) @if($p_konsul[0]->sumberdataperiksa == 'Pasien Sendiri') checked @endif @endif>
                                             <label class="form-check-label" for="inlineRadio1">Pasien Sendiri /
                                                 Autoanamase</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="sumberdata"
-                                                id="sumberdata" value="Keluarga">
+                                                id="sumberdata" value="Keluarga" @if(count($p_konsul) > 0) @if($p_konsul[0]->sumberdataperiksa == 'Keluarga') checked @endif @endif>
                                             <label class="form-check-label" for="inlineRadio2">Keluarga /
                                                 Alloanamnesa</label>
                                         </div>
@@ -53,7 +53,7 @@
                                 <tr>
                                     <td class="text-bold font-italic">Keluhan Utama</td>
                                     <td colspan="3">
-                                        <textarea class="form-control" id="keluhanutama" name="keluhanutama" placeholder="Ketik keluhan pasien ..."></textarea>
+                                        <textarea class="form-control" id="keluhanutama" name="keluhanutama" placeholder="Ketik keluhan pasien ...">@if(count($p_konsul) > 0) {{ $p_konsul[0]->keluhanutama }} @endif</textarea>
                                     </td>
                                 </tr>
                             </table>
@@ -220,13 +220,13 @@
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio"
                                                     name="pasienmengeluhnyeri" id="pasienmengeluhnyeri"
-                                                    value="Tidak Ada" checked>
+                                                    value="Tidak Ada" @if(count($p_konsul) > 0) @if($p_konsul[0]->Keluhannyeri == 'Tidak Ada') checked @endif @endif>
                                                 <label class="form-check-label" for="inlineRadio1">Tidak Ada</label>
                                             </div>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio"
                                                     name="pasienmengeluhnyeri" id="pasienmengeluhnyeri"
-                                                    value="Ada">
+                                                    value="Ada" @if(count($p_konsul) > 0) @if($p_konsul[0]->Keluhannyeri == 'Ada') checked @endif @endif>
                                                 <label class="form-check-label" for="inlineRadio2">Ada</label>
                                             </div>
                                         </td>
@@ -235,7 +235,7 @@
                                         <td class="text-bold font-italic"></td>
                                         <td colspan="3">
                                             <textarea class="form-control" placeholder="Keterangan skala nyeri pasien ..." name="skalanyeripasien"
-                                                id="skalanyeripasien"></textarea>
+                                                id="skalanyeripasien">@if(count($p_konsul) > 0) {{ $p_konsul[0]->skalenyeripasien }} @endif</textarea>
                                             <img width="50%" src="{{ asset('public/img/skalanyeri.jpg') }}"
                                                 alt="">
                                         </td>
@@ -388,7 +388,7 @@
                                                 <input type="text" class="form-control"
                                                     placeholder="Tekanan darah pasien ..."
                                                     aria-label="Recipient's username" id="tekanandarah"
-                                                    name="tekanandarah" aria-describedby="basic-addon2">
+                                                    name="tekanandarah" aria-describedby="basic-addon2" @if(count($p_konsul) > 0) value="{{ $p_konsul[0]->tekanandarah }}" @endif>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" id="basic-addon2">mmHg</span>
                                                 </div>
@@ -400,7 +400,7 @@
                                                 <input type="text" class="form-control"
                                                     placeholder="Frekuensi nadi pasien ..." id="frekuensinadi"
                                                     name="frekuensinadi" aria-label="Recipient's username"
-                                                    aria-describedby="basic-addon2">
+                                                    aria-describedby="basic-addon2" @if(count($p_konsul) > 0) value="{{ $p_konsul[0]->frekuensinadi }}" @endif>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" id="basic-addon2">x/menit</span>
                                                 </div>
@@ -414,7 +414,7 @@
                                                 <input type="text" class="form-control"
                                                     placeholder="Frekuensi Nafas Pasien ..." name="frekuensinafas"
                                                     id="frekuensinafas" aria-label="Recipient's username"
-                                                    aria-describedby="basic-addon2">
+                                                    aria-describedby="basic-addon2" @if(count($p_konsul) > 0) value="{{ $p_konsul[0]->frekuensinapas }}" @endif>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" id="basic-addon2">x/menit</span>
                                                 </div>
@@ -425,7 +425,7 @@
                                             <div class="input-group">
                                                 <input type="text" class="form-control"
                                                     placeholder="Suhu tubuh pasien ..." aria-label="Suhu tubuh pasien"
-                                                    name="suhutubuh" id="suhutubuh" aria-describedby="basic-addon2">
+                                                    name="suhutubuh" id="suhutubuh" aria-describedby="basic-addon2" @if(count($p_konsul) > 0) value="{{ $p_konsul[0]->suhutubuh }}" @endif>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" id="basic-addon2">°C</span>
                                                 </div>
@@ -438,7 +438,7 @@
                                             <div class="input-group">
                                                 <input type="text" class="form-control"
                                                     placeholder="Berat badan ..." name="beratbadan" id="beratbadan"
-                                                    aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                    aria-label="Recipient's username" aria-describedby="basic-addon2" @if(count($p_konsul) > 0) value="{{ $p_konsul[0]->beratbadan }}" @endif>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" id="basic-addon2">Kg</span>
                                                 </div>
@@ -462,28 +462,28 @@
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio"
                                                     name="riwayatpsikologis" id="riwayatpsikologis" value="Tidak Ada"
-                                                    checked>
+                                                    @if(count($p_konsul) > 0) @if($p_konsul[0]->Riwayatpsikologi == 'Tidak Ada') checked @endif @endif>
                                                 <label class="form-check-label" for="inlineRadio1">Tidak Ada</label>
                                             </div>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio"
-                                                    name="riwayatpsikologis" id="riwayatpsikologis" value="Cemas">
+                                                    name="riwayatpsikologis" id="riwayatpsikologis" value="Cemas" @if(count($p_konsul) > 0) @if($p_konsul[0]->Riwayatpsikologi == 'Cemas') checked @endif @endif>
                                                 <label class="form-check-label" for="inlineRadio2">Cemas</label>
                                             </div>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio"
-                                                    name="riwayatpsikologis" id="riwayatpsikologis" value="Takut">
+                                                    name="riwayatpsikologis" id="riwayatpsikologis" value="Takut" @if(count($p_konsul) > 0) @if($p_konsul[0]->Riwayatpsikologi == 'Takut') checked @endif @endif>
                                                 <label class="form-check-label" for="inlineRadio2">Takut</label>
                                             </div>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio"
-                                                    name="riwayatpsikologis" id="riwayatpsikologis" value="Sedih">
+                                                    name="riwayatpsikologis" id="riwayatpsikologis" value="Sedih" @if(count($p_konsul) > 0) @if($p_konsul[0]->Riwayatpsikologi == 'Sedih') checked @endif @endif>
                                                 <label class="form-check-label" for="inlineRadio2">Sedih</label>
                                             </div>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio"
                                                     name="riwayatpsikologis" id="riwayatpsikologis"
-                                                    value="Lain - lain">
+                                                    value="Lain - lain" @if(count($p_konsul) > 0) @if($p_konsul[0]->Riwayatpsikologi == 'Lain - lain') checked @endif @endif>
                                                 <label class="form-check-label" for="inlineRadio2">Lain - lain</label>
                                             </div>
                                         </td>
@@ -492,7 +492,7 @@
                                         <td class="text-bold font-italic"></td>
                                         <td colspan="3">
                                             <textarea class="form-control" id="keteranganriwayatpsikologislainnya" name="keteranganriwayatpsikologislainnya"
-                                                placeholder="Keterangan riwayat psikologis lain ..."></textarea>
+                                                placeholder="Keterangan riwayat psikologis lain ...">@if(count($p_konsul) > 0) {{ $p_konsul[0]->keterangan_riwayat_psikolog }}@endif</textarea>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -507,22 +507,22 @@
                                         <td colspan="3">
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="alatbantu"
-                                                    id="alatbantu" value="Tidak Ada" checked>
+                                                    id="alatbantu" value="Tidak Ada" @if(count($p_konsul) > 0) @if($p_konsul[0]->penggunaanalatbantu == 'Tidak Ada') checked @endif @endif>
                                                 <label class="form-check-label" for="inlineRadio1">Tidak Ada</label>
                                             </div>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="alatbantu"
-                                                    id="alatbantu" value="Tongkat">
+                                                    id="alatbantu" value="Tongkat" @if(count($p_konsul) > 0) @if($p_konsul[0]->penggunaanalatbantu == 'Tongkat') checked @endif @endif>
                                                 <label class="form-check-label" for="inlineRadio2">Tongkat</label>
                                             </div>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="alatbantu"
-                                                    id="alatbantu" value="Kursi Roda">
+                                                    id="alatbantu" value="Kursi Roda" @if(count($p_konsul) > 0) @if($p_konsul[0]->penggunaanalatbantu == 'Kursi Roda') checked @endif @endif>
                                                 <label class="form-check-label" for="inlineRadio2">Kursi Roda</label>
                                             </div>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="alatbantu"
-                                                    id="alatbantu" value="Lain - lain">
+                                                    id="alatbantu" value="Lain - lain" @if(count($p_konsul) > 0) @if($p_konsul[0]->penggunaanalatbantu == 'Lain - lain') checked @endif @endif>
                                                 <label class="form-check-label" for="inlineRadio2">Lain - lain</label>
                                             </div>
                                         </td>
@@ -531,7 +531,7 @@
                                         <td class="text-bold font-italic"></td>
                                         <td colspan="3">
                                             <textarea class="form-control" name="keteranganalatbantulain" id="keteranganalatbantulain"
-                                                placeholder="Keterangan alat bantu lainnya ..."></textarea>
+                                                placeholder="Keterangan alat bantu lainnya ...">@if(count($p_konsul) > 0) {{ $p_konsul[0]->keterangan_alat_bantu }}@endif</textarea>
                                         </td>
                                     </tr>
                                     <tr>
@@ -539,12 +539,12 @@
                                         <td colspan="3">
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="cacattubuh"
-                                                    id="cacattubuh" value="Tidak Ada" checked>
+                                                    id="cacattubuh" value="Tidak Ada" @if(count($p_konsul) > 0) @if($p_konsul[0]->cacattubuh == 'Tidak Ada') checked @endif @endif>
                                                 <label class="form-check-label" for="inlineRadio1">Tidak Ada</label>
                                             </div>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="cacattubuh"
-                                                    id="cacattubuh" value="Ada">
+                                                    id="cacattubuh" value="Ada" @if(count($p_konsul) > 0) @if($p_konsul[0]->cacattubuh == 'Ada') checked @endif @endif>
                                                 <label class="form-check-label" for="inlineRadio2">Ada</label>
                                             </div>
                                         </td>
@@ -553,7 +553,7 @@
                                         <td class="text-bold font-italic"></td>
                                         <td colspan="3">
                                             <textarea class="form-control" placeholder="Keterangan cacat tubuh lainnya ..." id="keterangancacattubuhlainnya"
-                                                name="keterangancacattubuhlainnya"></textarea>
+                                                name="keterangancacattubuhlainnya">@if(count($p_konsul) > 0) {{ $p_konsul[0]->keterangancacattubuh }}@endif</textarea>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -1158,7 +1158,7 @@
                                 <tr>
                                     <td>
                                         <textarea class="form-control" placeholder="Masukan diagnosa keperawatan ..." name="diagnosakeperawatan"
-                                            id="diagnosakeperawatan"></textarea>
+                                            id="diagnosakeperawatan">@if(count($p_konsul) > 0) {{ $p_konsul[0]->diagnosakeperawatan }}@endif</textarea>
                                     </td>
                                 </tr>
                             </table>
@@ -1187,7 +1187,7 @@
                                 <tr>
                                     <td>
                                         <textarea class="form-control" placeholder="Masukan rencana keperawatan" id="rencanakeperawatan"
-                                            name="rencanakeperawatan"></textarea>
+                                            name="rencanakeperawatan">@if(count($p_konsul) > 0) {{ $p_konsul[0]->rencanakeperawatan }}@endif</textarea>
                                     </td>
                                 </tr>
                                 <tr>
@@ -1197,7 +1197,7 @@
                                 <tr>
                                     <td>
                                         <textarea class="form-control" placeholder="Masukan tindakan keperawatan" id="tindakankeperawatan"
-                                            name="tindakankeperawatan"></textarea>
+                                            name="tindakankeperawatan">@if(count($p_konsul) > 0) {{ $p_konsul[0]->tindakankeperawatan }}@endif</textarea>
                                     </td>
                                 </tr>
                                 <tr>
@@ -1207,7 +1207,7 @@
                                 <tr>
                                     <td>
                                         <textarea class="form-control" placeholder="Masukan evaluasi keperawatan" name="evaluasikeperawatan"
-                                            id="evaluasikeperawatan"></textarea>
+                                            id="evaluasikeperawatan">@if(count($p_konsul) > 0) {{ $p_konsul[0]->evaluasikeperawatan }}@endif</textarea>
                                     </td>
                                 </tr>
                             </table>

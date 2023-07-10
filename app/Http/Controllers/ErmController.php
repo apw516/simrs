@@ -319,19 +319,32 @@ class ErmController extends Controller
         $fromDate = Carbon::parse($pasien[0]->tgl_lahir);
         $usiatahun = $toDate->diff($fromDate)->y;
         $usia_hari = $toDate->diffInDays($fromDate);
+        $ref_kunjungan = $kunjungan[0]->ref_kunjungan;
+        $unit = auth()->user()->unit;
+        if ($ref_kunjungan != '0') {
+            $p_konsul =  DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE kode_kunjungan = ?', [$ref_kunjungan]);
+        } else {
+            $p_konsul = DB::select('SELECT * FROM erm_hasil_assesmen_keperawatan_rajal
+        WHERE id = (SELECT MAX(id) FROM erm_hasil_assesmen_keperawatan_rajal WHERE no_rm = ? AND kode_unit = ? ) AND no_rm = ? AND kode_unit = ?', [$kunjungan[0]->no_rm, $unit, $kunjungan[0]->no_rm, $unit]);
+            if (count($p_konsul) < 1) {
+                $p_konsul = [];
+            }
+        }
         if (count($resume) > 0) {
             return view('ermperawat.formpemeriksaan_edit', compact([
                 'kunjungan',
                 'resume',
                 'usia_hari',
                 'usiatahun',
+                'p_konsul'
             ]));
         } else {
             return view('ermperawat.formpemeriksaan', compact([
                 'kunjungan',
                 'resume',
                 'usia_hari',
-                'usiatahun'
+                'usiatahun',
+                'p_konsul'
             ]));
             // }
         }
@@ -4750,7 +4763,7 @@ class ErmController extends Controller
     {
         $kodekunjungan = $request->kodekunjungan;
         $assdok = DB::select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
-        $cek_konsul  = DB::connection('mysql4')->select('select *,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where ref_kunjungan = ? and status_kunjungan != ?', [$kodekunjungan,'8']);
+        $cek_konsul  = DB::connection('mysql4')->select('select *,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where ref_kunjungan = ? and status_kunjungan != ?', [$kodekunjungan, '8']);
         if (count($assdok) > 0) {
             return view('ermtemplate.formtindaklanjut', compact([
                 'assdok',
@@ -4877,5 +4890,13 @@ class ErmController extends Controller
         ];
         echo json_encode($data);
         die;
+    }
+    public function riwayatkonsul(Request $request)
+    {
+        $id = auth()->user()->id;
+        $data = DB::select('select tindak_lanjut,keterangan_tindak_lanjut from assesmen_dokters where pic = ? and tindak_lanjut = ? ORDER BY id desc', [$id, 'KONSUL KE POLI LAIN']);
+        return view('ermtemplate.tabel_riwayat_konsul', compact([
+            'data'
+        ]));
     }
 }
