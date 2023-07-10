@@ -434,6 +434,12 @@ class ErmController extends Controller
     public function formpemeriksaan_dokter(Request $request)
     {
         $kunjungan = DB::select('select *,fc_nama_px(no_rm) as nama_pasien,fc_nama_paramedis(ref_paramedis) AS dokter_kirim,fc_nama_unit1(ref_unit) AS poli_asal from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
+        $ref_kunjungan = $kunjungan[0]->ref_kunjungan;
+        if($ref_kunjungan != 0){
+            $ref_resume = DB::select('select * from assesmen_dokters where id_kunjungan = ?',[$ref_kunjungan]);
+        }else{
+            $ref_resume = [];
+        }
         $resume_perawat = DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE kode_kunjungan = ?', [$request->kodekunjungan]);
         $resume = DB::select('SELECT * from assesmen_dokters WHERE id_kunjungan = ?', [$request->kodekunjungan]);
         $unit = auth()->user()->unit;
@@ -476,7 +482,8 @@ class ErmController extends Controller
                             'layanan',
                             'penyakit',
                             'k1',
-                            'k2'
+                            'k2',
+                            'ref_resume'
                         ]));
                     }
                 } else if ($resume_perawat[0]->status == 0) {
@@ -507,7 +514,8 @@ class ErmController extends Controller
                             'last_assdok',
                             'first_assdok',
                             'penyakit',
-                            'hasil_ro'
+                            'hasil_ro',
+                            'ref_resume'
                         ]));
                     }
                 }

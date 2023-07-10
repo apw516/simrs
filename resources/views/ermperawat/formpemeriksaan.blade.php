@@ -38,13 +38,13 @@
                                     <td colspan="3">
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="sumberdata"
-                                                id="sumberdata" value="Pasien Sendiri" @if(count($p_konsul) > 0) @if($p_konsul[0]->sumberdataperiksa == 'Pasien Sendiri') checked @endif @endif>
+                                                id="sumberdata" value="Pasien Sendiri" @if(count($p_konsul) > 0) @if($p_konsul[0]->sumberdataperiksa == 'Pasien Sendiri') checked @endif @else checked @endif>
                                             <label class="form-check-label" for="inlineRadio1">Pasien Sendiri /
                                                 Autoanamase</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="sumberdata"
-                                                id="sumberdata" value="Keluarga" @if(count($p_konsul) > 0) @if($p_konsul[0]->sumberdataperiksa == 'Keluarga') checked @endif @endif>
+                                                id="sumberdata" value="Keluarga" @if(count($p_konsul) > 0) @if($p_konsul[0]->sumberdataperiksa == 'Keluarga') checked @endif @else checked  @endif>
                                             <label class="form-check-label" for="inlineRadio2">Keluarga /
                                                 Alloanamnesa</label>
                                         </div>
@@ -220,7 +220,7 @@
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio"
                                                     name="pasienmengeluhnyeri" id="pasienmengeluhnyeri"
-                                                    value="Tidak Ada" @if(count($p_konsul) > 0) @if($p_konsul[0]->Keluhannyeri == 'Tidak Ada') checked @endif @endif>
+                                                    value="Tidak Ada" @if(count($p_konsul) > 0) @if($p_konsul[0]->Keluhannyeri == 'Tidak Ada') checked @endif @else checked  @endif>
                                                 <label class="form-check-label" for="inlineRadio1">Tidak Ada</label>
                                             </div>
                                             <div class="form-check form-check-inline">
@@ -462,7 +462,7 @@
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio"
                                                     name="riwayatpsikologis" id="riwayatpsikologis" value="Tidak Ada"
-                                                    @if(count($p_konsul) > 0) @if($p_konsul[0]->Riwayatpsikologi == 'Tidak Ada') checked @endif @endif>
+                                                    @if(count($p_konsul) > 0) @if($p_konsul[0]->Riwayatpsikologi == 'Tidak Ada') checked @endif @else checked  @endif>
                                                 <label class="form-check-label" for="inlineRadio1">Tidak Ada</label>
                                             </div>
                                             <div class="form-check form-check-inline">
@@ -507,7 +507,7 @@
                                         <td colspan="3">
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="alatbantu"
-                                                    id="alatbantu" value="Tidak Ada" @if(count($p_konsul) > 0) @if($p_konsul[0]->penggunaanalatbantu == 'Tidak Ada') checked @endif @endif>
+                                                    id="alatbantu" value="Tidak Ada" @if(count($p_konsul) > 0) @if($p_konsul[0]->penggunaanalatbantu == 'Tidak Ada') checked @endif @else checked  @endif>
                                                 <label class="form-check-label" for="inlineRadio1">Tidak Ada</label>
                                             </div>
                                             <div class="form-check form-check-inline">
@@ -539,7 +539,7 @@
                                         <td colspan="3">
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="cacattubuh"
-                                                    id="cacattubuh" value="Tidak Ada" @if(count($p_konsul) > 0) @if($p_konsul[0]->cacattubuh == 'Tidak Ada') checked @endif @endif>
+                                                    id="cacattubuh" value="Tidak Ada" @if(count($p_konsul) > 0) @if($p_konsul[0]->cacattubuh == 'Tidak Ada') checked @endif @else checked  @endif>
                                                 <label class="form-check-label" for="inlineRadio1">Tidak Ada</label>
                                             </div>
                                             <div class="form-check form-check-inline">
