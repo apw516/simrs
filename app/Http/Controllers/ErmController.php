@@ -472,7 +472,8 @@ class ErmController extends Controller
                             'resume_perawat',
                             'layanan',
                             'last_assdok',
-                            'first_assdok'
+                            'first_assdok',
+                            'ref_resume'
                         ]));
                     } else {
                         return view('ermdokter.new_formpemeriksaan_dokter_edit', compact([
@@ -504,7 +505,8 @@ class ErmController extends Controller
                             'last_assdok',
                             'first_assdok',
                             'penyakit',
-                            'hasil_ro'
+                            'hasil_ro',
+                            'ref_resume'
                         ]));
                     } else {
                         return view('ermdokter.new_form_pemeriksaan_dokter', compact([
