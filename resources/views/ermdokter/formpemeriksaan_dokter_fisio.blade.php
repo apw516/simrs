@@ -4,6 +4,20 @@
             data-target="#modalcatatankonsul"><i class="bi bi-eye mr-1"></i> Catatan Konsul</button>
     @endif</div>
     <div class="card-body">
+        @if ($kunjungan[0]->ref_kunjungan != '0')
+        <div class="jumbotron">
+            <h1 class="display-4">Hello {{ auth()->user()->nama }} </h1><br>
+            <p class="lead">Dokter Pengirim : {{ $kunjungan[0]->dokter_kirim }}</p>
+            <p class="lead">Poliklinik Pengirim : {{ $kunjungan[0]->poli_asal }}</p>
+            <p class="lead">Mohon Konsul</p>
+            <p class="lead">Pasien dengan : <br>RM {{ $kunjungan[0]->no_rm }} |
+                {{ $kunjungan[0]->nama_pasien }} | {{ $kunjungan[0]->diagx }} <br><br>
+                Keterangan <br>
+                @if(count($ref_resume) > 0 ) {{ $ref_resume[0]->keterangan_tindak_lanjut }}@endif
+            </p>
+            <hr class="my-4">
+        </div>
+        @endif
         <form class="formpemeriksaan_fisio">
             <input hidden type="text" name="kodekunjungan" id="kodekunjungan" class="form-control"
                 value="{{ $kunjungan[0]->kode_kunjungan }}">
@@ -394,6 +408,12 @@
                 @endif
                 </div>
             </div>
+            <div @if ($kunjungan[0]->ref_kunjungan == '0') hidden @endif class="card">
+                <div class="card-header bg-warning">Jawaban Konsul</div>
+                <div class="card-body">
+                    <textarea name="jawabankonsul" id="jawabankonsul" rows="10" class="form-control"></textarea>
+                </div>
+            </div>
         </form>
         <div class="card">
             <div class="card-header bg-light">Order Farmasi <button type="button"
@@ -444,7 +464,7 @@
                     <p class="lead">Pasien dengan : <br>RM {{ $kunjungan[0]->no_rm }} |
                         {{ $kunjungan[0]->nama_pasien }} | {{ $kunjungan[0]->diagx }} <br><br>
                         Keterangan <br>
-                        {{ $kunjungan[0]->keterangan3 }}
+                        @if(count($ref_resume) > 0 ) {{ $ref_resume[0]->keterangan_tindak_lanjut }}@endif
                     </p>
                     <hr class="my-4">
                 </div>

@@ -224,9 +224,9 @@ class ErmController extends Controller
     public function ambilcatatanmedis_pasien(Request $request)
     {
         $rm = $request->rm;
-        $kunjungan = DB::select('SELECT *,b.kode_unit,a.kode_kunjungan as kodek,a.no_rm as no_rm_k,b.id as id_1, c.id as id_2,b.signature as signature_perawat,c.signature as signature_dokter,b.keluhanutama as keluhan_perawat,a.tgl_masuk,a.counter,fc_nama_unit1(a.kode_unit) AS nama_unit FROM ts_kunjungan a
+        $kunjungan = DB::select('SELECT *,fc_nama_unit1(a.ref_unit) as nama_ref_unit,b.kode_unit,c.kode_unit as kode_unit_dokter,a.kode_kunjungan as kodek,a.no_rm as no_rm_k,b.id as id_1, c.id as id_2,b.signature as signature_perawat,c.signature as signature_dokter,b.keluhanutama as keluhan_perawat,a.tgl_masuk,a.counter,fc_nama_unit1(a.kode_unit) AS nama_unit FROM ts_kunjungan a
         LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`kode_kunjungan` = b.kode_kunjungan
-        LEFT OUTER JOIN assesmen_dokters c ON a.`kode_kunjungan` = c.`id_kunjungan` where a.no_rm = ? and a.status_kunjungan != ? ORDER BY a.counter desc', [$request->rm, 8]);
+        LEFT OUTER JOIN assesmen_dokters c ON a.`kode_kunjungan` = c.`id_kunjungan` where a.no_rm = ? and a.status_kunjungan != ? ORDER BY a.kode_kunjungan desc', [$request->rm, 8]);
         return view('ermtemplate.form_catatan_medis', compact([
             'kunjungan',
             'rm'
@@ -532,13 +532,15 @@ class ErmController extends Controller
                     'resume_lain',
                     'last_assdok',
                     'kunjungan',
-                    'resume_now'
+                    'resume_now',
+                    'ref_resume'
                 ]));
             } else {
                 return view('ermdokter.formpemeriksaan_dokter_fisio', compact([
                     'resume_lain',
                     'last_assdok',
-                    'kunjungan'
+                    'kunjungan',
+                    'ref_resume'
                 ]));
             }
         }
@@ -1129,6 +1131,7 @@ class ErmController extends Controller
             'keluhan_pasien' => trim($dataSet['keluhanutama']),
             'tindak_lanjut' => $dataSet_tindaklanjut['pilihtindaklanjut'],
             'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'],
+            'keterangan_tindak_lanjut_2' => trim($dataSet['jawabankonsul']),
             'umur' => $dataSet['usia'],
             'tgl_entry' => $this->get_now(),
             'status' => '0',
@@ -1184,6 +1187,7 @@ class ErmController extends Controller
                     'keluhan_pasien' => trim($dataSet['keluhanutama']),
                     'tindak_lanjut' => $dataSet_tindaklanjut['pilihtindaklanjut'],
                     'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'],
+                    'keterangan_tindak_lanjut_2' => trim($dataSet['jawabankonsul']),
                     'status' => '0',
                     'signature' => ''
                 ];
@@ -2191,6 +2195,7 @@ class ErmController extends Controller
             'riwayatlain' => $dataSet['supekpenyakit'],
             'ket_riwayatlain' => $dataSet['keterangansuspek'],
             'keluhan_pasien' => $dataSet['keluhanutama'],
+            'keterangan_tindak_lanjut_2' => trim($dataSet['jawabankonsul']),
             'status' => '0'
         ];
         if (count($cek) > 0) {
@@ -4907,6 +4912,29 @@ class ErmController extends Controller
         $data = DB::select('select tindak_lanjut,keterangan_tindak_lanjut from assesmen_dokters where pic = ? and tindak_lanjut = ? ORDER BY id desc', [$id, 'KONSUL KE POLI LAIN']);
         return view('ermtemplate.tabel_riwayat_konsul', compact([
             'data'
+        ]));
+    }
+    public function berkas_erm()
+    {
+        $title = 'SIMRS - ERM';
+        $sidebar = 'berkas_erm';
+        $sidebar_m = 'berkas_erm';
+        $now = $this->get_date();
+        return view('ermtemplate.index_berkas_erm',compact([
+            'title',
+            'sidebar',
+            'sidebar_m',
+            'now'
+        ]));
+    }
+    public function ambil_berkas_erm()
+    {
+        $now = date('Y-m-d');
+        $d2 = date('Y-m-d', strtotime('-30 days'));
+        $dataerm = db::select('SELECT a.id_pasien,fc_nama_px(a.`id_pasien`) AS nama_pasien,a.`nama_dokter`,b.`namapemeriksa` AS perawat
+        ,fc_nama_unit1(a.`kode_unit`) nama_poli,a.`tgl_pemeriksaan` FROM assesmen_dokters AS a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`id_asskep` = b.id WHERE DATE(a.tgl_pemeriksaan) BETWEEN ? AND ?',[$d2,$now]);
+        return view('ermtemplate.tabel_data_erm',compact([
+            'dataerm'
         ]));
     }
 }

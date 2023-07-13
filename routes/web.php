@@ -71,6 +71,11 @@ Route::post('/lihathasil_scanrm', [ErmController::class, 'lihathasil_scanrm'])
 Route::post('/vberkasluar', [ErmController::class, 'vberkasluar'])
     ->name('vberkasluar'); //sidebar
 
+Route::get('berkas_erm', [ErmController::class, 'berkas_erm'])
+    ->name('berkas_erm'); //sidebar
+Route::post('ambil_berkas_erm', [ErmController::class, 'ambil_berkas_erm'])
+    ->name('ambil_berkas_erm'); //sidebar
+
 Route::get('/register', [RegisterController::class, 'index'])->middleware('guest')->name('register');
 Route::get('/profil', [RegisterController::class, 'profil'])->name('profil');
 Route::post('/ambiltabeldatauser', [LoginController::class, 'ambiltabeldatauser'])->name('ambiltabeldatauser');

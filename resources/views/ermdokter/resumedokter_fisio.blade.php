@@ -42,6 +42,10 @@
                     <td>Suspek Penyakit Akibat Kerja</td>
                     <td>: {{ $resume['0']->riwayatlain}} | {{ $resume['0']->ket_riwayatlain}}</td>
                 </tr>
+                <tr>
+                    <td>Jawaban Konsul</td>
+                    <td>: {{ $resume['0']->keterangan_tindak_lanjut_2}} </td>
+                </tr>
             </table>
             <div class="card">
                 <div class="card-header bg-dark">Order Farmasi</div>

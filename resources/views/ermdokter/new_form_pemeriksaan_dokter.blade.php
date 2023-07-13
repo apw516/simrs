@@ -8,6 +8,21 @@
         @endif
     </div>
     <div class="card-body table-responsive p-5" style="height: 757Px">
+        @if ($kunjungan[0]->ref_kunjungan != '0')
+            <div class="jumbotron">
+                <h1 class="display-4">Hello {{ auth()->user()->nama }} </h1><br>
+                <p class="lead">Dokter Pengirim : {{ $kunjungan[0]->dokter_kirim }}</p>
+                <p class="lead">Poliklinik Pengirim : {{ $kunjungan[0]->poli_asal }}</p>
+                <p class="lead">Mohon Konsul</p>
+                <p class="lead">Pasien dengan : <br>RM {{ $kunjungan[0]->no_rm }} |
+                    {{ $kunjungan[0]->nama_pasien }} | {{ $kunjungan[0]->diagx }} <br><br>
+                    Keterangan <br>
+                    @if (count($ref_resume) > 0)
+                        {{ $ref_resume[0]->keterangan_tindak_lanjut }}@endif
+                </p>
+                <hr class="my-4">
+            </div>
+        @endif
         <form action="" class="formpemeriksaandokter">
             <input hidden type="text" name="kodekunjungan" class="form-control"
                 value="{{ $kunjungan[0]->kode_kunjungan }}">
@@ -377,24 +392,13 @@
                     </tr>
                 </tbody>
             </table>
-        </form>
-        {{-- <form action="" class="formfarmasi">
-            <div class="card">
-                <div class="card-header bg-light">Order Farmasi <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate" onclick="ambilresep()">Template
-                        resep</button></div>
+            <div @if ($kunjungan[0]->ref_kunjungan == '0') hidden @endif  class="card">
+                <div class="card-header bg-warning">Jawaban Konsul</div>
                 <div class="card-body">
-                    <div class="form-group mt-2">
-                        <label for="exampleInputEmail1">Resep</label>
-                        <textarea rows="10" type="text" class="form-control" id="resepobat" name="resepobat"
-                            aria-describedby="emailHelp" placeholder="Silahkan tulis resep anda ...."></textarea>
-                    </div>
-                    <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="simpantemplate" name="simpantemplate">
-                        <label class="form-check-label" for="exampleCheck1">Simpan sebagai template</label>
-                    </div>
+                    <textarea name="jawabankonsul" id="jawabankonsul" rows="10"class="form-control"></textarea>
                 </div>
             </div>
-        </form> --}}
+        </form>
         <div class="card">
             <div class="card-header bg-light">Order Farmasi <button type="button"
                     class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
@@ -1988,7 +1992,8 @@
                     <p class="lead">Pasien dengan : <br>RM {{ $kunjungan[0]->no_rm }} |
                         {{ $kunjungan[0]->nama_pasien }} | {{ $kunjungan[0]->diagx }} <br><br>
                         Keterangan <br>
-                        @if(count($ref_resume) > 0 ) {{ $ref_resume[0]->keterangan_tindak_lanjut }}@endif
+                        @if (count($ref_resume) > 0)
+                            {{ $ref_resume[0]->keterangan_tindak_lanjut }}@endif
                     </p>
                     <hr class="my-4">
                 </div>

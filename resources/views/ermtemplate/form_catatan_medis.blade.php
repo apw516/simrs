@@ -20,7 +20,7 @@
                                 aria-controls="collapseOne">
                                 Kunjungan Ke - {{ $k->counter }} | {{ $k->nama_unit }} @if ($k->kode_unit == '1028')
                                     | {{ $k->keterangan_cppt }}
-                                @endif
+                                @endif @if($k->ref_kunjungan != 0) <a class="text-bold text-dark"> | Pasien Konsul dari {{ $k->nama_ref_unit }}</a> @endif
                                 <p class="float-right">
                                     {{ $k->tgl_masuk }}</p>
                             </button>
@@ -48,18 +48,6 @@
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"><i
                                             class="bi bi-printer mr-2"></i>Assesmen Awal Medis</button>
                                 </div>
-
-                                {{-- <div class="col-md-4">
-                                    <button class="btn btn-secondary mb-2 float-right cetakresumedok ml-2"
-                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
-                                        kodekunjungan_asskep="{{ $k->kodek }}"><i class="bi bi-printer"></i>
-                                        Download assesmen awal keperawatan </button>
-                                </div>
-                                <div class="col-md-4">
-                                    <button class="btn btn-secondary mb-2 float-right cetakresumesus"
-                                        kodekunjungan="{{ $k->kodek }}"><i class="bi bi-printer"></i>
-                                        Download assesmen awal medis</button>
-                                </div> --}}
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
@@ -251,7 +239,7 @@
                                         <div class="card-header bg-danger text-bold">Assesmen awal Medis</div>
                                         @if ($k->id_2 != null)
                                             <div class="card-body">
-                                                @if($k->kode_unit == '1028')
+                                                @if($k->kode_unit == '1028' || $k->kode_unit_dokter == '1028')
                                                     <table class="table table-striped">
                                                         <tr>
                                                             <td colspan="2" class="text-center bg-dark">Layanann
@@ -544,6 +532,10 @@
                                                         <td class="text-bold font-italic">Tindak Lanjut</td>
                                                         <td>{{ $k->tindak_lanjut }} |
                                                             {{ $k->keterangan_tindak_lanjut }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-bold font-italic">Jawab Konsul Ke poli lain</td>
+                                                        <td> {{ $k->keterangan_tindak_lanjut_2 }}</td>
                                                     </tr>
                                                 </table>
                                                 <div class="card">

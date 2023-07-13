@@ -191,6 +191,11 @@
                     <td colspan="3">{{ $resume[0]->tindak_lanjut }} | {{ $resume[0]->keterangan_tindak_lanjut }}
                     </td>
                 </tr>
+                <tr>
+                    <td>Jawaban Konsul</td>
+                    <td colspan="3">{{ $resume[0]->keterangan_tindak_lanjut_2 }}
+                    </td>
+                </tr>
             </table>
             @if ($formkhusus['keterangan'] == 'tht')
                 <div class="row mt-2">

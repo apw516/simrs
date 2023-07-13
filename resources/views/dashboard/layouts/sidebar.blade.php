@@ -64,33 +64,7 @@
                               </p>
                           </a>
                       </li>
-                      {{-- <li class="nav-item">
-                      <a href="{{ route('pendaftaran') }}" class="nav-link @if ($sidebar == '2') active @endif">
-                          <i class="nav-icon fas fa-th"></i>
-                          <p>
-                              Pendaftaran V
-                          </p>
-                      </a>
-                  </li>                 --}}
-                      {{-- <li class="nav-item">
-                      <a href="{{ route('Validasiranap') }}" class="nav-link @if ($sidebar == '2.1') active @endif">
-                          <i class="nav-icon fas fa-th"></i>
-                          <p>
-                              Validasi Pasien Ranap
-                          </p>
-                      </a>
-                  </li> --}}
                   @endif
-                  {{-- @if (auth()->user()->unit != '3001')
-                  <li class="nav-item">
-                    <a href="{{ route('Billing') }}" class="nav-link @if ($sidebar == '2') active @endif">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>
-                            Input Layanan
-                        </p>
-                    </a>
-                </li>
-                @endif --}}
                   @if (auth()->user()->hak_akses == '9')
                       <li class="nav-item">
                           <a href="{{ route('datapasienranap') }}"
@@ -137,22 +111,6 @@
                     </a>
                 </li> --}}
                   @endif
-                  {{-- <li class="nav-item">
-                      <a href="/pendaftaran" class="nav-link @if ($sidebar == '6') active @endif">
-                          <i class="nav-icon fas fa-th"></i>
-                          <p>
-                              Billing Poliklinik
-                          </p>
-                      </a>
-                  </li>
-                  <li class="nav-item">
-                      <a href="/pendaftaran" class="nav-link @if ($sidebar == '6') active @endif">
-                          <i class="nav-icon fas fa-th"></i>
-                          <p>
-                              Billing Laboratorium
-                          </p>
-                      </a>
-                  </li> --}}
                   @if (auth()->user()->hak_akses == 1 || auth()->user()->hak_akses == 2)
                       <li class="nav-item @if ($sidebar == '3') menu-open @endif">
                           <a href="#" class="nav-link @if ($sidebar == '3') active @endif">
@@ -603,6 +561,27 @@
                               <p>Data User</p>
                           </a>
                       </li>
+                  @endif
+                  @if (auth()->user()->nama == 'agyl')
+                  <li class="nav-header">REKAMEDIS</li>
+                  <li class="nav-item @if ($sidebar == 'berkas_erm') menu-open @endif">
+                      <a href="#" class="nav-link">
+                          <i class="nav-icon fas fa-table"></i>
+                          <p>
+                              ERM
+                              <i class="fas fa-angle-left right"></i>
+                          </p>
+                      </a>
+                      <ul class="nav nav-treeview">
+                          <li class="nav-item">
+                              <a href="{{ route('berkas_erm') }}"
+                                  class="nav-link @if ($sidebar_m == 'berkas_erm') active @endif">
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>Berkas ERM</p>
+                              </a>
+                          </li>
+                      </ul>
+                  </li>
                   @endif
                   <li class="nav-header"> <i class="nav-icon bi bi-person-circle mr-2"></i> INFO AKUN</li>
                   <li class="nav-item">
