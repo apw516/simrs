@@ -361,6 +361,10 @@
                                                             <td>Lain - lain</td>
                                                             <td>{{ $k->lainlain  }}</td>
                                                         </tr>
+                                                        <tr>
+                                                            <td>Jawaban Konsul</td>
+                                                            <td>{{ $k->keterangan_tindak_lanjut_2  }}</td>
+                                                        </tr>
                                                     </tbody>
                                                 </table>
                                                 <table class="table table-sm table-bordered mt-4">

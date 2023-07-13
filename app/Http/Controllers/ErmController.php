@@ -2454,6 +2454,7 @@ class ErmController extends Controller
             'alternatif' => trim($dataSet['alternatif']),
             'lainlain' => trim($dataSet['lainlain']),
             'keluhan_pasien' => trim($dataSet['keluhanutama']),
+            'keterangan_tindak_lanjut_2' => trim($dataSet['jawabankonsul']),
             'umur' => $dataSet['usia'],
             'tgl_entry' => $this->get_now(),
             'status' => '0',

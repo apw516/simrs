@@ -8,6 +8,21 @@
         @endif
         </div>
     <div class="card-body table-responsive p-5" style="height: 757Px">
+        @if ($kunjungan[0]->ref_kunjungan != '0')
+        <div class="jumbotron">
+            <h1 class="display-4">Hello {{ auth()->user()->nama }} </h1><br>
+            <p class="lead">Dokter Pengirim : {{ $kunjungan[0]->dokter_kirim }}</p>
+            <p class="lead">Poliklinik Pengirim : {{ $kunjungan[0]->poli_asal }}</p>
+            <p class="lead">Mohon Konsul</p>
+            <p class="lead">Pasien dengan : <br>RM {{ $kunjungan[0]->no_rm }} |
+                {{ $kunjungan[0]->nama_pasien }} | {{ $kunjungan[0]->diagx }} <br><br>
+                Keterangan <br>
+                @if (count($ref_resume) > 0)
+                    {{ $ref_resume[0]->keterangan_tindak_lanjut }}@endif
+            </p>
+            <hr class="my-4">
+        </div>
+    @endif
         <form action="" class="formpemeriksaandokter">
             <input hidden type="text" name="kodekunjungan" class="form-control"
                 value="{{ $kunjungan[0]->kode_kunjungan }}">
@@ -343,6 +358,12 @@
                     <tr>
                         <td class="text-bold font-italic">Lain Lain</td>
                         <td colspan="3"><textarea type="text" class="form-control" name="lainlain" id="lainlain">{{ $resume[0]->lainlain }}</textarea></td>
+                    </tr>
+                    <tr>
+                        <td class="text-bold font-italic">Jawaban Konsul</td>
+                        <td colspan="3">
+                            <textarea type="text" class="form-control" name="jawabankonsul" id="jawabankonsul">{{ $resume[0]->keterangan_tindak_lanjut_2 }}</textarea>
+                        </td>
                     </tr>
                 </tbody>
             </table>

@@ -2,12 +2,27 @@
     <div class="card-header bg-info">Catatan Perkembangan Pasien Terintegrasi ( CPPT ) <button
             class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
             data-target="#modalresumeperawat"><i class="bi bi-eye mr-1"></i> Hasil Assesmen Keperawatan</button>
-            @if ($kunjungan[0]->ref_kunjungan != '0')
+        @if ($kunjungan[0]->ref_kunjungan != '0')
             <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
                 data-target="#modalcatatankonsul"><i class="bi bi-eye mr-1"></i> Catatan Konsul</button>
         @endif
-        </div>
+    </div>
     <div class="card-body table-responsive p-5" style="height: 757Px">
+        @if ($kunjungan[0]->ref_kunjungan != '0')
+            <div class="jumbotron">
+                <h1 class="display-4">Hello {{ auth()->user()->nama }} </h1><br>
+                <p class="lead">Dokter Pengirim : {{ $kunjungan[0]->dokter_kirim }}</p>
+                <p class="lead">Poliklinik Pengirim : {{ $kunjungan[0]->poli_asal }}</p>
+                <p class="lead">Mohon Konsul</p>
+                <p class="lead">Pasien dengan : <br>RM {{ $kunjungan[0]->no_rm }} |
+                    {{ $kunjungan[0]->nama_pasien }} | {{ $kunjungan[0]->diagx }} <br><br>
+                    Keterangan <br>
+                    @if (count($ref_resume) > 0)
+                        {{ $ref_resume[0]->keterangan_tindak_lanjut }}@endif
+                </p>
+                <hr class="my-4">
+            </div>
+        @endif
         <form action="" class="formpemeriksaandokter">
             <input hidden type="text" name="kodekunjungan" class="form-control"
                 value="{{ $kunjungan[0]->kode_kunjungan }}">
@@ -84,7 +99,8 @@
                                                         name="jantung" value="1"
                                                         @if (count($last_assdok) > 0) @if ($last_assdok[0]->jantung == '1') checked @endif
                                                         @endif>
-                                                    <label class="form-check-label" for="exampleCheck1">Jantung</label>
+                                                    <label class="form-check-label"
+                                                        for="exampleCheck1">Jantung</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
@@ -302,47 +318,75 @@
                     </tr>
                     <tr>
                         <td class="text-bold font-italic">Diagnosa ( WD & DD )</td>
-                        <td colspan="3"><textarea type="text" class="form-control" name="diagnosawd" id="diagnosawd"></textarea></td>
+                        <td colspan="3">
+                            <textarea type="text" class="form-control" name="diagnosawd" id="diagnosawd"></textarea>
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-bold font-italic">Dasar Diagnosa</td>
-                        <td colspan="3"><textarea type="text" class="form-control" name="dasardiagnosa" id="dasardiagnosa"></textarea></td>
+                        <td colspan="3">
+                            <textarea type="text" class="form-control" name="dasardiagnosa" id="dasardiagnosa"></textarea>
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-bold font-italic">Tindakan Kedokteran</td>
-                        <td colspan="3"><textarea type="text" class="form-control" name="tindakankedokteran" id="tindakankedokteran"></textarea></td>
+                        <td colspan="3">
+                            <textarea type="text" class="form-control" name="tindakankedokteran" id="tindakankedokteran"></textarea>
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-bold font-italic">Indikasi Tindakan</td>
-                        <td colspan="3"><textarea type="text" class="form-control" name="indikasitindakan" id="indikasitindakan"></textarea></td>
+                        <td colspan="3">
+                            <textarea type="text" class="form-control" name="indikasitindakan" id="indikasitindakan"></textarea>
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-bold font-italic">Tata Cara</td>
-                        <td colspan="3"><textarea type="text" class="form-control" name="tatacara" id="tatacara"></textarea></td>
+                        <td colspan="3">
+                            <textarea type="text" class="form-control" name="tatacara" id="tatacara"></textarea>
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-bold font-italic">Tujuan</td>
-                        <td colspan="3"><textarea type="text" class="form-control" name="tujuan" id="tujuan"></textarea></td>
+                        <td colspan="3">
+                            <textarea type="text" class="form-control" name="tujuan" id="tujuan"></textarea>
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-bold font-italic">Resiko</td>
-                        <td colspan="3"><textarea type="text" class="form-control" name="resiko" id="resiko"></textarea></td>
+                        <td colspan="3">
+                            <textarea type="text" class="form-control" name="resiko" id="resiko"></textarea>
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-bold font-italic">Komplikasi</td>
-                        <td colspan="3"><textarea type="text" class="form-control" name="komplikasi" id="komplikasi"></textarea></td>
+                        <td colspan="3">
+                            <textarea type="text" class="form-control" name="komplikasi" id="komplikasi"></textarea>
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-bold font-italic">Prognosis</td>
-                        <td colspan="3"><textarea type="text" class="form-control" name="prognosis" id="prognosis"></textarea></td>
+                        <td colspan="3">
+                            <textarea type="text" class="form-control" name="prognosis" id="prognosis"></textarea>
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-bold font-italic">Alternatif dan Resiko</td>
-                        <td colspan="3"><textarea type="text" class="form-control" name="alternatif" id="alternatif"></textarea></td>
+                        <td colspan="3">
+                            <textarea type="text" class="form-control" name="alternatif" id="alternatif"></textarea>
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-bold font-italic">Lain Lain</td>
-                        <td colspan="3"><textarea type="text" class="form-control" name="lainlain" id="lainlain"></textarea></td>
+                        <td colspan="3">
+                            <textarea type="text" class="form-control" name="lainlain" id="lainlain"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-bold font-italic">Jawaban Konsul</td>
+                        <td colspan="3">
+                            <textarea type="text" class="form-control" name="jawabankonsul" id="jawabankonsul"></textarea>
+                        </td>
                     </tr>
                     {{-- <tr>
                         <td colspan="4" class="bg-secondary">Pemeriksaan Fisik</td>
@@ -2020,7 +2064,8 @@
                     <p class="lead">Pasien dengan : <br>RM {{ $kunjungan[0]->no_rm }} |
                         {{ $kunjungan[0]->nama_pasien }} | {{ $kunjungan[0]->diagx }} <br><br>
                         Keterangan <br>
-                        @if(count($ref_resume) > 0 ) {{ $ref_resume[0]->keterangan_tindak_lanjut }}@endif
+                        @if (count($ref_resume) > 0)
+                            {{ $ref_resume[0]->keterangan_tindak_lanjut }}@endif
                     </p>
                     <hr class="my-4">
                 </div>
@@ -2341,10 +2386,14 @@
         }
         nomor = parseInt(document.getElementById('jumlahform').value)
         if (x < max_fields) { //max input box allowed
-            nama = 'namaobat'+nomor
-            aturan = 'aturanpakai'+nomor
+            nama = 'namaobat' + nomor
+            aturan = 'aturanpakai' + nomor
             $(wrapper).append(
-                '<div class="form-row text-xs"><div class="form-group col-md-2"><label for="">Nama Obat</label><input type="" class="form-control form-control-sm text-xs" id="'+nama+'" name="namaobat" value=""><input hidden readonly type="" class="form-control form-control-sm" id="" name="kodebarang" value="""></div><div class="form-group col-md-2"><label for="inputPassword4">Aturan Pakai</label><input type="" class="form-control form-control-sm" id="'+ aturan +'" name="aturanpakai" value=""></div><div class="form-group col-md-1"><label for="inputPassword4">Jumlah</label><input type="" class="form-control form-control-sm" id="" name="jumlah" value="0"></div><div class="form-group col-md-1"><label for="inputPassword4">Signa</label><input type="" class="form-control form-control-sm" id="" name="signa" value="0"></div><div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type="" class="form-control form-control-sm" id="" name="keterangan" value=""></div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i></div>'
+                '<div class="form-row text-xs"><div class="form-group col-md-2"><label for="">Nama Obat</label><input type="" class="form-control form-control-sm text-xs" id="' +
+                nama +
+                '" name="namaobat" value=""><input hidden readonly type="" class="form-control form-control-sm" id="" name="kodebarang" value="""></div><div class="form-group col-md-2"><label for="inputPassword4">Aturan Pakai</label><input type="" class="form-control form-control-sm" id="' +
+                aturan +
+                '" name="aturanpakai" value=""></div><div class="form-group col-md-1"><label for="inputPassword4">Jumlah</label><input type="" class="form-control form-control-sm" id="" name="jumlah" value="0"></div><div class="form-group col-md-1"><label for="inputPassword4">Signa</label><input type="" class="form-control form-control-sm" id="" name="signa" value="0"></div><div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type="" class="form-control form-control-sm" id="" name="keterangan" value=""></div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i></div>'
             );
             $(wrapper).on("click", ".remove_field", function(e) { //user click on remove
                 kode = $(this).attr('kode2')

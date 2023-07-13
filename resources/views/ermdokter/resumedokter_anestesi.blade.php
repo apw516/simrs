@@ -170,6 +170,10 @@
                     <td class="text-bold">Lain - lain</td>
                     <td colspan="3">{{ $resume[0]->lainlain }}</td>
                 </tr>
+                <tr>
+                    <td class="text-bold">Jawaban Konsul</td>
+                    <td colspan="3">{{ $resume[0]->keterangan_tindak_lanjut_2 }}</td>
+                </tr>
             </table>
             @if ($resume[0]->signature == '')
                 @if ($resume[0]->pic == auth()->user()->id || $resume[0]->pic == '')
