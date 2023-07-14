@@ -370,7 +370,7 @@
                                                         <tr>
                                                             <td colspan="2" class="text-center bg-dark">PENILAIAN EVALUASI JALAN NAFAS</td>
                                                         </tr>
-                                                        @if($lemon != '')
+                                                        @if($k->LEMON != '')
                                                         @php $lemon = explode('|',$k->LEMON ) @endphp
                                                         <tr>
                                                             <td>L</td>
