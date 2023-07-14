@@ -319,7 +319,7 @@
                     <tr>
                         <td class="text-bold font-italic">Diagnosa ( WD & DD )</td>
                         <td colspan="3">
-                            <textarea type="text" class="form-control" name="diagnosawd" id="diagnosawd"></textarea>
+                            <textarea type="text" class="form-control" name="diagnosawd" id="diagnosawd">{{ $ref_resume[0]->diagnosakerja}}</textarea>
                         </td>
                     </tr>
                     <tr>
@@ -328,58 +328,91 @@
                             <textarea type="text" class="form-control" name="dasardiagnosa" id="dasardiagnosa"></textarea>
                         </td>
                     </tr>
+                    <tr class="bg-dark">
+                        <td colspan="4" >ANAMNESA</td>
+                    </tr>
                     <tr>
-                        <td class="text-bold font-italic">Tindakan Kedokteran</td>
-                        <td colspan="3">
-                            <textarea type="text" class="form-control" name="tindakankedokteran" id="tindakankedokteran"></textarea>
+                        <td>A ( Alergi )</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control" name="a_alergi" id="a_alergi"></td>
+                    </tr>
+                    <tr>
+                        <td>M ( Medikasi )</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control" name="medikasi" id="medikasi"></td>
+                    </tr>
+                    <tr>
+                        <td>P ( Post Illnes )</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control" name="post_illnes" id="post_illnes"></td>
+                    </tr>
+                    <tr>
+                        <td>L ( Last Meal )</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control" name="last_meal" id="last_meal"></td>
+                    </tr>
+                    <tr>
+                        <td>E ( Event )</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control" name="event" id="event"></td>
+                    </tr>
+                    <tr class="bg-dark">
+                        <td colspan="4" >Pemeriksaan Fisik</td>
+                    </tr>
+                    <tr>
+                        <td>Cor</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control" name="cor" id="cor"></td>
+                    </tr>
+                    <tr>
+                        <td>Pulmo</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control" name="pulmo" id="pulmo"></td>
+                    </tr>
+                    <tr>
+                        <td>Gigi</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control" name="gigi" id="gigi"></td>
+                    </tr>
+                    <tr>
+                        <td>Ekstermitas</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control" name="ekstremitas" id="ekstremitas"></td>
+                    </tr>
+                    <tr class="bg-dark">
+                        <td colspan="4" >Penilaian Evaluasi Jalan Nafas</td>
+                    </tr>
+                    <tr>
+                        <td>L</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control" name="L" id="L"></td>
+                    </tr>
+                    <tr>
+                        <td>E</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control" name="E" id="E"></td>
+                    </tr>
+                    <tr>
+                        <td>M</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control" name="M" id="M"></td>
+                    </tr>
+                    <tr>
+                        <td>O</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control" name="O" id="O"></td>
+                    </tr>
+                    <tr>
+                        <td>N</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control" name="N" id="N"></td>
+                    </tr>
+                    <tr>
+                        <td>Assesmen</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="assesmen"
+                                    id="assesmen" value="1" checked>
+                                <label class="form-check-label" for="inlineRadio1">Setuju dijadwalkan untuk operasi</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="assesmen"
+                                    id="assesmen" value="2">
+                                <label class="form-check-label" for="inlineRadio2">Saat ini keadaan pasien dalam kondisi belum untuk dilakukan tindakan anestesi</label>
+                            </div>
                         </td>
                     </tr>
                     <tr>
-                        <td class="text-bold font-italic">Indikasi Tindakan</td>
-                        <td colspan="3">
-                            <textarea type="text" class="form-control" name="indikasitindakan" id="indikasitindakan"></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-bold font-italic">Tata Cara</td>
-                        <td colspan="3">
-                            <textarea type="text" class="form-control" name="tatacara" id="tatacara"></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-bold font-italic">Tujuan</td>
-                        <td colspan="3">
-                            <textarea type="text" class="form-control" name="tujuan" id="tujuan"></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-bold font-italic">Resiko</td>
-                        <td colspan="3">
-                            <textarea type="text" class="form-control" name="resiko" id="resiko"></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-bold font-italic">Komplikasi</td>
-                        <td colspan="3">
-                            <textarea type="text" class="form-control" name="komplikasi" id="komplikasi"></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-bold font-italic">Prognosis</td>
-                        <td colspan="3">
-                            <textarea type="text" class="form-control" name="prognosis" id="prognosis"></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-bold font-italic">Alternatif dan Resiko</td>
-                        <td colspan="3">
-                            <textarea type="text" class="form-control" name="alternatif" id="alternatif"></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-bold font-italic">Lain Lain</td>
-                        <td colspan="3">
-                            <textarea type="text" class="form-control" name="lainlain" id="lainlain"></textarea>
+                        <td>Saran</td>
+                        <td>
+                            <button type="button" class="btn btn-success mb-2 btnsaran" data-toggle="modal" data-target="#modalsaran">Template saran</button>
+                            <textarea name="saran" id="saran" rows="10" class="form-control"></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -2077,6 +2110,29 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="modalsaran" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Template saran</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="v_t_s">
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <link rel="stylesheet" href="{{ asset('public/dist/css/datepicker.css') }}" rel="stylesheet">
 <script src="{{ asset('public/dist/js/bootstrap-datepicker.js') }}"></script>
 <script>
@@ -2166,67 +2222,6 @@
             }
         });
     }
-
-    $(".showmodalicdkerja").click(function() {
-        spinner = $('#loader');
-        spinner.show();
-        $.ajax({
-            type: 'post',
-            data: {
-                _token: "{{ csrf_token() }}"
-            },
-            url: '<?= route('ambilicd10') ?>',
-            success: function(response) {
-                $('.view_icd10_kerja').html(response);
-                spinner.hide()
-            }
-        });
-    });
-    $(".showmodalicd9kerja").click(function() {
-        spinner = $('#loader');
-        spinner.show();
-        $.ajax({
-            type: 'post',
-            data: {
-                _token: "{{ csrf_token() }}"
-            },
-            url: '<?= route('ambilicd9') ?>',
-            success: function(response) {
-                $('.view_icd9_kerja').html(response);
-                spinner.hide()
-            }
-        });
-    });
-    $(".showmodalicdbanding").click(function() {
-        spinner = $('#loader');
-        spinner.show();
-        $.ajax({
-            type: 'post',
-            data: {
-                _token: "{{ csrf_token() }}"
-            },
-            url: '<?= route('ambilicd10_banding') ?>',
-            success: function(response) {
-                $('.view_icd10_banding').html(response);
-                spinner.hide()
-            }
-        });
-    });
-    $(".showmodalicd9banding").click(function() {
-        spinner = $('#loader');
-        spinner.show();
-        $.ajax({
-            type: 'post',
-            data: {
-                _token: "{{ csrf_token() }}"
-            },
-            url: '<?= route('ambilicd9_banding') ?>',
-            success: function(response) {
-                $('.view_icd9_banding').html(response);
-                spinner.hide()
-            }
-        });
-    });
 
     function batalisi() {
         rm = $('#nomorrm').val()
@@ -2410,5 +2405,20 @@
             // });
         }
     }
+    $(".btnsaran").click(function() {
+        spinner = $('#loader');
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}"
+            },
+            url: '<?= route('ambilsaran') ?>',
+            success: function(response) {
+                $('.v_t_s').html(response);
+                spinner.hide()
+            }
+        });
+    });
 </script>
 <script src="{{ asset('public/marker/markerjs2.js') }}"></script>

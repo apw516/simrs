@@ -2444,15 +2444,18 @@ class ErmController extends Controller
             'statusgeneralis' => $dataSet['statusgeneralis'],
             'diagnosakerja' => trim($dataSet['diagnosawd']),
             'diagnosabanding' => $dataSet['dasardiagnosa'],
-            'tindakanmedis' => trim($dataSet['tindakankedokteran']),
-            'indikasitindakan' => trim($dataSet['indikasitindakan']),
-            'tatacara' => trim($dataSet['tatacara']),
-            'tujuan' => trim($dataSet['tujuan']),
-            'resiko' => trim($dataSet['resiko']),
-            'komplikasi' => trim($dataSet['komplikasi']),
-            'prognosis' => trim($dataSet['prognosis']),
-            'alternatif' => trim($dataSet['alternatif']),
-            'lainlain' => trim($dataSet['lainlain']),
+            'tindak_lanjut' => $dataSet['assesmen'],
+            'keterangan_tindak_lanjut' => trim($dataSet['saran']),
+            'alergi' => trim($dataSet['a_alergi']),
+            'medikasi' => trim($dataSet['medikasi']),
+            'postillnes' => trim($dataSet['post_illnes']),
+            'lastmeal' => trim($dataSet['last_meal']),
+            'event' => trim($dataSet['event']),
+            'cor' => trim($dataSet['cor']),
+            'pulmo' => trim($dataSet['pulmo']),
+            'gigi' => trim($dataSet['gigi']),
+            'ekstremitas' => trim($dataSet['ekstremitas']),
+            'LEMON' => trim($dataSet['L']) . ' | '. trim($dataSet['E']) . ' | ' . trim($dataSet['M']) . ' | '.trim($dataSet['O']) . ' | ' . trim($dataSet['N']),
             'keluhan_pasien' => trim($dataSet['keluhanutama']),
             'keterangan_tindak_lanjut_2' => trim($dataSet['jawabankonsul']),
             'umur' => $dataSet['usia'],
@@ -4954,5 +4957,13 @@ class ErmController extends Controller
         }else{
 
         }
+    }
+    public function ambilsaran()
+    {
+        $id = auth()->user()->id;
+        $data = DB::select('select keterangan_tindak_lanjut from assesmen_dokters where pic = ? ORDER BY id desc', [$id]);
+        return view('ermtemplate.tabel_riwayat_saran', compact([
+            'data'
+        ]));
     }
 }

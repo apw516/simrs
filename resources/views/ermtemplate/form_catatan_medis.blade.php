@@ -326,40 +326,82 @@
                                                             <td>{{ $k->diagnosabanding }}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Tindakan Kedokteran</td>
-                                                            <td>{{ $k->tindakanmedis }}</td>
+                                                            <td colspan="2" class="text-center bg-dark">ANAMNESA</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Indikasi tindakan</td>
-                                                            <td>{{ $k->indikasitindakan }}</td>
+                                                            <td>A ( Alergi )</td>
+                                                            <td>{{ $k->alergi }}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Tata cara</td>
-                                                            <td>{{ $k->tatacara }}</td>
+                                                            <td>M ( Medikasi )</td>
+                                                            <td>{{ $k->medikasi }}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Tujuan</td>
-                                                            <td>{{ $k->tujuan }}</td>
+                                                            <td>P ( Post Illnes )</td>
+                                                            <td>{{ $k->postillnes }}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Resiko</td>
-                                                            <td>{{ $k->resiko }}</td>
+                                                            <td>L ( Last Meal )</td>
+                                                            <td>{{ $k->lastmeal }}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Komplikasi</td>
-                                                            <td>{{ $k->komplikasi }}</td>
+                                                            <td>E ( Event )</td>
+                                                            <td>{{ $k->event }}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Prognosis</td>
-                                                            <td>{{ $k->prognosis }}</td>
+                                                            <td colspan="2" class="text-center bg-dark">PEMERIKSAAN FISIK</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Alternatif dan resiko</td>
-                                                            <td>{{ $k->alternatif }}</td>
+                                                            <td>COR</td>
+                                                            <td>{{ $k->cor }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Pulmo</td>
+                                                            <td>{{ $k->pulmo }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Gigi</td>
+                                                            <td>{{ $k->gigi }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Ekstremitas</td>
+                                                            <td>{{ $k->ekstremitas }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2" class="text-center bg-dark">PENILAIAN EVALUASI JALAN NAFAS</td>
+                                                        </tr>
+                                                        @php $lemon = explode('|',$k->LEMON ) @endphp
+                                                        <tr>
+                                                            <td>L</td>
+                                                            <td>{{ $lemon['0'] }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>E</td>
+                                                            <td>{{ $lemon['1'] }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>M</td>
+                                                            <td>{{ $lemon['2'] }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>O</td>
+                                                            <td>{{ $lemon['3'] }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>N</td>
+                                                            <td>{{ $lemon['4'] }}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Lain - lain</td>
                                                             <td>{{ $k->lainlain  }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-bold">Assesmen</td>
+                                                            <td colspan="3">@if($k->tindak_lanjut == 1) Setuju dijadwalkan operasi @elseif ($k->tindak_lanjut == 2) Saat ini keadaan pasien dalam kondisi belum untuk dilakukan tindakan anestesi @endif</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-bold">Saran</td>
+                                                            <td colspan="3">{{ $k->keterangan_tindak_lanjut }}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Jawaban Konsul</td>

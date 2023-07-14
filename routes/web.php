@@ -70,6 +70,8 @@ Route::post('/lihathasil_scanrm', [ErmController::class, 'lihathasil_scanrm'])
     ->name('lihathasil_scanrm'); //sidebar
 Route::post('/vberkasluar', [ErmController::class, 'vberkasluar'])
     ->name('vberkasluar'); //sidebar
+Route::post('ambilsaran', [ErmController::class, 'ambilsaran'])
+    ->name('ambilsaran'); //sidebar
 
 Route::get('berkas_erm', [ErmController::class, 'berkas_erm'])
     ->name('berkas_erm'); //sidebar

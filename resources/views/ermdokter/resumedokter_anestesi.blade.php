@@ -135,40 +135,78 @@
                     <td colspan="3">{{ $resume[0]->diagnosabanding }}</td>
                 </tr>
                 <tr>
-                    <td class="text-bold">Tindakan Kedokteran</td>
-                    <td colspan="3">{{ $resume[0]->tindakanmedis }}</td>
+                    <td class="text-bold" colspan="3">Anamnesa</td>
                 </tr>
                 <tr>
-                    <td class="text-bold">Indikasi Tindakan</td>
-                    <td colspan="3">{{ $resume[0]->indikasitindakan }}</td>
+                    <td class="text-bold">A ( Alergi )</td>
+                    <td colspan="3">{{ $resume[0]->alergi }}</td>
                 </tr>
                 <tr>
-                    <td class="text-bold">Tata Cara</td>
-                    <td colspan="3">{{ $resume[0]->tatacara }}</td>
+                    <td class="text-bold">M ( Medikasi )</td>
+                    <td colspan="3">{{ $resume[0]->medikasi }}</td>
                 </tr>
                 <tr>
-                    <td class="text-bold">Tujuan</td>
-                    <td colspan="3">{{ $resume[0]->tujuan }}</td>
+                    <td class="text-bold">P ( Post Illnes )</td>
+                    <td colspan="3">{{ $resume[0]->postillnes }}</td>
                 </tr>
                 <tr>
-                    <td class="text-bold">Resiko</td>
-                    <td colspan="3">{{ $resume[0]->resiko }}</td>
+                    <td class="text-bold">L ( Last Meal )</td>
+                    <td colspan="3">{{ $resume[0]->lastmeal }}</td>
                 </tr>
                 <tr>
-                    <td class="text-bold">Komplikasi</td>
-                    <td colspan="3">{{ $resume[0]->komplikasi }}</td>
+                    <td class="text-bold">E ( Event )</td>
+                    <td colspan="3">{{ $resume[0]->event }}</td>
                 </tr>
                 <tr>
-                    <td class="text-bold">Prognosis</td>
-                    <td colspan="3">{{ $resume[0]->prognosis }}</td>
+                    <td class="text-bold" colspan="3">Pemeriksaan Fisik</td>
                 </tr>
                 <tr>
-                    <td class="text-bold">Alternatif dan Resiko</td>
-                    <td colspan="3">{{ $resume[0]->alternatif }}</td>
+                    <td class="text-bold">COR</td>
+                    <td colspan="3">{{ $resume[0]->cor }}</td>
                 </tr>
                 <tr>
-                    <td class="text-bold">Lain - lain</td>
-                    <td colspan="3">{{ $resume[0]->lainlain }}</td>
+                    <td class="text-bold">Pulmo</td>
+                    <td colspan="3">{{ $resume[0]->pulmo }}</td>
+                </tr>
+                <tr>
+                    <td class="text-bold">Gigi</td>
+                    <td colspan="3">{{ $resume[0]->gigi }}</td>
+                </tr>
+                <tr>
+                    <td class="text-bold">Ekstremitas</td>
+                    <td colspan="3">{{ $resume[0]->ekstremitas }}</td>
+                </tr>
+                <tr>
+                    <td class="text-bold" colspan="3">Penilaian Jalan Nafas</td>
+                </tr>
+                @php $lemon = explode('|',$resume[0]->LEMON ) @endphp
+                <tr>
+                    <td class="text-bold">L</td>
+                    <td colspan="3">{{ $lemon[0] }}</td>
+                </tr>
+                <tr>
+                    <td class="text-bold">E</td>
+                    <td colspan="3">{{ $lemon[1] }}</td>
+                </tr>
+                <tr>
+                    <td class="text-bold">M</td>
+                    <td colspan="3">{{ $lemon[2] }}</td>
+                </tr>
+                <tr>
+                    <td class="text-bold">O</td>
+                    <td colspan="3">{{ $lemon[3] }}</td>
+                </tr>
+                <tr>
+                    <td class="text-bold">N</td>
+                    <td colspan="3">{{ $lemon[4] }}</td>
+                </tr>
+                <tr>
+                    <td class="text-bold">Assesmen</td>
+                    <td colspan="3">@if($resume[0]->tindak_lanjut == 1) Setuju dijadwalkan operasi @elseif ($resume[0]->tindak_lanjut == 2) Saat ini keadaan pasien dalam kondisi belum untuk dilakukan tindakan anestesi @endif</td>
+                </tr>
+                <tr>
+                    <td class="text-bold">Saran</td>
+                    <td colspan="3">{{ $resume[0]->keterangan_tindak_lanjut }}</td>
                 </tr>
                 <tr>
                     <td class="text-bold">Jawaban Konsul</td>

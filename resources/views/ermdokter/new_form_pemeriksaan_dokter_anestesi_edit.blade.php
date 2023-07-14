@@ -2,27 +2,27 @@
     <div class="card-header bg-info">Catatan Perkembangan Pasien Terintegrasi ( CPPT ) <button
             class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
             data-target="#modalresumeperawat"><i class="bi bi-eye mr-1"></i> Hasil Assesmen Keperawatan</button>
-            @if ($kunjungan[0]->ref_kunjungan != '0')
+        @if ($kunjungan[0]->ref_kunjungan != '0')
             <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
                 data-target="#modalcatatankonsul"><i class="bi bi-eye mr-1"></i> Catatan Konsul</button>
         @endif
-        </div>
+    </div>
     <div class="card-body table-responsive p-5" style="height: 757Px">
         @if ($kunjungan[0]->ref_kunjungan != '0')
-        <div class="jumbotron">
-            <h1 class="display-4">Hello {{ auth()->user()->nama }} </h1><br>
-            <p class="lead">Dokter Pengirim : {{ $kunjungan[0]->dokter_kirim }}</p>
-            <p class="lead">Poliklinik Pengirim : {{ $kunjungan[0]->poli_asal }}</p>
-            <p class="lead">Mohon Konsul</p>
-            <p class="lead">Pasien dengan : <br>RM {{ $kunjungan[0]->no_rm }} |
-                {{ $kunjungan[0]->nama_pasien }} | {{ $kunjungan[0]->diagx }} <br><br>
-                Keterangan <br>
-                @if (count($ref_resume) > 0)
-                    {{ $ref_resume[0]->keterangan_tindak_lanjut }}@endif
-            </p>
-            <hr class="my-4">
-        </div>
-    @endif
+            <div class="jumbotron">
+                <h1 class="display-4">Hello {{ auth()->user()->nama }} </h1><br>
+                <p class="lead">Dokter Pengirim : {{ $kunjungan[0]->dokter_kirim }}</p>
+                <p class="lead">Poliklinik Pengirim : {{ $kunjungan[0]->poli_asal }}</p>
+                <p class="lead">Mohon Konsul</p>
+                <p class="lead">Pasien dengan : <br>RM {{ $kunjungan[0]->no_rm }} |
+                    {{ $kunjungan[0]->nama_pasien }} | {{ $kunjungan[0]->diagx }} <br><br>
+                    Keterangan <br>
+                    @if (count($ref_resume) > 0)
+                        {{ $ref_resume[0]->keterangan_tindak_lanjut }}@endif
+                </p>
+                <hr class="my-4">
+            </div>
+        @endif
         <form action="" class="formpemeriksaandokter">
             <input hidden type="text" name="kodekunjungan" class="form-control"
                 value="{{ $kunjungan[0]->kode_kunjungan }}">
@@ -99,7 +99,8 @@
                                                         name="jantung" value="1"
                                                         @if (count($last_assdok) > 0) @if ($last_assdok[0]->jantung == '1') checked @endif
                                                         @endif>
-                                                    <label class="form-check-label" for="exampleCheck1">Jantung</label>
+                                                    <label class="form-check-label"
+                                                        for="exampleCheck1">Jantung</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
@@ -317,47 +318,117 @@
                     </tr>
                     <tr>
                         <td class="text-bold font-italic">Diagnosa ( WD & DD )</td>
-                        <td colspan="3"><textarea type="text" class="form-control" name="diagnosawd" id="diagnosawd">{{ $resume[0]->diagnosakerja }}</textarea></td>
+                        <td colspan="3">
+                            <textarea type="text" class="form-control" name="diagnosawd" id="diagnosawd">{{ $resume[0]->diagnosakerja }}</textarea>
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-bold font-italic">Dasar Diagnosa</td>
-                        <td colspan="3"><textarea type="text" class="form-control" name="dasardiagnosa" id="dasardiagnosa">{{ $resume[0]->diagnosabanding }}</textarea></td>
+                        <td colspan="3">
+                            <textarea type="text" class="form-control" name="dasardiagnosa" id="dasardiagnosa">{{ $resume[0]->diagnosabanding }}</textarea>
+                        </td>
+                    </tr>
+                    <tr class="bg-dark">
+                        <td colspan="4">ANAMNESA</td>
                     </tr>
                     <tr>
-                        <td class="text-bold font-italic">Tindakan Kedokteran</td>
-                        <td colspan="3"><textarea type="text" class="form-control" name="tindakankedokteran" id="tindakankedokteran">{{ $resume[0]->tindakanmedis }}</textarea></td>
+                        <td>A ( Alergi )</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control"
+                                name="a_alergi" id="a_alergi" value="{{ $resume[0]->alergi }}"></td>
                     </tr>
                     <tr>
-                        <td class="text-bold font-italic">Indikasi Tindakan</td>
-                        <td colspan="3"><textarea type="text" class="form-control" name="indikasitindakan" id="indikasitindakan">{{ $resume[0]->indikasitindakan }}</textarea></td>
+                        <td>M ( Medikasi )</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control"
+                                name="medikasi" id="medikasi" value="{{ $resume[0]->medikasi }}"></td>
                     </tr>
                     <tr>
-                        <td class="text-bold font-italic">Tata Cara</td>
-                        <td colspan="3"><textarea type="text" class="form-control" name="tatacara" id="tatacara">{{ $resume[0]->tatacara }}</textarea></td>
+                        <td>P ( Post Illnes )</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control"
+                                name="post_illnes" id="post_illnes" value="{{ $resume[0]->postillnes }}"></td>
                     </tr>
                     <tr>
-                        <td class="text-bold font-italic">Tujuan</td>
-                        <td colspan="3"><textarea type="text" class="form-control" name="tujuan" id="tujuan">{{ $resume[0]->tujuan }}</textarea></td>
+                        <td>L ( Last Meal )</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control"
+                                name="last_meal" id="last_meal" value="{{ $resume[0]->lastmeal }}"></td>
                     </tr>
                     <tr>
-                        <td class="text-bold font-italic">Resiko</td>
-                        <td colspan="3"><textarea type="text" class="form-control" name="resiko" id="resiko">{{ $resume[0]->resiko }}</textarea></td>
+                        <td>E ( Event )</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control"
+                                name="event" id="event" value="{{ $resume[0]->event }}"></td>
+                    </tr>
+                    <tr class="bg-dark">
+                        <td colspan="4">Pemeriksaan Fisik</td>
                     </tr>
                     <tr>
-                        <td class="text-bold font-italic">Komplikasi</td>
-                        <td colspan="3"><textarea type="text" class="form-control" name="komplikasi" id="komplikasi">{{ $resume[0]->komplikasi }}</textarea></td>
+                        <td>Cor</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control"
+                                name="cor" id="cor" value="{{ $resume[0]->cor }}"></td>
                     </tr>
                     <tr>
-                        <td class="text-bold font-italic">Prognosis</td>
-                        <td colspan="3"><textarea type="text" class="form-control" name="prognosis" id="prognosis">{{ $resume[0]->prognosis }}</textarea></td>
+                        <td>Pulmo</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control"
+                                name="pulmo" id="pulmo" value="{{ $resume[0]->pulmo }}"></td>
                     </tr>
                     <tr>
-                        <td class="text-bold font-italic">Alternatif dan Resiko</td>
-                        <td colspan="3"><textarea type="text" class="form-control" name="alternatif" id="alternatif">{{ $resume[0]->alternatif }}</textarea></td>
+                        <td>Gigi</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control"
+                                name="gigi" id="gigi" value="{{ $resume[0]->gigi }}"></td>
                     </tr>
                     <tr>
-                        <td class="text-bold font-italic">Lain Lain</td>
-                        <td colspan="3"><textarea type="text" class="form-control" name="lainlain" id="lainlain">{{ $resume[0]->lainlain }}</textarea></td>
+                        <td>Ekstermitas</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control"
+                                name="ekstremitas" id="ekstremitas" value="{{ $resume[0]->ekstremitas }}"></td>
+                    </tr>
+                    <tr class="bg-dark">
+                        <td colspan="4">Penilaian Evaluasi Jalan Nafas</td>
+                    </tr>
+                    @php $lemon = explode('|',$resume[0]->LEMON ) @endphp
+                    <tr>
+                        <td>L</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control"
+                                name="L" id="L" value="{{ $lemon[0] }}"></td>
+                    </tr>
+                    <tr>
+                        <td>E</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control"
+                                name="E" id="E" value="{{ $lemon[1] }}"></td>
+                    </tr>
+                    <tr>
+                        <td>M</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control"
+                                name="M" id="M" value="{{ $lemon[2] }}"></td>
+                    </tr>
+                    <tr>
+                        <td>O</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control"
+                                name="O" id="O" value="{{ $lemon[3] }}"></td>
+                    </tr>
+                    <tr>
+                        <td>N</td>
+                        <td class="text-bold font-italic" colspan="3"><input type="text" class="form-control"
+                                name="N" id="N" value="{{ $lemon[4] }}"></td>
+                    </tr>
+                    <tr>
+                        <td>Assesmen</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="assesmen"
+                                    id="assesmen" value="1" @if($resume[0]->tindak_lanjut == 1) checked @endif>
+                                <label class="form-check-label" for="inlineRadio1">Setuju dijadwalkan untuk operasi</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="assesmen"
+                                    id="assesmen" value="2" @if($resume[0]->tindak_lanjut == 2) checked @endif>
+                                <label class="form-check-label" for="inlineRadio2">Saat ini keadaan pasien dalam kondisi belum untuk dilakukan tindakan anestesi</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Saran</td>
+                        <td>
+                            <button type="button" class="btn btn-success mb-2 btnsaran" data-toggle="modal" data-target="#modalsaran">Template saran</button>
+                            <textarea name="saran" id="saran" rows="10" class="form-control">{{ $resume[0]->keterangan_tindak_lanjut }}</textarea>
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-bold font-italic">Jawaban Konsul</td>
@@ -365,6 +436,7 @@
                             <textarea type="text" class="form-control" name="jawabankonsul" id="jawabankonsul">{{ $resume[0]->keterangan_tindak_lanjut_2 }}</textarea>
                         </td>
                     </tr>
+
                 </tbody>
             </table>
         </form>
@@ -1094,7 +1166,8 @@
                                                     </div>
                                                     <input id="os_sph_Lensometer"
                                                         value="{{ $hasil_ro[0]->Lensometer_os_sph }}"
-                                                        name="os_sph_Lensometer" type="text" class="form-control"
+                                                        name="os_sph_Lensometer" type="text"
+                                                        class="form-control"
                                                         aria-label="Amount (to the nearest dollar)">
                                                 </div>
                                             </td>
@@ -1105,7 +1178,8 @@
                                                     </div>
                                                     <input id="os_cyl_Lensometer"
                                                         value="{{ $hasil_ro[0]->Lensometer_os_cyl }}"
-                                                        name="os_cyl_Lensometer" type="text" class="form-control"
+                                                        name="os_cyl_Lensometer" type="text"
+                                                        class="form-control"
                                                         aria-label="Amount (to the nearest dollar)">
                                                 </div>
                                             </td>
@@ -1976,7 +2050,8 @@
                     <p class="lead">Pasien dengan : <br>RM {{ $kunjungan[0]->no_rm }} |
                         {{ $kunjungan[0]->nama_pasien }} | {{ $kunjungan[0]->diagx }} <br><br>
                         Keterangan <br>
-                        @if(count($ref_resume) > 0 ) {{ $ref_resume[0]->keterangan_tindak_lanjut }}@endif
+                        @if (count($ref_resume) > 0)
+                            {{ $ref_resume[0]->keterangan_tindak_lanjut }}@endif
                     </p>
                     <hr class="my-4">
                 </div>
@@ -1987,6 +2062,29 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalsaran" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Template saran</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="v_t_s">
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <link rel="stylesheet" href="{{ asset('public/dist/css/datepicker.css') }}" rel="stylesheet">
 <script src="{{ asset('public/dist/js/bootstrap-datepicker.js') }}"></script>
@@ -2119,6 +2217,21 @@
             url: '<?= route('ambilicd10_banding') ?>',
             success: function(response) {
                 $('.view_icd10_banding').html(response);
+                spinner.hide()
+            }
+        });
+    });
+    $(".btnsaran").click(function() {
+        spinner = $('#loader');
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}"
+            },
+            url: '<?= route('ambilsaran') ?>',
+            success: function(response) {
+                $('.v_t_s').html(response);
                 spinner.hide()
             }
         });
@@ -2297,10 +2410,14 @@
         }
         nomor = parseInt(document.getElementById('jumlahform').value)
         if (x < max_fields) { //max input box allowed
-            nama = 'namaobat'+nomor
-            aturan = 'aturanpakai'+nomor
+            nama = 'namaobat' + nomor
+            aturan = 'aturanpakai' + nomor
             $(wrapper).append(
-                '<div class="form-row text-xs"><div class="form-group col-md-2"><label for="">Nama Obat</label><input type="" class="form-control form-control-sm text-xs" id="'+nama+'" name="namaobat" value=""><input hidden readonly type="" class="form-control form-control-sm" id="" name="kodebarang" value="""></div><div class="form-group col-md-2"><label for="inputPassword4">Aturan Pakai</label><input type="" class="form-control form-control-sm" id="'+ aturan +'" name="aturanpakai" value=""></div><div class="form-group col-md-1"><label for="inputPassword4">Jumlah</label><input type="" class="form-control form-control-sm" id="" name="jumlah" value="0"></div><div class="form-group col-md-1"><label for="inputPassword4">Signa</label><input type="" class="form-control form-control-sm" id="" name="signa" value="0"></div><div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type="" class="form-control form-control-sm" id="" name="keterangan" value=""></div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i></div>'
+                '<div class="form-row text-xs"><div class="form-group col-md-2"><label for="">Nama Obat</label><input type="" class="form-control form-control-sm text-xs" id="' +
+                nama +
+                '" name="namaobat" value=""><input hidden readonly type="" class="form-control form-control-sm" id="" name="kodebarang" value="""></div><div class="form-group col-md-2"><label for="inputPassword4">Aturan Pakai</label><input type="" class="form-control form-control-sm" id="' +
+                aturan +
+                '" name="aturanpakai" value=""></div><div class="form-group col-md-1"><label for="inputPassword4">Jumlah</label><input type="" class="form-control form-control-sm" id="" name="jumlah" value="0"></div><div class="form-group col-md-1"><label for="inputPassword4">Signa</label><input type="" class="form-control form-control-sm" id="" name="signa" value="0"></div><div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type="" class="form-control form-control-sm" id="" name="keterangan" value=""></div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i></div>'
             );
             $(wrapper).on("click", ".remove_field", function(e) { //user click on remove
                 kode = $(this).attr('kode2')
