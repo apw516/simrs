@@ -4938,4 +4938,21 @@ class ErmController extends Controller
             'dataerm'
         ]));
     }
+    public function ambilriwayatobat(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        $unit = auth()->user()->unit;
+        $kunjungan = db::select('select * from ts_kunjungan where kode_kunjungan = ?',[$kodekunjungan]);
+        $last_assdok = DB::select('SELECT * FROM assesmen_dokters
+        WHERE id = (SELECT MAX(id) FROM assesmen_dokters WHERE id_pasien = ? AND kode_unit = ? ) AND id_pasien = ? AND kode_unit = ?', [$kunjungan[0]->no_rm, $unit, $kunjungan[0]->no_rm, $unit]);
+        if(count($last_assdok) > 0){
+            $riwayatobat = db::select('SELECT * FROM ts_layanan_header_order AS a
+            LEFT OUTER JOIN ts_layanan_detail_order b ON a.`id` = b.row_id_header WHERE LEFT(a.kode_layanan_header,3) = ? AND a.kode_kunjungan = ?',['ORF',$last_assdok[0]->id_kunjungan]);
+            return view('ermtemplate.riwayat_obat',compact([
+                'riwayatobat'
+            ]));
+        }else{
+
+        }
+    }
 }

@@ -205,6 +205,66 @@
                     </div>
                 </div>
             </div>
+
+            <div class="accordion" id="accordionExample">
+                <div class="card">
+                  <div class="card-header" id="headingOne">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne1" aria-expanded="true" aria-controls="collapseOne">
+                        ( S ) SUBJECTIVE
+                      </button>
+                    </h2>
+                  </div>
+
+                  <div id="collapseOne1" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div class="card-body">
+                      Some placeholder content for the first accordion panel. This panel is shown by default, thanks to the <code>.show</code> class.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" id="headingTwo">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        ( O ) OBJECTIVE
+                      </button>
+                    </h2>
+                  </div>
+                  <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                    <div class="card-body">
+                      Some placeholder content for the second accordion panel. This panel is hidden by default.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" id="headingThree">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        ( A ) ASSESMENT
+                      </button>
+                    </h2>
+                  </div>
+                  <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                    <div class="card-body">
+                      And lastly, the placeholder content for the third and final accordion panel. This panel is hidden by default.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" id="headingThree">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree">
+                        ( P ) PLANNING
+                      </button>
+                    </h2>
+                  </div>
+                  <div id="collapseFour" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                    <div class="card-body">
+                      And lastly, the placeholder content for the third and final accordion panel. This panel is hidden by default.
+                    </div>
+                  </div>
+                </div>
+              </div>
             <table class="table">
                 <tr hidden>
                     <td class="text-bold font-italic">Tanggal Kunjungan</td>
@@ -320,15 +380,15 @@
                     </tr>
                     <tr>
                         <td colspan="4">
-                            <textarea class="form-control" rows="5" name="pemeriksaanfisik">
+                            <textarea class="form-control" name="pemeriksaanfisik">
 @if (count($last_assdok) > 0){{ $last_assdok[0]->pemeriksaan_fisik }} @endif
 </textarea>
                         </td>
                     </tr>
-                    <tr hidden>
+                    <tr>
                         <td colspan="4" class="bg-secondary">Pemeriksaan Umum</td>
                     </tr>
-                    <tr hidden>
+                    <tr>
                         <td class="text-bold font-italic">Keadaan Umum</td>
                         <td colspan="3">
                             <textarea class="form-control" name="keadaanumum">
@@ -336,7 +396,7 @@
 </textarea>
                         </td>
                     </tr>
-                    <tr hidden>
+                    <tr>
                         <td class="text-bold font-italic">Kesadaran</td>
                         <td colspan="3">
                             <div class="form-check form-check-inline">
@@ -391,7 +451,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div @if ($kunjungan[0]->ref_kunjungan == '0') hidden @endif class="card">
+            <div @if ($kunjungan[0]->ref_kunjungan == '0') hidden @endif  class="card">
                 <div class="card-header bg-warning">Jawaban Konsul</div>
                 <div class="card-body">
                     <textarea name="jawabankonsul" id="jawabankonsul" rows="10"class="form-control"></textarea>
@@ -2130,6 +2190,67 @@
             }
         });
     })
+    $(".showmodalicdkerja").click(function() {
+        spinner = $('#loader');
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}"
+            },
+            url: '<?= route('ambilicd10') ?>',
+            success: function(response) {
+                $('.view_icd10_kerja').html(response);
+                spinner.hide()
+            }
+        });
+    });
+    $(".showmodalicd9kerja").click(function() {
+        spinner = $('#loader');
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}"
+            },
+            url: '<?= route('ambilicd9') ?>',
+            success: function(response) {
+                $('.view_icd9_kerja').html(response);
+                spinner.hide()
+            }
+        });
+    });
+    $(".showmodalicdbanding").click(function() {
+        spinner = $('#loader');
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}"
+            },
+            url: '<?= route('ambilicd10_banding') ?>',
+            success: function(response) {
+                $('.view_icd10_banding').html(response);
+                spinner.hide()
+            }
+        });
+    });
+    $(".showmodalicd9banding").click(function() {
+        spinner = $('#loader');
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}"
+            },
+            url: '<?= route('ambilicd9_banding') ?>',
+            success: function(response) {
+                $('.view_icd9_banding').html(response);
+                spinner.hide()
+            }
+        });
+    });
+
     function batalisi() {
         rm = $('#nomorrm').val()
         formcatatanmedis(rm)
@@ -2238,28 +2359,8 @@
     }
     $(document).ready(function() {
         ambilgambar()
-        ambilriwayatobat()
     })
-    function ambilriwayatobat()
-    {
-        spinner = $('#loader')
-        spinner.show();
-        $.ajax({
-            type: 'post',
-            data: {
-                _token: "{{ csrf_token() }}",
-                kodekunjungan: $('#kodekunjungan').val()
-            },
-            url: '<?= route('ambilriwayatobat') ?>',
-            error: function(data) {
-                alert('ok')
-            },
-            success: function(response) {
-                $('.formobatfarmasi2').html(response)
-                spinner.hide()
-            }
-        });
-    }
+
     function resetgambar() {
         $.ajax({
             type: 'post',

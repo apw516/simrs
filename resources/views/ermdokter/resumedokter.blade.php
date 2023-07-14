@@ -132,13 +132,13 @@
                 <tr>
                     <td colspan="4">{{ $resume[0]->pemeriksaan_fisik }}</td>
                 </tr>
-                <tr>
+                {{-- <tr>
                     <td colspan="4" class="bg-info">Pemeriksaan Umum</td>
-                </tr>
-                <tr>
+                </tr> --}}
+                {{-- <tr>
                     <td>Keadaan Umum</td>
                     <td colspan="3">{{ $resume[0]->keadaanumum }}</td>
-                </tr>
+                </tr> --}}
                 <tr>
                     <td>Kesadaran</td>
                     <td colspan="3">{{ $resume[0]->kesadaran }}</td>

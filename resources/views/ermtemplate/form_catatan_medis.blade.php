@@ -481,7 +481,7 @@
                                                     <tr>
                                                         <td colspan="4">{{ $k->pemeriksaan_fisik }}</td>
                                                     </tr>
-                                                    <tr>
+                                                    {{-- <tr>
                                                         <td colspan="4" class="text-bold bg-danger">Pemeriksaan
                                                             Umum
                                                         </td>
@@ -489,7 +489,7 @@
                                                     <tr>
                                                         <td class="text-bold font-italic">Keadaan Umum</td>
                                                         <td>{{ $k->keadaanumum }}</td>
-                                                    </tr>
+                                                    </tr> --}}
                                                     <tr>
                                                         <td class="text-bold font-italic">Kesadaran</td>
                                                         <td>{{ $k->kesadaran }}</td>
