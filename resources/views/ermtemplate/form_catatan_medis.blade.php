@@ -370,6 +370,7 @@
                                                         <tr>
                                                             <td colspan="2" class="text-center bg-dark">PENILAIAN EVALUASI JALAN NAFAS</td>
                                                         </tr>
+                                                        @if($lemon != '')
                                                         @php $lemon = explode('|',$k->LEMON ) @endphp
                                                         <tr>
                                                             <td>L</td>
@@ -391,6 +392,7 @@
                                                             <td>N</td>
                                                             <td>{{ $lemon['4'] }}</td>
                                                         </tr>
+                                                        @endif
                                                         <tr>
                                                             <td>Lain - lain</td>
                                                             <td>{{ $k->lainlain  }}</td>
