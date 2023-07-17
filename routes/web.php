@@ -79,6 +79,8 @@ Route::post('ambil_berkas_erm', [ErmController::class, 'ambil_berkas_erm'])
     ->name('ambil_berkas_erm'); //sidebar
 Route::post('ambilriwayatobat', [ErmController::class, 'ambilriwayatobat'])
     ->name('ambilriwayatobat'); //sidebar
+Route::post('ambil_berkas_erm_pasien', [ErmController::class, 'ambil_berkas_erm_pasien'])
+    ->name('ambil_berkas_erm_pasien'); //sidebar
 
 Route::get('/register', [RegisterController::class, 'index'])->middleware('guest')->name('register');
 Route::get('/profil', [RegisterController::class, 'profil'])->name('profil');

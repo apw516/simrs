@@ -435,9 +435,9 @@ class ErmController extends Controller
     {
         $kunjungan = DB::select('select *,fc_nama_px(no_rm) as nama_pasien,fc_nama_paramedis(ref_paramedis) AS dokter_kirim,fc_nama_unit1(ref_unit) AS poli_asal from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
         $ref_kunjungan = $kunjungan[0]->ref_kunjungan;
-        if($ref_kunjungan != 0){
-            $ref_resume = DB::select('select * from assesmen_dokters where id_kunjungan = ?',[$ref_kunjungan]);
-        }else{
+        if ($ref_kunjungan != 0) {
+            $ref_resume = DB::select('select * from assesmen_dokters where id_kunjungan = ?', [$ref_kunjungan]);
+        } else {
             $ref_resume = [];
         }
         $resume_perawat = DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE kode_kunjungan = ?', [$request->kodekunjungan]);
@@ -2455,7 +2455,7 @@ class ErmController extends Controller
             'pulmo' => trim($dataSet['pulmo']),
             'gigi' => trim($dataSet['gigi']),
             'ekstremitas' => trim($dataSet['ekstremitas']),
-            'LEMON' => trim($dataSet['L']) . ' | '. trim($dataSet['E']) . ' | ' . trim($dataSet['M']) . ' | '.trim($dataSet['O']) . ' | ' . trim($dataSet['N']),
+            'LEMON' => trim($dataSet['L']) . ' | ' . trim($dataSet['E']) . ' | ' . trim($dataSet['M']) . ' | ' . trim($dataSet['O']) . ' | ' . trim($dataSet['N']),
             'keluhan_pasien' => trim($dataSet['keluhanutama']),
             'keterangan_tindak_lanjut_2' => trim($dataSet['jawabankonsul']),
             'umur' => $dataSet['usia'],
@@ -4924,20 +4924,25 @@ class ErmController extends Controller
         $sidebar = 'berkas_erm';
         $sidebar_m = 'berkas_erm';
         $now = $this->get_date();
-        return view('ermtemplate.index_berkas_erm',compact([
+        return view('ermtemplate.index_berkas_erm', compact([
             'title',
             'sidebar',
             'sidebar_m',
             'now'
         ]));
     }
-    public function ambil_berkas_erm()
+    public function ambil_berkas_erm(Request $request)
     {
-        $now = date('Y-m-d');
-        $d2 = date('Y-m-d', strtotime('-30 days'));
-        $dataerm = db::select('SELECT a.id_pasien,fc_nama_px(a.`id_pasien`) AS nama_pasien,a.`nama_dokter`,b.`namapemeriksa` AS perawat
-        ,fc_nama_unit1(a.`kode_unit`) nama_poli,a.`tgl_pemeriksaan` FROM assesmen_dokters AS a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`id_asskep` = b.id WHERE DATE(a.tgl_pemeriksaan) BETWEEN ? AND ?',[$d2,$now]);
-        return view('ermtemplate.tabel_data_erm',compact([
+        if (empty($request->tglawal)) {
+            $now = date('Y-m-d');
+            $d2 = date('Y-m-d', strtotime('-30 days'));
+        } else {
+            $now = $request->tglakhir;
+            $d2 = $request->tglawal;
+        }
+        $dataerm = db::select('SELECT b.id as id_asskep,a.id as id_assdok,a.id_pasien,fc_nama_px(a.`id_pasien`) AS nama_pasien,a.`nama_dokter`,b.`namapemeriksa` AS perawat
+        ,fc_nama_unit1(a.`kode_unit`) nama_poli,a.`tgl_pemeriksaan` FROM assesmen_dokters AS a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`id_asskep` = b.id WHERE DATE(a.tgl_pemeriksaan) BETWEEN ? AND ?', [$d2, $now]);
+        return view('ermtemplate.tabel_data_erm', compact([
             'dataerm'
         ]));
     }
@@ -4945,17 +4950,16 @@ class ErmController extends Controller
     {
         $kodekunjungan = $request->kodekunjungan;
         $unit = auth()->user()->unit;
-        $kunjungan = db::select('select * from ts_kunjungan where kode_kunjungan = ?',[$kodekunjungan]);
+        $kunjungan = db::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
         $last_assdok = DB::select('SELECT * FROM assesmen_dokters
         WHERE id = (SELECT MAX(id) FROM assesmen_dokters WHERE id_pasien = ? AND kode_unit = ? ) AND id_pasien = ? AND kode_unit = ?', [$kunjungan[0]->no_rm, $unit, $kunjungan[0]->no_rm, $unit]);
-        if(count($last_assdok) > 0){
+        if (count($last_assdok) > 0) {
             $riwayatobat = db::select('SELECT * FROM ts_layanan_header_order AS a
-            LEFT OUTER JOIN ts_layanan_detail_order b ON a.`id` = b.row_id_header WHERE LEFT(a.kode_layanan_header,3) = ? AND a.kode_kunjungan = ?',['ORF',$last_assdok[0]->id_kunjungan]);
-            return view('ermtemplate.riwayat_obat',compact([
+            LEFT OUTER JOIN ts_layanan_detail_order b ON a.`id` = b.row_id_header WHERE LEFT(a.kode_layanan_header,3) = ? AND a.kode_kunjungan = ?', ['ORF', $last_assdok[0]->id_kunjungan]);
+            return view('ermtemplate.riwayat_obat', compact([
                 'riwayatobat'
             ]));
-        }else{
-
+        } else {
         }
     }
     public function ambilsaran()
@@ -4964,6 +4968,86 @@ class ErmController extends Controller
         $data = DB::select('select keterangan_tindak_lanjut from assesmen_dokters where pic = ? ORDER BY id desc', [$id]);
         return view('ermtemplate.tabel_riwayat_saran', compact([
             'data'
+        ]));
+    }
+    public function ambil_berkas_erm_pasien(Request $request)
+    {
+        $id_asskep = $request->id_asskep;
+        $id_assdok = $request->id_assdok;
+        $resume_1 = DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE id = ?', [$id_asskep]);
+        $resume = DB::select('SELECT * from assesmen_dokters WHERE id = ?', [$id_assdok]);
+        $kode_unit = $resume[0]->kode_unit;
+        $kodekunjungan = $resume[0]->id_kunjungan;
+        if (count($resume) > 0) {
+            if ($kode_unit == '1019') {
+                $kanan = DB::SELECT('select * from erm_tht_telinga where kode_kunjungan = ? and keterangan = ?', [$kodekunjungan, 'telinga kanan']);
+                $kiri = DB::SELECT('select * from erm_tht_telinga where kode_kunjungan = ? and keterangan = ?', [$kodekunjungan, 'telinga kiri']);
+                $hidungkanan = DB::SELECT('select * from erm_tht_hidung where kode_kunjungan = ? and keterangan = ?', [$kodekunjungan, 'Hidung Kanan']);
+                $hidungkiri = DB::SELECT('select * from erm_tht_hidung where kode_kunjungan = ? and keterangan = ?', [$kodekunjungan, 'Hidung Kiri']);
+                $formkhusus = [
+                    'keterangan' => 'tht',
+                    'telingakanan' => $kanan,
+                    'cek1' => count($kanan),
+                    'telingakiri' => $kiri,
+                    'cek2' => count($kiri),
+                    'hidungkanan' => $hidungkanan,
+                    'cek3' => count($hidungkanan),
+                    'hidungkiri' => $hidungkiri,
+                    'cek4' => count($hidungkiri),
+                ];
+            } elseif ($resume[0]->kode_unit == '1014') {
+                $mata = DB::SELECT('select * from erm_mata_kanan_kiri where kode_kunjungan = ?', [$kodekunjungan]);
+                $formkhusus = [
+                    'keterangan' => 'mata',
+                    'mata' => $mata,
+                    'cek' => count($mata)
+                ];
+            } else if ($resume[0]->kode_unit == '1007') {
+                $gigi = DB::SELECT('select * from erm_gambar_gigi where kode_kunjungan = ?', [$kodekunjungan]);
+                $formkhusus = [
+                    'keterangan' => 'gigi',
+                    'gigi' => $gigi,
+                    'cek' => count($gigi)
+                ];
+            } else {
+                $gambar = DB::SELECT('select * from erm_catatan_gambar where kode_kunjungan = ? and kode_unit = ?', [$kodekunjungan, $kode_unit]);
+                $formkhusus = [
+                    'keterangan' => 'allin',
+                    'gambar' => $gambar,
+                    'cek' => count($gambar)
+                ];
+            }
+        } else {
+            $formkhusus = [
+                'keterangan' => '',
+            ];
+        }
+        $riwayat_tindakan = DB::connection('mysql4')->select("SELECT b.status_layanan as status_header,a.kode_kunjungan,b.id AS id_header,C.id AS id_detail,c.jumlah_layanan,b.kode_layanan_header,c.`kode_tarif_detail`,e.`NAMA_TARIF` FROM simrs_waled.ts_kunjungan a
+        RIGHT OUTER JOIN ts_layanan_header b ON a.kode_kunjungan = b.kode_kunjungan
+        RIGHT OUTER JOIN ts_layanan_detail c ON b.id = c.row_id_header
+        RIGHT OUTER JOIN mt_tarif_detail d ON c.kode_tarif_detail = d.`KODE_TARIF_DETAIL`
+        RIGHT OUTER JOIN mt_tarif_header e ON d.`KODE_TARIF_HEADER` = e.`KODE_TARIF_HEADER`
+        WHERE a.`kode_kunjungan` = ?", [$kodekunjungan]);
+
+        $riwayat_order = DB::select("SELECT b.status_layanan as status_header,a.kode_kunjungan,b.id AS id_header,C.id AS id_detail,c.jumlah_layanan,b.kode_layanan_header,c.`kode_tarif_detail`,e.`NAMA_TARIF` FROM simrs_waled.ts_kunjungan a
+        RIGHT OUTER JOIN ts_layanan_header_order b ON a.kode_kunjungan = b.kode_kunjungan
+        RIGHT OUTER JOIN ts_layanan_detail_order c ON b.id = c.row_id_header
+        RIGHT OUTER JOIN mt_tarif_detail d ON c.kode_tarif_detail = d.`KODE_TARIF_DETAIL`
+        RIGHT OUTER JOIN mt_tarif_header e ON d.`KODE_TARIF_HEADER` = e.`KODE_TARIF_HEADER`
+        WHERE a.`kode_kunjungan` = ?", [$kodekunjungan]);
+
+        $riwayat_order_f = DB::connection('mysql4')->select("SELECT b.kode_layanan_header,b.status_layanan AS status_layanan_header,a.kode_kunjungan,b.id AS id_header,C.id AS id_detail,c.kode_barang,c.aturan_pakai,c.kategori_resep,c.satuan_barang,c.jumlah_layanan,b.kode_layanan_header,c.`kode_tarif_detail` FROM simrs_waled.ts_kunjungan a RIGHT OUTER JOIN ts_layanan_header_order b ON a.kode_kunjungan = b.kode_kunjungan RIGHT OUTER JOIN ts_layanan_detail_order c ON b.id = c.row_id_header WHERE a.`kode_kunjungan` = ? AND LEFT(b.kode_layanan_header,3) = 'ORF'", [$kodekunjungan]);
+
+        $riwayat_upload = DB::select('select *,fc_nama_unit2(kode_unit) as nama_unit from erm_upload_gambar where kodekunjungan = ?', [$kodekunjungan]);
+
+        return view('ermtemplate.resumepasien_rm', compact([
+            'resume_1',
+            'resume',
+            'formkhusus',
+            'riwayat_tindakan',
+            'riwayat_order',
+            'riwayat_upload',
+            'riwayat_order_f'
         ]));
     }
 }

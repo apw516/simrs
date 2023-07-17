@@ -50,5 +50,25 @@
                     }
                 });
             }
+            function caripasien_erm()
+            {
+                spinner = $('#loader')
+                spinner.show();
+                tglawal = $('#tglawal').val()
+                tglakhir = $('#tglakhir').val()
+                $.ajax({
+                    type: 'post',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        tglawal,
+                        tglakhir
+                    },
+                    url: '<?= route('ambil_berkas_erm') ?>',
+                    success: function(response) {
+                        spinner.hide()
+                        $('.vberkaserm').html(response);
+                    }
+                });
+            }
         </script>
     @endsection

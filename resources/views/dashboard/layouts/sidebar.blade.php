@@ -562,7 +562,7 @@
                           </a>
                       </li>
                   @endif
-                  @if (auth()->user()->nama == 'agyl')
+                  @if (auth()->user()->nama == 'agyl' || auth()->user()->hak_akses == '1')
                   <li class="nav-header">REKAMEDIS</li>
                   <li class="nav-item @if ($sidebar == 'berkas_erm') menu-open @endif">
                       <a href="#" class="nav-link">
