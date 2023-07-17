@@ -4718,6 +4718,9 @@ class ErmController extends Controller
     public function lihathasil_scanrm(Request $request)
     {
         $rm = $request->rm;
+        if(strlen($rm) == 8){
+            $rm = (substr($rm,2));
+        }
         $cek = DB::select('select * from jkn_scan_file_rm where norm = ?', [$rm]);
         if (count($cek) == 0) {
             echo "<h4 class='text-danger'> Tidak Ada Hasil Scan ...</h5>";
