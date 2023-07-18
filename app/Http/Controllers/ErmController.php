@@ -4731,7 +4731,9 @@ class ErmController extends Controller
         if(strlen($rm) == 8){
             $rm = (substr($rm,2));
         }
-        $cek = DB::select('select * from jkn_scan_file_rm where norm = ?', [$rm]);
+        $rm = '%'.$rm;
+        // dd($rm);
+        $cek = DB::select('select * from jkn_scan_file_rm where norm like ?', [$rm]);
         if (count($cek) == 0) {
             echo "<h4 class='text-danger'> Tidak Ada Hasil Scan ...</h5>";
         } else {
