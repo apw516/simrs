@@ -98,16 +98,18 @@
 <script>
     $(document).ready(function() {
         kodekunjungan = $('#kodekunjungan').val()
-        formpemeriksaan_ro(kodekunjungan)
+        rm = $('#nomorrm').val()
+        formpemeriksaan_ro(kodekunjungan,rm)
     })
-    function formpemeriksaan_ro(kodekunjungan) {
+    function formpemeriksaan_ro(kodekunjungan,rm) {
         spinner = $('#loader')
         spinner.show();
         $.ajax({
             type: 'post',
             data: {
                 _token: "{{ csrf_token() }}",
-                kodekunjungan
+                kodekunjungan,
+                rm
             },
             url: '<?= route('form_pemeriksaan_ro') ?>',
             success: function(response) {

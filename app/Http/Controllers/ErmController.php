@@ -235,12 +235,17 @@ class ErmController extends Controller
     public function form_pemeriksaan_ro(Request $request)
     {
         $resume_perawat = DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE kode_kunjungan = ?', [$request->kodekunjungan]);
+        $ref_kunjungan = db::select('SELECT counter,kode_kunjungan FROM ts_kunjungan
+        WHERE counter = (SELECT MAX(counter)-1 FROM ts_kunjungan WHERE no_rm = ? AND kode_unit = ? ) AND no_rm = ? AND kode_unit = ?',[$request->rm,auth()->user()->unit,$request->rm,auth()->user()->unit]);
+        $kode_lama = $ref_kunjungan[0]->kode_kunjungan;
+        $hasil_ro_lama = DB::select('SELECT * from erm_mata_kanan_kiri WHERE kode_kunjungan = ?', [$kode_lama]);
         if (count($resume_perawat) > 0) {
             $hasil_ro = DB::select('SELECT * from erm_mata_kanan_kiri WHERE id_asskep = ?', [$resume_perawat[0]->id]);
         } else {
             $hasil_ro = [];
         }
-        return view('ermperawat.isi_form_ro', compact(['resume_perawat', 'hasil_ro']));
+        $rm = $request->rm;
+        return view('ermperawat.isi_form_ro', compact(['resume_perawat', 'hasil_ro','hasil_ro_lama']));
     }
     public function simpanpemeriksaan_ro(Request $request)
     {
