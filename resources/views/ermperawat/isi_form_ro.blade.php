@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="card-header bg-info">Pemeriksaan Khusus <button class="btn btn-warning float-right" data-toggle="modal"
+    <div class="card-header bg-info">Form RO <button class="btn btn-warning float-right" data-toggle="modal"
             data-target="#modalhasil_kmrn"><i class="bi bi-eye mr-1 ml-1"></i> Hasil Sebelumnya</button></div>
     <div class="card-body">
         @if (count($resume_perawat) > 0)
