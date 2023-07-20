@@ -574,6 +574,15 @@
                       </a>
                       <ul class="nav nav-treeview">
                           <li class="nav-item">
+                              <a href="{{ route('kunjungan_pasien') }}"
+                                  class="nav-link @if ($sidebar_m == 'kunjungan_pasien') active @endif">
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>Cek Berkas Scan</p>
+                              </a>
+                          </li>
+                      </ul>
+                      <ul class="nav nav-treeview">
+                          <li class="nav-item">
                               <a href="{{ route('berkas_erm') }}"
                                   class="nav-link @if ($sidebar_m == 'berkas_erm') active @endif">
                                   <i class="far fa-circle nav-icon"></i>

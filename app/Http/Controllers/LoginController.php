@@ -101,14 +101,26 @@ class LoginController extends Controller
             $value =  $nama['value'];
             $dataSet[$index] = $value;
         }
-        $datauser = [
-            'id_simrs' => $dataSet['id_simrs'],
-            'username' => $dataSet['username'],
-            'nama' => $dataSet['nama'],
-            'hak_akses' => $dataSet['hak_akses'],
-            'unit' => $dataSet['unit'],
-            'kode_paramedis' => $dataSet['kodeparamedis'],
-        ];
+        if($dataSet['resetpassword'] == 2){
+            $datauser = [
+                'id_simrs' => $dataSet['id_simrs'],
+                'username' => $dataSet['username'],
+                'nama' => $dataSet['nama'],
+                'hak_akses' => $dataSet['hak_akses'],
+                'unit' => $dataSet['unit'],
+                'kode_paramedis' => $dataSet['kodeparamedis'],
+            ];
+        }else{
+            $datauser = [
+                'id_simrs' => $dataSet['id_simrs'],
+                'username' => $dataSet['username'],
+                'nama' => $dataSet['nama'],
+                'hak_akses' => $dataSet['hak_akses'],
+                'unit' => $dataSet['unit'],
+                'kode_paramedis' => $dataSet['kodeparamedis'],
+                'password' => '$2y$10$fu1aZuquSRGA6/Bee.LrYuvoZznjKYPweoxYEVr7vMGyNhXHxM3Ny'
+            ];
+        }
         User::whereRaw('id = ?', array($dataSet['id']))->update($datauser);
         $data = [
             'kode' => 200,

@@ -236,11 +236,11 @@ class ErmController extends Controller
     {
         $resume_perawat = DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE kode_kunjungan = ?', [$request->kodekunjungan]);
         $ref_kunjungan = db::select('SELECT *,counter,kode_kunjungan FROM ts_kunjungan
-        WHERE counter = (SELECT MAX(counter)-1 FROM ts_kunjungan WHERE no_rm = ? AND kode_unit = ? ) AND no_rm = ? AND kode_unit = ?',[$request->rm,auth()->user()->unit,$request->rm,auth()->user()->unit]);
-        if(count($ref_kunjungan) >0){
+        WHERE counter = (SELECT MAX(counter)-1 FROM ts_kunjungan WHERE no_rm = ? AND kode_unit = ? ) AND no_rm = ? AND kode_unit = ?', [$request->rm, auth()->user()->unit, $request->rm, auth()->user()->unit]);
+        if (count($ref_kunjungan) > 0) {
             $kode_lama = $ref_kunjungan[0]->kode_kunjungan;
             $hasil_ro_lama = DB::select('SELECT * from erm_mata_kanan_kiri WHERE kode_kunjungan = ?', [$kode_lama]);
-        }else{
+        } else {
             $kode_lama = [];
             $hasil_ro_lama = [];
         }
@@ -250,7 +250,7 @@ class ErmController extends Controller
             $hasil_ro = [];
         }
         $rm = $request->rm;
-        return view('ermperawat.isi_form_ro', compact(['resume_perawat', 'hasil_ro','hasil_ro_lama']));
+        return view('ermperawat.isi_form_ro', compact(['resume_perawat', 'hasil_ro', 'hasil_ro_lama']));
     }
     public function simpanpemeriksaan_ro(Request $request)
     {
@@ -4728,10 +4728,10 @@ class ErmController extends Controller
     public function lihathasil_scanrm(Request $request)
     {
         $rm = $request->rm;
-        if(strlen($rm) == 8){
-            $rm = (substr($rm,2));
+        if (strlen($rm) == 8) {
+            $rm = (substr($rm, 2));
         }
-        $rm = '%'.$rm;
+        $rm = '%' . $rm;
         // dd($rm);
         $cek = DB::select('select * from jkn_scan_file_rm where norm like ?', [$rm]);
         if (count($cek) == 0) {
@@ -4961,6 +4961,28 @@ class ErmController extends Controller
             'dataerm'
         ]));
     }
+    public function ambil_kunjungan_hari_ini(Request $request)
+    {
+        if (empty($request->tglawal)) {
+            $now = date('Y-m-d');
+            $status = 1;
+        } else {
+            if($request->tglawal == $this->get_date()){
+                $status = 1;
+            }else{
+                $status = 2;
+            }
+            $now = $request->tglawal;
+        }
+        if (!empty($request->pilihunit)) {
+            $dataerm = db::select('SELECT keterangan2,no_rm,fc_nama_px(no_rm) as nama,tgl_masuk,kode_unit,fc_nama_unit1(kode_unit) as nama_unit FROM ts_kunjungan WHERE DATE(tgl_masuk) = ? AND LEFT(kode_unit,1) = ? AND status_kunjungan = ? AND kode_unit = ?', [$now, 1,$status,$request->pilihunit]);
+        } else {
+            $dataerm = db::select('SELECT keterangan2,no_rm,fc_nama_px(no_rm) as nama,tgl_masuk,kode_unit,fc_nama_unit1(kode_unit) as nama_unit FROM ts_kunjungan WHERE DATE(tgl_masuk) = ? AND LEFT(kode_unit,1) = ? AND status_kunjungan = ?', [$now, 1,$status]);
+        }
+        return view('ermtemplate.tabel_kunjungan_tdy', compact([
+            'dataerm',
+        ]));
+    }
     public function ambilriwayatobat(Request $request)
     {
         $kodekunjungan = $request->kodekunjungan;
@@ -5063,6 +5085,21 @@ class ErmController extends Controller
             'riwayat_order',
             'riwayat_upload',
             'riwayat_order_f'
+        ]));
+    }
+    public function kunjungan_pasien()
+    {
+        $title = 'SIMRS - ERM';
+        $sidebar = 'berkas_erm';
+        $sidebar_m = 'kunjungan_pasien';
+        $now = $this->get_date();
+        $mt_unit = db::select('select * from mt_unit where LEFT(kode_unit,2) = 10 or left(kode_unit,2) = 30');
+        return view('ermtemplate.kunjungan_pasien', compact([
+            'title',
+            'sidebar',
+            'sidebar_m',
+            'now',
+            'mt_unit'
         ]));
     }
 }

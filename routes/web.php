@@ -73,14 +73,20 @@ Route::post('/vberkasluar', [ErmController::class, 'vberkasluar'])
 Route::post('ambilsaran', [ErmController::class, 'ambilsaran'])
     ->name('ambilsaran'); //sidebar
 
+Route::get('kunjungan_pasien', [ErmController::class, 'kunjungan_pasien'])
+    ->name('kunjungan_pasien'); //sidebar
 Route::get('berkas_erm', [ErmController::class, 'berkas_erm'])
     ->name('berkas_erm'); //sidebar
+Route::post('ambil_kunjungan_hari_ini', [ErmController::class, 'ambil_kunjungan_hari_ini'])
+    ->name('ambil_kunjungan_hari_ini'); //sidebar
 Route::post('ambil_berkas_erm', [ErmController::class, 'ambil_berkas_erm'])
     ->name('ambil_berkas_erm'); //sidebar
 Route::post('ambilriwayatobat', [ErmController::class, 'ambilriwayatobat'])
     ->name('ambilriwayatobat'); //sidebar
 Route::post('ambil_berkas_erm_pasien', [ErmController::class, 'ambil_berkas_erm_pasien'])
     ->name('ambil_berkas_erm_pasien'); //sidebar
+Route::post('ambil_berkas_erm_pasien_scan', [ErmController::class, 'lihathasil_scanrm'])
+    ->name('ambil_berkas_erm_pasien_scan'); //sidebar
 
 Route::get('/register', [RegisterController::class, 'index'])->middleware('guest')->name('register');
 Route::get('/profil', [RegisterController::class, 'profil'])->name('profil');

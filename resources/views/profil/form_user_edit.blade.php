@@ -38,4 +38,12 @@
         <label for="exampleInputPassword1">Kode Paramedis</label>
         <input type="text" class="form-control" id="kodeparamedis" name="kodeparamedis" value="{{ $datauser[0]->kode_paramedis }}">
     </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Reset Password</label>
+        <select class="form-control" id="resetpassword" name="resetpassword">
+            <option value="1">Ya</option>
+            <option value="2" selected>Tidak</option>
+          </select>
+
+    </div>
 </form>
