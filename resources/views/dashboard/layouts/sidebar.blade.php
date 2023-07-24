@@ -562,7 +562,7 @@
                           </a>
                       </li>
                   @endif
-                  @if (auth()->user()->nama == 'agyl' || auth()->user()->hak_akses == '1')
+                  @if (auth()->user()->nama == 'agyl' || auth()->user()->hak_akses == '1'  || auth()->user()->hak_akses == '101')
                   <li class="nav-header">REKAMEDIS</li>
                   <li class="nav-item @if ($sidebar == 'berkas_erm') menu-open @endif">
                       <a href="#" class="nav-link">
@@ -572,6 +572,15 @@
                               <i class="fas fa-angle-left right"></i>
                           </p>
                       </a>
+                      <ul class="nav nav-treeview">
+                          <li class="nav-item">
+                              <a href="{{ route('monitoring_erm') }}"
+                                  class="nav-link @if ($sidebar_m == 'Monitoring ERM') active @endif">
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>Monitoring ERM</p>
+                              </a>
+                          </li>
+                      </ul>
                       <ul class="nav nav-treeview">
                           <li class="nav-item">
                               <a href="{{ route('kunjungan_pasien') }}"

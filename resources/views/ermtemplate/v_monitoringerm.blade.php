@@ -5,7 +5,7 @@
             <div class="row mb-3">
                 <div class="row mb-2">
                     <div class="col-sm-12">
-                        <h1 class="m-0">Scan RM Pasien Poli / Kunjungan</h1>
+                        <h1 class="m-0">Monitoring ERM</h1>
                     </div>
                 </div>
             </div>
@@ -39,10 +39,10 @@
         </section>
         <script>
             $(document).ready(function() {
-                ambildatapasien_hari_ini()
+                monitoring_erm()
             });
 
-            function ambildatapasien_hari_ini() {
+            function monitoring_erm() {
                 spinner = $('#loader')
                 spinner.show();
                 $.ajax({
@@ -50,7 +50,7 @@
                     data: {
                         _token: "{{ csrf_token() }}",
                     },
-                    url: '<?= route('ambil_kunjungan_hari_ini') ?>',
+                    url: '<?= route('monitoring_berkas_erm') ?>',
                     success: function(response) {
                         spinner.hide()
                         $('.vberkaserm').html(response);
@@ -70,7 +70,7 @@
                         tglawal,
                         pilihunit
                     },
-                    url: '<?= route('ambil_kunjungan_hari_ini') ?>',
+                    url: '<?= route('monitoring_berkas_erm') ?>',
                     success: function(response) {
                         spinner.hide()
                         $('.vberkaserm').html(response);

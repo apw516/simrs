@@ -66,7 +66,6 @@ class LoginController extends Controller
         // }
     }
     public function LoginController(Request $request){
-
     }
     public function datauser()
     {

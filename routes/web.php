@@ -13,17 +13,6 @@ use App\Http\Controllers\ErmController;
 use App\Http\Controllers\PenunjangController;
 use App\Http\Controllers\AntrianIgd;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 
 Route::get('/', [LoginController::class, 'index']);
 Route::get('datauser', [LoginController::class, 'datauser'])->middleware('auth')->name('datauser');
@@ -77,8 +66,12 @@ Route::get('kunjungan_pasien', [ErmController::class, 'kunjungan_pasien'])
     ->name('kunjungan_pasien'); //sidebar
 Route::get('berkas_erm', [ErmController::class, 'berkas_erm'])
     ->name('berkas_erm'); //sidebar
+Route::get('monitoring_erm', [ErmController::class, 'monitoring_erm'])
+    ->name('monitoring_erm'); //sidebar
 Route::post('ambil_kunjungan_hari_ini', [ErmController::class, 'ambil_kunjungan_hari_ini'])
     ->name('ambil_kunjungan_hari_ini'); //sidebar
+Route::post('monitoring_berkas_erm', [ErmController::class, 'monitoring_berkas_erm'])
+    ->name('monitoring_berkas_erm'); //sidebar
 Route::post('ambil_berkas_erm', [ErmController::class, 'ambil_berkas_erm'])
     ->name('ambil_berkas_erm'); //sidebar
 Route::post('ambilriwayatobat', [ErmController::class, 'ambilriwayatobat'])

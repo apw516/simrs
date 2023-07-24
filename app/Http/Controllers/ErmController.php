@@ -4983,6 +4983,30 @@ class ErmController extends Controller
             'dataerm',
         ]));
     }
+    public function monitoring_berkas_erm(Request $request)
+    {
+        if (empty($request->tglawal)) {
+            $now = date('Y-m-d');
+            $status = 1;
+        } else {
+            if($request->tglawal == $this->get_date()){
+                $status = 1;
+            }else{
+                $status = 2;
+            }
+            $now = $request->tglawal;
+        }
+        if (!empty($request->pilihunit)) {
+            $dataerm = db::select('SELECT a.tgl_masuk,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.kode_unit,fc_nama_unit1(a.kode_unit) AS nama_unit,b.id AS id_asskep,b.namapemeriksa,c.nama_dokter,c.id AS id_assdok FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.`kode_kunjungan`
+            LEFT OUTER JOIN assesmen_dokters c ON b.id = c.id_asskep WHERE DATE(a.`tgl_masuk`) = ? AND a.`status_kunjungan` = ? AND a.kode_unit = ?', [$now,$status,$request->pilihunit]);
+        } else {
+            $dataerm = db::select('SELECT a.tgl_masuk,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.kode_unit,fc_nama_unit1(a.kode_unit) AS nama_unit,b.id AS id_asskep,b.namapemeriksa,c.nama_dokter,c.id AS id_assdok FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.`kode_kunjungan`
+            LEFT OUTER JOIN assesmen_dokters c ON b.id = c.id_asskep WHERE DATE(a.`tgl_masuk`) = ? AND a.`status_kunjungan` = ?', [$now,$status]);
+        }
+        return view('ermtemplate.tabel_monitoring_Erm', compact([
+            'dataerm',
+        ]));
+    }
     public function ambilriwayatobat(Request $request)
     {
         $kodekunjungan = $request->kodekunjungan;
@@ -5095,6 +5119,21 @@ class ErmController extends Controller
         $now = $this->get_date();
         $mt_unit = db::select('select * from mt_unit where LEFT(kode_unit,2) = 10 or left(kode_unit,2) = 30');
         return view('ermtemplate.kunjungan_pasien', compact([
+            'title',
+            'sidebar',
+            'sidebar_m',
+            'now',
+            'mt_unit'
+        ]));
+    }
+    public function monitoring_erm()
+    {
+        $title = 'SIMRS - ERM';
+        $sidebar = 'berkas_erm';
+        $sidebar_m = 'Monitoring ERM';
+        $now = $this->get_date();
+        $mt_unit = db::select('select * from mt_unit where LEFT(kode_unit,2) = 10 or left(kode_unit,2) = 30');
+        return view('ermtemplate.v_monitoringerm', compact([
             'title',
             'sidebar',
             'sidebar_m',
