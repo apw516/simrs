@@ -4750,7 +4750,7 @@ class ErmController extends Controller
             'hak_kelas' => $kunjungan[0]->hak_kelas,
             'diagx' => $assdok[0]->diagnosakerja,
             'keterangan3' => $dataSet['keterangankonsul'],
-            'pic' => auth()->user()->id,
+            'pic' => auth()->user()->id_simrs,
             'no_sep' => '',
         ];
         $kodeunit = $dataSet['idpolitujuan'];
@@ -4780,7 +4780,7 @@ class ErmController extends Controller
             'kode_kunjungan' => $ts_kunjungan->id,
             'kode_unit' => $kodeunit,
             'kode_tipe_transaksi' => $kode_tipe_transaksi,
-            'pic' => auth()->user()->id,
+            'pic' => auth()->user()->id_simrs,
             'status_layanan' => '1',
             'status_retur' => 'OPN',
             'status_pembayaran' => 'OPN'
