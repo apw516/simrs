@@ -1,7 +1,13 @@
 <div class="card">
-    <div class="card-header bg-info">Catatan Perkembangan Pasien Terintegrasi ( CPPT ) <button
-            class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
+    <div class="card-header bg-info">CPPT
+        <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
             data-target="#modalresumeperawat"><i class="bi bi-eye mr-1"></i> Hasil Assesmen Keperawatan</button>
+        <button class="btn btn-danger ml-2 lihathasilpenunjang_lab" nomorrm="{{ $kunjungan[0]->no_rm }}"
+            data-toggle="modal" data-target="#modalhasilpenunjang_lab"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan
+            Laboratorium</button>
+        <button class="btn btn-danger ml-2 lihathasilpenunjang_rad" nomorrm="{{ $kunjungan[0]->no_rm }}"
+            data-toggle="modal" data-target="#modalhasilpenunjang_rad"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan
+            Radiologi</button>
         @if ($kunjungan[0]->ref_kunjungan != '0')
             <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
                 data-target="#modalcatatankonsul"><i class="bi bi-eye mr-1"></i> Catatan Konsul</button>
@@ -412,21 +418,24 @@
                         <td>Assesmen</td>
                         <td>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="assesmen"
-                                    id="assesmen" value="1" @if($resume[0]->tindak_lanjut == 1) checked @endif>
-                                <label class="form-check-label" for="inlineRadio1">Setuju dijadwalkan untuk operasi</label>
+                                <input class="form-check-input" type="radio" name="assesmen" id="assesmen"
+                                    value="1" @if ($resume[0]->tindak_lanjut == 1) checked @endif>
+                                <label class="form-check-label" for="inlineRadio1">Setuju dijadwalkan untuk
+                                    operasi</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="assesmen"
-                                    id="assesmen" value="2" @if($resume[0]->tindak_lanjut == 2) checked @endif>
-                                <label class="form-check-label" for="inlineRadio2">Saat ini keadaan pasien dalam kondisi belum untuk dilakukan tindakan anestesi</label>
+                                <input class="form-check-input" type="radio" name="assesmen" id="assesmen"
+                                    value="2" @if ($resume[0]->tindak_lanjut == 2) checked @endif>
+                                <label class="form-check-label" for="inlineRadio2">Saat ini keadaan pasien dalam
+                                    kondisi belum untuk dilakukan tindakan anestesi</label>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td>Saran</td>
                         <td>
-                            <button type="button" class="btn btn-success mb-2 btnsaran" data-toggle="modal" data-target="#modalsaran">Template saran</button>
+                            <button type="button" class="btn btn-success mb-2 btnsaran" data-toggle="modal"
+                                data-target="#modalsaran">Template saran</button>
                             <textarea name="saran" id="saran" rows="10" class="form-control">{{ $resume[0]->keterangan_tindak_lanjut }}</textarea>
                         </td>
                     </tr>
@@ -457,7 +466,7 @@
                 </div>
             </div>
         </form> --}}
-        <div hidden class="card">
+        <div class="card">
             <div class="card-header bg-light">Order Farmasi <button type="button"
                     class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
                     onclick="ambilresep()">Template resep</button></div>
@@ -1131,7 +1140,8 @@
                                                     </div>
                                                     <input id="od_sph_Lensometer"
                                                         value="{{ $hasil_ro[0]->Lensometer_od_sph }}"
-                                                        name="od_sph_Lensometer" type="text" class="form-control"
+                                                        name="od_sph_Lensometer" type="text"
+                                                        class="form-control"
                                                         aria-label="Amount (to the nearest dollar)">
                                                 </div>
                                             </td>
@@ -1142,7 +1152,8 @@
                                                     </div>
                                                     <input id="od_cyl_Lensometer"
                                                         value="{{ $hasil_ro[0]->Lensometer_od_cyl }}"
-                                                        name="od_cyl_Lensometer" type="text" class="form-control"
+                                                        name="od_cyl_Lensometer" type="text"
+                                                        class="form-control"
                                                         aria-label="Amount (to the nearest dollar)">
                                                 </div>
                                             </td>
@@ -1846,7 +1857,50 @@
         <button type="button" class="btn btn-success float-right" onclick="simpanhasil()">Simpan</button>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalhasilpenunjang_lab" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hasil Pemeriksaan Laboratorium</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_hasil_penunjang_lab">
 
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalhasilpenunjang_rad" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hasil Pemeriksaan Radiologi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_hasil_penunjang_rad">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Modal -->
 <div class="modal fade" id="modalresumeperawat" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -2066,25 +2120,25 @@
 <!-- Modal -->
 <div class="modal fade" id="modalsaran" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Template saran</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="v_t_s">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Template saran</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_t_s">
 
-          </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
 
 <link rel="stylesheet" href="{{ asset('public/dist/css/datepicker.css') }}" rel="stylesheet">
 <script src="{{ asset('public/dist/js/bootstrap-datepicker.js') }}"></script>
@@ -2434,5 +2488,39 @@
             // });
         }
     }
+    $(".lihathasilpenunjang_lab").click(function() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm
+            },
+            url: '<?= route('lihathasilpenunjang_lab') ?>',
+            success: function(response) {
+                $('.v_hasil_penunjang_lab').html(response);
+                spinner.hide()
+            }
+        });
+    })
+    $(".lihathasilpenunjang_rad").click(function() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm
+            },
+            url: '<?= route('lihathasilpenunjang_rad') ?>',
+            success: function(response) {
+                $('.v_hasil_penunjang_rad').html(response);
+                spinner.hide()
+            }
+        });
+    })
 </script>
 <script src="{{ asset('public/marker/markerjs2.js') }}"></script>

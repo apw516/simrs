@@ -80,6 +80,10 @@ Route::post('ambil_berkas_erm_pasien', [ErmController::class, 'ambil_berkas_erm_
     ->name('ambil_berkas_erm_pasien'); //sidebar
 Route::post('ambil_berkas_erm_pasien_scan', [ErmController::class, 'lihathasil_scanrm'])
     ->name('ambil_berkas_erm_pasien_scan'); //sidebar
+Route::post('lihathasilpenunjang_lab', [ErmController::class, 'lihathasilpenunjang_lab'])
+    ->name('lihathasilpenunjang_lab'); //sidebar
+Route::post('lihathasilpenunjang_rad', [ErmController::class, 'lihathasilpenunjang_rad'])
+    ->name('lihathasilpenunjang_rad'); //sidebar
 
 Route::get('/register', [RegisterController::class, 'index'])->middleware('guest')->name('register');
 Route::get('/profil', [RegisterController::class, 'profil'])->name('profil');

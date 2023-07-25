@@ -1,5 +1,10 @@
 <div class="card">
-    <div class="card-header bg-info">Catatan Perkembangan Pasien Terintegrasi @if ($kunjungan[0]->ref_kunjungan != '0')
+    <div class="card-header bg-info">CPPT
+        <button class="btn btn-danger ml-2 lihathasilpenunjang_lab" nomorrm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
+            data-target="#modalhasilpenunjang_lab"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan Laboratorium</button>
+        <button class="btn btn-danger ml-2 lihathasilpenunjang_rad" nomorrm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
+            data-target="#modalhasilpenunjang_rad"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan Radiologi</button>
+        @if ($kunjungan[0]->ref_kunjungan != '0')
         <button class="btn btn-warning ml-2" data-toggle="modal"
             data-target="#modalcatatankonsul"><i class="bi bi-eye mr-1"></i> Catatan Konsul</button>
     @endif</div>
@@ -475,6 +480,50 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalhasilpenunjang_lab" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hasil Pemeriksaan Laboratorium</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_hasil_penunjang_lab">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalhasilpenunjang_rad" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hasil Pemeriksaan Radiologi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_hasil_penunjang_rad">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     function simpanhasil() {
         var data = $('.formpemeriksaan_fisio').serializeArray();
@@ -573,4 +622,38 @@
             $('#namaresep').attr('Hidden', true)
         }
     }
+    $(".lihathasilpenunjang_lab").click(function(){
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm
+            },
+            url: '<?= route('lihathasilpenunjang_lab') ?>',
+            success: function(response) {
+                $('.v_hasil_penunjang_lab').html(response);
+                spinner.hide()
+            }
+        });
+    })
+    $(".lihathasilpenunjang_rad").click(function(){
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm
+            },
+            url: '<?= route('lihathasilpenunjang_rad') ?>',
+            success: function(response) {
+                $('.v_hasil_penunjang_rad').html(response);
+                spinner.hide()
+            }
+        });
+    })
 </script>

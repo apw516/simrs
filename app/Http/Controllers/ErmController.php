@@ -1319,233 +1319,6 @@ class ErmController extends Controller
             }
             //end of input tindakan
 
-            //orderfarmasi
-            // if ($cekorderfar > 0) {
-            //     $simpantemplate = $request->simpantemplate;
-            //     $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
-            //     $dt = Carbon::now()->timezone('Asia/Jakarta');
-            //     $date = $dt->toDateString();
-            //     $time = $dt->toTimeString();
-            //     $now = $date . ' ' . $time;
-            //     $cek_layanan_header = count(DB::SELECT('select id from ts_layanan_header_order where kode_kunjungan = ?', [$request->kodekunjungan]));
-            //     $kodekunjungan = $request->kodekunjungan;
-            //     $penjamin = $kunjungan[0]->kode_penjamin;
-            //     //jika penjamin bpjs order ke dp2
-            //     //jika penjamin umum order ke dp1
-            //     //kodeheader dibedakan menjadi ORF
-            //     if ($penjamin == 'P01') {
-            //         $unit = '4002';
-            //     } else {
-            //         $unit = '4008';
-            //     }
-            //     $mtunit = DB::select('select * from mt_unit where kode_unit = ?', [$unit]);
-            //     $prefix_kunjungan = $mtunit[0]->prefix_unit;
-            //     if ($simpantemplate == 'on') {
-            //         //simpantemplatenya
-            //         $dataresep = [
-            //             'keterangan' => $request->resepobat,
-            //             'user' => auth()->user()->kode_paramedis,
-            //             'tgl_entry' => $this->get_now()
-            //         ];
-            //         $id_resep = templateresep::create($dataresep);
-            //     }
-            //     try {
-            //         $kode_unit = $unit;
-            //         $kode_layanan_header = $this->createOrderHeader('F');
-            //         $data_layanan_header = [
-            //             'no_rm' => $kunjungan[0]->no_rm,
-            //             'kode_layanan_header' => $kode_layanan_header,
-            //             'tgl_entry' =>   $now,
-            //             'kode_kunjungan' => $kunjungan[0]->kode_kunjungan,
-            //             'kode_penjaminx' => $penjamin,
-            //             'kode_unit' => $kode_unit,
-            //             'kode_tipe_transaksi' => 2,
-            //             'pic' => auth()->user()->id,
-            //             'unit_pengirim' => auth()->user()->unit,
-            //             'tgl_periksa' => $this->get_now(),
-            //             'diagnosa' => $kunjungan[0]->diagx,
-            //             'dok_kirim' => auth()->user()->kode_paramedis,
-            //             'status_layanan' => '3',
-            //             'status_retur' => 'OPN',
-            //             'status_pembayaran' => 'OPN',
-            //             'status_order' => '0',
-            //             'id_assdok' => $id_assesmen
-            //         ];
-            //         $cek_header = DB::select('select * from ts_layanan_header_order where id_assdok = ?', [$id_assesmen]);
-            //         $cek_detail = DB::select('select * from ts_layanan_detail_order where id_assdok = ?', [$id_assesmen]);
-            //         if (count($cek_header) == 0) {
-            //             $ts_layanan_header = ts_layanan_header_order::create($data_layanan_header);
-            //             $kode_header = $ts_layanan_header->id;
-            //         } else {
-            //             $kode_header = $cek_header[0]->id;
-            //             $kode_layanan_header = $cek_header[0]->kode_layanan_header;
-            //         }
-            //         $id_detail = $this->createLayanandetailOrder();
-            //         $save_detail = [
-            //             'id_layanan_detail' => $id_detail,
-            //             'kode_layanan_header' => $kode_layanan_header,
-            //             'kode_dokter1' => auth()->user()->kode_paramedis,
-            //             'status_layanan_detail' => 'OPN',
-            //             'tgl_layanan_detail' => $now,
-            //             'tgl_layanan_detail_2' => $now,
-            //             'row_id_header' => $kode_header,
-            //             'keterangan' => $request->resepobat,
-            //             'id_assdok' => $id_assesmen
-            //         ];
-            //         if (count($cek_detail) == 0) {
-            //             $ts_layanan_detail = ts_layanan_detail_order::create($save_detail);
-            //         } else {
-            //             ts_layanan_detail_order::where('id_assdok', $id_assesmen)
-            //                 ->update($save_detail);
-            //         }
-            //         if ($penjamin == 'P01') {
-            //             //dummy
-            //             ts_layanan_header_order::where('id', $kode_header)
-            //                 ->update(['status_layanan' => 1]);
-            //         } else {
-            //             //dummy
-            //             ts_layanan_header_order::where('id', $kode_header)
-            //                 ->update(['status_layanan' => 1]);
-            //         }
-            //         assesmenawaldokter::whereRaw('id = ?', array($id_assesmen))->update(['resepobat' => $request->resepobat]);
-            //     } catch (\Exception $e) {
-            //         $back = [
-            //             'kode' => 500,
-            //             'message' => $e->getMessage()
-            //         ];
-            //         echo json_encode($back);
-            //         die;
-            //     }
-            // }
-            // if (count($formobat_farmasi) > 1) {
-            //     $simpantemplate = $request->simpantemplate;
-            //     $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
-            //     $dt = Carbon::now()->timezone('Asia/Jakarta');
-            //     $date = $dt->toDateString();
-            //     $time = $dt->toTimeString();
-            //     $now = $date . ' ' . $time;
-            //     $cek_layanan_header = count(DB::SELECT('select id from ts_layanan_header_order where kode_kunjungan = ?', [$request->kodekunjungan]));
-            //     $kodekunjungan = $request->kodekunjungan;
-            //     $penjamin = $kunjungan[0]->kode_penjamin;
-            //     //jika penjamin bpjs order ke dp2
-            //     //jika penjamin umum order ke dp1
-            //     //kodeheader dibedakan menjadi ORF
-            //     if ($penjamin == 'P01') {
-            //         $unit = '4002';
-            //     } else {
-            //         $unit = '4008';
-            //     }
-            //     $mtunit = DB::select('select * from mt_unit where kode_unit = ?', [$unit]);
-            //     $prefix_kunjungan = $mtunit[0]->prefix_unit;
-            //     foreach ($formobat_farmasi as $nama) {
-            //         $index = $nama['name'];
-            //         $value = $nama['value'];
-            //         $dataSet[$index] = $value;
-            //         if ($index == 'keterangan') {
-            //             $arrayindex_far[] = $dataSet;
-            //         }
-            //     }
-            //     if ($simpantemplate == 'on') {
-            //         if ($request->namaresep == '') {
-            //             $back = [
-            //                 'kode' => 500,
-            //                 'message' => 'Nama Resep tidak boleh kosong !'
-            //             ];
-            //             echo json_encode($back);
-            //             die;
-            //         }
-            //         $obatnya = '';
-            //         foreach ($arrayindex_far as $d) {
-            //             if ($obatnya == '') {
-            //                 $obatbaru = $obatnya . "nama obat : " . $d['namaobat'] . " , jumlah : " . $d['jumlah'] . " " . $d['satuan'] . " , " . "aturan pakai : " . $d['aturanpakai'] . " , " . " signa : " . $d['signa'] . " , " . " keterangan : " . $d['keterangan'] . " , " . " kategori resep : " . $d['jenis'];
-            //             } else {
-            //                 $obatbaru = $obatnya . " | " . "nama obat : " . $d['namaobat'] . ", jumlah : " . $d['jumlah'] . " " . $d['satuan'] . " , " . "aturan pakai : " . $d['aturanpakai'] . " , " . " signa : " . $d['signa'] . " , " . " keterangan : " . $d['keterangan'] . " , " . " kategori resep : " . $d['jenis'];
-            //             }
-            //             $obatnya = $obatbaru;
-            //         }
-            //         $dataresep = [
-            //             'nama_resep' => $request->namaresep,
-            //             'keterangan' => $obatnya,
-            //             'user' => auth()->user()->kode_paramedis,
-            //             'tgl_entry' => $this->get_now()
-            //         ];
-            //         $id_resep = templateresep::create($dataresep);
-            //         foreach ($arrayindex_far as $d) {
-            //             $detailresep = [
-            //                 'id_template' => $id_resep->id,
-            //                 'nama_barang' => $d['namaobat'],
-            //                 'kode_barang' => $d['kodebarang'],
-            //                 'aturan_pakai' => $d['aturanpakai'],
-            //                 'jenis' => $d['jenis'],
-            //                 'satuan' => $d['satuan'],
-            //                 'jumlah' => $d['jumlah'],
-            //                 'signa' => $d['signa'],
-            //                 'keterangan' => $d['keterangan'],
-            //             ];
-            //             $detailresep = templateresep_detail::create($detailresep);
-            //         }
-            //     }
-            //     try {
-            //         $kode_unit = $unit;
-            //         $kode_layanan_header = $this->createOrderHeader('F');
-            //         $data_layanan_header = [
-            //             'no_rm' => $kunjungan[0]->no_rm,
-            //             'kode_layanan_header' => $kode_layanan_header,
-            //             'tgl_entry' =>   $now,
-            //             'kode_kunjungan' => $kunjungan[0]->kode_kunjungan,
-            //             'kode_penjaminx' => $penjamin,
-            //             'kode_unit' => $kode_unit,
-            //             'kode_tipe_transaksi' => 2,
-            //             'pic' => auth()->user()->id,
-            //             'unit_pengirim' => auth()->user()->unit,
-            //             'tgl_periksa' => $this->get_now(),
-            //             'diagnosa' => $kunjungan[0]->diagx,
-            //             'dok_kirim' => auth()->user()->kode_paramedis,
-            //             'status_layanan' => '3',
-            //             'status_retur' => 'OPN',
-            //             'status_pembayaran' => 'OPN',
-            //             'status_order' => '0'
-            //         ];
-
-            //         $ts_layanan_header = ts_layanan_header_order::create($data_layanan_header);
-            //         foreach ($arrayindex_far as $d) {
-            //             $id_detail = $this->createLayanandetailOrder();
-            //             $save_detail = [
-            //                 'id_layanan_detail' => $id_detail,
-            //                 'kode_layanan_header' => $kode_layanan_header,
-            //                 'kode_dokter1' => auth()->user()->kode_paramedis,
-            //                 'jumlah_layanan' => $d['jumlah'],
-            //                 'kode_barang' => $d['kodebarang'],
-            //                 'aturan_pakai' => $d['aturanpakai'] . ' | ' . $d['signa'] . ' | ' . $d['keterangan'],
-            //                 'kategori_resep' => $d['jenis'],
-            //                 'satuan_barang' => $d['satuan'],
-            //                 'status_layanan_detail' => 'OPN',
-            //                 'tgl_layanan_detail' => $now,
-            //                 'tgl_layanan_detail_2' => $now,
-            //                 'row_id_header' => $ts_layanan_header->id
-            //             ];
-            //             $ts_layanan_detail = ts_layanan_detail_order::create($save_detail);
-            //         }
-            //         if ($penjamin == 'P01') {
-            //             //dummy
-            //             ts_layanan_header_order::where('id', $ts_layanan_header->id)
-            //                 ->update(['status_layanan' => 1]);
-            //         } else {
-            //             //dummy
-            //             ts_layanan_header_order::where('id', $ts_layanan_header->id)
-            //                 ->update(['status_layanan' => 1]);
-            //         }
-            //     } catch (\Exception $e) {
-            //         $back = [
-            //             'kode' => 500,
-            //             'message' => $e->getMessage()
-            //         ];
-            //         echo json_encode($back);
-            //         die;
-            //     }
-            // }
-
-
             if (count($formobatfarmasi2) > 1) {
                 $simpantemplate = $request->simpantemplate;
                 $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
@@ -2414,6 +2187,7 @@ class ErmController extends Controller
         };
 
         $data = json_decode($_POST['data'], true);
+        $formobatfarmasi2 = json_decode($_POST['formobatfarmasi2'], true);
         foreach ($data as $nama) {
             $index =  $nama['name'];
             $value =  $nama['value'];
@@ -2479,6 +2253,133 @@ class ErmController extends Controller
         } else {
             $erm_assesmen = assesmenawaldokter::create($data);
         }
+        if (count($formobatfarmasi2) > 1) {
+            $simpantemplate = $request->simpantemplate;
+            $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$dataSet['kodekunjungan']]);
+            $dt = Carbon::now()->timezone('Asia/Jakarta');
+            $date = $dt->toDateString();
+            $time = $dt->toTimeString();
+            $now = $date . ' ' . $time;
+            $cek_layanan_header = count(DB::SELECT('select id from ts_layanan_header_order where kode_kunjungan = ?', [$dataSet['kodekunjungan']]));
+            $kodekunjungan = $dataSet['kodekunjungan'];
+            $penjamin = $kunjungan[0]->kode_penjamin;
+            //jika penjamin bpjs order ke dp2
+            //jika penjamin umum order ke dp1
+            //kodeheader dibedakan menjadi ORF
+            if ($penjamin == 'P01') {
+                $unit = '4002';
+            } else {
+                $unit = '4008';
+            }
+            $mtunit = DB::select('select * from mt_unit where kode_unit = ?', [$unit]);
+            $prefix_kunjungan = $mtunit[0]->prefix_unit;
+            foreach ($formobatfarmasi2 as $nama) {
+                $index = $nama['name'];
+                $value = $nama['value'];
+                $dataSet2[$index] = $value;
+                if ($index == 'keterangan') {
+                    $arrayindex_far[] = $dataSet2;
+                }
+            }
+            $obatnya = '';
+            foreach ($arrayindex_far as $d) {
+                if ($obatnya == '') {
+                    $obatbaru = $obatnya . "nama obat : " . $d['namaobat'] . " , jumlah : " . $d['jumlah'] . " , " . "aturan pakai : " . $d['aturanpakai'] . " , " . " signa : " . $d['signa'] . " , " . " keterangan : " . $d['keterangan'] . "\n\n";
+                } else {
+                    $obatbaru = $obatnya . " | " . "nama obat : " . $d['namaobat'] . ", jumlah : " . $d['jumlah'] . " , " . "aturan pakai : " . $d['aturanpakai'] . " , " . " signa : " . $d['signa'] . " , " . " keterangan : " . $d['keterangan'] . "\n\n";
+                }
+                $obatnya = $obatbaru;
+            }
+            if ($simpantemplate == 'on') {
+                if ($request->namaresep == '') {
+                    $back = [
+                        'kode' => 500,
+                        'message' => 'Nama Resep tidak boleh kosong !'
+                    ];
+                    echo json_encode($back);
+                    die;
+                }
+
+                $dataresep = [
+                    'nama_resep' => $request->namaresep,
+                    'keterangan' => $obatnya,
+                    'user' => auth()->user()->kode_paramedis,
+                    'tgl_entry' => $this->get_now()
+                ];
+                $id_resep = templateresep::create($dataresep);
+                foreach ($arrayindex_far as $d) {
+                    $detailresep = [
+                        'id_template' => $id_resep->id,
+                        'nama_barang' => $d['namaobat'],
+                        'kode_barang' => $d['kodebarang'],
+                        'aturan_pakai' => $d['aturanpakai'],
+                        'jumlah' => $d['jumlah'],
+                        'signa' => $d['signa'],
+                        'keterangan' => $d['keterangan'],
+                    ];
+                    $detailresep = templateresep_detail::create($detailresep);
+                }
+            }
+            try {
+                $kode_unit = $unit;
+                $kode_layanan_header = $this->createOrderHeader('F');
+                $data_layanan_header = [
+                    'no_rm' => $kunjungan[0]->no_rm,
+                    'kode_layanan_header' => $kode_layanan_header,
+                    'tgl_entry' =>   $now,
+                    'kode_kunjungan' => $kunjungan[0]->kode_kunjungan,
+                    'kode_penjaminx' => $penjamin,
+                    'kode_unit' => $kode_unit,
+                    'kode_tipe_transaksi' => 2,
+                    'pic' => auth()->user()->id,
+                    'unit_pengirim' => auth()->user()->unit,
+                    'tgl_periksa' => $this->get_now(),
+                    'diagnosa' => trim($dataSet['diagnosawd']),
+                    'dok_kirim' => auth()->user()->kode_paramedis,
+                    'status_layanan' => '3',
+                    'status_retur' => 'OPN',
+                    'status_pembayaran' => 'OPN',
+                    'status_order' => '0',
+                    'id_assdok' => $id_assesmen
+                ];
+                $ts_layanan_header = ts_layanan_header_order::create($data_layanan_header);
+                foreach ($arrayindex_far as $d) {
+                    $id_detail = $this->createLayanandetailOrder();
+                    $save_detail = [
+                        'id_layanan_detail' => $id_detail,
+                        'kode_layanan_header' => $kode_layanan_header,
+                        'kode_dokter1' => auth()->user()->kode_paramedis,
+                        'kode_barang' => $d['namaobat'],
+                        'jumlah_layanan' => $d['jumlah'],
+                        'aturan_pakai' => $d['aturanpakai'] . ' | ' . $d['signa'] . ' | ' . $d['keterangan'],
+                        'status_layanan_detail' => 'OPN',
+                        'tgl_layanan_detail' => $now,
+                        'tgl_layanan_detail_2' => $now,
+                        'row_id_header' => $ts_layanan_header->id,
+                        'id_assdok' => $id_assesmen
+                    ];
+                    $ts_layanan_detail = ts_layanan_detail_order::create($save_detail);
+                }
+                if ($penjamin == 'P01') {
+                    //dummy
+                    ts_layanan_header_order::where('id', $ts_layanan_header->id)
+                        ->update(['status_layanan' => 1]);
+                } else {
+                    //dummy
+                    ts_layanan_header_order::where('id', $ts_layanan_header->id)
+                        ->update(['status_layanan' => 1]);
+                }
+            } catch (\Exception $e) {
+                $back = [
+                    'kode' => 500,
+                    'message' => $e->getMessage()
+                ];
+                echo json_encode($back);
+                die;
+            }
+        }
+        //end of farmasi
+
         $data = [
             'kode' => 200,
             'message' => 'Data berhasil disimpan !'
@@ -5139,6 +5040,25 @@ class ErmController extends Controller
             'sidebar_m',
             'now',
             'mt_unit'
+        ]));
+    }
+    public function lihathasilpenunjang_lab(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $hasil_lab = DB::select('SELECT * FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` WHERE a.`no_rm` = ? AND b.`kode_unit` = ? ORDER BY a.`kode_kunjungan`DESC ',[$rm,'3002']);
+        return view('ermtemplate.view_hasil_penunjang_lab',compact([
+            'hasil_lab'
+        ]));
+    }
+    public function lihathasilpenunjang_rad(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $hasil_rad = DB::select('SELECT *,DATE(b.tgl_baca ) AS tanggalnya,fc_acc_number_ris(b.id_detail) AS acc_number FROM ts_kunjungan a LEFT OUTER JOIN
+        ts_hasil_expertisi b ON a.kode_kunjungan = b.kode_kunjungan
+        WHERE a.no_rm = ? ',[$rm]);
+        return view('ermtemplate.view_hasil_penunjang_rad',compact([
+            'hasil_rad',
+            'rm'
         ]));
     }
 }

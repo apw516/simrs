@@ -1,24 +1,34 @@
 <div class="card">
-    <div class="card-header bg-info">Catatan Perkembangan Pasien Terintegrasi ( CPPT ) <button
-            class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
-            data-target="#modalresumeperawat"><i class="bi bi-eye mr-1"></i> Hasil Assesmen Keperawatan</button>@if ($kunjungan[0]->ref_kunjungan != '0')
+    <div class="card-header bg-info">CPPT
+        <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
+            data-target="#modalresumeperawat"><i class="bi bi-eye mr-1"></i> Hasil Assesmen Keperawatan</button>
+        <button class="btn btn-danger ml-2 lihathasilpenunjang_lab" nomorrm="{{ $kunjungan[0]->no_rm }}"
+            data-toggle="modal" data-target="#modalhasilpenunjang_lab"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan
+            Laboratorium</button>
+        <button class="btn btn-danger ml-2 lihathasilpenunjang_rad" nomorrm="{{ $kunjungan[0]->no_rm }}"
+            data-toggle="modal" data-target="#modalhasilpenunjang_rad"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan
+            Radiologi</button>
+        @if ($kunjungan[0]->ref_kunjungan != '0')
             <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
                 data-target="#modalcatatankonsul"><i class="bi bi-eye mr-1"></i> Catatan Konsul</button>
-        @endif</div>
+        @endif
+    </div>
     <div class="card-body  table-responsive p-5" style="height: 757Px">
         @if ($kunjungan[0]->ref_kunjungan != '0')
-        <div class="jumbotron">
-            <h1 class="display-4">Hello {{ auth()->user()->nama }} </h1><br>
-            <p class="lead">Dokter Pengirim : {{ $kunjungan[0]->dokter_kirim }}</p>
-            <p class="lead">Poliklinik Pengirim : {{ $kunjungan[0]->poli_asal }}</p>
-            <p class="lead">Mohon Konsul</p>
-            <p class="lead">Pasien dengan : <br>RM {{ $kunjungan[0]->no_rm }} |
-                {{ $kunjungan[0]->nama_pasien }} | {{ $kunjungan[0]->diagx }} <br><br>
-                Keterangan <br>
-                @if(count($ref_resume) > 0 ) {{ $ref_resume[0]->keterangan_tindak_lanjut }}@endif
-            </p>
-            <hr class="my-4">
-        </div>
+            <div class="jumbotron">
+                <h1 class="display-4">Hello {{ auth()->user()->nama }} </h1><br>
+                <p class="lead">Dokter Pengirim : {{ $kunjungan[0]->dokter_kirim }}</p>
+                <p class="lead">Poliklinik Pengirim : {{ $kunjungan[0]->poli_asal }}</p>
+                <p class="lead">Mohon Konsul</p>
+                <p class="lead">Pasien dengan : <br>RM {{ $kunjungan[0]->no_rm }} |
+                    {{ $kunjungan[0]->nama_pasien }} | {{ $kunjungan[0]->diagx }} <br><br>
+                    Keterangan <br>
+                    @if (count($ref_resume) > 0)
+                        {{ $ref_resume[0]->keterangan_tindak_lanjut }}
+                    @endif
+                </p>
+                <hr class="my-4">
+            </div>
         @endif
         <form action="" class="formpemeriksaandokter">
             <input hidden type="text" name="kodekunjungan" class="form-control"
@@ -87,7 +97,8 @@
                                                     <input @if ($resume[0]->jantung == 1) checked @endif
                                                         type="checkbox" class="form-check-input" id="jantung"
                                                         name="jantung" value="1">
-                                                    <label class="form-check-label" for="exampleCheck1">Jantung</label>
+                                                    <label class="form-check-label"
+                                                        for="exampleCheck1">Jantung</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
@@ -355,7 +366,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div @if ($kunjungan[0]->ref_kunjungan == '0') hidden @endif  class="card">
+            <div @if ($kunjungan[0]->ref_kunjungan == '0') hidden @endif class="card">
                 <div class="card-header bg-warning">Jawaban Konsul</div>
                 <div class="card-body">
                     <textarea name="jawabankonsul" id="jawabankonsul" rows="10"class="form-control">{{ $resume[0]->keterangan_tindak_lanjut_2 }}</textarea>
@@ -410,7 +421,9 @@
         </form> --}}
         <form action="" class="formtindaklanjut">
             <div class="card">
-                <div class="card-header bg-light">Tindak Lanjut <button type="button" class="btn btn-success float-right riwayatkonsul" data-toggle="modal" data-target="#modalriwayatkonsul">Riwayat Konsul</button></div>
+                <div class="card-header bg-light">Tindak Lanjut <button type="button"
+                        class="btn btn-success float-right riwayatkonsul" data-toggle="modal"
+                        data-target="#modalriwayatkonsul">Riwayat Konsul</button></div>
                 <div class="card-body">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="pilihtindaklanjut"
@@ -3242,7 +3255,9 @@
                     <p class="lead">Pasien dengan : <br>RM {{ $kunjungan[0]->no_rm }} |
                         {{ $kunjungan[0]->nama_pasien }} | {{ $kunjungan[0]->diagx }} <br><br>
                         Keterangan <br>
-                        @if(count($ref_resume) > 0 ) {{ $ref_resume[0]->keterangan_tindak_lanjut }}@endif
+                        @if (count($ref_resume) > 0)
+                            {{ $ref_resume[0]->keterangan_tindak_lanjut }}
+                        @endif
                     </p>
                     <hr class="my-4">
                 </div>
@@ -3254,6 +3269,50 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="modalhasilpenunjang_lab" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hasil Pemeriksaan Laboratorium</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_hasil_penunjang_lab">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalhasilpenunjang_rad" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hasil Pemeriksaan Radiologi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_hasil_penunjang_rad">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Modal -->
 <div class="modal fade" id="modalriwayatkonsul" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -3426,6 +3485,40 @@
             }
         });
     });
+    $(".lihathasilpenunjang_lab").click(function(){
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm
+            },
+            url: '<?= route('lihathasilpenunjang_lab') ?>',
+            success: function(response) {
+                $('.v_hasil_penunjang_lab').html(response);
+                spinner.hide()
+            }
+        });
+    })
+    $(".lihathasilpenunjang_rad").click(function(){
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm
+            },
+            url: '<?= route('lihathasilpenunjang_rad') ?>',
+            success: function(response) {
+                $('.v_hasil_penunjang_rad').html(response);
+                spinner.hide()
+            }
+        });
+    })
     $(document).ready(function() {
         tindakanhariini()
     });
@@ -3442,6 +3535,7 @@
             }
         });
     })
+
     function tindakanhariini() {
         $.ajax({
             type: 'post',
@@ -3540,10 +3634,14 @@
         }
         nomor = parseInt(document.getElementById('jumlahform').value)
         if (x < max_fields) { //max input box allowed
-            nama = 'namaobat'+nomor
-            aturan = 'aturanpakai'+nomor
+            nama = 'namaobat' + nomor
+            aturan = 'aturanpakai' + nomor
             $(wrapper).append(
-                '<div class="form-row text-xs"><div class="form-group col-md-2"><label for="">Nama Obat</label><input type="" class="form-control form-control-sm text-xs" id="'+nama+'" name="namaobat" value=""><input hidden readonly type="" class="form-control form-control-sm" id="" name="kodebarang" value="""></div><div class="form-group col-md-2"><label for="inputPassword4">Aturan Pakai</label><input type="" class="form-control form-control-sm" id="'+ aturan +'" name="aturanpakai" value=""></div><div class="form-group col-md-1"><label for="inputPassword4">Jumlah</label><input type="" class="form-control form-control-sm" id="" name="jumlah" value="0"></div><div class="form-group col-md-1"><label for="inputPassword4">Signa</label><input type="" class="form-control form-control-sm" id="" name="signa" value="0"></div><div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type="" class="form-control form-control-sm" id="" name="keterangan" value=""></div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i></div>'
+                '<div class="form-row text-xs"><div class="form-group col-md-2"><label for="">Nama Obat</label><input type="" class="form-control form-control-sm text-xs" id="' +
+                nama +
+                '" name="namaobat" value=""><input hidden readonly type="" class="form-control form-control-sm" id="" name="kodebarang" value="""></div><div class="form-group col-md-2"><label for="inputPassword4">Aturan Pakai</label><input type="" class="form-control form-control-sm" id="' +
+                aturan +
+                '" name="aturanpakai" value=""></div><div class="form-group col-md-1"><label for="inputPassword4">Jumlah</label><input type="" class="form-control form-control-sm" id="" name="jumlah" value="0"></div><div class="form-group col-md-1"><label for="inputPassword4">Signa</label><input type="" class="form-control form-control-sm" id="" name="signa" value="0"></div><div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type="" class="form-control form-control-sm" id="" name="keterangan" value=""></div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i></div>'
             );
             $(wrapper).on("click", ".remove_field", function(e) { //user click on remove
                 kode = $(this).attr('kode2')
