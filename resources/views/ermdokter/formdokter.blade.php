@@ -1,6 +1,6 @@
 <button class="btn btn-danger" onclick="ambildatapasien()">Kembali</button>
 <div class="row mt-3">
-    <div class="col-md-3">
+    <div class="col-md-2">
         <!-- Profile Image -->
         <div class="card card-primary card-outline">
             <div class="card-body box-profile">
@@ -58,11 +58,11 @@
                         </a>
                     </li> --}}
                     @if(auth()->user()->unit != '1028')
-                    <li class="nav-item" id="pemeriksaan">
+                    {{-- <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="orderpenunjang()">
                             <i class="fas fa-inbox mr-2"></i>Order Penunjang
                         </a>
-                    </li>
+                    </li> --}}
                     @endif
                     {{-- <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="orderfarmasi()">
@@ -91,7 +91,7 @@
         </div>
     </div>
     <!-- /.col -->
-    <div class="col-md-9">
+    <div class="col-md-10">
         <div class="slide3">
         </div>
     </div>

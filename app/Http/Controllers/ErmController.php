@@ -78,7 +78,7 @@ class ErmController extends Controller
     public function ambildatapasienpoli()
     {
         if (auth()->user()->unit == '1002') {
-            $pasienigd = DB::select('SELECT * from mt_pasien_igd');
+            $pasienigd = DB::connection('mysql4')->select('SELECT * from ts_antrian_igd where date(tgl_masuk) = CURDATE()');
             return view('ermtemplate.tabelpasienigd', compact([
                 'pasienigd'
             ]));
@@ -457,6 +457,9 @@ class ErmController extends Controller
         $kelas = $kunjungan[0]->kelas;
         $penyakit = DB::select('SELECT * from mt_penyakit');
         $layanan = $this->carilayanan($kelas, $layanan, $unit);
+        $kelas = $kunjungan[0]->kelas;
+        $layanan_rad = DB::select("CALL SP_CARI_TARIF_PELAYANAN_RAD_ORDER('1','','$kelas')");
+        $layanan_lab = DB::select("CALL SP_CARI_TARIF_PELAYANAN_LAB_ORDER('1','','$kelas')");
         $last_assdok = DB::select('SELECT * FROM assesmen_dokters
         WHERE id = (SELECT MAX(id) FROM assesmen_dokters WHERE id_pasien = ? AND kode_unit = ? ) AND id_pasien = ? AND kode_unit = ?', [$kunjungan[0]->no_rm, $unit, $kunjungan[0]->no_rm, $unit]);
         $first_assdok = DB::select('SELECT * FROM assesmen_dokters
@@ -486,11 +489,13 @@ class ErmController extends Controller
                             'ref_resume'
                         ]));
                     } else {
-                        return view('ermdokter.new_formpemeriksaan_dokter_edit', compact([
+                        return view('ermdokter.new_formpemeriksaan_dokter_edit_2', compact([
                             'kunjungan',
                             'resume',
                             'resume_perawat',
                             'layanan',
+                            'layanan_rad',
+                            'layanan_lab',
                             'penyakit',
                             'k1',
                             'k2',
@@ -519,10 +524,22 @@ class ErmController extends Controller
                             'ref_resume'
                         ]));
                     } else {
-                        return view('ermdokter.new_form_pemeriksaan_dokter', compact([
+                        // return view('ermdokter.new_form_pemeriksaan_dokter', compact([
+                        //     'kunjungan',
+                        //     'resume_perawat',
+                        //     'layanan',
+                        //     'last_assdok',
+                        //     'first_assdok',
+                        //     'penyakit',
+                        //     'hasil_ro',
+                        //     'ref_resume'
+                        // ]));
+                        return view('ermdokter.new_form_pemeriksaan_dokter_2', compact([
                             'kunjungan',
                             'resume_perawat',
                             'layanan',
+                            'layanan_rad',
+                            'layanan_lab',
                             'last_assdok',
                             'first_assdok',
                             'penyakit',
@@ -921,35 +938,124 @@ class ErmController extends Controller
             $value =  $nama['value'];
             $dataSet[$index] = $value;
         }
+        // subyektifanamnesis
+        // keadaanumum
+        // kesadaran
+        // tekananintrakranial
+        // pupil
+        // neurosensorik
+        // integumen
+        // turgorkulit
+        // edema
+        // mukosamulut
+        //         jumlah_perdarahan
+        // warna_perdarahan
+        // intoksikasi
+        // frekuensibab
+        // konsistensibab
+        // warnabab
+        // frekuensibak
+        // konsistensibak
+        // warnabak
+        // kecemasan
+        // mekanisme
+
+        // adakeluhannyeri
+
+
+        // skalanyeripasien
+        // nyeriberipindah
+        // lamanyeri
+        // rasanyeri
+        // seberapaseringnyeri
+        // durasinyeri
+        // peredanyeri
+
+
+        // riwayat_jatuh_dewasa
+        // diagnosissekunder_dewasa
+        // alatbantu_dewasa
+        // terpasanginfus_dewasa
+        // gayaberjalan_dewasa
+        // statusmental
+
+
+        // umur_anak
+        // jeniskelaminanak
+        // diagnosa_anak
+        // gangguankognitif_anak
+        // faktorlingkungan_anak
+        // responanestesi_anak
+        // penggunaanobatobatan_anak
+
+        // apakahadapenurunanbb
+        // beratpenurunan
+        // apakahasupanmakanburuk
+        // Sakitberat
+        // pasientampakkurus
+        // penurunanbb_anak
+        // kondisilain
+        // penyakitlain_anak
+
+
+        // jlnnafas
+        // polanafas
+        // pertukarangas
+        // sirkulasi
+        // perfusijaringan
+        // hipertermia
+        // keseimbangancairan
+        // integritaskulit
+        // aktualtakut
+        // toksik
+        // cederajatuh
+        // nyeri
+        // diagnosakeperawatan
+
+        // rencanakeperawatan
+        // tindakankeperawatan
+        // evaluasikeperawatan
+        // infus
+        // lab
+        // ekg
+        // oksigenasi
+        // nebulizer
+        // saturasioksigen
+        // ngt
+        // mengumbahlambung
+        // kateter
+        // defibrilasi
+        // mayo
+        // ett
+        // suction
+        // eksplorasi
+        // obat
+
         $data = [
-            // 'counter' => $dataSet['counter'],
-            'nama_pasien' => $dataSet['namapasien'],
-            'alamat' => $dataSet['alamat'],
-            'no_rm' => $dataSet['koderegistrasi'],
             'kode_unit' => '1002',
-            // 'kode_kunjungan' => $dataSet['kodekunjungan'],
-            'tanggalkunjungan' => $dataSet['tanggalkunjungan'],
+            'no_rm' => $dataSet['idantrian'],
             'sumberdataperiksa' => $dataSet['sumberdata'],
-            'keluhanutama' => trim($dataSet['keluhanutama']),
+            'asalmasuk' => $dataSet['asalmasuk'],
+            'caramasuk' => $dataSet['caramasuk'],
             'tekanandarah' => $dataSet['tekanandarah'],
             'frekuensinadi' => $dataSet['frekuensinadi'],
             'frekuensinapas' => $dataSet['frekuensinafas'],
             'suhutubuh' => $dataSet['suhutubuh'],
-            'Riwayatpsikologi' => $dataSet['riwayatpsikologis'],
-            'keterangan_riwayat_psikolog' => $dataSet['keteranganriwayatpsikologislainnya'],
-            'penggunaanalatbantu' => $dataSet['alatbantu'],
-            'keterangan_alat_bantu' => $dataSet['keteranganalatbantulain'],
-            'cacattubuh' => $dataSet['cacattubuh'],
-            'keterangancacattubuh' => $dataSet['keterangancacattubuhlainnya'],
-            'Keluhannyeri' => $dataSet['pasienmengeluhnyeri'],
-            'skalenyeripasien' => $dataSet['skalanyeripasien'],
-            'resikojatuh' => $dataSet['resikojatuh'],
-            'Skrininggizi' => $dataSet['penurunanbb'],
-            'beratskrininggizi' => $dataSet['beratpenurunan'],
-            'status_asupanmkanan' => $dataSet['asupanmakanan'],
-            'penyakitlainpasien' => $dataSet['keterangandiagnosalain'],
-            'diagnosakhusus' => $dataSet['diagnosakhusus'],
-            'resikomalnutrisi' => $dataSet['kajianlanjutgizi'],
+            'beratbadan' => $dataSet['beratbadan'],
+            'Keluhannyeri' => $dataSet['adakeluhannyeri'],
+            'skalenyeripasien' => $dataSet['skalanyeripasien'] . ' | ' . $dataSet['nyeriberipindah'] . ' | ' . $dataSet['lamanyeri'] . ' | ' . $dataSet['rasanyeri'] . ' | ' . $dataSet['seberapaseringnyeri'] . ' | ' . $dataSet['durasinyeri'] . ' | ' . $dataSet['peredanyeri'],
+            'keterangan_riwayat_psikolog' => $dataSet['riwayat_jatuh_dewasa'] . ' | ' . $dataSet['diagnosissekunder_dewasa'] . ' | ' . $dataSet['alatbantu_dewasa'] . ' | ' . $dataSet['terpasanginfus_dewasa'] . ' | ' . $dataSet['gayaberjalan_dewasa'] . ' | ' . $dataSet['statusmental'],
+            'umur' => $dataSet['umur_anak'],
+            'jeniskelamin' => $dataSet['jeniskelaminanak'],
+            'diagnosis' => $dataSet['diagnosa_anak'],
+            'gangguankoginitf' => $dataSet['gangguankognitif_anak'],
+            'faktorlingkungan' => $dataSet['faktorlingkungan_anak'],
+            'responterhadapoperasi' => $dataSet['responanestesi_anak'],
+            'penggunaanobat' => $dataSet['penggunaanobatobatan_anak'],
+            'anaktampakkurus' => $dataSet['pasientampakkurus'],
+            'adapenurunanbbanak' => $dataSet['apakahadapenurunanbb'],
+            'faktormalnutrisianak' => $dataSet['beratpenurunan'] . ' | ' . $dataSet['apakahasupanmakanburuk'] . ' | ' . $dataSet['Sakitberat'] . ' | ' . $dataSet['penurunanbb_anak'] . ' | ' . $dataSet['kondisilain'] . ' | ' . $dataSet['penyakitlain_anak'],
+            'penyakitlainpasien' => $dataSet['jlnnafas'].' | '.$dataSet['polanafas'].' | '.$dataSet['pertukarangas'].' | '.$dataSet['sirkulasi'].' | '.$dataSet['perfusijaringan'].' | '.$dataSet['hipertermia'].' | '.$dataSet['keseimbangancairan'].' | '.$dataSet['integritaskulit'].' | '.$dataSet['aktualtakut'].' | '.$dataSet['toksik'].' | '.$dataSet['cederajatuh'].' | '.$dataSet['nyeri'].' | ',
             'diagnosakeperawatan' => $dataSet['diagnosakeperawatan'],
             'rencanakeperawatan' => $dataSet['rencanakeperawatan'],
             'tindakankeperawatan' => $dataSet['tindakankeperawatan'],
@@ -959,6 +1065,7 @@ class ErmController extends Controller
             'status' => '0',
             'signature' => ''
         ];
+        dd($data);
         try {
             $cek = DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE tanggalkunjungan = ? AND no_rm = ?', [$dataSet['tanggalkunjungan'], $dataSet['koderegistrasi']]);
             if (count($cek) > 0) {
@@ -1445,6 +1552,1128 @@ class ErmController extends Controller
                 }
             }
             //end of farmasi
+
+            //datapemeriksaankhusus
+            $gambar = $request->gambar;
+            //jika poli mata
+            if (auth()->user()->unit == '1014') {
+                $data1 = json_decode($_POST['formpemeriksaankhusus'], true);
+                foreach ($data1 as $nama) {
+                    $index =  $nama['name'];
+                    $value =  $nama['value'];
+                    $dataSet[$index] = $value;
+                }
+                $datamata = [
+                    'id_assesmen_dokter' => $id_assesmen,
+                    'no_rm' => $nomorrm,
+                    'nama_dokter' => auth()->user()->nama,
+                    'id_dokter' => auth()->user()->id,
+                    'kode_kunjungan' => $request->kodekunjungan,
+                    'tgl_entry' => $this->get_now(),
+                    'status' => '0',
+                    'vd_od' => $dataSet['od_visus_dasar'],
+                    'vd_od_pinhole' => $dataSet['od_pinhole_visus_dasar'],
+                    'vd_os' => $dataSet['os_visus_dasar'],
+                    'vd_os_pinhole' => $dataSet['os_pinhole_visus_dasar'],
+                    'refraktometer_od_sph' => $dataSet['od_sph_refraktometer'],
+                    'refraktometer_od_cyl' => $dataSet['od_cyl_refraktometer'],
+                    'refraktometer_od_x' => $dataSet['od_x_refraktometer'],
+                    'refraktometer_os_sph' => $dataSet['os_sph_refraktometer'],
+                    'refraktometer_os_cyl' => $dataSet['os_cyl_refraktometer'],
+                    'refraktometer_os_x' => $dataSet['os_x_refraktometer'],
+                    'Lensometer_od_sph' => $dataSet['od_sph_Lensometer'],
+                    'Lensometer_od_cyl' => $dataSet['od_cyl_Lensometer'],
+                    'Lensometer_od_x' => $dataSet['od_x_Lensometer'],
+                    'Lensometer_os_sph' => $dataSet['os_sph_Lensometer'],
+                    'Lensometer_os_cyl' => $dataSet['os_cyl_Lensometer'],
+                    'Lensometer_os_x' => $dataSet['os_x_Lensometer'],
+                    'koreksipenglihatan_vod_sph' => $dataSet['vod_sph_kpj'],
+                    'koreksipenglihatan_vod_cyl' => $dataSet['vod_cyl_kpj'],
+                    'koreksipenglihatan_vod_x' => $dataSet['vod_x_kpj'],
+                    'koreksipenglihatan_vos_sph' => $dataSet['vos_sph_kpj'],
+                    'koreksipenglihatan_vos_cyl' => $dataSet['vos_cyl_kpj'],
+                    'koreksipenglihatan_vos_x' => $dataSet['vos_x_kpj'],
+                    'tajampenglihatandekat' => $dataSet['penglihatan_dekat'],
+                    'tekananintraokular' => $dataSet['tekanan_intra_okular'],
+                    'catatanpemeriksaanlain' => $dataSet['catatan_pemeriksaan_lainnya'],
+                    'palpebra' => $dataSet['palpebra'],
+                    'konjungtiva' => $dataSet['konjungtiva'],
+                    'kornea' => $dataSet['kornea'],
+                    'bilikmatadepan' => $dataSet['bilik_mata_depan'],
+                    'pupil' => $dataSet['pupil'],
+                    'iris' => $dataSet['iris'],
+                    'lensa' => $dataSet['lensa'],
+                    'funduskopi' => $dataSet['funduskopi'],
+                    'status_oftamologis_khusus' => $dataSet['oftamologis'],
+                    'masalahmedis' => $dataSet['masalahmedis'],
+                    'prognosis' => $dataSet['prognosis'],
+                    'id_asskep' =>  $id_asskep
+                ];
+
+                $cekmata = DB::select('select * from erm_mata_kanan_kiri where id_asskep = ?', [$id_asskep]);
+                if (count($cekmata) > 0) {
+                    erm_mata_kanan_kiri::whereRaw('id_asskep = ?', array($id_asskep))->update($datamata);
+                } else {
+                    erm_mata_kanan_kiri::create($datamata);
+                }
+                $hasil_pemeriksaan_khusus = "visus dasar : " . " OD : " . $dataSet['od_visus_dasar'] . " OD PINHOLE : " . $dataSet['od_pinhole_visus_dasar'] . " OS : " . $dataSet['os_visus_dasar'] .  " OS PINHOLE : " . $dataSet['os_pinhole_visus_dasar'] . " | Refraktometer / streak : " . "  OD : Sph : " . $dataSet['od_sph_refraktometer'] . " Cyl : " . $dataSet['od_cyl_refraktometer'] . " X : " . $dataSet['od_x_refraktometer'] . "  OS : Sph  : " . $dataSet['os_sph_refraktometer'] . " Cyl : " . $dataSet['os_cyl_refraktometer'] . " X : " . $dataSet['os_x_refraktometer'] . " Lensometer : " . "  OD : Sph  :" . $dataSet['od_sph_Lensometer'] . " Cyl : " . $dataSet['od_cyl_Lensometer'] . " X : " . $dataSet['od_x_Lensometer'] . "  OS : Sph : " . $dataSet['os_sph_Lensometer'] . " Cyl : " . $dataSet['os_cyl_Lensometer'] . " X : " . $dataSet['os_x_Lensometer'] . " | Koreksi penglihatan jauh : " . "  VOD : Sph : " . $dataSet['vod_sph_kpj'] . " Cyl : " . $dataSet['vod_cyl_kpj'] . " X : " . $dataSet['vod_x_kpj'] . "  VOS : Sph  : " . $dataSet['vos_sph_kpj'] . " Cyl : " . $dataSet['vos_cyl_kpj'] . "X :" . $dataSet['vos_x_kpj'] . " | Tajam penglihatan dekat : " . $dataSet['penglihatan_dekat'] . " | Tekanan Intra Okular : " . $dataSet['tekanan_intra_okular'] . " | Catatan Pemeriksaan Lainnya : " . $dataSet['catatan_pemeriksaan_lainnya'] . " | Palpebra : " . $dataSet['palpebra'] . " | Konjungtiva : " . $dataSet['konjungtiva'] . "| Kornea : " . $dataSet['kornea'] . " | Bilik Mata Depan : " . $dataSet['bilik_mata_depan'] . " | pupil : " . $dataSet['pupil'] . " | Iris : " . $dataSet['iris'] . " | Lensa : " . $dataSet['lensa'] . " | funduskopi : " . $dataSet['funduskopi'] . " | Status Oftalmologis Khusus : " . $dataSet['oftamologis'] . "| Masalah Medis : " . $dataSet['masalahmedis'] . " | Prognosis : " . $dataSet['prognosis'];
+
+                $data_mata = ['gambar_1' => $gambar, 'pemeriksaan_khusus' => $hasil_pemeriksaan_khusus];
+                assesmenawaldokter::whereRaw('id = ?', array($id_assesmen))->update($data_mata);
+            } elseif (auth()->user()->unit == '1019') {
+                $telingakanan = json_decode($_POST['formtelingakanan'], true);
+                $telingakiri = json_decode($_POST['formtelingakiri'], true);
+                $anjurantelinga = json_decode($_POST['formanjurantelinga'], true);
+                $hidungkanan = json_decode($_POST['formhidungkanan'], true);
+                $hidungkiri = json_decode($_POST['formhidungkiri'], true);
+                $kseimpulanhidung = json_decode($_POST['formkesimpulanhidung'], true);
+                foreach ($telingakanan as $nama) {
+                    $index =  $nama['name'];
+                    $value =  $nama['value'];
+                    $arrtelingakanan[$index] = $value;
+                }
+                foreach ($telingakiri as $nama) {
+                    $index =  $nama['name'];
+                    $value =  $nama['value'];
+                    $arrtelingakiri[$index] = $value;
+                }
+                foreach ($anjurantelinga as $nama) {
+                    $index =  $nama['name'];
+                    $value =  $nama['value'];
+                    $arranjurantelinga[$index] = $value;
+                }
+                foreach ($hidungkanan as $nama) {
+                    $index =  $nama['name'];
+                    $value =  $nama['value'];
+                    $arrhidungkanan[$index] = $value;
+                }
+                foreach ($hidungkiri as $nama) {
+                    $index =  $nama['name'];
+                    $value =  $nama['value'];
+                    $arrhidungkiri[$index] = $value;
+                }
+                foreach ($kseimpulanhidung as $nama) {
+                    $index =  $nama['name'];
+                    $value =  $nama['value'];
+                    $arrkesimpulanhidung[$index] = $value;
+                }
+                //telinga kanan
+                (empty($arrtelingakanan['Lapang'])) ? $a = '' : $a = ' Liang Telinga - lapang';
+                (empty($arrtelingakanan['Destruksi'])) ? $b = '' : $b = ' Liang Telinga - Destruksi';
+                (empty($arrtelingakanan['Sempit']))  ? $c = '' : $c = ' Liang Telinga - Sempit';
+                (empty($arrtelingakanan['Serumen']))  ? $d = '' : $d = ' Liang Telinga - Serumen';
+                (empty($arrtelingakanan['Kolesteatoma']))  ? $e = '' : $e = ' Liang Telinga - Kolesteatoma';
+                (empty($arrtelingakanan['Sekret']))  ? $f = '' : $f = ' Liang Telinga - Sekret';
+                (empty($arrtelingakanan['Massa atau Jaringan']))  ? $g = '' : $g = ' Liang Telinga - Massa atau Jaringan';
+                (empty($arrtelingakanan['Jamur']))  ? $h = '' : $h = ' Liang Telinga - Jamur';
+                (empty($arrtelingakanan['Benda Asing']))  ? $i = '' : $i = ' Liang Telinga - Benda Asing';
+                (empty($arrtelingakanan['LT Lain-Lain']))  ? $j = '' : $j = ' Liang Telinga - Lain - lain';
+
+                (empty($arrtelingakanan['Intak - Normal']))  ? $k = '' : $k = ' Intak - Normal';
+                (empty($arrtelingakanan['Intak - Hiperemis']))  ? $l = '' : $l = ' Intak - Hiperemis';
+                (empty($arrtelingakanan['Intak - Bulging']))  ? $m = '' : $m = ' Intak - Bulging';
+                (empty($arrtelingakanan['Intak - Retraksi']))  ? $n = '' : $n = ' Intak - Retraksi';
+                (empty($arrtelingakanan['Intak - Sklerotik']))  ? $o = '' : $o = ' Intak - Sklerotik';
+                (empty($arrtelingakanan['Perforasi - Sentral']))  ? $p = '' : $p = ' Perforasi - Sentral';
+                (empty($arrtelingakanan['Perforasi - Atik']))  ? $q = '' : $q = ' Perforasi - Atik';
+                (empty($arrtelingakanan['Perforasi - Marginal']))  ? $r = '' : $r = ' Perforasi - Marginal';
+                (empty($arrtelingakanan['Perforasi - Lain-Lain']))  ? $s = '' : $s = ' Perforasi - Lain-Lain';
+
+                if ($arrtelingakanan['ltketeranganlain'] != '') {
+                    $ltketeranganlain = ' Liang telinga keterangan : ' . $arrtelingakanan['ltketeranganlain'];
+                } else {
+                    $ltketeranganlain = '';
+                }
+
+                if ($arrtelingakanan['mtketeranganlain'] != '') {
+                    $mtketeranganlain = ' membaran timpan keterangan lain : ' . $arrtelingakanan['mtketeranganlain'];
+                } else {
+                    $mtketeranganlain = '';
+                }
+
+                if ($arrtelingakanan['mukosa'] != '') {
+                    $mukosa = ' mukosa : ' . $arrtelingakanan['mukosa'];
+                } else {
+                    $mukosa = '';
+                }
+
+                if ($arrtelingakanan['oslkel'] != '') {
+                    $oslkel = ' oslkel : ' . $arrtelingakanan['oslkel'];
+                } else {
+                    $oslkel = '';
+                }
+
+                if ($arrtelingakanan['Isthmus'] != '') {
+                    $isthmus = ' Isthmus : ' . $arrtelingakanan['Isthmus'];
+                } else {
+                    $isthmus = '';
+                }
+                if ($arrtelingakanan['keteranganlain'] != '') {
+                    $keteranganlain = ' Keterangan lain : ' . $arrtelingakanan['keteranganlain'];
+                } else {
+                    $keteranganlain = '';
+                }
+                if ($arranjurantelinga['kesimpulan'] != '') {
+                    $kesimpulan = ' kesimpulan : ' . $arranjurantelinga['kesimpulan'];
+                } else {
+                    $kesimpulan = '';
+                }
+                if ($arranjurantelinga['anjuran'] != '') {
+                    $anjuran = ' anjuran : ' . $arranjurantelinga['anjuran'];
+                } else {
+                    $anjuran = '';
+                }
+
+                $data_telinga_kanan = 'Telinga Kanan : ' . $a . $b . $c . $d . $e . $f . $g . $h . $i . $j . $ltketeranganlain . $k . $l . $m . $n . $o . $p . $q . $r . $s .  $mtketeranganlain . $mukosa . $oslkel . $isthmus . $keteranganlain . $kesimpulan . $anjuran;
+                //end telinga kanan
+
+
+                //telinga kiri
+                (empty($arrtelingakiri['Lapang'])) ? $a1 = '' : $a1 = ' Liang Telinga - lapang';
+                (empty($arrtelingakiri['Destruksi'])) ? $b1 = '' : $b1 = ' Liang Telinga - Destruksi';
+                (empty($arrtelingakiri['Sempit']))  ? $c1 = '' : $c1 = ' Liang Telinga - Sempit';
+                (empty($arrtelingakiri['Serumen']))  ? $d1 = '' : $d1 = ' Liang Telinga - Serumen';
+                (empty($arrtelingakiri['Kolesteatoma']))  ? $e1 = '' : $e1 = ' Liang Telinga - Kolesteatoma';
+                (empty($arrtelingakiri['Sekret']))  ? $f1 = '' : $f1 = ' Liang Telinga - Sekret';
+                (empty($arrtelingakiri['Massa atau Jaringan']))  ? $g1 = '' : $g1 = ' Liang Telinga - Massa atau Jaringan';
+                (empty($arrtelingakiri['Jamur']))  ? $h1 = '' : $h1 = ' Liang Telinga - Jamur';
+                (empty($arrtelingakiri['Benda Asing']))  ? $i1 = '' : $i1 = ' Liang Telinga - Benda Asing';
+                (empty($arrtelingakiri['LT Lain-Lain']))  ? $j1 = '' : $j1 = ' Liang Telinga - Lain - lain';
+
+                (empty($arrtelingakiri['Intak - Normal']))  ? $k1 = '' : $k1 = ' Intak - Normal';
+                (empty($arrtelingakiri['Intak - Hiperemis']))  ? $l1 = '' : $l1 = ' Intak - Hiperemis';
+                (empty($arrtelingakiri['Intak - Bulging']))  ? $m1 = '' : $m1 = ' Intak - Bulging';
+                (empty($arrtelingakiri['Intak - Retraksi']))  ? $n1 = '' : $n1 = ' Intak - Retraksi';
+                (empty($arrtelingakiri['Intak - Sklerotik']))  ? $o1 = '' : $o1 = ' Intak - Sklerotik';
+                (empty($arrtelingakiri['Perforasi - Sentral']))  ? $p1 = '' : $p1 = ' Perforasi - Sentral';
+                (empty($arrtelingakiri['Perforasi - Atik']))  ? $q1 = '' : $q1 = ' Perforasi - Atik';
+                (empty($arrtelingakiri['Perforasi - Marginal']))  ? $r1 = '' : $r1 = ' Perforasi - Marginal';
+                (empty($arrtelingakiri['Perforasi - Lain-Lain']))  ? $s1 = '' : $s1 = ' Perforasi - Lain-Lain';
+
+                if ($arrtelingakiri['ltketeranganlain'] != '') {
+                    $ltketeranganlain = ' Liang telinga keterangan : ' . $arrtelingakiri['ltketeranganlain'];
+                } else {
+                    $ltketeranganlain = '';
+                }
+
+                if ($arrtelingakiri['mtketeranganlain'] != '') {
+                    $mtketeranganlain = ' membaran timpan keterangan lain : ' . $arrtelingakiri['mtketeranganlain'];
+                } else {
+                    $mtketeranganlain = '';
+                }
+
+                if ($arrtelingakiri['mukosa'] != '') {
+                    $mukosa = ' mukosa : ' . $arrtelingakiri['mukosa'];
+                } else {
+                    $mukosa = '';
+                }
+
+                if ($arrtelingakiri['oslkel'] != '') {
+                    $oslkel = ' oslkel : ' . $arrtelingakiri['oslkel'];
+                } else {
+                    $oslkel = '';
+                }
+
+                if ($arrtelingakiri['Isthmus'] != '') {
+                    $isthmus = ' Isthmus : ' . $arrtelingakiri['Isthmus'];
+                } else {
+                    $isthmus = '';
+                }
+                if ($arrtelingakiri['keteranganlain'] != '') {
+                    $keteranganlain = ' Keterangan lain : ' . $arrtelingakiri['keteranganlain'];
+                } else {
+                    $keteranganlain = '';
+                }
+                if ($arranjurantelinga['kesimpulan'] != '') {
+                    $kesimpulan = ' kesimpulan : ' . $arranjurantelinga['kesimpulan'];
+                } else {
+                    $kesimpulan = '';
+                }
+                if ($arranjurantelinga['anjuran'] != '') {
+                    $anjuran = ' anjuran : ' . $arranjurantelinga['anjuran'];
+                } else {
+                    $anjuran = '';
+                }
+
+                $data_telinga_kiri = 'Telinga Kiri : ' . $a1 . $b1 . $c1 . $d1 . $e1 . $f1 . $g1 . $h1 . $i1 . $j1 . $ltketeranganlain . $k1 . $l1 . $m1 . $n1 . $o1 . $p1 . $q1 . $r1 . $s1 .  $mtketeranganlain . $mukosa . $oslkel . $isthmus . $keteranganlain . $kesimpulan . $anjuran;
+                //end telinga kiri
+
+
+                //hidung
+
+                $KN_Lapang = (empty($arrhidungkanan['Lapang'])) ? '' : ' Kavum nasi lapang ';
+                $KN_Sempit = (empty($arrhidungkanan['Sempit'])) ? '' : ' Kavum nasi sempit ';
+                $KN_Mukosa_pucat = (empty($arrhidungkanan['Mukosa Pucat'])) ? '' : ' Kavum nasi mukosa pucat ';
+                $KN_Mukosa_hiperemis = (empty($arrhidungkanan['Mukosa Hiperemis'])) ? '' : ' Kavum nasi mukosa hiperemis ';
+                $KN_Mukosa_edema = (empty($arrhidungkanan['Kavum Nasi Mukosa Edema'])) ? '' : ' Kavum nasi mukosa edema ';
+                $KN_Massa = (empty($arrhidungkanan['Massa'])) ? '' : ' Kavum nasi massa ';
+                $KN_Polip = (empty($arrhidungkanan['Kavum Nasi Polip'])) ? '' : ' Kavum nasi polip ';
+                $KI_Eutrofi = (empty($arrhidungkanan['Eutrofi'])) ? '' : ' Konka eutrofi ';
+                $KN_Hipertrofi = (empty($arrhidungkanan['Hipertrofi'])) ? '' : ' Konka hipertrofi ';
+                $KN_Atrofi = (empty($arrhidungkanan['Atrofi'])) ? '' : ' Konka atrofi ';
+                $MM_Terbuka  =  (empty($arrhidungkanan['Terbuka'])) ? '' : ' Meatus medius terbuka ';
+                $MM_Tertutup  =  (empty($arrhidungkanan['Tertutup'])) ? '' : ' Meatus medius tertutup ';
+                $MM_Mukosa_Edema  =  (empty($arrhidungkanan['Mukosa Edema'])) ? '' : ' Meatus medius mukosa edema ';
+                $S_Polip  = (empty($arrhidungkanan['Septum Polip'])) ? '' : ' Septum polip ';
+                $S_Sekret  = (empty($arrhidungkanan['Sekret'])) ? '' : ' Septum sekret ';
+                $S_Lurus  = (empty($arrhidungkanan['Lurus'])) ? '' : ' Septum lurus ';
+                $S_Deviasi  = (empty($arrhidungkanan['Deviasi'])) ? '' : ' Septum Deviasi ';
+                $S_Spina  = (empty($arrhidungkanan['Spina'])) ? '' : ' Septum Spina ';
+                $N_Normal  = (empty($arrhidungkanan['Normal'])) ? '' : ' Nasofaring Normal ';
+                $N_Adenoid  = (empty($arrhidungkanan['Adenoid'])) ? '' : ' Nasofaring Adenoid ';
+                $N_Keradangan  = (empty($arrhidungkanan['Keradangan'])) ? '' : ' Nasofaring Keradangan ';
+                $N_Massa  = (empty($arrhidungkanan['Massa'])) ? '' : ' Nasofaring Massa ';
+                $lain_lain  = $arrhidungkanan['lain-lain'];
+                $kesimpulan  = 'Kesimpulan : ' . $arrkesimpulanhidung['kesimpulanhidung'];
+
+                $_KN_Lapang = (empty($arrhidungkiri['Lapang'])) ? '' : ' Kavum nasi lapang ';
+                $_KN_Sempit = (empty($arrhidungkiri['Sempit'])) ? '' : ' Kavum nasi sempit ';
+                $_KN_Mukosa_pucat = (empty($arrhidungkiri['Mukosa Pucat'])) ? '' : ' Kavum nasi mukosa pucat ';
+                $_KN_Mukosa_hiperemis = (empty($arrhidungkiri['Mukosa Hiperemis'])) ? '' : ' Kavum nasi mukosa hiperemis ';
+                $_KN_Mukosa_edema = (empty($arrhidungkiri['Kavum Nasi Mukosa Edema'])) ? '' : ' Kavum nasi mukosa edema ';
+                $_KN_Massa = (empty($arrhidungkiri['Massa'])) ? '' : ' Kavum nasi massa ';
+                $_KN_Polip = (empty($arrhidungkiri['Kavum Nasi Polip'])) ? '' : ' Kavum nasi polip ';
+                $_KI_Eutrofi = (empty($arrhidungkiri['Eutrofi'])) ? '' : ' Konka eutrofi ';
+                $_KN_Hipertrofi = (empty($arrhidungkiri['Hipertrofi'])) ? '' : ' Konka hipertrofi ';
+                $_KN_Atrofi = (empty($arrhidungkiri['Atrofi'])) ? '' : ' Konka atrofi ';
+                $_MM_Terbuka  =  (empty($arrhidungkiri['Terbuka'])) ? '' : ' Meatus medius terbuka ';
+                $_MM_Tertutup  =  (empty($arrhidungkiri['Tertutup'])) ? '' : ' Meatus medius tertutup ';
+                $_MM_Mukosa_Edema  =  (empty($arrhidungkiri['Mukosa Edema'])) ? '' : ' Meatus medius mukosa edema ';
+                $_S_Polip  = (empty($arrhidungkiri['Septum Polip'])) ? '' : ' Septum polip ';
+                $_S_Sekret  = (empty($arrhidungkiri['Sekret'])) ? '' : ' Septum sekret ';
+                $_S_Lurus  = (empty($arrhidungkiri['Lurus'])) ? '' : ' Septum lurus ';
+                $_S_Deviasi  = (empty($arrhidungkiri['Deviasi'])) ? '' : ' Septum Deviasi ';
+                $_S_Spina  = (empty($arrhidungkiri['Spina'])) ? '' : ' Septum Spina ';
+                $_N_Normal  = (empty($arrhidungkiri['Normal'])) ? '' : ' Nasofaring Normal ';
+                $_N_Adenoid  = (empty($arrhidungkiri['Adenoid'])) ? '' : ' Nasofaring Adenoid ';
+                $_N_Keradangan  = (empty($arrhidungkiri['Keradangan'])) ? '' : ' Nasofaring Keradangan ';
+                $_N_Massa  = (empty($arrhidungkiri['Massa'])) ? '' : ' Nasofaring Massa ';
+                $_lain_lain  = $arrhidungkiri['lain-lain'];
+                $_kesimpulan  = ' Kesimpulan : ' . $arrkesimpulanhidung['kesimpulanhidung'];
+
+                $hidungkanan = 'Hidung Kanan : ' . $KN_Lapang . $KN_Sempit . $KN_Mukosa_pucat . $KN_Mukosa_pucat . $KN_Mukosa_hiperemis . $KN_Mukosa_edema . $KN_Massa . $KN_Polip . $KI_Eutrofi . $KN_Hipertrofi . $KN_Atrofi . $MM_Terbuka . $MM_Tertutup . $MM_Mukosa_Edema . $S_Polip . $S_Sekret . $S_Lurus . $S_Deviasi . $S_Spina . $N_Normal . $N_Adenoid . $N_Keradangan . $N_Massa . $lain_lain . $kesimpulan;
+
+                $hidungkiri = 'Hidung Kiri : ' . $_KN_Lapang . $_KN_Sempit . $_KN_Mukosa_pucat . $_KN_Mukosa_pucat . $_KN_Mukosa_hiperemis . $_KN_Mukosa_edema . $_KN_Massa . $_KN_Polip . $_KI_Eutrofi . $_KN_Hipertrofi . $_KN_Atrofi . $_MM_Terbuka . $_MM_Tertutup . $_MM_Mukosa_Edema . $_S_Polip . $_S_Sekret . $_S_Lurus . $_S_Deviasi . $_S_Spina . $_N_Normal . $_N_Adenoid . $_N_Keradangan . $_N_Massa . $_lain_lain . $_kesimpulan;
+                // dd($id_assesmen);
+                $datatelingakanan = [
+                    'id_assesmen_dokter' => $id_assesmen,
+                    'nama_dokter' => auth()->user()->nama,
+                    'no_rm' => $nomorrm,
+                    'id_dokter' => auth()->user()->id,
+                    'status' => '0',
+                    'kode_kunjungan' => $request->kodekunjungan,
+                    'keterangan' => 'telinga kanan',
+                    'LT_lapang' => (empty($arrtelingakanan['Lapang'])) ? 0 : $arrtelingakanan['Lapang'],
+                    'LT_dataSetestruksi' => (empty($arrtelingakanan['Destruksi'])) ? 0 : $arrtelingakanan['Destruksi'],
+                    'LT_Sempit' => (empty($arrtelingakanan['Sempit']))  ? 0 : $arrtelingakanan['Sempit'],
+                    'LT_Serumen' => (empty($arrtelingakanan['Serumen']))  ? 0 : $arrtelingakanan['Serumen'],
+                    'LT_Kolesteatoma' => (empty($arrtelingakanan['Kolesteatoma']))  ? 0 : $arrtelingakanan['Kolesteatoma'],
+                    'LT_Sekret' => (empty($arrtelingakanan['Sekret']))  ? 0 : $arrtelingakanan['Sekret'],
+                    'LT_Massa_Jaringan' => (empty($arrtelingakanan['Massa atau Jaringan']))  ? 0 : $arrtelingakanan['Massa atau Jaringan'],
+                    'LT_Jamur' => (empty($arrtelingakanan['Jamur']))  ? 0 : $arrtelingakanan['Jamur'],
+                    'LT_Benda_asing' => (empty($arrtelingakanan['Benda Asing']))  ? 0 : $arrtelingakanan['Benda Asing'],
+                    'LT_Lain_lain' => (empty($arrtelingakanan['LT Lain-Lain']))  ? 0 : $arrtelingakanan['LT Lain-Lain'],
+                    'LT_Keterangan_lain' => $arrtelingakanan['ltketeranganlain'],
+                    'MT_intak_normal' => (empty($arrtelingakanan['Intak - Normal']))  ? 0 : $arrtelingakanan['Intak - Normal'],
+                    'MT_intak_hiperemis' => (empty($arrtelingakanan['Intak - Hiperemis']))  ? 0 : $arrtelingakanan['Intak - Hiperemis'],
+                    'MT_intak_bulging' => (empty($arrtelingakanan['Intak - Bulging']))  ? 0 : $arrtelingakanan['Intak - Bulging'],
+                    'MT_intak_retraksi' => (empty($arrtelingakanan['Intak - Retraksi']))  ? 0 : $arrtelingakanan['Intak - Retraksi'],
+                    'MT_intak_sklerotik' => (empty($arrtelingakanan['Intak - Sklerotik']))  ? 0 : $arrtelingakanan['Intak - Sklerotik'],
+                    'MT_perforasi_sentral' => (empty($arrtelingakanan['Perforasi - Sentral']))  ? 0 : $arrtelingakanan['Perforasi - Sentral'],
+                    'MT_perforasi_atik' => (empty($arrtelingakanan['Perforasi - Atik']))  ? 0 : $arrtelingakanan['Perforasi - Atik'],
+                    'MT_perforasi_marginal' => (empty($arrtelingakanan['Perforasi - Marginal']))  ? 0 : $arrtelingakanan['Perforasi - Marginal'],
+                    'MT_perforasi_lain' => (empty($arrtelingakanan['Perforasi - Lain-Lain']))  ? 0 : $arrtelingakanan['Perforasi - Lain-Lain'],
+                    'MT_keterangan_lain' => $arrtelingakanan['mtketeranganlain'],
+                    'MT_mukosa' => $arrtelingakanan['mukosa'],
+                    'MT_osikal' => $arrtelingakanan['oslkel'],
+                    'MT_isthmus' => $arrtelingakanan['Isthmus'],
+                    'lain_lain' => $arrtelingakanan['keteranganlain'],
+                    'kesimpulan' => $arranjurantelinga['kesimpulan'],
+                    'anjuran' => $arranjurantelinga['anjuran'],
+                    'tgl_entry' => $this->get_now()
+                ];
+                $datatelingakiri = [
+                    'id_assesmen_dokter' => $id_assesmen,
+                    'nama_dokter' => auth()->user()->nama,
+                    'no_rm' => $nomorrm,
+                    'id_dokter' => auth()->user()->id,
+                    'status' => '0',
+                    'kode_kunjungan' => $request->kodekunjungan,
+                    'keterangan' => 'telinga kiri',
+                    'LT_lapang' => (empty($arrtelingakiri['Lapang'])) ? 0 : $arrtelingakiri['Lapang'],
+                    'LT_dataSetestruksi' => (empty($arrtelingakiri['Destruksi'])) ? 0 : $arrtelingakiri['Destruksi'],
+                    'LT_Sempit' => (empty($arrtelingakiri['Sempit']))  ? 0 : $arrtelingakiri['Sempit'],
+                    'LT_Serumen' => (empty($arrtelingakiri['Serumen']))  ? 0 : $arrtelingakiri['Serumen'],
+                    'LT_Kolesteatoma' => (empty($arrtelingakiri['Kolesteatoma']))  ? 0 : $arrtelingakiri['Kolesteatoma'],
+                    'LT_Sekret' => (empty($arrtelingakiri['Sekret']))  ? 0 : $arrtelingakiri['Sekret'],
+                    'LT_Massa_Jaringan' => (empty($arrtelingakiri['Massa atau Jaringan']))  ? 0 : $arrtelingakiri['Massa atau Jaringan'],
+                    'LT_Jamur' => (empty($arrtelingakiri['Jamur']))  ? 0 : $arrtelingakiri['Jamur'],
+                    'LT_Benda_asing' => (empty($arrtelingakiri['Benda Asing']))  ? 0 : $arrtelingakiri['Benda Asing'],
+                    'LT_Lain_lain' => (empty($arrtelingakiri['LT Lain-Lain']))  ? 0 : $arrtelingakiri['LT Lain-Lain'],
+                    'LT_Keterangan_lain' => $arrtelingakiri['ltketeranganlain'],
+                    'MT_intak_normal' => (empty($arrtelingakiri['Intak - Normal']))  ? 0 : $arrtelingakiri['Intak - Normal'],
+                    'MT_intak_hiperemis' => (empty($arrtelingakiri['Intak - Hiperemis']))  ? 0 : $arrtelingakiri['Intak - Hiperemis'],
+                    'MT_intak_bulging' => (empty($arrtelingakiri['Intak - Bulging']))  ? 0 : $arrtelingakiri['Intak - Bulging'],
+                    'MT_intak_retraksi' => (empty($arrtelingakiri['Intak - Retraksi']))  ? 0 : $arrtelingakiri['Intak - Retraksi'],
+                    'MT_intak_sklerotik' => (empty($arrtelingakiri['Intak - Sklerotik']))  ? 0 : $arrtelingakiri['Intak - Sklerotik'],
+                    'MT_perforasi_sentral' => (empty($arrtelingakiri['Perforasi - Sentral']))  ? 0 : $arrtelingakiri['Perforasi - Sentral'],
+                    'MT_perforasi_atik' => (empty($arrtelingakiri['Perforasi - Atik']))  ? 0 : $arrtelingakiri['Perforasi - Atik'],
+                    'MT_perforasi_marginal' => (empty($arrtelingakiri['Perforasi - Marginal']))  ? 0 : $arrtelingakiri['Perforasi - Marginal'],
+                    'MT_perforasi_lain' => (empty($arrtelingakiri['Perforasi - Lain-Lain']))  ? 0 : $arrtelingakiri['Perforasi - Lain-Lain'],
+                    'MT_keterangan_lain' => $arrtelingakiri['mtketeranganlain'],
+                    'MT_mukosa' => $arrtelingakiri['mukosa'],
+                    'MT_osikal' => $arrtelingakiri['oslkel'],
+                    'MT_isthmus' => $arrtelingakiri['Isthmus'],
+                    'lain_lain' => $arrtelingakiri['keteranganlain'],
+                    'kesimpulan' => $arranjurantelinga['kesimpulan'],
+                    'anjuran' => $arranjurantelinga['anjuran'],
+                    'tgl_entry' => $this->get_now()
+                ];
+                $datahidungkanan = [
+                    'id_assesmen_dokter' => $id_assesmen,
+                    'nama_dokter' => auth()->user()->nama,
+                    'no_rm' => $nomorrm,
+                    'id_dokter' => auth()->user()->id,
+                    'status' => '0',
+                    'tgl_entry' => $this->get_now(),
+                    'keterangan' => 'Hidung Kanan',
+                    'kode_kunjungan' => $request->kodekunjungan,
+                    'KN_Lapang' => (empty($arrhidungkanan['Lapang'])) ? 0 : $arrhidungkanan['Lapang'],
+                    'KN_Sempit' => (empty($arrhidungkanan['Sempit'])) ? 0 : $arrhidungkanan['Sempit'],
+                    'KN_Mukosa_pucat' => (empty($arrhidungkanan['Mukosa Pucat'])) ? 0 : $arrhidungkanan['Mukosa Pucat'],
+                    'KN_Mukosa_hiperemis' => (empty($arrhidungkanan['Mukosa Hiperemis'])) ? 0 : $arrhidungkanan['Mukosa Hiperemis'],
+                    'KN_Mukosa_edema' => (empty($arrhidungkanan['Kavum Nasi Mukosa Edema'])) ? 0 : $arrhidungkanan['Kavum Nasi Mukosa Edema'],
+                    'KN_Massa' => (empty($arrhidungkanan['Massa'])) ? 0 : $arrhidungkanan['Massa'],
+                    'KN_Polip' => (empty($arrhidungkanan['Kavum Nasi Polip'])) ? 0 : $arrhidungkanan['Kavum Nasi Polip'],
+                    'KI_Eutrofi' => (empty($arrhidungkanan['Eutrofi'])) ? 0 : $arrhidungkanan['Eutrofi'],
+                    'KI_Hipertrofi' => (empty($arrhidungkanan['Hipertrofi'])) ? 0 : $arrhidungkanan['Hipertrofi'],
+                    'KI_Atrofi' => (empty($arrhidungkanan['Atrofi'])) ? 0 : $arrhidungkanan['Atrofi'],
+                    'MM_Terbuka' => (empty($arrhidungkanan['Terbuka'])) ? 0 : $arrhidungkanan['Terbuka'],
+                    'MM_Tertutup' => (empty($arrhidungkanan['Tertutup'])) ? 0 : $arrhidungkanan['Tertutup'],
+                    'MM_Mukosa_Edema' => (empty($arrhidungkanan['Mukosa Edema'])) ? 0 : $arrhidungkanan['Mukosa Edema'],
+                    'S_Polip' => (empty($arrhidungkanan['Septum Polip'])) ? 0 : $arrhidungkanan['Septum Polip'],
+                    'S_Sekret' => (empty($arrhidungkanan['Sekret'])) ? 0 : $arrhidungkanan['Sekret'],
+                    'S_Lurus' => (empty($arrhidungkanan['Lurus'])) ? 0 : $arrhidungkanan['Lurus'],
+                    'S_Deviasi' => (empty($arrhidungkanan['Deviasi'])) ? 0 : $arrhidungkanan['Deviasi'],
+                    'S_Spina' => (empty($arrhidungkanan['Spina'])) ? 0 : $arrhidungkanan['Spina'],
+                    'N_Normal' => (empty($arrhidungkanan['Normal'])) ? 0 : $arrhidungkanan['Normal'],
+                    'N_Adenoid' => (empty($arrhidungkanan['Adenoid'])) ? 0 : $arrhidungkanan['Adenoid'],
+                    'N_Keradangan' => (empty($arrhidungkanan['Keradangan'])) ? 0 : $arrhidungkanan['Keradangan'],
+                    'N_Massa' => (empty($arrhidungkanan['Massa'])) ? 0 : $arrhidungkanan['Massa'],
+                    'lain_lain' => $arrhidungkanan['lain-lain'],
+                    'kesimpulan' => $arrkesimpulanhidung['kesimpulanhidung']
+                ];
+                $datahidungkiri = [
+                    'id_assesmen_dokter' => $id_assesmen,
+                    'nama_dokter' => auth()->user()->nama,
+                    'no_rm' => $nomorrm,
+                    'id_dokter' => auth()->user()->id,
+                    'status' => '0',
+                    'tgl_entry' => $this->get_now(),
+                    'keterangan' => 'Hidung Kiri',
+                    'kode_kunjungan' => $request->kodekunjungan,
+                    'KN_Lapang' => (empty($arrhidungkiri['Lapang'])) ? 0 : $arrhidungkiri['Lapang'],
+                    'KN_Sempit' => (empty($arrhidungkiri['Sempit'])) ? 0 : $arrhidungkiri['Sempit'],
+                    'KN_Mukosa_pucat' => (empty($arrhidungkiri['Mukosa Pucat'])) ? 0 : $arrhidungkiri['Mukosa Pucat'],
+                    'KN_Mukosa_hiperemis' => (empty($arrhidungkiri['Mukosa Hiperemis'])) ? 0 : $arrhidungkiri['Mukosa Hiperemis'],
+                    'KN_Mukosa_edema' => (empty($arrhidungkiri['Kavum Nasi Mukosa Edema'])) ? 0 : $arrhidungkiri['Kavum Nasi Mukosa Edema'],
+                    'KN_Massa' => (empty($arrhidungkiri['Massa'])) ? 0 : $arrhidungkiri['Massa'],
+                    'KN_Polip' => (empty($arrhidungkiri['Kavum Nasi Polip'])) ? 0 : $arrhidungkiri['Kavum Nasi Polip'],
+                    'KI_Eutrofi' => (empty($arrhidungkiri['Eutrofi'])) ? 0 : $arrhidungkiri['Eutrofi'],
+                    'KI_Hipertrofi' => (empty($arrhidungkiri['Hipertrofi'])) ? 0 : $arrhidungkiri['Hipertrofi'],
+                    'KI_Atrofi' => (empty($arrhidungkiri['Atrofi'])) ? 0 : $arrhidungkiri['Atrofi'],
+                    'MM_Terbuka' => (empty($arrhidungkiri['Terbuka'])) ? 0 : $arrhidungkiri['Terbuka'],
+                    'MM_Tertutup' => (empty($arrhidungkiri['Tertutup'])) ? 0 : $arrhidungkiri['Tertutup'],
+                    'MM_Mukosa_Edema' => (empty($arrhidungkiri['Mukosa Edema'])) ? 0 : $arrhidungkiri['Mukosa Edema'],
+                    'S_Polip' => (empty($arrhidungkiri['Septum Polip'])) ? 0 : $arrhidungkiri['Septum Polip'],
+                    'S_Sekret' => (empty($arrhidungkiri['Sekret'])) ? 0 : $arrhidungkiri['Sekret'],
+                    'S_Lurus' => (empty($arrhidungkiri['Lurus'])) ? 0 : $arrhidungkiri['Lurus'],
+                    'S_Deviasi' => (empty($arrhidungkiri['Deviasi'])) ? 0 : $arrhidungkiri['Deviasi'],
+                    'S_Spina' => (empty($arrhidungkiri['Spina'])) ? 0 : $arrhidungkiri['Spina'],
+                    'N_Normal' => (empty($arrhidungkiri['Normal'])) ? 0 : $arrhidungkiri['Normal'],
+                    'N_Adenoid' => (empty($arrhidungkiri['Adenoid'])) ? 0 : $arrhidungkiri['Adenoid'],
+                    'N_Keradangan' => (empty($arrhidungkiri['Keradangan'])) ? 0 : $arrhidungkiri['Keradangan'],
+                    'N_Massa' => (empty($arrhidungkiri['Massa'])) ? 0 : $arrhidungkiri['Massa'],
+                    'lain_lain' => $arrhidungkiri['lain-lain'],
+                    'kesimpulan' => $arrkesimpulanhidung['kesimpulanhidung']
+                ];
+                $hasilpemeriksaan = $data_telinga_kanan . ' | ' . $data_telinga_kiri . ' | ' . $hidungkanan . ' | ' . $hidungkiri;
+                $cektelingakanan = DB::select('select * from erm_tht_telinga where id_assesmen_dokter = ? and keterangan = ?', [$id_assesmen, 'telinga kanan']);
+                $cektelingakiri = DB::select('select * from erm_tht_telinga where id_assesmen_dokter = ? and keterangan = ?', [$id_assesmen, 'telinga kiri']);
+                $cekhidungkanan = DB::select('select * from erm_tht_hidung where id_assesmen_dokter = ? and keterangan = ?', [$id_assesmen, 'Hidung Kanan']);
+                $cekhidungkiri = DB::select('select * from erm_tht_hidung where id_assesmen_dokter = ? and keterangan = ?', [$id_assesmen, 'Hidung Kiri']);
+                $data_telinga = ['gambar_1' => $request->gambar, 'pemeriksaan_khusus' => $hasilpemeriksaan];
+                assesmenawaldokter::whereRaw('id = ?', array($id_assesmen))->update($data_telinga);
+                if (count($cektelingakanan) > 0) {
+                    ermtht_telinga::whereRaw('id_assesmen_dokter = ? and keterangan = ?', array($id_assesmen, 'telinga kanan'))->update($datatelingakanan);
+                } else {
+                    ermtht_telinga::create($datatelingakanan);
+                }
+                if (count($cektelingakiri) > 0) {
+                    ermtht_telinga::whereRaw('id_assesmen_dokter = ? and keterangan = ?', array($id_assesmen, 'telinga kiri'))->update($datatelingakiri);
+                } else {
+                    ermtht_telinga::create($datatelingakiri);
+                }
+
+                if (count($cekhidungkanan) > 0) {
+                    erm_tht_hidung::whereRaw('id_assesmen_dokter = ? and keterangan = ?', array($id_assesmen, 'Hidung Kanan'))->update($datahidungkanan);
+                } else {
+                    erm_tht_hidung::create($datahidungkanan);
+                }
+                if (count($cekhidungkiri) > 0) {
+                    erm_tht_hidung::whereRaw('id_assesmen_dokter = ? and keterangan = ?', array($id_assesmen, 'Hidung Kiri'))->update($datahidungkiri);
+                } else {
+                    erm_tht_hidung::create($datahidungkiri);
+                }
+            } else {
+                $datagambar = ['gambar_1' => $gambar];
+                assesmenawaldokter::whereRaw('id = ?', array($id_assesmen))->update($datagambar);
+            }
+            ts_kunjungan::whereRaw('kode_kunjungan = ?', array($kodekunjungan))->update([
+                'kode_paramedis' => auth()->user()->kode_paramedis
+            ]);
+            $data = [
+                'kode' => 200,
+                'message' => 'Data berhasil disimpan !'
+            ];
+            echo json_encode($data);
+            die;
+        } catch (\Exception $e) {
+            $data = [
+                'kode' => 500,
+                'message' => $e->getMessage()
+            ];
+            echo json_encode($data);
+            die;
+        }
+    }
+    public function simpanpemeriksaandokter_2(Request $request)
+    {
+        $data1 = json_decode($_POST['data1'], true);
+        $data2 = json_decode($_POST['data2'], true);
+        $data3 = json_decode($_POST['data3'], true);
+        $data4 = json_decode($_POST['data4'], true);
+        $formorder_lab = json_decode($_POST['formorder_lab'], true);
+        $formtindakan_rad = json_decode($_POST['formtindakan_rad'], true);
+        $datatindakan = json_decode($_POST['datatindakan'], true);
+        $datatindaklanjut = json_decode($_POST['datatindaklanjut'], true);
+        $formobat_farmasi = json_decode($_POST['formobat_farmasi'], true);
+        $formobatfarmasi2 = json_decode($_POST['formobatfarmasi2'], true);
+
+        if (count($datatindaklanjut) == 1) {
+            $data = [
+                'kode' => 500,
+                'message' => 'Tindak lanjut pasien harus diisi !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        foreach ($datatindaklanjut as $nama_1) {
+            $index =  $nama_1['name'];
+            $value =  $nama_1['value'];
+            $dataSet_tindaklanjut[$index] = $value;
+        }
+        foreach ($data1 as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet_1[$index] = $value;
+        }
+        foreach ($data2 as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet_2[$index] = $value;
+        }
+        foreach ($data3 as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet_3[$index] = $value;
+        }
+        foreach ($data4 as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet_4[$index] = $value;
+        }
+        $id_asskep = $dataSet_1['idasskep'];
+        $diagnosakerja = preg_replace("/[^A-Za-z]/", "", $dataSet_3['diagnosakerja']);
+        $cekdiagnosa =  strlen($diagnosakerja);
+        $cekorderfarmasi = preg_replace("/[^A-Za-z]/", "", $request->resepobat);
+        $cekorderfar =  strlen($cekorderfarmasi);
+        if ($cekdiagnosa == '0') {
+            $data = [
+                'kode' => 500,
+                'message' => 'Harap isi diagnosa pasien !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        // ($dataSet['diagnosakerja']
+        $simpantemplate = $request->simpantemplate;
+        if (empty($dataSet_1['hipertensi'])) {
+            $hipertensi = 0;
+        } else {
+            $hipertensi = $dataSet_1['hipertensi'];
+        };
+
+        if (empty($dataSet_1['kencingmanis'])) {
+            $kencingmanis = 0;
+        } else {
+            $kencingmanis = $dataSet_1['kencingmanis'];
+        };
+
+        if (empty($dataSet_1['jantung'])) {
+            $jantung = 0;
+        } else {
+            $jantung = $dataSet_1['jantung'];
+        };
+
+        if (empty($dataSet_1['stroke'])) {
+            $stroke = 0;
+        } else {
+            $stroke = $dataSet_1['stroke'];
+        };
+
+        if (empty($dataSet_1['hepatitis'])) {
+            $hepatitis = 0;
+        } else {
+            $hepatitis = $dataSet_1['hepatitis'];
+        };
+
+        if (empty($dataSet_1['asthma'])) {
+            $asthma = 0;
+        } else {
+            $asthma = $dataSet_1['asthma'];
+        };
+
+        if (empty($dataSet_1['ginjal'])) {
+            $ginjal = 0;
+        } else {
+            $ginjal = $dataSet_1['ginjal'];
+        };
+
+        if (empty($dataSet_1['tb'])) {
+            $tb = 0;
+        } else {
+            $tb = $dataSet_1['tb'];
+        };
+
+        if (empty($dataSet_1['riwayatlain'])) {
+            $riwayatlain = 0;
+        } else {
+            $riwayatlain = $dataSet_1['riwayatlain'];
+            if ($dataSet_1['ketriwayatlain'] == '') {
+                $data = [
+                    'kode' => 502,
+                    'message' => 'Isi keterangan riwayat lain ...'
+                ];
+                echo json_encode($data);
+                die;
+            }
+        };
+
+        if ($dataSet_2['kesadaran'] == 'Composmentis') {
+            $kesadaran = 'Composmentis';
+        } else {
+            $kesadaran = $dataSet_2['keterangankesadaran'];
+        }
+
+        $data = [
+            'counter' => $dataSet_1['counter'],
+            'kode_unit' => $dataSet_1['unit'],
+            'id_kunjungan' => $dataSet_1['kodekunjungan'],
+            'id_pasien' => $dataSet_1['nomorrm'],
+            'id_asskep' => $dataSet_1['idasskep'],
+            'pic' => auth()->user()->id,
+            'nama_dokter' => auth()->user()->nama,
+            'tgl_kunjungan' => $dataSet_1['tanggalkunjungan'],
+            'tgl_pemeriksaan' => $this->get_now(),
+            'sumber_data' => $dataSet_1['sumberdata'],
+            'tekanan_darah' => $dataSet_2['tekanandarah'],
+            'frekuensi_nadi' => $dataSet_2['frekuensinadi'],
+            'frekuensi_nafas' => $dataSet_2['frekuensinafas'],
+            'beratbadan' => $dataSet_2['beratbadan'],
+            'suhu_tubuh' => $dataSet_2['suhutubuh'],
+            'riwayat_alergi' =>  $dataSet_1['alergi'],
+            'keterangan_alergi' =>  $dataSet_1['ketalergi'],
+            'riwayat_kehamilan_pasien_wanita' => $dataSet_1['riwayatkehamilan'],
+            'riwyat_kelahiran_pasien_anak' => $dataSet_1['riwayatkelahiran'],
+            'riwyat_penyakit_sekarang' => $dataSet_1['riwayatpenyakitsekarang'],
+            'hipertensi' => $hipertensi,
+            'kencingmanis' => $kencingmanis,
+            'jantung' => $jantung,
+            'stroke' => $stroke,
+            'hepatitis' => $hepatitis,
+            'asthma' => $asthma,
+            'ginjal' => $ginjal,
+            'tbparu' => $tb,
+            'riwayatlain' => $riwayatlain,
+            'ket_riwayatlain' => $dataSet_1['ketriwayatlain'],
+            'statusgeneralis' => $dataSet_1['statusgeneralis'],
+            'pemeriksaan_fisik' => $dataSet_2['pemeriksaanfisik'],
+            'keadaanumum' => $dataSet_2['keadaanumum'],
+            'kesadaran' => $dataSet_2['kesadaran'],
+            'diagnosakerja' => trim($dataSet_3['diagnosakerja']),
+            'diagnosabanding' => $dataSet_3['diagnosabanding'],
+            'rencanakerja' => trim($dataSet_4['rencanakerja']),
+            'tindakanmedis' => trim($dataSet_4['tindakanmedis']),
+            'keluhan_pasien' => trim($dataSet_1['keluhanutama']),
+            'tindak_lanjut' => $dataSet_tindaklanjut['pilihtindaklanjut'],
+            'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'],
+            'keterangan_tindak_lanjut_2' => trim($dataSet_3['jawabankonsul']),
+            'umur' => $dataSet_2['usia'],
+            'tgl_entry' => $this->get_now(),
+            'status' => '0',
+            'signature' => ''
+        ];
+        $nomorrm = $dataSet_1['nomorrm'];
+        $diagnosakerja = $dataSet_4['rencanakerja'];
+        try {
+            $data_k = [
+                'keluhanutama' =>  trim($dataSet_1['keluhanutama'])
+            ];
+            assesmenawalperawat::whereRaw('id = ?', array($dataSet_1['idasskep']))->update($data_k);
+            $cek = DB::select('SELECT * from assesmen_dokters WHERE tgl_kunjungan = ? AND id_pasien = ? AND kode_unit = ?', [$dataSet_1['tanggalkunjungan'], $dataSet_1['nomorrm'], $dataSet_1['unit']]);
+            $kodekunjungan = $dataSet_1['kodekunjungan'];
+            if (count($cek) > 0) {
+                $data = [
+                    'counter' => $dataSet_1['counter'],
+                    'kode_unit' => $dataSet_1['unit'],
+                    'id_kunjungan' => $dataSet_1['kodekunjungan'],
+                    'id_pasien' => $dataSet_1['nomorrm'],
+                    'id_asskep' => $dataSet_1['idasskep'],
+                    'pic' => auth()->user()->id,
+                    'nama_dokter' => auth()->user()->nama,
+                    'tgl_kunjungan' => $dataSet_1['tanggalkunjungan'],
+                    'updated_at' => $this->get_now(),
+                    'sumber_data' => $dataSet_1['sumberdata'],
+                    'tekanan_darah' => $dataSet_2['tekanandarah'],
+                    'frekuensi_nadi' => $dataSet_2['frekuensinadi'],
+                    'frekuensi_nafas' => $dataSet_2['frekuensinafas'],
+                    'suhu_tubuh' => $dataSet_2['suhutubuh'],
+                    'riwayat_alergi' =>  $dataSet_1['alergi'],
+                    'keterangan_alergi' =>  $dataSet_1['ketalergi'],
+                    'riwayat_kehamilan_pasien_wanita' => $dataSet_1['riwayatkehamilan'],
+                    'riwyat_kelahiran_pasien_anak' => $dataSet_1['riwayatkelahiran'],
+                    'riwyat_penyakit_sekarang' => $dataSet_1['riwayatpenyakitsekarang'],
+                    'hipertensi' => $hipertensi,
+                    'kencingmanis' => $kencingmanis,
+                    'jantung' => $jantung,
+                    'stroke' => $stroke,
+                    'hepatitis' => $hepatitis,
+                    'asthma' => $asthma,
+                    'ginjal' => $ginjal,
+                    'tbparu' => $tb,
+                    'riwayatlain' => $riwayatlain,
+                    'ket_riwayatlain' => $dataSet_1['ketriwayatlain'],
+                    'statusgeneralis' => $dataSet_1['statusgeneralis'],
+                    'pemeriksaan_fisik' => $dataSet_2['pemeriksaanfisik'],
+                    'keadaanumum' => $dataSet_2['keadaanumum'],
+                    'kesadaran' => $kesadaran,
+                    'diagnosakerja' => trim($dataSet_3['diagnosakerja']),
+                    'diagnosabanding' => $dataSet_3['diagnosabanding'],
+                    'rencanakerja' => trim($dataSet_4['rencanakerja']),
+                    'keluhan_pasien' => trim($dataSet_1['keluhanutama']),
+                    'tindak_lanjut' => $dataSet_tindaklanjut['pilihtindaklanjut'],
+                    'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'],
+                    'keterangan_tindak_lanjut_2' => trim($dataSet_3['jawabankonsul']),
+                    'status' => '0',
+                    'signature' => ''
+                ];
+                assesmenawaldokter::whereRaw('id_pasien = ? and kode_unit = ? and id_kunjungan = ?', array($dataSet_1['nomorrm'],  $dataSet_1['unit'], $dataSet_1['kodekunjungan']))->update($data);
+                $id_assesmen = $cek[0]->id;
+            } else {
+                $erm_assesmen = assesmenawaldokter::create($data);
+                $id_assesmen = $erm_assesmen->id;
+            }
+
+            //input tindakan
+            $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$dataSet_1['kodekunjungan']]);
+            if (count($datatindakan) > 0) {
+                $dt = Carbon::now()->timezone('Asia/Jakarta');
+                $date = $dt->toDateString();
+                $time = $dt->toTimeString();
+                $now = $date . ' ' . $time;
+                $cek_layanan_header = count(DB::connection('mysql4')->SELECT('select id from ts_layanan_header where kode_kunjungan = ?', [$dataSet_1['kodekunjungan']]));
+                $kodekunjungan = $dataSet_1['kodekunjungan'];
+                $penjamin = $kunjungan[0]->kode_penjamin;
+                $unit = DB::select('select * from mt_unit where kode_unit = ?', [$kunjungan[0]->kode_unit]);
+                $prefix_kunjungan = $unit[0]->prefix_unit;
+
+                foreach ($datatindakan as $namatindakan) {
+                    $index = $namatindakan['name'];
+                    $value = $namatindakan['value'];
+                    $dataSet[$index] = $value;
+                    if ($index == 'cyto') {
+                        $arrayindex_tindakan[] = $dataSet;
+                    }
+                }
+
+                try {
+                    $kode_unit = $kunjungan[0]->kode_unit;
+                    //dummy
+                    $r = DB::connection('mysql4')->select("CALL GET_NOMOR_LAYANAN_HEADER('$kode_unit')");
+                    $kode_layanan_header = $r[0]->no_trx_layanan;
+                    if ($kode_layanan_header == "") {
+                        $year = date('y');
+                        $kode_layanan_header = $unit[0]['prefix_unit'] . $year . date('m') . date('d') . '000001';
+                        //dummy
+                        DB::connection('mysql4')->select('insert into mt_nomor_trx (tgl,no_trx_layanan,unit) values (?,?,?)', [date('Y-m-d h:i:s'), $kode_layanan_header, $kunjungan[0]->kode_unit]);
+                    }
+                    $data_layanan_header = [
+                        'kode_layanan_header' => $kode_layanan_header,
+                        'tgl_entry' =>   $now,
+                        'kode_kunjungan' => $kunjungan[0]->kode_kunjungan,
+                        'kode_unit' => $kunjungan['0']->kode_unit,
+                        'kode_tipe_transaksi' => 2,
+                        'pic' => auth()->user()->id,
+                        'status_layanan' => '3',
+                        'status_retur' => 'OPN',
+                        'status_pembayaran' => 'OPN'
+                    ];
+                    //data yg diinsert ke ts_layanan_header
+                    //simpan ke layanan header
+                    //dummy
+                    $ts_layanan_header = ts_layanan_header_dummy::create($data_layanan_header);
+                    $grand_total_tarif = 0;
+                    foreach ($arrayindex_tindakan as $d) {
+                        if ($penjamin == 'P01') {
+                            $tagihanpenjamin = 0;
+                            $tagihanpribadi = $d['tarif'] * $d['qty'];
+                        } else {
+                            $tagihanpenjamin = $d['tarif'] * $d['qty'];
+                            $tagihanpribadi = 0;
+                        }
+                        $total_tarif = $d['tarif'] * $d['qty'];
+                        $id_detail = $this->createLayanandetail();
+                        $save_detail = [
+                            'id_layanan_detail' => $id_detail,
+                            'kode_layanan_header' => $kode_layanan_header,
+                            'kode_tarif_detail' => $d['kodelayanan'],
+                            'total_tarif' => $d['tarif'],
+                            'jumlah_layanan' => $d['qty'],
+                            'diskon_layanan' => $d['disc'],
+                            'total_layanan' => $total_tarif,
+                            'grantotal_layanan' => $total_tarif,
+                            'kode_dokter1' => auth()->user()->kode_paramedis,
+                            'status_layanan_detail' => 'OPN',
+                            'tgl_layanan_detail' => $now,
+                            'tagihan_penjamin' => $tagihanpenjamin,
+                            'tagihan_pribadi' => $tagihanpribadi,
+                            'tgl_layanan_detail_2' => $now,
+                            'row_id_header' => $ts_layanan_header->id
+                        ];
+                        $ts_layanan_detail = ts_layanan_detail_dummy::create($save_detail);
+                        $grand_total_tarif = $grand_total_tarif + $total_tarif;
+                    }
+                    if ($penjamin == 'P01') {
+                        //dummy
+                        ts_layanan_header_dummy::where('id', $ts_layanan_header->id)
+                            ->update(['status_layanan' => 1, 'total_layanan' => $grand_total_tarif, 'tagihan_pribadi' => $grand_total_tarif]);
+                    } else {
+                        //dummy
+                        ts_layanan_header_dummy::where('id', $ts_layanan_header->id)
+                            ->update(['status_layanan' => 1, 'total_layanan' => $grand_total_tarif, 'tagihan_penjamin' => $grand_total_tarif]);
+                    }
+                    $data = [
+                        'status' => 0,
+                        'signature' => ''
+
+                    ];
+                    assesmenawaldokter::whereRaw('id_kunjungan = ?', array($kodekunjungan))->update($data);
+                    // $back = [
+                    //     'kode' => 200,
+                    //     'message' => ''
+                    // ];
+                    // echo json_encode($back);
+                    // die;
+                } catch (\Exception $e) {
+                    $back = [
+                        'kode' => 500,
+                        'message' => $e->getMessage()
+                    ];
+                    echo json_encode($back);
+                    die;
+                }
+            }
+            //end of input tindakan
+
+            if (count($formobatfarmasi2) > 1) {
+                $simpantemplate = $request->simpantemplate;
+                // $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
+                $dt = Carbon::now()->timezone('Asia/Jakarta');
+                $date = $dt->toDateString();
+                $time = $dt->toTimeString();
+                $now = $date . ' ' . $time;
+                $cek_layanan_header = count(DB::SELECT('select id from ts_layanan_header_order where kode_kunjungan = ?', [$request->kodekunjungan]));
+                $kodekunjungan = $request->kodekunjungan;
+                $penjamin = $kunjungan[0]->kode_penjamin;
+                //jika penjamin bpjs order ke dp2
+                //jika penjamin umum order ke dp1
+                //kodeheader dibedakan menjadi ORF
+                if ($penjamin == 'P01') {
+                    $unit = '4002';
+                } else {
+                    $unit = '4008';
+                }
+                $mtunit = DB::select('select * from mt_unit where kode_unit = ?', [$unit]);
+                $prefix_kunjungan = $mtunit[0]->prefix_unit;
+                foreach ($formobatfarmasi2 as $nama) {
+                    $index = $nama['name'];
+                    $value = $nama['value'];
+                    $dataSet[$index] = $value;
+                    if ($index == 'keterangan') {
+                        $arrayindex_far[] = $dataSet;
+                    }
+                }
+                $obatnya = '';
+                foreach ($arrayindex_far as $d) {
+                    if ($obatnya == '') {
+                        $obatbaru = $obatnya . "nama obat : " . $d['namaobat'] . " , jumlah : " . $d['jumlah'] . " , " . "aturan pakai : " . $d['aturanpakai'] . " , " . " signa : " . $d['signa'] . " , " . " keterangan : " . $d['keterangan'] . "\n\n";
+                    } else {
+                        $obatbaru = $obatnya . " | " . "nama obat : " . $d['namaobat'] . ", jumlah : " . $d['jumlah'] . " , " . "aturan pakai : " . $d['aturanpakai'] . " , " . " signa : " . $d['signa'] . " , " . " keterangan : " . $d['keterangan'] . "\n\n";
+                    }
+                    $obatnya = $obatbaru;
+                }
+                if ($simpantemplate == 'on') {
+                    if ($request->namaresep == '') {
+                        $back = [
+                            'kode' => 500,
+                            'message' => 'Nama Resep tidak boleh kosong !'
+                        ];
+                        echo json_encode($back);
+                        die;
+                    }
+
+                    $dataresep = [
+                        'nama_resep' => $request->namaresep,
+                        'keterangan' => $obatnya,
+                        'user' => auth()->user()->kode_paramedis,
+                        'tgl_entry' => $this->get_now()
+                    ];
+                    $id_resep = templateresep::create($dataresep);
+                    foreach ($arrayindex_far as $d) {
+                        $detailresep = [
+                            'id_template' => $id_resep->id,
+                            'nama_barang' => $d['namaobat'],
+                            'kode_barang' => $d['kodebarang'],
+                            'aturan_pakai' => $d['aturanpakai'],
+                            'jumlah' => $d['jumlah'],
+                            'signa' => $d['signa'],
+                            'keterangan' => $d['keterangan'],
+                        ];
+                        $detailresep = templateresep_detail::create($detailresep);
+                    }
+                }
+                try {
+                    $kode_unit = $unit;
+                    $kode_layanan_header = $this->createOrderHeader('F');
+                    $data_layanan_header = [
+                        'no_rm' => $kunjungan[0]->no_rm,
+                        'kode_layanan_header' => $kode_layanan_header,
+                        'tgl_entry' =>   $now,
+                        'kode_kunjungan' => $kunjungan[0]->kode_kunjungan,
+                        'kode_penjaminx' => $penjamin,
+                        'kode_unit' => $kode_unit,
+                        'kode_tipe_transaksi' => 2,
+                        'pic' => auth()->user()->id,
+                        'unit_pengirim' => auth()->user()->unit,
+                        'tgl_periksa' => $this->get_now(),
+                        'diagnosa' => $diagnosakerja,
+                        'dok_kirim' => auth()->user()->kode_paramedis,
+                        'status_layanan' => '3',
+                        'status_retur' => 'OPN',
+                        'status_pembayaran' => 'OPN',
+                        'status_order' => '0',
+                        'id_assdok' => $id_assesmen
+                    ];
+                    $ts_layanan_header = ts_layanan_header_order::create($data_layanan_header);
+                    foreach ($arrayindex_far as $d) {
+                        $id_detail = $this->createLayanandetailOrder();
+                        $save_detail = [
+                            'id_layanan_detail' => $id_detail,
+                            'kode_layanan_header' => $kode_layanan_header,
+                            'kode_dokter1' => auth()->user()->kode_paramedis,
+                            'kode_barang' => $d['namaobat'],
+                            'jumlah_layanan' => $d['jumlah'],
+                            'aturan_pakai' => $d['aturanpakai'] . ' | ' . $d['signa'] . ' | ' . $d['keterangan'],
+                            'status_layanan_detail' => 'OPN',
+                            'tgl_layanan_detail' => $now,
+                            'tgl_layanan_detail_2' => $now,
+                            'row_id_header' => $ts_layanan_header->id,
+                            'id_assdok' => $id_assesmen
+                        ];
+                        $ts_layanan_detail = ts_layanan_detail_order::create($save_detail);
+                    }
+                    if ($penjamin == 'P01') {
+                        //dummy
+                        ts_layanan_header_order::where('id', $ts_layanan_header->id)
+                            ->update(['status_layanan' => 1]);
+                    } else {
+                        //dummy
+                        ts_layanan_header_order::where('id', $ts_layanan_header->id)
+                            ->update(['status_layanan' => 1]);
+                    }
+                } catch (\Exception $e) {
+                    $back = [
+                        'kode' => 500,
+                        'message' => $e->getMessage()
+                    ];
+                    echo json_encode($back);
+                    die;
+                }
+            }
+            //end of farmasi
+            $dt = Carbon::now()->timezone('Asia/Jakarta');
+            $date = $dt->toDateString();
+            $time = $dt->toTimeString();
+            $now = $date . ' ' . $time;
+            // order ke lab
+            if (count($formorder_lab) > 1){
+                foreach ($formorder_lab as $namatindakan) {
+                    $index = $namatindakan['name'];
+                    $value = $namatindakan['value'];
+                    $dataSet[$index] = $value;
+                    if ($index == 'cyto') {
+                        $arrayindex_tindakan_lab[] = $dataSet;
+                    }
+                }
+                $penjamin = $kunjungan[0]->kode_penjamin;
+                $kode_layanan_header_order = $this->createOrderHeader('P');
+                $data_layanan_header_order = [
+                    'no_rm' => $nomorrm,
+                    'kode_layanan_header' => $kode_layanan_header_order,
+                    'tgl_entry' =>   $now,
+                    'kode_kunjungan' => $kodekunjungan,
+                    'kode_penjaminx' => $penjamin,
+                    'kode_unit' => '3002',
+                    'kode_tipe_transaksi' => 2,
+                    'pic' => auth()->user()->id,
+                    'unit_pengirim' => auth()->user()->unit,
+                    'diagnosa' => $dataSet_3['diagnosakerja'],
+                    'tgl_periksa' => '2023-07-07',
+                    'dok_kirim' => auth()->user()->kode_paramedis,
+                    'status_layanan' => '3',
+                    'status_retur' => 'OPN',
+                    'status_pembayaran' => 'OPN',
+                    'status_order' => '0'
+                ];
+
+                $ts_layanan_header_order = ts_layanan_header_order::create($data_layanan_header_order);
+                $grand_total_tarif = 0;
+                $now = $this->get_now();
+                foreach ($arrayindex_tindakan_lab as $d) {
+                    if ($penjamin == 'P01') {
+                        $tagihanpenjamin = 0;
+                        $tagihanpribadi = $d['tarif'] * $d['qty'];
+                    } else {
+                        $tagihanpenjamin = $d['tarif'] * $d['qty'];
+                        $tagihanpribadi = 0;
+                    }
+                    $id_detail_order = $this->createLayanandetailOrder();
+                    $save_detail_order = [
+                        'id_layanan_detail' => $id_detail_order,
+                        'kode_layanan_header' => $kode_layanan_header_order,
+                        'kode_tarif_detail' => $d['kodelayanan'],
+                        'total_tarif' => $d['tarif'],
+                        'jumlah_layanan' => $d['qty'],
+                        'diskon_layanan' => $d['disc'],
+                        'total_layanan' => $d['tarif'] * $d['qty'],
+                        'grantotal_layanan' => $d['tarif'] * $d['qty'],
+                        'kode_dokter1' => auth()->user()->kode_paramedis,
+                        'status_layanan_detail' => 'OPN',
+                        'tgl_layanan_detail' => $now,
+                        'tagihan_penjamin' => $tagihanpenjamin,
+                        'tagihan_pribadi' => $tagihanpribadi,
+                        'tgl_layanan_detail_2' => $now,
+                        'row_id_header' => $ts_layanan_header_order->id
+                    ];
+                    $ts_layanan_detail_order = ts_layanan_detail_order::create($save_detail_order);
+                    $grand_total_tarif = $grand_total_tarif + $d['tarif'];
+                }
+                if ($penjamin == 'P01') {
+                    //dummy
+                    ts_layanan_header_order::where('id', $ts_layanan_header_order->id)
+                        ->update(['status_layanan' => 1, 'total_layanan' => $grand_total_tarif, 'tagihan_pribadi' => $grand_total_tarif]);
+                } else {
+                    //dummy
+                    ts_layanan_header_order::where('id', $ts_layanan_header_order->id)
+                        ->update(['status_layanan' => 1, 'total_layanan' => $grand_total_tarif, 'tagihan_penjamin' => $grand_total_tarif]);
+                }
+            }
+            // end order lab
+
+             // order ke rad
+             if (count($formtindakan_rad) > 1){
+                foreach ($formtindakan_rad as $namatindakan) {
+                    $index = $namatindakan['name'];
+                    $value = $namatindakan['value'];
+                    $dataSet[$index] = $value;
+                    if ($index == 'cyto') {
+                        $arrayindex_tindakan_rad[] = $dataSet;
+                    }
+                }
+                $penjamin = $kunjungan[0]->kode_penjamin;
+                $kode_layanan_header_order = $this->createOrderHeader('P');
+                $data_layanan_header_order = [
+                    'no_rm' => $nomorrm,
+                    'kode_layanan_header' => $kode_layanan_header_order,
+                    'tgl_entry' =>  $now,
+                    'kode_kunjungan' => $kodekunjungan,
+                    'kode_penjaminx' => $penjamin,
+                    'kode_unit' => '3003',
+                    'kode_tipe_transaksi' => 2,
+                    'pic' => auth()->user()->id,
+                    'unit_pengirim' => auth()->user()->unit,
+                    'diagnosa' => $dataSet_3['diagnosakerja'],
+                    'tgl_periksa' => '2023-07-07',
+                    'dok_kirim' => auth()->user()->kode_paramedis,
+                    'status_layanan' => '3',
+                    'status_retur' => 'OPN',
+                    'status_pembayaran' => 'OPN',
+                    'status_order' => '0'
+                ];
+
+                $ts_layanan_header_order = ts_layanan_header_order::create($data_layanan_header_order);
+                $grand_total_tarif = 0;
+                foreach ($arrayindex_tindakan_rad as $d) {
+                    if ($penjamin == 'P01') {
+                        $tagihanpenjamin = 0;
+                        $tagihanpribadi = $d['tarif'] * $d['qty'];
+                    } else {
+                        $tagihanpenjamin = $d['tarif'] * $d['qty'];
+                        $tagihanpribadi = 0;
+                    }
+                    $id_detail_order = $this->createLayanandetailOrder();
+                    $save_detail_order = [
+                        'id_layanan_detail' => $id_detail_order,
+                        'kode_layanan_header' => $kode_layanan_header_order,
+                        'kode_tarif_detail' => $d['kodelayanan'],
+                        'total_tarif' => $d['tarif'],
+                        'jumlah_layanan' => $d['qty'],
+                        'diskon_layanan' => $d['disc'],
+                        'total_layanan' => $d['tarif'] * $d['qty'],
+                        'grantotal_layanan' => $d['tarif'] * $d['qty'],
+                        'kode_dokter1' => auth()->user()->kode_paramedis,
+                        'status_layanan_detail' => 'OPN',
+                        'tgl_layanan_detail' => $now,
+                        'tagihan_penjamin' => $tagihanpenjamin,
+                        'tagihan_pribadi' => $tagihanpribadi,
+                        'tgl_layanan_detail_2' => $now,
+                        'row_id_header' => $ts_layanan_header_order->id
+                    ];
+                    $ts_layanan_detail_order = ts_layanan_detail_order::create($save_detail_order);
+                    $grand_total_tarif = $grand_total_tarif + $d['tarif'];
+                }
+                if ($penjamin == 'P01') {
+                    //dummy
+                    ts_layanan_header_order::where('id', $ts_layanan_header_order->id)
+                        ->update(['status_layanan' => 1, 'total_layanan' => $grand_total_tarif, 'tagihan_pribadi' => $grand_total_tarif]);
+                } else {
+                    //dummy
+                    ts_layanan_header_order::where('id', $ts_layanan_header_order->id)
+                        ->update(['status_layanan' => 1, 'total_layanan' => $grand_total_tarif, 'tagihan_penjamin' => $grand_total_tarif]);
+                }
+            }
+            // end order lab
 
             //datapemeriksaankhusus
             $gambar = $request->gambar;
@@ -3587,6 +4816,32 @@ class ErmController extends Controller
             'riwayat_tindakan'
         ]));
     }
+    public function tindakanhariini_lab(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        $riwayat_tindakan_lab = DB::connection('mysql4')->select("SELECT b.status_layanan AS status_layanan_header,a.kode_kunjungan,b.id AS id_header,C.id AS id_detail,c.jumlah_layanan,b.kode_layanan_header,c.`kode_tarif_detail`,e.`NAMA_TARIF` FROM simrs_waled.ts_kunjungan a
+        RIGHT OUTER JOIN ts_layanan_header_order b ON a.kode_kunjungan = b.kode_kunjungan
+        RIGHT OUTER JOIN ts_layanan_detail_order c ON b.id = c.row_id_header
+        RIGHT OUTER JOIN mt_tarif_detail d ON c.kode_tarif_detail = d.`KODE_TARIF_DETAIL`
+        RIGHT OUTER JOIN mt_tarif_header e ON d.`KODE_TARIF_HEADER` = e.`KODE_TARIF_HEADER`
+        WHERE a.`kode_kunjungan` = ? and b.kode_unit = ?", [$request->kodekunjungan,'3002']);
+        return view('ermtemplate.table_order_lab',compact([
+            'riwayat_tindakan_lab'
+        ]));
+    }
+    public function tindakanhariini_rad(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        $riwayat_tindakan_rad = DB::connection('mysql4')->select("SELECT b.status_layanan AS status_layanan_header,a.kode_kunjungan,b.id AS id_header,C.id AS id_detail,c.jumlah_layanan,b.kode_layanan_header,c.`kode_tarif_detail`,e.`NAMA_TARIF` FROM simrs_waled.ts_kunjungan a
+        RIGHT OUTER JOIN ts_layanan_header_order b ON a.kode_kunjungan = b.kode_kunjungan
+        RIGHT OUTER JOIN ts_layanan_detail_order c ON b.id = c.row_id_header
+        RIGHT OUTER JOIN mt_tarif_detail d ON c.kode_tarif_detail = d.`KODE_TARIF_DETAIL`
+        RIGHT OUTER JOIN mt_tarif_header e ON d.`KODE_TARIF_HEADER` = e.`KODE_TARIF_HEADER`
+        WHERE a.`kode_kunjungan` = ? and b.kode_unit = ?", [$request->kodekunjungan,'3003']);
+        return view('ermtemplate.table_order_rad',compact([
+            'riwayat_tindakan_rad'
+        ]));
+    }
     public function terapi_tindakanhariini(Request $request)
     {
         $kodekunjungan = $request->kodekunjungan;
@@ -4868,17 +6123,17 @@ class ErmController extends Controller
             $now = date('Y-m-d');
             $status = 1;
         } else {
-            if($request->tglawal == $this->get_date()){
+            if ($request->tglawal == $this->get_date()) {
                 $status = 1;
-            }else{
+            } else {
                 $status = 2;
             }
             $now = $request->tglawal;
         }
         if (!empty($request->pilihunit)) {
-            $dataerm = db::select('SELECT keterangan2,no_rm,fc_nama_px(no_rm) as nama,tgl_masuk,kode_unit,fc_nama_unit1(kode_unit) as nama_unit FROM ts_kunjungan WHERE DATE(tgl_masuk) = ? AND LEFT(kode_unit,1) = ? AND status_kunjungan = ? AND kode_unit = ?', [$now, 1,$status,$request->pilihunit]);
+            $dataerm = db::select('SELECT keterangan2,no_rm,fc_nama_px(no_rm) as nama,tgl_masuk,kode_unit,fc_nama_unit1(kode_unit) as nama_unit FROM ts_kunjungan WHERE DATE(tgl_masuk) = ? AND LEFT(kode_unit,1) = ? AND status_kunjungan = ? AND kode_unit = ?', [$now, 1, $status, $request->pilihunit]);
         } else {
-            $dataerm = db::select('SELECT keterangan2,no_rm,fc_nama_px(no_rm) as nama,tgl_masuk,kode_unit,fc_nama_unit1(kode_unit) as nama_unit FROM ts_kunjungan WHERE DATE(tgl_masuk) = ? AND LEFT(kode_unit,1) = ? AND status_kunjungan = ?', [$now, 1,$status]);
+            $dataerm = db::select('SELECT keterangan2,no_rm,fc_nama_px(no_rm) as nama,tgl_masuk,kode_unit,fc_nama_unit1(kode_unit) as nama_unit FROM ts_kunjungan WHERE DATE(tgl_masuk) = ? AND LEFT(kode_unit,1) = ? AND status_kunjungan = ?', [$now, 1, $status]);
         }
         return view('ermtemplate.tabel_kunjungan_tdy', compact([
             'dataerm',
@@ -4890,19 +6145,19 @@ class ErmController extends Controller
             $now = date('Y-m-d');
             $status = 1;
         } else {
-            if($request->tglawal == $this->get_date()){
+            if ($request->tglawal == $this->get_date()) {
                 $status = 1;
-            }else{
+            } else {
                 $status = 2;
             }
             $now = $request->tglawal;
         }
         if (!empty($request->pilihunit)) {
             $dataerm = db::select('SELECT a.tgl_masuk,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.kode_unit,fc_nama_unit1(a.kode_unit) AS nama_unit,b.id AS id_asskep,b.namapemeriksa,c.nama_dokter,c.id AS id_assdok FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.`kode_kunjungan`
-            LEFT OUTER JOIN assesmen_dokters c ON b.id = c.id_asskep WHERE DATE(a.`tgl_masuk`) = ? AND a.`status_kunjungan` = ? AND a.kode_unit = ?', [$now,$status,$request->pilihunit]);
+            LEFT OUTER JOIN assesmen_dokters c ON b.id = c.id_asskep WHERE DATE(a.`tgl_masuk`) = ? AND a.`status_kunjungan` = ? AND a.kode_unit = ?', [$now, $status, $request->pilihunit]);
         } else {
             $dataerm = db::select('SELECT a.tgl_masuk,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.kode_unit,fc_nama_unit1(a.kode_unit) AS nama_unit,b.id AS id_asskep,b.namapemeriksa,c.nama_dokter,c.id AS id_assdok FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.`kode_kunjungan`
-            LEFT OUTER JOIN assesmen_dokters c ON b.id = c.id_asskep WHERE DATE(a.`tgl_masuk`) = ? AND a.`status_kunjungan` = ?', [$now,$status]);
+            LEFT OUTER JOIN assesmen_dokters c ON b.id = c.id_asskep WHERE DATE(a.`tgl_masuk`) = ? AND a.`status_kunjungan` = ?', [$now, $status]);
         }
         return view('ermtemplate.tabel_monitoring_Erm', compact([
             'dataerm',
@@ -5045,8 +6300,8 @@ class ErmController extends Controller
     public function lihathasilpenunjang_lab(Request $request)
     {
         $rm = $request->nomorrm;
-        $hasil_lab = DB::select('SELECT * FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` WHERE a.`no_rm` = ? AND b.`kode_unit` = ? ORDER BY a.`kode_kunjungan`DESC ',[$rm,'3002']);
-        return view('ermtemplate.view_hasil_penunjang_lab',compact([
+        $hasil_lab = DB::select('SELECT * FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` WHERE a.`no_rm` = ? AND b.`kode_unit` = ? ORDER BY a.`kode_kunjungan`DESC ', [$rm, '3002']);
+        return view('ermtemplate.view_hasil_penunjang_lab', compact([
             'hasil_lab'
         ]));
     }
@@ -5055,10 +6310,23 @@ class ErmController extends Controller
         $rm = $request->nomorrm;
         $hasil_rad = DB::select('SELECT *,DATE(b.tgl_baca ) AS tanggalnya,fc_acc_number_ris(b.id_detail) AS acc_number FROM ts_kunjungan a LEFT OUTER JOIN
         ts_hasil_expertisi b ON a.kode_kunjungan = b.kode_kunjungan
-        WHERE a.no_rm = ? ',[$rm]);
-        return view('ermtemplate.view_hasil_penunjang_rad',compact([
+        WHERE a.no_rm = ? ', [$rm]);
+        return view('ermtemplate.view_hasil_penunjang_rad', compact([
             'hasil_rad',
             'rm'
         ]));
+    }
+    public function ambil_form_igd(Request $request)
+    {
+        $id_antrian = $request->id;
+        $data_antrian = DB::connection('mysql4')->select('select * from ts_antrian_igd where id = ?', [$id_antrian]);
+        $rm = $data_antrian[0]->nomor_rm;
+        if ($rm == '') {
+            return view('ermtemplate.form_igd_perawat',compact([
+                'id_antrian'
+            ]));
+        } else {
+            dd('tidak kosong');
+        }
     }
 }
