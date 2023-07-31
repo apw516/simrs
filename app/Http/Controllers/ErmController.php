@@ -186,7 +186,7 @@ class ErmController extends Controller
     }
     public function ambildetailpasien_dokter(Request $request)
     {
-        $mt_pasien = DB::select('Select no_rm,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$request->rm]);
+        $mt_pasien = DB::select('Select no_rm,jenis_kelamin,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$request->rm]);
         $kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$request->kode]);
         $pic = $request->pic;
         $unit = auth()->user()->unit;
@@ -928,175 +928,6 @@ class ErmController extends Controller
             die;
         }
         // }
-    }
-    public function simpanpemeriksaanperawat_igd(Request $request)
-    {
-
-        $data = json_decode($_POST['data'], true);
-        foreach ($data as $nama) {
-            $index =  $nama['name'];
-            $value =  $nama['value'];
-            $dataSet[$index] = $value;
-        }
-        // subyektifanamnesis
-        // keadaanumum
-        // kesadaran
-        // tekananintrakranial
-        // pupil
-        // neurosensorik
-        // integumen
-        // turgorkulit
-        // edema
-        // mukosamulut
-        //         jumlah_perdarahan
-        // warna_perdarahan
-        // intoksikasi
-        // frekuensibab
-        // konsistensibab
-        // warnabab
-        // frekuensibak
-        // konsistensibak
-        // warnabak
-        // kecemasan
-        // mekanisme
-
-        // adakeluhannyeri
-
-
-        // skalanyeripasien
-        // nyeriberipindah
-        // lamanyeri
-        // rasanyeri
-        // seberapaseringnyeri
-        // durasinyeri
-        // peredanyeri
-
-
-        // riwayat_jatuh_dewasa
-        // diagnosissekunder_dewasa
-        // alatbantu_dewasa
-        // terpasanginfus_dewasa
-        // gayaberjalan_dewasa
-        // statusmental
-
-
-        // umur_anak
-        // jeniskelaminanak
-        // diagnosa_anak
-        // gangguankognitif_anak
-        // faktorlingkungan_anak
-        // responanestesi_anak
-        // penggunaanobatobatan_anak
-
-        // apakahadapenurunanbb
-        // beratpenurunan
-        // apakahasupanmakanburuk
-        // Sakitberat
-        // pasientampakkurus
-        // penurunanbb_anak
-        // kondisilain
-        // penyakitlain_anak
-
-
-        // jlnnafas
-        // polanafas
-        // pertukarangas
-        // sirkulasi
-        // perfusijaringan
-        // hipertermia
-        // keseimbangancairan
-        // integritaskulit
-        // aktualtakut
-        // toksik
-        // cederajatuh
-        // nyeri
-        // diagnosakeperawatan
-
-        // rencanakeperawatan
-        // tindakankeperawatan
-        // evaluasikeperawatan
-        // infus
-        // lab
-        // ekg
-        // oksigenasi
-        // nebulizer
-        // saturasioksigen
-        // ngt
-        // mengumbahlambung
-        // kateter
-        // defibrilasi
-        // mayo
-        // ett
-        // suction
-        // eksplorasi
-        // obat
-
-        $data = [
-            'kode_unit' => '1002',
-            'no_rm' => $dataSet['idantrian'],
-            'sumberdataperiksa' => $dataSet['sumberdata'],
-            'asalmasuk' => $dataSet['asalmasuk'],
-            'caramasuk' => $dataSet['caramasuk'],
-            'tekanandarah' => $dataSet['tekanandarah'],
-            'frekuensinadi' => $dataSet['frekuensinadi'],
-            'frekuensinapas' => $dataSet['frekuensinafas'],
-            'suhutubuh' => $dataSet['suhutubuh'],
-            'beratbadan' => $dataSet['beratbadan'],
-            'Keluhannyeri' => $dataSet['adakeluhannyeri'],
-            'skalenyeripasien' => $dataSet['skalanyeripasien'] . ' | ' . $dataSet['nyeriberipindah'] . ' | ' . $dataSet['lamanyeri'] . ' | ' . $dataSet['rasanyeri'] . ' | ' . $dataSet['seberapaseringnyeri'] . ' | ' . $dataSet['durasinyeri'] . ' | ' . $dataSet['peredanyeri'],
-            'keterangan_riwayat_psikolog' => $dataSet['riwayat_jatuh_dewasa'] . ' | ' . $dataSet['diagnosissekunder_dewasa'] . ' | ' . $dataSet['alatbantu_dewasa'] . ' | ' . $dataSet['terpasanginfus_dewasa'] . ' | ' . $dataSet['gayaberjalan_dewasa'] . ' | ' . $dataSet['statusmental'],
-            'umur' => $dataSet['umur_anak'],
-            'jeniskelamin' => $dataSet['jeniskelaminanak'],
-            'diagnosis' => $dataSet['diagnosa_anak'],
-            'gangguankoginitf' => $dataSet['gangguankognitif_anak'],
-            'faktorlingkungan' => $dataSet['faktorlingkungan_anak'],
-            'responterhadapoperasi' => $dataSet['responanestesi_anak'],
-            'penggunaanobat' => $dataSet['penggunaanobatobatan_anak'],
-            'anaktampakkurus' => $dataSet['pasientampakkurus'],
-            'adapenurunanbbanak' => $dataSet['apakahadapenurunanbb'],
-            'faktormalnutrisianak' => $dataSet['beratpenurunan'] . ' | ' . $dataSet['apakahasupanmakanburuk'] . ' | ' . $dataSet['Sakitberat'] . ' | ' . $dataSet['penurunanbb_anak'] . ' | ' . $dataSet['kondisilain'] . ' | ' . $dataSet['penyakitlain_anak'],
-            'penyakitlainpasien' => $dataSet['jlnnafas'].' | '.$dataSet['polanafas'].' | '.$dataSet['pertukarangas'].' | '.$dataSet['sirkulasi'].' | '.$dataSet['perfusijaringan'].' | '.$dataSet['hipertermia'].' | '.$dataSet['keseimbangancairan'].' | '.$dataSet['integritaskulit'].' | '.$dataSet['aktualtakut'].' | '.$dataSet['toksik'].' | '.$dataSet['cederajatuh'].' | '.$dataSet['nyeri'].' | ',
-            'diagnosakeperawatan' => $dataSet['diagnosakeperawatan'],
-            'rencanakeperawatan' => $dataSet['rencanakeperawatan'],
-            'tindakankeperawatan' => $dataSet['tindakankeperawatan'],
-            'evaluasikeperawatan' => $dataSet['evaluasikeperawatan'],
-            'namapemeriksa' => auth()->user()->nama,
-            'idpemeriksa' => auth()->user()->id,
-            'status' => '0',
-            'signature' => ''
-        ];
-        dd($data);
-        try {
-            $cek = DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE tanggalkunjungan = ? AND no_rm = ?', [$dataSet['tanggalkunjungan'], $dataSet['koderegistrasi']]);
-            if (count($cek) > 0) {
-                $cek2 = DB::select('SELECT * from assesmen_dokters WHERE tgl_kunjungan = ? AND id_pasien = ? AND kode_unit = ?', [$dataSet['tanggalkunjungan'], $dataSet['nomorrm'], $dataSet['unit']]);
-                if (count($cek2) > 0) {
-                    $data = [
-                        'kode' => 500,
-                        'message' => 'Dokter sudah mengisi assesmen awal medis ... !'
-                    ];
-                    echo json_encode($data);
-                    die;
-                } else {
-                    assesmenawalperawat::whereRaw('no_rm = ? and kode_unit = ? and tanggalkunjungan = ?', array($dataSet['nomorrm'],  $dataSet['unit'], $dataSet['tanggalkunjungan']))->update($data);
-                }
-            } else {
-                $erm_assesmen = assesmenawalperawat::create($data);
-            }
-            $data = [
-                'kode' => 200,
-                'message' => 'Data berhasil disimpan !'
-            ];
-            echo json_encode($data);
-            die;
-        } catch (\Exception $e) {
-            $data = [
-                'kode' => 500,
-                'message' => $e->getMessage()
-            ];
-            echo json_encode($data);
-            die;
-        }
     }
     public function simpanpemeriksaandokter(Request $request)
     {
@@ -6321,12 +6152,88 @@ class ErmController extends Controller
         $id_antrian = $request->id;
         $data_antrian = DB::connection('mysql4')->select('select * from ts_antrian_igd where id = ?', [$id_antrian]);
         $rm = $data_antrian[0]->nomor_rm;
+        $resume = DB::connection('mysql4')->select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE id_antrian = ?', [$request->id]);
         if ($rm == '') {
-            return view('ermtemplate.form_igd_perawat',compact([
-                'id_antrian'
-            ]));
+            if(count($resume) > 0){
+                return view('ermtemplate.form_igd_perawat_edit',compact([
+                    'id_antrian',
+                    'data_antrian',
+                    'resume'
+                ]));
+            }else{
+                return view('ermtemplate.form_igd_perawat',compact([
+                    'id_antrian',
+                    'data_antrian'
+                ]));
+            }
         } else {
             dd('tidak kosong');
+        }
+    }
+    public function simpanpemeriksaanperawat_igd(Request $request)
+    {
+
+        $data = json_decode($_POST['data'], true);
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+        $data = [
+            'kode_unit' => '1002',
+            'id_antrian' => $dataSet['idantrian'],
+            'nama_pasien' => $dataSet['namapasien'],
+            'sumberdataperiksa' => $dataSet['sumberdata'],
+            'asalmasuk' => $dataSet['asalmasuk'],
+            'caramasuk' => $dataSet['caramasuk'],
+            'tekanandarah' => $dataSet['tekanandarah'],
+            'frekuensinadi' => $dataSet['frekuensinadi'],
+            'frekuensinapas' => $dataSet['frekuensinafas'],
+            'suhutubuh' => $dataSet['suhutubuh'],
+            'beratbadan' => $dataSet['beratbadan'],
+            'Keluhannyeri' => $dataSet['adakeluhannyeri'],
+            'skalenyeripasien' => $dataSet['skalanyeripasien'] . ' | ' . $dataSet['nyeriberipindah'] . ' | ' . $dataSet['lamanyeri'] . ' | ' . $dataSet['rasanyeri'] . ' | ' . $dataSet['seberapaseringnyeri'] . ' | ' . $dataSet['durasinyeri'] . ' | ' . $dataSet['peredanyeri'],
+            'keterangan_riwayat_psikolog' => $dataSet['riwayat_jatuh_dewasa'] . ' | ' . $dataSet['diagnosissekunder_dewasa'] . ' | ' . $dataSet['alatbantu_dewasa'] . ' | ' . $dataSet['terpasanginfus_dewasa'] . ' | ' . $dataSet['gayaberjalan_dewasa'] . ' | ' . $dataSet['statusmental'],
+            'umur' => $dataSet['umur_anak'],
+            'jeniskelamin' => $dataSet['jeniskelaminanak'],
+            'diagnosis' => $dataSet['diagnosa_anak'],
+            'gangguankoginitf' => $dataSet['gangguankognitif_anak'],
+            'faktorlingkungan' => $dataSet['faktorlingkungan_anak'],
+            'responterhadapoperasi' => $dataSet['responanestesi_anak'],
+            'penggunaanobat' => $dataSet['penggunaanobatobatan_anak'],
+            'anaktampakkurus' => $dataSet['pasientampakkurus'],
+            'adapenurunanbbanak' => $dataSet['apakahadapenurunanbb'],
+            'faktormalnutrisianak' => $dataSet['beratpenurunan'] . ' | ' . $dataSet['apakahasupanmakanburuk'] . ' | ' . $dataSet['Sakitberat'] . ' | ' . $dataSet['penurunanbb_anak'] . ' | ' . $dataSet['kondisilain'] . ' | ' . $dataSet['penyakitlain_anak'],
+            'penyakitlainpasien' => $dataSet['jlnnafas'].' | '.$dataSet['polanafas'].' | '.$dataSet['pertukarangas'].' | '.$dataSet['sirkulasi'].' | '.$dataSet['perfusijaringan'].' | '.$dataSet['hipertermia'].' | '.$dataSet['keseimbangancairan'].' | '.$dataSet['integritaskulit'].' | '.$dataSet['aktualtakut'].' | '.$dataSet['toksik'].' | '.$dataSet['cederajatuh'].' | '.$dataSet['nyeri'].' | ',
+            'diagnosakeperawatan' => $dataSet['diagnosakeperawatan'].' | '.$dataSet['subyektifanamnesis'],
+            'rencanakeperawatan' => $dataSet['rencanakeperawatan'],
+            'tindakankeperawatan' => $dataSet['tindakankeperawatan'],
+            'evaluasikeperawatan' => $dataSet['evaluasikeperawatan'],
+            'namapemeriksa' => auth()->user()->nama,
+            'idpemeriksa' => auth()->user()->id,
+            'status' => '0',
+            'signature' => ''
+        ];
+        try {
+            $cek = DB::connection('mysql4')->select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE id_antrian = ?', [$dataSet['idantrian']]);
+            if (count($cek) > 0) {
+                    assesmenawalperawat::whereRaw('id_antrian = ? and kode_unit = ?', array($dataSet['idantrian'],  '1002'))->update($data);
+            } else {
+                $erm_assesmen = assesmenawalperawat::create($data);
+            }
+            $data = [
+                'kode' => 200,
+                'message' => 'Data berhasil disimpan !'
+            ];
+            echo json_encode($data);
+            die;
+        } catch (\Exception $e) {
+            $data = [
+                'kode' => 500,
+                'message' => $e->getMessage()
+            ];
+            echo json_encode($data);
+            die;
         }
     }
 }

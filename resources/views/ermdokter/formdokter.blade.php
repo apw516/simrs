@@ -16,6 +16,15 @@
                     {{ \Carbon\Carbon::parse($mt_pasien[0]->tgl_lahir)->format('Y-m-d') }}
                     (Usia {{ \Carbon\Carbon::parse($mt_pasien[0]->tgl_lahir)->age }})</p>
                 <p class="text-bold text-center text-xs">Alamat : {{ $mt_pasien[0]->alamatpasien }} </p>
+                <p class="text-bold text-center text-xs">Jenis Kelamin :
+                    @if($mt_pasien[0]->jenis_kelamin == 'P' || $mt_pasien[0]->jenis_kelamin == 'p')
+                    Perempuan
+                    @elseif ($mt_pasien[0]->jenis_kelamin == 'L' || $mt_pasien[0]->jenis_kelamin == 'l')
+                    Laki - Laki
+                    @else
+                    {{ $mt_pasien[0]->jenis_kelamin }}
+                    @endif
+                </p>
                 <p class="text-bold text-center text-md">Diagnosa :
                     @if(count($last_assdok) > 0)
                     <br>{{ $last_assdok[0]->diagnosakerja }}</p>

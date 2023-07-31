@@ -16,19 +16,19 @@
                     </tr>
                     <tr>
                         <td class="text-bold font-italic">Nama Pasien</td>
-                        <td colspan="3"><input type="text" class="form-control" name="namapasien" id="namapasien"></td>
+                        <td colspan="3"><input type="text" class="form-control" name="namapasien" id="namapasien" value="{{ $resume[0]->nama_pasien }}"></td>
                     </tr>
                     <tr>
                         <td class="text-bold font-italic">Sumber Data</td>
                         <td colspan="3">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="sumberdata" id="sumberdata"
-                                    value="Pasien Sendiri" checked>
+                                    value="Pasien Sendiri" @if($resume[0]->sumberdataperiksa == 'Pasien Sendiri') checked @endif>
                                 <label class="form-check-label" for="inlineRadio1">Pasien Sendiri / Autoanamase</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="sumberdata" id="sumberdata"
-                                    value="Keluarga">
+                                    value="Keluarga" @if($resume[0]->sumberdataperiksa == 'Keluarga') checked @endif>
                                 <label class="form-check-label" for="inlineRadio2">Keluarga / Alloanamnesa</label>
                             </div>
                             <div class="form-check form-check-inline">
@@ -50,12 +50,12 @@
                         <td colspan="3">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="asalmasuk" id="asalmasuk"
-                                    value="Non Rujukan" checked>
+                                    value="Non Rujukan" @if($resume[0]->asalmasuk == 'Non Rujukan') checked @endif>
                                 <label class="form-check-label" for="inlineRadio1">Non Rujukan</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="asalmasuk" id="asalmasuk"
-                                    value="Rujukan">
+                                    value="Rujukan" @if($resume[0]->asalmasuk == 'Rujukan') checked @endif>
                                 <label class="form-check-label" for="inlineRadio2">Rujukan</label>
                             </div>
                             <div class="form-check form-check-inline">
@@ -68,23 +68,23 @@
                         <td colspan="3">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="caramasuk" id="caramasuk"
-                                    value="Jalan Kaki" checked>
+                                    value="Jalan Kaki" @if($resume[0]->caramasuk == 'Jalan Kaki') checked @endif>
                                 <label class="form-check-label" for="inlineRadio1">Jalan Kaki</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="caramasuk" id="caramasuk"
-                                    value="Kursi Roda">
+                                    value="Kursi Roda" @if($resume[0]->caramasuk == 'Kursi Roda') checked @endif>
                                 <label class="form-check-label" for="inlineRadio2">Kursi Roda</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="caramasuk" id="caramasuk"
-                                    value="Brankar">
+                                    value="Brankar" @if($resume[0]->caramasuk == 'Brankar') checked @endif>
                                 <label class="form-check-label" for="inlineRadio2">Brankar</label>
                             </div>
                         </td>
                     </tr>
                 </table>
-
+                @php $dg = explode('|',$resume[0]->diagnosakeperawatan ) @endphp
                 <div class="accordion" id="accordionExample">
                     <div class="card">
                         <div class="card-header bg-warning" id="headingOne">
@@ -99,7 +99,7 @@
                         <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
                             data-parent="#accordionExample">
                             <div class="card-body">
-                                <textarea class="form-control" id="subyektifanamnesis" name="subyektifanamnesis" placeholder="ketik subyektif anamnesis ..."></textarea>
+                                <textarea class="form-control" id="subyektifanamnesis" name="subyektifanamnesis" placeholder="ketik subyektif anamnesis ...">{{ $dg[1] }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -124,7 +124,7 @@
                                                     <input type="text" class="form-control"
                                                         placeholder="Tekanan darah pasien ..."
                                                         aria-label="Recipient's username" id="tekanandarah"
-                                                        name="tekanandarah" aria-describedby="basic-addon2">
+                                                        name="tekanandarah" aria-describedby="basic-addon2" value="{{ $resume[0]->tekanandarah }}">
                                                     <div class="input-group-append">
                                                         <span class="input-group-text" id="basic-addon2">mmHg</span>
                                                     </div>
@@ -136,7 +136,7 @@
                                                     <input type="text" class="form-control"
                                                         placeholder="Frekuensi nadi pasien ..." id="frekuensinadi"
                                                         name="frekuensinadi" aria-label="Recipient's username"
-                                                        aria-describedby="basic-addon2">
+                                                        aria-describedby="basic-addon2" value="{{ $resume[0]->frekuensinadi }}">
                                                     <div class="input-group-append">
                                                         <span class="input-group-text" id="basic-addon2">x/menit</span>
                                                     </div>
@@ -150,7 +150,7 @@
                                                     <input type="text" class="form-control"
                                                         placeholder="Frekuensi Nafas Pasien ..." name="frekuensinafas"
                                                         id="frekuensinafas" aria-label="Recipient's username"
-                                                        aria-describedby="basic-addon2">
+                                                        aria-describedby="basic-addon2" value="{{ $resume[0]->frekuensinapas }}">
                                                     <div class="input-group-append">
                                                         <span class="input-group-text" id="basic-addon2">x/menit</span>
                                                     </div>
@@ -161,7 +161,7 @@
                                                 <div class="input-group">
                                                     <input type="text" class="form-control"
                                                         placeholder="Suhu tubuh pasien ..." aria-label="Suhu tubuh pasien"
-                                                        name="suhutubuh" id="suhutubuh" aria-describedby="basic-addon2">
+                                                        name="suhutubuh" id="suhutubuh" aria-describedby="basic-addon2" value="{{ $resume[0]->suhutubuh }}">
                                                     <div class="input-group-append">
                                                         <span class="input-group-text" id="basic-addon2">°C</span>
                                                     </div>
@@ -175,7 +175,7 @@
                                                     <input type="text" class="form-control"
                                                         placeholder="Berat Badan Pasien ..." name="beratbadan"
                                                         id="beratbadan" aria-label="Recipient's username"
-                                                        aria-describedby="basic-addon2">
+                                                        aria-describedby="basic-addon2" value="{{ $resume[0]->beratbadan }}">
                                                     <div class="input-group-append">
                                                         <span class="input-group-text" id="basic-addon2">x/menit</span>
                                                     </div>
@@ -680,6 +680,7 @@
                             </div>
                         </div>
                     </div>
+                    @php $n = explode('|',$resume[0]->skalenyeripasien ) @endphp
                     <div class="card">
                         <div class="card-header bg-warning" id="headingFive">
                             <h2 class="mb-0">
@@ -700,13 +701,13 @@
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="adakeluhannyeri" id="adakeluhannyeri"
-                                                        value="Tidak Ada" checked>
+                                                        value="Tidak Ada" @if($resume[0]->Keluhannyeri == 'Tidak Ada') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">Tidak ada</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="adakeluhannyeri" id="adakeluhannyeri"
-                                                        value="Ada">
+                                                        value="Ada" @if($resume[0]->Keluhannyeri == 'Ada') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Ada</label>
                                                 </div>
                                             </td>
@@ -715,7 +716,7 @@
                                             <td class="text-bold font-italic"></td>
                                             <td colspan="3">
                                                 <textarea class="form-control" placeholder="Keterangan skala nyeri pasien ..." name="skalanyeripasien"
-                                                    id="skalanyeripasien"></textarea>
+                                                    id="skalanyeripasien">{{ $n[0] }}</textarea>
                                                 <img width="50%" src="{{ asset('public/img/skalanyeri.png') }}"
                                                     alt="">
                                             </td>
@@ -728,13 +729,13 @@
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="nyeriberipindah" id="nyeriberipindah"
-                                                        value="Tidak" checked>
+                                                        value="Tidak" @if($n[1] == ' Tidak ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">Tidak</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="nyeriberipindah" id="nyeriberipindah"
-                                                        value="Ada">
+                                                        value="Ada" @if($n[1] == ' Ada ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Ya</label>
                                                 </div>
                                             </td>
@@ -745,21 +746,21 @@
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="lamanyeri" id="lamanyeri"
-                                                        value="Tidak" checked>
+                                                        value="Tidak"  @if($n[2] == ' Tidak ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">
                                                         Tidak</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="lamanyeri" id="lamanyeri"
-                                                        value="< 3 bulan=akut">
+                                                        value="< 3 bulan=akut"  @if($n[2] == ' < 3 bulan=akut ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">
                                                         < 3 bulan=akut</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="lamanyeri" id="lamanyeri"
-                                                        value="> 3 bulan = kronik">
+                                                        value="> 3 bulan = kronik"  @if($n[2] == ' > 3 bulan = kronik ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2"> > 3 bulan =
                                                         kronik</label>
                                                 </div>
@@ -771,70 +772,70 @@
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="rasanyeri" id="rasanyeri"
-                                                        value="Tidak Ada" checked>
+                                                        value="Tidak Ada" @if($n[3] == ' Tidak Ada ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">
                                                         Tidak Ada</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="rasanyeri" id="rasanyeri"
-                                                        value="Tajam" >
+                                                        value="Tajam" @if($n[3] == ' Tajam ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">
                                                         Tajam</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="rasanyeri" id="rasanyeri"
-                                                        value="Nyeri tumpul">
+                                                        value="Nyeri tumpul" @if($n[3] == ' Nyeri tumpul ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Nyeri tumpul
                                                     </label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="rasanyeri" id="rasanyeri"
-                                                        value="seperti ditarik">
+                                                        value="seperti ditarik" @if($n[3] == ' seperti ditarik ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Seperti
                                                         ditarik</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="rasanyeri" id="rasanyeri"
-                                                        value="seperti ditusuk">
+                                                        value="seperti ditusuk" @if($n[3] == ' seperti ditusuk ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">
                                                         Seperti ditusuk</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="rasanyeri" id="rasanyeri"
-                                                        value="seperti dipukul">
+                                                        value="seperti dipukul" @if($n[3] == ' seperti dipukul ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Seperti
                                                         dipukul</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="rasanyeri" id="rasanyeri"
-                                                        value="seperti dibakar">
+                                                        value="seperti dibakar" @if($n[3] == ' seperti dibakar ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Seperti
                                                         dibakar</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="rasanyeri" id="rasanyeri"
-                                                        value="seperti berdenyut">
+                                                        value="seperti berdenyut" @if($n[3] == ' seperti berdenyut ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Seperti
                                                         berdenyut</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="rasanyeri" id="rasanyeri"
-                                                        value="seperti ditikam">
+                                                        value="seperti ditikam" @if($n[3] == ' seperti ditikam ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Seperti
                                                         ditikam</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="rasanyeri" id="rasanyeri"
-                                                        value="seperti kram">
+                                                        value="seperti kram" @if($n[3] == ' seperti kram ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Seperti
                                                         kram</label>
                                                 </div>
@@ -852,20 +853,20 @@
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="seberapaseringnyeri" id="seberapaseringnyeri"
-                                                        value="1 - 2 jam">
+                                                        value="1 - 2 jam"  @if($n[4] == ' 1 - 2 jam ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">
                                                         1 - 2 jam</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="seberapaseringnyeri" id="seberapaseringnyeri"
-                                                        value="3 -4 jam">
+                                                        value="3 -4 jam" @if($n[4] == ' 3 -4 jam ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">3 -4 jam</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="seberapaseringnyeri" id="seberapaseringnyeri"
-                                                        value="Tidak Ada" checked>
+                                                        value="Tidak Ada" @if($n[4] == ' Tidak Ada ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Tidak Ada</label>
                                                 </div>
                                             </td>
@@ -879,20 +880,20 @@
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="durasinyeri" id="durasinyeri"
-                                                        value="< 30 menit">
+                                                        value="< 30 menit"  @if($n[5] == ' < 30 menit ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">
                                                         < 30 menit </label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="durasinyeri" id="durasinyeri"
-                                                        value="> 30 menit">
+                                                        value="> 30 menit"  @if($n[5] == ' > 30 menit ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2"> > 30 menit</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="durasinyeri" id="durasinyeri"
-                                                        value="Tidak Ada" checked>
+                                                        value="Tidak Ada"  @if($n[5] == ' Tidak Ada ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Tidak Ada</label>
                                                 </div>
                                             </td>
@@ -904,21 +905,21 @@
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="peredanyeri" id="peredanyeri"
-                                                        value="kompres hangat / dingin">
+                                                        value="kompres hangat / dingin" @if($n[6] == ' kompres hangat / dingin') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">
                                                         Kompres hangat / dingin</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="peredanyeri" id="peredanyeri"
-                                                        value="aktivitas dikurangi / bertambah">
+                                                        value="aktivitas dikurangi / bertambah" @if($n[6] == ' aktivitas dikurangi / bertambah') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">
                                                         Aktivitas dikurangi / bertambah </label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="peredanyeri" id="peredanyeri"
-                                                        value="Tidak" checked>
+                                                        value="Tidak" @if($n[6] == ' Tidak') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">
                                                         Tidak</label>
                                                 </div>
@@ -937,6 +938,7 @@
                             </div>
                         </div>
                     </div>
+                    @php $jth = explode('|',$resume[0]->keterangan_riwayat_psikolog ) @endphp
                     <div class="card">
                         <div class="card-header bg-warning" id="headingSix">
                             <h2 class="mb-0">
@@ -970,7 +972,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="riwayat_jatuh_dewasa"
                                                                         id="riwayat_jatuh_dewasa" value="Ya"
-                                                                        checked>
+                                                                        @if($jth[0] == 'Ya ') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Ya</label>
                                                                 </div>
@@ -984,7 +986,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="riwayat_jatuh_dewasa"
                                                                         id="riwayat_jatuh_dewasa" value="Tidak"
-                                                                        checked>
+                                                                        @if($jth[0] == 'Tidak ') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Tidak</label>
                                                                 </div>
@@ -999,7 +1001,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="diagnosissekunder_dewasa"
                                                                         id="diagnosissekunder_dewasa" value="Ya"
-                                                                        checked>
+                                                                        @if($jth[1] == ' Ya ') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Ya</label>
                                                                 </div>
@@ -1013,7 +1015,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="diagnosissekunder_dewasa"
                                                                         id="diagnosissekunder_dewasa" value="Tidak"
-                                                                        checked>
+                                                                        @if($jth[1] == ' Tidak ') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Tidak</label>
                                                                 </div>
@@ -1027,7 +1029,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="alatbantu_dewasa"
                                                                         id="alatbantu_dewasa" value="berpegangan pada perabot"
-                                                                        checked>
+                                                                        @if($jth[2] == ' berpegangan pada perabot ') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Berpegangan pada perabot</label>
                                                                 </div>
@@ -1041,7 +1043,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="alatbantu_dewasa"
                                                                         id="alatbantu_dewasa" value="Tidak"
-                                                                        checked>
+                                                                        @if($jth[2] == ' Tidak ') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Tidak</label>
                                                                 </div>
@@ -1055,7 +1057,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="terpasanginfus_dewasa"
                                                                         id="terpasanginfus_dewasa" value="Ya"
-                                                                        checked>
+                                                                        @if($jth[3] == ' Ya ') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Ya</label>
                                                                 </div>
@@ -1069,7 +1071,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="terpasanginfus_dewasa"
                                                                         id="terpasanginfus_dewasa" value="Tidak"
-                                                                        checked>
+                                                                        @if($jth[3] == ' Tidak ') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Tidak</label>
                                                                 </div>
@@ -1083,7 +1085,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="gayaberjalan_dewasa"
                                                                         id="gayaberjalan_dewasa" value="Terganggu"
-                                                                        checked>
+                                                                        @if($jth[4] == ' Terganggu ') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Terganggu</label>
                                                                 </div>
@@ -1097,7 +1099,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="gayaberjalan_dewasa"
                                                                         id="gayaberjalan_dewasa" value="Lemah"
-                                                                        checked>
+                                                                        @if($jth[4] == ' Lemah ') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Lemah</label>
                                                                 </div>
@@ -1110,7 +1112,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="gayaberjalan_dewasa"
                                                                         id="gayaberjalan_dewasa" value="Normal / Tirah baring / imobilisasi"
-                                                                        checked>
+                                                                        @if($jth[4] == ' Normal / Tirah baring / imobilisasi ') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Normal / Tirah baring / imobilisasi</label>
                                                                 </div>
@@ -1124,7 +1126,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="statusmental"
                                                                         id="statusmental" value="Sering Lupa akan keterbatasan yang dimiliki"
-                                                                        checked>
+                                                                        @if($jth[5] == ' Sering Lupa akan keterbatasan yang dimiliki') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Sering Lupa akan keterbatasan yang dimiliki</label>
                                                                 </div>
@@ -1138,7 +1140,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="statusmental"
                                                                         id="statusmental" value="Sadar akan kemampuan diri sendiri"
-                                                                        checked>
+                                                                        @if($jth[5] == ' Sadar akan kemampuan diri sendiri') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Sadar akan kemampuan diri sendiri</label>
                                                                 </div>
@@ -1168,7 +1170,7 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio"
                                                                         name="umur_anak"
-                                                                        id="umur_anak" value="Kurang dari 3 tahun">
+                                                                        id="umur_anak" value="Kurang dari 3 tahun" @if($resume[0]->umur == 'Kurang dari 3 tahun') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Kurang dari 3 tahun</label>
                                                                 </div>
@@ -1182,7 +1184,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="umur_anak"
                                                                         id="umur_anak" value="3 tahun - 7 tahun"
-                                                                        >
+                                                                        @if($resume[0]->umur == '3 tahun - 7 tahun') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         3 tahun - 7 tahun</label>
                                                                 </div>
@@ -1195,7 +1197,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="umur_anak"
                                                                         id="umur_anak" value="7 tahun - 13 tahun"
-                                                                        >
+                                                                        @if($resume[0]->umur == '7 tahun - 13 tahun') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         7 tahun - 13 tahun</label>
                                                                 </div>
@@ -1207,7 +1209,7 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio"
                                                                         name="umur_anak"
-                                                                        id="umur_anak" value="Lebih 13 tahun">
+                                                                        id="umur_anak" value="Lebih 13 tahun" @if($resume[0]->umur == 'Lebih 13 tahun') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Lebih 13 tahun</label>
                                                                 </div>
@@ -1219,7 +1221,7 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio"
                                                                         name="umur_anak"
-                                                                        id="umur_anak" value="0" checked>
+                                                                        id="umur_anak" value="0" @if($resume[0]->umur == '0') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                        None</label>
                                                                 </div>
@@ -1232,7 +1234,7 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio"
                                                                         name="jeniskelaminanak"
-                                                                        id="jeniskelaminanak" value="Laki-laki">
+                                                                        id="jeniskelaminanak" value="Laki-laki"  @if($resume[0]->jeniskelamin == 'Laki-laki') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Laki - laki</label>
                                                                 </div>
@@ -1246,7 +1248,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="jeniskelaminanak"
                                                                         id="jeniskelaminanak" value="Perempuan"
-                                                                        >
+                                                                        @if($resume[0]->jeniskelamin == 'Perempuan') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Perempuan</label>
                                                                 </div>
@@ -1258,7 +1260,7 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio"
                                                                         name="jeniskelaminanak"
-                                                                        id="jeniskelaminanak" value="0" checked
+                                                                        id="jeniskelaminanak" value="0" @if($resume[0]->jeniskelamin == '0') checked @endif
                                                                         >
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         None</label>
@@ -1273,7 +1275,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="diagnosa_anak"
                                                                         id="diagnosa_anak" value="Neurologi"
-                                                                        >
+                                                                        @if($resume[0]->diagnosis == 'Neurologi') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Neurologi</label>
                                                                 </div>
@@ -1287,7 +1289,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="diagnosa_anak"
                                                                         id="diagnosa_anak" value="Respiratori, dehidrasi, anemia,anorexia,syncope"
-                                                                        >
+                                                                        @if($resume[0]->diagnosis == 'Respiratori, dehidrasi, anemia,anorexia,syncope') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Respiratori, dehidrasi, anemia,anorexia,
                                                                         syncope</label>
@@ -1301,7 +1303,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="diagnosa_anak"
                                                                         id="diagnosa_anak" value="Perilaku"
-                                                                        >
+                                                                        @if($resume[0]->diagnosis == 'Perilaku') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Perilaku</label>
                                                                 </div>
@@ -1314,7 +1316,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="diagnosa_anak"
                                                                         id="diagnosa_anak" value="Lain - lain"
-                                                                        >
+                                                                        @if($resume[0]->diagnosis == 'Lain - lain') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Lain - lain</label>
                                                                 </div>
@@ -1326,8 +1328,8 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio"
                                                                         name="diagnosa_anak"
-                                                                        id="diagnosa_anak" value="0" checked
-                                                                        >
+                                                                        id="diagnosa_anak" value="0"
+                                                                        @if($resume[0]->diagnosis == '0') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         None</label>
                                                                 </div>
@@ -1340,7 +1342,7 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio"
                                                                         name="gangguankognitif_anak"
-                                                                        id="gangguankognitif_anak" value="Keterbatasan daya pikir"
+                                                                        id="gangguankognitif_anak" value="Keterbatasan daya pikir"  @if($resume[0]->gangguankoginitf == 'Keterbatasan daya pikir') checked @endif
                                                                         >
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Keterbatasan daya pikir</label>
@@ -1355,7 +1357,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="gangguankognitif_anak"
                                                                         id="gangguankognitif_anak" value="Pelupa, berkurangnya orientasi sekitar"
-                                                                        >
+                                                                        @if($resume[0]->gangguankoginitf == 'Pelupa, berkurangnya orientasi sekitar') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Pelupa, berkurangnya orientasi sekitar</label>
                                                                 </div>
@@ -1368,7 +1370,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="gangguankognitif_anak"
                                                                         id="gangguankognitif_anak" value="Dapat menggunakan daya pikir tanpa hambatan"
-                                                                        >
+                                                                        @if($resume[0]->gangguankoginitf == 'Dapat menggunakan daya pikir tanpa hambatan') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Dapat menggunakan daya pikir tanpa hambatan</label>
                                                                 </div>
@@ -1380,7 +1382,7 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio"
                                                                         name="gangguankognitif_anak"
-                                                                        id="gangguankognitif_anak" value="0" checked
+                                                                        id="gangguankognitif_anak" value="0" @if($resume[0]->gangguankoginitf == '0') checked @endif
                                                                         >
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         None</label>
@@ -1394,7 +1396,7 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio"
                                                                         name="faktorlingkungan_anak"
-                                                                        id="faktorlingkungan_anak" value="Riwayat jatuh atau bayi / balita yang ditempatkan ditempat tidur"
+                                                                        id="faktorlingkungan_anak" value="Riwayat jatuh atau bayi / balita yang ditempatkan ditempat tidur" @if($resume[0]->faktorlingkungan == '0') checked @endif
                                                                         >
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Riwayat jatuh atau bayi / balita yang ditempatkan
@@ -1409,7 +1411,7 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio"
                                                                         name="faktorlingkungan_anak"
-                                                                        id="faktorlingkungan_anak" value="Pasien yang menggunakan alat bantu / bayi balita dalam ayunan"
+                                                                        id="faktorlingkungan_anak" value="Pasien yang menggunakan alat bantu / bayi balita dalam ayunan" @if($resume[0]->faktorlingkungan == 'Pasien yang menggunakan alat bantu / bayi balita dalam ayunan') checked @endif
                                                                         >
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Pasien yang menggunakan alat bantu / bayi balita
@@ -1423,7 +1425,7 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio"
                                                                         name="faktorlingkungan_anak"
-                                                                        id="faktorlingkungan_anak" value="Pasien ditempat tidur standar"
+                                                                        id="faktorlingkungan_anak" value="Pasien ditempat tidur standar" @if($resume[0]->faktorlingkungan == 'Pasien ditempat tidur standar') checked @endif
                                                                         >
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Pasien ditempat tidur standar</label>
@@ -1436,7 +1438,7 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio"
                                                                         name="faktorlingkungan_anak"
-                                                                        id="faktorlingkungan_anak" value="Area pasien rawat jalan"
+                                                                        id="faktorlingkungan_anak" value="Area pasien rawat jalan"  @if($resume[0]->faktorlingkungan == 'Area pasien rawat jalan') checked @endif
                                                                         >
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Area pasien rawat jalan</label>
@@ -1449,7 +1451,7 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio"
                                                                         name="faktorlingkungan_anak"
-                                                                        id="faktorlingkungan_anak" value="0" checked
+                                                                        id="faktorlingkungan_anak" value="0" @if($resume[0]->faktorlingkungan == '0') checked @endif
                                                                         >
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         None</label>
@@ -1464,7 +1466,7 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio"
                                                                         name="responanestesi_anak"
-                                                                        id="responanestesi_anak" value=" Dalam 24 jam"
+                                                                        id="responanestesi_anak" value=" Dalam 24 jam" @if($resume[0]->responterhadapoperasi == ' Dalam 24 jam') checked @endif
                                                                         >
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Dalam 24 jam</label>
@@ -1478,7 +1480,7 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio"
                                                                         name="responanestesi_anak"
-                                                                        id="responanestesi_anak" value="Dalam 48 jam"
+                                                                        id="responanestesi_anak" value="Dalam 48 jam" @if($resume[0]->responterhadapoperasi == 'Dalam 48 jam') checked @endif
                                                                         >
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Dalam 48 jam</label>
@@ -1491,7 +1493,7 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio"
                                                                         name="responanestesi_anak"
-                                                                        id="responanestesi_anak" value="Lebih dari 48 jam / tidak ada respon"
+                                                                        id="responanestesi_anak" value="Lebih dari 48 jam / tidak ada respon" @if($resume[0]->responterhadapoperasi == 'Lebih dari 48 jam / tidak ada respon') checked @endif
                                                                         >
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Lebih dari 48 jam / tidak ada respon</label>
@@ -1504,7 +1506,7 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio"
                                                                         name="responanestesi_anak"
-                                                                        id="responanestesi_anak" value="0" checked
+                                                                        id="responanestesi_anak" value="0" @if($resume[0]->responterhadapoperasi == '0') checked @endif
                                                                         >
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         None</label>
@@ -1518,7 +1520,7 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio"
                                                                         name="penggunaanobatobatan_anak"
-                                                                        id="penggunaanobatobatan_anak" value="Penggunaan bersamaan sedative, barbiturate, anti depresan, diuretik, narkotik"
+                                                                        id="penggunaanobatobatan_anak" value="Penggunaan bersamaan sedative, barbiturate, anti depresan, diuretik, narkotik" @if($resume[0]->penggunaanobat == 'Penggunaan bersamaan sedative, barbiturate, anti depresan, diuretik, narkotik') checked @endif
                                                                         >
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Penggunaan bersamaan sedative, barbiturate, anti
@@ -1533,7 +1535,7 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio"
                                                                         name="penggunaanobatobatan_anak"
-                                                                        id="penggunaanobatobatan_anak" value="salah satu dari obat diatas"
+                                                                        id="penggunaanobatobatan_anak" value="salah satu dari obat diatas" @if($resume[0]->penggunaanobat == 'salah satu dari obat diatas') checked @endif
                                                                         >
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         salah satu dari obat diatas</label>
@@ -1546,7 +1548,7 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio"
                                                                         name="penggunaanobatobatan_anak"
-                                                                        id="penggunaanobatobatan_anak" value="obat obatan lainnya / tanpa obat"
+                                                                        id="penggunaanobatobatan_anak" value="obat obatan lainnya / tanpa obat" @if($resume[0]->penggunaanobat == 'obat obatan lainnya / tanpa obat') checked @endif
                                                                         >
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         obat obatan lainnya / tanpa obat</label>
@@ -1559,7 +1561,7 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio"
                                                                         name="penggunaanobatobatan_anak"
-                                                                        id="penggunaanobatobatan_anak" value="0" checked
+                                                                        id="penggunaanobatobatan_anak" value="0" @if($resume[0]->penggunaanobat == '0') checked @endif
                                                                         >
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         None</label>
@@ -1608,8 +1610,7 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio"
                                                                         name="apakahadapenurunanbb"
-                                                                        id="apakahadapenurunanbb" value="Tidak ( Tidak terjadi penurunan dalam 6 bulan terakhir )"
-                                                                        checked>
+                                                                        id="apakahadapenurunanbb" value="Tidak ( Tidak terjadi penurunan dalam 6 bulan terakhir )" @if($resume[0]->adapenurunanbbanak == 'Tidak ( Tidak terjadi penurunan dalam 6 bulan terakhir )') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Tidak ( Tidak terjadi penurunan dalam 6 bulan terakhir )</label>
                                                                 </div>
@@ -1623,7 +1624,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="apakahadapenurunanbb"
                                                                         id="apakahadapenurunanbb" value="Tidak Yakin"
-                                                                        >
+                                                                        @if($resume[0]->adapenurunanbbanak == 'Tidak Yakin') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Tidak Yakin ( Tanyakan apakah baju / celanan terasa linggar )</label>
                                                                 </div>
@@ -1635,11 +1636,12 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio"
                                                                         name="apakahadapenurunanbb"
-                                                                        id="apakahadapenurunanbb" value="Ada"
+                                                                        id="apakahadapenurunanbb" value="Ada" @if($resume[0]->adapenurunanbbanak == 'Ada') checked @endif
                                                                         >
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Ya, berapakah penurunan berat badan tersebut ?</label>
                                                                 </div>
+                                                                @php $gz = explode('|',$resume[0]->faktormalnutrisianak ) @endphp
                                                                 <div class="row">
                                                                     <p class="mt-2 mb-2 text-bold">pilih berat penurunan</p>
                                                                     <div class="col-md-12">
@@ -1647,7 +1649,7 @@
                                                                             <input class="form-check-input" type="radio"
                                                                                 name="beratpenurunan"
                                                                                 id="beratpenurunan" value="1-5kg"
-                                                                                checked>
+                                                                                @if($gz[0] == '1-5kg ') checked @endif>
                                                                             <label class="form-check-label" for="inlineRadio1">
                                                                                 1 - 5 kg</label>
                                                                         </div>
@@ -1657,7 +1659,7 @@
                                                                             <input class="form-check-input" type="radio"
                                                                                 name="beratpenurunan"
                                                                                 id="beratpenurunan" value="6-10kg"
-                                                                                checked>
+                                                                                @if($gz[0] == '6-10kg ') checked @endif>
                                                                             <label class="form-check-label" for="inlineRadio1">
                                                                                 6 - 10 kg</label>
                                                                         </div>
@@ -1667,7 +1669,7 @@
                                                                             <input class="form-check-input" type="radio"
                                                                                 name="beratpenurunan"
                                                                                 id="beratpenurunan" value="11-15kg"
-                                                                                checked>
+                                                                                @if($gz[0] == '11-15kg ') checked @endif>
                                                                             <label class="form-check-label" for="inlineRadio1">
                                                                                 11 - 15 kg</label>
                                                                         </div>
@@ -1677,7 +1679,7 @@
                                                                             <input class="form-check-input" type="radio"
                                                                                 name="beratpenurunan"
                                                                                 id="beratpenurunan" value=">15kg"
-                                                                                checked>
+                                                                                @if($gz[0] == '>15kg ') checked @endif>
                                                                             <label class="form-check-label" for="inlineRadio1">
                                                                                >15 kg</label>
                                                                         </div>
@@ -1687,7 +1689,7 @@
                                                                             <input class="form-check-input" type="radio"
                                                                                 name="beratpenurunan"
                                                                                 id="beratpenurunan" value="Tidak Yakin"
-                                                                                checked>
+                                                                                @if($gz[0] == 'Tidak Yakin ') checked @endif>
                                                                             <label class="form-check-label" for="inlineRadio1">
                                                                                 Tidak Yakin</label>
                                                                         </div>
@@ -1704,7 +1706,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="apakahasupanmakanburuk"
                                                                         id="apakahasupanmakanburuk" value="Ya"
-                                                                        checked>
+                                                                        @if($gz[1] == ' Ya ') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Ya</label>
                                                                 </div>
@@ -1718,7 +1720,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="apakahasupanmakanburuk"
                                                                         id="apakahasupanmakanburuk" value="Tidak"
-                                                                        checked>
+                                                                        @if($gz[1] == ' Tidak ') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Tidak</label>
                                                                 </div>
@@ -1732,7 +1734,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="Sakitberat"
                                                                         id="Sakitberat" value="Ya"
-                                                                        checked>
+                                                                        @if($gz[2] == ' Ya ') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Ya</label>
                                                                 </div>
@@ -1746,7 +1748,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="Sakitberat"
                                                                         id="Sakitberat" value="Tidak"
-                                                                        checked>
+                                                                        @if($gz[2] == ' Tidak ') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Tidak</label>
                                                                 </div>
@@ -1777,7 +1779,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="pasientampakkurus"
                                                                         id="pasientampakkurus" value="Ya"
-                                                                        checked>
+                                                                        @if($resume[0]->anaktampakkurus == 'Ya') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Ya</label>
                                                                 </div>
@@ -1791,7 +1793,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="pasientampakkurus"
                                                                         id="pasientampakkurus" value="Tidak"
-                                                                        checked>
+                                                                        @if($resume[0]->anaktampakkurus == 'Tidak') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Tidak</label>
                                                                 </div>
@@ -1805,7 +1807,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="penurunanbb_anak"
                                                                         id="penurunanbb_anak" value="Ya"
-                                                                        checked>
+                                                                        @if($gz[3] == ' Ya ') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Ya</label>
                                                                 </div>
@@ -1819,7 +1821,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="penurunanbb_anak"
                                                                         id="penurunanbb_anak" value="Tidak"
-                                                                        checked>
+                                                                        @if($gz[3] == ' Tidak ') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Tidak</label>
                                                                 </div>
@@ -1836,7 +1838,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="kondisilain"
                                                                         id="kondisilain" value="diare / asupan makanan berkurang "
-                                                                        checked>
+                                                                        @if($gz[4] == ' diare / asupan makanan berkurang  ') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Ya</label>
                                                                 </div>
@@ -1850,7 +1852,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="kondisilain"
                                                                         id="kondisilain" value="Tidak"
-                                                                        checked>
+                                                                        @if($gz[4] == ' Tidak ') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                         Tidak</label>
                                                                 </div>
@@ -1864,7 +1866,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="penyakitlain_anak"
                                                                         id="penyakitlain_anak" value="Ya"
-                                                                        checked>
+                                                                        @if($gz[5] == ' Ya') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                        Ya</label>
                                                                 </div>
@@ -1878,7 +1880,7 @@
                                                                     <input class="form-check-input" type="radio"
                                                                         name="penyakitlain_anak"
                                                                         id="penyakitlain_anak" value="Tidak"
-                                                                        checked>
+                                                                        @if($gz[5] == ' Tidak') checked @endif>
                                                                     <label class="form-check-label" for="inlineRadio1">
                                                                       Tidak</label>
                                                                 </div>
@@ -1901,56 +1903,57 @@
                     </tr>
                     <tr>
                         <td>
+                            @php $p = explode('|',$resume[0]->penyakitlainpasien ) @endphp
                             <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" id="jlnnafas" name="jlnnafas">
+                                <input type="checkbox" class="form-check-input" id="jlnnafas" name="jlnnafas" @if($p[0] == 'on ') checked @endif>
                                 <label class="form-check-label" for="exampleCheck1">Aktual / risiko bersihan jalan nafas tidak efektif</label>
                               </div>
                             <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" name="polanafas" id="polanafas">
+                                <input type="checkbox" class="form-check-input" name="polanafas" id="polanafas" @if($p[1] == ' on ') checked @endif>
                                 <label class="form-check-label" for="exampleCheck1">Aktual / risiko pola nafas tidak efektif</label>
                               </div>
                             <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" name="pertukarangas" id="pertukarangas">
+                                <input type="checkbox" class="form-check-input" name="pertukarangas" id="pertukarangas" @if($p[2] == ' on ') checked @endif>
                                 <label class="form-check-label" for="exampleCheck1">Aktual / risiko gangguan pertukaran gas</label>
                               </div>
                             <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" name="sirkulasi" id="sirkulasi">
+                                <input type="checkbox" class="form-check-input" name="sirkulasi" id="sirkulasi" @if($p[3] == ' on ') checked @endif>
                                 <label class="form-check-label" for="exampleCheck1">Aktual / risiko gangguan sirkulasi</label>
                               </div>
                             <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" name="perfusijaringan" id="perfusijaringan">
+                                <input type="checkbox" class="form-check-input" name="perfusijaringan" id="perfusijaringan" @if($p[4] == ' on ') checked @endif>
                                 <label class="form-check-label" for="exampleCheck1">Aktual / risiko gangguan perfusi jaringan / cerebral</label>
                               </div>
                             <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" name="hipertermia" id="hipertermia">
+                                <input type="checkbox" class="form-check-input" name="hipertermia" id="hipertermia" @if($p[5] == ' on ') checked @endif>
                                 <label class="form-check-label" for="exampleCheck1">hipertermia</label>
                               </div>
                             <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" name="keseimbangancairan" id="keseimbangancairan">
+                                <input type="checkbox" class="form-check-input" name="keseimbangancairan" id="keseimbangancairan" @if($p[6] == ' on ') checked @endif>
                                 <label class="form-check-label" for="exampleCheck1">Aktual / risiko gangguan keseimbangan cairan</label>
                               </div>
                             <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" name="integritaskulit" id="integritaskulit">
+                                <input type="checkbox" class="form-check-input" name="integritaskulit" id="integritaskulit" @if($p[7] == ' on ') checked @endif>
                                 <label class="form-check-label" for="exampleCheck1">Aktual / risiko gangguan gangguan integritas kulit</label>
                               </div>
                             <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" name="aktualtakut" id="aktualtakut">
+                                <input type="checkbox" class="form-check-input" name="aktualtakut" id="aktualtakut" @if($p[8] == ' on ') checked @endif>
                                 <label class="form-check-label" for="exampleCheck1">Aktual / risiko cemas / takut</label>
                               </div>
                             <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" name="toksik" id="toksik">
+                                <input type="checkbox" class="form-check-input" name="toksik" id="toksik" @if($p[9] == ' on ') checked @endif>
                                 <label class="form-check-label" for="exampleCheck1">Risiko penyebaran toksik</label>
                               </div>
                             <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" name="cederajatuh" id="cederajatuh">
+                                <input type="checkbox" class="form-check-input" name="cederajatuh" id="cederajatuh" @if($p[10] == ' on ') checked @endif>
                                 <label class="form-check-label" for="exampleCheck1">Risiko cedera / jatuh</label>
                               </div>
                             <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" name="nyeri" id="nyeri">
+                                <input type="checkbox" class="form-check-input" name="nyeri" id="nyeri" @if($p[11] == ' on ') checked @endif>
                                 <label class="form-check-label" for="exampleCheck1">Nyeri</label>
                               </div>
                             <textarea class="form-control" placeholder="Masukan diagnosa keperawatan ..." name="diagnosakeperawatan"
-                                id="diagnosakeperawatan"></textarea>
+                                id="diagnosakeperawatan">{{ $dg[0] }}</textarea>
                         </td>
                     </tr>
                     <tr>
@@ -1959,7 +1962,7 @@
                     <tr>
                         <td>
                             <textarea class="form-control" placeholder="Masukan rencana keperawatan" id="rencanakeperawatan"
-                                name="rencanakeperawatan"></textarea>
+                                name="rencanakeperawatan">{{ $resume[0]->rencanakeperawatan}}</textarea>
                         </td>
                     </tr>
                     <tr>
@@ -1968,7 +1971,7 @@
                     <tr>
                         <td>
                             <textarea class="form-control" placeholder="Masukan tindakan keperawatan" id="tindakankeperawatan"
-                                name="tindakankeperawatan"></textarea>
+                                name="tindakankeperawatan">{{ $resume[0]->tindakankeperawatan}}</textarea>
                         </td>
                     </tr>
                     <tr>
@@ -1977,7 +1980,7 @@
                     <tr>
                         <td>
                             <textarea class="form-control" placeholder="Masukan evaluasi keperawatan" name="evaluasikeperawatan"
-                                id="evaluasikeperawatan"></textarea>
+                                id="evaluasikeperawatan">{{ $resume[0]->evaluasikeperawatan}}</textarea>
                         </td>
                     </tr>
                     <tr>
