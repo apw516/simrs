@@ -1947,7 +1947,7 @@
                         <div id="collapseOne_4" class="collapse" aria-labelledby="headingOne"
                             data-parent="#accordionExample">
                             <div class="card-body">
-                                <div class="row">
+                                {{-- <div class="row">
                                     <div class="col-md-5" style="margin-top:20px">
                                         <h5>Terapi / Tindakan Medis</h5>
                                         <table id="tabeltindakan" class="table table-hover table-sm">
@@ -1981,7 +1981,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>

@@ -19,6 +19,7 @@
                         <td colspan="3"><input type="text" class="form-control" name="namapasien" id="namapasien" value="{{ $resume[0]->nama_pasien }}"></td>
                     </tr>
                     <tr>
+                        @php $as = explode('|',$resume[0]->asalmasuk ) @endphp
                         <td class="text-bold font-italic">Sumber Data</td>
                         <td colspan="3">
                             <div class="form-check form-check-inline">
@@ -33,16 +34,8 @@
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-control" name="namakeluarga" id="namakeluarga"
-                                    placeholder="Nama Keluarga ...">
+                                    placeholder="Nama Keluarga ..." value="{{ $as[2]}}">
                             </div>
-                            {{-- <div class="form-check form-check-inline">
-                                <div class="form-group">
-                                    <select class="form-control" id="hubungankeluarga" name="hubungankeluarga">
-                                        <option value="suami">Suami</option>
-                                        <option value="istri">Istri</option>
-                                    </select>
-                                </div>
-                            </div> --}}
                         </td>
                     </tr>
                     <tr>
@@ -50,16 +43,16 @@
                         <td colspan="3">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="asalmasuk" id="asalmasuk"
-                                    value="Non Rujukan" @if($resume[0]->asalmasuk == 'Non Rujukan') checked @endif>
+                                    value="Non Rujukan" @if($as[0] == 'Non Rujukan ') checked @endif>
                                 <label class="form-check-label" for="inlineRadio1">Non Rujukan</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="asalmasuk" id="asalmasuk"
-                                    value="Rujukan" @if($resume[0]->asalmasuk == 'Rujukan') checked @endif>
+                                    value="Rujukan" @if($as[0] == 'Rujukan ') checked @endif>
                                 <label class="form-check-label" for="inlineRadio2">Rujukan</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <textarea class="form-control" name="keteranganasalmasuk" id="keteranganasalmasuk" placeholder="Keterangan ..."></textarea>
+                                <textarea class="form-control" name="keteranganasalmasuk" id="keteranganasalmasuk" placeholder="Keterangan ...">{{ $as[1]}}</textarea>
                             </div>
                         </td>
                     </tr>
@@ -249,6 +242,7 @@
                                 </button>
                             </h2>
                         </div>
+                        @php $nt = explode('|',$resume[0]->Riwayatpsikologi ) @endphp
                         <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
                             data-parent="#accordionExample">
                             <div class="card-body">
@@ -259,38 +253,38 @@
                                             <td colspan="3">
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="tekananintrakranial"
-                                                        id="tekananintrakranial" value="Tidak Ada" checked>
+                                                        id="tekananintrakranial" value="Tidak Ada" @if($nt[2] == ' Tidak Ada ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">Tidak Ada</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="tekananintrakranial"
-                                                        id="tekananintrakranial" value="Sakit Kepala">
+                                                        id="tekananintrakranial" value="Sakit Kepala" @if($nt[2] == ' Sakit Kepala ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">Sakit
                                                         Kepala</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="tekananintrakranial"
-                                                        id="tekananintrakranial" value="Muntah">
+                                                        id="tekananintrakranial" value="Muntah" @if($nt[2] == ' Muntah ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Muntah</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="tekananintrakranial"
-                                                        id="tekananintrakranial" value="Pusing">
+                                                        id="tekananintrakranial" value="Pusing" @if($nt[2] == ' Pusing ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Pusing</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="tekananintrakranial"
-                                                        id="tekananintrakranial" value="Bingung">
+                                                        id="tekananintrakranial" value="Bingung" @if($nt[2] == ' Bingung ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Bingung</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="tekananintrakranial"
-                                                        id="tekananintrakranial" value="Hypertensi">
+                                                        id="tekananintrakranial" value="Hypertensi" @if($nt[2] == ' Hypertensi ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Hypertensi</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="tekananintrakranial"
-                                                        id="tekananintrakranial" value="Hipotensi">
+                                                        id="tekananintrakranial" value="Hipotensi" @if($nt[2] == ' Hipotensi ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Hipotensi</label>
                                                 </div>
                                             </td>
@@ -300,27 +294,27 @@
                                             <td colspan="3">
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="pupil"
-                                                        id="pupil" value="Normal" checked>
+                                                        id="pupil" value="Normal" @if($nt[3] == ' Normal ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">Normal</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="pupil"
-                                                        id="pupil" value="Miosis">
+                                                        id="pupil" value="Miosis" @if($nt[3] == ' Miosis ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Miosis</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="pupil"
-                                                        id="pupil" value="Midriasis">
+                                                        id="pupil" value="Midriasis" @if($nt[3] == ' Midriasis ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Midriasis</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="pupil"
-                                                        id="pupil" value="Isokor">
+                                                        id="pupil" value="Isokor" @if($nt[3] == ' Isokor ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Isokor</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="pupil"
-                                                        id="pupil" value="Anisokor">
+                                                        id="pupil" value="Anisokor" @if($nt[3] == ' Anisokor ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Anisokor</label>
                                                 </div>
                                             </td>
@@ -330,47 +324,47 @@
                                             <td colspan="3">
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="neurosensorik"
-                                                        id="neurosensorik" value="Tidak Ada" checked>
+                                                        id="neurosensorik" value="Tidak Ada" @if($nt[4] == ' Tidak Ada ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">Tidak Ada</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="neurosensorik"
-                                                        id="neurosensorik" value="spasme otot">
+                                                        id="neurosensorik" value="spasme otot" @if($nt[4] == ' spasme otot ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">Spasme Otot</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="neurosensorik"
-                                                        id="neurosensorik" value="perubahan sensorik">
+                                                        id="neurosensorik" value="perubahan sensorik" @if($nt[4] == ' perubahan sensorik ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Perubahan
                                                         Sensorik</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="neurosensorik"
-                                                        id="neurosensorik" value="perubahan motorik">
+                                                        id="neurosensorik" value="perubahan motorik" @if($nt[4] == ' perubahan motorik ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Perubahan
                                                         Motorik</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="neurosensorik"
-                                                        id="neurosensorik" value="kerusakan jaringan / luka">
+                                                        id="neurosensorik" value="kerusakan jaringan / luka" @if($nt[4] == ' kerusakan jaringan / luka ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Kerusakan Jaringan
                                                         / Luka</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="neurosensorik"
-                                                        id="neurosensorik" value="perubahan bentuk ekstermitas">
+                                                        id="neurosensorik" value="perubahan bentuk ekstermitas" @if($nt[4] == ' perubahan bentuk ekstermitas ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Perubahan bentuk
                                                         ekstermitas</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="neurosensorik"
-                                                        id="neurosensorik" value="penurunan tingkat kesadaran">
+                                                        id="neurosensorik" value="penurunan tingkat kesadaran" @if($nt[4] == ' penurunan tingkat kesadaran ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Penurunan tingkat
                                                         kesadaran</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="neurosensorik"
-                                                        id="neurosensorik" value="fraktur / dislokasi / luksasio">
+                                                        id="neurosensorik" value="fraktur / dislokasi / luksasio" @if($nt[4] == ' fraktur / dislokasi / luksasio ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Fraktur / Dislokasi
                                                         / Luksasio
                                                     </label>
@@ -382,33 +376,33 @@
                                             <td colspan="3">
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="integumen"
-                                                        id="integumen" value="Tidak Ada" checked>
+                                                        id="integumen" value="Tidak Ada" @if($nt[5] == ' Tidak Ada ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">Tidak Ada</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="integumen"
-                                                        id="integumen" value="luka bakar">
+                                                        id="integumen" value="luka bakar" @if($nt[5] == ' luka bakar ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">Luka Bakar</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="integumen"
-                                                        id="integumen" value="luka robek">
+                                                        id="integumen" value="luka robek" @if($nt[5] == ' luka robek ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Luka Robek</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="integumen"
-                                                        id="integumen" value="lecet">
+                                                        id="integumen" value="lecet" @if($nt[5] == ' lecet ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Lecet</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="integumen"
-                                                        id="integumen" value="luka dekubitus">
+                                                        id="integumen" value="luka dekubitus" @if($nt[5] == ' luka dekubitus ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Luka
                                                         dekubitus</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="integumen"
-                                                        id="integumen" value="luka gangren">
+                                                        id="integumen" value="luka gangren" @if($nt[5] == ' luka gangren ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Luka
                                                         gangren</label>
                                                 </div>
@@ -419,12 +413,12 @@
                                             <td colspan="3">
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="turgorkulit"
-                                                        id="turgorkulit" value="baik" checked>
+                                                        id="turgorkulit" value="baik" @if($nt[6] == ' baik ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">Baik</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="turgorkulit"
-                                                        id="turgorkulit" value="menurun">
+                                                        id="turgorkulit" value="menurun" @if($nt[6] == ' menurun ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Menurun</label>
                                                 </div>
                                             </td>
@@ -434,28 +428,28 @@
                                             <td colspan="3">
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="edema"
-                                                        id="edema" value="Tidak Ada" checked>
+                                                        id="edema" value="Tidak Ada" @if($nt[7] == ' Tidak Ada ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">Tidak Ada</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="edema"
-                                                        id="edema" value="ekstremitas">
+                                                        id="edema" value="ekstremitas" @if($nt[7] == ' ekstremitas ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">Ekstremitas</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="edema"
-                                                        id="edema" value="seluruh tubuh">
+                                                        id="edema" value="seluruh tubuh" @if($nt[7] == ' seluruh tubuh ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Seluruh
                                                         tubuh</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="edema"
-                                                        id="edema" value="ascites">
+                                                        id="edema" value="ascites" @if($nt[7] == ' ascites ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Ascites</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="edema"
-                                                        id="edema" value="palpebra">
+                                                        id="edema" value="palpebra" @if($nt[7] == ' palpebra ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Palpebra</label>
                                                 </div>
                                             </td>
@@ -465,27 +459,27 @@
                                             <td colspan="3">
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="mukosamulut"
-                                                        id="mukosamulut" value="Tidak Ada" checked>
+                                                        id="mukosamulut" value="Tidak Ada" @if($nt[8] == ' Tidak Ada ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">Tidak Ada</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="mukosamulut"
-                                                        id="mukosamulut" value="Kering">
+                                                        id="mukosamulut" value="Kering" @if($nt[8] == ' Kering ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">Kering</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="mukosamulut"
-                                                        id="mukosamulut" value="Lembab">
+                                                        id="mukosamulut" value="Lembab" @if($nt[8] == ' Lembab ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Lembab</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="mukosamulut"
-                                                        id="mukosamulut" value="Ascites">
+                                                        id="mukosamulut" value="Ascites" @if($nt[8] == ' Ascites ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Ascites</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="mukosamulut"
-                                                        id="mukosamulut" value="palpebra">
+                                                        id="mukosamulut" value="palpebra" @if($nt[8] == ' palpebra ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Palpebra</label>
                                                 </div>
                                             </td>
@@ -495,11 +489,11 @@
                                             <td colspan="3">
                                                 <div class="form-check form-check-inline">
                                                     <label class="form-check-label" for="inlineRadio1">Jumlah</label>
-                                                    <input class="form-control" name="jumlah_perdarahan" id="jumlah_perdarahan">
+                                                    <input class="form-control" name="jumlah_perdarahan" id="jumlah_perdarahan" value="{{ $nt[9] }}">
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <label class="form-check-label" for="inlineRadio2">Warna</label>
-                                                    <input class="form-control" name="warna_perdarahan" id="warna_perdarahan">
+                                                    <input class="form-control" name="warna_perdarahan" id="warna_perdarahan" value="{{ $nt[10] }}">
                                                 </div>
                                             </td>
                                         </tr>
@@ -508,33 +502,33 @@
                                             <td colspan="3">
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="intoksikasi"
-                                                        id="intoksikasi" value="Tidak Ada" checked>
+                                                        id="intoksikasi" value="Tidak Ada" @if($nt[11] == ' Tidak Ada ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">Tidak Ada</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="intoksikasi"
-                                                        id="intoksikasi" value="makanan">
+                                                        id="intoksikasi" value="makanan" @if($nt[11] == ' makanan ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">Makanan</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="intoksikasi"
-                                                        id="intoksikasi" value="gigitan">
+                                                        id="intoksikasi" value="gigitan" @if($nt[11] == ' gigitan ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Gigitan
                                                         Binatang</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="intoksikasi"
-                                                        id="intoksikasi" value="zat kimia">
+                                                        id="intoksikasi" value="zat kimia" @if($nt[11] == ' zat kimia ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Zat Kimia</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="intoksikasi"
-                                                        id="intoksikasi" value="gas">
+                                                        id="intoksikasi" value="gas" @if($nt[11] == ' gas ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Gas</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="intoksikasi"
-                                                        id="intoksikasi" value="obat">
+                                                        id="intoksikasi" value="obat" @if($nt[11] == ' obat ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Obat</label>
                                                 </div>
                                             </td>
@@ -550,7 +544,7 @@
                                                         <input type="text" class="form-control"
                                                             placeholder="Frekuensi BAB ..." name="frekuensibab"
                                                             id="frekuensibab" aria-label="Recipient's username"
-                                                            aria-describedby="basic-addon2">
+                                                            aria-describedby="basic-addon2" value="{{ $nt[12] }}">
                                                         <div class="input-group-append">
                                                             <span class="input-group-text" id="basic-addon2">x</span>
                                                         </div>
@@ -559,11 +553,11 @@
                                                 <div class="form-check form-check-inline">
                                                     <label class="form-check-label mr-1"
                                                         for="inlineRadio2">Konsistensi</label>
-                                                    <input class="form-control" name="konsistensibab" id="konsistensibab">
+                                                    <input class="form-control" name="konsistensibab" id="konsistensibab" value="{{ $nt[13] }}">
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <label class="form-check-label mr-1" for="inlineRadio2">Warna</label>
-                                                    <input class="form-control" name="warnabab" id="warnabab">
+                                                    <input class="form-control" name="warnabab" id="warnabab" value="{{ $nt[14] }}">
                                                 </div>
                                             </td>
                                         </tr>
@@ -577,7 +571,7 @@
                                                         <input type="text" class="form-control"
                                                             placeholder="Frekuensi BAK ..." name="frekuensibak"
                                                             id="frekuensibak" aria-label="Recipient's username"
-                                                            aria-describedby="basic-addon2">
+                                                            aria-describedby="basic-addon2" value="{{ $nt[15] }}">
                                                         <div class="input-group-append">
                                                             <span class="input-group-text" id="basic-addon2">x</span>
                                                         </div>
@@ -586,11 +580,11 @@
                                                 <div class="form-check form-check-inline">
                                                     <label class="form-check-label mr-1"
                                                         for="inlineRadio2">Konsistensi</label>
-                                                    <input class="form-control" name="konsistensibak" id="konsistensibak">
+                                                    <input class="form-control" name="konsistensibak" id="konsistensibak" value="{{ $nt[16] }}">
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <label class="form-check-label mr-1" for="inlineRadio2">Warna</label>
-                                                    <input class="form-control" name="warnabak" id="warnabak">
+                                                    <input class="form-control" name="warnabak" id="warnabak" value="{{ $nt[17] }}">
                                                 </div>
                                             </td>
                                         </tr>
@@ -619,25 +613,25 @@
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="kecemasan" id="kecemasan"
-                                                        value="Tidak Ada" checked>
+                                                        value="Tidak Ada" @if($nt[18] == ' Tidak Ada ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">Tidak Ada</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="kecemasan" id="kecemasan"
-                                                        value="sedang">
+                                                        value="sedang" @if($nt[18] == ' sedang ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">Sedang</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="kecemasan" id="kecemasan"
-                                                        value="berat">
+                                                        value="berat" @if($nt[18] == ' berat ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Berat</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="kecemasan" id="kecemasan"
-                                                        value="panik">
+                                                        value="panik" @if($nt[18] == ' panik ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Panik</label>
                                                 </div>
                                             </td>
@@ -648,20 +642,20 @@
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="mekanisme" id="mekanisme"
-                                                        value="Tidak Ada" checked>
+                                                        value="Tidak Ada" @if($nt[19] == ' Tidak Ada ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">Tidak Ada</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="mekanisme" id="mekanisme"
-                                                        value="merusak diri">
+                                                        value="merusak diri" @if($nt[19] == ' merusak diri ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio1">Merusak
                                                         diri</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="mekanisme" id="mekanisme"
-                                                        value="menarik diri">
+                                                        value="menarik diri" @if($nt[19] == ' menarik diri ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Menarik diri /
                                                         isolasi
                                                         sosial</label>
@@ -669,7 +663,7 @@
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="mekanisme" id="mekanisme"
-                                                        value="perilaku kekerasan">
+                                                        value="perilaku kekerasan" @if($nt[19] == ' perilaku kekerasan ') checked @endif>
                                                     <label class="form-check-label" for="inlineRadio2">Perilaku
                                                         kekerasan</label>
                                                 </div>

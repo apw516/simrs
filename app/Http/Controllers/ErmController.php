@@ -26,6 +26,7 @@ use App\Models\Barang;
 use App\Models\erm_order_penunjang;
 use App\Models\ts_kunjungan;
 use App\Models\ts_kunjungan2;
+use App\Models\ts_antrian_igd;
 use Carbon\Carbon;
 use simitsdk\phpjasperxml\PHPJasperXML;
 use Illuminate\Support\Facades\Storage;
@@ -1891,6 +1892,7 @@ class ErmController extends Controller
         $formobat_farmasi = json_decode($_POST['formobat_farmasi'], true);
         $formobatfarmasi2 = json_decode($_POST['formobatfarmasi2'], true);
 
+
         if (count($datatindaklanjut) == 1) {
             $data = [
                 'kode' => 500,
@@ -2128,7 +2130,6 @@ class ErmController extends Controller
                 $penjamin = $kunjungan[0]->kode_penjamin;
                 $unit = DB::select('select * from mt_unit where kode_unit = ?', [$kunjungan[0]->kode_unit]);
                 $prefix_kunjungan = $unit[0]->prefix_unit;
-
                 foreach ($datatindakan as $namatindakan) {
                     $index = $namatindakan['name'];
                     $value = $namatindakan['value'];
@@ -6173,18 +6174,87 @@ class ErmController extends Controller
     public function simpanpemeriksaanperawat_igd(Request $request)
     {
 
+
         $data = json_decode($_POST['data'], true);
         foreach ($data as $nama) {
             $index =  $nama['name'];
             $value =  $nama['value'];
             $dataSet[$index] = $value;
         }
+
+        if (empty($dataSet['nyeri'])) {
+            $nyeri = 0;
+        } else {
+            $nyeri = $dataSet['nyeri'];
+        };
+        if (empty($dataSet['cederajatuh'])) {
+            $cederajatuh = 0;
+        } else {
+            $cederajatuh = $dataSet['cederajatuh'];
+        };
+        if (empty($dataSet['toksik'])) {
+            $toksik = 0;
+        } else {
+            $toksik = $dataSet['toksik'];
+        };
+        if (empty($dataSet['aktualtakut'])) {
+            $aktualtakut = 0;
+        } else {
+            $aktualtakut = $dataSet['aktualtakut'];
+        };
+        if (empty($dataSet['integritaskulit'])) {
+            $integritaskulit = 0;
+        } else {
+            $integritaskulit = $dataSet['integritaskulit'];
+        };
+        if (empty($dataSet['keseimbangancairan'])) {
+            $keseimbangancairan = 0;
+        } else {
+            $keseimbangancairan = $dataSet['keseimbangancairan'];
+        };
+        if (empty($dataSet['hipertermia'])) {
+            $hipertermia = 0;
+        } else {
+            $hipertermia = $dataSet['hipertermia'];
+        };
+        if (empty($dataSet['jlnnafas'])) {
+            $jlnnafas = 0;
+        } else {
+            $jlnnafas = $dataSet['jlnnafas'];
+        };
+
+        if (empty($dataSet['polanafas'])) {
+            $polanafas = 0;
+        } else {
+            $polanafas = $dataSet['polanafas'];
+        };
+
+        if (empty($dataSet['pertukarangas'])) {
+            $pertukarangas = 0;
+        } else {
+            $pertukarangas = $dataSet['pertukarangas'];
+        };
+
+        if (empty($dataSet['sirkulasi'])) {
+            $sirkulasi = 0;
+        } else {
+            $sirkulasi = $dataSet['sirkulasi'];
+        };
+
+        if (empty($dataSet['perfusijaringan'])) {
+            $perfusijaringan = 0;
+        } else {
+            $perfusijaringan = $dataSet['perfusijaringan'];
+        };
+
         $data = [
             'kode_unit' => '1002',
             'id_antrian' => $dataSet['idantrian'],
             'nama_pasien' => $dataSet['namapasien'],
             'sumberdataperiksa' => $dataSet['sumberdata'],
-            'asalmasuk' => $dataSet['asalmasuk'],
+            'tanggalkunjungan' => $dataSet['tanggalkunjungan'],
+            'tanggalperiksa' => $this->get_now(),
+            'asalmasuk' => $dataSet['asalmasuk'].' | '.$dataSet['keteranganasalmasuk'].' | '.$dataSet['namakeluarga'],
             'caramasuk' => $dataSet['caramasuk'],
             'tekanandarah' => $dataSet['tekanandarah'],
             'frekuensinadi' => $dataSet['frekuensinadi'],
@@ -6197,6 +6267,7 @@ class ErmController extends Controller
             'umur' => $dataSet['umur_anak'],
             'jeniskelamin' => $dataSet['jeniskelaminanak'],
             'diagnosis' => $dataSet['diagnosa_anak'],
+            'Riwayatpsikologi' => $dataSet['keadaanumum'].' | '.$dataSet['kesadaran'].' | '.$dataSet['tekananintrakranial'].' | '.$dataSet['pupil'].' | '.$dataSet['neurosensorik'].' | '.$dataSet['integumen'].' | '.$dataSet['turgorkulit'].' | '.$dataSet['edema'].' | '.$dataSet['mukosamulut'].' | '.$dataSet['jumlah_perdarahan'].' | '.$dataSet['warna_perdarahan'].' | '.$dataSet['intoksikasi'].' | '.$dataSet['frekuensibab'].' | '.$dataSet['konsistensibab'].' | '.$dataSet['warnabab'].' | '.$dataSet['frekuensibak'].' | '.$dataSet['konsistensibak'].' | '.$dataSet['warnabak'].' | '.$dataSet['kecemasan'].' | '.$dataSet['mekanisme'].' | '.$dataSet['mekanisme'],
             'gangguankoginitf' => $dataSet['gangguankognitif_anak'],
             'faktorlingkungan' => $dataSet['faktorlingkungan_anak'],
             'responterhadapoperasi' => $dataSet['responanestesi_anak'],
@@ -6204,7 +6275,7 @@ class ErmController extends Controller
             'anaktampakkurus' => $dataSet['pasientampakkurus'],
             'adapenurunanbbanak' => $dataSet['apakahadapenurunanbb'],
             'faktormalnutrisianak' => $dataSet['beratpenurunan'] . ' | ' . $dataSet['apakahasupanmakanburuk'] . ' | ' . $dataSet['Sakitberat'] . ' | ' . $dataSet['penurunanbb_anak'] . ' | ' . $dataSet['kondisilain'] . ' | ' . $dataSet['penyakitlain_anak'],
-            'penyakitlainpasien' => $dataSet['jlnnafas'].' | '.$dataSet['polanafas'].' | '.$dataSet['pertukarangas'].' | '.$dataSet['sirkulasi'].' | '.$dataSet['perfusijaringan'].' | '.$dataSet['hipertermia'].' | '.$dataSet['keseimbangancairan'].' | '.$dataSet['integritaskulit'].' | '.$dataSet['aktualtakut'].' | '.$dataSet['toksik'].' | '.$dataSet['cederajatuh'].' | '.$dataSet['nyeri'].' | ',
+            'penyakitlainpasien' => $jlnnafas.' | '.$polanafas.' | '.$pertukarangas.' | '.$sirkulasi.' | '.$perfusijaringan.' | '.$hipertermia.' | '.$keseimbangancairan.' | '.$integritaskulit.' | '.$aktualtakut.' | '.$toksik.' | '.$cederajatuh.' | '.$nyeri.' | ',
             'diagnosakeperawatan' => $dataSet['diagnosakeperawatan'].' | '.$dataSet['subyektifanamnesis'],
             'rencanakeperawatan' => $dataSet['rencanakeperawatan'],
             'tindakankeperawatan' => $dataSet['tindakankeperawatan'],
@@ -6221,6 +6292,10 @@ class ErmController extends Controller
             } else {
                 $erm_assesmen = assesmenawalperawat::create($data);
             }
+            $dt_antrian = [
+                'nama_px' => $dataSet['namapasien']
+            ];
+            ts_antrian_igd::whereRaw('id = ?',array($dataSet['idantrian']))->update($dt_antrian);
             $data = [
                 'kode' => 200,
                 'message' => 'Data berhasil disimpan !'
