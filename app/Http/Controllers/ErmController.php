@@ -79,7 +79,10 @@ class ErmController extends Controller
     public function ambildatapasienpoli()
     {
         if (auth()->user()->unit == '1002') {
-            $pasienigd = DB::connection('mysql4')->select('SELECT * from ts_antrian_igd where date(tgl_masuk) = CURDATE()');
+            $pasienigd = DB::connection('mysql4')->select('SELECT a.id AS id,a.nomor_antrian,a.`nama_px`,a.nomor_rm,a.`tgl_masuk`,b.id AS id_pemeriksaan,b.`namapemeriksa`,c.`id` AS id_pemeriksaan_dokter,c.`nama_dokter` AS namadokter FROM ts_antrian_igd a
+            LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`id` = b.id_antrian
+            LEFT OUTER JOIN assesmen_dokters c ON a.id = c.id_antrian
+            WHERE DATE(a.`tgl_masuk`) = CURDATE()');
             return view('ermtemplate.tabelpasienigd', compact([
                 'pasienigd'
             ]));
@@ -5785,7 +5788,7 @@ class ErmController extends Controller
     {
         $kodekunjungan = $request->kodekunjungan;
         $assdok = DB::select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
-        $cek_konsul  = DB::connection('mysql4')->select('select *,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where ref_kunjungan = ? and status_kunjungan != ?', [$kodekunjungan, '8']);
+        $cek_konsul  = DB::select('select *,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where ref_kunjungan = ? and status_kunjungan != ?', [$kodekunjungan, '8']);
         if (count($assdok) > 0) {
             return view('ermtemplate.formtindaklanjut', compact([
                 'assdok',
@@ -5820,6 +5823,16 @@ class ErmController extends Controller
         $assdok = DB::select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
         $kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
         $unit = DB::select('select * from mt_unit where kode_unit = ?', [$dataSet['idpolitujuan']]);
+        //cek ts kunjungan
+        $cek_ts_kunjungan = DB::select('Select * from ts_kunjungan where ref_kunjungan = ? and kode_unit = ? and status_kunjungan != ?',[$kodekunjungan,$dataSet['idpolitujuan'],8]);
+        if(count($cek_ts_kunjungan) > 0){
+            $data = [
+                'kode' => 500,
+                'message' => 'Pasien sudah dikonsulkan !'
+            ];
+            echo json_encode($data);
+            die;
+        }
         $data_ts_kunjungan = [
             'counter' => $kunjungan[0]->counter,
             'no_rm' => $kunjungan[0]->no_rm,
@@ -5835,7 +5848,7 @@ class ErmController extends Controller
             'kode_penjamin' => $kunjungan[0]->kode_penjamin,
             'id_alasan_masuk' => '7',
             'hak_kelas' => $kunjungan[0]->hak_kelas,
-            'diagx' => $assdok[0]->diagnosakerja,
+            'diagx' => $dataSet['diagnosakonsul'],
             'keterangan3' => $dataSet['keterangankonsul'],
             'pic' => auth()->user()->id_simrs,
             'no_sep' => '',
@@ -6168,7 +6181,30 @@ class ErmController extends Controller
                 ]));
             }
         } else {
-            dd('tidak kosong');
+            $mt_pasien = DB::select('Select no_rm,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$rm]);
+            return view('ermtemplate.index_form_igd',compact([
+                'mt_pasien',
+                'id_antrian'
+            ]));
+        }
+    }
+    public function formpemeriksaan_igd(Request $request)
+    {
+        $id_antrian = $request->id;
+        $data_antrian = DB::connection('mysql4')->select('select * from ts_antrian_igd where id = ?', [$id_antrian]);
+        $rm = $data_antrian[0]->nomor_rm;
+        $resume = DB::connection('mysql4')->select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE id_antrian = ?', [$request->id]);
+        if(count($resume) > 0){
+            return view('ermtemplate.form_igd_perawat_edit_2',compact([
+                'id_antrian',
+                'data_antrian',
+                'resume'
+            ]));
+        }else{
+            return view('ermtemplate.form_igd_perawat_2',compact([
+                'id_antrian',
+                'data_antrian'
+            ]));
         }
     }
     public function simpanpemeriksaanperawat_igd(Request $request)
@@ -6309,6 +6345,55 @@ class ErmController extends Controller
             ];
             echo json_encode($data);
             die;
+        }
+    }
+    public function indexdokter_igd()
+    {
+        $title = 'SIMRS - ERM';
+        $sidebar = 'ermdokter';
+        $sidebar_m = '2';
+        $now = $this->get_date();
+        return view('ermdokter.index_igd', compact([
+            'title',
+            'sidebar',
+            'sidebar_m',
+            'now'
+        ]));
+    }
+    public function ambildatapasiendokter_igd()
+    {
+        $pasienigd = DB::connection('mysql4')->select('SELECT a.id AS id,a.nomor_antrian,a.`nama_px`,a.nomor_rm,a.`tgl_masuk`,b.id AS id_pemeriksaan,b.`namapemeriksa`,c.`id` AS id_pemeriksaan_dokter,c.`nama_dokter` AS namadokter FROM ts_antrian_igd a
+        LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`id` = b.id_antrian
+        LEFT OUTER JOIN assesmen_dokters c ON a.id = c.id_antrian
+        WHERE DATE(a.`tgl_masuk`) = CURDATE()');
+        return view('ermtemplate.tabelpasienigd_dokter', compact([
+            'pasienigd'
+        ]));
+    }
+    public function ambil_form_igd_dokter(Request $request){
+        $id_antrian = $request->id;
+        $data_antrian = DB::connection('mysql4')->select('select * from ts_antrian_igd where id = ?', [$id_antrian]);
+        $rm = $data_antrian[0]->nomor_rm;
+        $resume = DB::connection('mysql4')->select('SELECT * from assesmen_dokters WHERE id_antrian = ?', [$request->id]);
+        if ($rm == '') {
+            if(count($resume) > 0){
+                return view('ermtemplate.form_igd_dokter_edit',compact([
+                    'id_antrian',
+                    'data_antrian',
+                    'resume'
+                ]));
+            }else{
+                return view('ermtemplate.form_igd_dokter',compact([
+                    'id_antrian',
+                    'data_antrian'
+                ]));
+            }
+        } else {
+            $mt_pasien = DB::select('Select no_rm,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$rm]);
+            return view('ermtemplate.index_form_igd',compact([
+                'mt_pasien',
+                'id_antrian'
+            ]));
         }
     }
 }

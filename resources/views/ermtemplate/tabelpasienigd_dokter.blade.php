@@ -41,7 +41,7 @@
                 _token: "{{ csrf_token() }}",
                 id
             },
-            url: '<?= route('ambil_form_igd') ?>',
+            url: '<?= route('ambil_form_igd_dokter') ?>',
             success: function(response) {
                 $('.formpasien').html(response);
             }

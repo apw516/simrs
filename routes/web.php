@@ -444,6 +444,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('ambildatapasienpoli'); //sidebar
     Route::post('/ambil_form_igd', [ErmController::class, 'ambil_form_igd'])
         ->name('ambil_form_igd'); //sidebar
+    Route::post('/formpemeriksaan_igd', [ErmController::class, 'formpemeriksaan_igd'])
+        ->name('formpemeriksaan_igd'); //sidebar
     Route::post('/ambildatapasienpoli_cari', [ErmController::class, 'ambildatapasienpoli_cari'])
         ->name('ambildatapasienpoli_cari'); //sidebar
     Route::post('/ambildetailpasien', [ErmController::class, 'ambildetailpasien'])
@@ -496,12 +498,16 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('cariobat'); //formpasien_bpjs
     Route::get('/indexdokter', [ErmController::class, 'indexdokter'])
         ->name('indexdokter'); //sidebar
+    Route::get('/indexdokter_igd', [ErmController::class, 'indexdokter_igd'])
+        ->name('indexdokter_igd'); //sidebar
     Route::get('/indexdokter_ro', [ErmController::class, 'indexdokter_ro'])
         ->name('indexdokter_ro'); //sidebar
     Route::post('/form_pemeriksaan_ro', [ErmController::class, 'form_pemeriksaan_ro'])
         ->name('form_pemeriksaan_ro'); //sidebar
     Route::post('/simpanpemeriksaan_ro', [ErmController::class, 'simpanpemeriksaan_ro'])
         ->name('simpanpemeriksaan_ro'); //sidebar
+    Route::post('/ambildatapasiendokter_igd', [ErmController::class, 'ambildatapasiendokter_igd'])
+        ->name('ambildatapasiendokter_igd'); //sidebar
     Route::post('/ambildatapasienpoli_dokter', [ErmController::class, 'ambildatapasienpoli_dokter'])
         ->name('ambildatapasienpoli_dokter'); //sidebar
     Route::post('/ambildatapasienpoli_dokter_cari', [ErmController::class, 'ambildatapasienpoli_dokter_cari'])
@@ -510,6 +516,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('ambildetailpasien_dokter'); //sidebar
     Route::post('/formpemeriksaan_dokter', [ErmController::class, 'formpemeriksaan_dokter'])
         ->name('formpemeriksaan_dokter'); //sidebar
+    Route::post('/ambil_form_igd_dokter', [ErmController::class, 'ambil_form_igd_dokter'])
+        ->name('ambil_form_igd_dokter'); //sidebar
     Route::post('/simpanpemeriksaandokter', [ErmController::class, 'simpanpemeriksaandokter'])
         ->name('simpanpemeriksaandokter'); //sidebar
     Route::post('/simpanpemeriksaandokter_2', [ErmController::class, 'simpanpemeriksaandokter_2'])

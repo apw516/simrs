@@ -27,7 +27,11 @@ class LoginController extends Controller
             if (auth()->user()->hak_akses == 4) {
                 return redirect()->intended('indexperawat');
             } else if (auth()->user()->hak_akses == 5) {
-                return redirect()->intended('indexdokter');
+                    if(auth()->user()->unit == '1002'){
+                        return redirect()->intended('indexdokter_igd');
+                    }else{
+                        return redirect()->intended('indexdokter');
+                    }
             } else if (auth()->user()->hak_akses == 99) {
                 return redirect()->intended('antrianigd');
             } else {
