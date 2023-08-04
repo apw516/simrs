@@ -254,7 +254,7 @@ class ErmController extends Controller
             $hasil_ro = [];
         }
         $rm = $request->rm;
-        return view('ermperawat.isi_form_ro', compact(['resume_perawat', 'hasil_ro', 'hasil_ro_lama']));
+        return view('ermperawat.isi_form_ro_2', compact(['resume_perawat', 'hasil_ro', 'hasil_ro_lama']));
     }
     public function simpanpemeriksaan_ro(Request $request)
     {
@@ -296,6 +296,52 @@ class ErmController extends Controller
             'koreksipenglihatan_vos_cyl' => $dataSet['vos_cyl_kpj'],
             'koreksipenglihatan_vos_x' => $dataSet['vos_x_kpj'],
             'tajampenglihatandekat' => $dataSet['penglihatan_dekat'],
+            'tekananintraokular' => $dataSet['tekanan_intra_okular'],
+            'catatanpemeriksaanlain' => $dataSet['catatan_pemeriksaan_lainnya'],
+            'palpebra' => $dataSet['palpebra'],
+            'konjungtiva' => $dataSet['konjungtiva'],
+            'kornea' => $dataSet['kornea'],
+            'bilikmatadepan' => $dataSet['bilik_mata_depan'],
+            'pupil' => $dataSet['pupil'],
+            'iris' => $dataSet['iris'],
+            'lensa' => $dataSet['lensa'],
+            'funduskopi' => $dataSet['funduskopi'],
+            'status_oftamologis_khusus' => $dataSet['oftamologis'],
+            'masalahmedis' => $dataSet['masalahmedis'],
+            'prognosis' => $dataSet['prognosis'],
+        ];
+        $cekmata = DB::select('select * from erm_mata_kanan_kiri where id_asskep = ?', [$id]);
+        if (count($cekmata) > 0) {
+            erm_mata_kanan_kiri::whereRaw('id_asskep = ?', array($id))->update($datamata);
+        } else {
+            erm_mata_kanan_kiri::create($datamata);
+        }
+
+        $data = [
+            'kode' => 200,
+            'message' => 'Data berhasil disimpan !'
+        ];
+        echo json_encode($data);
+        die;
+    }
+    public function simpanpemeriksaan_ro_2(Request $request)
+    {
+        $data = json_decode($_POST['formro'], true);
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+        $kodekunjungan = $dataSet['kodekunjungan'];
+        $id = $dataSet['idassesmen'];
+        $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$kodekunjungan]);
+        $datamata = [
+            'no_rm' => $kunjungan[0]->no_rm,
+            'kode_kunjungan' => $kodekunjungan,
+            'id_asskep' => $id,
+            'tgl_entry' => $this->get_now(),
+            'status' => '0',
+            'tajampenglihatandekat' => $dataSet['hasilperiksalain'],
             'tekananintraokular' => $dataSet['tekanan_intra_okular'],
             'catatanpemeriksaanlain' => $dataSet['catatan_pemeriksaan_lainnya'],
             'palpebra' => $dataSet['palpebra'],
@@ -1087,7 +1133,8 @@ class ErmController extends Controller
             'umur' => $dataSet['usia'],
             'tgl_entry' => $this->get_now(),
             'status' => '0',
-            'signature' => ''
+            'signature' => '',
+            'evaluasi' => $request->hasilexpertisi
         ];
         $nomorrm = $dataSet['nomorrm'];
         $diagnosakerja = $dataSet['rencanakerja'];
@@ -1141,7 +1188,8 @@ class ErmController extends Controller
                     'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'],
                     'keterangan_tindak_lanjut_2' => trim($dataSet['jawabankonsul']),
                     'status' => '0',
-                    'signature' => ''
+                    'signature' => '',
+                    'evaluasi' => $request->hasilexpertisi
                 ];
                 assesmenawaldokter::whereRaw('id_pasien = ? and kode_unit = ? and id_kunjungan = ?', array($dataSet['nomorrm'],  $dataSet['unit'], $dataSet['kodekunjungan']))->update($data);
                 $id_assesmen = $cek[0]->id;
@@ -1894,8 +1942,6 @@ class ErmController extends Controller
         $datatindaklanjut = json_decode($_POST['datatindaklanjut'], true);
         $formobat_farmasi = json_decode($_POST['formobat_farmasi'], true);
         $formobatfarmasi2 = json_decode($_POST['formobatfarmasi2'], true);
-
-
         if (count($datatindaklanjut) == 1) {
             $data = [
                 'kode' => 500,
@@ -1949,49 +1995,41 @@ class ErmController extends Controller
         } else {
             $hipertensi = $dataSet_1['hipertensi'];
         };
-
         if (empty($dataSet_1['kencingmanis'])) {
             $kencingmanis = 0;
         } else {
             $kencingmanis = $dataSet_1['kencingmanis'];
         };
-
         if (empty($dataSet_1['jantung'])) {
             $jantung = 0;
         } else {
             $jantung = $dataSet_1['jantung'];
         };
-
         if (empty($dataSet_1['stroke'])) {
             $stroke = 0;
         } else {
             $stroke = $dataSet_1['stroke'];
         };
-
         if (empty($dataSet_1['hepatitis'])) {
             $hepatitis = 0;
         } else {
             $hepatitis = $dataSet_1['hepatitis'];
         };
-
         if (empty($dataSet_1['asthma'])) {
             $asthma = 0;
         } else {
             $asthma = $dataSet_1['asthma'];
         };
-
         if (empty($dataSet_1['ginjal'])) {
             $ginjal = 0;
         } else {
             $ginjal = $dataSet_1['ginjal'];
         };
-
         if (empty($dataSet_1['tb'])) {
             $tb = 0;
         } else {
             $tb = $dataSet_1['tb'];
         };
-
         if (empty($dataSet_1['riwayatlain'])) {
             $riwayatlain = 0;
         } else {
@@ -2005,7 +2043,6 @@ class ErmController extends Controller
                 die;
             }
         };
-
         if ($dataSet_2['kesadaran'] == 'Composmentis') {
             $kesadaran = 'Composmentis';
         } else {
@@ -2058,7 +2095,8 @@ class ErmController extends Controller
             'umur' => $dataSet_2['usia'],
             'tgl_entry' => $this->get_now(),
             'status' => '0',
-            'signature' => ''
+            'signature' => '',
+            'evaluasi' => $request->hasilexpertisi
         ];
         $nomorrm = $dataSet_1['nomorrm'];
         $diagnosakerja = $dataSet_4['rencanakerja'];
@@ -2112,7 +2150,8 @@ class ErmController extends Controller
                     'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'],
                     'keterangan_tindak_lanjut_2' => trim($dataSet_3['jawabankonsul']),
                     'status' => '0',
-                    'signature' => ''
+                    'signature' => '',
+                    'evaluasi' => $request->hasilexpertisi
                 ];
                 assesmenawaldokter::whereRaw('id_pasien = ? and kode_unit = ? and id_kunjungan = ?', array($dataSet_1['nomorrm'],  $dataSet_1['unit'], $dataSet_1['kodekunjungan']))->update($data);
                 $id_assesmen = $cek[0]->id;
@@ -2362,7 +2401,7 @@ class ErmController extends Controller
             $time = $dt->toTimeString();
             $now = $date . ' ' . $time;
             // order ke lab
-            if (count($formorder_lab) > 1){
+            if (count($formorder_lab) > 1) {
                 foreach ($formorder_lab as $namatindakan) {
                     $index = $namatindakan['name'];
                     $value = $namatindakan['value'];
@@ -2436,8 +2475,8 @@ class ErmController extends Controller
             }
             // end order lab
 
-             // order ke rad
-             if (count($formtindakan_rad) > 1){
+            // order ke rad
+            if (count($formtindakan_rad) > 1) {
                 foreach ($formtindakan_rad as $namatindakan) {
                     $index = $namatindakan['name'];
                     $value = $namatindakan['value'];
@@ -2528,29 +2567,7 @@ class ErmController extends Controller
                     'kode_kunjungan' => $request->kodekunjungan,
                     'tgl_entry' => $this->get_now(),
                     'status' => '0',
-                    'vd_od' => $dataSet['od_visus_dasar'],
-                    'vd_od_pinhole' => $dataSet['od_pinhole_visus_dasar'],
-                    'vd_os' => $dataSet['os_visus_dasar'],
-                    'vd_os_pinhole' => $dataSet['os_pinhole_visus_dasar'],
-                    'refraktometer_od_sph' => $dataSet['od_sph_refraktometer'],
-                    'refraktometer_od_cyl' => $dataSet['od_cyl_refraktometer'],
-                    'refraktometer_od_x' => $dataSet['od_x_refraktometer'],
-                    'refraktometer_os_sph' => $dataSet['os_sph_refraktometer'],
-                    'refraktometer_os_cyl' => $dataSet['os_cyl_refraktometer'],
-                    'refraktometer_os_x' => $dataSet['os_x_refraktometer'],
-                    'Lensometer_od_sph' => $dataSet['od_sph_Lensometer'],
-                    'Lensometer_od_cyl' => $dataSet['od_cyl_Lensometer'],
-                    'Lensometer_od_x' => $dataSet['od_x_Lensometer'],
-                    'Lensometer_os_sph' => $dataSet['os_sph_Lensometer'],
-                    'Lensometer_os_cyl' => $dataSet['os_cyl_Lensometer'],
-                    'Lensometer_os_x' => $dataSet['os_x_Lensometer'],
-                    'koreksipenglihatan_vod_sph' => $dataSet['vod_sph_kpj'],
-                    'koreksipenglihatan_vod_cyl' => $dataSet['vod_cyl_kpj'],
-                    'koreksipenglihatan_vod_x' => $dataSet['vod_x_kpj'],
-                    'koreksipenglihatan_vos_sph' => $dataSet['vos_sph_kpj'],
-                    'koreksipenglihatan_vos_cyl' => $dataSet['vos_cyl_kpj'],
-                    'koreksipenglihatan_vos_x' => $dataSet['vos_x_kpj'],
-                    'tajampenglihatandekat' => $dataSet['penglihatan_dekat'],
+                    'tajampenglihatandekat' => $dataSet['hasilperiksalain'],
                     'tekananintraokular' => $dataSet['tekanan_intra_okular'],
                     'catatanpemeriksaanlain' => $dataSet['catatan_pemeriksaan_lainnya'],
                     'palpebra' => $dataSet['palpebra'],
@@ -2573,7 +2590,7 @@ class ErmController extends Controller
                 } else {
                     erm_mata_kanan_kiri::create($datamata);
                 }
-                $hasil_pemeriksaan_khusus = "visus dasar : " . " OD : " . $dataSet['od_visus_dasar'] . " OD PINHOLE : " . $dataSet['od_pinhole_visus_dasar'] . " OS : " . $dataSet['os_visus_dasar'] .  " OS PINHOLE : " . $dataSet['os_pinhole_visus_dasar'] . " | Refraktometer / streak : " . "  OD : Sph : " . $dataSet['od_sph_refraktometer'] . " Cyl : " . $dataSet['od_cyl_refraktometer'] . " X : " . $dataSet['od_x_refraktometer'] . "  OS : Sph  : " . $dataSet['os_sph_refraktometer'] . " Cyl : " . $dataSet['os_cyl_refraktometer'] . " X : " . $dataSet['os_x_refraktometer'] . " Lensometer : " . "  OD : Sph  :" . $dataSet['od_sph_Lensometer'] . " Cyl : " . $dataSet['od_cyl_Lensometer'] . " X : " . $dataSet['od_x_Lensometer'] . "  OS : Sph : " . $dataSet['os_sph_Lensometer'] . " Cyl : " . $dataSet['os_cyl_Lensometer'] . " X : " . $dataSet['os_x_Lensometer'] . " | Koreksi penglihatan jauh : " . "  VOD : Sph : " . $dataSet['vod_sph_kpj'] . " Cyl : " . $dataSet['vod_cyl_kpj'] . " X : " . $dataSet['vod_x_kpj'] . "  VOS : Sph  : " . $dataSet['vos_sph_kpj'] . " Cyl : " . $dataSet['vos_cyl_kpj'] . "X :" . $dataSet['vos_x_kpj'] . " | Tajam penglihatan dekat : " . $dataSet['penglihatan_dekat'] . " | Tekanan Intra Okular : " . $dataSet['tekanan_intra_okular'] . " | Catatan Pemeriksaan Lainnya : " . $dataSet['catatan_pemeriksaan_lainnya'] . " | Palpebra : " . $dataSet['palpebra'] . " | Konjungtiva : " . $dataSet['konjungtiva'] . "| Kornea : " . $dataSet['kornea'] . " | Bilik Mata Depan : " . $dataSet['bilik_mata_depan'] . " | pupil : " . $dataSet['pupil'] . " | Iris : " . $dataSet['iris'] . " | Lensa : " . $dataSet['lensa'] . " | funduskopi : " . $dataSet['funduskopi'] . " | Status Oftalmologis Khusus : " . $dataSet['oftamologis'] . "| Masalah Medis : " . $dataSet['masalahmedis'] . " | Prognosis : " . $dataSet['prognosis'];
+                $hasil_pemeriksaan_khusus = "Catatan pemeriksaan lain : ". $dataSet['hasilperiksalain']. " | Tekanan Intra Okular : " . $dataSet['tekanan_intra_okular'] . " | Catatan Pemeriksaan Lainnya : " . $dataSet['catatan_pemeriksaan_lainnya'] . " | Palpebra : " . $dataSet['palpebra'] . " | Konjungtiva : " . $dataSet['konjungtiva'] . "| Kornea : " . $dataSet['kornea'] . " | Bilik Mata Depan : " . $dataSet['bilik_mata_depan'] . " | pupil : " . $dataSet['pupil'] . " | Iris : " . $dataSet['iris'] . " | Lensa : " . $dataSet['lensa'] . " | funduskopi : " . $dataSet['funduskopi'] . " | Status Oftalmologis Khusus : " . $dataSet['oftamologis'] . "| Masalah Medis : " . $dataSet['masalahmedis'] . " | Prognosis : " . $dataSet['prognosis'];
 
                 $data_mata = ['gambar_1' => $gambar, 'pemeriksaan_khusus' => $hasil_pemeriksaan_khusus];
                 assesmenawaldokter::whereRaw('id = ?', array($id_assesmen))->update($data_mata);
@@ -4659,8 +4676,8 @@ class ErmController extends Controller
         RIGHT OUTER JOIN ts_layanan_detail_order c ON b.id = c.row_id_header
         RIGHT OUTER JOIN mt_tarif_detail d ON c.kode_tarif_detail = d.`KODE_TARIF_DETAIL`
         RIGHT OUTER JOIN mt_tarif_header e ON d.`KODE_TARIF_HEADER` = e.`KODE_TARIF_HEADER`
-        WHERE a.`kode_kunjungan` = ? and b.kode_unit = ?", [$request->kodekunjungan,'3002']);
-        return view('ermtemplate.table_order_lab',compact([
+        WHERE a.`kode_kunjungan` = ? and b.kode_unit = ?", [$request->kodekunjungan, '3002']);
+        return view('ermtemplate.table_order_lab', compact([
             'riwayat_tindakan_lab'
         ]));
     }
@@ -4672,8 +4689,8 @@ class ErmController extends Controller
         RIGHT OUTER JOIN ts_layanan_detail_order c ON b.id = c.row_id_header
         RIGHT OUTER JOIN mt_tarif_detail d ON c.kode_tarif_detail = d.`KODE_TARIF_DETAIL`
         RIGHT OUTER JOIN mt_tarif_header e ON d.`KODE_TARIF_HEADER` = e.`KODE_TARIF_HEADER`
-        WHERE a.`kode_kunjungan` = ? and b.kode_unit = ?", [$request->kodekunjungan,'3003']);
-        return view('ermtemplate.table_order_rad',compact([
+        WHERE a.`kode_kunjungan` = ? and b.kode_unit = ?", [$request->kodekunjungan, '3003']);
+        return view('ermtemplate.table_order_rad', compact([
             'riwayat_tindakan_rad'
         ]));
     }
@@ -5824,8 +5841,8 @@ class ErmController extends Controller
         $kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
         $unit = DB::select('select * from mt_unit where kode_unit = ?', [$dataSet['idpolitujuan']]);
         //cek ts kunjungan
-        $cek_ts_kunjungan = DB::select('Select * from ts_kunjungan where ref_kunjungan = ? and kode_unit = ? and status_kunjungan != ?',[$kodekunjungan,$dataSet['idpolitujuan'],8]);
-        if(count($cek_ts_kunjungan) > 0){
+        $cek_ts_kunjungan = DB::select('Select * from ts_kunjungan where ref_kunjungan = ? and kode_unit = ? and status_kunjungan != ?', [$kodekunjungan, $dataSet['idpolitujuan'], 8]);
+        if (count($cek_ts_kunjungan) > 0) {
             $data = [
                 'kode' => 500,
                 'message' => 'Pasien sudah dikonsulkan !'
@@ -6168,21 +6185,21 @@ class ErmController extends Controller
         $rm = $data_antrian[0]->nomor_rm;
         $resume = DB::connection('mysql4')->select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE id_antrian = ?', [$request->id]);
         if ($rm == '') {
-            if(count($resume) > 0){
-                return view('ermtemplate.form_igd_perawat_edit',compact([
+            if (count($resume) > 0) {
+                return view('ermtemplate.form_igd_perawat_edit', compact([
                     'id_antrian',
                     'data_antrian',
                     'resume'
                 ]));
-            }else{
-                return view('ermtemplate.form_igd_perawat',compact([
+            } else {
+                return view('ermtemplate.form_igd_perawat', compact([
                     'id_antrian',
                     'data_antrian'
                 ]));
             }
         } else {
             $mt_pasien = DB::select('Select no_rm,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$rm]);
-            return view('ermtemplate.index_form_igd',compact([
+            return view('ermtemplate.index_form_igd', compact([
                 'mt_pasien',
                 'id_antrian'
             ]));
@@ -6194,14 +6211,14 @@ class ErmController extends Controller
         $data_antrian = DB::connection('mysql4')->select('select * from ts_antrian_igd where id = ?', [$id_antrian]);
         $rm = $data_antrian[0]->nomor_rm;
         $resume = DB::connection('mysql4')->select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE id_antrian = ?', [$request->id]);
-        if(count($resume) > 0){
-            return view('ermtemplate.form_igd_perawat_edit_2',compact([
+        if (count($resume) > 0) {
+            return view('ermtemplate.form_igd_perawat_edit_2', compact([
                 'id_antrian',
                 'data_antrian',
                 'resume'
             ]));
-        }else{
-            return view('ermtemplate.form_igd_perawat_2',compact([
+        } else {
+            return view('ermtemplate.form_igd_perawat_2', compact([
                 'id_antrian',
                 'data_antrian'
             ]));
@@ -6290,7 +6307,7 @@ class ErmController extends Controller
             'sumberdataperiksa' => $dataSet['sumberdata'],
             'tanggalkunjungan' => $dataSet['tanggalkunjungan'],
             'tanggalperiksa' => $this->get_now(),
-            'asalmasuk' => $dataSet['asalmasuk'].' | '.$dataSet['keteranganasalmasuk'].' | '.$dataSet['namakeluarga'],
+            'asalmasuk' => $dataSet['asalmasuk'] . ' | ' . $dataSet['keteranganasalmasuk'] . ' | ' . $dataSet['namakeluarga'],
             'caramasuk' => $dataSet['caramasuk'],
             'tekanandarah' => $dataSet['tekanandarah'],
             'frekuensinadi' => $dataSet['frekuensinadi'],
@@ -6303,7 +6320,7 @@ class ErmController extends Controller
             'umur' => $dataSet['umur_anak'],
             'jeniskelamin' => $dataSet['jeniskelaminanak'],
             'diagnosis' => $dataSet['diagnosa_anak'],
-            'Riwayatpsikologi' => $dataSet['keadaanumum'].' | '.$dataSet['kesadaran'].' | '.$dataSet['tekananintrakranial'].' | '.$dataSet['pupil'].' | '.$dataSet['neurosensorik'].' | '.$dataSet['integumen'].' | '.$dataSet['turgorkulit'].' | '.$dataSet['edema'].' | '.$dataSet['mukosamulut'].' | '.$dataSet['jumlah_perdarahan'].' | '.$dataSet['warna_perdarahan'].' | '.$dataSet['intoksikasi'].' | '.$dataSet['frekuensibab'].' | '.$dataSet['konsistensibab'].' | '.$dataSet['warnabab'].' | '.$dataSet['frekuensibak'].' | '.$dataSet['konsistensibak'].' | '.$dataSet['warnabak'].' | '.$dataSet['kecemasan'].' | '.$dataSet['mekanisme'].' | '.$dataSet['mekanisme'],
+            'Riwayatpsikologi' => $dataSet['keadaanumum'] . ' | ' . $dataSet['kesadaran'] . ' | ' . $dataSet['tekananintrakranial'] . ' | ' . $dataSet['pupil'] . ' | ' . $dataSet['neurosensorik'] . ' | ' . $dataSet['integumen'] . ' | ' . $dataSet['turgorkulit'] . ' | ' . $dataSet['edema'] . ' | ' . $dataSet['mukosamulut'] . ' | ' . $dataSet['jumlah_perdarahan'] . ' | ' . $dataSet['warna_perdarahan'] . ' | ' . $dataSet['intoksikasi'] . ' | ' . $dataSet['frekuensibab'] . ' | ' . $dataSet['konsistensibab'] . ' | ' . $dataSet['warnabab'] . ' | ' . $dataSet['frekuensibak'] . ' | ' . $dataSet['konsistensibak'] . ' | ' . $dataSet['warnabak'] . ' | ' . $dataSet['kecemasan'] . ' | ' . $dataSet['mekanisme'] . ' | ' . $dataSet['mekanisme'],
             'gangguankoginitf' => $dataSet['gangguankognitif_anak'],
             'faktorlingkungan' => $dataSet['faktorlingkungan_anak'],
             'responterhadapoperasi' => $dataSet['responanestesi_anak'],
@@ -6311,8 +6328,8 @@ class ErmController extends Controller
             'anaktampakkurus' => $dataSet['pasientampakkurus'],
             'adapenurunanbbanak' => $dataSet['apakahadapenurunanbb'],
             'faktormalnutrisianak' => $dataSet['beratpenurunan'] . ' | ' . $dataSet['apakahasupanmakanburuk'] . ' | ' . $dataSet['Sakitberat'] . ' | ' . $dataSet['penurunanbb_anak'] . ' | ' . $dataSet['kondisilain'] . ' | ' . $dataSet['penyakitlain_anak'],
-            'penyakitlainpasien' => $jlnnafas.' | '.$polanafas.' | '.$pertukarangas.' | '.$sirkulasi.' | '.$perfusijaringan.' | '.$hipertermia.' | '.$keseimbangancairan.' | '.$integritaskulit.' | '.$aktualtakut.' | '.$toksik.' | '.$cederajatuh.' | '.$nyeri.' | ',
-            'diagnosakeperawatan' => $dataSet['diagnosakeperawatan'].' | '.$dataSet['subyektifanamnesis'],
+            'penyakitlainpasien' => $jlnnafas . ' | ' . $polanafas . ' | ' . $pertukarangas . ' | ' . $sirkulasi . ' | ' . $perfusijaringan . ' | ' . $hipertermia . ' | ' . $keseimbangancairan . ' | ' . $integritaskulit . ' | ' . $aktualtakut . ' | ' . $toksik . ' | ' . $cederajatuh . ' | ' . $nyeri . ' | ',
+            'diagnosakeperawatan' => $dataSet['diagnosakeperawatan'] . ' | ' . $dataSet['subyektifanamnesis'],
             'rencanakeperawatan' => $dataSet['rencanakeperawatan'],
             'tindakankeperawatan' => $dataSet['tindakankeperawatan'],
             'evaluasikeperawatan' => $dataSet['evaluasikeperawatan'],
@@ -6324,14 +6341,14 @@ class ErmController extends Controller
         try {
             $cek = DB::connection('mysql4')->select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE id_antrian = ?', [$dataSet['idantrian']]);
             if (count($cek) > 0) {
-                    assesmenawalperawat::whereRaw('id_antrian = ? and kode_unit = ?', array($dataSet['idantrian'],  '1002'))->update($data);
+                assesmenawalperawat::whereRaw('id_antrian = ? and kode_unit = ?', array($dataSet['idantrian'],  '1002'))->update($data);
             } else {
                 $erm_assesmen = assesmenawalperawat::create($data);
             }
             $dt_antrian = [
                 'nama_px' => $dataSet['namapasien']
             ];
-            ts_antrian_igd::whereRaw('id = ?',array($dataSet['idantrian']))->update($dt_antrian);
+            ts_antrian_igd::whereRaw('id = ?', array($dataSet['idantrian']))->update($dt_antrian);
             $data = [
                 'kode' => 200,
                 'message' => 'Data berhasil disimpan !'
@@ -6370,27 +6387,28 @@ class ErmController extends Controller
             'pasienigd'
         ]));
     }
-    public function ambil_form_igd_dokter(Request $request){
+    public function ambil_form_igd_dokter(Request $request)
+    {
         $id_antrian = $request->id;
         $data_antrian = DB::connection('mysql4')->select('select * from ts_antrian_igd where id = ?', [$id_antrian]);
         $rm = $data_antrian[0]->nomor_rm;
         $resume = DB::connection('mysql4')->select('SELECT * from assesmen_dokters WHERE id_antrian = ?', [$request->id]);
         if ($rm == '') {
-            if(count($resume) > 0){
-                return view('ermtemplate.form_igd_dokter_edit',compact([
+            if (count($resume) > 0) {
+                return view('ermtemplate.form_igd_dokter_edit', compact([
                     'id_antrian',
                     'data_antrian',
                     'resume'
                 ]));
-            }else{
-                return view('ermtemplate.form_igd_dokter',compact([
+            } else {
+                return view('ermtemplate.form_igd_dokter', compact([
                     'id_antrian',
                     'data_antrian'
                 ]));
             }
         } else {
             $mt_pasien = DB::select('Select no_rm,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$rm]);
-            return view('ermtemplate.index_form_igd',compact([
+            return view('ermtemplate.index_form_igd', compact([
                 'mt_pasien',
                 'id_antrian'
             ]));

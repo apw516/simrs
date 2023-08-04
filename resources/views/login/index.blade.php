@@ -3,8 +3,10 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6">
-            <img src="{{ asset('public/auth/images/BG.svg');}}" alt="Image"
+            <img src="{{ asset('public/auth/images/DIRGAHAYU.png');}}" alt="Image"
                 class="img-fluid">
+            {{-- <img src="{{ asset('public/auth/images/BG.svg');}}" alt="Image"
+                class="img-fluid"> --}}
         </div>
         <div class="col-md-6 contents">
             <div class="row justify-content-center">
@@ -35,7 +37,7 @@
                             <label for="password">Password</label>
                             <input type="password" class="form-control" id="password" name="password">
                         </div>
-                        <input type="submit" value="Log In" class="btn btn-block btn-success">
+                        <input type="submit" value="Log In" class="btn btn-block btn-danger">
                         <span class="d-block text-center my-4"><a href="{{ route('register')}}">Register</a></span>
                         <span class="d-block text-center my-4 text-muted">&mdash; view dashboard &mdash;</span>
                         <div class="social-login text-center">

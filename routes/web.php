@@ -115,7 +115,6 @@ Route::get('/kontakkami', [SimrsController::class, 'kontakkami'])
 //reloadorder
 Route::post('/reloadorder', [PenunjangController::class, 'reloadorder'])
     ->name('reloadorder'); //sidebar
-
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9']], function () {
     Route::get('/pendaftaran', [SimrsController::class, 'Pendaftaran'])
@@ -506,6 +505,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('form_pemeriksaan_ro'); //sidebar
     Route::post('/simpanpemeriksaan_ro', [ErmController::class, 'simpanpemeriksaan_ro'])
         ->name('simpanpemeriksaan_ro'); //sidebar
+    Route::post('/simpanpemeriksaan_ro_2', [ErmController::class, 'simpanpemeriksaan_ro_2'])
+        ->name('simpanpemeriksaan_ro_2'); //sidebar
     Route::post('/ambildatapasiendokter_igd', [ErmController::class, 'ambildatapasiendokter_igd'])
         ->name('ambildatapasiendokter_igd'); //sidebar
     Route::post('/ambildatapasienpoli_dokter', [ErmController::class, 'ambildatapasienpoli_dokter'])
