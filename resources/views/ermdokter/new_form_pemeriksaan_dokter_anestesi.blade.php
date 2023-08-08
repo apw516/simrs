@@ -2,10 +2,12 @@
     <div class="card-header bg-info">CPPT
         <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
             data-target="#modalresumeperawat"><i class="bi bi-eye mr-1"></i> Hasil Assesmen Keperawatan</button>
-            <button class="btn btn-danger ml-2 lihathasilpenunjang_lab" nomorrm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
-                data-target="#modalhasilpenunjang_lab"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan Laboratorium</button>
-            <button class="btn btn-danger ml-2 lihathasilpenunjang_rad" nomorrm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
-                data-target="#modalhasilpenunjang_rad"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan Radiologi</button>
+        <button class="btn btn-danger ml-2 lihathasilpenunjang_lab" nomorrm="{{ $kunjungan[0]->no_rm }}"
+            data-toggle="modal" data-target="#modalhasilpenunjang_lab"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan
+            Laboratorium</button>
+        <button class="btn btn-danger ml-2 lihathasilpenunjang_rad" nomorrm="{{ $kunjungan[0]->no_rm }}"
+            data-toggle="modal" data-target="#modalhasilpenunjang_rad"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan
+            Radiologi</button>
         @if ($kunjungan[0]->ref_kunjungan != '0')
             <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
                 data-target="#modalcatatankonsul"><i class="bi bi-eye mr-1"></i> Catatan Konsul</button>
@@ -323,7 +325,7 @@
                     <tr>
                         <td class="text-bold font-italic">Diagnosa ( WD & DD )</td>
                         <td colspan="3">
-                            <textarea type="text" class="form-control" name="diagnosawd" id="diagnosawd">{{ $ref_resume[0]->diagnosakerja }}</textarea>
+                            <textarea type="text" class="form-control" name="diagnosawd" id="diagnosawd">@if(count($ref_resume) > 0){{ $ref_resume[0]->diagnosakerja }} @endif</textarea>
                         </td>
                     </tr>
                     <tr>
@@ -1196,7 +1198,8 @@
                                                     </div>
                                                     <input id="od_cyl_Lensometer"
                                                         value="{{ $hasil_ro[0]->Lensometer_od_cyl }}"
-                                                        name="od_cyl_Lensometer" type="text" class="form-control"
+                                                        name="od_cyl_Lensometer" type="text"
+                                                        class="form-control"
                                                         aria-label="Amount (to the nearest dollar)">
                                                 </div>
                                             </td>
@@ -2469,7 +2472,7 @@
             }
         });
     });
-    $(".lihathasilpenunjang_lab").click(function(){
+    $(".lihathasilpenunjang_lab").click(function() {
         spinner = $('#loader')
         spinner.show();
         nomorrm = $(this).attr('nomorrm')
@@ -2486,7 +2489,7 @@
             }
         });
     })
-    $(".lihathasilpenunjang_rad").click(function(){
+    $(".lihathasilpenunjang_rad").click(function() {
         spinner = $('#loader')
         spinner.show();
         nomorrm = $(this).attr('nomorrm')
