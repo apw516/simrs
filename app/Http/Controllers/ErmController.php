@@ -5781,6 +5781,20 @@ class ErmController extends Controller
         $data = DB::select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
         return view('ermtemplate.formgambar', compact('unit', 'data'));
     }
+    public function ambilgambarpemeriksaan_matakiri(Request $request)
+    {
+        $unit = auth()->user()->unit;
+        $kodekunjungan = $request->kodekunjungan;
+        $data = DB::select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
+        return view('ermtemplate.formgambar_matakiri', compact('unit', 'data'));
+    }
+    public function ambilgambarpemeriksaan_matakanan(Request $request)
+    {
+        $unit = auth()->user()->unit;
+        $kodekunjungan = $request->kodekunjungan;
+        $data = DB::select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
+        return view('ermtemplate.formgambar_matakanan', compact('unit', 'data'));
+    }
     public function ambilgambarpemeriksaan_reset(Request $request)
     {
         $unit = auth()->user()->unit;

@@ -591,6 +591,10 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('hapustemplateresep'); //sidebar
     Route::post('ambilgambarpemeriksaan', [ErmController::class, 'ambilgambarpemeriksaan'])
         ->name('ambilgambarpemeriksaan'); //sidebar
+    Route::post('ambilgambarpemeriksaan_matakiri', [ErmController::class, 'ambilgambarpemeriksaan_matakiri'])
+        ->name('ambilgambarpemeriksaan_matakiri'); //sidebar
+    Route::post('ambilgambarpemeriksaan_matakanan', [ErmController::class, 'ambilgambarpemeriksaan_matakanan'])
+        ->name('ambilgambarpemeriksaan_matakanan'); //sidebar
     Route::post('ambilgambarpemeriksaan_reset', [ErmController::class, 'ambilgambarpemeriksaan_reset'])
         ->name('ambilgambarpemeriksaan_reset'); //sidebar
     Route::post('riwayatkonsul', [ErmController::class, 'riwayatkonsul'])
