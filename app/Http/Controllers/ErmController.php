@@ -3058,7 +3058,7 @@ class ErmController extends Controller
             'evaluasi' => $dataSet['evaluasi'],
             'riwayatlain' => $dataSet['supekpenyakit'],
             'ket_riwayatlain' => $dataSet['keterangansuspek'],
-            'keluhan_pasien' => $dataSet['keluhanutama'],
+            // 'keluhan_pasien' => $dataSet['keluhanutama'],
             'keterangan_tindak_lanjut_2' => trim($dataSet['jawabankonsul']),
             'status' => '0'
         ];
