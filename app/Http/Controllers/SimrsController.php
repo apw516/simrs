@@ -1317,6 +1317,33 @@ class SimrsController extends Controller
                 'message' => $datasep->metaData->message
             ];
             echo json_encode($data);
+        } else {
+            DB::table('ts_kunjungan')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
+            if ($kelas_unit == 1 || $kelas_unit == 2) {
+                //jika kelas penunjang  seperti hd,lab dll tidak akan tebentuk layanan header
+                DB::table('ts_layanan_header')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
+                DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
+            }
+            // //batal antrian
+            if ($request->kodepolitujuan != 'HDL') {
+                if (isset($antrian->metadata->code)) {
+                    $status_a = $antrian->metadata->code;
+                    if ($status_a == 200) {
+                        $kodebooking = $antrian->response->kodebooking;
+                        $batal = [
+                            "kodebooking" => "$kodebooking",
+                            "keterangan" => "system error"
+                        ];
+                        $mw->batalantrian($batal);
+                    }
+                }
+            }
+            //end of batal antrian
+            $data = [
+                'kode' => 500,
+                'message' => 'The Network connection lost, please try again ...'
+            ];
+            echo json_encode($data);
         }
     }
     public function Simpansepranap(Request $request)
@@ -3620,7 +3647,7 @@ class SimrsController extends Controller
             LEFT JOIN mt_pasien d ON a.no_rm = d.no_rm
             WHERE kode_unit = ? and status_kunjungan = ?', [$user, 1]);
         return view('ranap.datapasien', compact([
-            'title', 'sidebar', 'sidebar_m','datapasien'
+            'title', 'sidebar', 'sidebar_m', 'datapasien'
         ]));
     }
     public function lihatcatatanpasien(Request $request)
