@@ -123,4 +123,4 @@
                 });
             }
         </script>
-    @endsection
+@endsection

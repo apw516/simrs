@@ -25,7 +25,13 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             if (auth()->user()->hak_akses == 4) {
-                return redirect()->intended('indexperawat');
+                if(auth()->user()->unit == '1002'){
+                    // return redirect()->intended('indexdokter_igd');
+                    return redirect()->intended('indexigd');
+                }else{
+                    // return redirect()->intended('indexdokter');
+                    return redirect()->intended('indexperawat');
+                }
             } else if (auth()->user()->hak_akses == 5) {
                     if(auth()->user()->unit == '1002'){
                         return redirect()->intended('indexdokter_igd');

@@ -12,6 +12,7 @@ use App\Http\Controllers\RanapController;
 use App\Http\Controllers\ErmController;
 use App\Http\Controllers\PenunjangController;
 use App\Http\Controllers\AntrianIgd;
+use App\Http\Controllers\ErmIgdController;
 
 
 Route::get('/', [LoginController::class, 'index']);
@@ -439,6 +440,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:9']], function () {
 Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
     Route::get('/indexperawat', [ErmController::class, 'indexPerawat'])
         ->name('indexperawat'); //sidebar
+    Route::get('/indexigd', [ErmIgdController::class, 'indexigd'])
+        ->name('indexigd'); //sidebar
     Route::post('/ambildatapasienpoli', [ErmController::class, 'ambildatapasienpoli'])
         ->name('ambildatapasienpoli'); //sidebar
     Route::post('/ambil_form_igd', [ErmController::class, 'ambil_form_igd'])
