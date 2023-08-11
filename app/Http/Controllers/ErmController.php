@@ -3010,9 +3010,10 @@ class ErmController extends Controller
                     erm_tht_hidung::create($datahidungkiri);
                 }
             } else {
-                if($request->gambar == $this->gambar_lain() || $request->gambar == $this->gambar_lain_2() || $request->gambar == $this->blank_img() || $request->gambar() == $this->another_img()){
-                    $gambar = '';
-                }
+                // if($request->gambar == $this->gambar_lain() || $request->gambar == $this->gambar_lain_2() || $request->gambar == $this->blank_img() || $request->gambar() == $this->another_img()){
+                //     $gambar = '';
+                // }
+                $gambar = '';
                 $datagambar = ['gambar_1' => $gambar];
                 assesmenawaldokter::whereRaw('id = ?', array($id_assesmen))->update($datagambar);
             }
