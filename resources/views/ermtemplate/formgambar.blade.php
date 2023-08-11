@@ -20,7 +20,7 @@
         <img id="gambarnya1" name="gambarnya1" style="margin-top:50px" width="1000px" height="500px" src="{{ asset('public/img/bedahumum.png') }}"
             onclick="showMarkerArea(this);" />
         @else
-        <img id="gambarnya1" name="gambarnya1" style="margin-top:50px" width="1000px" height="500px" src="{{ asset('public/img/polosan.jpg') }}"
+        <img id="gambarnya1" name="gambarnya1" style="margin-top:50px" width="1000px" height="500px" src=""
             onclick="showMarkerArea(this);" />
         @endif
         @endif
