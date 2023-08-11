@@ -482,6 +482,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('generatekode_igd'); //sidebar
     Route::post('/formupload', [ErmController::class, 'formupload'])
         ->name('formupload'); //sidebar
+    Route::post('/formsumarilis', [ErmController::class, 'formsumarilis'])
+        ->name('formsumarilis'); //sidebar
     Route::post('/uploadgambarnya', [ErmController::class, 'uploadgambarnya'])
         ->name('uploadgambarnya'); //sidebar
     Route::post('/hapusgambarupload', [ErmController::class, 'hapusgambarupload'])
@@ -492,6 +494,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('formsurkon'); //sidebar
     Route::post('simpankonsul', [ErmController::class, 'simpankonsul'])
         ->name('simpankonsul'); //sidebar
+    Route::post('simpansumarilis', [ErmController::class, 'simpansumarilis'])
+        ->name('simpansumarilis'); //sidebar
     Route::post('batalkonsul', [ErmController::class, 'batalkonsul'])
         ->name('batalkonsul'); //sidebar
     Route::get('caripoli_konsul', [SimrsController::class, 'Caripoli_rs'])

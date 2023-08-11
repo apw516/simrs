@@ -47,6 +47,13 @@
                             <i class="fas fa-inbox mr-2"></i>Catatan Perkembangan Pasien Terintegrasi ( CPPT )
                         </a>
                     </li>
+                    @if(auth()->user()->unit == '1029')
+                    <li class="nav-item" id="pemeriksaan">
+                        <a href="#" class="nav-link" onclick="formsumarilis()">
+                            <i class="fas fa-inbox mr-2"></i>SUMARILIS
+                        </a>
+                    </li>
+                    @endif
                     <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formtindaklanjut()">
                             <i class="fas fa-inbox mr-2"></i>Form Tindak Lanjut
@@ -229,6 +236,26 @@
                 kodekunjungan
             },
             url: '<?= route('formupload') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    function formsumarilis()
+    {
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('formsumarilis') ?>',
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()
