@@ -6198,12 +6198,12 @@ class ErmController extends Controller
     public function lihathasilpenunjang_rad(Request $request)
     {
         $rm = $request->nomorrm;
-        $hasil_rad = DB::select('SELECT *,DATE(b.tgl_baca ) AS tanggalnya,fc_acc_number_ris(b.id_detail) AS acc_number FROM ts_kunjungan a LEFT OUTER JOIN
-        ts_hasil_expertisi b ON a.kode_kunjungan = b.kode_kunjungan
-        WHERE a.no_rm = ? ', [$rm]);
+        $hasil_rad = DB::select('SELECT * FROM ts_hasil_expertisi WHERE no_rm = ? ', [$rm]);
+        $date = $this->get_date();
         return view('ermtemplate.view_hasil_penunjang_rad', compact([
             'hasil_rad',
-            'rm'
+            'rm',
+            'date'
         ]));
     }
     public function lihathasilpenunjang_pa(Request $request)
