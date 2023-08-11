@@ -333,7 +333,7 @@
                             </tr>
                             <tr hidden>
                                 <td class="text-bold font-italic">Keadaan Umum</td>
-                                <td  colspan="3">
+                                <td colspan="3">
                                     <textarea class="form-control" name="keadaanumum">{{ $resume[0]->keadaanumum }}</textarea>
                                 </td>
                             </tr>
@@ -678,8 +678,7 @@
                                                                             <div class="form-group form-check">
                                                                                 <input type="checkbox"
                                                                                     class="form-check-input"
-                                                                                    name="Benda Asing"
-                                                                                    value="1"
+                                                                                    name="Benda Asing" value="1"
                                                                                     @if ($k1['0']->LT_Benda_asing == 1) checked @endif>
                                                                                 <label class="form-check-label"
                                                                                     for="exampleCheck1">Benda
@@ -690,8 +689,7 @@
                                                                             <div class="form-group form-check">
                                                                                 <input type="checkbox"
                                                                                     class="form-check-input"
-                                                                                    name="LT Lain-Lain"
-                                                                                    value="1"
+                                                                                    name="LT Lain-Lain" value="1"
                                                                                     @if ($k1['0']->LT_Lain_lain == 1) checked @endif>
                                                                                 <label class="form-check-label"
                                                                                     for="exampleCheck1">LT
@@ -838,16 +836,16 @@
                                                                     <div class="row">
                                                                         <div class="col-md-12">
                                                                             <label for="">Mukosa</label>
-                                                                            <input type="text"
-                                                                                class="form-control" name="mukosa"
+                                                                            <input type="text" class="form-control"
+                                                                                name="mukosa"
                                                                                 value="{{ $k1['0']->MT_mukosa }}">
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class="col-md-12">
                                                                             <label for="">Oslkel</label>
-                                                                            <input type="text"
-                                                                                class="form-control" name="oslkel"
+                                                                            <input type="text" class="form-control"
+                                                                                name="oslkel"
                                                                                 value="{{ $k1['0']->MT_osikal }}">
                                                                         </div>
                                                                     </div>
@@ -856,8 +854,8 @@
                                                                             <label for="">Isthmus
                                                                                 timpani/anterior
                                                                                 timpani/posterior timpani</label>
-                                                                            <input type="text"
-                                                                                class="form-control" name="Isthmus"
+                                                                            <input type="text" class="form-control"
+                                                                                name="Isthmus"
                                                                                 value="{{ $k1['0']->MT_isthmus }}">
                                                                         </div>
                                                                     </div>
@@ -879,14 +877,12 @@
                                                                         @foreach ($penyakit as $p)
                                                                             @if ($p->sub_organ == 'Liang Telinga')
                                                                                 <div class="col-md-4">
-                                                                                    <div
-                                                                                        class="form-group form-check">
+                                                                                    <div class="form-group form-check">
                                                                                         <input type="checkbox"
                                                                                             class="form-check-input"
                                                                                             name="{{ $p->nama_pemeriksaan }}"
                                                                                             value="1">
-                                                                                        <label
-                                                                                            class="form-check-label"
+                                                                                        <label class="form-check-label"
                                                                                             for="exampleCheck1">{{ $p->nama_pemeriksaan }}</label>
                                                                                     </div>
                                                                                 </div>
@@ -904,15 +900,13 @@
                                                                         @foreach ($penyakit as $p)
                                                                             @if ($p->sub_organ == 'Membran Timpani')
                                                                                 <div class="col-md-4">
-                                                                                    <div
-                                                                                        class="form-group form-check">
+                                                                                    <div class="form-group form-check">
                                                                                         <input type="checkbox"
                                                                                             class="form-check-input"
                                                                                             id=""
                                                                                             name="{{ $p->nama_pemeriksaan }}"
                                                                                             value="1">
-                                                                                        <label
-                                                                                            class="form-check-label"
+                                                                                        <label class="form-check-label"
                                                                                             for="exampleCheck1">{{ $p->nama_pemeriksaan }}</label>
                                                                                     </div>
                                                                                 </div>
@@ -930,15 +924,15 @@
                                                                     <div class="row">
                                                                         <div class="col-md-12">
                                                                             <label for="">Mukosa</label>
-                                                                            <input type="text"
-                                                                                class="form-control" name="mukosa">
+                                                                            <input type="text" class="form-control"
+                                                                                name="mukosa">
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class="col-md-12">
                                                                             <label for="">Oslkel</label>
-                                                                            <input type="text"
-                                                                                class="form-control" name="oslkel">
+                                                                            <input type="text" class="form-control"
+                                                                                name="oslkel">
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
@@ -946,8 +940,8 @@
                                                                             <label for="">Isthmus
                                                                                 timpani/anterior
                                                                                 timpani/posterior timpani</label>
-                                                                            <input type="text"
-                                                                                class="form-control" name="Isthmus">
+                                                                            <input type="text" class="form-control"
+                                                                                name="Isthmus">
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -1039,8 +1033,7 @@
                                                                             <div class="form-group form-check">
                                                                                 <input type="checkbox"
                                                                                     class="form-check-input"
-                                                                                    name="Kolesteatoma"
-                                                                                    value="1"
+                                                                                    name="Kolesteatoma" value="1"
                                                                                     @if ($k1['1']->LT_Kolesteatoma == 1) checked @endif>
                                                                                 <label class="form-check-label"
                                                                                     for="exampleCheck1">Kolesteatoma</label>
@@ -1062,8 +1055,7 @@
                                                                             <div class="form-group form-check">
                                                                                 <input type="checkbox"
                                                                                     class="form-check-input"
-                                                                                    name="Benda Asing"
-                                                                                    value="1"
+                                                                                    name="Benda Asing" value="1"
                                                                                     @if ($k1['1']->LT_Benda_asing == 1) checked @endif>
                                                                                 <label class="form-check-label"
                                                                                     for="exampleCheck1">Benda
@@ -1074,8 +1066,7 @@
                                                                             <div class="form-group form-check">
                                                                                 <input type="checkbox"
                                                                                     class="form-check-input"
-                                                                                    name="LT Lain-Lain"
-                                                                                    value="1"
+                                                                                    name="LT Lain-Lain" value="1"
                                                                                     @if ($k1['1']->LT_Lain_lain == 1) checked @endif>
                                                                                 <label class="form-check-label"
                                                                                     for="exampleCheck1">LT
@@ -1222,16 +1213,16 @@
                                                                     <div class="row">
                                                                         <div class="col-md-12">
                                                                             <label for="">Mukosa</label>
-                                                                            <input type="text"
-                                                                                class="form-control" name="mukosa"
+                                                                            <input type="text" class="form-control"
+                                                                                name="mukosa"
                                                                                 value="{{ $k1['1']->MT_mukosa }}">
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class="col-md-12">
                                                                             <label for="">Oslkel</label>
-                                                                            <input type="text"
-                                                                                class="form-control" name="oslkel"
+                                                                            <input type="text" class="form-control"
+                                                                                name="oslkel"
                                                                                 value="{{ $k1['1']->MT_osikal }}">
                                                                         </div>
                                                                     </div>
@@ -1240,8 +1231,8 @@
                                                                             <label for="">Isthmus
                                                                                 timpani/anterior
                                                                                 timpani/posterior timpani</label>
-                                                                            <input type="text"
-                                                                                class="form-control" name="Isthmus"
+                                                                            <input type="text" class="form-control"
+                                                                                name="Isthmus"
                                                                                 value="{{ $k1['1']->MT_isthmus }}">
                                                                         </div>
                                                                     </div>
@@ -1263,14 +1254,12 @@
                                                                         @foreach ($penyakit as $p)
                                                                             @if ($p->sub_organ == 'Liang Telinga')
                                                                                 <div class="col-md-4">
-                                                                                    <div
-                                                                                        class="form-group form-check">
+                                                                                    <div class="form-group form-check">
                                                                                         <input type="checkbox"
                                                                                             class="form-check-input"
                                                                                             name="{{ $p->nama_pemeriksaan }}"
                                                                                             value="1">
-                                                                                        <label
-                                                                                            class="form-check-label"
+                                                                                        <label class="form-check-label"
                                                                                             for="exampleCheck1">{{ $p->nama_pemeriksaan }}</label>
                                                                                     </div>
                                                                                 </div>
@@ -1288,15 +1277,13 @@
                                                                         @foreach ($penyakit as $p)
                                                                             @if ($p->sub_organ == 'Membran Timpani')
                                                                                 <div class="col-md-4">
-                                                                                    <div
-                                                                                        class="form-group form-check">
+                                                                                    <div class="form-group form-check">
                                                                                         <input type="checkbox"
                                                                                             class="form-check-input"
                                                                                             id=""
                                                                                             name="{{ $p->nama_pemeriksaan }}"
                                                                                             value="1">
-                                                                                        <label
-                                                                                            class="form-check-label"
+                                                                                        <label class="form-check-label"
                                                                                             for="exampleCheck1">{{ $p->nama_pemeriksaan }}</label>
                                                                                     </div>
                                                                                 </div>
@@ -1314,15 +1301,15 @@
                                                                     <div class="row">
                                                                         <div class="col-md-12">
                                                                             <label for="">Mukosa</label>
-                                                                            <input type="text"
-                                                                                class="form-control" name="mukosa">
+                                                                            <input type="text" class="form-control"
+                                                                                name="mukosa">
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class="col-md-12">
                                                                             <label for="">Oslkel</label>
-                                                                            <input type="text"
-                                                                                class="form-control" name="oslkel">
+                                                                            <input type="text" class="form-control"
+                                                                                name="oslkel">
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
@@ -2385,15 +2372,20 @@
                 <button class="btn btn-danger ml-2 lihathasilpenunjang_rad" nomorrm="{{ $kunjungan[0]->no_rm }}"
                     data-toggle="modal" data-target="#modalhasilpenunjang_rad"><i class="bi bi-eye mr-1"></i>
                     Hasil Radiologi</button>
-                <button class="btn btn-warning ml-2 scanrm_liat" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
-                        data-target="#modalscan_rm"><i class="bi bi-journal-text"></i> BERKAS RM SCAN</button>
+                <button class="btn btn-danger ml-2 lihathasilpenunjang_pa" nomorrm="{{ $kunjungan[0]->no_rm }}"
+                    data-toggle="modal" data-target="#modalhasilpenunjang_pa"><i class="bi bi-eye mr-1"></i>
+                    Hasil LAB PA</button>
+                <button class="btn btn-warning ml-2 scanrm_liat" rm="{{ $kunjungan[0]->no_rm }}"
+                    data-toggle="modal" data-target="#modalscan_rm"><i class="bi bi-journal-text"></i> BERKAS RM
+                    SCAN</button>
 
-                <button class="btn btn-danger ml-2 liatberkasluar" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
-                        data-target="#modalberkasluar"><i class="bi bi-journal-text"></i> BERKAS LAIN</button>
+                <button class="btn btn-danger ml-2 liatberkasluar" rm="{{ $kunjungan[0]->no_rm }}"
+                    data-toggle="modal" data-target="#modalberkasluar"><i class="bi bi-journal-text"></i> BERKAS
+                    LAIN</button>
                 @if ($kunjungan[0]->ref_kunjungan != '0')
-                        <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
-                            data-target="#modalcatatankonsul"><i class="bi bi-eye mr-1"></i> Catatan Konsul</button>
-                    @endif
+                    <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
+                        data-target="#modalcatatankonsul"><i class="bi bi-eye mr-1"></i> Catatan Konsul</button>
+                @endif
             </div>
             <div class="card-body">
                 <form action="" class="form_pemeriksaan_4">
@@ -2553,11 +2545,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div @if(auth()->user()->unit != '1012' && auth()->user()->unit != '1027' ) hidden @endif class="col-md-12">
+                                    <div @if (auth()->user()->unit != '1012' && auth()->user()->unit != '1027') hidden @endif class="col-md-12">
                                         <div class="card">
                                             <div class="card-header text-bold bg-dark">Hasil Expertisi</div>
                                             <div class="card-body">
-                                                <textarea class="form-control" id="hasilexpertisi" name="hasilexpertisi" cols="30" rows="10" placeholder="Silahkan isi hasil expertisi ...">{{ $resume[0]->evaluasi }}</textarea>
+                                                <textarea class="form-control" id="hasilexpertisi" name="hasilexpertisi" cols="30" rows="10"
+                                                    placeholder="Silahkan isi hasil expertisi ...">{{ $resume[0]->evaluasi }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -3068,6 +3061,28 @@
     </div>
 </div>
 <!-- Modal -->
+<div class="modal fade" id="modalhasilpenunjang_pa" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hasil Pemeriksaan Patologi Anatomi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_hasil_penunjang_pa">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
 <div class="modal fade" id="modalriwayatkonsul" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -3091,7 +3106,8 @@
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="modalscan_rm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalscan_rm" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -3112,7 +3128,8 @@
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="modalberkasluar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalberkasluar" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -3327,6 +3344,23 @@
             }
         });
     })
+    $(".lihathasilpenunjang_pa").click(function() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm
+            },
+            url: '<?= route('lihathasilpenunjang_pa') ?>',
+            success: function(response) {
+                $('.v_hasil_penunjang_pa').html(response);
+                spinner.hide()
+            }
+        });
+    })
     $(document).ready(function() {
         tindakanhariini()
         tindakanhariini_lab()
@@ -3345,6 +3379,7 @@
             }
         });
     })
+
     function tindakanhariini() {
         $.ajax({
             type: 'post',
@@ -3361,6 +3396,7 @@
             }
         });
     }
+
     function tindakanhariini_lab() {
         $.ajax({
             type: 'post',
@@ -3377,6 +3413,7 @@
             }
         });
     }
+
     function tindakanhariini_rad() {
         $.ajax({
             type: 'post',
@@ -3538,6 +3575,7 @@
         }
 
     });
+
     function addform() {
         var max_fields = 10;
         var wrapper = $(".formobatfarmasi2"); //Fields wrapper
@@ -3576,6 +3614,7 @@
             // });
         }
     }
+
     function showname() {
         a = $('#simpantemplate:checked').val()
         if (a == 'on') {
@@ -3584,6 +3623,7 @@
             $('#namaresep').attr('Hidden', true)
         }
     }
+
     function ambilresep() {
         spinner = $('#loader')
         spinner.show();
@@ -3624,6 +3664,7 @@
     $(document).ready(function() {
         orderobathariini()
     });
+
     function orderobathariini() {
         spinner = $('#loader')
         spinner.show();
@@ -3643,6 +3684,7 @@
             }
         });
     }
+
     function showMarkerArea(target) {
         const markerArea = new markerjs2.MarkerArea(target);
         markerArea.addEventListener("render", (event) => (target.src = event.dataUrl));
@@ -3651,6 +3693,7 @@
     $(document).ready(function() {
         ambilgambar()
     })
+
     function resetgambar() {
         $.ajax({
             type: 'post',
@@ -3667,6 +3710,7 @@
             }
         });
     }
+
     function ambilgambar() {
         $.ajax({
             type: 'post',
@@ -3686,6 +3730,7 @@
     $(document).ready(function() {
         orderobathariini()
     });
+
     function orderobathariini() {
         spinner = $('#loader')
         spinner.show();

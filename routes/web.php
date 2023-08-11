@@ -85,6 +85,8 @@ Route::post('lihathasilpenunjang_lab', [ErmController::class, 'lihathasilpenunja
     ->name('lihathasilpenunjang_lab'); //sidebar
 Route::post('lihathasilpenunjang_rad', [ErmController::class, 'lihathasilpenunjang_rad'])
     ->name('lihathasilpenunjang_rad'); //sidebar
+Route::post('lihathasilpenunjang_pa', [ErmController::class, 'lihathasilpenunjang_pa'])
+    ->name('lihathasilpenunjang_pa'); //sidebar
 
 Route::get('/register', [RegisterController::class, 'index'])->middleware('guest')->name('register');
 Route::get('/profil', [RegisterController::class, 'profil'])->name('profil');

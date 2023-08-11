@@ -6206,6 +6206,15 @@ class ErmController extends Controller
             'rm'
         ]));
     }
+    public function lihathasilpenunjang_pa(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $hasil_pa = DB::select('SELECT * FROM ts_hasil_expertisi_pa  WHERE no_rm = ? ', [$rm]);
+        return view('ermtemplate.view_hasil_penunjang_pa', compact([
+            'hasil_pa',
+            'rm'
+        ]));
+    }
     public function ambil_form_igd(Request $request)
     {
         $id_antrian = $request->id;
