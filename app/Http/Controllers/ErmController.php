@@ -28,6 +28,7 @@ use App\Models\ts_kunjungan;
 use App\Models\ts_kunjungan2;
 use App\Models\ts_antrian_igd;
 use App\Models\ts_sumarilis;
+use App\Models\di_diagnosa;
 use Carbon\Carbon;
 use simitsdk\phpjasperxml\PHPJasperXML;
 use Illuminate\Support\Facades\Storage;
@@ -2593,8 +2594,8 @@ class ErmController extends Controller
                 } else {
                     erm_mata_kanan_kiri::create($datamata);
                 }
-                $hasil_pemeriksaan_khusus = "Catatan pemeriksaan lain : ". $dataSet['hasilperiksalain']. " | Tekanan Intra Okular : " . $dataSet['tekanan_intra_okular'] . " | Catatan Pemeriksaan Lainnya : " . $dataSet['catatan_pemeriksaan_lainnya'] . " | Palpebra : " . $dataSet['palpebra'] . " | Konjungtiva : " . $dataSet['konjungtiva'] . "| Kornea : " . $dataSet['kornea'] . " | Bilik Mata Depan : " . $dataSet['bilik_mata_depan'] . " | pupil : " . $dataSet['pupil'] . " | Iris : " . $dataSet['iris'] . " | Lensa : " . $dataSet['lensa'] . " | funduskopi : " . $dataSet['funduskopi'] . " | Status Oftalmologis Khusus : " . $dataSet['oftamologis'] . "| Masalah Medis : " . $dataSet['masalahmedis'] . " | Prognosis : " . $dataSet['prognosis'];
-                if($request->gambar == $this->gambar_mata() || $request->gambar == $this->gambar_mata_2() || $request->gambar == $this->blank_img() || $request->gambar == $this->another_img()){
+                $hasil_pemeriksaan_khusus = "Catatan pemeriksaan lain : " . $dataSet['hasilperiksalain'] . " | Tekanan Intra Okular : " . $dataSet['tekanan_intra_okular'] . " | Catatan Pemeriksaan Lainnya : " . $dataSet['catatan_pemeriksaan_lainnya'] . " | Palpebra : " . $dataSet['palpebra'] . " | Konjungtiva : " . $dataSet['konjungtiva'] . "| Kornea : " . $dataSet['kornea'] . " | Bilik Mata Depan : " . $dataSet['bilik_mata_depan'] . " | pupil : " . $dataSet['pupil'] . " | Iris : " . $dataSet['iris'] . " | Lensa : " . $dataSet['lensa'] . " | funduskopi : " . $dataSet['funduskopi'] . " | Status Oftalmologis Khusus : " . $dataSet['oftamologis'] . "| Masalah Medis : " . $dataSet['masalahmedis'] . " | Prognosis : " . $dataSet['prognosis'];
+                if ($request->gambar == $this->gambar_mata() || $request->gambar == $this->gambar_mata_2() || $request->gambar == $this->blank_img() || $request->gambar == $this->another_img()) {
                     $gambar = '';
                 }
                 $data_mata = ['gambar_1' => $gambar, 'pemeriksaan_khusus' => $hasil_pemeriksaan_khusus];
@@ -2977,9 +2978,9 @@ class ErmController extends Controller
                     'kesimpulan' => $arrkesimpulanhidung['kesimpulanhidung']
                 ];
 
-                if($request->gambar == $this->gambar_telinga() || $request->gambar == $this->gambar_telinga_2() || $request->gambar == $this->blank_img() || $request->gambar == $this->another_img()){
-                   $gambar = '';
-                }else{
+                if ($request->gambar == $this->gambar_telinga() || $request->gambar == $this->gambar_telinga_2() || $request->gambar == $this->blank_img() || $request->gambar == $this->another_img()) {
+                    $gambar = '';
+                } else {
                     $gambar = $request->gambar;
                 }
                 $hasilpemeriksaan = $data_telinga_kanan . ' | ' . $data_telinga_kiri . ' | ' . $hidungkanan . ' | ' . $hidungkiri;
@@ -3021,6 +3022,33 @@ class ErmController extends Controller
             ts_kunjungan::whereRaw('kode_kunjungan = ?', array($kodekunjungan))->update([
                 'kode_paramedis' => auth()->user()->kode_paramedis
             ]);
+            try {
+                $di_diagnosa = [
+                    'no_rm' => $dataSet_1['nomorrm'],
+                    'kode_unit' => $dataSet_1['unit'],
+                    'counter' => $dataSet_1['counter'],
+                    'kode_kunjungan' => $dataSet_1['kodekunjungan'],
+                    'pic' => 0,
+                    'input_date' => $this->get_now(),
+                    'diag_00' => trim($dataSet_3['diagnosakerja']),
+                    'alasan_pulang' => 0,
+                    'rs_rujukan' => 'ERM RAWAT JALAN',
+                    'kode_paramedis' => auth()->user()->kode_paramedis,
+                ];
+                $cek = DB::select('select * from di_pasien_diagnosa_frunit where kode_kunjungan = ?', [$dataSet_1['kodekunjungan']]);
+                if (count($cek) > 0) {
+                    di_diagnosa::whereRaw('kode_kunjungan = ?', array($dataSet_1['kodekunjungan']))->update($di_diagnosa);
+                } else {
+                    di_diagnosa::create($di_diagnosa);
+                }
+            } catch (\Exception $e) {
+                $data = [
+                    'kode' => 200,
+                    'message' => 'Data berhasil disimpan !'
+                ];
+                echo json_encode($data);
+                die;
+            }
             $data = [
                 'kode' => 200,
                 'message' => 'Data berhasil disimpan !'
@@ -5106,8 +5134,8 @@ class ErmController extends Controller
     {
         $kodekunjungan = $request->kodekunjungan;
         $nomorrm = $request->nomorrm;
-        $riwayat = DB::connection('mysql4')->select('select * from ts_hasil_sumarilis where no_rm = ?',[$nomorrm]);
-        return view('ermtemplate.formsumarilis',compact([
+        $riwayat = DB::connection('mysql4')->select('select * from ts_hasil_sumarilis where no_rm = ?', [$nomorrm]);
+        return view('ermtemplate.formsumarilis', compact([
             'kodekunjungan',
             'nomorrm',
             'riwayat'
@@ -5115,15 +5143,15 @@ class ErmController extends Controller
     }
     public function detailsumarilis(Request $request)
     {
-        $data = DB::connection('mysql4')->select('select *,date(tgl_kunjungan) as tanggal from ts_hasil_sumarilis where id = ?',[$request->id]);
-        return view('ermtemplate.editsumarilis',compact([
+        $data = DB::connection('mysql4')->select('select *,date(tgl_kunjungan) as tanggal from ts_hasil_sumarilis where id = ?', [$request->id]);
+        return view('ermtemplate.editsumarilis', compact([
             'data'
         ]));
     }
     public function hasilsumarilis(Request $request)
     {
-        $data = DB::connection('mysql4')->select('select *,date(tgl_kunjungan) as tanggal from ts_hasil_sumarilis where no_rm = ?',[$request->nomorrm]);
-        return view('ermtemplate.tabelhasilsumarilis',compact([
+        $data = DB::connection('mysql4')->select('select *,date(tgl_kunjungan) as tanggal from ts_hasil_sumarilis where no_rm = ?', [$request->nomorrm]);
+        return view('ermtemplate.tabelhasilsumarilis', compact([
             'data'
         ]));
     }
@@ -6525,7 +6553,7 @@ class ErmController extends Controller
             'ket_regimen' => $dataSet['ketreg'],
             'obat' => $dataSet['obat'],
         ];
-        if($dataSet['tanggalsumarilis'] == ''){
+        if ($dataSet['tanggalsumarilis'] == '') {
             $data = [
                 'kode' => 500,
                 'message' => 'Tanggal tidak boleh kosong !'
@@ -6533,12 +6561,12 @@ class ErmController extends Controller
             echo json_encode($data);
             die;
         }
-        $cek = DB::connection('mysql4')->select('select * from ts_hasil_sumarilis where kode_kunjungan = ?',[$dataSet['kodekunjungan']]);
-        if(count($cek) == 0){
+        $cek = DB::connection('mysql4')->select('select * from ts_hasil_sumarilis where kode_kunjungan = ?', [$dataSet['kodekunjungan']]);
+        if (count($cek) == 0) {
             $simpan = ts_sumarilis::create($datasum);
-        }else{
+        } else {
             ts_sumarilis::where('kode_kunjungan', $dataSet['kodekunjungan'])
-            ->update($datasum);
+                ->update($datasum);
         }
         $data = [
             'kode' => 200,
@@ -6548,5 +6576,3 @@ class ErmController extends Controller
         die;
     }
 }
-
-
