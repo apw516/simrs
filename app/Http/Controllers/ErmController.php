@@ -5279,7 +5279,7 @@ class ErmController extends Controller
     }
     public function riwayatupload(Request $request)
     {
-        $cek = DB::select('select *,fc_nama_unit2(kode_unit) as nama_unit from erm_upload_gambar where kodekunjungan = ?', [$request->kodekunjungan]);
+        $cek = DB::select('select *,fc_nama_unit2(kode_unit) as nama_unit from erm_upload_gambar where no_rm = ?', [$request->rm]);
         return view('ermdokter.riwayatupload', compact([
             'cek'
         ]));

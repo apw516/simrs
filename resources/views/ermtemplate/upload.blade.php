@@ -30,14 +30,16 @@
 <script>
      $(document).ready(function() {
         kodekunjungan = $('#kodekunjungan').val()
-        riwayatupload(kodekunjungan)
+        rm = $('#nomorrm').val()
+        riwayatupload(kodekunjungan,rm)
     })
-    function riwayatupload(kodekunjungan) {
+    function riwayatupload(kodekunjungan,rm) {
         $.ajax({
             type: 'post',
             data: {
                 _token: "{{ csrf_token() }}",
-                kodekunjungan
+                kodekunjungan,
+                rm
             },
             url: '<?= route('riwayatupload') ?>',
             success: function(response) {

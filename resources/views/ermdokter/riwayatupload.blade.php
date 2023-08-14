@@ -46,7 +46,7 @@
     </div>
 </div>
 <script>
-    $('#tabelgbr').on('click', '.klikklik', function() {
+    $('#tabelgbr').on('click', '.klikklik2', function() {
         $("#modalgambar").modal()
         url = $(this).attr('url')
         wrapper = $(".imageviewer")
