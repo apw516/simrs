@@ -9,9 +9,9 @@
         </thead>
         <tbody>
             @foreach ($cek as $d)
-                <tr class="klikklik2" url="{{ url('../../files/' . $d->gambar) }}">
+                <tr class="klikklik2" url="{{ url('../../files/' . $d->gambar) }}" id="{{$d->id}}">
                     <td>{{ $d->nama }}</td>
-                    <td><img width="20px" src="{{ url('../../files/' . $d->gambar) }}" alt="" class="mr-3">
+                    <td><img width="50%" src="{{ url('../../files/' . $d->gambar) }}" alt="" class="mr-3">
                         {{ $d->gambar }}</td>
                     <td>{{ $d->nama_unit }}</td>
                     <td>{{ $d->tgl_upload }}</td>
@@ -49,8 +49,19 @@
     $('#tabelgbr').on('click', '.klikklik2', function() {
         $("#modalgambar").modal()
         url = $(this).attr('url')
-        wrapper = $(".imageviewer")
-        $(wrapper).append('<img src=' + url + '>');
+        id = $(this).attr('id')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                id,
+                url
+            },
+            url: '<?= route('showfile') ?>',
+            success: function(response) {
+                $('.imageviewer').html(response);
+            }
+        });
     })
     $('#tabelgbr').on('click', '.hapus', function() {
         id = $(this).attr('id')

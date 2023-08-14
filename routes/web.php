@@ -62,6 +62,8 @@ Route::post('/vberkasluar', [ErmController::class, 'vberkasluar'])
     ->name('vberkasluar'); //sidebar
 Route::post('ambilsaran', [ErmController::class, 'ambilsaran'])
     ->name('ambilsaran'); //sidebar
+Route::post('showfile', [ErmController::class, 'showfile'])
+    ->name('showfile'); //sidebar
 
 Route::get('kunjungan_pasien', [ErmController::class, 'kunjungan_pasien'])
     ->name('kunjungan_pasien'); //sidebar

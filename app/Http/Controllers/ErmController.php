@@ -6605,4 +6605,14 @@ class ErmController extends Controller
         echo json_encode($data);
         die;
     }
+    public function showfile(Request $request)
+    {
+        $id = $request->id;
+        $img = DB::select('select * from erm_upload_gambar where id = ?',[$id]);
+        $url = url('../../files/');
+        return view('ermtemplate.detailgbr_upload',compact([
+            'img',
+            'url'
+        ]));
+    }
 }
