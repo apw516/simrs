@@ -3238,6 +3238,36 @@ class ErmController extends Controller
             }
         }
         assesmenawaldokter::whereRaw('id_kunjungan = ?', array($request->kodekunjungan))->update(['signature' => '', 'status' => '0']);
+
+        try {
+            $di_diagnosa = [
+                'no_rm' => $request->nomorrm,
+                'kode_unit' => $dataSet['unit'],
+                'counter' => $kunjungan[0]->counter,
+                'kode_kunjungan' => $request->kodekunjungan,
+                'pic' => 0,
+                'input_date' => $this->get_now(),
+                'diag_00' => trim($dataSet['diagnosismedis']),
+                'alasan_pulang' => 0,
+                'rs_rujukan' => 'ERM RAWAT JALAN',
+                'kode_paramedis' => auth()->user()->kode_paramedis,
+            ];
+            $cek = DB::select('select * from di_pasien_diagnosa_frunit where kode_kunjungan = ?', [$request->kodekunjungan]);
+            if (count($cek) > 0) {
+                di_diagnosa::whereRaw('kode_kunjungan = ?', array($request->kodekunjungan))->update($di_diagnosa);
+            } else {
+                di_diagnosa::create($di_diagnosa);
+            }
+        } catch (\Exception $e) {
+            $data = [
+                'kode' => 200,
+                'message' => 'Data berhasil disimpan !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+
+
         $data = [
             'kode' => 200,
             'message' => 'Data berhasil disimpan !'
