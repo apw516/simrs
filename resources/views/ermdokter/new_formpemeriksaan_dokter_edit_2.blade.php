@@ -2378,6 +2378,10 @@
                 <button class="btn btn-warning ml-2 scanrm_liat" rm="{{ $kunjungan[0]->no_rm }}"
                     data-toggle="modal" data-target="#modalscan_rm"><i class="bi bi-journal-text"></i> BERKAS RM
                     SCAN</button>
+                <button class="btn btn-warning ml-2 liatsumarilis" rm="{{ $kunjungan[0]->no_rm }}"
+                    data-toggle="modal" data-target="#modalsumarilis"><i class="bi bi-journal-text"></i>
+                    SUMARILIS</button>
+
 
                 <button class="btn btn-danger ml-2 liatberkasluar" rm="{{ $kunjungan[0]->no_rm }}"
                     data-toggle="modal" data-target="#modalberkasluar"><i class="bi bi-journal-text"></i> BERKAS
@@ -3015,7 +3019,28 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalsumarilis" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">SUMARILIS</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_sumarilis">
 
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Modal -->
 <div class="modal fade" id="modalhasilpenunjang_lab" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -3357,6 +3382,23 @@
             url: '<?= route('lihathasilpenunjang_pa') ?>',
             success: function(response) {
                 $('.v_hasil_penunjang_pa').html(response);
+                spinner.hide()
+            }
+        });
+    })
+    $(".liatsumarilis").click(function() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm
+            },
+            url: '<?= route('hasilsumarilis') ?>',
+            success: function(response) {
+                $('.v_sumarilis').html(response);
                 spinner.hide()
             }
         });
