@@ -496,6 +496,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('simpankonsul'); //sidebar
     Route::post('simpansumarilis', [ErmController::class, 'simpansumarilis'])
         ->name('simpansumarilis'); //sidebar
+    Route::post('detailsumarilis', [ErmController::class, 'detailsumarilis'])
+        ->name('detailsumarilis'); //sidebar
     Route::post('batalkonsul', [ErmController::class, 'batalkonsul'])
         ->name('batalkonsul'); //sidebar
     Route::get('caripoli_konsul', [SimrsController::class, 'Caripoli_rs'])
@@ -608,6 +610,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('ambilgambarpemeriksaan_reset'); //sidebar
     Route::post('riwayatkonsul', [ErmController::class, 'riwayatkonsul'])
         ->name('riwayatkonsul'); //sidebar
+    Route::post('hasilsumarilis', [ErmController::class, 'hasilsumarilis'])
+        ->name('hasilsumarilis'); //sidebar
 });
 
 Route::group(['middleware' => ['auth', 'hak_akses1:99']], function () {

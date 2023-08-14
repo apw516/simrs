@@ -5113,6 +5113,20 @@ class ErmController extends Controller
             'riwayat'
         ]));
     }
+    public function detailsumarilis(Request $request)
+    {
+        $data = DB::connection('mysql4')->select('select *,date(tgl_kunjungan) as tanggal from ts_hasil_sumarilis where id = ?',[$request->id]);
+        return view('ermtemplate.editsumarilis',compact([
+            'data'
+        ]));
+    }
+    public function hasilsumarilis(Request $request)
+    {
+        $data = DB::connection('mysql4')->select('select *,date(tgl_kunjungan) as tanggal from ts_hasil_sumarilis where no_rm = ?',[$request->nomorrm]);
+        return view('ermtemplate.tabelhasilsumarilis',compact([
+            'data'
+        ]));
+    }
     public function formorderpenunjang(Request $request)
     {
         $assdok = DB::select('select * from assesmen_dokters where id_kunjungan = ?', [$request->kodekunjungan]);
