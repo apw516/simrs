@@ -2,7 +2,7 @@
     <thead>
         <th>tgl sumarilis</th>
         <th>Diagnosa</th>
-        <th>Siklus</th>
+        {{-- <th>Siklus</th> --}}
         <th>Keterangan Regimen</th>
         <th>Obat</th>
     </thead>
@@ -11,8 +11,8 @@
             <tr>
                 <td>{{ $d->tgl_kunjungan}}</td>
                 <td>{{ $d->diagnosa}}</td>
-                <td>{{ $d->siklus}}</td>
-                <td>{{ $d->ket_regimen}}</td>
+                {{-- <td>{{ $d->siklus}}</td> --}}
+                <td>{{ $d->tindakan}}</td>
                 <td>{{ $d->obat}}</td>
             </tr>
         @endforeach

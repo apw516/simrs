@@ -9,7 +9,7 @@
             <label for="exampleInputPassword1">Diagnosa</label>
             <input type="text" class="form-control" id="diagnosasum" name="diagnosasum" value="{{ $data[0]->diagnosa }}">
         </div>
-        <div class="form-group">
+        <div hidden class="form-group">
             <label for="exampleInputPassword1">Siklus</label>
             <input type="text" class="form-control" id="siklus" name="siklus" value="{{ $data[0]->siklus }}">
         </div>

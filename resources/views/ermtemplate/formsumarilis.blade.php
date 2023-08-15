@@ -7,7 +7,7 @@
                 <form class="formasumarilisnya">
                     <div class="form-row">
                         <div class="form-group col-md-2">
-                            <label for="inputEmail4">Tgl sumarilis / kunjungan</label>
+                            <label for="inputEmail4">Tgl sumarilis</label>
                             <input type="date" class="form-control" id="tanggalsumarilis" name="tanggalsumarilis">
                             <input hidden type="text" class="form-control" id="nomorrm" name="nomorrm"
                                 value="{{ $nomorrm }}">
@@ -18,12 +18,12 @@
                             <label for="inputPassword4">Diagnosa</label>
                             <input type="test" class="form-control" id="diagnosasum" name="diagnosasum">
                         </div>
-                        <div class="form-group col-md-1">
+                        <div hidden class="form-group col-md-1">
                             <label for="inputPassword4">Siklus</label>
                             <input type="text" class="form-control" id="siklus" name="siklus">
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="inputPassword4">keterangan Regimen</label>
+                            <label for="inputPassword4">Tindakan</label>
                             <textarea type="text" class="form-control" id="ketreg" name="ketreg"></textarea>
                         </div>
                         <div class="form-group col-md-2">
@@ -42,8 +42,8 @@
                             <thead>
                                 <th>Tanggal Regimen</th>
                                 <th>Diagnosa</th>
-                                <th>Siklus</th>
-                                <th>Keterangan Regimen</th>
+                                {{-- <th>Siklus</th> --}}
+                                <th>Tindakan</th>
                                 <th>Obat Obatan</th>
                                 <th>---</th>
                             </thead>
@@ -52,7 +52,7 @@
                                     <tr>
                                         <td>{{ $r->tgl_kunjungan }}</td>
                                         <td>{{ $r->diagnosa }}</td>
-                                        <td>{{ $r->siklus }}</td>
+                                        {{-- <td>{{ $r->siklus }}</td> --}}
                                         <td>{{ $r->ket_regimen }}</td>
                                         <td>{{ $r->obat }}</td>
                                         <td>
