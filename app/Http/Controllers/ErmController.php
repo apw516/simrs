@@ -601,7 +601,7 @@ class ErmController extends Controller
                         //     'hasil_ro',
                         //     'ref_resume'
                         // ]));
-                        if($unit = '1014'){
+                        if($unit == '1014'){
                             return view('ermdokter.form_pemeriksaan_dokter_mata', compact([
                                 'kunjungan',
                                 'resume_perawat',
