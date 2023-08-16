@@ -1995,7 +1995,6 @@
             }
         });
     })
-
     function batalisi() {
         rm = $('#nomorrm').val()
         formcatatanmedis(rm)
@@ -2240,6 +2239,7 @@
     }
 
     function ambilgambar() {
+        alert('ok ada')
         $.ajax({
             type: 'post',
             data: {
