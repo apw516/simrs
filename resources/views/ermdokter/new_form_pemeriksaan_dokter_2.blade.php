@@ -2239,7 +2239,6 @@
     }
 
     function ambilgambar() {
-        alert('ok ada')
         $.ajax({
             type: 'post',
             data: {
