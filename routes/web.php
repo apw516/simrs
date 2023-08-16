@@ -536,6 +536,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('simpanpemeriksaandokter'); //sidebar
     Route::post('/simpanpemeriksaandokter_2', [ErmController::class, 'simpanpemeriksaandokter_2'])
         ->name('simpanpemeriksaandokter_2'); //sidebar
+    Route::post('/simpanpemeriksaandokter_mata', [ErmController::class, 'simpanpemeriksaandokter_mata'])
+        ->name('simpanpemeriksaandokter_mata'); //sidebar
     Route::post('/simpanpemeriksaandokter_fisio', [ErmController::class, 'simpanpemeriksaandokter_fisio'])
         ->name('simpanpemeriksaandokter_fisio'); //sidebar
     Route::post('/simpanpemeriksaandokter_anesetesi', [ErmController::class, 'simpanpemeriksaandokter_anesetesi'])
@@ -604,12 +606,18 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('hapustemplateresep'); //sidebar
     Route::post('ambilgambarpemeriksaan', [ErmController::class, 'ambilgambarpemeriksaan'])
         ->name('ambilgambarpemeriksaan'); //sidebar
-    Route::post('ambilgambarpemeriksaan_matakiri', [ErmController::class, 'ambilgambarpemeriksaan_matakiri'])
-        ->name('ambilgambarpemeriksaan_matakiri'); //sidebar
-    Route::post('ambilgambarpemeriksaan_matakanan', [ErmController::class, 'ambilgambarpemeriksaan_matakanan'])
-        ->name('ambilgambarpemeriksaan_matakanan'); //sidebar
+    Route::post('ambilgambarmatakiri', [ErmController::class, 'ambilgambarpemeriksaan_matakiri'])
+        ->name('ambilgambarmatakiri'); //sidebar
+
+    Route::post('ambilgambarmatakanan', [ErmController::class, 'ambilgambarpemeriksaan_matakanan'])
+        ->name('ambilgambarmatakanan'); //sidebar
+
     Route::post('ambilgambarpemeriksaan_reset', [ErmController::class, 'ambilgambarpemeriksaan_reset'])
         ->name('ambilgambarpemeriksaan_reset'); //sidebar
+    Route::post('matakiri_reset', [ErmController::class, 'matakiri_reset'])
+        ->name('matakiri_reset'); //sidebar
+    Route::post('matakanan_reset', [ErmController::class, 'matakanan_reset'])
+        ->name('matakanan_reset'); //sidebar
     Route::post('riwayatkonsul', [ErmController::class, 'riwayatkonsul'])
         ->name('riwayatkonsul'); //sidebar
     Route::post('hasilsumarilis', [ErmController::class, 'hasilsumarilis'])

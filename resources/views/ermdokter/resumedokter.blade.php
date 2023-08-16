@@ -198,7 +198,7 @@
                 </tr>
                 <tr>
                     <td>Hasil Expertisi</td>
-                    <td colspan="3">{{ $resume[0]->evaluasi }}
+                    <td colspan="3">: {{ $resume[0]->evaluasi }}
                     </td>
                 </tr>
             </table>
@@ -1266,7 +1266,216 @@
                 </div>
             @elseif($formkhusus['keterangan'] == 'mata')
                 @if ($formkhusus['cek'] > 0)
-                    <div class="col-md-12">
+                @php
+                $a = explode('|',$formkhusus['mata'][0]->catatanpemeriksaanlain );
+                $b = explode('|',$formkhusus['mata'][0]->palpebra );
+                $c = explode('|',$formkhusus['mata'][0]->konjungtiva );
+                $d = explode('|',$formkhusus['mata'][0]->kornea);
+                $e = explode('|',$formkhusus['mata'][0]->bilikmatadepan );
+                $f = explode('|',$formkhusus['mata'][0]->pupil );
+                $g = explode('|',$formkhusus['mata'][0]->iris );
+                $h = explode('|',$formkhusus['mata'][0]->lensa );
+                $i = explode('|',$formkhusus['mata'][0]->funduskopi );
+                $j = explode('|',$formkhusus['mata'][0]->status_oftamologis_khusus );
+                $k = explode('|',$formkhusus['mata'][0]->masalahmedis );
+                $l = explode('|',$formkhusus['mata'][0]->prognosis );
+                $m = explode('|',$formkhusus['mata'][0]->tekananintraokular );
+                @endphp
+                <div class="row">
+                    <div class="col-md-12 mt-2">
+                        <div class="card">
+                            <div class="card-header bg-light">Hasil Pemeriksaan RO</div>
+                            <div class="card-body">
+                                {{ $formkhusus['mata'][0]->tajampenglihatandekat }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header bg-light">Mata Kiri</div>
+                            <div class="card-body">
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td colspan="4">
+                                            <img src="{{ $resume[0]->gambar_2}}" alt="">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tekanan Intra Okular</td>
+                                        <td colspan="3">
+                                            <textarea readonly class="form-control" id="tekanan_intra_okular" name="tekanan_intra_okular">@if(count($m) > 1){{ $m[1] }}@endif</textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Catatan Pemeriksaan Lainnya</td>
+                                        <td colspan="3">
+                                            <textarea readonly class="form-control" name="catatan_pemeriksaan_lainnya" id="catatan_pemerikssaan_lainnya">@if(count($a) > 1){{ $a[0] }}@endif</textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Palpebra</td>
+                                        <td colspan="3"><input class="form-control" readonly
+                                                value="@if(count($b) > 1){{ $b[0] }}@endif" id="palpebra"
+                                                name="palpebra"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Konjungtiva</td>
+                                        <td colspan="3"><input class="form-control" readonly
+                                                value="@if(count($c) > 1){{ $c[0] }}@endif" id="konjungtiva"
+                                                name="konjungtiva"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kornea</td>
+                                        <td colspan="3"><input class="form-control" readonly
+                                                value="@if(count($d) > 1){{ $d[0] }}@endif" name="kornea"
+                                                id="kornea"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bilik Mata Depan</td>
+                                        <td colspan="3"><input class="form-control" readonly
+                                                value="@if(count($e) > 1){{ $e[0] }}@endif"
+                                                name="bilik_mata_depan" id="bilik_mata_depan"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pupil</td>
+                                        <td colspan="3"><input class="form-control" readonly
+                                                value="@if(count($f) > 1){{ $f[0] }}@endif" id="pupil"
+                                                name="pupil"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Iris</td>
+                                        <td colspan="3"><input class="form-control" readonly
+                                                value="@if(count($g) > 1){{ $g[0] }}@endif" name="iris"
+                                                id="iris"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lensa</td>
+                                        <td colspan="3"><input class="form-control" readonly
+                                                value="@if(count($h) > 1){{ $h[0] }}@endif" name="lensa"
+                                                id="lensa"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Funduskopi</td>
+                                        <td colspan="3"><input class="form-control" readonly
+                                                value="@if(count($i) > 1){{ $i[0] }}@endif" name="funduskopi"
+                                                id="funduskopi"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Status Oftalmologis Khusus</td>
+                                        <td colspan="3">
+                                            <textarea readonly class="form-control" name="oftamologis" id="oftamologis">@if(count($j) > 1){{ $j[0] }}@endif</textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Masalah Medis</td>
+                                        <td colspan="3">
+                                            <textarea readonly class="form-control" name="masalahmedis" id="masalahmedis">@if(count($k) > 1){{ $k[0] }}@endif</textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Prognosis</td>
+                                        <td colspan="3">
+                                            <textarea readonly class="form-control" name="prognosis" id="prognosis">@if(count($l) > 1){{ $l[0] }}@endif</textarea>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header bg-light">Mata Kanan</div>
+                            <div class="card-body">
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td colspan="4">
+                                            <img src="{{ $resume[0]->gambar_1}}" alt="">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tekanan Intra Okular</td>
+                                        <td colspan="3">
+                                            <textarea readonly class="form-control" id="tekanan_intra_okular" name="tekanan_intra_okular">{{ $m[0] }}</textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Catatan Pemeriksaan Lainnya</td>
+                                        <td colspan="3">
+                                            <textarea readonly class="form-control" name="catatan_pemeriksaan_lainnya" id="catatan_pemerikssaan_lainnya">{{ $a[0] }}</textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Palpebra</td>
+                                        <td colspan="3"><input class="form-control" readonly
+                                                value="{{ $b[0] }}" id="palpebra"
+                                                name="palpebra"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Konjungtiva</td>
+                                        <td colspan="3"><input class="form-control" readonly
+                                                value="{{ $c[0] }}" id="konjungtiva"
+                                                name="konjungtiva"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kornea</td>
+                                        <td colspan="3"><input class="form-control" readonly
+                                                value="{{ $d[0] }}" name="kornea"
+                                                id="kornea"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bilik Mata Depan</td>
+                                        <td colspan="3"><input class="form-control" readonly
+                                                value="{{ $e[0] }}"
+                                                name="bilik_mata_depan" id="bilik_mata_depan"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pupil</td>
+                                        <td colspan="3"><input class="form-control" readonly
+                                                value="{{ $f[0] }}" id="pupil"
+                                                name="pupil"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Iris</td>
+                                        <td colspan="3"><input class="form-control" readonly
+                                                value="{{ $g[0] }}" name="iris"
+                                                id="iris"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lensa</td>
+                                        <td colspan="3"><input class="form-control" readonly
+                                                value="{{ $h[0] }}" name="lensa"
+                                                id="lensa"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Funduskopi</td>
+                                        <td colspan="3"><input class="form-control" readonly
+                                                value="{{ $i[0] }}" name="funduskopi"
+                                                id="funduskopi"></input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Status Oftalmologis Khusus</td>
+                                        <td colspan="3">
+                                            <textarea readonly class="form-control" name="oftamologis" id="oftamologis">{{ $j[0] }}</textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Masalah Medis</td>
+                                        <td colspan="3">
+                                            <textarea readonly class="form-control" name="masalahmedis" id="masalahmedis">{{ $k[0] }}</textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Prognosis</td>
+                                        <td colspan="3">
+                                            <textarea readonly class="form-control" name="prognosis" id="prognosis">{{ $l[0] }}</textarea>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    {{-- <div class="col-md-12">
                         <img src="{{ $resume[0]->gambar_1 }}" alt="">
                     </div>
                     <div class="col-md-12">
@@ -1356,7 +1565,7 @@
                                 </td>
                             </tr>
                         </table>
-                    </div>
+                    </div> --}}
                 @endif
             @elseif ($formkhusus['keterangan'] == 'gigi')
                 @if ($formkhusus['cek'] > 0)
