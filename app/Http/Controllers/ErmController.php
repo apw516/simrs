@@ -28,6 +28,8 @@ use App\Models\ts_kunjungan;
 use App\Models\ts_kunjungan2;
 use App\Models\ts_antrian_igd;
 use App\Models\ts_sumarilis;
+use App\Models\ts_erm_transfusi_darah_reaksi;
+use App\Models\ts_erm_transfusi_darah_monitoring;
 use App\Models\di_diagnosa;
 use Carbon\Carbon;
 use simitsdk\phpjasperxml\PHPJasperXML;
@@ -230,9 +232,27 @@ class ErmController extends Controller
     public function ambilcatatanmedis_pasien(Request $request)
     {
         $rm = $request->rm;
-        $kunjungan = DB::select('SELECT *,fc_nama_unit1(a.ref_unit) as nama_ref_unit,b.kode_unit,c.kode_unit as kode_unit_dokter,a.kode_kunjungan as kodek,a.no_rm as no_rm_k,b.id as id_1, c.id as id_2,b.signature as signature_perawat,c.signature as signature_dokter,b.keluhanutama as keluhan_perawat,a.tgl_masuk,a.counter,fc_nama_unit1(a.kode_unit) AS nama_unit FROM ts_kunjungan a
-        LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`kode_kunjungan` = b.kode_kunjungan
-        LEFT OUTER JOIN assesmen_dokters c ON a.`kode_kunjungan` = c.`id_kunjungan` where a.no_rm = ? and a.status_kunjungan != ? ORDER BY a.kode_kunjungan desc LIMIT 6', [$request->rm, 8]);
+        // $kunjungan = DB::select('SELECT *,fc_nama_unit1(a.ref_unit) as nama_ref_unit,b.kode_unit,c.kode_unit as kode_unit_dokter,a.kode_kunjungan as kodek,a.no_rm as no_rm_k,b.id as id_1, c.id as id_2,b.signature as signature_perawat,c.signature as signature_dokter,b.keluhanutama as keluhan_perawat,a.tgl_masuk,a.counter,fc_nama_unit1(a.kode_unit) AS nama_unit FROM ts_kunjungan a
+        // LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`kode_kunjungan` = b.kode_kunjungan
+        // LEFT OUTER JOIN assesmen_dokters c ON a.`kode_kunjungan` = c.`id_kunjungan` where a.no_rm = ? and a.status_kunjungan != ? ORDER BY a.kode_kunjungan desc LIMIT 6', [$request->rm, 8]);
+        $kunjungan = DB::select('SELECT
+        b.*
+        ,c.*
+        ,fc_nama_unit1(a.ref_unit) AS nama_ref_unit
+        ,b.kode_unit,c.kode_unit AS kode_unit_dokter
+        ,a.kode_kunjungan AS kodek
+        ,a.no_rm AS no_rm_k
+        ,a.ref_kunjungan
+        ,b.id AS id_1
+        ,c.id AS id_2
+        ,b.signature AS signature_perawat
+        ,c.signature AS signature_dokter
+        ,b.keluhanutama AS keluhan_perawat
+        ,a.tgl_masuk,a.counter
+        ,fc_nama_unit1(a.kode_unit) AS nama_unit FROM ts_kunjungan a
+        LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`kode_kunjungan` = b.kode_kunjungan AND b.`kode_unit` = a.`kode_unit`
+        LEFT OUTER JOIN assesmen_dokters c ON a.`kode_kunjungan` = c.`id_kunjungan` AND c.`kode_unit` = a.`kode_unit`
+        WHERE a.no_rm = ? AND a.status_kunjungan NOT IN(8,11) ORDER BY a.kode_kunjungan DESC LIMIT 5', [$request->rm]);
         return view('ermtemplate.form_catatan_medis', compact([
             'kunjungan',
             'rm'
@@ -541,7 +561,7 @@ class ErmController extends Controller
                             'ref_resume'
                         ]));
                     } else {
-                        if($unit == '1014'){
+                        if ($unit == '1014') {
                             return view('ermdokter.form_pemeriksaan_dokter_mata_edit', compact([
                                 'kunjungan',
                                 'resume',
@@ -554,7 +574,7 @@ class ErmController extends Controller
                                 'k2',
                                 'ref_resume'
                             ]));
-                        }else{
+                        } else {
                             return view('ermdokter.new_formpemeriksaan_dokter_edit_2', compact([
                                 'kunjungan',
                                 'resume',
@@ -601,7 +621,7 @@ class ErmController extends Controller
                         //     'hasil_ro',
                         //     'ref_resume'
                         // ]));
-                        if($unit == '1014'){
+                        if ($unit == '1014') {
                             return view('ermdokter.form_pemeriksaan_dokter_mata', compact([
                                 'kunjungan',
                                 'resume_perawat',
@@ -614,7 +634,7 @@ class ErmController extends Controller
                                 'hasil_ro',
                                 'ref_resume'
                             ]));
-                        }else{
+                        } else {
                             return view('ermdokter.new_form_pemeriksaan_dokter_2', compact([
                                 'kunjungan',
                                 'resume_perawat',
@@ -3736,19 +3756,19 @@ class ErmController extends Controller
                     'tgl_entry' => $this->get_now(),
                     'status' => '0',
                     'tajampenglihatandekat' => $dataSet['hasilpemeriksaanro'],
-                    'tekananintraokular' => $dataSet['tekanan_intra_okular'].'|'.$dataSet['kiri_tekanan_intra_okular'],
-                    'catatanpemeriksaanlain' => $dataSet['catatan_pemeriksaan_lainnya'].'|'.$dataSet['kiri_catatan_pemeriksaan_lainnya'],
-                    'palpebra' => $dataSet['palpebra'].'|'.$dataSet['kiri_palpebra'],
-                    'konjungtiva' => $dataSet['konjungtiva'].'|'.$dataSet['kiri_konjungtiva'],
-                    'kornea' => $dataSet['kornea'].'|'.$dataSet['kiri_kornea'],
-                    'bilikmatadepan' => $dataSet['bilik_mata_depan'].'|'.$dataSet['kiri_bilik_mata_depan'],
-                    'pupil' => $dataSet['pupil'].'|'.$dataSet['kiri_pupil'],
-                    'iris' => $dataSet['iris'].'|'.$dataSet['kiri_iris'],
-                    'lensa' => $dataSet['lensa'].'|'.$dataSet['kiri_lensa'],
-                    'funduskopi' => $dataSet['funduskopi'].'|'.$dataSet['kiri_funduskopi'],
-                    'status_oftamologis_khusus' => $dataSet['oftamologis'].'|'.$dataSet['kiri_oftamologis'],
-                    'masalahmedis' => $dataSet['masalahmedis'].'|'.$dataSet['kiri_masalahmedis'],
-                    'prognosis' => $dataSet['prognosis'].'|'.$dataSet['kiri_prognosis'],
+                    'tekananintraokular' => $dataSet['tekanan_intra_okular'] . '|' . $dataSet['kiri_tekanan_intra_okular'],
+                    'catatanpemeriksaanlain' => $dataSet['catatan_pemeriksaan_lainnya'] . '|' . $dataSet['kiri_catatan_pemeriksaan_lainnya'],
+                    'palpebra' => $dataSet['palpebra'] . '|' . $dataSet['kiri_palpebra'],
+                    'konjungtiva' => $dataSet['konjungtiva'] . '|' . $dataSet['kiri_konjungtiva'],
+                    'kornea' => $dataSet['kornea'] . '|' . $dataSet['kiri_kornea'],
+                    'bilikmatadepan' => $dataSet['bilik_mata_depan'] . '|' . $dataSet['kiri_bilik_mata_depan'],
+                    'pupil' => $dataSet['pupil'] . '|' . $dataSet['kiri_pupil'],
+                    'iris' => $dataSet['iris'] . '|' . $dataSet['kiri_iris'],
+                    'lensa' => $dataSet['lensa'] . '|' . $dataSet['kiri_lensa'],
+                    'funduskopi' => $dataSet['funduskopi'] . '|' . $dataSet['kiri_funduskopi'],
+                    'status_oftamologis_khusus' => $dataSet['oftamologis'] . '|' . $dataSet['kiri_oftamologis'],
+                    'masalahmedis' => $dataSet['masalahmedis'] . '|' . $dataSet['kiri_masalahmedis'],
+                    'prognosis' => $dataSet['prognosis'] . '|' . $dataSet['kiri_prognosis'],
                     'id_asskep' =>  $id_asskep
                 ];
 
@@ -3762,7 +3782,7 @@ class ErmController extends Controller
                 if ($request->gambar == $this->gambar_mata() || $request->gambar == $this->gambar_mata_2() || $request->gambar == $this->blank_img() || $request->gambar == $this->another_img()) {
                     $gambar = '';
                 }
-                $data_mata = ['gambar_1' => $gambar_kanan,'gambar_2' =>$gambar_kiri,'pemeriksaan_khusus' => $hasil_pemeriksaan_khusus];
+                $data_mata = ['gambar_1' => $gambar_kanan, 'gambar_2' => $gambar_kiri, 'pemeriksaan_khusus' => $hasil_pemeriksaan_khusus];
                 assesmenawaldokter::whereRaw('id = ?', array($id_assesmen))->update($data_mata);
             }
             ts_kunjungan::whereRaw('kode_kunjungan = ?', array($kodekunjungan))->update([
@@ -5917,6 +5937,19 @@ class ErmController extends Controller
             'riwayat'
         ]));
     }
+    public function form_monitoring_darah(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        $nomorrm = $request->nomorrm;
+        $datareaksi = DB::select('select * from erm_transfusi_darah_reaksi where kode_kunjungan = ?', [$kodekunjungan]);
+        $datamonitoring = DB::select('select * from erm_transfusi_darah_monitoring where kode_kunjungan = ?', [$kodekunjungan]);
+        return view('ermtemplate.form_monitoring_darah', compact([
+            'kodekunjungan',
+            'nomorrm',
+            'datareaksi',
+            'datamonitoring'
+        ]));
+    }
     public function detailsumarilis(Request $request)
     {
         $data = DB::connection('mysql4')->select('select *,date(tgl_kunjungan) as tanggal from ts_hasil_sumarilis where id = ?', [$request->id]);
@@ -7365,14 +7398,108 @@ class ErmController extends Controller
         echo json_encode($data);
         die;
     }
+    public function simpandarah(Request $request)
+    {
+        $data1 = json_decode($_POST['data'], true);
+        foreach ($data1 as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+        $datasum = [
+            'tgl_entry' => $this->get_now(),
+            'kode_kunjungan' => $dataSet['kodekunjungan'],
+            'no_kantong' => $dataSet['noka_darah'],
+            'asal_unit' => $dataSet['ruangrawat'],
+            'diag_klinis' => $dataSet['diagnosaklinis'],
+            'Jenis_darah' => $dataSet['jenisdarah'],
+            'isi' => $dataSet['isi_darah'],
+            'tgl_transfusi' => $dataSet['tanggal'],
+            'mulai_transfusi' => $dataSet['mulai_tf'],
+            'selesai_transfusi' => $dataSet['selesai_tf'],
+            'volume_pakai' => $dataSet['vol_tf'],
+        ];
+        if ($dataSet['tanggal'] == '') {
+            $data = [
+                'kode' => 500,
+                'message' => 'Tanggal tidak boleh kosong !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        $cek = DB::select('select * from erm_transfusi_darah_reaksi where kode_kunjungan = ? and no_kantong = ?', [$dataSet['kodekunjungan'],$dataSet['noka_darah']]);
+        if (count($cek) == 0) {
+            $simpan = ts_erm_transfusi_darah_reaksi::create($datasum);
+        } else {
+            ts_erm_transfusi_darah_reaksi::where('kode_kunjungan', $dataSet['kodekunjungan'])
+                ->update($datasum);
+        }
+        $data = [
+            'kode' => 200,
+            'message' => 'Data Berhasil disimpan !'
+        ];
+        echo json_encode($data);
+        die;
+    }
     public function showfile(Request $request)
     {
         $id = $request->id;
-        $img = DB::select('select * from erm_upload_gambar where id = ?',[$id]);
+        $img = DB::select('select * from erm_upload_gambar where id = ?', [$id]);
         $url = url('../../files/');
-        return view('ermtemplate.detailgbr_upload',compact([
+        return view('ermtemplate.detailgbr_upload', compact([
             'img',
             'url'
         ]));
+    }
+    public function ambilform_monitoring(Request $request)
+    {
+        $id = $request->id;
+        $kodekunjungan = $request->kodekunjungan;
+        $nomorkantong = $request->nomorkantong;
+        $isi = $request->isi;
+        $jenis = $request->jenis;
+        return view('ermtemplate.isi_form_monitoring_darah',compact([
+            'id',
+            'kodekunjungan',
+            'nomorkantong',
+            'isi',
+            'jenis'
+        ]));
+    }
+    public function simpanmonitoring_darah(Request $request)
+    {
+        $data1 = json_decode($_POST['data'], true);
+        foreach ($data1 as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+        $datamon = [
+            'id_reaksi' => $dataSet['id_reak'],
+            // 'tgl_entry' => $this->get_now(),
+            'kode_kunjungan' => $dataSet['kode_kunjungan_mon'],
+            'asal_unit' => '',
+            'tgl_monitoring' => $dataSet['tgl_mon'],
+            'jam_monitoring' => $dataSet['jm_mon'],
+            'Jenis_darah' => $dataSet['jd_mon'],
+            'no_kantong' => $dataSet['nomorkantong_mon'],
+            // 'pernah_transfusi' => $dataSet['per_traf'],
+            // 'riwayat_alergi' => $dataSet['riw_alergi'],
+            // 'riwayat_alergi_ket' => $dataSet['ket_alergi'],
+            'isi' => $dataSet['isda_mon'],
+            'ttv_td' => $dataSet['td_mon'],
+            'ttv_nadi' => $dataSet['nadi_mon'],
+            'ttv_rr' => $dataSet['rr_mon'],
+            'ttv_s' => $dataSet['s_mon'],
+            'pic' => auth()->user()->id,
+            'reaksi' => $dataSet['reaksi_mon'],
+        ];
+        $simpan = ts_erm_transfusi_darah_monitoring::create($datamon);
+        $data = [
+            'kode' => 200,
+            'message' => 'Data Berhasil disimpan !'
+        ];
+        echo json_encode($data);
+        die;
     }
 }

@@ -53,6 +53,11 @@
                             <i class="fas fa-inbox mr-2"></i>SUMARILIS
                         </a>
                     </li>
+                    {{-- <li class="nav-item" id="pemeriksaan">
+                        <a href="#" class="nav-link" onclick="formmonitoringdarah()">
+                            <i class="fas fa-inbox mr-2"></i>MONITORING TRANSFUSI DARAH
+                        </a>
+                    </li> --}}
                     @endif
                     <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formtindaklanjut()">
@@ -256,6 +261,26 @@
                 kodekunjungan
             },
             url: '<?= route('formsumarilis') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    function formmonitoringdarah()
+    {
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('form_monitoring_darah') ?>',
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()

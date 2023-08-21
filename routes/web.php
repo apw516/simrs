@@ -486,6 +486,12 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('formupload'); //sidebar
     Route::post('/formsumarilis', [ErmController::class, 'formsumarilis'])
         ->name('formsumarilis'); //sidebar
+    Route::post('/form_monitoring_darah', [ErmController::class, 'form_monitoring_darah'])
+        ->name('form_monitoring_darah'); //sidebar
+    Route::post('/simpanmonitoring_darah', [ErmController::class, 'simpanmonitoring_darah'])
+        ->name('simpanmonitoring_darah'); //sidebar
+    Route::post('/ambilform_monitoring', [ErmController::class, 'ambilform_monitoring'])
+        ->name('ambilform_monitoring'); //sidebar
     Route::post('/uploadgambarnya', [ErmController::class, 'uploadgambarnya'])
         ->name('uploadgambarnya'); //sidebar
     Route::post('/hapusgambarupload', [ErmController::class, 'hapusgambarupload'])
@@ -498,6 +504,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('simpankonsul'); //sidebar
     Route::post('simpansumarilis', [ErmController::class, 'simpansumarilis'])
         ->name('simpansumarilis'); //sidebar
+    Route::post('simpandarah', [ErmController::class, 'simpandarah'])
+        ->name('simpandarah'); //sidebar
     Route::post('detailsumarilis', [ErmController::class, 'detailsumarilis'])
         ->name('detailsumarilis'); //sidebar
     Route::post('batalkonsul', [ErmController::class, 'batalkonsul'])

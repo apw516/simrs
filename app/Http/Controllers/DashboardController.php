@@ -32,11 +32,13 @@ class DashboardController extends Controller
             'P01', 'P01', 'L', 'P', 1, 1, 17, 17, 1, 1, 2023, 04, 1
         ]);
         // dd($query);
+        $ds = DB::select('CALL erm_dasboard_03_per_tgl(?,?,?)',['2023-08-01','2023-08-31','']);
         return view('dashboard.index', compact([
             'title',
             'sidebar',
             'sidebar_m',
-            'query'
+            'query',
+            'ds'
         ]));
     }
 }
