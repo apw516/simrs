@@ -407,7 +407,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="card">
-                                                        <div class="card-header bg-danger">Mata Kiri</div>
+                                                        <div class="card-header bg-danger">Mata Kanan</div>
                                                         <div class="card-body">
                                                             <table class="table table-sm">
                                                                 <tr>
@@ -499,7 +499,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="card">
-                                                        <div class="card-header bg-danger">Mata Kanan</div>
+                                                        <div class="card-header bg-danger">Mata Kiri</div>
                                                         <div class="card-body">
                                                             <table class="table table-sm">
                                                                 <tr>
