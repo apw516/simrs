@@ -488,10 +488,20 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('formsumarilis'); //sidebar
     Route::post('/form_monitoring_darah', [ErmController::class, 'form_monitoring_darah'])
         ->name('form_monitoring_darah'); //sidebar
+    Route::post('/ambilform_editmonitoring', [ErmController::class, 'ambilform_editmonitoring'])
+        ->name('ambilform_editmonitoring'); //sidebar
     Route::post('/simpanmonitoring_darah', [ErmController::class, 'simpanmonitoring_darah'])
         ->name('simpanmonitoring_darah'); //sidebar
+    Route::post('/simpaneditmonitoring_darah', [ErmController::class, 'simpaneditmonitoring_darah'])
+        ->name('simpaneditmonitoring_darah'); //sidebar
+    Route::post('/simpanhasil_reaksi', [ErmController::class, 'simpanhasil_reaksi'])
+        ->name('simpanhasil_reaksi'); //sidebar
     Route::post('/ambilform_monitoring', [ErmController::class, 'ambilform_monitoring'])
         ->name('ambilform_monitoring'); //sidebar
+    Route::post('/ambilform_edit_transfusi', [ErmController::class, 'ambilform_edit_transfusi'])
+        ->name('ambilform_edit_transfusi'); //sidebar
+    Route::post('/ambilform_input_reaksi', [ErmController::class, 'ambilform_input_reaksi'])
+        ->name('ambilform_input_reaksi'); //sidebar
     Route::post('/uploadgambarnya', [ErmController::class, 'uploadgambarnya'])
         ->name('uploadgambarnya'); //sidebar
     Route::post('/hapusgambarupload', [ErmController::class, 'hapusgambarupload'])
@@ -506,6 +516,12 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('simpansumarilis'); //sidebar
     Route::post('simpandarah', [ErmController::class, 'simpandarah'])
         ->name('simpandarah'); //sidebar
+    Route::post('hapusdarah', [ErmController::class, 'hapusdarah'])
+        ->name('hapusdarah'); //sidebar
+    Route::post('hapusmonitoring', [ErmController::class, 'hapusmonitoring'])
+        ->name('hapusmonitoring'); //sidebar
+    Route::post('simpaneditdarah', [ErmController::class, 'simpaneditdarah'])
+        ->name('simpaneditdarah'); //sidebar
     Route::post('detailsumarilis', [ErmController::class, 'detailsumarilis'])
         ->name('detailsumarilis'); //sidebar
     Route::post('batalkonsul', [ErmController::class, 'batalkonsul'])

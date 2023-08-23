@@ -5943,11 +5943,13 @@ class ErmController extends Controller
         $nomorrm = $request->nomorrm;
         $datareaksi = DB::select('select * from erm_transfusi_darah_reaksi where kode_kunjungan = ?', [$kodekunjungan]);
         $datamonitoring = DB::select('select * from erm_transfusi_darah_monitoring where kode_kunjungan = ?', [$kodekunjungan]);
+        $unit = DB::select('select * from mt_unit where group_unit = ?',(['I']));
         return view('ermtemplate.form_monitoring_darah', compact([
             'kodekunjungan',
             'nomorrm',
             'datareaksi',
-            'datamonitoring'
+            'datamonitoring',
+            'unit'
         ]));
     }
     public function detailsumarilis(Request $request)
@@ -7406,6 +7408,14 @@ class ErmController extends Controller
             $value =  $nama['value'];
             $dataSet[$index] = $value;
         }
+        if($dataSet['ruangrawat'] == ''){
+            $data = [
+                'kode' => 500,
+                'message' => 'Silahkan Pilih Ruang Rawat !'
+            ];
+            echo json_encode($data);
+            die;
+        }
         $datasum = [
             'tgl_entry' => $this->get_now(),
             'kode_kunjungan' => $dataSet['kodekunjungan'],
@@ -7418,11 +7428,46 @@ class ErmController extends Controller
             'mulai_transfusi' => $dataSet['mulai_tf'],
             'selesai_transfusi' => $dataSet['selesai_tf'],
             'volume_pakai' => $dataSet['vol_tf'],
+            'riwayat_alergi' => $dataSet['riw_alergi'],
+            'riwayat_alergi_ket' => $dataSet['ket_alergi'],
+            'pernah_transfusi' => $dataSet['per_traf'],
         ];
         if ($dataSet['tanggal'] == '') {
             $data = [
                 'kode' => 500,
                 'message' => 'Tanggal tidak boleh kosong !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if($dataSet['jenisdarah'] == ''){
+            $data = [
+                'kode' => 500,
+                'message' => 'Jenis darah tidak boleh kosong !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if($dataSet['diagnosaklinis'] == ''){
+            $data = [
+                'kode' => 500,
+                'message' => 'Diagnosa Klinis tidak boleh kosong !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if($dataSet['mulai_tf'] == ''){
+            $data = [
+                'kode' => 500,
+                'message' => 'Jam mulai transfusi tidak boleh kosong !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if($dataSet['noka_darah'] == ''){
+            $data = [
+                'kode' => 500,
+                'message' => 'Nomor kantong darah tidak boleh kosong !'
             ];
             echo json_encode($data);
             die;
@@ -7437,6 +7482,111 @@ class ErmController extends Controller
         $data = [
             'kode' => 200,
             'message' => 'Data Berhasil disimpan !'
+        ];
+        echo json_encode($data);
+        die;
+    }
+    public function simpaneditdarah(Request $request)
+    {
+        $data1 = json_decode($_POST['data'], true);
+        foreach ($data1 as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+        if($dataSet['ruangrawat'] == ''){
+            $data = [
+                'kode' => 500,
+                'message' => 'Silahkan Pilih Ruang Rawat !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        $datasum = [
+            'no_kantong' => $dataSet['noka_darah'],
+            'asal_unit' => $dataSet['ruangrawat'],
+            'diag_klinis' => $dataSet['diagnosaklinis'],
+            'Jenis_darah' => $dataSet['jenisdarah'],
+            'isi' => $dataSet['isi_darah'],
+            'tgl_transfusi' => $dataSet['tanggal'],
+            'mulai_transfusi' => $dataSet['mulai_tf'],
+            'selesai_transfusi' => $dataSet['selesai_tf'],
+            'volume_pakai' => $dataSet['vol_tf'],
+            'riwayat_alergi' => $dataSet['riw_alergi'],
+            'riwayat_alergi_ket' => $dataSet['ket_alergi'],
+            'pernah_transfusi' => $dataSet['per_traf'],
+        ];
+        if ($dataSet['tanggal'] == '') {
+            $data = [
+                'kode' => 500,
+                'message' => 'Tanggal tidak boleh kosong !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if($dataSet['jenisdarah'] == ''){
+            $data = [
+                'kode' => 500,
+                'message' => 'Jenis darah tidak boleh kosong !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if($dataSet['diagnosaklinis'] == ''){
+            $data = [
+                'kode' => 500,
+                'message' => 'Diagnosa Klinis tidak boleh kosong !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if($dataSet['mulai_tf'] == ''){
+            $data = [
+                'kode' => 500,
+                'message' => 'Jam mulai transfusi tidak boleh kosong !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if($dataSet['noka_darah'] == ''){
+            $data = [
+                'kode' => 500,
+                'message' => 'Nomor kantong darah tidak boleh kosong !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        $cek = DB::select('select * from erm_transfusi_darah_reaksi where idx = ?', [$dataSet['id']]);
+        if (count($cek) == 0) {
+            $simpan = ts_erm_transfusi_darah_reaksi::create($datasum);
+        } else {
+            ts_erm_transfusi_darah_reaksi::where('idx', $dataSet['id'])
+                ->update($datasum);
+        }
+        $data = [
+            'kode' => 200,
+            'message' => 'Data Berhasil disimpan !'
+        ];
+        echo json_encode($data);
+        die;
+    }
+    public function hapusdarah(Request $request)
+    {
+        DB::table('erm_transfusi_darah_reaksi')->where('idx', $request->id)->delete();
+        DB::table('erm_transfusi_darah_monitoring')->where('id_reaksi', $request->id)->delete();
+        $data = [
+            'kode' => 200,
+            'message' => 'Data Berhasil dihapus !'
+        ];
+        echo json_encode($data);
+        die;
+    }
+    public function hapusmonitoring(Request $request)
+    {
+        DB::table('erm_transfusi_darah_monitoring')->where('idx', $request->id)->delete();
+        $data = [
+            'kode' => 200,
+            'message' => 'Data Berhasil dihapus !'
         ];
         echo json_encode($data);
         die;
@@ -7464,6 +7614,39 @@ class ErmController extends Controller
             'nomorkantong',
             'isi',
             'jenis'
+        ]));
+    }
+    public function ambilform_editmonitoring(Request $request)
+    {
+        $id = $request->id;
+        $data_mon = DB::select('select * from erm_transfusi_darah_monitoring where idx = ?',([$id]));
+        return view('ermtemplate.edit_isi_form_monitoring_darah',compact([
+            'id',
+           'data_mon'
+        ]));
+    }
+    public function ambilform_input_reaksi(Request $request)
+    {
+        $id = $request->id;
+        $data_mon = DB::select('select * from erm_transfusi_darah_monitoring where idx = ?',([$id]));
+        $data_reaksi = DB::select('select * from erm_transfusi_darah_reaksi where idx = ?',([$data_mon[0]->id_reaksi]));
+        $unit = DB::select('select * from mt_unit where group_unit = ?',(['I']));
+        return view('ermtemplate.isi_form_input_reaksi',compact([
+            'id',
+            'data_mon',
+            'data_reaksi',
+            'unit'
+        ]));
+    }
+    public function ambilform_edit_transfusi(Request $request)
+    {
+        $id = $request->id;
+        $data_reaksi = DB::select('select * from erm_transfusi_darah_reaksi where idx = ?',([$id]));
+        $unit = DB::select('select * from mt_unit where group_unit = ?',(['I']));
+        return view('ermtemplate.isi_edit_transfusi',compact([
+            'id',
+            'data_reaksi',
+            'unit'
         ]));
     }
     public function simpanmonitoring_darah(Request $request)
@@ -7494,7 +7677,217 @@ class ErmController extends Controller
             'pic' => auth()->user()->id,
             'reaksi' => $dataSet['reaksi_mon'],
         ];
+        if($dataSet['tgl_mon'] == ''){
+            $data = [
+                'kode' => 500,
+                'message' => 'Tanggal monitoring tidak boleh kosong !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if($dataSet['jm_mon'] == ''){
+            $data = [
+                'kode' => 500,
+                'message' => 'Jam monitoring tidak boleh kosong !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if($dataSet['td_mon'] == ''){
+            $data = [
+                'kode' => 500,
+                'message' => 'Tekanan Darah tidak boleh kosong !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if($dataSet['nadi_mon'] == ''){
+            $data = [
+                'kode' => 500,
+                'message' => 'Frekuensi nadi tidak boleh kosong !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if($dataSet['rr_mon'] == ''){
+            $data = [
+                'kode' => 500,
+                'message' => 'Frekuensi Nafas tidak boleh kosong !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if($dataSet['s_mon'] == ''){
+            $data = [
+                'kode' => 500,
+                'message' => 'Suhu tubuh tidak boleh kosong !'
+            ];
+            echo json_encode($data);
+            die;
+        }
         $simpan = ts_erm_transfusi_darah_monitoring::create($datamon);
+        $data = [
+            'kode' => 200,
+            'message' => 'Data Berhasil disimpan !'
+        ];
+        echo json_encode($data);
+        die;
+    }
+    public function simpaneditmonitoring_darah(Request $request)
+    {
+        $data1 = json_decode($_POST['data'], true);
+        foreach ($data1 as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+        $datamon = [
+            // 'tgl_entry' => $this->get_now(),
+            'asal_unit' => '',
+            'tgl_monitoring' => $dataSet['tgl_mon'],
+            'jam_monitoring' => $dataSet['jm_mon'],
+            'Jenis_darah' => $dataSet['jd_mon'],
+            'no_kantong' => $dataSet['nomorkantong_mon'],
+            // 'pernah_transfusi' => $dataSet['per_traf'],
+            // 'riwayat_alergi' => $dataSet['riw_alergi'],
+            // 'riwayat_alergi_ket' => $dataSet['ket_alergi'],
+            'isi' => $dataSet['isda_mon'],
+            'ttv_td' => $dataSet['td_mon'],
+            'ttv_nadi' => $dataSet['nadi_mon'],
+            'ttv_rr' => $dataSet['rr_mon'],
+            'ttv_s' => $dataSet['s_mon'],
+            'pic' => auth()->user()->id,
+            'reaksi' => $dataSet['reaksi_mon'],
+        ];
+        if($dataSet['tgl_mon'] == ''){
+            $data = [
+                'kode' => 500,
+                'message' => 'Tanggal monitoring tidak boleh kosong !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if($dataSet['jm_mon'] == ''){
+            $data = [
+                'kode' => 500,
+                'message' => 'Jam monitoring tidak boleh kosong !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if($dataSet['td_mon'] == ''){
+            $data = [
+                'kode' => 500,
+                'message' => 'Tekanan Darah tidak boleh kosong !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if($dataSet['nadi_mon'] == ''){
+            $data = [
+                'kode' => 500,
+                'message' => 'Frekuensi nadi tidak boleh kosong !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if($dataSet['rr_mon'] == ''){
+            $data = [
+                'kode' => 500,
+                'message' => 'Frekuensi Nafas tidak boleh kosong !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if($dataSet['s_mon'] == ''){
+            $data = [
+                'kode' => 500,
+                'message' => 'Suhu tubuh tidak boleh kosong !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        ts_erm_transfusi_darah_monitoring::where('idx', $dataSet['id_mon'])
+                ->update($datamon);
+        // $simpan = ts_erm_transfusi_darah_monitoring::create($datamon);
+        $data = [
+            'kode' => 200,
+            'message' => 'Data Berhasil disimpan !'
+        ];
+        echo json_encode($data);
+        die;
+    }
+    public function simpanhasil_reaksi(Request $request)
+    {
+        $data1 = json_decode($_POST['data'], true);
+        foreach ($data1 as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+        if (empty($dataSet['demam2'])) {
+            $dataSet['demam2'] = 0;
+        }
+        if (empty($dataSet['menggigil'])) {
+            $dataSet['menggigil'] = 0;
+        }
+        if (empty($dataSet['gatal'])) {
+            $dataSet['gatal'] = 0;
+        }
+        if (empty($dataSet['lainnya'])) {
+            $dataSet['lainnya'] = 0;
+        }
+
+
+        if (empty($dataSet['nyeripinggangbawah'])) {
+            $dataSet['nyeripinggangbawah'] = 0;
+        }
+        if (empty($dataSet['nyeridada'])) {
+            $dataSet['nyeridada'] = 0;
+        }
+        if (empty($dataSet['cemas'])) {
+            $dataSet['cemas'] = 0;
+        }
+        if (empty($dataSet['sakitkepala'])) {
+            $dataSet['sakitkepala'] = 0;
+        }
+
+
+        if (empty($dataSet['kulitbiru'])) {
+            $dataSet['kulitbiru'] = 0;
+        }
+        if (empty($dataSet['bakgelas'])) {
+            $dataSet['bakgelas'] = 0;
+        }
+        if (empty($dataSet['sesaknafas'])) {
+            $dataSet['sesaknafas'] = 0;
+        }
+        if (empty($dataSet['perdarahanluka'])) {
+            $dataSet['perdarahanluka'] = 0;
+        }
+        $datasum = [
+            'no_kantong' => $dataSet['noka_darah'],
+            'asal_unit' => $dataSet['ruangrawat'],
+            'diag_klinis' => $dataSet['diagnosaklinis'],
+            'Jenis_darah' => $dataSet['jenisdarah'],
+            'isi' => $dataSet['isi_darah'],
+            'tgl_transfusi' => $dataSet['tanggal'],
+            'mulai_transfusi' => $dataSet['mulai_tf'],
+            'selesai_transfusi' => $dataSet['selesai_tf'],
+            'volume_pakai' => $dataSet['vol_tf'],
+            'riwayat_alergi' => $dataSet['riw_alergi'],
+            'riwayat_alergi_ket' => $dataSet['ket_alergi'],
+            'pernah_transfusi' => $dataSet['per_traf'],
+            'tgl_reaksi' =>  $dataSet['tanggal_reaksi'],
+            'check_identitas' => $dataSet['idpasien'],
+            'check_kantong' => $dataSet['status_kantong'],
+            'check_suhu' => $dataSet['demam'],
+            'tv_sebelum_reaksi' => $dataSet['jam_sebelum_reak'].'|'.$dataSet['ttv_s_sebelum'].'|'.$dataSet['ttv_rr_sebelum'].'|'.$dataSet['ttv_td_sebelum'].'|'.$dataSet['ttv_nadi_sebelum'],
+            'tv_terjadi_reaksi' => $dataSet['jam_sesudah_reak'].'|'.$dataSet['ttv_s_sesudah'].'|'.$dataSet['ttv_rr_sesudah'].'|'.$dataSet['ttv_td_sesudah'].'|'.$dataSet['ttv_nadi_sesudah'],
+            'Gejala_klinis' => $dataSet['demam2'].'|'.$dataSet['menggigil'].'|'.$dataSet['gatal'].'|'.$dataSet['lainnya'].'|'.$dataSet['nyeripinggangbawah'].'|'.$dataSet['nyeridada'].'|'.$dataSet['cemas'].'|'.$dataSet['sakitkepala'].'|'.$dataSet['kulitbiru'].'|'.$dataSet['bakgelas'].'|'.$dataSet['sesaknafas'].'|'.$dataSet['perdarahanluka'],
+        ];
+        ts_erm_transfusi_darah_reaksi::where('idx', $dataSet['kodereaksi'])
+        ->update($datasum);
         $data = [
             'kode' => 200,
             'message' => 'Data Berhasil disimpan !'

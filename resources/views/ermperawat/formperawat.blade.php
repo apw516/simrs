@@ -53,11 +53,11 @@
                             <i class="fas fa-inbox mr-2"></i>SUMARILIS
                         </a>
                     </li>
-                    {{-- <li class="nav-item" id="pemeriksaan">
+                    <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formmonitoringdarah()">
                             <i class="fas fa-inbox mr-2"></i>MONITORING TRANSFUSI DARAH
                         </a>
-                    </li> --}}
+                    </li>
                     @endif
                     <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formtindaklanjut()">
