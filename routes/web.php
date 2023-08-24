@@ -121,6 +121,8 @@ Route::get('/kontakkami', [SimrsController::class, 'kontakkami'])
 Route::post('/reloadorder', [PenunjangController::class, 'reloadorder'])
     ->name('reloadorder'); //sidebar
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
+Route::post('/ambil_grafik_all_poli', [DashboardController::class, 'ambil_grafik_all_poli'])->middleware('auth')->name('ambil_grafik_all_poli');
+Route::post('/ambil_grafik_by_poli', [DashboardController::class, 'ambil_grafik_by_poli'])->middleware('auth')->name('ambil_grafik_by_poli');
 Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9']], function () {
     Route::get('/pendaftaran', [SimrsController::class, 'Pendaftaran'])
         ->name('pendaftaran'); //sidebar
