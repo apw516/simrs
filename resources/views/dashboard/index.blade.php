@@ -22,6 +22,105 @@
 
     <section class="content">
         <div class="container-fluid">
+            <div class="row mb-5">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header bg-success">Data Kunjungan</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p class="text-center">
+                                        <strong>Pasien Rawat Jalan</strong>
+                                      </p>
+                                      <form class="form-inline mb-3">
+                                        <div class="form-group mx-sm-3 mb-2">
+                                            <label for="inputPassword2" class="sr-only">Password</label>
+                                            <input type="date" class="form-control" id="" name=""
+                                                placeholder="Password" value="{{ $awal_bulan }}">
+                                        </div>
+                                        <div class="form-group mx-sm-3 mb-2">
+                                            <label for="inputPassword2" class="sr-only">Password</label>
+                                            <input type="date" class="form-control" id=""
+                                                name="" placeholder="Password" value="{{ $now }}">
+                                        </div>
+                                        <button type="button" class="btn btn-primary mb-2"><i
+                                                class="bi bi-eye mr-1 ml-1"></i>Tampil</button>
+                                    </form>
+                                      <div class="progress-group">
+                                        Total Pasien
+                                        <span class="float-right"><b>160</b>/200</span>
+                                        <div class="progress progress-sm">
+                                          <div class="progress-bar bg-primary" style="width: 80%"></div>
+                                        </div>
+                                      </div>
+                                      <!-- /.progress-group -->
+
+                                      <div class="progress-group">
+                                          Pasien Umum
+                                        <span class="float-right"><b>310</b>/400</span>
+                                        <div class="progress progress-sm">
+                                          <div class="progress-bar bg-danger" style="width: 75%"></div>
+                                        </div>
+                                      </div>
+
+                                      <!-- /.progress-group -->
+                                      <div class="progress-group">
+                                        <span class="progress-text">Pasien BPJS</span>
+                                        <span class="float-right"><b>480</b>/800</span>
+                                        <div class="progress progress-sm">
+                                          <div class="progress-bar bg-success" style="width: 60%"></div>
+                                        </div>
+                                      </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <p class="text-center">
+                                        <strong>Pasien Rawat Inap</strong>
+                                        <form class="form-inline mb-3">
+                                            <div class="form-group mx-sm-3 mb-2">
+                                                <label for="inputPassword2" class="sr-only">Password</label>
+                                                <input type="date" class="form-control" id="" name=""
+                                                    placeholder="Password" value="{{ $awal_bulan }}">
+                                            </div>
+                                            <div class="form-group mx-sm-3 mb-2">
+                                                <label for="inputPassword2" class="sr-only">Password</label>
+                                                <input type="date" class="form-control" id=""
+                                                    name="" placeholder="Password" value="{{ $now }}">
+                                            </div>
+                                            <button type="button" class="btn btn-primary mb-2"><i
+                                                    class="bi bi-eye mr-1 ml-1"></i>Tampil</button>
+                                        </form>
+                                      </p>
+                                      <div class="progress-group">
+                                        Total Kunjungan
+                                        <span class="float-right"><b>160</b>/200</span>
+                                        <div class="progress progress-sm">
+                                          <div class="progress-bar bg-primary" style="width: 80%"></div>
+                                        </div>
+                                      </div>
+                                      <!-- /.progress-group -->
+
+                                      <div class="progress-group">
+                                          Pasien Umum
+                                        <span class="float-right"><b>310</b>/400</span>
+                                        <div class="progress progress-sm">
+                                          <div class="progress-bar bg-danger" style="width: 75%"></div>
+                                        </div>
+                                      </div>
+
+                                      <!-- /.progress-group -->
+                                      <div class="progress-group">
+                                        <span class="progress-text">Pasien BPJS</span>
+                                        <span class="float-right"><b>480</b>/800</span>
+                                        <div class="progress progress-sm">
+                                          <div class="progress-bar bg-success" style="width: 60%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="row">
@@ -94,10 +193,6 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                </div>
-            </div>
         </div>
         <script>
             const ctx = document.getElementById('chart');
@@ -108,20 +203,36 @@
                 data: {
                     labels: unit,
                     datasets: [{
-                        label: '# Data Penggunaan',
-                        data: total,
-                        borderWidth: 1,
-                        backgroundColor: '#9932CC',
-                        borderColor: [
-                            'rgb(255, 99, 132)',
-                            'rgb(255, 159, 64)',
-                            'rgb(255, 205, 86)',
-                            'rgb(75, 192, 192)',
-                            'rgb(54, 162, 235)',
-                            'rgb(153, 102, 255)',
-                            'rgb(201, 203, 207)'
-                        ],
-                    }]
+                            label: '# Data Penggunaan',
+                            data: total,
+                            borderWidth: 1,
+                            backgroundColor: '#9932CC',
+                            borderColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(255, 159, 64)',
+                                'rgb(255, 205, 86)',
+                                'rgb(75, 192, 192)',
+                                'rgb(54, 162, 235)',
+                                'rgb(153, 102, 255)',
+                                'rgb(201, 203, 207)'
+                            ],
+                        },
+                        {
+                            label: '# Total Kunjungan',
+                            data: total,
+                            borderWidth: 1,
+                            borderColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(255, 159, 64)',
+                                'rgb(255, 205, 86)',
+                                'rgb(75, 192, 192)',
+                                'rgb(54, 162, 235)',
+                                'rgb(153, 102, 255)',
+                                'rgb(201, 203, 207)'
+                            ],
+                        }
+
+                    ]
                 },
                 options: {
                     scales: {

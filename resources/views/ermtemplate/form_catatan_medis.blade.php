@@ -76,6 +76,10 @@
                                                             <td>{{ $k->frekuensinadi }} x/menit</td>
                                                         </tr>
                                                         <tr>
+                                                            <td class="text-bold font-italic">Berat Badan / Tinggi Badan / IMT</td>
+                                                            <td colspan="3">{{ $k->beratbadan }}</td>
+                                                        </tr>
+                                                        <tr>
                                                             <td class="text-bold font-italic">Frekuensi Nafas</td>
                                                             <td>{{ $k->frekuensinapas }} x/menit</td>
                                                             <td class="text-bold font-italic">Suhu</td>

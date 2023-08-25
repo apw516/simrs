@@ -31,6 +31,10 @@
                     <td>{{ $resume[0]->suhu_tubuh }} °C</td>
                 </tr>
                 <tr>
+                    <td>Berat Badan / tinggi badan / IMT</td>
+                    <td>{{ $resume[0]->beratbadan }}</td>
+                </tr>
+                <tr>
                     <td colspan="4" class="bg-info">Riwayat Kesehatan</td>
                 </tr>
                 <tr>

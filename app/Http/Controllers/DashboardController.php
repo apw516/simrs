@@ -17,6 +17,8 @@ class DashboardController extends Controller
         $awal_bulan = date('Y-m-01');
         $now = $this->get_date();
         $mt_unit = db::select('select * from mt_unit where group_unit = ?',(['J']));
+        $pasien_rajal = db::select('SELECT COUNT(kode_kunjungan) as total FROM ts_kunjungan
+        WHERE DATE(tgl_masuk) = CURDATE() AND LEFT(kode_unit,1) = 1 AND status_kunjungan NOT IN (8)');
         //semua poli / bulan
         $ds = DB::select('CALL erm_dasboard_03_per_tgl(?,?,?)', [$awal_bulan,$this->get_date(), '']);
         $unit = [];
@@ -48,7 +50,8 @@ class DashboardController extends Controller
             'awal_bulan',
             'tgl',
             'jml',
-            'mt_unit'
+            'mt_unit',
+            'pasien_rajal'
         ]));
     }
     public function ambil_grafik_all_poli(Request $request)

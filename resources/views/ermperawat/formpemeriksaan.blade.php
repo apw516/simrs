@@ -433,11 +433,11 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-bold font-italic">Berat Badan</td>
+                                        <td class="text-bold font-italic">Berat Badan / Tinggi Badan / IMT</td>
                                         <td>
                                             <div class="input-group">
                                                 <input type="text" class="form-control"
-                                                    placeholder="Berat badan ..." name="beratbadan" id="beratbadan"
+                                                    placeholder="Berat badan / Tinggi Badan / IMT ..." name="beratbadan" id="beratbadan"
                                                     aria-label="Recipient's username" aria-describedby="basic-addon2" @if(count($p_konsul) > 0) value="{{ $p_konsul[0]->beratbadan }}" @endif>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" id="basic-addon2">Kg</span>

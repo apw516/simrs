@@ -312,14 +312,14 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-bold font-italic">Berat Badan</td>
+                            <td class="text-bold font-italic">Berat Badan / tinggi badan / IMT</td>
                             <td>
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Berat badan Pasien ..."
                                         name="beratbadan" id="beratbadan" aria-label="Recipient's username"
                                         aria-describedby="basic-addon2" value="{{ $resume_perawat[0]->beratbadan }}">
                                     <div class="input-group-append">
-                                        <span class="input-group-text" id="basic-addon2">kg</span>
+                                        <span class="input-group-text" id="basic-addon2"></span>
                                     </div>
                                 </div>
                             </td>
