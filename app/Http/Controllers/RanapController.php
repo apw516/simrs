@@ -47,7 +47,22 @@ class RanapController extends Controller
     public function UpdateSEP(Request $request)
     {
         $v = new VclaimModel();
+        // dd($request->rm);
+        $mt_pasien = DB::select('select * from mt_pasien where no_rm = ?',[$request->rm]);
+        $no_bpjs = $mt_pasien[0]->no_Bpjs;
         $sep = $request->nomorsurat;
+        $cek_sep = $v->carisep($sep);
+        if($no_bpjs != $cek_sep->response->peserta->noKartu){
+            $data = [
+                'metaData' =>
+                [
+                    'code' => 500,
+                    'message' => 'Nomor SEP Tidak Sesuai !'
+                ]
+            ];
+            echo json_encode($data);
+            die;
+        }
         $alasan = $request->alasan;
         $kodekunjungan = $request->kodekunjungan;
         $stm = '';
