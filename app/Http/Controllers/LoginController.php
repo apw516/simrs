@@ -40,6 +40,8 @@ class LoginController extends Controller
                     }
             } else if (auth()->user()->hak_akses == 99) {
                 return redirect()->intended('antrianigd');
+            } else if(auth()->user()->hak_akses == 9){
+                return redirect()->intended('logout');
             } else {
                 return redirect()->intended('dashboard');
             }
