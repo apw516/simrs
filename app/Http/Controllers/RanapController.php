@@ -63,6 +63,17 @@ class RanapController extends Controller
             echo json_encode($data);
             die;
         }
+        if($cek_sep->response->jnsPelayanan == 'Rawat Jalan'){
+            $data = [
+                'metaData' =>
+                [
+                    'code' => 500,
+                    'message' => 'Nomor SEP Tidak Sesuai !'
+                ]
+            ];
+            echo json_encode($data);
+            die;
+        }
         $alasan = $request->alasan;
         $kodekunjungan = $request->kodekunjungan;
         $stm = '';
