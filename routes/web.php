@@ -661,6 +661,7 @@ Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
     Route::post('/simpanorderan_far', [FarmasiController::class, 'simpanorderan_far'])->middleware('auth')->name('simpanorderan_far');
     Route::post('/jumlah_grand_total', [FarmasiController::class, 'jumlah_grand_total'])->middleware('auth')->name('jumlah_grand_total');
     Route::post('/minus_grand_total', [FarmasiController::class, 'minus_grand_total'])->middleware('auth')->name('minus_grand_total');
+    Route::get('/test_print', [FarmasiController::class, 'test_print'])->middleware('auth')->name('test_print');
 });
 
 

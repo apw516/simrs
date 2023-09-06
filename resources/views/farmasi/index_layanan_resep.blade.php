@@ -34,34 +34,37 @@
                             </ul>
                         </div><!-- /.card-header -->
                         <div class="card-body">
-                            <div class="tab-content">
-                                <div class="active tab-pane" id="activity">
-                                    <table class="table table-sm table-bordered">
-                                        <thead>
-                                            <th>Nomor RM</th>
-                                            <th>Asal Unit</th>
-                                            <th>Dokter Pengirim</th>
-                                            <th>Status</th>
-                                        </thead>
-                                    </table>
-                                </div>
-                                <!-- /.tab-pane -->
-                                <div class="tab-pane" id="timeline">
-                                    <form class="form-inline">
-                                        <div class="form-group mx-sm-3 mb-2">
-                                            <label for="inputPassword2" class="sr-only">Nomor RM</label>
-                                            <input type="text" class="form-control" id="cari_rm" name="cari_rm"
-                                                placeholder="Nomor RM">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="active tab-pane" id="activity">
+                                            <table class="table table-sm table-bordered">
+                                                <thead>
+                                                    <th>Nomor RM</th>
+                                                    <th>Asal Unit</th>
+                                                    <th>Dokter Pengirim</th>
+                                                    <th>Status</th>
+                                                </thead>
+                                            </table>
                                         </div>
-                                        <button type="button" class="btn btn-success mb-2" onclick="caripasien_far()"><i
-                                                class="bi bi-search ml-1 mr-2"></i>Cari Pasien</button>
-                                    </form>
+                                        <!-- /.tab-pane -->
+                                        <div class="tab-pane" id="timeline">
+                                            <form class="form-inline">
+                                                <div class="form-group mx-sm-3 mb-2">
+                                                    <label for="inputPassword2" class="sr-only">Nomor RM</label>
+                                                    <input type="text" class="form-control" id="cari_rm" name="cari_rm"
+                                                        placeholder="Nomor RM">
+                                                </div>
+                                                <button type="button" class="btn btn-success mb-2" id="myBtncaripx"
+                                                    onclick="caripasien_far()"><i class="bi bi-search ml-1 mr-2"></i>Cari
+                                                    Pasien</button>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <!-- /.tab-content -->
-                        </div><!-- /.card-body -->
+                        </div>
                     </div>
-                    <!-- /.card -->
                 </div>
                 <div class="col-md-12">
                     <div class="data_pasien_pencarian">
@@ -71,6 +74,13 @@
             </div>
         </div>
         <script>
+            var input1 = document.getElementById("cari_rm");
+            input1.addEventListener("keypress", function(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    document.getElementById("myBtncaripx").click();
+                }
+            });
             function caripasien_far() {
                 rm = $('#cari_rm').val()
                 spinner = $('#loader')
