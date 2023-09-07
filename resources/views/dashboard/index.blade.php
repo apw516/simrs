@@ -48,16 +48,16 @@
                                     </form>
                                       <div class="progress-group">
                                         Total Pasien
-                                        <span class="float-right"><b>160</b>/200</span>
+                                        <span class="float-right"><b>{{ $pasien_rajal[0]->total }}</b></span>
                                         <div class="progress progress-sm">
-                                          <div class="progress-bar bg-primary" style="width: 80%"></div>
+                                          <div class="progress-bar bg-primary" style="width: 100%"></div>
                                         </div>
                                       </div>
                                       <!-- /.progress-group -->
 
                                       <div class="progress-group">
                                           Pasien Umum
-                                        <span class="float-right"><b>310</b>/400</span>
+                                        <span class="float-right"><b>{{ $pasien_rajal[0]->total }}</b></span>
                                         <div class="progress progress-sm">
                                           <div class="progress-bar bg-danger" style="width: 75%"></div>
                                         </div>
@@ -66,7 +66,7 @@
                                       <!-- /.progress-group -->
                                       <div class="progress-group">
                                         <span class="progress-text">Pasien BPJS</span>
-                                        <span class="float-right"><b>480</b>/800</span>
+                                        <span class="float-right"><b>480</b></span>
                                         <div class="progress progress-sm">
                                           <div class="progress-bar bg-success" style="width: 60%"></div>
                                         </div>

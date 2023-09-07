@@ -13,6 +13,7 @@ use App\Http\Controllers\ErmController;
 use App\Http\Controllers\PenunjangController;
 use App\Http\Controllers\AntrianIgd;
 use App\Http\Controllers\ErmIgdController;
+use App\Http\Controllers\FarmasiController;
 
 
 Route::get('/', [LoginController::class, 'index']);
@@ -649,6 +650,23 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
     Route::post('hasilsumarilis', [ErmController::class, 'hasilsumarilis'])
         ->name('hasilsumarilis'); //sidebar
 });
+
+
+//farmasi
+Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
+    // index_layanan_resep
+    Route::get('/index_layanan_resep', [FarmasiController::class, 'index_layanan_resep'])->middleware('auth')->name('index_layanan_resep');
+    Route::get('/cari_resep', [FarmasiController::class, 'index_cari_resep'])->middleware('auth')->name('cari_resep');
+    Route::post('/ambil_data_pasien_far', [FarmasiController::class, 'ambil_data_pasien_far'])->middleware('auth')->name('ambil_data_pasien_far');
+    Route::post('/cari_obat_farmasi', [FarmasiController::class, 'cari_obat_farmasi'])->middleware('auth')->name('cari_obat_farmasi');
+    Route::post('/cari_riwayat_resep', [FarmasiController::class, 'cari_riwayat_resep'])->middleware('auth')->name('cari_riwayat_resep');
+    Route::post('/simpanorderan_far', [FarmasiController::class, 'simpanorderan_far'])->middleware('auth')->name('simpanorderan_far');
+    Route::post('/jumlah_grand_total', [FarmasiController::class, 'jumlah_grand_total'])->middleware('auth')->name('jumlah_grand_total');
+    Route::post('/minus_grand_total', [FarmasiController::class, 'minus_grand_total'])->middleware('auth')->name('minus_grand_total');
+    Route::get('/cetaketiket/{kodekunjungan}', [FarmasiController::class, 'CetakEtiket'])->middleware('auth')->name('CetakEtiket');
+    // Route::get('/test_print', [FarmasiController::class, 'test_print'])->middleware('auth')->name('test_print');
+});
+
 
 Route::group(['middleware' => ['auth', 'hak_akses1:99']], function () {
     Route::get('/antrianigd', [AntrianIgd::class, 'index']);
