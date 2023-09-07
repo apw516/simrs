@@ -38,14 +38,17 @@
                                 <div class="col-md-12">
                                     <div class="tab-content">
                                         <div class="active tab-pane" id="activity">
-                                            <table class="table table-sm table-bordered">
+                                            <div class="v_o_f">
+
+                                            </div>
+                                            {{-- <table class="table table-sm table-bordered">
                                                 <thead>
                                                     <th>Nomor RM</th>
                                                     <th>Asal Unit</th>
                                                     <th>Dokter Pengirim</th>
                                                     <th>Status</th>
                                                 </thead>
-                                            </table>
+                                            </table> --}}
                                         </div>
                                         <!-- /.tab-pane -->
                                         <div class="tab-pane" id="timeline">
@@ -98,5 +101,27 @@
                     }
                 });
             }
+            function ambil_data_order()
+            {
+                spinner = $('#loader')
+                spinner.show();
+                $.ajax({
+                    type: 'post',
+                    data: {
+                        _token: "{{ csrf_token() }}"
+                    },
+                    url: '<?= route('ambil_data_order') ?>',
+                    success: function(response) {
+                        $('.v_o_f').html(response);
+                        spinner.hide()
+                    }
+                });
+            }
+
+            $(document).ready(function() {
+                spinner = $('#loader')
+                spinner.show();
+                ambil_data_order()
+            });
         </script>
     @endsection

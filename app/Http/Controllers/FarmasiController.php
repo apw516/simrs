@@ -61,6 +61,26 @@ class FarmasiController extends Controller
             'kunjungan'
         ]));
     }
+    public function ambil_data_order()
+    {
+        $cari_order = DB::select('SELECT tgl_entry
+        ,b.no_rm
+        ,fc_nama_px(no_rm) AS nama_pasien
+        ,fc_alamat(no_rm) AS alamat
+        ,a.id
+        ,a.kode_layanan_header
+        ,a.status_layanan
+        ,a.kode_kunjungan
+        ,fc_NAMA_PARAMEDIS1(a.dok_kirim) AS nama_dokter
+        ,fc_nama_unit1(a.kode_unit) AS nama_unit
+        ,a.unit_pengirim
+        FROM ts_layanan_header a
+        LEFT OUTER JOIN ts_kunjungan b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+        WHERE a.kode_unit = ? AND DATE(a.tgl_entry) BETWEEN ? AND ?', ([auth()->user()->unit, $tanggal_awal, $tanggal_akhir]));
+        return view('farmasi.tabel_riwayat_resep', compact([
+            'cari_order'
+        ]));
+    }
     public function cari_obat_farmasi(Request $request)
     {
         $nama = $request->nama;
