@@ -7,12 +7,16 @@ use App\Models\ts_layanan_header_dummy;
 use App\Models\ti_kartu_stok;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Codedge\code128\PDF_Code128 as Code128PDF_Code128;
+use Codedge\code128\PDF_Code128\PDF_Code128 as PDF_Code128PDF_Code128;
 use Illuminate\Support\Facades\DB;
 use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use Mike42\Escpos\Printer;
 use Codedge\Fpdf\Fpdf\Fpdf;
-use Codedge\Fpdf\Fpdf\code128;
+use Codedge\Fpdf\Fpdf\PDF;
+use Codedge\Fpdf\code128\PDF_Code128;
+use Codedge\Fpdf\Fpdf128;
 use \Milon\Barcode\DNS1D;
 
 class FarmasiController extends Controller
@@ -28,6 +32,23 @@ class FarmasiController extends Controller
             'sidebar',
             'sidebar_m',
             'now'
+        ]));
+    }
+    public function index_cari_resep()
+    {
+        $title = 'SIMRS - ERM';
+        $sidebar = 'farmasi_3';
+        $sidebar_m = 'farmasi_3';
+        $now = Carbon::now();
+        $oneweek = $now->startOfWeek()->format('Y-m-d');
+        $now = $this->get_date();
+        // $weekEndDate = (Carbon::now()->subMonth(1)->toDateString());
+        return view('farmasi.index_cari_resep', compact([
+            'title',
+            'sidebar',
+            'sidebar_m',
+            'now',
+            'oneweek'
         ]));
     }
     public function ambil_data_pasien_far(Request $request)
@@ -941,45 +962,158 @@ class FarmasiController extends Controller
         // $printer->cut();
         // $printer->close();
         // require('code128.php');
-        $pdf = new Fpdf('P', 'in', array('1.97', '2.36'));
-        $pdf = new code128('P', 'in', array('1.97', '2.36'));
-        // $pdf = new Fpdf('P', 'in',array('3.35','2.22'));
-        $pdf->SetMargins(0, 0, 0);
-        $pdf->AddPage();
-        $pdf->SetTitle('Cetak nota');
+        $get_header = DB::select('select * from ts_layanan_header where id = ?', ['5031937']);
+        $dtpx = DB::select('SELECT no_rm,fc_nama_px(no_rm) AS nama, fc_umur(no_rm) AS umur,DATE(fc_tgl_lahir(no_rm)) AS tgl_lahir,fc_alamat(no_rm) AS alamat FROM ts_kunjungan WHERE kode_kunjungan = ?', [$get_header[0]->kode_kunjungan]);
+        $get_detail = DB::select('SELECT a.kode_barang,b.`nama_barang`,a.aturan_pakai,a.`ed_obat` FROM ts_layanan_detail a
+        LEFT OUTER JOIN mt_barang b ON a.`kode_barang` = b.`kode_barang`
+        WHERE a.row_id_header = ?', ['5031937']);
+
+        $pdf = new PDF('P', 'in', array('1.97', '2.36'));
+        $i = $pdf->GetY();
+        // $pdf->AliasNbPages();
+        // $pdf->AddPage();
+        $pdf->SetTitle('Cetak Etiket');
         $pdf->SetFont('Arial', 'B', 8);
-        $pdf->Image('public/img/logo_rs2.png', 0.08, 0.05, 0.2, 0.2);
-        $pdf->SetXY(0.5, 0.05);
-        $pdf->Cell(0.3, 0.10, 'INSTALASI FARMASI', 0, 0);
-        $pdf->SetXY(0.3, 0.15);
-        $pdf->Cell(0.3, 0.10, 'RSUD WALED KAB. CIREBON', 0, 0);
-        $pdf->Line(0, 0.34, 100, 0.34);
-        $pdf->SetXY(0, 0.4);
-        $pdf->Cell(0.3, 0.10, '23982408', 0, 0);
-        $pdf->SetFont('Arial', '', 8);
-        $pdf->SetXY(1, 0.4);
-        $pdf->Cell(0.3, 0.10, '22/28/1991' . '   ' . '56', 0, 0);
-        $pdf->SetXY(0, 0.6);
-        $pdf->Cell(0.3, 0.10, 'RIMBOS', 0, 0);
-        $pdf->SetXY(0, 0.8);
-        $pdf->Cell(0.3, 0.10, 'RT 99/99 BLOK M', 0, 0);
-        $pdf->SetFont('Arial', 'B', 8);
-        $pdf->SetXY(0, 1);
-        $pdf->Cell(0.3, 0.10, 'SANTAGESIK INJ', 0, 0);
-        //C set
-        $code = '12345678901234567890';
-        $pdf->Code128(50, 120, $code, 110, 20);
-        $pdf->SetXY(50, 145);
-        $pdf->Write(5, 'C set: "' . $code . '"');
-        // $pdf->SetXY(0, 1.2);
-        // $pdf->Cell(0.3, 0.10, $barcode, 0, 0);
-        $pdf->SetFont('Arial', '', 5);
-        $pdf->SetXY(0, 1.470);
-        $pdf->Cell(0.3, 0.10, '06-09-2023', 0, 0);
-        $pdf->SetXY(1.2, 1.470);
-        $pdf->Cell(0.3, 0.10, 'EXP 06-09-2023', 0, 0);
+        foreach ($get_detail as $d) {
+            if ($d->kode_barang != '') {
+                $pdf->SetXY(0, $i);
+                $pdf->Cell(0.1, 10, '' . $i, 0, 1);
+                $pdf->SetFont('Arial', '', 8);
+                $pdf->SetXY(0, 0.4);
+                $pdf->Cell(0.3, 0.10, $dtpx[0]->no_rm, 0, 0);
+                $pdf->SetXY(1, 0.4);
+                $pdf->Cell(0.3, 0.10, $dtpx[0]->tgl_lahir . '   ' . $dtpx[0]->umur, 0, 0);
+                $pdf->SetXY(0, 0.6);
+                $pdf->Cell(0.3, 0.10, $dtpx[0]->nama, 0, 0);
+                $pdf->SetFont('Arial', '', 5);
+                $pdf->SetXY(0, 0.8);
+                $pdf->MultiCell(1.9, 0.1, $dtpx[0]->alamat);
+                $y = $pdf->GetY();
+                // $pdf->Cell(0.3, 0.10, $dtpx[0]->alamat, 0, 0);
+                $pdf->SetFont('Arial', 'B', 7);
+                $pdf->SetXY(0, $y + 0.1);
+                $pdf->MultiCell(1.8, 0.10, $d->nama_barang);
+                $y = $pdf->GetY();
+                $pdf->SetXY(0, $y);
+                $pdf->MultiCell(1.9, 0.10, $d->aturan_pakai);
+                // $pdf->Cell(0.3, 0.10, $d->nama_barang, 0, 0);
+                // //A set
+                $code = 'CODE 128';
+                $pdf->Code128(0.1, 1.6, $code, 1.8, 0.4);
+                // // $pdf->Cell(0.3, 0.10, $barcode, 0, 0);
+                $y = $pdf->GetY();
+                $pdf->SetFont('Arial', 'b', 5);
+                $pdf->SetXY(0, $y);
+                $pdf->Cell(0.3, 0.10, '06-09-2023', 0, 0);
+                $pdf->SetXY(1.2, $y);
+                $pdf->Cell(0.3, 0.10, 'EXP 06-09-2023', 0, 0);
+                $i = 10;
+            }
+        }
+        // $pdf->Image('public/img/logo_rs2.png', 0.08, 0.05, 0.2, 0.2);
+        // $pdf->SetXY(0.5, 0.05);
+        // $pdf->Cell(0.3, 0.10, 'INSTALASI FARMASI', 0, 0);
+        // $pdf->SetXY(0.3, 0.15);
+        // $pdf->Cell(0.3, 0.10, 'RSUD WALED KAB. CIREBON', 0, 0);
+        // $pdf->Line(0, 0.34, 100, 0.34);
+        // $pdf->SetXY(0, 0.4);
+        // $pdf->Cell(0.3, 0.10, '23982408', 0, 0);
+        // $pdf->SetFont('Arial', '', 8);
+        // $pdf->SetXY(1, 0.4);
+        // $pdf->Cell(0.3, 0.10, '22/28/1991' . '   ' . '56', 0, 0);
+        // $pdf->SetXY(0, 0.6);
+        // $pdf->Cell(0.3, 0.10, 'RIMBOS', 0, 0);
+        // $pdf->SetXY(0, 0.8);
+        // $pdf->Cell(0.3, 0.10, 'RT 99/99 BLOK M', 0, 0);
+        // $pdf->SetFont('Arial', 'B', 8);
+        // $pdf->SetXY(0, 1);
+        // $pdf->Cell(0.3, 0.10, 'SANTAGESIK INJ', 0, 0);
+        // //A set
+        // $code = 'CODE 128';
+        // $pdf->Code128(0.3, 1.2, $code, 1.5, 0.2);
+        // // $pdf->Cell(0.3, 0.10, $barcode, 0, 0);
+        // $pdf->SetFont('Arial', '', 5);
+        // $pdf->SetXY(0, 1.470);
+        // $pdf->Cell(0.3, 0.10, '06-09-2023', 0, 0);
+        // $pdf->SetXY(1.2, 1.470);
+        // $pdf->Cell(0.3, 0.10, 'EXP 06-09-2023', 0, 0);
         $pdf->Output();
         exit;
         // return;
+    }
+    public function CetakEtiket($id)
+    {
+        $get_header = DB::select('select * from ts_layanan_header where id = ?', [$id]);
+        $dtpx = DB::select('SELECT no_rm,fc_nama_px(no_rm) AS nama, fc_umur(no_rm) AS umur,DATE(fc_tgl_lahir(no_rm)) AS tgl_lahir,fc_alamat(no_rm) AS alamat FROM ts_kunjungan WHERE kode_kunjungan = ?', [$get_header[0]->kode_kunjungan]);
+        $get_detail = DB::select('SELECT a.kode_barang,b.`nama_barang`,a.aturan_pakai,a.`ed_obat` FROM ts_layanan_detail a
+        LEFT OUTER JOIN mt_barang b ON a.`kode_barang` = b.`kode_barang`
+        WHERE a.row_id_header = ?', [$id]);
+        $pdf = new PDF('P', 'in', array('1.97', '2.36'));
+        $i = $pdf->GetY();
+        // $pdf->AliasNbPages();
+        // $pdf->AddPage();
+        $pdf->SetTitle('Cetak Etiket');
+        $pdf->SetFont('Arial', 'B', 8);
+        foreach ($get_detail as $d) {
+            if ($d->kode_barang != '') {
+                $pdf->SetXY(0, $i);
+                $pdf->Cell(0.1, 10, '' . $i, 0, 1);
+                $pdf->SetFont('Arial', '', 8);
+                $pdf->SetXY(0, 0.4);
+                $pdf->Cell(0.3, 0.10, $dtpx[0]->no_rm, 0, 0);
+                $pdf->SetXY(0.8, 0.4);
+                $pdf->Cell(0.3, 0.10, $dtpx[0]->tgl_lahir . '/ usia ' . $dtpx[0]->umur, 0, 0);
+                $pdf->SetXY(0, 0.6);
+                $pdf->Cell(0.3, 0.10, $dtpx[0]->nama, 0, 0);
+                $pdf->SetFont('Arial', '', 5);
+                $pdf->SetXY(0, 0.8);
+                $pdf->MultiCell(1.9, 0.1, $dtpx[0]->alamat);
+                $y = $pdf->GetY();
+                // $pdf->Cell(0.3, 0.10, $dtpx[0]->alamat, 0, 0);
+                $pdf->SetFont('Arial', 'B', 7);
+                $pdf->SetXY(0, $y + 0.1);
+                $pdf->MultiCell(1.8, 0.10, $d->nama_barang);
+                $y = $pdf->GetY()+0.007;
+                $pdf->SetXY(0, $y);
+                $pdf->MultiCell(1.9, 0.10, $d->aturan_pakai);
+                // $pdf->Cell(0.3, 0.10, $d->nama_barang, 0, 0);
+                // //A set
+                $code = 'CODE 128';
+                $pdf->Code128(0.1, 1.6, $code, 1.8, 0.4);
+                // // $pdf->Cell(0.3, 0.10, $barcode, 0, 0);
+                $y = $pdf->GetY();
+                $pdf->SetFont('Arial', 'b', 5);
+                $pdf->SetXY(0, $y);
+                $pdf->Cell(0.3, 0.10, $get_header[0]->tgl_entry, 0, 0);
+                $pdf->SetXY(1.2, $y);
+                $pdf->Cell(0.3, 0.10, 'EXP'.$d->ed_obat, 0, 0);
+                $i = 10;
+            }
+        }
+        $pdf->Output();
+        exit;
+        // return;
+    }
+    public function cari_riwayat_resep(Request $request)
+    {
+        $tanggal_awal = $request->tanggalawal;
+        $tanggal_akhir = $request->tanggalakhir;
+        $cari_order = DB::select('SELECT tgl_entry
+        ,b.no_rm
+        ,fc_nama_px(no_rm) AS nama_pasien
+        ,fc_alamat(no_rm) AS alamat
+        ,a.id
+        ,a.kode_layanan_header
+        ,a.status_layanan
+        ,a.kode_kunjungan
+        ,fc_NAMA_PARAMEDIS1(a.dok_kirim) AS nama_dokter
+        ,fc_nama_unit1(a.kode_unit) AS nama_unit
+        ,a.unit_pengirim
+        FROM ts_layanan_header a
+        LEFT OUTER JOIN ts_kunjungan b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+        WHERE a.kode_unit = ? AND DATE(a.tgl_entry) BETWEEN ? AND ?', ([auth()->user()->unit, $tanggal_awal, $tanggal_akhir]));
+        return view('farmasi.tabel_riwayat_resep', compact([
+            'cari_order'
+        ]));
     }
 }
