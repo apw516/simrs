@@ -26,12 +26,14 @@ class FarmasiController extends Controller
         $title = 'SIMRS - ERM';
         $sidebar = 'farmasi_1';
         $sidebar_m = 'farmasi_1';
+        $mt_unit = DB::select('select * from mt_unit where group_unit = ?', (['J']));
         $now = $this->get_date();
         return view('farmasi.index_layanan_resep', compact([
             'title',
             'sidebar',
             'sidebar_m',
-            'now'
+            'now',
+            'mt_unit'
         ]));
     }
     public function index_cari_resep()
@@ -54,30 +56,51 @@ class FarmasiController extends Controller
     public function ambil_data_pasien_far(Request $request)
     {
         $rm = $request->rm;
+        $poliklinik = $request->poliklinik;
+        $kunjungan = DB::select('SELECT date(tgl_masuk) as tgl_masuk,no_rm,kode_kunjungan,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat,fc_nama_unit1(kode_unit) AS nama_unit,kode_unit, fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin FROM ts_kunjungan WHERE kode_unit = ? AND status_kunjungan = ?', [$poliklinik, '1']);
+        return view('farmasi.tabel_pasien_poli', compact([
+            'kunjungan'
+        ]));
+        // $mt_pasien = DB::select('Select no_rm,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$rm]);
+        // return view('farmasi.detail_pasien_pencarian', compact([
+        //     'mt_pasien',
+        //     'kunjungan'
+        // ]));
+    }
+    public function ambil_detail_pasien(Request $request)
+    {
+        $rm = $request->rm;
+        $kodeunit = $request->kodeunit;
+        $kunjungan = DB::select('SELECT date(tgl_masuk) as tgl_masuk,no_rm,kode_kunjungan,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat,fc_nama_unit1(kode_unit) AS nama_unit,kode_unit, fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin FROM ts_kunjungan WHERE no_rm = ? AND kode_unit = ? AND status_kunjungan = ?', [$rm,$kodeunit, '1']);
         $mt_pasien = DB::select('Select no_rm,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$rm]);
-        $kunjungan = DB::select('SELECT kode_kunjungan,fc_nama_unit1(kode_unit) AS nama_unit, fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin FROM ts_kunjungan WHERE no_rm = ? AND status_kunjungan = ?', [$rm, '1']);
+        $orderan = db::select('SELECT * ,fc_nama_unit1(unit_pengirim) AS nama_unit,fc_nama_paramedis1(dok_kirim) AS nama_dokter FROM ts_layanan_detail_order a
+        LEFT OUTER JOIN ts_layanan_header_order b ON a.`row_id_header` = b.`id`
+        WHERE DATE(a.`tgl_layanan_detail`) = CURDATE() AND b.`kode_kunjungan` = ?',([$kunjungan[0]->kode_kunjungan]));
         return view('farmasi.detail_pasien_pencarian', compact([
             'mt_pasien',
-            'kunjungan'
+            'kunjungan',
+            'orderan'
         ]));
     }
     public function ambil_data_order()
     {
-        $cari_order = DB::select('SELECT tgl_entry
+        $cari_order = DB::select('SELECT date(tgl_entry) as tgl_entry
         ,b.no_rm
-        ,fc_nama_px(no_rm) AS nama_pasien
-        ,fc_alamat(no_rm) AS alamat
+        ,fc_nama_px(b.no_rm) AS nama_pasien
+        ,fc_alamat(b.no_rm) AS alamat
         ,a.id
         ,a.kode_layanan_header
         ,a.status_layanan
         ,a.kode_kunjungan
         ,fc_NAMA_PARAMEDIS1(a.dok_kirim) AS nama_dokter
         ,fc_nama_unit1(a.kode_unit) AS nama_unit
-        ,a.unit_pengirim
-        FROM ts_layanan_header a
+        ,a.unit_pengirim as kode_unit_pengirim
+        ,fc_nama_unit1(a.unit_pengirim) as nama_unit_pengirim
+        ,status_order
+        FROM ts_layanan_header_order a
         LEFT OUTER JOIN ts_kunjungan b ON a.`kode_kunjungan` = b.`kode_kunjungan`
-        WHERE a.kode_unit = ? AND DATE(a.tgl_entry) BETWEEN ? AND ?', ([auth()->user()->unit, $tanggal_awal, $tanggal_akhir]));
-        return view('farmasi.tabel_riwayat_resep', compact([
+        WHERE a.kode_unit = ? and date(tgl_entry) = curdate()', ([auth()->user()->unit]));
+        return view('farmasi.tabel_riwayat_order', compact([
             'cari_order'
         ]));
     }
@@ -1093,7 +1116,7 @@ class FarmasiController extends Controller
                 $pdf->SetFont('Arial', 'B', 7);
                 $pdf->SetXY(0, $y + 0.1);
                 $pdf->MultiCell(1.8, 0.10, $d->nama_barang);
-                $y = $pdf->GetY()+0.007;
+                $y = $pdf->GetY() + 0.007;
                 $pdf->SetXY(0, $y);
                 $pdf->MultiCell(1.9, 0.10, $d->aturan_pakai);
                 // $pdf->Cell(0.3, 0.10, $d->nama_barang, 0, 0);
@@ -1106,7 +1129,7 @@ class FarmasiController extends Controller
                 $pdf->SetXY(0, $y);
                 $pdf->Cell(0.3, 0.10, $get_header[0]->tgl_entry, 0, 0);
                 $pdf->SetXY(1.2, $y);
-                $pdf->Cell(0.3, 0.10, 'EXP'.$d->ed_obat, 0, 0);
+                $pdf->Cell(0.3, 0.10, 'EXP' . $d->ed_obat, 0, 0);
                 $i = 10;
             }
         }

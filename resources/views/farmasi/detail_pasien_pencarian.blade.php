@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card mt-3">
     <div class="card-header">Data Pasien</div>
     <input type="text" hidden name="kodekunjungan" id="kodekunjungan" class="form-control"
         value="{{ $kunjungan[0]->kode_kunjungan }}">
@@ -38,12 +38,25 @@
                         <div class="card">
                             <div class="card-header bg-info">Data Order</div>
                             <div class="card-body">
-                                <table class="table table-sm table-bordered">
-                                    <th>Nama Obat</th>
-                                    <th>Qty</th>
-                                    <th>Keterangan</th>
-                                    <th>Unit Asal</th>
-                                    <th>Dokter</th>
+                                <table class="table table-sm table-bordered text-xs">
+                                    <thead>
+                                        <th>Nama Obat</th>
+                                        <th>Qty</th>
+                                        <th>Keterangan</th>
+                                        <th>Unit Asal</th>
+                                        <th>Dokter</th>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($orderan as $or )
+                                            <tr>
+                                                <td>{{ $or->kode_barang}}</td>
+                                                <td>{{ $or->jumlah_layanan}}</td>
+                                                <td>{{ $or->aturan_pakai}}</td>
+                                                <td>{{ $or->nama_unit}}</td>
+                                                <td>{{ $or->nama_dokter}}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
                                 </table>
                             </div>
                         </div>

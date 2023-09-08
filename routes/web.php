@@ -659,6 +659,7 @@ Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
     Route::get('/cari_resep', [FarmasiController::class, 'index_cari_resep'])->middleware('auth')->name('cari_resep');
     Route::post('/ambil_data_order', [FarmasiController::class, 'ambil_data_order'])->middleware('auth')->name('ambil_data_order');
     Route::post('/ambil_data_pasien_far', [FarmasiController::class, 'ambil_data_pasien_far'])->middleware('auth')->name('ambil_data_pasien_far');
+    Route::post('/ambil_detail_pasien', [FarmasiController::class, 'ambil_detail_pasien'])->middleware('auth')->name('ambil_detail_pasien');
     Route::post('/cari_obat_farmasi', [FarmasiController::class, 'cari_obat_farmasi'])->middleware('auth')->name('cari_obat_farmasi');
     Route::post('/cari_riwayat_resep', [FarmasiController::class, 'cari_riwayat_resep'])->middleware('auth')->name('cari_riwayat_resep');
     Route::post('/simpanorderan_far', [FarmasiController::class, 'simpanorderan_far'])->middleware('auth')->name('simpanorderan_far');
