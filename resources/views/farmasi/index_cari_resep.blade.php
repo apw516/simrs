@@ -21,20 +21,22 @@
     </div>
 
     <section class="content">
-        <div class="container-fluid">
-            <div class="row">
+        <div class="container-fluid form-awal-cari-resep">
+            <div class="row form-awal-cari-resep">
                 <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Tanggal Awal</label>
-                                <input type="date" class="form-control" id="tanggalawal" aria-describedby="emailHelp" value="{{ $oneweek }}">
+                                <input type="date" class="form-control" id="tanggalawal" aria-describedby="emailHelp"
+                                    value="{{ $oneweek }}">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Tanggal Akhir</label>
-                                <input type="date" class="form-control" id="tanggalakhir" aria-describedby="emailHelp" value="{{ $now }}">
+                                <input type="date" class="form-control" id="tanggalakhir" aria-describedby="emailHelp"
+                                    value="{{ $now }}">
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -51,6 +53,14 @@
                     <div class="v_t_r">
 
                     </div>
+                </div>
+            </div>
+        </div>
+        <div hidden class="container-fluid form-awal-detail-resep">
+            <div class="col-md-12">
+                <button class="btn btn-danger" onclick="Kembaliawal()">Kembali</button>
+                <div class="view_detail_resep">
+
                 </div>
             </div>
         </div>
@@ -80,7 +90,11 @@
                     }
                 });
             }
-
+            function Kembaliawal()
+            {
+                $(".form-awal-cari-resep").removeAttr('Hidden',true)
+                $(".form-awal-detail-resep").attr('Hidden',true)
+            }
             $(document).ready(function() {
                 spinner = $('#loader')
                 spinner.show();

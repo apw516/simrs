@@ -11,7 +11,7 @@
         <th>--</th>
     </thead>
     <tbody>
-        @foreach ($cari_order as $o )
+        @foreach ($cari_order as $o)
             <tr>
                 <td>{{ $o->tgl_entry }}</td>
                 {{-- <td>{{ $o->kode_layanan_header }}</td> --}}
@@ -22,9 +22,18 @@
                 <td>{{ $o->unit_pengirim }}</td>
                 <td>{{ $o->nama_dokter }}</td>
                 <td width="10%">
-                    <button rm="{{ $o->no_rm }}" nama="{{ $o->nama_pasien }}" alamat="{{ $o->alamat }}" idheader="{{ $o->id }}" kodekunjungan="{{ $o->kode_kunjungan}}" class="btn btn-success btn-sm cetaketiket" data-placement="top" title="Cetak etiket"><i class="bi bi-printer-fill"></i></button>
-                    <button class="btn btn-primary btn-sm" data-placement="top" title="Cetak Nota"><i class="bi bi-printer-fill"></i></button>
-                    <button class="btn btn-info btn-sm" data-placement="top" title="Lihat Rincian Resep"><i class="bi bi-ticket-detailed-fill"></i></button>
+                    <button rm="{{ $o->no_rm }}" nama="{{ $o->nama_pasien }}" alamat="{{ $o->alamat }}"
+                        idheader="{{ $o->id }}" kodekunjungan="{{ $o->kode_kunjungan }}"
+                        class="btn btn-success btn-sm cetaketiket" data-placement="top" title="Cetak etiket"><i
+                            class="bi bi-printer-fill"></i></button>
+                    <button rm="{{ $o->no_rm }}" nama="{{ $o->nama_pasien }}" alamat="{{ $o->alamat }}"
+                        idheader="{{ $o->id }}" kodekunjungan="{{ $o->kode_kunjungan }}"
+                        class="btn btn-primary btn-sm cetaknota" data-placement="top" title="Cetak Nota"><i
+                            class="bi bi-printer-fill"></i></button>
+                    <button rm="{{ $o->no_rm }}" nama="{{ $o->nama_pasien }}" alamat="{{ $o->alamat }}"
+                        idheader="{{ $o->id }}" kodekunjungan="{{ $o->kode_kunjungan }}"
+                        class="btn btn-info btn-sm detailresep" data-placement="top" title="Lihat Rincian Resep"><i
+                            class="bi bi-ticket-detailed-fill"></i></button>
                 </td>
             </tr>
         @endforeach
@@ -48,5 +57,40 @@
         idheader = $(this).attr('idheader')
         kodekunjungan = $(this).attr('kodekunjungan')
         window.open('cetaketiket/' + idheader);
-     });
+    });
+    $('#tabel_riwayat_obat').on('click', '.cetaknota', function() {
+        rm = $(this).attr('rm')
+        nama = $(this).attr('nama')
+        alamat = $(this).attr('alamat')
+        idheader = $(this).attr('idheader')
+        kodekunjungan = $(this).attr('kodekunjungan')
+        window.open('cetaknotafarmasi/' + idheader);
+    });
+    $('#tabel_riwayat_obat').on('click', '.detailresep', function() {
+        $(".form-awal-cari-resep").attr('Hidden', true)
+        $(".form-awal-detail-resep").removeAttr('Hidden', true)
+        rm = $(this).attr('rm')
+        nama = $(this).attr('nama')
+        alamat = $(this).attr('alamat')
+        idheader = $(this).attr('idheader')
+        kodekunjungan = $(this).attr('kodekunjungan')
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm,
+                nama,
+                alamat,
+                idheader,
+                kodekunjungan
+            },
+            url: '<?= route('cari_detail_resep') ?>',
+            success: function(response) {
+                $('.view_detail_resep').html(response);
+                spinner.hide()
+            }
+        });
+    });
 </script>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\ts_layanan_detail_dummy;
 use App\Models\ts_layanan_header_dummy;
 use App\Models\ti_kartu_stok;
+use App\Models\ts_retur_detail;
+use App\Models\ts_retur_header;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Codedge\code128\PDF_Code128 as Code128PDF_Code128;
@@ -71,11 +73,11 @@ class FarmasiController extends Controller
     {
         $rm = $request->rm;
         $kodeunit = $request->kodeunit;
-        $kunjungan = DB::select('SELECT date(tgl_masuk) as tgl_masuk,no_rm,kode_kunjungan,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat,fc_nama_unit1(kode_unit) AS nama_unit,kode_unit, fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin FROM ts_kunjungan WHERE no_rm = ? AND kode_unit = ? AND status_kunjungan = ?', [$rm,$kodeunit, '1']);
+        $kunjungan = DB::select('SELECT date(tgl_masuk) as tgl_masuk,no_rm,kode_kunjungan,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat,fc_nama_unit1(kode_unit) AS nama_unit,kode_unit, fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin FROM ts_kunjungan WHERE no_rm = ? AND kode_unit = ? AND status_kunjungan = ?', [$rm, $kodeunit, '1']);
         $mt_pasien = DB::select('Select no_rm,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$rm]);
         $orderan = db::select('SELECT * ,fc_nama_unit1(unit_pengirim) AS nama_unit,fc_nama_paramedis1(dok_kirim) AS nama_dokter FROM ts_layanan_detail_order a
         LEFT OUTER JOIN ts_layanan_header_order b ON a.`row_id_header` = b.`id`
-        WHERE DATE(a.`tgl_layanan_detail`) = CURDATE() AND b.`kode_kunjungan` = ?',([$kunjungan[0]->kode_kunjungan]));
+        WHERE DATE(a.`tgl_layanan_detail`) = CURDATE() AND b.`kode_kunjungan` = ?', ([$kunjungan[0]->kode_kunjungan]));
         return view('farmasi.detail_pasien_pencarian', compact([
             'mt_pasien',
             'kunjungan',
@@ -1084,6 +1086,30 @@ class FarmasiController extends Controller
         exit;
         // return;
     }
+    public function cari_detail_resep(Request $request)
+    {
+        $mt_pasien = DB::select('select no_rm,nama_px,fc_alamat(no_rm) as alamat,date(tgl_lahir) as tgl_lahir,fc_umur(no_rm) as umur from mt_pasien where no_rm = ?', [$request->rm]);
+        $header_layanan = DB::select('select unit_pengirim,fc_nama_paramedis1(dok_kirim) as dok_kirim from ts_layanan_header where kode_kunjungan = ? and kode_unit = ?', ([$request->kodekunjungan, auth()->user()->unit]));
+        $detail = DB::select('SELECT a.id AS id_header
+        ,b.`id` AS id_detail
+        ,a.`tgl_entry` AS tgl_entry
+        ,a.kode_layanan_header
+        ,b.`id_layanan_detail`
+        ,fc_nama_barang(b.`kode_barang`) AS namabarang
+        ,b.`jumlah_layanan`
+        ,b.satuan_barang
+        ,b.`total_layanan`
+        ,a.`keterangan`
+        ,a.`status_layanan`
+         FROM ts_layanan_header a
+        LEFT OUTER JOIN ts_layanan_detail b ON a.`id` = b.`row_id_header`
+        WHERE a.`kode_unit` = ? AND a.`kode_kunjungan` = ? AND status_layanan != ?', ([auth()->user()->unit, $request->kodekunjungan, 3]));
+        return view('farmasi.index_detail_resep', compact([
+            'mt_pasien',
+            'header_layanan',
+            'detail'
+        ]));
+    }
     public function CetakEtiket($id)
     {
         $get_header = DB::select('select * from ts_layanan_header where id = ?', [$id]);
@@ -1096,6 +1122,59 @@ class FarmasiController extends Controller
         // $pdf->AliasNbPages();
         // $pdf->AddPage();
         $pdf->SetTitle('Cetak Etiket');
+        $pdf->SetFont('Arial', 'B', 8);
+        foreach ($get_detail as $d) {
+            if ($d->kode_barang != '') {
+                $pdf->SetXY(0, $i);
+                $pdf->Cell(0.1, 10, '' . $i, 0, 1);
+                $pdf->SetFont('Arial', '', 8);
+                $pdf->SetXY(0, 0.4);
+                $pdf->Cell(0.3, 0.10, $dtpx[0]->no_rm, 0, 0);
+                $pdf->SetXY(0.8, 0.4);
+                $pdf->Cell(0.3, 0.10, $dtpx[0]->tgl_lahir . '/ usia ' . $dtpx[0]->umur, 0, 0);
+                $pdf->SetXY(0, 0.6);
+                $pdf->Cell(0.3, 0.10, $dtpx[0]->nama, 0, 0);
+                $pdf->SetFont('Arial', '', 5);
+                $pdf->SetXY(0, 0.8);
+                $pdf->MultiCell(1.9, 0.1, $dtpx[0]->alamat);
+                $y = $pdf->GetY();
+                // $pdf->Cell(0.3, 0.10, $dtpx[0]->alamat, 0, 0);
+                $pdf->SetFont('Arial', 'B', 7);
+                $pdf->SetXY(0, $y + 0.1);
+                $pdf->MultiCell(1.8, 0.10, $d->nama_barang);
+                $y = $pdf->GetY() + 0.007;
+                $pdf->SetXY(0, $y);
+                $pdf->MultiCell(1.9, 0.10, $d->aturan_pakai);
+                // $pdf->Cell(0.3, 0.10, $d->nama_barang, 0, 0);
+                // //A set
+                $code = 'CODE 128';
+                $pdf->Code128(0.1, 1.6, $code, 1.8, 0.4);
+                // // $pdf->Cell(0.3, 0.10, $barcode, 0, 0);
+                $y = $pdf->GetY();
+                $pdf->SetFont('Arial', 'b', 5);
+                $pdf->SetXY(0, $y);
+                $pdf->Cell(0.3, 0.10, $get_header[0]->tgl_entry, 0, 0);
+                $pdf->SetXY(1.2, $y);
+                $pdf->Cell(0.3, 0.10, 'EXP' . $d->ed_obat, 0, 0);
+                $i = 10;
+            }
+        }
+        $pdf->Output();
+        exit;
+        // return;
+    }
+    public function cetaknotafarmasi($id)
+    {
+        $get_header = DB::select('select * from ts_layanan_header where id = ?', [$id]);
+        $dtpx = DB::select('SELECT no_rm,fc_nama_px(no_rm) AS nama, fc_umur(no_rm) AS umur,DATE(fc_tgl_lahir(no_rm)) AS tgl_lahir,fc_alamat(no_rm) AS alamat FROM ts_kunjungan WHERE kode_kunjungan = ?', [$get_header[0]->kode_kunjungan]);
+        $get_detail = DB::select('SELECT a.kode_barang,b.`nama_barang`,a.aturan_pakai,a.`ed_obat` FROM ts_layanan_detail a
+        LEFT OUTER JOIN mt_barang b ON a.`kode_barang` = b.`kode_barang`
+        WHERE a.row_id_header = ?', [$id]);
+        $pdf = new PDF('P', 'in', array('1.97', '2.36'));
+        $i = $pdf->GetY();
+        // $pdf->AliasNbPages();
+        // $pdf->AddPage();
+        $pdf->SetTitle('Cetak Nota Farmasi');
         $pdf->SetFont('Arial', 'B', 8);
         foreach ($get_detail as $d) {
             if ($d->kode_barang != '') {
@@ -1154,9 +1233,149 @@ class FarmasiController extends Controller
         ,a.unit_pengirim
         FROM ts_layanan_header a
         LEFT OUTER JOIN ts_kunjungan b ON a.`kode_kunjungan` = b.`kode_kunjungan`
-        WHERE a.kode_unit = ? AND DATE(a.tgl_entry) BETWEEN ? AND ?', ([auth()->user()->unit, $tanggal_awal, $tanggal_akhir]));
+        WHERE a.kode_unit = ? AND DATE(a.tgl_entry) BETWEEN ? AND ? AND a.status_layanan != ?', ([auth()->user()->unit, $tanggal_awal, $tanggal_akhir, 3]));
         return view('farmasi.tabel_riwayat_resep', compact([
             'cari_order'
         ]));
+    }
+    public function ambil_data_obat_retur(Request $request)
+    {
+        $idheader = $request->idheader;
+        $iddetail = $request->iddetail;
+        $ambil_detail = DB::select('select kode_barang,fc_nama_barang(kode_barang) as nama_barang,jumlah_layanan,satuan_barang from ts_layanan_detail where id = ?', [$iddetail]);
+        return view('farmasi.form_retur_obat', compact([
+            'ambil_detail',
+            'idheader',
+            'iddetail'
+        ]));
+    }
+    public function simpanretur(Request $request)
+    {
+        $data1 = json_decode($_POST['data'], true);
+        foreach ($data1 as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+
+        $get_header = db::select('select * from ts_layanan_header where id = ?', [$dataSet['idheader']]);
+        $get_detail = db::select('select * from ts_layanan_detail where id = ?', [$dataSet['iddetail']]);
+        $data_kunjungan = db::select('select no_rm,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat_pasien from ts_kunjungan where kode_kunjungan = ?', [$get_header[0]->kode_kunjungan]);
+        $cek_stok = db::select('SELECT * FROM ti_kartu_stok WHERE NO = ( SELECT MAX(a.no ) AS nomor FROM ti_kartu_stok a WHERE kode_barang = ? AND kode_unit = ? )', ([$dataSet['kodebarang'], auth()->user()->unit]));
+        $kode_kunjungan = $get_header[0]->kode_kunjungan;
+        $kode_layanan_header = $get_header[0]->kode_layanan_header;
+        $mt_unit = db::select('select * from mt_unit where kode_unit = ?', [auth()->user()->unit]);
+        $prefix_unit = $mt_unit[0]->prefix_unit;
+        $kode_retur_header = $this->createReturHeader($prefix_unit);
+        $cek_mt_barang = db::select('select * from mt_barang where kode_barang = ?', [$dataSet['kodebarang']]);
+        // dd($cek_mt_barang);
+        $stok_cur_1 = $cek_stok[0]->stok_current;
+        $jlh_Ret = $dataSet['jumlahretur'];
+        $total_retur = ceil($dataSet['jumlahretur'] * $cek_mt_barang[0]->harga_jual);
+        $qty_awal = $dataSet['jumlah'];
+        $harga_jual = $cek_mt_barang[0]->harga_jual;
+        $habis_retur = $qty_awal - $jlh_Ret;
+        if ($habis_retur > 0) {
+            $status_retur = 'OPN';
+            $status_pembayaran = 'OPN';
+        } else if ($habis_retur < 0) {
+            $data = [
+                'kode' => 500,
+                'message' => 'retur eror ! jumlah retur tidak sesuai jumlah order',
+            ];
+            echo json_encode($data);
+            die;
+        } else if ($habis_retur == 0) {
+            $status_retur = 'CLS';
+            $status_pembayaran = 'CLS';
+        }
+        $ts_retur_header = [
+            'kode_kunjungan' => $kode_kunjungan,
+            'kode_retur_header' => $kode_retur_header,
+            'kode_layanan_header' => $kode_layanan_header,
+            'tgl_retur' => $this->get_now(),
+            'total_retur' => $total_retur,
+            'alasan_retur' => 'RETUR',
+            'status_retur' => $status_retur,
+            'pic' => auth()->user()->id,
+            'status_pembayaran' => $status_pembayaran
+        ];
+        //insert ke ts_retur_header
+        $insert_retur_header = ts_retur_header::create($ts_retur_header);
+        $ts_retur_detail = [
+            'kode_retur_detail' => $this->createReturDetail(),
+            'tgl_retur_detail' => $this->get_now(),
+            'kode_retur_header' => $kode_retur_header,
+            'id_layanan_detail' => $get_detail[0]->id_layanan_detail,
+            'qty_awal' => $qty_awal,
+            'qty_retur' => $jlh_Ret,
+            'qty_sisa' => $habis_retur,
+            'tarif_layanan' => $harga_jual,
+            'total_retur_detail' => $total_retur,
+            'status_retur_detail' => $status_retur,
+            'row_id_header' => $insert_retur_header['id'],
+        ];
+        //insert ke ts_retur_detail
+        $insert_retur_detail = ts_retur_detail::create($ts_retur_detail);
+
+        $stok_current = (int)$stok_cur_1 + (int)$jlh_Ret;
+        $data_ti_kartu_stok = [
+            'no_dokumen' => 'RET' . $get_header[0]->kode_layanan_header,
+            'no_dokumen_detail' => 'RET' . $get_detail[0]->id_layanan_detail,
+            'tgl_stok' => $this->get_now(),
+            'kode_unit' => auth()->user()->unit,
+            'kode_barang' => $dataSet['kodebarang'],
+            'stok_in' => $jlh_Ret,
+            'stok_last' => $cek_stok[0]->stok_current,
+            'stok_current' => $stok_current,
+            'harga_beli' => $cek_stok[0]->harga_beli,
+            'act' => '1',
+            'act_ed' => '1',
+            'input_by' => auth()->user()->id,
+            'keterangan' => $data_kunjungan[0]->no_rm . '|' . $data_kunjungan[0]->nama_pasien . '|' . $data_kunjungan[0]->alamat_pasien,
+        ];
+        $insert_ti_kartu_stok = ti_kartu_stok::create($data_ti_kartu_stok);
+        $data = [
+            'kode' => 200,
+            'message' => 'sukses',
+        ];
+        echo json_encode($data);
+        die;
+    }
+    public function createReturHeader($prefix_unit)
+    {
+        $q = DB::connection('mysql4')->select('SELECT id,kode_retur_header,RIGHT(kode_retur_header,6) AS kd_max  FROM ts_retur_header
+        WHERE DATE(tgl_retur) = CURDATE()
+        ORDER BY id DESC
+        LIMIT 1');
+        $kd = "";
+        if (count($q) > 0) {
+            foreach ($q as $k) {
+                $tmp = ((int) $k->kd_max) + 1;
+                $kd = sprintf("%06s", $tmp);
+            }
+        } else {
+            $kd = "000001";
+        }
+        date_default_timezone_set('Asia/Jakarta');
+        return 'RET' . $prefix_unit . date('ymd') . $kd;
+    }
+    public function createReturDetail()
+    {
+        $q = DB::connection('mysql4')->select('SELECT id,kode_retur_detail,RIGHT(kode_retur_detail,6) AS kd_max  FROM ts_retur_detail
+        WHERE DATE(tgl_retur_detail) = CURDATE()
+        ORDER BY id DESC
+        LIMIT 1');
+        $kd = "";
+        if (count($q) > 0) {
+            foreach ($q as $k) {
+                $tmp = ((int) $k->kd_max) + 1;
+                $kd = sprintf("%06s", $tmp);
+            }
+        } else {
+            $kd = "000001";
+        }
+        date_default_timezone_set('Asia/Jakarta');
+        return 'RETDET' . date('ymd') . $kd;
     }
 }
