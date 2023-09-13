@@ -46,6 +46,7 @@ class RanapController extends Controller
     }
     public function UpdateSEP(Request $request)
     {
+        return redirect()->intended('logout');
         $v = new VclaimModel();
         // dd($request->rm);
         $mt_pasien = DB::select('select * from mt_pasien where no_rm = ?',[$request->rm]);
