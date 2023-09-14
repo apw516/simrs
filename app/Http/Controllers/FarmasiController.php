@@ -1289,6 +1289,26 @@ class FarmasiController extends Controller
             $status_retur = 'CLS';
             $status_pembayaran = 'CLS';
         }
+
+        //ts layanan_detail & ts_layanan_header
+        $jml_layanan_detail = $get_detail[0]->jumlah_layanan;
+        $jml_layanan_new = $jml_layanan_detail - $jlh_Ret;
+        $total_layanan_header = $get_header[0]->total_layanan;
+        $total_layanan_yang_diretur = $jlh_Ret * $harga_jual;
+        $total_layanan_header_new = $get_header[0]->total_layanan - $jml_layanan_detail;
+        if ($jml_layanan_new > 0) {
+            $total_tarif_detail = ceil($harga_jual * $jml_layanan_new);
+            $total_layanan_detail = ceil($harga_jual * $jml_layanan_new);
+            $gran_total_layanan_detail = ceil($harga_jual * $jml_layanan_new + 1700);
+            $total_layanan_header_new_2 = $total_layanan_header_new + $gran_total_layanan_detail;
+        } else {
+            $total_tarif_detail = 0;
+            $total_layanan_detail = 0;
+            $gran_total_layanan_detail = 1700;
+            $total_layanan_header_new_2 = $total_layanan_header_new + $gran_total_layanan_detail;
+        }
+        dd($cekdata);
+
         $ts_retur_header = [
             'kode_kunjungan' => $kode_kunjungan,
             'kode_retur_header' => $kode_retur_header,
@@ -1317,7 +1337,6 @@ class FarmasiController extends Controller
         ];
         //insert ke ts_retur_detail
         $insert_retur_detail = ts_retur_detail::create($ts_retur_detail);
-
         $stok_current = (int)$stok_cur_1 + (int)$jlh_Ret;
         $data_ti_kartu_stok = [
             'no_dokumen' => 'RET' . $get_header[0]->kode_layanan_header,
