@@ -137,7 +137,7 @@
                                     <button class="badge badge-danger daftarranap" nama="{{ $p['nama_px'] }}"
                                         rm="{{ $p['no_rm'] }}">Ranap</button>
                                     <button class="badge badge-primary daftarumum" nama="{{ $p['nama_px'] }}"
-                                        rm="{{ $p['no_rm'] }}">Umum</button>
+                                        rm="{{ $p['no_rm'] }}">iGD & Umum</button>
                                     <button class="badge badge-success daftarbpjs" rm="{{ $p['no_rm'] }}"
                                         noka="{{ $p['no_Bpjs'] }}">Bpjs</button>
                                 </td>
