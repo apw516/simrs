@@ -776,14 +776,14 @@ class SimrsController extends Controller
         $day = $request->tglsep;
         $today = strtoupper(Carbon::parse($day)->dayName);
         $jampraktek = DB::select('select * from jkn_jadwal_dokter where kodedokter = ? and namahari = ?', [$request->kodedokterlayan, $today]);
-        if (empty($jampraktek)) {
-            $data = [
-                'kode' => 500,
-                'message' => 'Jadwal Dokter tidak ditemukan !'
-            ];
-            echo json_encode($data);
-            die;
-        }
+        // if (empty($jampraktek)) {
+        //     $data = [
+        //         'kode' => 500,
+        //         'message' => 'Jadwal Dokter tidak ditemukan !'
+        //     ];
+        //     echo json_encode($data);
+        //     die;
+        // }
         //end antrian
         //ambil antrian
         // if ($request->tujuankunjungan == 0) {
@@ -1298,19 +1298,19 @@ class SimrsController extends Controller
                 DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
             }
             //batal antrian
-            if ($request->kodepolitujuan != 'HDL') {
-                if (isset($antrian->metadata->code)) {
-                    $status_a = $antrian->metadata->code;
-                    if ($status_a == 200) {
-                        $kodebooking = $antrian->response->kodebooking;
-                        $batal = [
-                            "kodebooking" => "$kodebooking",
-                            "keterangan" => "system error"
-                        ];
-                        $mw->batalantrian($batal);
-                    }
-                }
-            }
+            // if ($request->kodepolitujuan != 'HDL') {
+            //     if (isset($antrian->metadata->code)) {
+            //         $status_a = $antrian->metadata->code;
+            //         if ($status_a == 200) {
+            //             $kodebooking = $antrian->response->kodebooking;
+            //             $batal = [
+            //                 "kodebooking" => "$kodebooking",
+            //                 "keterangan" => "system error"
+            //             ];
+            //             $mw->batalantrian($batal);
+            //         }
+            //     }
+            // }
             //end of batal antrian
             $data = [
                 'kode' => 201,
