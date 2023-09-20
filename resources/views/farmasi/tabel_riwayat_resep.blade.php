@@ -8,7 +8,7 @@
         <th>Unit</th>
         <th>Unit Pengirim</th>
         <th>Dokter Pengirim</th>
-        <th>--</th>
+        <th class="text-center">--</th>
     </thead>
     <tbody>
         @foreach ($cari_order as $o)
@@ -21,17 +21,20 @@
                 <td>{{ $o->nama_unit }}</td>
                 <td>{{ $o->unit_pengirim }}</td>
                 <td>{{ $o->nama_dokter }}</td>
-                <td width="10%">
-                    <button rm="{{ $o->no_rm }}" nama="{{ $o->nama_pasien }}" alamat="{{ $o->alamat }}"
-                        idheader="{{ $o->id }}" kodekunjungan="{{ $o->kode_kunjungan }}"
+                <td width="5%" class="text-center">
+                    {{-- <button rm="{{ $o->no_rm }}" nama="{{ $o->nama_pasien }}" alamat="{{ $o->alamat }}"
+                        idheader="{{ $o->id }}"
+                        kodekunjungan="{{ $o->kode_kunjungan }}"
                         class="btn btn-success btn-sm cetaketiket" data-placement="top" title="Cetak etiket"><i
                             class="bi bi-printer-fill"></i></button>
                     <button rm="{{ $o->no_rm }}" nama="{{ $o->nama_pasien }}" alamat="{{ $o->alamat }}"
-                        idheader="{{ $o->id }}" kodekunjungan="{{ $o->kode_kunjungan }}"
+                        idheader="{{ $o->id }}"
+                        kodekunjungan="{{ $o->kode_kunjungan }}"
                         class="btn btn-primary btn-sm cetaknota" data-placement="top" title="Cetak Nota"><i
-                            class="bi bi-printer-fill"></i></button>
+                            class="bi bi-printer-fill"></i></button> --}}
                     <button rm="{{ $o->no_rm }}" nama="{{ $o->nama_pasien }}" alamat="{{ $o->alamat }}"
-                        idheader="{{ $o->id }}" kodekunjungan="{{ $o->kode_kunjungan }}"
+                        {{-- idheader="{{ $o->id }}" --}}
+                         kodekunjungan="{{ $o->kode_kunjungan }}"
                         class="btn btn-info btn-sm detailresep" data-placement="top" title="Lihat Rincian Resep"><i
                             class="bi bi-ticket-detailed-fill"></i></button>
                 </td>

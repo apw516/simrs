@@ -44,7 +44,8 @@ class FarmasiController extends Controller
         $sidebar = 'farmasi_3';
         $sidebar_m = 'farmasi_3';
         $now = Carbon::now();
-        $oneweek = $now->startOfWeek()->format('Y-m-d');
+        $oneweek = '2023-09-01';
+        // $oneweek = $now->startOfWeek()->format('Y-m-d');
         $now = $this->get_date();
         // $weekEndDate = (Carbon::now()->subMonth(1)->toDateString());
         return view('farmasi.index_cari_resep', compact([
@@ -168,10 +169,8 @@ class FarmasiController extends Controller
             $kode_tipe_transaki = 1;
             $status_layanan = 1;
         }
-
         //insert resep reguler
         if ($cek_reg > 0) {
-            $this->test_print();
             foreach ($arrayindex_reguler as $a) {
                 $cek_stok = db::select('SELECT * FROM ti_kartu_stok WHERE NO = ( SELECT MAX(a.no ) AS nomor FROM ti_kartu_stok a WHERE kode_barang = ? AND kode_unit = ? )', ([$a['kode_barang_order'], auth()->user()->unit]));
                 $stok_current = $cek_stok[0]->stok_current - $a['qty_order'];
@@ -269,7 +268,13 @@ class FarmasiController extends Controller
                 ];
                 $insert_ti_kartu_stok = ti_kartu_stok::create($data_ti_kartu_stok);
                 //end of insert ti_kartu_Stok
-
+                if ($data_kunjungan[0]->kode_penjamin != 'P01') {
+                    $tagihan_pribadi_js = 0;
+                    $tagihan_penjamin_js = $jsf[0]->jasa_resep + $jsf[0]->jasa_embalase;
+                } else {
+                    $tagihan_pribadi_js = $jsf[0]->jasa_resep + $jsf[0]->jasa_embalase;
+                    $tagihan_penjamin_js = 0;
+                }
                 $ts_layanan_detail2 = [
                     'id_layanan_detail' => $this->createLayanandetail(),
                     'kode_layanan_header' => $kode_layanan_header,
@@ -280,8 +285,8 @@ class FarmasiController extends Controller
                     'grantotal_layanan' => $jsf[0]->jasa_resep + $jsf[0]->jasa_embalase,
                     'status_layanan_detail' => 'OPN',
                     'tgl_layanan_detail' => $now,
-                    'tagihan_pribadi' => '0',
-                    'tagihan_penjamin' => '0',
+                    'tagihan_pribadi' => $tagihan_pribadi_js,
+                    'tagihan_penjamin' => $tagihan_penjamin_js,
                     'tgl_layanan_detail_2' => $now,
                     'row_id_header' => $header->id,
                 ];
@@ -322,7 +327,7 @@ class FarmasiController extends Controller
                 $tagihan_pribadi_header = '0';
             } else {
                 $tagihan_penjamin_header = '0';
-                $tagihan_pribadi_header = '$totalheader';
+                $tagihan_pribadi_header = $totalheader;
             }
             ts_layanan_header_dummy::where('id', $header->id)
                 ->update(['status_layanan' => $status_layanan, 'kode_tipe_transaksi' => $kode_tipe_transaki, 'total_layanan' => $totalheader, 'tagihan_penjamin' => $tagihan_penjamin_header, 'tagihan_pribadi' => $tagihan_pribadi_header]);
@@ -1088,17 +1093,22 @@ class FarmasiController extends Controller
     }
     public function cari_detail_resep(Request $request)
     {
-        $mt_pasien = DB::select('select no_rm,nama_px,fc_alamat(no_rm) as alamat,date(tgl_lahir) as tgl_lahir,fc_umur(no_rm) as umur from mt_pasien where no_rm = ?', [$request->rm]);
-        $header_layanan = DB::select('select unit_pengirim,fc_nama_paramedis1(dok_kirim) as dok_kirim from ts_layanan_header where kode_kunjungan = ? and kode_unit = ?', ([$request->kodekunjungan, auth()->user()->unit]));
-        $detail = DB::select('SELECT a.id AS id_header
+        $mt_pasien = DB::connection('mysql4')->select('select no_rm,nama_px,fc_alamat(no_rm) as alamat,date(tgl_lahir) as tgl_lahir,fc_umur(no_rm) as umur from mt_pasien where no_rm = ?', [$request->rm]);
+        $header_layanan = DB::connection('mysql4')->select('select id,tgl_entry,kode_layanan_header,fc_nama_unit1(unit_pengirim) as nama_unit, unit_pengirim,fc_nama_paramedis1(dok_kirim) as dok_kirim,total_layanan,tagihan_penjamin,tagihan_pribadi from ts_layanan_header where kode_kunjungan = ? and kode_unit = ?', ([$request->kodekunjungan, auth()->user()->unit]));
+        $detail = DB::connection('mysql4')->select('SELECT a.id AS id_header
         ,b.`id` AS id_detail
         ,a.`tgl_entry` AS tgl_entry
         ,a.kode_layanan_header
         ,b.`id_layanan_detail`
+        ,b.`kode_tarif_detail`
         ,fc_nama_barang(b.`kode_barang`) AS namabarang
         ,b.`jumlah_layanan`
         ,b.satuan_barang
         ,b.`total_layanan`
+        ,b.`jumlah_retur`
+        ,b.`tagihan_penjamin`
+        ,b.`kode_barang`
+        ,b.`tagihan_pribadi`
         ,a.`keterangan`
         ,a.`status_layanan`
          FROM ts_layanan_header a
@@ -1112,9 +1122,9 @@ class FarmasiController extends Controller
     }
     public function CetakEtiket($id)
     {
-        $get_header = DB::select('select * from ts_layanan_header where id = ?', [$id]);
+        $get_header = DB::connection('mysql4')->select('select * from ts_layanan_header where id = ?', [$id]);
         $dtpx = DB::select('SELECT no_rm,fc_nama_px(no_rm) AS nama, fc_umur(no_rm) AS umur,DATE(fc_tgl_lahir(no_rm)) AS tgl_lahir,fc_alamat(no_rm) AS alamat FROM ts_kunjungan WHERE kode_kunjungan = ?', [$get_header[0]->kode_kunjungan]);
-        $get_detail = DB::select('SELECT a.kode_barang,b.`nama_barang`,a.aturan_pakai,a.`ed_obat` FROM ts_layanan_detail a
+        $get_detail = DB::connection('mysql4')->select('SELECT a.kode_barang,b.`nama_barang`,a.aturan_pakai,a.`ed_obat` FROM ts_layanan_detail a
         LEFT OUTER JOIN mt_barang b ON a.`kode_barang` = b.`kode_barang`
         WHERE a.row_id_header = ?', [$id]);
         $pdf = new PDF('P', 'in', array('1.97', '2.36'));
@@ -1220,20 +1230,36 @@ class FarmasiController extends Controller
     {
         $tanggal_awal = $request->tanggalawal;
         $tanggal_akhir = $request->tanggalakhir;
-        $cari_order = DB::select('SELECT tgl_entry
-        ,b.no_rm
-        ,fc_nama_px(no_rm) AS nama_pasien
-        ,fc_alamat(no_rm) AS alamat
-        ,a.id
-        ,a.kode_layanan_header
-        ,a.status_layanan
-        ,a.kode_kunjungan
-        ,fc_NAMA_PARAMEDIS1(a.dok_kirim) AS nama_dokter
-        ,fc_nama_unit1(a.kode_unit) AS nama_unit
-        ,a.unit_pengirim
-        FROM ts_layanan_header a
-        LEFT OUTER JOIN ts_kunjungan b ON a.`kode_kunjungan` = b.`kode_kunjungan`
-        WHERE a.kode_unit = ? AND DATE(a.tgl_entry) BETWEEN ? AND ? AND a.status_layanan != ?', ([auth()->user()->unit, $tanggal_awal, $tanggal_akhir, 3]));
+        // $cari_order = DB::connection('mysql4')->select('SELECT DISTINCT a.kode_kunjungan
+        // ,a.tgl_entry
+        // ,b.no_rm
+        // ,fc_nama_px(no_rm) AS nama_pasien
+        // ,fc_alamat(no_rm) AS alamat
+        // ,a.id
+        // -- ,a.kode_layanan_header
+        // ,a.status_layanan
+        // -- ,a.kode_kunjungan
+        // ,fc_NAMA_PARAMEDIS1(a.dok_kirim) AS nama_dokter
+        // ,fc_nama_unit1(a.kode_unit) AS nama_unit
+        // ,a.unit_pengirim
+        // FROM db_dummy.ts_layanan_header a
+        // JOIN simrs_waled.ts_kunjungan b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+        // WHERE a.kode_unit = ? AND DATE(a.tgl_entry) BETWEEN ? AND ? AND a.status_layanan != ?', ([auth()->user()->unit, $tanggal_awal, $tanggal_akhir, 3]));
+        $cari_order = DB::connection('mysql4')->select('SELECT DISTINCT a.kode_kunjungan
+         ,DATE(a.tgl_entry) AS tgl_entry
+         ,b.no_rm
+         ,fc_nama_px(b.no_rm) AS nama_pasien
+         ,fc_alamat4(b.no_rm) AS alamat
+         #,a.id
+         -- ,a.kode_layanan_header
+         ,a.status_layanan
+         -- ,a.kode_kunjungan
+         ,fc_NAMA_PARAMEDIS1(a.dok_kirim) AS nama_dokter
+         ,fc_nama_unit1(a.kode_unit) AS nama_unit
+         ,fc_nama_unit1(a.unit_pengirim) AS unit_pengirim
+         FROM db_dummy.ts_layanan_header a
+         INNER JOIN simrs_waled.ts_kunjungan b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+         WHERE a.kode_unit = ? AND DATE(a.tgl_entry) BETWEEN ? AND ? AND a.status_layanan <> ?', ([auth()->user()->unit, $tanggal_awal, $tanggal_akhir, 3]));
         return view('farmasi.tabel_riwayat_resep', compact([
             'cari_order'
         ]));
@@ -1242,7 +1268,7 @@ class FarmasiController extends Controller
     {
         $idheader = $request->idheader;
         $iddetail = $request->iddetail;
-        $ambil_detail = DB::select('select kode_barang,fc_nama_barang(kode_barang) as nama_barang,jumlah_layanan,satuan_barang from ts_layanan_detail where id = ?', [$iddetail]);
+        $ambil_detail = DB::connection('mysql4')->select('select kode_barang,fc_nama_barang(kode_barang) as nama_barang,jumlah_layanan,satuan_barang from ts_layanan_detail where id = ?', [$iddetail]);
         return view('farmasi.form_retur_obat', compact([
             'ambil_detail',
             'idheader',
@@ -1257,103 +1283,294 @@ class FarmasiController extends Controller
             $value =  $nama['value'];
             $dataSet[$index] = $value;
         }
+        $get_header = db::connection('mysql4')->select('select * from ts_layanan_header where id = ?', [$dataSet['idheader']]);
+        $get_detail = db::connection('mysql4')->select('select * from ts_layanan_detail where id = ?', [$dataSet['iddetail']]);
+        $data_kunjungan = db::select('select kode_penjamin,no_rm,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat_pasien from ts_kunjungan where kode_kunjungan = ?', [$get_header[0]->kode_kunjungan]);
+        $penjamin = $data_kunjungan[0]->kode_penjamin;
 
-        $get_header = db::select('select * from ts_layanan_header where id = ?', [$dataSet['idheader']]);
-        $get_detail = db::select('select * from ts_layanan_detail where id = ?', [$dataSet['iddetail']]);
-        $data_kunjungan = db::select('select no_rm,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat_pasien from ts_kunjungan where kode_kunjungan = ?', [$get_header[0]->kode_kunjungan]);
-        $cek_stok = db::select('SELECT * FROM ti_kartu_stok WHERE NO = ( SELECT MAX(a.no ) AS nomor FROM ti_kartu_stok a WHERE kode_barang = ? AND kode_unit = ? )', ([$dataSet['kodebarang'], auth()->user()->unit]));
-        $kode_kunjungan = $get_header[0]->kode_kunjungan;
-        $kode_layanan_header = $get_header[0]->kode_layanan_header;
-        $mt_unit = db::select('select * from mt_unit where kode_unit = ?', [auth()->user()->unit]);
-        $prefix_unit = $mt_unit[0]->prefix_unit;
-        $kode_retur_header = $this->createReturHeader($prefix_unit);
-        $cek_mt_barang = db::select('select * from mt_barang where kode_barang = ?', [$dataSet['kodebarang']]);
-        // dd($cek_mt_barang);
-        $stok_cur_1 = $cek_stok[0]->stok_current;
-        $jlh_Ret = $dataSet['jumlahretur'];
-        $total_retur = ceil($dataSet['jumlahretur'] * $cek_mt_barang[0]->harga_jual);
-        $qty_awal = $dataSet['jumlah'];
-        $harga_jual = $cek_mt_barang[0]->harga_jual;
-        $habis_retur = $qty_awal - $jlh_Ret;
-        if ($habis_retur > 0) {
-            $status_retur = 'OPN';
-            $status_pembayaran = 'OPN';
-        } else if ($habis_retur < 0) {
-            $data = [
-                'kode' => 500,
-                'message' => 'retur eror ! jumlah retur tidak sesuai jumlah order',
-            ];
-            echo json_encode($data);
-            die;
-        } else if ($habis_retur == 0) {
-            $status_retur = 'CLS';
-            $status_pembayaran = 'CLS';
-        }
+        //proses hitung retur dits layanan detail
+        $tarif_layanan = $get_detail[0]->total_tarif;
+        $jumlah_layanan = $get_detail[0]->jumlah_layanan;
+        $jumlah_retur = $dataSet['jumlahretur'] + $get_detail[0]->jumlah_retur;
+        $total_layanan_retur = $jumlah_retur * $tarif_layanan;
+        $total_layanan_sebelum_retur = $get_detail[0]->total_layanan;
+        $total_layanan_setelah_retur = $total_layanan_sebelum_retur - $total_layanan_retur;
 
-        //ts layanan_detail & ts_layanan_header
-        $jml_layanan_detail = $get_detail[0]->jumlah_layanan;
-        $jml_layanan_new = $jml_layanan_detail - $jlh_Ret;
-        $total_layanan_header = $get_header[0]->total_layanan;
-        $total_layanan_yang_diretur = $jlh_Ret * $harga_jual;
-        $total_layanan_header_new = $get_header[0]->total_layanan - $jml_layanan_detail;
-        if ($jml_layanan_new > 0) {
-            $total_tarif_detail = ceil($harga_jual * $jml_layanan_new);
-            $total_layanan_detail = ceil($harga_jual * $jml_layanan_new);
-            $gran_total_layanan_detail = ceil($harga_jual * $jml_layanan_new + 1700);
-            $total_layanan_header_new_2 = $total_layanan_header_new + $gran_total_layanan_detail;
+        if ($total_layanan_setelah_retur > 0) {
+            $tagihan_detail_baru = $total_layanan_setelah_retur + 1700;
+            $status_layanan_detail = 'OPN';
+            $tagihan_embalase = 1700;
+            $tagihan_resep = 1000;
         } else {
-            $total_tarif_detail = 0;
-            $total_layanan_detail = 0;
-            $gran_total_layanan_detail = 1700;
-            $total_layanan_header_new_2 = $total_layanan_header_new + $gran_total_layanan_detail;
+            $tagihan_embalase = 0;
+            $tagihan_resep = 0;
+            $tagihan_detail_baru = 0;
+            $status_layanan_detail = 'CCL';
         }
-        dd($cekdata);
+        //menentukan tagihan penjamin atau pribadi
+        if ($penjamin == 'P01') {
+            $tagihan_detail_lama = $get_detail[0]->tagihan_pribadi;
+            $tagihan_pribadi_detail_1 = $tagihan_detail_baru;
+            $tagihan_penjamin_detail_1 = 0;
+            $cari_jasa = DB::connection('mysql4')->select('select * from ts_layanan_detail where kode_tarif_detail = ? and row_id_header = ? and tagihan_pribadi > ? LIMIT 1', (['TX23513', $dataSet['idheader'], 0]));
+            $cari_jasa_resep = DB::connection('mysql4')->select('select * from ts_layanan_detail where kode_tarif_detail = ? and row_id_header = ? and tagihan_pribadi > ? LIMIT 1', (['TX23523', $dataSet['idheader'],0]));
+            $tagihan_pribadi_embalase = $tagihan_embalase;
+            $tagihan_penjamin_embalase = $tagihan_embalase;
+            $tagihan_pribadi_jasa_baca = $tagihan_resep;
+            $tagihan_penjamin_jasa_baca = $tagihan_resep;
+        } else {
+            $tagihan_detail_lama = $get_detail[0]->tagihan_penjamin;
+            $tagihan_pribadi_detail_1 = 0;
+            $tagihan_penjamin_detail_1 = $tagihan_detail_baru;
+            $cari_jasa = DB::connection('mysql4')->select('select * from ts_layanan_detail where kode_tarif_detail = ? and row_id_header = ? and tagihan_penjamin > ? LIMIT 1', (['TX23513', $dataSet['idheader'], 0]));
+            $cari_jasa_resep = DB::connection('mysql4')->select('select * from ts_layanan_detail where kode_tarif_detail = ? and row_id_header = ? and tagihan_penjamin > ? LIMIT 1', (['TX23523', $dataSet['idheader'],0]));
+            $tagihan_pribadi_embalase = $tagihan_embalase;
+            $tagihan_penjamin_embalase = $tagihan_embalase;
+            $tagihan_pribadi_jasa_baca = $tagihan_resep;
+            $tagihan_penjamin_jasa_baca =$tagihan_resep;
+        }
 
-        $ts_retur_header = [
-            'kode_kunjungan' => $kode_kunjungan,
-            'kode_retur_header' => $kode_retur_header,
-            'kode_layanan_header' => $kode_layanan_header,
-            'tgl_retur' => $this->get_now(),
-            'total_retur' => $total_retur,
-            'alasan_retur' => 'RETUR',
-            'status_retur' => $status_retur,
-            'pic' => auth()->user()->id,
-            'status_pembayaran' => $status_pembayaran
+        //menentukan retur semua atau retur sebagian
+        $ts_layanan_detail_1 = [
+            'jumlah_retur' => $jumlah_retur,
+            'tagihan_pribadi' => $tagihan_pribadi_detail_1,
+            'tagihan_penjamin' => $tagihan_penjamin_detail_1,
+            'status_layanan_detail' => $status_layanan_detail
         ];
-        //insert ke ts_retur_header
-        $insert_retur_header = ts_retur_header::create($ts_retur_header);
-        $ts_retur_detail = [
-            'kode_retur_detail' => $this->createReturDetail(),
-            'tgl_retur_detail' => $this->get_now(),
-            'kode_retur_header' => $kode_retur_header,
-            'id_layanan_detail' => $get_detail[0]->id_layanan_detail,
-            'qty_awal' => $qty_awal,
-            'qty_retur' => $jlh_Ret,
-            'qty_sisa' => $habis_retur,
-            'tarif_layanan' => $harga_jual,
-            'total_retur_detail' => $total_retur,
-            'status_retur_detail' => $status_retur,
-            'row_id_header' => $insert_retur_header['id'],
-        ];
-        //insert ke ts_retur_detail
-        $insert_retur_detail = ts_retur_detail::create($ts_retur_detail);
-        $stok_current = (int)$stok_cur_1 + (int)$jlh_Ret;
-        $data_ti_kartu_stok = [
-            'no_dokumen' => 'RET' . $get_header[0]->kode_layanan_header,
-            'no_dokumen_detail' => 'RET' . $get_detail[0]->id_layanan_detail,
-            'tgl_stok' => $this->get_now(),
-            'kode_unit' => auth()->user()->unit,
-            'kode_barang' => $dataSet['kodebarang'],
-            'stok_in' => $jlh_Ret,
-            'stok_last' => $cek_stok[0]->stok_current,
-            'stok_current' => $stok_current,
-            'harga_beli' => $cek_stok[0]->harga_beli,
-            'act' => '1',
-            'act_ed' => '1',
-            'input_by' => auth()->user()->id,
-            'keterangan' => $data_kunjungan[0]->no_rm . '|' . $data_kunjungan[0]->nama_pasien . '|' . $data_kunjungan[0]->alamat_pasien,
-        ];
-        $insert_ti_kartu_stok = ti_kartu_stok::create($data_ti_kartu_stok);
+        ts_layanan_detail_dummy::where('id', $dataSet['iddetail'])->update($ts_layanan_detail_1);
+        //menentukan hilang atau tidaknya jasa embalase
+        if ($total_layanan_setelah_retur <= 0) {
+            $ts_layanan_detail_2 = [
+                'tagihan_pribadi' => $tagihan_pribadi_embalase,
+                'tagihan_penjamin' => $tagihan_penjamin_embalase,
+                'status_layanan_detail' => $status_layanan_detail
+            ];
+            ts_layanan_detail_dummy::where('id', $cari_jasa[0]->id)->update($ts_layanan_detail_2);
+        }
+
+        $cek_detail = db::connection('mysql4')->select('select * from ts_layanan_detail where row_id_header = ? and status_layanan_detail = ?', [$dataSet['idheader'], 'OPN']);
+        if (count($cek_detail) == 1) {
+            $id_detail = $cek_detail[0]->id;
+            $ts_layanan_detail_3 = [
+                'tagihan_pribadi' => $tagihan_pribadi_jasa_baca,
+                'tagihan_penjamin' => $tagihan_penjamin_jasa_baca,
+                'status_layanan_detail' => 'CCL'
+            ];
+            ts_layanan_detail_dummy::where('id', $cari_jasa_resep[0]->id)->update($ts_layanan_detail_3);
+            $total_header_baru = 0;
+            if ($penjamin == 'P01') {
+                $tagihan_head_pribadi = $total_header_baru;
+                $tagihan_head_penjamin = 0;
+            }else{
+                $tagihan_head_pribadi = 0;
+                $tagihan_head_penjamin = $total_header_baru;
+            }
+            $ts_layanan_header = [
+                'tagihan_pribadi' => $tagihan_head_pribadi,
+                'tagihan_penjamin' => $tagihan_head_penjamin,
+                'status_retur' => 'CLS',
+            ];
+        } else {
+            //hitung ts layanan header
+            if($penjamin == 'P01'){
+                $tagihan_lama = $get_header[0]->tagihan_pribadi;
+            }else{
+                $tagihan_lama = $get_header[0]->tagihan_penjamin;
+            }
+            $total_layanan_header_sebelum_ada_retur = $tagihan_lama ;
+            $total_header = $total_layanan_header_sebelum_ada_retur - $tagihan_detail_lama;
+            $total_header_baru = $total_header + $tagihan_detail_baru;
+            if ($penjamin == 'P01') {
+                $tagihan_head_pribadi = $total_header_baru;
+                $tagihan_head_penjamin = 0;
+            }else{
+                $tagihan_head_pribadi = 0;
+                $tagihan_head_penjamin = $total_header_baru;
+            }
+            $ts_layanan_header = [
+                'tagihan_pribadi' => $tagihan_head_pribadi,
+                'tagihan_penjamin' => $tagihan_head_penjamin,
+                'status_retur' => 'OPN',
+            ];
+        }
+        ts_layanan_header_dummy::where('id', $dataSet['idheader'])->update($ts_layanan_header);
+
+        // dd($total_header_baru);
+
+        // $cek_stok = db::select('SELECT * FROM ti_kartu_stok WHERE NO = ( SELECT MAX(a.no ) AS nomor FROM ti_kartu_stok a WHERE kode_barang = ? AND kode_unit = ? )', ([$dataSet['kodebarang'], auth()->user()->unit]));
+        // $kode_kunjungan = $get_header[0]->kode_kunjungan;
+        // $kode_layanan_header = $get_header[0]->kode_layanan_header;
+        // $mt_unit = db::select('select * from mt_unit where kode_unit = ?', [auth()->user()->unit]);
+        // $prefix_unit = $mt_unit[0]->prefix_unit;
+        // $kode_retur_header = $this->createReturHeader($prefix_unit);
+        // $cek_mt_barang = db::select('select * from mt_barang where kode_barang = ?', [$dataSet['kodebarang']]);
+        // // dd($cek_mt_barang);
+        // $stok_cur_1 = $cek_stok[0]->stok_current;
+        // $jlh_Ret = $dataSet['jumlahretur'];
+        // $total_retur = ceil($dataSet['jumlahretur'] * $cek_mt_barang[0]->harga_jual);
+        // $qty_awal = $dataSet['jumlah'];
+        // $harga_jual = $cek_mt_barang[0]->harga_jual;
+        // $habis_retur = $qty_awal - $jlh_Ret;
+        // if ($habis_retur > 0) {
+        //     $status_retur = 'OPN';
+        //     $status_pembayaran = 'OPN';
+        // } else if ($habis_retur < 0) {
+        //     $data = [
+        //         'kode' => 500,
+        //         'message' => 'retur eror ! jumlah retur tidak sesuai jumlah order',
+        //     ];
+        //     echo json_encode($data);
+        //     die;
+        // } else if ($habis_retur == 0) {
+        //     $status_retur = 'CLS';
+        //     $status_pembayaran = 'CLS';
+        // }
+        // //ts layanan_detail & ts_layanan_header
+        // $jml_layanan_detail = $get_detail[0]->jumlah_layanan;
+        // $jml_layanan_new = $jml_layanan_detail - $jlh_Ret;
+        // $total_layanan_header = $get_header[0]->total_layanan;
+        // $total_layanan_yang_diretur = ceil($jlh_Ret * $harga_jual);
+        // if($data_kunjungan[0]->kode_penjamin == 'P01'){
+        //     $total_layanan_header_new = ceil($get_header[0]->tagihan_pribadi - $get_detail[0]->grantotal_layanan);
+        // }else{
+        //     $total_layanan_header_new = ceil($get_header[0]->tagihan_penjamin - $get_detail[0]->grantotal_layanan);
+        // }
+        // // selisih dipengurangan
+        // if($total_layanan_header_new <= 1001){
+        //     $total_layanan_header_new = $total_layanan_header_new - 1000;
+        // }else{
+        //     $total_layanan_header_new = $total_layanan_header_new;
+        // }
+        // if($total_layanan_header_new <= 0){
+        //     $data = [
+        //         'kode' => 500,
+        //         'message' => 'Semua data sudah diretur !',
+        //     ];
+        //     echo json_encode($data);
+        //     die;
+        // }
+        // if ($jml_layanan_new > 0) {
+        //     $total_tarif_detail = ceil($harga_jual * $jml_layanan_new);
+        //     $total_layanan_detail = ceil($harga_jual * $jml_layanan_new);
+        //     $gran_total_layanan_detail = ceil($harga_jual * $jml_layanan_new + 1700);
+        //     $total_layanan_header_new_2 = $total_layanan_header_new + $gran_total_layanan_detail;
+        //     $tagihan_jasa = 1700;
+        //     $tagihan_resep = 1000;
+        // } else {
+        //     $total_tarif_detail = 0;
+        //     $total_layanan_detail = 0;
+        //     $gran_total_layanan_detail = 0;
+        //     $total_layanan_header_new_2 = $total_layanan_header_new + $gran_total_layanan_detail;
+        //     $tagihan_jasa = 0;
+        //     $tagihan_resep = 0;
+        // }
+        // //cek_penjamin
+        // if ($data_kunjungan[0]->kode_penjamin == 'P01') {
+        //     $cari_jasa = DB::connection('mysql4')->select('select * from ts_layanan_detail where kode_tarif_detail = ? and row_id_header = ? and tagihan_pribadi > ? LIMIT 1', (['TX23513', $dataSet['idheader'],0]));
+        //     $cari_jasa_resep = DB::connection('mysql4')->select('select * from ts_layanan_detail where kode_tarif_detail = ? and row_id_header = ? and tagihan_pribadi > ? LIMIT 1', (['TX23523', $dataSet['idheader'],0]));
+        //     $tagihan_pribadi = $gran_total_layanan_detail;
+        //     $tagihan_penjamin = 0;
+        //     $tagihan_pribadi_header = ceil($total_layanan_header_new_2);
+        //     $tagihan_penjamin_header = 0;
+        //     $tagihan_penjamin_jasa = 0;
+        //     $tagihan_pribadi_jasa = $tagihan_jasa;
+        //     $tagihan_penjamin_resep = 0;
+        //     $tagihan_pribadi_resep = $tagihan_resep;
+        //     $status_layanan_detail = 'OPN';
+        // } else {
+        //     $tagihan_penjamin = $gran_total_layanan_detail;
+        //     $tagihan_pribadi = 0;
+        //     $tagihan_pribadi_header = 0;
+        //     $status_layanan_detail = 'CCL';
+        //     $tagihan_penjamin_header = ceil($total_layanan_header_new_2);
+        //     $cari_jasa = DB::connection('mysql4')->select('select * from ts_layanan_detail where kode_tarif_detail = ? and row_id_header = ? and tagihan_penjamin > ? LIMIT 1', (['TX23513', $dataSet['idheader'],0]));
+        //     $cari_jasa_resep = DB::connection('mysql4')->select('select * from ts_layanan_detail where kode_tarif_detail = ? and row_id_header = ? and tagihan_penjamin > ? LIMIT 1', (['TX23523', $dataSet['idheader'],0]));
+        //     $tagihan_penjamin_jasa = $tagihan_jasa;
+        //     $tagihan_pribadi_jasa = 0;
+        //     $tagihan_penjamin_resep = $tagihan_resep;
+        //     $tagihan_pribadi_resep = 0;
+        // }
+        // //update ts_layanan
+        // //layanan detail hanya merubah tagihan penjamin atau pribadi dan insert jlh retur
+        // //ts layanan header hanya update tagihan penjamin atau pribadi
+        // $ts_layanan_detail = [
+        //     'jumlah_retur' => $jlh_Ret,
+        //     // 'total_layanan' => $total_layanan_detail,
+        //     // 'grantotal_layanan' => $gran_total_layanan_detail,
+        //     'tagihan_pribadi' => $tagihan_pribadi,
+        //     'tagihan_penjamin' => $tagihan_penjamin,
+        //     'status_layanan_detail' => $status_layanan_detail
+        // ];
+        // $ts_layanan_detail_2 = [
+        //     'tagihan_pribadi' => $tagihan_pribadi_jasa,
+        //     'tagihan_penjamin' =>$tagihan_penjamin_jasa,
+        //     'status_layanan_detail' => $status_layanan_detail
+        // ];
+        // $ts_layanan_detail_3 = [
+        //     'tagihan_pribadi' => $tagihan_pribadi_resep,
+        //     'tagihan_penjamin' =>$tagihan_penjamin_resep,
+        //     'status_layanan_detail' => $status_layanan_detail
+        // ];
+        // // dd($dataSet['idheader']);
+        // if(count($cari_jasa) > 0){
+        //     ts_layanan_detail_dummy::where('id', $cari_jasa[0]->id)->update($ts_layanan_detail_2);
+        // }
+        // if(count($cari_jasa_resep) > 0){
+        // ts_layanan_detail_dummy::where('id', $cari_jasa_resep[0]->id)->update($ts_layanan_detail_3);
+        // }
+        // ts_layanan_detail_dummy::where('id', $dataSet['iddetail'])->update($ts_layanan_detail);
+        // $ts_layanan_header = [
+        //     // 'total_layanan' => ceil($total_layanan_header_new_2),
+        //     'tagihan_pribadi' => ceil($tagihan_pribadi_header),
+        //     'tagihan_penjamin' => ceil($tagihan_penjamin_header),
+        // ];
+        // ts_layanan_header_dummy::where('id', $dataSet['idheader'])->update($ts_layanan_header);
+
+        // $ts_retur_header = [
+        //     'kode_kunjungan' => $kode_kunjungan,
+        //     'kode_retur_header' => $kode_retur_header,
+        //     'kode_layanan_header' => $kode_layanan_header,
+        //     'tgl_retur' => $this->get_now(),
+        //     'total_retur' => $total_retur,
+        //     'alasan_retur' => 'RETUR',
+        //     'status_retur' => $status_retur,
+        //     'pic' => auth()->user()->id,
+        //     'status_pembayaran' => $status_pembayaran
+        // ];
+        // //insert ke ts_retur_header
+        // $insert_retur_header = ts_retur_header::create($ts_retur_header);
+        // $ts_retur_detail = [
+        //     'kode_retur_detail' => $this->createReturDetail(),
+        //     'tgl_retur_detail' => $this->get_now(),
+        //     'kode_retur_header' => $kode_retur_header,
+        //     'id_layanan_detail' => $get_detail[0]->id_layanan_detail,
+        //     'qty_awal' => $qty_awal,
+        //     'qty_retur' => $jlh_Ret,
+        //     'qty_sisa' => $habis_retur,
+        //     'tarif_layanan' => $harga_jual,
+        //     'total_retur_detail' => $total_retur,
+        //     'status_retur_detail' => $status_retur,
+        //     'row_id_header' => $insert_retur_header['id'],
+        // ];
+        // //insert ke ts_retur_detail
+        // $insert_retur_detail = ts_retur_detail::create($ts_retur_detail);
+        // $stok_current = (int)$stok_cur_1 + (int)$jlh_Ret;
+        // $data_ti_kartu_stok = [
+        //     'no_dokumen' => 'RET' . $get_header[0]->kode_layanan_header,
+        //     'no_dokumen_detail' => 'RET' . $get_detail[0]->id_layanan_detail,
+        //     'tgl_stok' => $this->get_now(),
+        //     'kode_unit' => auth()->user()->unit,
+        //     'kode_barang' => $dataSet['kodebarang'],
+        //     'stok_in' => $jlh_Ret,
+        //     'stok_last' => $cek_stok[0]->stok_current,
+        //     'stok_current' => $stok_current,
+        //     'harga_beli' => $cek_stok[0]->harga_beli,
+        //     'act' => '1',
+        //     'act_ed' => '1',
+        //     'input_by' => auth()->user()->id,
+        //     'keterangan' => $data_kunjungan[0]->no_rm . '|' . $data_kunjungan[0]->nama_pasien . '|' . $data_kunjungan[0]->alamat_pasien,
+        // ];
+        // $insert_ti_kartu_stok = ti_kartu_stok::create($data_ti_kartu_stok);
         $data = [
             'kode' => 200,
             'message' => 'sukses',
