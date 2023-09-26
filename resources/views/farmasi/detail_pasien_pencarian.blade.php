@@ -1,7 +1,9 @@
 <div class="card mt-3">
-    <div class="card-header">Data Pasien</div>
+    <div class="card-header">Data Pasien <a class="float-right text-dark text-bold">Tanggal Masuk {{ $kunjungan[0]->tgl_masuk }}</a></div>
     <input type="text" hidden name="kodekunjungan" id="kodekunjungan" class="form-control"
         value="{{ $kunjungan[0]->kode_kunjungan }}">
+    <input type="text" hidden name="nomororder" id="nomororder" class="form-control"
+        value="@if(count($orderan) > 0 ){{ $orderan[0]->id }} @endif">
     <div class="card-body">
         <div class="row">
             <div class="col-md-12">
@@ -472,6 +474,7 @@
     function simpanorderan_far() {
         var data1 = $('.form_draf_obat').serializeArray();
         kodekunjungan = $('#kodekunjungan').val()
+        nomororder = $('#nomororder').val()
         spinner = $('#loader')
         spinner.show();
         $.ajax({
@@ -481,7 +484,8 @@
             data: {
                 _token: "{{ csrf_token() }}",
                 data1: JSON.stringify(data1),
-                kodekunjungan
+                kodekunjungan,
+                nomororder
             },
             url: '<?= route('simpanorderan_far') ?>',
             error: function(data) {
@@ -503,13 +507,6 @@
                         footer: ''
                     })
                 } else {
-                    // Swal.fire({
-                    //     icon: 'success',
-                    //     title: 'OK',
-                    //     text: data.message,
-                    //     footer: ''
-                    // })
-
                     Swal.fire({
                         title: 'Data Berhasil disimpan !',
                         text: "Cetak nota pembayaran . . .",
@@ -526,6 +523,8 @@
                                 'Nota berhasil dicetak ...',
                                 'success'
                             )
+                            window.open('cetaketiket/' + data.idheader);
+                            window.open('cetaknotafarmasi/' + data.idheader);
                             location.reload()
                         }else{
                             location.reload()

@@ -33,13 +33,16 @@
         <!-- /.card -->
     </div>
     <div class="col-md-9">
-        @foreach ($header_layanan as $h )
+        @foreach ($header_layanan as $h)
             <div class="card">
-                <div class="card-header bg-info">{{ $h->tgl_entry }} | {{ $h->kode_layanan_header}} | {{ $h->nama_unit }} - {{ $h->dok_kirim }}
-                <button class="btn btn-warning float-right ml-1 cetaketiket" idheader={{ $h->id }}><i
-                    class="bi bi-printer-fill mr-1"></i>Cetak Etiket</button>
-                <button class="btn btn-warning float-right"><i
-                    class="bi bi-printer-fill mr-1"></i>Cetak Nota</button>
+                <div class="card-header bg-info">{{ $h->tgl_entry }} | {{ $h->kode_layanan_header }} |
+                    {{ $h->nama_unit }} <br> {{ $h->dok_kirim }}
+                    <button class="btn btn-danger float-right batalresep mr-1 ml-1" idheader={{ $h->id }}><i
+                            class="bi bi-trash mr-1"></i>Batal Resep</button>
+                    <button class="btn btn-warning float-right ml-1 cetaketiket" idheader={{ $h->id }}><i
+                            class="bi bi-printer-fill mr-1"></i>Cetak Etiket</button>
+                    <button class="btn btn-warning float-right cetaknota mr-1" idheader={{ $h->id }}><i
+                            class="bi bi-printer-fill mr-1"></i>Cetak Nota</button>
                 </div>
                 <div class="card-body">
                     <table id="tabel_detail_resep" class="table table-sm text-xs table-hover">
@@ -51,6 +54,7 @@
                             <th>Nama Barang</th>
                             <th>Jumlah Barang</th>
                             <th>Jumlah Barang Retur</th>
+                            <th>Status</th>
                             <th>Satuan</th>
                             <th>Total Layanan</th>
                             <th>Tagihan Penjamin</th>
@@ -59,61 +63,72 @@
                         </thead>
                         <tbody>
                             @foreach ($detail as $d)
-                                @if($d->kode_barang != NULL && $d->kode_layanan_header == $h->kode_layanan_header )
-                                <tr>
-                                    <td>{{ $d->tgl_entry }}</td>
-                                    {{-- <td>{{ $d->kode_layanan_header }}</td>
+                                @if ($d->kode_barang != null && $d->kode_layanan_header == $h->kode_layanan_header)
+                                    <tr>
+                                        <td>{{ $d->tgl_entry }}</td>
+                                        {{-- <td>{{ $d->kode_layanan_header }}</td>
                                     <td>{{ $d->id_layanan_detail }}</td> --}}
-                                    {{-- <td>{{ $d->status_layanan }}</td> --}}
-                                    <td>{{ $d->namabarang }}</td>
-                                    <td>{{ $d->jumlah_layanan }}</td>
-                                    <td>{{ $d->jumlah_retur }}</td>
-                                    <td>{{ $d->satuan_barang }}</td>
-                                    <td>
-                                        IDR {{ number_format($d->total_layanan, 2) }}
-                                    </td>
-                                    <td>
-                                        IDR {{ number_format($d->tagihan_penjamin, 2) }}
-                                    </td>
-                                    <td>
-                                        IDR {{ number_format($d->tagihan_pribadi, 2) }}
-                                    </td>
-                                    <td><button idheader="{{ $d->id_header }}" iddetail="{{ $d->id_detail }}"
-                                            class="btn btn-danger btn-sm tombolretur" data-toggle="modal"
-                                            data-target="#modalretur"><i class="bi bi-recycle"></i></button></td>
-                                </tr>
+                                        {{-- <td>{{ $d->status_layanan }}</td> --}}
+                                        <td>{{ $d->namabarang }}</td>
+                                        <td>{{ $d->jumlah_layanan }}</td>
+                                        <td>{{ $d->jumlah_retur }}</td>
+                                        <td>
+                                            @if ($d->tipe_anestesi == '80')
+                                                REGULER
+                                            @elseif($d->tipe_anestesi == '81')
+                                                KRONIS
+                                            @elseif($d->tipe_anestesi == '82')
+                                                KEMOTHERAPI
+                                            @elseif($d->tipe_anestesi == '83')
+                                                HIBAH
+                                            @endif
+                                        </td>
+                                        <td>{{ $d->satuan_barang }}</td>
+                                        <td>
+                                            IDR {{ number_format($d->total_layanan, 2) }}
+                                        </td>
+                                        <td>
+                                            IDR {{ number_format($d->tagihan_penjamin, 2) }}
+                                        </td>
+                                        <td>
+                                            IDR {{ number_format($d->tagihan_pribadi, 2) }}
+                                        </td>
+                                        <td><button idheader="{{ $d->id_header }}" iddetail="{{ $d->id_detail }}"
+                                                class="btn btn-danger btn-sm tombolretur" data-toggle="modal"
+                                                data-target="#modalretur"><i class="bi bi-recycle"></i></button></td>
+                                    </tr>
                                 @endif
                             @endforeach
                         </tbody>
                     </table>
                     <div class="col-6">
                         <div class="table-responsive">
-                          <table class="table table-sm">
-                            <tr>
-                              <th style="width:50%">Jasa Resep:</th>
-                              <td>
-                                @foreach ($detail as $d)
-                                @if($d->kode_tarif_detail == 'TX23523' && $d->kode_layanan_header == $h->kode_layanan_header )
-                                IDR {{ number_format($d->total_layanan, 2) }}
-                                @endif
-                                @endforeach
-                            </td>
-                            </tr>
-                            <tr>
-                              <th style="width:50%">Grand Total:</th>
-                              <td>IDR {{ number_format($h->total_layanan, 2) }}</td>
-                            </tr>
-                            <tr>
-                              <th>Tagihan Penjamin</th>
-                              <td>IDR {{ number_format($h->tagihan_penjamin, 2) }}</td>
-                            </tr>
-                            <tr>
-                              <th>Tagihan Pribadi:</th>
-                              <td>IDR {{ number_format($h->tagihan_pribadi, 2) }}</td>
-                            </tr>
-                          </table>
+                            <table class="table table-sm">
+                                <tr>
+                                    <th style="width:50%">Jasa Resep:</th>
+                                    <td>
+                                        @foreach ($detail as $d)
+                                            @if ($d->kode_tarif_detail == 'TX23523' && $d->kode_layanan_header == $h->kode_layanan_header)
+                                                IDR {{ number_format($d->total_layanan, 2) }}
+                                            @endif
+                                        @endforeach
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="width:50%">Grand Total:</th>
+                                    <td>IDR {{ number_format($h->total_layanan, 2) }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Tagihan Penjamin</th>
+                                    <td>IDR {{ number_format($h->tagihan_penjamin, 2) }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Tagihan Pribadi:</th>
+                                    <td>IDR {{ number_format($h->tagihan_pribadi, 2) }}</td>
+                                </tr>
+                            </table>
                         </div>
-                      </div>
+                    </div>
                 </div>
             </div>
         @endforeach
@@ -171,12 +186,32 @@
             }
         });
     });
+    $(".batalresep").on('click', function(event) {
+        idheader = $(this).attr('idheader')
+        Swal.fire({
+            title: 'Resep dibatalkan ?',
+            text: idheader,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, batal resep!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            }
+        })
+    });
 
     function simpanretur() {
         obat = $('#namabarang').val()
         jumlahretur = $('#jumlahretur').val()
         Swal.fire({
-            title: 'Retur Obat '+ obat + ' ? ',
+            title: 'Retur Obat ' + obat + ' ? ',
             text: "Klik batal untuk batal retur !",
             icon: 'warning',
             showCancelButton: true,
@@ -232,5 +267,9 @@
     $(".cetaketiket").on('click', function(event) {
         idheader = $(this).attr('idheader')
         window.open('cetaketiket/' + idheader);
+    });
+    $(".cetaknota").on('click', function(event) {
+        idheader = $(this).attr('idheader')
+        window.open('cetaknotafarmasi/' + idheader);
     });
 </script>

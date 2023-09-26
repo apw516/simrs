@@ -12,7 +12,7 @@
     </div>
     <div class="form-group">
         <label for="exampleInputPassword1">Jumlah</label>
-        <input readonly type="text" class="form-control" id="jumlah" name="jumlah"  value="{{ $ambil_detail[0]->jumlah_layanan }}">
+        <input readonly type="text" class="form-control" id="jumlah" name="jumlah"  value="{{ $ambil_detail[0]->jumlah_layanan - $ambil_detail[0]->jumlah_retur }}">
     </div>
     <div class="form-group">
         <label for="exampleInputPassword1">Jumlah Retur</label>

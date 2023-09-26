@@ -38,25 +38,36 @@
                         <div class="card">
                             <div class="card-header">Cari Pasien</div>
                             <div class="card-body">
-                                <form class="form-inline">
-                                    <div hidden class="form-group mx-sm-3 mb-2">
-                                        <label for="inputPassword2" class="sr-only">Nomor RM</label>
-                                        <input type="text" class="form-control" id="cari_rm" name="cari_rm"
-                                            placeholder="Nomor RM">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div hidden class="form-group mx-sm-3 mb-2">
+                                            <label for="inputPassword2" class="sr-only">Nomor RM</label>
+                                            <input type="text" class="form-control" id="cari_rm" name="cari_rm"
+                                                placeholder="Nomor RM">
+                                        </div>
+                                        <div class="form-group mx-sm-3 mb-2">
+                                            <label for="inputPassword2" class="sr-only">Tanggal</label>
+                                            <input type="date" class="form-control" id="tanggalcari" name="tanggalcari"
+                                                placeholder="Nomor RM" value="{{ $now }}">
+                                        </div>
                                     </div>
-                                    <div class="form-group mx-sm-3 mb-2">
-                                        <label for="inputPassword2" class="sr-only">Nomor RM</label>
-                                        <select class="form-control" id="poliklinik">
-                                            <option value="0">- Pilih Poliklinik -</option>
-                                            @foreach ($mt_unit as $u)
-                                                <option value="{{ $u->kode_unit }}">{{ $u->nama_unit }}</option>
-                                            @endforeach
-                                        </select>
+                                    <div class="col-md-5">
+                                        <div class="form-group mx-sm-2 mb-2">
+                                            <label for="inputPassword2" class="sr-only">Poliklinik </label>
+                                            <select class="form-control" id="poliklinik">
+                                                <option value="0">- Pilih Poliklinik -</option>
+                                                @foreach ($mt_unit as $u)
+                                                    <option value="{{ $u->kode_unit }}">{{ $u->nama_unit }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
-                                    <button type="button" class="btn btn-success mb-2" id="myBtncaripx"
-                                        onclick="caripasien_far()"><i class="bi bi-search ml-1 mr-2"></i>Cari
-                                        Pasien</button>
-                                </form>
+                                    <div class="col-md-3">
+                                        <button type="button" class="btn btn-success mb-2" id="myBtncaripx"
+                                            onclick="caripasien_far()"><i class="bi bi-search ml-1 mr-2"></i>Cari
+                                            Pasien</button>
+                                    </div>
+                                </div>
                                 <div class="v_t_pasien_poli">
 
                                 </div>
@@ -147,6 +158,7 @@
 
             function caripasien_far() {
                 rm = $('#cari_rm').val()
+                tanggalcari = $('#tanggalcari').val()
                 poliklinik = $('#poliklinik').val()
                 spinner = $('#loader')
                 spinner.show();
@@ -155,7 +167,8 @@
                     data: {
                         _token: "{{ csrf_token() }}",
                         rm,
-                        poliklinik
+                        poliklinik,
+                        tanggalcari
                     },
                     url: '<?= route('ambil_data_pasien_far') ?>',
                     success: function(response) {
@@ -184,10 +197,10 @@
                     ambil_data_order()
                 }, 50000);
             });
-            function batalpilih()
-            {
-                $('.v_awal').removeAttr('hidden',true)
-                $('.v_kedua').attr('hidden',true)
+
+            function batalpilih() {
+                $('.v_awal').removeAttr('hidden', true)
+                $('.v_kedua').attr('hidden', true)
             }
         </script>
     @endsection

@@ -42,7 +42,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="exampleInputEmail1"></label><br>
-                                <button class="btn btn-primary mt-2"><i class="bi bi-search mr-2"></i>Cari Resep</button>
+                                <button class="btn btn-primary mt-2" onclick="cariresepbydate()"><i class="bi bi-search mr-2"></i>Cari Resep</button>
                             </div>
                         </div>
                     </div>
@@ -72,7 +72,13 @@
             //         document.getElementById("myBtncaripx").click();
             //     }
             // });
-
+            function cariresepbydate(){
+                spinner = $('#loader')
+                spinner.show();
+                tanggalawal = $('#tanggalawal').val()
+                tanggalakhir = $('#tanggalakhir').val()
+                ambil_riwayat_resep(tanggalawal, tanggalakhir)
+            }
             function ambil_riwayat_resep(tanggalawal, tanggalakhir) {
                 spinner = $('#loader')
                 spinner.show();
