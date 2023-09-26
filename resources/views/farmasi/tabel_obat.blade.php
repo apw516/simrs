@@ -45,7 +45,10 @@
         $('#pre_stok').val(stok_current)
         $('#pre_dosis').val(aturan)
         $('#pre_satuan').val(satuan)
+        $('#pre_sub').val(0)
+        $('#pre_sub_2').val(0)
         $('#modalcariobat').modal('hide')
+        $("#pre_qty").val(0);
         $("#pre_qty").focus();
      });
  </script>

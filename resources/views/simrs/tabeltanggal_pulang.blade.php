@@ -21,7 +21,7 @@
                     <td>{{ $d->noSepUpdating }}</td>
                     <td>{{ $d->status }}</td>
                     <td>{{ $d->tglMeninggal }}</td>
-                    <td>{{ $d->keterangan }}</td>
+                    <td>{{ $d->keterangan }} | {{ $d->user }}</td>
                     <td>{{ $d->tglSep }}</td>
                     <td>{{ $d->tglPulang }}</td>
                     <td>

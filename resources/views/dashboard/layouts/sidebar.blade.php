@@ -544,16 +544,16 @@
                               </p>
                           </a>
                       </li>
-                      <li class="nav-item">
+                      {{-- <li class="nav-item">
                           <a href="" class="nav-link @if ($sidebar == '2') active @endif">
                               <i class="nav-icon fas fa-th"></i>
                               <p>
                                   Retur Resep
                               </p>
                           </a>
-                      </li>
+                      </li> --}}
                       <li class="nav-item">
-                          <a href="" class="nav-link @if ($sidebar == '2') active @endif">
+                          <a href="{{ route('cari_resep')}}" class="nav-link @if ($sidebar == 'farmasi_3') active @endif">
                               <i class="nav-icon fas fa-th"></i>
                               <p>
                                   Cari Resep
