@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <img src="{{ asset('public/auth/images/DIRGAHAYU.png')}}" alt="Image" class="img-fluid">
+                <img src="{{ asset('public/auth/images/BG.svg')}}" alt="Image" class="img-fluid">
             </div>
             <div class="col-md-6 contents">
                 <div class="row justify-content-center">
@@ -56,7 +56,7 @@
                                 <label for="password">Password</label>
                                 <input type="password" class="form-control" id="password" name="password">
                             </div>
-                            <input type="submit" value="REGISTRASI" class="btn btn-block btn-danger">
+                            <input type="submit" value="REGISTRASI" class="btn btn-block btn-success">
                             <span class="d-block text-center my-4"><a href="{{ route('login')}}">Login</a></span>
                             <div class="social-login text-center">
                                 <a href="#" class="facebook">
