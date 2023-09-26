@@ -4,6 +4,21 @@
             <label for="exampleInputEmail1">Jumlah Item</label>
             <input readonly type="text" class="form-control" id="jumlahitem" value="{{ $jumlahitem }}"
                 aria-describedby="emailHelp">
+            <input hidden readonly type="text" class="form-control" id="resepreguler" value="{{ $resep_reguler }}"
+                aria-describedby="emailHelp">
+            <input hidden readonly type="text" class="form-control" id="resepkronis" value="{{ $resep_kronis }}"
+                aria-describedby="emailHelp">
+            <input hidden readonly type="text" class="form-control" id="resephibah" value="{{ $resep_kemo }}"
+                aria-describedby="emailHelp">
+            <input hidden readonly type="text" class="form-control" id="resepkemo" value="{{ $resep_hibah  }}"
+                aria-describedby="emailHelp">
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Jumlah Resep</label>
+            <input readonly type="text" class="form-control" id="jumlahitem" value="{{ $total_resep }}"
+                aria-describedby="emailHelp">
         </div>
     </div>
     <div class="col-md-2">
@@ -21,7 +36,7 @@
                 $jasa_resep = 1200 * $jumlahitem;
                 $jasa_embalase = 500 * $jumlahitem;
             @endphp
-            <label for="exampleInputEmail1">Jasa Resep</label>
+            <label for="exampleInputEmail1">Jasa Baca</label>
             <input readonly type="text" class="form-control" id="jasaresep1" value="IDR {{ number_format($jasa_resep, 2) }}"
                 aria-describedby="emailHelp">
             <input type="text" hidden class="form-control" id="jasaresep2" value=""
@@ -39,14 +54,15 @@
     </div>
     <div class="col-md-2">
         <div class="form-group">
-            <label for="exampleInputEmail1">Jasa Resep / lembar</label>
-            <input readonly type="text" class="form-control" id="embalse1" value="IDR {{ number_format(1000, 2) }}"
+            <label for="exampleInputEmail1">Jasa Resep</label>
+            <input readonly type="text" class="form-control" id="embalse1" value="IDR {{ number_format($jasa_resep_lbr, 2) }}"
                 aria-describedby="emailHelp">
             <input type="text" hidden class="form-control" id="embalse2" value=""
                 aria-describedby="emailHelp">
         </div>
     </div>
     <div class="col-md-12">
+        @php $grandtotal_nya = $new_total_item + $jasa_resep + $jasa_embalase + $jasa_resep_lbr @endphp
         @if ($operator == '+')
             @if ($jumlahitem == 1)
                 @php $grand_total_last = $grandtotal + 1000 @endphp
@@ -63,9 +79,12 @@
         <div class="form-group">
             <label for="exampleInputEmail1">Grand Total</label>
             <input readonly type="text" class="form-control" id="grandtotal1"
-                value="IDR {{ number_format($grand_total_last, 2) }}" aria-describedby="emailHelp">
-            <input type="text" hidden class="form-control" id="grandtotal2" value="{{ $grand_total_last }}"
+                value="IDR {{ number_format($grandtotal_nya, 2) }}" aria-describedby="emailHelp">
+            <input type="text" hidden class="form-control" id="grandtotal2" value="{{ $grandtotal_nya }}"
                 aria-describedby="emailHelp">
         </div>
     </div>
 </div>
+
+
+

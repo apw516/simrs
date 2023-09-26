@@ -656,11 +656,21 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
 Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
     // index_layanan_resep
     Route::get('/index_layanan_resep', [FarmasiController::class, 'index_layanan_resep'])->middleware('auth')->name('index_layanan_resep');
+    Route::get('/cari_resep', [FarmasiController::class, 'index_cari_resep'])->middleware('auth')->name('cari_resep');
+    Route::post('/ambil_data_order', [FarmasiController::class, 'ambil_data_order'])->middleware('auth')->name('ambil_data_order');
     Route::post('/ambil_data_pasien_far', [FarmasiController::class, 'ambil_data_pasien_far'])->middleware('auth')->name('ambil_data_pasien_far');
+    Route::post('/ambil_detail_pasien', [FarmasiController::class, 'ambil_detail_pasien'])->middleware('auth')->name('ambil_detail_pasien');
     Route::post('/cari_obat_farmasi', [FarmasiController::class, 'cari_obat_farmasi'])->middleware('auth')->name('cari_obat_farmasi');
+    Route::post('/cari_riwayat_resep', [FarmasiController::class, 'cari_riwayat_resep'])->middleware('auth')->name('cari_riwayat_resep');
+    Route::post('/cari_detail_resep', [FarmasiController::class, 'cari_detail_resep'])->middleware('auth')->name('cari_detail_resep');
     Route::post('/simpanorderan_far', [FarmasiController::class, 'simpanorderan_far'])->middleware('auth')->name('simpanorderan_far');
     Route::post('/jumlah_grand_total', [FarmasiController::class, 'jumlah_grand_total'])->middleware('auth')->name('jumlah_grand_total');
     Route::post('/minus_grand_total', [FarmasiController::class, 'minus_grand_total'])->middleware('auth')->name('minus_grand_total');
+    Route::post('/ambil_data_obat_retur', [FarmasiController::class, 'ambil_data_obat_retur'])->middleware('auth')->name('ambil_data_obat_retur');
+    Route::post('/simpanretur', [FarmasiController::class, 'simpanretur'])->middleware('auth')->name('simpanretur');
+    Route::get('/cetaketiket/{kodekunjungan}', [FarmasiController::class, 'CetakEtiket'])->middleware('auth')->name('CetakEtiket');
+    Route::get('/cetaknotafarmasi/{kodekunjungan}', [FarmasiController::class, 'cetaknotafarmasi'])->middleware('auth')->name('CetakNotaFarmasi');
+    // Route::get('/test_print', [FarmasiController::class, 'test_print'])->middleware('auth')->name('test_print');
 });
 
 

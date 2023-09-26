@@ -135,9 +135,7 @@
                                         rm="{{ $p['no_rm'] }}" data-toggle="modal" data-target="#editpasien"><i
                                             class="bi bi-pencil-square"></i></button> --}}
                                     <button class="badge badge-danger daftarranap" nama="{{ $p['nama_px'] }}"
-                                        rm="{{ $p['no_rm'] }}">Ranap</button>
-                                    <button class="badge badge-primary daftarumum" nama="{{ $p['nama_px'] }}"
-                                        rm="{{ $p['no_rm'] }}">iGD & Umum</button>
+                                        rm="{{ $p['no_rm'] }}">Ranap</button
                                     <button class="badge badge-success daftarbpjs" rm="{{ $p['no_rm'] }}"
                                         noka="{{ $p['no_Bpjs'] }}">Bpjs</button>
                                 </td>
