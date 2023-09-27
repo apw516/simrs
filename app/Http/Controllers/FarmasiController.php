@@ -1765,16 +1765,16 @@ class FarmasiController extends Controller
         if ($total_layanan_setelah_retur > 0) {
             $tagihan_detail_baru = $total_layanan_setelah_retur + 1700;
             $status_layanan_detail = 'OPN';
-            $tagihan_embalase = 1700;
+            // $tagihan_embalase = 1700;
             $tagihan_resep = 1000;
         } else {
-            $tagihan_embalase = 0;
+            // $tagihan_embalase = 0;
             $tagihan_resep = 0;
             $tagihan_detail_baru = 0;
             $status_layanan_detail = 'CCL';
         }
         //menentukan tagihan penjamin atau pribadi
-        $cari_jasa = DB::connection('mysql4')->select('select * from ts_layanan_detail where kode_tarif_detail = ? and row_id_header = ? and grantotal_layanan > ? LIMIT 1', (['TX23513', $dataSet['idheader'], 0]));
+        $cari_jasa = DB::connection('mysql4')->select('select * from ts_layanan_detail where kode_tarif_detail = ? and row_id_header = ? and status_layanan_detail <> ? LIMIT 1', (['TX23513', $dataSet['idheader'], 'CCL']));
         if ($penjamin == 'P01') {
             $tagihan_detail_lama = $get_detail[0]->tagihan_pribadi;
             $tagihan_pribadi_detail_1 = $tagihan_detail_baru;
@@ -1809,7 +1809,7 @@ class FarmasiController extends Controller
             $ts_layanan_detail_2 = [
                 // 'tagihan_pribadi' => $tagihan_pribadi_embalase,
                 // 'tagihan_penjamin' => $tagihan_penjamin_embalase,
-                'grantotal_layanan' => $tagihan_embalase,
+                // 'grantotal_layanan' => $tagihan_embalase,
                 'status_layanan_detail' => $status_layanan_detail
             ];
             ts_layanan_detail_dummy::where('id', $cari_jasa[0]->id)->update($ts_layanan_detail_2);
