@@ -14,7 +14,7 @@
                  <td>{{ $k->nama_pasien }}</td>
                  <td>{{ $k->alamat }}</td>
                  <td><button class="btn btn-success btn-sm pilihpasien" unit="{{ $k->kode_unit }}"
-                         rm="{{ $k->no_rm }}"><i class="bi bi-box-arrow-down"></i></button></td>
+                         rm="{{ $k->no_rm }}" kodekunjungan="{{ $k->kode_kunjungan }}"><i class="bi bi-box-arrow-down"></i></button></td>
              </tr>
          @endforeach
      </tbody>
@@ -35,6 +35,7 @@
         $('.v_kedua').removeAttr('hidden',true)
          rm = $(this).attr('rm')
          kodeunit = $(this).attr('unit')
+         kodekunjungan = $(this).attr('kodekunjungan')
          spinner = $('#loader')
          spinner.show();
          $.ajax({
@@ -42,7 +43,8 @@
              data: {
                  _token: "{{ csrf_token() }}",
                  rm,
-                 kodeunit
+                 kodeunit,
+                 kodekunjungan
              },
              url: '<?= route('ambil_detail_pasien') ?>',
              success: function(response) {

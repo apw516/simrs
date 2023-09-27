@@ -26,7 +26,7 @@
                 <td>
                     {{-- <a href="#timeline" data-toggle="tab" rm="{{ $o->no_rm }}" nama="{{ $o->nama_pasien }}" alamat="{{ $o->alamat }}" idheader="{{ $o->id }}" kodekunjungan="{{ $o->kode_kunjungan}}" class="btn btn-info btn-sm" data-placement="top" title="Lihat Detail"><i class="bi bi-eye-fill"></i></a> --}}
                     <button class="btn btn-success btn-sm pilihpasien_order" unit="{{ $o->kode_unit_pengirim }}"
-                        rm="{{ $o->no_rm }}"><i class="bi bi-box-arrow-down"></i></button>
+                        rm="{{ $o->no_rm }}" kodekunjungan="{{ $o->kode_kunjungan }}"><i class="bi bi-box-arrow-down"></i></button>
                 </td>
             </tr>
         @endforeach
@@ -48,6 +48,7 @@
         $('.v_kedua').removeAttr('hidden',true)
          rm = $(this).attr('rm')
          kodeunit = $(this).attr('unit')
+         kodekunjungan = $(this).attr('kodekunjungan')
          spinner = $('#loader')
          spinner.show();
          $.ajax({
@@ -55,7 +56,8 @@
              data: {
                  _token: "{{ csrf_token() }}",
                  rm,
-                 kodeunit
+                 kodeunit,
+                 kodekunjungan
              },
              url: '<?= route('ambil_detail_pasien') ?>',
              success: function(response) {
