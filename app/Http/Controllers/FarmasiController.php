@@ -44,11 +44,40 @@ class FarmasiController extends Controller
         $sidebar = 'farmasi_3';
         $sidebar_m = 'farmasi_3';
         $now = Carbon::now();
-        $oneweek = '2023-09-01';
-        // $oneweek = $now->startOfWeek()->format('Y-m-d');
+        // $oneweek = '2023-09-01';
+        $oneweek = $now->startOfWeek()->format('Y-m-d');
         $now = $this->get_date();
         // $weekEndDate = (Carbon::now()->subMonth(1)->toDateString());
         return view('farmasi.index_cari_resep', compact([
+            'title',
+            'sidebar',
+            'sidebar_m',
+            'now',
+            'oneweek'
+        ]));
+    }
+    public function ambil_kartu_stok(Request $request)
+    {
+        $tanggal_awal = $request->tanggalawal;
+        $tanggal_akhir = $request->tanggalakhir;
+        // $stok = DB::select('select no_dokumen,fc_nama_barang(kode_barang) as nama_barang,tgl_stok,stok_last,stok_in,stok_out,stok_current,harga_beli,keterangan from ti_kartu_stok WHERE kode_unit = ? AND DATE(tgl_stok) BETWEEN ? AND ? ORDER BY no DESC',[auth()->user()->unit,$tanggal_awal,$tanggal_akhir]);
+        $unit = auth()->user()->unit;
+        $stok = DB::select("CALL WSP_Kartu_Stok('','$tanggal_awal','$tanggal_akhir','$unit')");
+        return view('farmasi.tabel_kartu_stok', compact([
+            'stok'
+        ]));
+    }
+    public function index_kartu_stok()
+    {
+        $title = 'SIMRS - ERM';
+        $sidebar = 'farmasi_4';
+        $sidebar_m = 'farmasi_4';
+        $now = Carbon::now();
+        // $oneweek = '2023-09-01';
+        $oneweek = $now->startOfWeek()->format('Y-m-d');
+        $now = $this->get_date();
+        // $weekEndDate = (Carbon::now()->subMonth(1)->toDateString());
+        return view('farmasi.index_kartu_stok', compact([
             'title',
             'sidebar',
             'sidebar_m',

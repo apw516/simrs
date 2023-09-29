@@ -657,6 +657,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
     // index_layanan_resep
     Route::get('/index_layanan_resep', [FarmasiController::class, 'index_layanan_resep'])->middleware('auth')->name('index_layanan_resep');
     Route::get('/cari_resep', [FarmasiController::class, 'index_cari_resep'])->middleware('auth')->name('cari_resep');
+    Route::get('/kartu_stok', [FarmasiController::class, 'index_kartu_stok'])->middleware('auth')->name('kartu_stok');
+    Route::post('/ambil_kartu_stok', [FarmasiController::class, 'ambil_kartu_stok'])->middleware('auth')->name('ambil_kartu_stok');
     Route::post('/ambil_data_order', [FarmasiController::class, 'ambil_data_order'])->middleware('auth')->name('ambil_data_order');
     Route::post('/ambil_data_pasien_far', [FarmasiController::class, 'ambil_data_pasien_far'])->middleware('auth')->name('ambil_data_pasien_far');
     Route::post('/ambil_detail_pasien', [FarmasiController::class, 'ambil_detail_pasien'])->middleware('auth')->name('ambil_detail_pasien');

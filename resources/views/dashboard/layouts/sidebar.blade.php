@@ -560,6 +560,14 @@
                               </p>
                           </a>
                       </li>
+                      <li class="nav-item">
+                          <a href="{{ route('kartu_stok')}}" class="nav-link @if ($sidebar == 'farmasi_4') active @endif">
+                              <i class="nav-icon fas fa-th"></i>
+                              <p>
+                                  Kartu Stok
+                              </p>
+                          </a>
+                      </li>
                   @endif
                   @if (auth()->user()->nama == 'agyl' ||
                           auth()->user()->hak_akses == '1' ||
