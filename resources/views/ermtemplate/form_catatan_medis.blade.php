@@ -5,6 +5,12 @@
             data-target="#modalscan_rm"><i class="bi bi-journal-text"></i> BERKAS RM SCAN</button>
         <button class="btn btn-danger mb-2 liatberkasluar" rm="{{ $rm }}" data-toggle="modal"
             data-target="#modalberkasluar"><i class="bi bi-journal-text"></i> BERKAS LAIN</button>
+        <button class="btn btn-info mb-2 liathasil_lab" nomorrm="{{ $rm }}" data-toggle="modal"
+            data-target="#modalhasillab"><i class="bi bi-journal-text"></i> Hasil laboratorium</button>
+        <button class="btn btn-info mb-2 liathasil_rad" nomorrm="{{ $rm }}" data-toggle="modal"
+            data-target="#modalhasilrad"><i class="bi bi-journal-text"></i> Hasil Radiologi</button>
+        <button class="btn btn-info mb-2 liathasil_pa" nomorrm="{{ $rm }}" data-toggle="modal"
+            data-target="#modalhasilpa"><i class="bi bi-journal-text"></i> Hasil Lab PA</button>
         <div class="accordion" id="accordionExample">
             @php
                 $urutan = 1;
@@ -45,7 +51,7 @@
                                             class="bi bi-printer mr-2"></i>Assesmen
                                         Awal Keperawatan</button>
                                     <button type="button" class="btn btn-secondary cetakresumedok"
-                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"><i
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}" unit="{{ $k->kode_unit }}"><i
                                             class="bi bi-printer mr-2"></i>Assesmen Awal Medis</button>
                                 </div>
                             </div>
@@ -832,7 +838,72 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalhasillab" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hasil Pemeriksaan Laboratorium</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_hasil_penunjang_lab">
 
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalhasilrad" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hasil Pemeriksaan Radiologi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_hasil_penunjang_rad">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalhasilpa" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hasil Pemeriksaan Patologi Anatomi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_hasil_penunjang_pa">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $(".riwayatorderfarmasi").on('click', function(event) {
         kodekunjungan = $(this).attr('kodekunjungan')
@@ -930,7 +1001,8 @@
     $(".cetakresumedok").on('click', function(event) {
         rm = $(this).attr('rm')
         counter = $(this).attr('counter')
-        window.open('cetakresumedokter/' + rm + '/' + counter);
+        unit = $(this).attr('unit')
+        window.open('http://192.168.2.30/siramah/cppt_print?rm='+rm+'&counter='+counter+'&kode_unit='+unit);
     })
     $(".lihathasil_lab").on('click', function(event) {
         kodekunjungan = $(this).attr('kodekunjungan')
@@ -1013,6 +1085,57 @@
             success: function(response) {
                 spinner.hide();
                 $('.vberkasluar').html(response);
+            }
+        });
+    })
+    $(".liathasil_lab").click(function() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm
+            },
+            url: '<?= route('lihathasilpenunjang_lab') ?>',
+            success: function(response) {
+                $('.v_hasil_penunjang_lab').html(response);
+                spinner.hide()
+            }
+        });
+    })
+    $(".liathasil_rad").click(function() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm
+            },
+            url: '<?= route('lihathasilpenunjang_rad') ?>',
+            success: function(response) {
+                $('.v_hasil_penunjang_rad').html(response);
+                spinner.hide()
+            }
+        });
+    })
+    $(".liathasil_pa").click(function() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm
+            },
+            url: '<?= route('lihathasilpenunjang_pa') ?>',
+            success: function(response) {
+                $('.v_hasil_penunjang_pa').html(response);
+                spinner.hide()
             }
         });
     })
