@@ -51,7 +51,7 @@
                                             class="bi bi-printer mr-2"></i>Assesmen
                                         Awal Keperawatan</button>
                                     <button type="button" class="btn btn-secondary cetakresumedok"
-                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"><i
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}" unit="{{ $k->kode_unit }}"><i
                                             class="bi bi-printer mr-2"></i>Assesmen Awal Medis</button>
                                 </div>
                             </div>
@@ -1001,7 +1001,8 @@
     $(".cetakresumedok").on('click', function(event) {
         rm = $(this).attr('rm')
         counter = $(this).attr('counter')
-        window.open('cetakresumedokter/' + rm + '/' + counter);
+        unit = $(this).attr('unit')
+        window.open('http://192.168.2.30/siramah/cppt_print?rm='+rm+'&counter='+counter+'&kode_unit='+unit);
     })
     $(".lihathasil_lab").on('click', function(event) {
         kodekunjungan = $(this).attr('kodekunjungan')
