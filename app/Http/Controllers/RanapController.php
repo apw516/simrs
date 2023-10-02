@@ -245,4 +245,44 @@ class RanapController extends Controller
         $now = $date . ' ' . $time;
         return $now;
     }
+    public function indexberkaserm()
+    {
+        $user = auth()->user()->unit;
+        $title = 'SIMRS - Berkas ERM';
+        $sidebar = 'RANAP';
+        $sidebar_m = 'SEP RANAP';
+        return view('ranap.indexberkaserm', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m
+        ]);
+    }
+    public function cariberkasnya_pasien(Request $request)
+    {
+        $rm = $request->rm;
+        $kunjungan = DB::select('SELECT
+        b.*
+        ,c.*
+        ,fc_nama_unit1(a.ref_unit) AS nama_ref_unit
+        ,b.kode_unit,c.kode_unit AS kode_unit_dokter
+        ,a.kode_kunjungan AS kodek
+        ,a.no_rm AS no_rm_k
+        ,a.ref_kunjungan
+        ,b.id AS id_1
+        ,c.id AS id_2
+        ,b.signature AS signature_perawat
+        ,c.signature AS signature_dokter
+        ,b.keluhanutama AS keluhan_perawat
+        ,a.tgl_masuk,a.counter
+        ,fc_nama_unit1(a.kode_unit) AS nama_unit FROM ts_kunjungan a
+        LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`kode_kunjungan` = b.kode_kunjungan AND b.`kode_unit` = a.`kode_unit`
+        LEFT OUTER JOIN assesmen_dokters c ON a.`kode_kunjungan` = c.`id_kunjungan` AND c.`kode_unit` = a.`kode_unit`
+        WHERE a.no_rm = ? AND a.status_kunjungan NOT IN(8,11) ORDER BY a.kode_kunjungan DESC LIMIT 5', [$request->rm]);
+        $mt_pasien = DB::select('Select no_rm,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$request->rm]);
+        return view('ermtemplate.form_catatan_medis_ranap_2', compact([
+            'kunjungan',
+            'rm',
+            'mt_pasien'
+        ]));
+    }
 }
