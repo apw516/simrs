@@ -854,6 +854,7 @@ class SimrsController extends Controller
                 die;
             }
         }
+        sleep(20);
         $cek_kunjungan_aktif = DB::select('select * from ts_kunjungan where no_rm = ? AND status_kunjungan = ?', [$request->norm, '1']);
         if ($request->jenispelayanan == 2) {
             $paramedis = Dokter::where('kode_dpjp', '=', "$request->kodedokterlayan")->get();
