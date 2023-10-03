@@ -2002,6 +2002,7 @@ class ErmController extends Controller
             echo json_encode($data);
             die;
         }
+        sleep(40);
         foreach ($datatindaklanjut as $nama_1) {
             $index =  $nama_1['name'];
             $value =  $nama_1['value'];
