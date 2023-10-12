@@ -151,6 +151,14 @@ class FarmasiController extends Controller
             'pencarian_obat'
         ]));
     }
+    public function cari_obat_farmasi_racik(Request $request)
+    {
+        $nama = $request->nama;
+        $pencarian_obat = DB::select('CALL sp_cari_obat_semua(?,?)', [$nama, auth()->user()->unit]);
+        return view('farmasi.tabel_obat_racik', compact([
+            'pencarian_obat'
+        ]));
+    }
     public function simpanorderan_far(Request $request)
     {
         $jsf = DB::select('select * from mt_jasa_farmasi');

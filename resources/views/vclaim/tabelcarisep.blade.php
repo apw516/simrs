@@ -171,9 +171,11 @@
             "lengthChange": false,
             "autoWidth": true,
             "pageLength": 3,
-            "searching": true
+            "searching": true,
+            "dom": 'Bfrtip',
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)')
         })
-    });
     $(function() {
         $("#kunjunganpasienrawatinap").DataTable({
             "responsive": true,

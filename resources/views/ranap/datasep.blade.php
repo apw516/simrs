@@ -21,35 +21,36 @@
     </div>
 
     <section class="content">
-        <div class="container">
-            <table id="tabelpasienranappulang" class="table table-sm table-bordered text-xs">
-                <thead>
-                    <th>Nomor BPJS</th>
-                    <th>Nomor RM</th>
-                    <th>Nomor SEP</th>
-                    {{-- <th>Tgl Masuk</th> --}}
-                    <th>Tgl Keluar</th>
-                    <th>Alasan Pulang</th>
-                    <th>Nama Pasien</th>
-                    <th>Unit</th>
-                    {{-- <th>Kamar</th>
+        <div class="container-fluid">
+            <div class="v1_ranap">
+                <table id="tabelpasienranappulang" class="table table-sm table-bordered text-xs">
+                    <thead>
+                        <th>Nomor BPJS</th>
+                        <th>Nomor RM</th>
+                        <th>Nomor SEP</th>
+                        {{-- <th>Tgl Masuk</th> --}}
+                        <th>Tgl Keluar</th>
+                        <th>Alasan Pulang</th>
+                        <th>Nama Pasien</th>
+                        <th>Unit</th>
+                        {{-- <th>Kamar</th>
                     <th>Bed</th> --}}
-                    <th>Action</th>
-                </thead>
-                <tbody>
-                    @foreach ($datapasien as $d)
-                        <tr>
-                            <td>{{ $d->no_Bpjs }}</td>
-                            <td>{{ $d->no_rm }}</td>
-                            <td>{{ $d->no_sep }}</td>
-                            <td>{{ $d->tgl_keluar }}</td>
-                            <td>{{ $d->alasan_pulang }} | {{ $d->keterangan2 }}</td>
-                            <td>{{ $d->nama }}</td>
-                            <td>{{ $d->unit }}</td>
-                            {{-- <td>{{ $d->kamar }}</td>
+                        <th>Action</th>
+                    </thead>
+                    <tbody>
+                        @foreach ($datapasien as $d)
+                            <tr>
+                                <td>{{ $d->no_Bpjs }}</td>
+                                <td>{{ $d->no_rm }}</td>
+                                <td>{{ $d->no_sep }}</td>
+                                <td>{{ $d->tgl_keluar }}</td>
+                                <td>{{ $d->alasan_pulang }} | {{ $d->keterangan2 }}</td>
+                                <td>{{ $d->nama }}</td>
+                                <td>{{ $d->unit }}</td>
+                                {{-- <td>{{ $d->kamar }}</td>
                             <td>{{ $d->no_bed }}</td> --}}
-                            <td class="text-center">
-                                <button kodekunjungan="{{ $d->kode_kunjungan }}" nama="{{ $d->nama }}"
+                                <td width="10%"class="text-center">
+                                    {{-- <button kodekunjungan="{{ $d->kode_kunjungan }}" nama="{{ $d->nama }}"
                                     nomorsep="{{ $d->no_sep }}" rm="{{ $d->no_rm }}" bpjs="{{ $d->no_Bpjs }}"
                                     class="badge badge-danger editkunjungan" data-toggle="tooltip" data-placement="top"
                                     title="edit nomor sep ..."><i class="bi bi-pencil-square"></i></button>
@@ -60,14 +61,25 @@
                                     alasan="{{ $d->kode }}" nomorsep="{{ $d->no_sep }}"
                                     nama="{{ $d->nama }}" class="badge badge-warning pulangsep" data-toggle="tooltip"
                                     data-placement="top" title="Pulangkan SEP ..."><i class="bi bi-house-door"></i></button>
-                                {{-- <button nomorsep="{{ $d->no_sep }}" class="badge badge-success buatsuratkontrolinap"
+                                <button nomorsep="{{ $d->no_sep }}" class="badge badge-success buatsuratkontrolinap"
                                     data-toggle="tooltip" data-placement="top" title="Buat surat kontrol ..."><i
                                         class="bi bi-envelope-plus"></i></button> --}}
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                                    <button class="btn btn-info btn-sm detailpasien" rm="{{ $d->no_rm }}"
+                                        kodekunjungan="{{ $d->kode_kunjungan }}" tglpulang="{{ $d->tgl_keluar }}"
+                                        alasan="{{ $d->kode }}" alasanpulang="{{ $d->alasan_pulang }}"
+                                        keterangan="{{ $d->keterangan2 }}" nomorsep="{{ $d->no_sep }}"
+                                        bpjs="{{ $d->no_Bpjs }}">
+                                        <i class="bi bi-box-arrow-right mr-1"></i>detail
+                                    </button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <div hidden id="v2_ranap" class="v2_ranap">
+
+            </div>
         </div>
 
         <!-- Modal -->
@@ -316,6 +328,51 @@
         </div>
     </section>
     <script>
+        // function detailpasien() {
+        //     $('.v1_ranap').attr('Hidden', true)
+        //     $('.v2_ranap').removeAttr('Hidden', true)
+        // }
+
+        $(".detailpasien").on('click', function(event) {
+            $('.v1_ranap').attr('Hidden', true)
+            $('.v2_ranap').removeAttr('Hidden', true)
+            rm = $(this).attr('rm')
+            kodekunjungan = $(this).attr('kodekunjungan')
+            tglpulang = $(this).attr('tglpulang')
+            alasan = $(this).attr('alasan')
+            nomorsep = $(this).attr('nomorsep')
+            bpjs = $(this).attr('bpjs')
+            alasanpulang = $(this).attr('alasanpulang')
+            keterangan = $(this).attr('keterangan')
+            spinner = $('#loader')
+            spinner.show()
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    rm,
+                    kodekunjungan,
+                    tglpulang,
+                    alasan,
+                    nomorsep,
+                    bpjs,
+                    alasanpulang,
+                    keterangan
+                },
+                url: '<?= route('detailpasienranap') ?>',
+                error: function(data) {
+                    spinner.hide()
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops,silahkan coba lagi',
+                    })
+                },
+                success: function(response) {
+                    spinner.hide()
+                    $('.v2_ranap').html(response)
+                }
+            });
+        });
         $(function() {
             $("#tabelpasienranappulang").DataTable({
                 "responsive": false,
@@ -486,7 +543,6 @@
                         $('#modalpasienpulang').modal('hide');
                         $("#modalsurkonpasca").modal();
                         // location.reload()
-
                     } else {
                         Swal.fire({
                             icon: 'error',

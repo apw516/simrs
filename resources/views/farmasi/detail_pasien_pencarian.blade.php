@@ -1,9 +1,10 @@
 <div class="card mt-3">
-    <div class="card-header">Data Pasien <a class="float-right text-dark text-bold">Tanggal Masuk {{ $kunjungan[0]->tgl_masuk }}</a></div>
+    <div class="card-header">Data Pasien <a class="float-right text-dark text-bold">Tanggal Masuk
+            {{ $kunjungan[0]->tgl_masuk }}</a></div>
     <input type="text" hidden name="kodekunjungan" id="kodekunjungan" class="form-control"
         value="{{ $kunjungan[0]->kode_kunjungan }}">
     <input type="text" hidden name="nomororder" id="nomororder" class="form-control"
-        value="@if(count($orderan) > 0 ){{ $orderan[0]->id }} @endif">
+        value="@if (count($orderan) > 0) {{ $orderan[0]->id }} @endif">
     <div class="card-body">
         <div class="row">
             <div class="col-md-12">
@@ -49,13 +50,13 @@
                                         <th>Dokter</th>
                                     </thead>
                                     <tbody>
-                                        @foreach ($orderan as $or )
+                                        @foreach ($orderan as $or)
                                             <tr>
-                                                <td>{{ $or->kode_barang}}</td>
-                                                <td>{{ $or->jumlah_layanan}}</td>
-                                                <td>{{ $or->aturan_pakai}}</td>
-                                                <td>{{ $or->nama_unit}}</td>
-                                                <td>{{ $or->nama_dokter}}</td>
+                                                <td>{{ $or->kode_barang }}</td>
+                                                <td>{{ $or->jumlah_layanan }}</td>
+                                                <td>{{ $or->aturan_pakai }}</td>
+                                                <td>{{ $or->nama_unit }}</td>
+                                                <td>{{ $or->nama_dokter }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -69,6 +70,8 @@
                             <div class="card-body">
                                 <button class="btn btn-success" data-toggle="modal" data-target="#modalcariobat"><i
                                         class="bi bi-search ml-1 mr-2"></i>Cari Obat</button>
+                                <button class="btn btn-danger" data-toggle="modal" data-target="#modalobatracik"><i
+                                        class="bi bi-search ml-1 mr-2"></i>Obat Racik</button>
                                 <div class="row mt-1">
                                     <div class="col-md-2">
                                         <div class="form-group">
@@ -122,8 +125,8 @@
                                     <div class="col-md-1">
                                         <div class="form-group">
                                             <label for="exampleFormControlInput1">Sub Total</label>
-                                            <input readonly type="text" class="form-control text-xs" id="pre_sub"
-                                                placeholder="Sub total" value="0">
+                                            <input readonly type="text" class="form-control text-xs"
+                                                id="pre_sub" placeholder="Sub total" value="0">
                                             <input hidden readonly type="text" class="form-control text-xs"
                                                 id="pre_sub_2" placeholder="Sub total" value="0">
                                         </div>
@@ -223,6 +226,190 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalobatracik" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Pencarian Obat Racik</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-2 col-form-label">Nama Racikan</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="inputPassword">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-2 col-form-label">Tipe Racikan</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                id="inlineRadio1" value="option1">
+                            <label class="form-check-label" for="inlineRadio1">Non-Powder</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                id="inlineRadio2" value="option2">
+                            <label class="form-check-label" for="inlineRadio2">Powder</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-2 col-form-label">Kemasan</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                id="inlineRadio1" value="option1">
+                            <label class="form-check-label" for="inlineRadio1">Kapsul</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                id="inlineRadio2" value="option2">
+                            <label class="form-check-label" for="inlineRadio2">Kertas Perkamen</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                id="inlineRadio3" value="option3">
+                            <label class="form-check-label" for="inlineRadio3">Pot Salep</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-2 col-form-label">Qty Racikan</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="inputPassword">
+                        </div>
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalpencarianobat_racik"><i class="bi bi-search mr-1 ml-1"></i> Cari Obat</button>
+                    </div>
+                </form>
+                <div class="col-md-12 mt-3">
+                    <div class="card">
+                        <div class="card-header">Draft Komponen Obat Racik</div>
+                        <div class="card-body">
+                            <div class="form-komponen-obat-racik">
+                                <div class="row mt-1">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="exampleFormControlInput1">Nama Barang</label>
+                                            <input readonly type="text" class="form-control text-xs" id="pre_nama_barang_racik"
+                                                placeholder="Nama Barang / Layanan">
+                                            <input hidden readonly type="text" class="form-control text-xs" id="pre_kode_racik"
+                                                placeholder="Nama Barang / Layanan">
+                                            <input hidden readonly type="text" class="form-control text-xs" id="pre_id_ti_racik"
+                                                placeholder="Nama Barang / Layanan">
+                                            <input hidden type="text" class="form-control text-xs" id="harga2_racik"
+                                                placeholder="Nama Barang / Layanan">
+                                            <input hidden readonly type="text" class="form-control text-xs" id="pre_satuan_racik"
+                                                placeholder="Nama Barang / Layanan">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <div class="form-group">
+                                            <label for="exampleFormControlInput1">Stok</label>
+                                            <input readonly type="text" class="form-control text-xs" id="pre_stok_racik" placeholder="stok_racik">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <div class="form-group">
+                                            <label for="exampleFormControlInput1">Dosis</label>
+                                            <input readonly type="text" class="form-control text-xs" id="pre_stok_racik" placeholder="stok_racik">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <div class="form-group">
+                                            <label for="exampleFormControlInput1">Racik</label>
+                                            <input readonly type="text" class="form-control text-xs" id="pre_stok_racik" placeholder="stok_racik">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="form-group">
+                                            <label for="exampleFormControlInput1">QTY</label>
+                                            <input type="text" class="form-control" id="pre_qty_racik" placeholder="qty" value="0"
+                                                oninput="hitungsubtotal1()">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="form-group">
+                                            <label for="exampleFormControlInput1">Satuan</label>
+                                            <input type="text" class="form-control" id="pre_qty_racik" placeholder="qty" value="0"
+                                                oninput="hitungsubtotal1()">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="form-group">
+                                            <label for="exampleFormControlInput1">Subtotal</label>
+                                            <input type="text" class="form-control" id="pre_qty_racik" placeholder="qty" value="0"
+                                                oninput="hitungsubtotal1()">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="form-group">
+                                            <label for="exampleFormControlInput1">Action</label><br>
+                                            <button class="btn btn-secondary btn-sm" onclick="simpandraft_racik()"><i
+                                                    class="bi bi-arrow-down mr-1"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                     </div>
+                     <div class="card">
+                         <div class="card-header bg-dark">Komponen Obat Racik</div>
+                         <div class="card-body">
+                            <form action="" method="post" class="form_draf_obat_racik">
+                                <div class="input_obat_racik">
+                                    <div>
+                                    </div>
+                                </div>
+                            </form>
+                         </div>
+                     </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalpencarianobat_racik" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Cari Obat</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="col-md-12">
+                <div class="form-inline">
+                    <div class="form-group mx-sm-3 mb-2">
+                        <label for="inputPassword2" class="sr-only">Pencarian Nama Obat</label>
+                        <input type="text" class="form-control" id="nama_obat_pencarian_racik"
+                            name="nama_obat_pencarian_racik" placeholder="Cari Obat ...">
+                    </div>
+                    <button type="button" class="btn btn-success mb-2" id="myBtncari_obat_racik" onclick="cariobat_racik()"><i
+                            class="bi bi-search ml-1 mr-2"></i>Cari Obat</button>
+                </div>
+            </div>
+            <div class="col-md-12 mt-3">
+                <div class="v_t_o_r">
+
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <script>
     function hitungsubtotal1() {
@@ -443,6 +630,13 @@
             document.getElementById("myBtncari").click();
         }
     });
+    var input = document.getElementById("nama_obat_pencarian_racik");
+    input.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            document.getElementById("myBtncari_obat_racik").click();
+        }
+    });
 
     function cariobat() {
         nama = $('#nama_obat_pencarian').val()
@@ -470,7 +664,32 @@
             });
         }
     }
-
+    function cariobat_racik() {
+        nama = $('#nama_obat_pencarian_racik').val()
+        if (nama == ' ') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Nama obat tidak boleh kosong !',
+                footer: '<a href="">Why do I have this issue?</a>'
+            })
+        } else {
+            spinner = $('#loader')
+            spinner.show();
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    nama
+                },
+                url: '<?= route('cari_obat_farmasi_racik') ?>',
+                success: function(response) {
+                    $('.v_t_o_r').html(response);
+                    spinner.hide()
+                }
+            });
+        }
+    }
     function simpanorderan_far() {
         var data1 = $('.form_draf_obat').serializeArray();
         kodekunjungan = $('#kodekunjungan').val()
@@ -526,7 +745,7 @@
                             window.open('cetaketiket/' + data.idheader);
                             window.open('cetaknotafarmasi/' + data.idheader);
                             location.reload()
-                        }else{
+                        } else {
                             location.reload()
                         }
                     })

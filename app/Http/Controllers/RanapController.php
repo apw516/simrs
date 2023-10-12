@@ -49,11 +49,11 @@ class RanapController extends Controller
         // return redirect()->intended('logout');
         $v = new VclaimModel();
         // dd($request->rm);
-        $mt_pasien = DB::select('select * from mt_pasien where no_rm = ?',[$request->rm]);
+        $mt_pasien = DB::select('select * from mt_pasien where no_rm = ?', [$request->rm]);
         $no_bpjs = $mt_pasien[0]->no_Bpjs;
         $sep = $request->nomorsurat;
         $cek_sep = $v->carisep($sep);
-        if($no_bpjs != $cek_sep->response->peserta->noKartu){
+        if ($no_bpjs != $cek_sep->response->peserta->noKartu) {
             $data = [
                 'metaData' =>
                 [
@@ -64,7 +64,7 @@ class RanapController extends Controller
             echo json_encode($data);
             die;
         }
-        if($cek_sep->response->jnsPelayanan == 'Rawat Jalan'){
+        if ($cek_sep->response->jnsPelayanan == 'Rawat Jalan') {
             $data = [
                 'metaData' =>
                 [
@@ -197,7 +197,7 @@ class RanapController extends Controller
             'status' => 1,
         ];
         try {
-            $cek = DB::select('select * from tb_buka_data where kode_kunjungan = ? and status = ?', [$dataSet['kode_kunjungan'],1]);
+            $cek = DB::select('select * from tb_buka_data where kode_kunjungan = ? and status = ?', [$dataSet['kode_kunjungan'], 1]);
             if (count($cek) > 0) {
                 $status = $cek['0']->status;
                 if ($status == '1') {
@@ -209,7 +209,7 @@ class RanapController extends Controller
                     die;
                 }
             }
-            $cek2 = DB::select('select * from tb_buka_data where kode_kunjungan = ? and status = ?', [$dataSet['kode_kunjungan'],2]);
+            $cek2 = DB::select('select * from tb_buka_data where kode_kunjungan = ? and status = ?', [$dataSet['kode_kunjungan'], 2]);
             if (count($cek2) > 0) {
                 $status = $cek2['0']->status;
                 if ($status == '2') {
@@ -284,5 +284,65 @@ class RanapController extends Controller
             'rm',
             'mt_pasien'
         ]));
+    }
+    public function detailpasienranap(Request $request)
+    {
+        $v = new VclaimModel();
+        $bulan = date('m');
+        $tahun = date('Y');
+        $rm = $request->rm;
+        $kodekunjungan = $request->kodekunjungan;
+        $tglpulang = $request->tglpulang;
+        $alasan = $request->alasan;
+        $alasanpulang = $request->alasanpulang;
+        $keterangan = $request->keterangan;
+        $nomorsep = $request->nomorsep;
+        $nomorbpjs = $request->bpjs;
+        $data_peserta = $v->get_peserta_noka($nomorbpjs, date('Y-m-d'));
+        $sep = $v->carisep($nomorsep);
+        $mt_pasien = DB::select('Select no_rm,nama_px,date(tgl_lahir) as tgl_lahir,fc_alamat(no_rm) as alamatpasien,jenis_kelamin from mt_pasien where no_rm = ?', [$rm]);
+        $filter = 1;
+        $suratkontrol = $v->ListRencanaKontrol_bycard($bulan, $tahun, $nomorbpjs, $filter);
+        // dd($data_peserta);
+        if ($nomorbpjs == $sep->response->peserta->noKartu) {
+            $status_1 = 'true';
+        } else {
+            $status_1 = 'false';
+        }
+        if ($sep->response->jnsPelayanan == 'Rawat Jalan') {
+            $status_2 = 'false';
+        } else {
+            $status_2 = 'true';
+        }
+        return view('ranap.detailpasienranap', compact([
+            'mt_pasien',
+            'kodekunjungan',
+            'nomorbpjs',
+            'rm',
+            'data_peserta',
+            'sep',
+            'status_1',
+            'status_2',
+            'tglpulang',
+            'alasan',
+            'alasanpulang',
+            'keterangan',
+            'bulan',
+            'tahun',
+            'suratkontrol'
+        ]));
+    }
+    public function carisuratkontrol_ranap(Request $request)
+    {
+        $v = new VclaimModel();
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $filter = $request->filter;
+        $noka = $request->noka;
+        $suratkontrol = $v->ListRencanaKontrol_bycard($bulan, $tahun, $noka, $filter);
+        return view('ranap.tb_surkon_2',compact([
+            'suratkontrol'
+        ]));
+
     }
 }
