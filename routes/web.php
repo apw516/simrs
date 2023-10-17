@@ -443,6 +443,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:9']], function () {
         ->name('datasepranap'); //sidebar
     Route::post('/ranapupdatesep', [RanapController::class, 'UpdateSEP'])
         ->name('ranapupdatesep'); //sidebar
+    Route::post('/detailsepranap', [RanapController::class, 'detailsepranap'])
+        ->name('detailsepranap'); //sidebar
     Route::post('/infopasienranap', [RanapController::class, 'Infopasien'])
         ->name('infopasienranap'); //sidebar
     Route::post('/carisurkonranap', [RanapController::class, 'Carisurkonranap'])
@@ -672,6 +674,7 @@ Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
     Route::post('/ambil_data_pasien_far', [FarmasiController::class, 'ambil_data_pasien_far'])->middleware('auth')->name('ambil_data_pasien_far');
     Route::post('/ambil_detail_pasien', [FarmasiController::class, 'ambil_detail_pasien'])->middleware('auth')->name('ambil_detail_pasien');
     Route::post('/cari_obat_farmasi', [FarmasiController::class, 'cari_obat_farmasi'])->middleware('auth')->name('cari_obat_farmasi');
+    Route::post('/hitunganracikan', [FarmasiController::class, 'hitungan_racikan'])->middleware('auth')->name('hitunganracikan');
     Route::post('/cari_obat_farmasi_racik', [FarmasiController::class, 'cari_obat_farmasi_racik'])->middleware('auth')->name('cari_obat_farmasi_racik');
     Route::post('/cari_riwayat_resep', [FarmasiController::class, 'cari_riwayat_resep'])->middleware('auth')->name('cari_riwayat_resep');
     Route::post('/cari_detail_resep', [FarmasiController::class, 'cari_detail_resep'])->middleware('auth')->name('cari_detail_resep');

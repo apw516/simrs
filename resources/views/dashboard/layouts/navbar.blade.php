@@ -11,10 +11,11 @@
             {{-- <img width="4%" src="{{ asset('public/img/logo_rs.png') }}" alt="AdminLTE Logo" class="ml-2 mr-3"
                 style="opacity: .8"> --}}
             <div class="btn-group" role="group">
-                @if (auth()->user()->unit == '3001')
+                @if (auth()->user()->unit == '3001' || auth()->user()->hak_akses == '9' )
                     <button type="button" class="btn btn-outline-primary" data-toggle="modal"
                         data-target="#modalinfopasienbpjs"><i class="bi bi-person-plus"></i> Info Pasien
                         BPJS</button>
+                        @if (auth()->user()->unit == '3001')
                     <button type="button" class="btn btn-outline-primary" data-toggle="modal"
                         data-target="#modalpengajuansep"><i class="bi bi-send-plus-fill"></i> Pengajuan SEP
                         Bckdate / Finger</button>
@@ -27,6 +28,7 @@
                     <button type="button" class="btn btn-outline-primary" data-toggle="modal"
                         data-target="#modalupdatetglpulang"><i class="bi bi-send-plus-fill mr-2"></i>Update tanggal
                         pulang</button>
+                        @endif
                     <button type="button" class="btn btn-outline-primary" data-toggle="modal"
                         data-target="#modalpencariansep"><i class="bi bi-send-plus-fill"></i> Cari
                         SEP</button>

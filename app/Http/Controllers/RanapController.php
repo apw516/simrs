@@ -345,4 +345,22 @@ class RanapController extends Controller
         ]));
 
     }
+    public function detailsepranap(Request $request)
+    {
+        $rm = $request->rm;
+        $kodekunjungan = $request->kodekunjungan;
+        $sep = $request->nomorsep;
+        $nobpjs = $request->bpjs;
+        $mt_pasien = DB::select('Select no_rm,nama_px,date(tgl_lahir) as tgl_lahir,fc_alamat(no_rm) as alamatpasien,jenis_kelamin from mt_pasien where no_rm = ?', [$rm]);
+        $v = new VclaimModel();
+        $data_peserta = $v->get_peserta_noka($nobpjs, date('Y-m-d'));
+        $detsep = $v->carisep($sep);
+        return view('ranap.detailsep',compact([
+            'sep',
+            'mt_pasien',
+            'nobpjs',
+            'detsep'
+        ]));
+
+    }
 }

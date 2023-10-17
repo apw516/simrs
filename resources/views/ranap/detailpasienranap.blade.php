@@ -207,7 +207,7 @@
                         </form>
                         <div class="col-md-12">
                             <div class="v_tabel_surkon_2">
-                                <table id="tbsrk" class="table table-sm table-bordered text-xs table-hover table-stripped">
+                                <table id="tbsrk" style="font-size:65%" class="table table-sm table-bordered table-hover table-stripped">
                                     <thead>
                                         <th>Nomor Kartu</th>
                                         <th>Nama</th>
@@ -224,7 +224,11 @@
                                     <tbody>
                                         @if ($suratkontrol->metaData->code == 200)
                                             @foreach ($suratkontrol->response->list as $s)
-                                                <tr class="detailsurkon">
+                                                <tr class="detailsurkon" data-toggle="modal" data-target="#detailsurkon"
+                                                nomorsurat="{{ $s->noSuratKontrol }}" nosep="{{ $s->noSepAsalKontrol }}"
+                                                kodedokter="{{ $s->kodeDokter }}" namadokter="{{ $s->namaDokter }}"
+                                                namapoli="{{ $s->namaPoliTujuan }}" polikontrol="{{ $s->poliTujuan }}"
+                                                tglrencanakontrol="{{ $s->tglRencanaKontrol }}">
                                                     <td>{{ $s->noKartu }}</td>
                                                     <td>{{ $s->nama }}</td>
                                                     <td>{{ $s->noSuratKontrol }}</td>
@@ -245,6 +249,80 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="detailsurkon" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Detail Surat Kontrol</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Jenis Surat</label>
+                        <select class="form-control" id="jenissurat_kontrolpasca">
+                            <option value="2">SURAT KONTROL</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Tanggal Kontrol</label>
+                        <input type="date" class="form-control datepicker" id="tglkontrol_pasca"
+                            placeholder="name@example.com" data-date-format="yyyy-mm-dd">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Nomor Surat</label>
+                        <input readonly type="" class="form-control" id="nomorsurat" value=""
+                            placeholder="name@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Nomor SEP</label>
+                        <input readonly type="" class="form-control" id="seppasca" value=""
+                            placeholder="name@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Poli Kontrol</label>
+                        <div class="input-group mb-3">
+                            <input readonly type="text" class="form-control" placeholder="Klik cari poli ..."
+                                id="polikontrolpasca">
+                            <input hidden readonly type="text" class="form-control" placeholder="Klik cari poli ..."
+                                id="kodepolikontrolpasca">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" data-toggle="modal"
+                                    data-target="#modalpilihpolipasca" onclick="caripolikontrolpasca()">Cari
+                                    Poli</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Dokter</label>
+                        <div class="input-group mb-3">
+                            <input readonly type="text" class="form-control" placeholder="Klik cari dokter ..."
+                                id="dokterkontrolpasca">
+                            <input hidden readonly type="text" class="form-control"
+                                placeholder="Klik cari dokter ..." id="kodedokterkontrolpasca">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" data-toggle="modal"
+                                    data-target="#modalpilihdokterpasca" onclick="caridokterkontrolpasca()">Cari
+                                    Dokter</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="hapussurkon()"><i class="bi bi-trash3-fill mr-1 ml-1"></i>Hapus</button>
+                <button type="button" class="btn btn-warning" onclick="editsurkon()"><i class="bi bi-pencil-square mr-1 ml-1"></i>Edit</button>
+                <button type="button" class="btn btn-success" onclick="cetaksurkon()"><i class="bi bi-printer-fill mr-1 ml-1"></i>Print</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="bi bi-x-square mr-1 ml-1"></i>Close</button>
             </div>
         </div>
     </div>
@@ -318,6 +396,152 @@
                 spinner.hide();
                 $('.v_tabel_surkon_2').html(response);
                 // $('#daftarpxumum').attr('disabled', true);
+            }
+        });
+    }
+    $('#tbsrk').on('click', '.detailsurkon', function() {
+        nomorsurat = $(this).attr('nomorsurat')
+        nosep = $(this).attr('nosep')
+        kodedokter = $(this).attr('kodedokter')
+        namadokter = $(this).attr('namadokter')
+        namapoli = $(this).attr('namapoli')
+        polikontrol = $(this).attr('polikontrol')
+        tgl = $(this).attr('tglrencanakontrol')
+        $('#nomorsurat').val(nomorsurat)
+        $('#tglkontrol_pasca').val(tgl)
+        $('#seppasca').val(nosep)
+        $('#polikontrolpasca').val(namapoli)
+        $('#kodepolikontrolpasca').val(polikontrol)
+        $('#dokterkontrolpasca').val(namadokter)
+        $('#kodedokterkontrolpasca').val(kodedokter)
+    });
+
+    function editsurkon() {
+        spinner = $('#loader');
+        nomorsurat = $('#nomorsurat').val()
+        nomorkartu = $('#seppasca').val()
+        jenissurat = $('#jenissurat_kontrolpasca').val()
+        tanggalkontrol = $('#tglkontrol_pasca').val()
+        polikontrol = $('#polikontrolpasca').val()
+        kodepolikontrol = $('#kodepolikontrolpasca').val()
+        dokterkontrol = $('#dokterkontrolpasca').val()
+        kodedokterkontrol = $('#kodedokterkontrolpasca').val()
+        Swal.fire({
+            title: 'Edit Surat Kontrol ?',
+            text: nomorsurat,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya edit'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                spinner.show();
+                $.ajax({
+                    async: true,
+                    dataType: 'Json',
+                    type: 'post',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        nomorsurat,
+                        nomorkartu,
+                        jenissurat,
+                        tanggalkontrol,
+                        kodepolikontrol,
+                        kodedokterkontrol
+                    },
+                    url: '<?= route('updatesuratkontrol') ?>',
+                    error: function(data) {
+                        spinner.hide();
+                        alert('error!')
+                    },
+                    success: function(data) {
+                        spinner.hide();
+                        if (data.metaData.code == 200) {
+                            Swal.fire({
+                                title: 'Surat kontrol berhasil disimpan!',
+                                text: "Cetak surat kontrol ? " + data.response
+                                    .noSuratKontrol,
+                                icon: 'success',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ya, Cetak!'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.open('cetaksurkon/' + data.response
+                                        .noSuratKontrol);
+                                    location.reload()
+                                } else {
+                                    location.reload()
+                                }
+                            })
+                        } else {
+                            Swal.fire(
+                                'Gagal!',
+                                data.metaData.message,
+                                'error'
+                            )
+                        }
+                    }
+                });
+            }
+        })
+
+    }
+    function cetaksurkon()
+    {
+        nomorsurat = $('#nomorsurat').val()
+        window.open('cetaksurkon/' + nomorsurat);
+    }
+    function hapussurkon()
+    {
+        nomorsurat = $('#nomorsurat').val()
+        Swal.fire({
+            title: 'surat kontrol ' + nomorsurat,
+            text: "Surat kontrol akan dihapus ?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Hapus',
+            cancelButtonText: 'Tidak'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                spinner = $('#loader')
+                spinner.show()
+                $.ajax({
+                    type: 'post',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        nomorsurat,
+                    },
+                    dataType: 'Json',
+                    Async: true,
+                    url: '<?= route('vclaimhapussurkon');?>',
+                    error: function(data) {
+                        spinner.hide()
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops,silahkan coba lagi',
+                        })
+                    },
+                    success: function(data) {
+                        spinner.hide()
+                        if (data.metaData.code == 200) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil dihapus ...',
+                            })
+                            location.reload()
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: data.metaData.message,
+                            })
+                        }
+                    }
+                });
             }
         });
     }

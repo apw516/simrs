@@ -159,6 +159,22 @@ class FarmasiController extends Controller
             'pencarian_obat'
         ]));
     }
+    public function hitungan_racikan(Request $request)
+    {
+        $a = $request->dosis_racik;
+        $b = $request->qtyracikan;
+        $c = $request->dosis_awal;
+        $d = $request->harga2;
+        $qty_total = $a * $b / $c;
+        $subtot = $d * $qty_total;
+        $data = [
+            'kode' => 200,
+            'subtotal' => $subtot,
+            'qtytotal' => $qty_total
+        ];
+        echo json_encode($data);
+        die;
+    }
     public function simpanorderan_far(Request $request)
     {
         $jsf = DB::select('select * from mt_jasa_farmasi');

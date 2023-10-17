@@ -42,7 +42,11 @@
                             <tr>
                                 <td>{{ $d->no_Bpjs }}</td>
                                 <td>{{ $d->no_rm }}</td>
-                                <td>{{ $d->no_sep }}</td>
+                                <td width="20%">{{ $d->no_sep }} <button rm="{{ $d->no_rm }}"
+                                        kodekunjungan="{{ $d->kode_kunjungan }}" nomorsep="{{ $d->no_sep }}"
+                                        bpjs="{{ $d->no_Bpjs }}" class="badge badge-sm badge-warning btneditsep"
+                                        data-placement="top" title="edit sep ..." data-toggle="modal"
+                                        data-target="#modaleditkunjungan"><i class="bi bi-pencil-square"></i></button></td>
                                 <td>{{ $d->tgl_keluar }}</td>
                                 <td>{{ $d->alasan_pulang }} | {{ $d->keterangan2 }}</td>
                                 <td>{{ $d->nama }}</td>
@@ -302,7 +306,7 @@
 
         <div class="modal fade" id="modaleditkunjungan" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Edit Nomor SEP</h5>
@@ -311,12 +315,8 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group row">
-                            <label for="inputPassword" class="col-sm-4 col-form-label text-xs">Nomor SEP</label>
-                            <div class="col-sm-8">
-                                <input type="" class="form-control" id="NOSEPUPDATE">
-                                <input hidden type="" class="form-control" id="KODEKUNJUNGAN">
-                            </div>
+                        <div class="form-edit-sep">
+
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -326,12 +326,69 @@
                 </div>
             </div>
         </div>
+
+
     </section>
     <script>
         // function detailpasien() {
         //     $('.v1_ranap').attr('Hidden', true)
         //     $('.v2_ranap').removeAttr('Hidden', true)
         // }
+        function caririwayatsep() {
+            nokad = $('#nokapencarian').val()
+            tglawal = $('#tanggalawalpencarian').val()
+            tglakhir = $('#tanggalakhirpencarian').val()
+            // view_riwayat_sep
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    nokad,
+                    tglawal,
+                    tglakhir
+                },
+                url: '<?= route('caririwayatsep') ?>',
+                error: function(data) {
+                    spinner.hide();
+                    alert('error!')
+                },
+                success: function(response) {
+                    spinner.hide();
+                    $('.view_riwayat_sep').html(response);
+                    // $('#daftarpxumum').attr('disabled', true);
+                }
+            });
+        }
+        $(".btneditsep").on('click', function(event) {
+            rm = $(this).attr('rm')
+            kodekunjungan = $(this).attr('kodekunjungan')
+            nomorsep = $(this).attr('nomorsep')
+            bpjs = $(this).attr('bpjs')
+            spinner = $('#loader')
+            spinner.show()
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    rm,
+                    kodekunjungan,
+                    nomorsep,
+                    bpjs
+                },
+                url: '<?= route('detailsepranap') ?>',
+                error: function(data) {
+                    spinner.hide()
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops,silahkan coba lagi',
+                    })
+                },
+                success: function(response) {
+                    spinner.hide()
+                    $('.form-edit-sep').html(response)
+                }
+            });
+        });
 
         $(".detailpasien").on('click', function(event) {
             $('.v1_ranap').attr('Hidden', true)
