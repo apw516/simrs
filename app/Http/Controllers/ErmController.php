@@ -2335,7 +2335,7 @@ class ErmController extends Controller
                 //jika penjamin bpjs order ke dp2
                 //jika penjamin umum order ke dp1
                 //kodeheader dibedakan menjadi ORF
-                if ($penjamin == 'P01') {
+                if ($penjamin == 'P01' || $penjamin == 'P15' || $penjamin == 'P16'|| $penjamin == 'P17'|| $penjamin == 'P20'|| $penjamin == 'P22' || $penjamin == 'P28'|| $penjamin == 'P29') {
                     $unit = '4002';
                 } else {
                     $unit = '4008';
@@ -3468,7 +3468,7 @@ class ErmController extends Controller
                 //jika penjamin bpjs order ke dp2
                 //jika penjamin umum order ke dp1
                 //kodeheader dibedakan menjadi ORF
-                if ($penjamin == 'P01') {
+                if ($penjamin == 'P01' || $penjamin == 'P15' || $penjamin == 'P16'|| $penjamin == 'P17'|| $penjamin == 'P20'|| $penjamin == 'P22' || $penjamin == 'P28'|| $penjamin == 'P29') {
                     $unit = '4002';
                 } else {
                     $unit = '4008';
