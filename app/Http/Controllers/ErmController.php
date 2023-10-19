@@ -2475,7 +2475,7 @@ class ErmController extends Controller
                     'pic' => auth()->user()->id,
                     'unit_pengirim' => auth()->user()->unit,
                     'diagnosa' => $dataSet_3['diagnosakerja'],
-                    'tgl_periksa' => '2023-07-07',
+                    'tgl_periksa' => $this->get_now(),
                     'dok_kirim' => auth()->user()->kode_paramedis,
                     'status_layanan' => '3',
                     'status_retur' => 'OPN',
@@ -5509,7 +5509,7 @@ class ErmController extends Controller
     public function tindakanhariini_lab(Request $request)
     {
         $kodekunjungan = $request->kodekunjungan;
-        $riwayat_tindakan_lab = DB::connection('mysql4')->select("SELECT b.status_layanan AS status_layanan_header,a.kode_kunjungan,b.id AS id_header,C.id AS id_detail,c.jumlah_layanan,b.kode_layanan_header,c.`kode_tarif_detail`,e.`NAMA_TARIF` FROM simrs_waled.ts_kunjungan a
+        $riwayat_tindakan_lab = DB::select("SELECT b.status_layanan AS status_layanan_header,a.kode_kunjungan,b.id AS id_header,C.id AS id_detail,c.jumlah_layanan,b.kode_layanan_header,c.`kode_tarif_detail`,e.`NAMA_TARIF` FROM simrs_waled.ts_kunjungan a
         RIGHT OUTER JOIN ts_layanan_header_order b ON a.kode_kunjungan = b.kode_kunjungan
         RIGHT OUTER JOIN ts_layanan_detail_order c ON b.id = c.row_id_header
         RIGHT OUTER JOIN mt_tarif_detail d ON c.kode_tarif_detail = d.`KODE_TARIF_DETAIL`
