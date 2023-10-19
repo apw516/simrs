@@ -334,31 +334,7 @@
         //     $('.v1_ranap').attr('Hidden', true)
         //     $('.v2_ranap').removeAttr('Hidden', true)
         // }
-        function caririwayatsep() {
-            nokad = $('#nokapencarian').val()
-            tglawal = $('#tanggalawalpencarian').val()
-            tglakhir = $('#tanggalakhirpencarian').val()
-            // view_riwayat_sep
-            $.ajax({
-                type: 'post',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    nokad,
-                    tglawal,
-                    tglakhir
-                },
-                url: '<?= route('caririwayatsep') ?>',
-                error: function(data) {
-                    spinner.hide();
-                    alert('error!')
-                },
-                success: function(response) {
-                    spinner.hide();
-                    $('.view_riwayat_sep').html(response);
-                    // $('#daftarpxumum').attr('disabled', true);
-                }
-            });
-        }
+
         $(".btneditsep").on('click', function(event) {
             rm = $(this).attr('rm')
             kodekunjungan = $(this).attr('kodekunjungan')
