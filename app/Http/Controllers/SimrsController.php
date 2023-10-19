@@ -967,7 +967,8 @@ class SimrsController extends Controller
                 'diagx' => $request->kodediagnosa . ' | ' . $request->namadiagnosa,
                 'no_sep' => '',
                 'no_rujukan' => $request->nomorrujukan,
-                'id_alasan_masuk' => $request->alasanmasuk
+                'id_alasan_masuk' => $request->alasanmasuk,
+                'keterangan2' => 'BRIDGING'
             );
             $kodeunit = $unit[0]['kode_unit'];
             $kelas_unit = $unit['0']['kelas_unit'];
