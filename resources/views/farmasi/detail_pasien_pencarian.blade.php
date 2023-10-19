@@ -344,7 +344,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <label for="exampleFormControlInput1">Subtotal</label>
+                                            <label for="exampleFormControlInput1">Harga</label>
                                             <input readonly type="text" class="form-control" id="pre_harga_racik"
                                                 name="pre_harga_racik" placeholder="qty" value="0"
                                                 oninput="hitungsubtotal1()">
@@ -371,10 +371,16 @@
                                 </div>
                             </form>
                         </div>
+                        <div class="card-footer bg-danger">
+                            <div class="grantotal_racikan">
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="simpanracikan()">Simpan Racikan</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -779,7 +785,6 @@
         satuan = $('#pre_satuan_racik').val()
         subtot = $('#pre_sub_racik').val()
         subtot2 = $('#pre_sub_2_racik').val()
-
         qtyracikan = $('#qtyracikan').val()
         dosis_awal = $('#dosis_awal').val()
         dosis_racik = $('#dosis_racik').val()
@@ -802,7 +807,6 @@
                 footer: '<a href="">Why do I have this issue?</a>'
             })
         } else {
-            qty_obat = dosis_racik * qtyracikan / dosis_awal
             $.ajax({
                 async: true,
                 type: 'post',
@@ -827,43 +831,67 @@
                 success: function(data) {
                     spinner.hide()
                     if (data.kode == 200) {
-                        subtotalracik = data.subtotal
+                        subtotalracik_2 = data.subtotal
                         qtytotal_racik = data.qtytotal
+                        if (x < max_fields) {
+                            x++; //text box increment
+                            $(wrapper).append(
+                                '<div class="form-row text-xs"><div class="form-group col-md-2"><label for="">Nama Barang / Tindakan</label><input readonly type="" class="form-control form-control-sm text-xs edit_field" id="" name="nama_barang_order" value="' +
+                                namabarang +
+                                '"><input hidden readonly type="" class="form-control form-control-sm" id="" name="kode_barang_order" value="' +
+                                kode +
+                                '"><input hidden readonly type="" class="form-control form-control-sm" id="" name="id_stok_order" value="' +
+                                id_stok +
+                                '"><input hidden readonly type="" class="form-control form-control-sm" id="" name="harga2_order" value="' +
+                                subtotalracik_2 +
+                                '"><input hidden readonly type="" class="form-control form-control-sm" id="" name="sub_total_order_2" value="' +
+                                subtot2 +
+                                '"><input hidden readonly type="" class="form-control form-control-sm" id="" name="status_order_2" value="' +
+                                status +
+                                '"></div><div class="form-group col-md-1"><label for="inputPassword4">Stok</label><input readonly type="" class="form-control form-control-sm" id="" name="stok_curr_order" value="' +
+                                stok_curr +
+                                '"></div><div class="form-group col-md-1"><label for="inputPassword4">Qty</label><input readonly type="" class="form-control form-control-sm" id="" name="qty_order" value="' +
+                                qtytotal_racik +
+                                '"></div><div class="form-group col-md-1"><label for="inputPassword4">Satuan</label><input readonly type="" class="form-control form-control-sm" id="" name="satuan_order" value="' +
+                                satuan +
+                                '"></div><div class="form-group col-md-2"><label for="inputPassword4">Harga</label><input readonly type="" class="form-control form-control-sm text-xs" id="" name="harga_order" value="' +
+                                harga +
+                                '"></div><div class="form-group col-md-2"><label for="inputPassword4">Sub Total</label><input readonly type="" class="form-control form-control-sm text-xs" id="" name="sub_total_order" value="' +
+                                subtotalracik_2 +
+                                '"></div><i class="bi bi-x-square remove_field form-group col-md-1 text-danger" kode2="' +
+                                kode + '" subtot="' + subtot2 + '" jenis="' + status +
+                                '" nama_barang="' + namabarang +
+                                '" kode_barang="' + kode + '" id_stok="' + id_stok + '" harga2="' +
+                                harga2 + '" satuan="' +
+                                satuan + '" stok="' + stok_curr + '" qty="' + qty + '" harga="' +
+                                harga + '" disc="' + disc +
+                                '" dosis="' + disc + '" sub="' + subtot + '" sub2="' + subtot2 +
+                                '" status="' + status +
+                                '"></i></div>'
+                            );
+                            jumlahkomponen = $('#jumlahkomponen').val()
+                            totalitemracik = $('#totalitemracik2').val()
+                            totalitem = $('#totalitem').val()
+                            $.ajax({
+                                type: 'post',
+                                data: {
+                                    _token: "{{ csrf_token() }}",
+                                    qtyracikan,
+                                    jumlahkomponen,
+                                    totalitem,
+                                    totalitemracik,
+                                    subtotalracik_2
+                                },
+                                url: '<?= route('jumlah_grand_total_racikan') ?>',
+                                success: function(response) {
+                                    $('.grantotal_racikan').html(response);
+                                }
+                            });
+                        }
                     }
                 }
             });
             if (x < max_fields) { //max input box allowed
-                x++; //text box increment
-                $(wrapper).append(
-                    '<div class="form-row text-xs"><div class="form-group col-md-2"><label for="">Nama Barang / Tindakan</label><input readonly type="" class="form-control form-control-sm text-xs edit_field" id="" name="nama_barang_order" value="' +
-                    namabarang +
-                    '"><input hidden readonly type="" class="form-control form-control-sm" id="" name="kode_barang_order" value="' +
-                    kode +
-                    '"><input hidden readonly type="" class="form-control form-control-sm" id="" name="id_stok_order" value="' +
-                    id_stok +
-                    '"><input hidden readonly type="" class="form-control form-control-sm" id="" name="harga2_order" value="' +
-                    subtotalracik +
-                    '"><input hidden readonly type="" class="form-control form-control-sm" id="" name="sub_total_order_2" value="' +
-                    subtot2 +
-                    '"><input hidden readonly type="" class="form-control form-control-sm" id="" name="status_order_2" value="' +
-                    status +
-                    '"></div><div class="form-group col-md-1"><label for="inputPassword4">Stok</label><input readonly type="" class="form-control form-control-sm" id="" name="stok_curr_order" value="' +
-                    stok_curr +
-                    '"></div><div class="form-group col-md-1"><label for="inputPassword4">Qty</label><input readonly type="" class="form-control form-control-sm" id="" name="qty_order" value="' +
-                    qtytotal_racik +
-                    '"></div><div class="form-group col-md-1"><label for="inputPassword4">Satuan</label><input readonly type="" class="form-control form-control-sm" id="" name="satuan_order" value="' +
-                    satuan +
-                    '"></div><div class="form-group col-md-2"><label for="inputPassword4">Harga</label><input readonly type="" class="form-control form-control-sm text-xs" id="" name="harga_order" value="' +
-                    harga +
-                    '"></div><div class="form-group col-md-2"><label for="inputPassword4">Sub Total</label><input readonly type="" class="form-control form-control-sm text-xs" id="" name="sub_total_order" value="' +
-                    subtotalracik +
-                    '"></div><i class="bi bi-x-square remove_field form-group col-md-1 text-danger" kode2="' +
-                    kode + '" subtot="' + subtot2 + '" jenis="' + status + '" nama_barang="' + namabarang +
-                    '" kode_barang="' + kode + '" id_stok="' + id_stok + '" harga2="' + harga2 + '" satuan="' +
-                    satuan + '" stok="' + stok_curr + '" qty="' + qty + '" harga="' + harga + '" disc="' + disc +
-                    '" dosis="' + disc + '" sub="' + subtot + '" sub2="' + subtot2 + '" status="' + status +
-                    '"></i></div>'
-                );
                 $(wrapper).on("click", ".remove_field", function(e) { //user click on remove
                     kode = $(this).attr('kode2')
                     subtot3 = $(this).attr('subtot')
@@ -893,7 +921,10 @@
                     $('#pre_dosis').val(j)
                     $('#pre_sub').val(k)
                     $('#pre_sub_2').val(l)
-                    totalitem = $('#totalitem2').val()
+
+
+                    totalitem = $('#jumlahkomponen').val()
+                    totalitemracik2 = $('#totalitemracik2').val()
                     grandtotal = $('#grandtotal2').val()
                     jumlahitem = $('#jumlahitem').val()
                     resepreguler = $('#resepreguler').val()
@@ -916,53 +947,22 @@
                             resepreguler,
                             resepkronis,
                             resephibah,
-                            resepkemo
+                            resepkemo,
+                            totalitemracik2,
+                            d,
+                            qtyracikan
                         },
-                        url: '<?= route('minus_grand_total') ?>',
+                        url: '<?= route('minus_grand_total_retur') ?>',
                         success: function(response) {
-                            $('.gt').html(response);
+                            $('.grantotal_racikan').html(response);
                         }
                     });
                 })
             }
-            totalitem = $('#totalitem2').val()
-            grandtotal = $('#grandtotal2').val()
-            jumlahitem = $('#jumlahitem').val()
-            resepreguler = $('#resepreguler').val()
-            resepkronis = $('#resepkronis').val()
-            resephibah = $('#resephibah').val()
-            resepkemo = $('#resepkemo').val()
-            $.ajax({
-                type: 'post',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    subtot2,
-                    totalitem,
-                    grandtotal,
-                    jumlahitem,
-                    resepreguler,
-                    resepkronis,
-                    resephibah,
-                    resepkemo,
-                    status
-                },
-                url: '<?= route('jumlah_grand_total') ?>',
-                success: function(response) {
-                    $('.gt').html(response);
-                }
-            });
-            $('#pre_kode').val('')
-            $('#pre_nama_barang').val('')
-            $('#pre_harga').val('')
-            $('#pre_id_ti').val('')
-            $('#harga2').val('')
-            $('#pre_stok').val('')
-            $('#pre_qty').val(0)
-            $('#pre_disc').val(0)
-            $('#pre_dosis').val('')
-            $('#pre_satuan').val('')
-            $('#pre_sub').val(0)
-            $('#pre_sub_2').val(0)
         }
+    }
+
+    function simpanracikan() {
+        alert('ok')
     }
 </script>

@@ -681,10 +681,12 @@ Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
     Route::post('/simpanorderan_far', [FarmasiController::class, 'simpanorderan_far'])->middleware('auth')->name('simpanorderan_far');
     Route::post('/jumlah_grand_total', [FarmasiController::class, 'jumlah_grand_total'])->middleware('auth')->name('jumlah_grand_total');
     Route::post('/minus_grand_total', [FarmasiController::class, 'minus_grand_total'])->middleware('auth')->name('minus_grand_total');
+    Route::post('/minus_grand_total_retur', [FarmasiController::class, 'minus_grand_total_retur'])->middleware('auth')->name('minus_grand_total_retur');
     Route::post('/ambil_data_obat_retur', [FarmasiController::class, 'ambil_data_obat_retur'])->middleware('auth')->name('ambil_data_obat_retur');
     Route::post('/simpanretur', [FarmasiController::class, 'simpanretur'])->middleware('auth')->name('simpanretur');
     Route::get('/cetaketiket/{kodekunjungan}', [FarmasiController::class, 'CetakEtiket'])->middleware('auth')->name('CetakEtiket');
     Route::get('/cetaknotafarmasi/{kodekunjungan}', [FarmasiController::class, 'cetaknotafarmasi'])->middleware('auth')->name('CetakNotaFarmasi');
+    Route::post('/jumlah_grand_total_racikan}', [FarmasiController::class, 'jumlahGrandtotalracikan'])->middleware('auth')->name('jumlah_grand_total_racikan');
     // Route::get('/test_print', [FarmasiController::class, 'test_print'])->middleware('auth')->name('test_print');
 });
 

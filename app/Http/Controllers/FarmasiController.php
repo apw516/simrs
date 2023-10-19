@@ -1255,6 +1255,22 @@ class FarmasiController extends Controller
             'total_resep'
         ]));
     }
+    public function jumlahGrandtotalracikan(Request $request)
+    {
+        $qtyracikan = $request->qtyracikan;
+        $jumlahkomponen = $request->jumlahkomponen;
+        $new_total_item_racik = $request->subtotalracik_2 + $request->totalitemracik;
+        if ($jumlahkomponen == 'null') {
+            $jumlahkomponen = 1;
+        } else {
+            $jumlahkomponen = $request->jumlahkomponen + 1;
+        };
+        return view('farmasi.grand_total_racikan',compact([
+            'qtyracikan',
+            'jumlahkomponen',
+            'new_total_item_racik'
+        ]));
+    }
     public function minus_grand_total(Request $request)
     {
         $reguler = $request->resepreguler;
@@ -1322,6 +1338,23 @@ class FarmasiController extends Controller
             'resep_hibah',
             'jasa_resep_lbr',
             'total_resep'
+        ]));
+    }
+    public function minus_grand_total_retur(Request $request)
+    {
+        $qtyracikan = $request->qtyracikan;
+        $totalitem = $request->totalitem;
+        $totalharga = $request->totalitemracik2;
+        $harga = $request->d;
+        $jumlahkomponen = $totalitem - 1;
+        $new_total_item_racik = $totalharga - $harga;
+        if($new_total_item_racik < 0){
+            $new_total_item_racik = 0;
+        }
+        return view('farmasi.grand_total_racikan',compact([
+            'qtyracikan',
+            'jumlahkomponen',
+            'new_total_item_racik'
         ]));
     }
     public function get_now()
