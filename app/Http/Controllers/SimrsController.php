@@ -940,6 +940,7 @@ class SimrsController extends Controller
                 'diagx' => $request->kodediagnosa . ' | ' . $request->namadiagnosa,
                 'pic' => auth()->user()->id_simrs,
                 'no_sep' => '',
+                'keterangan2' => 'BRIDGING',
             ];
             $kodeunit = $request->namaunitranap;
             $kelas_unit = $unit['0']['kelas_unit'];
