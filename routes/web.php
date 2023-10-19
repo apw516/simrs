@@ -414,11 +414,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:3']], function () {
         ->name('ambildetailorder'); //sidebar
     Route::post('/terimaordernya', [PenunjangController::class, 'terimaordernya'])
         ->name('terimaordernya'); //sidebar
-
     Route::post('/ambildataorderan', [PenunjangController::class, 'ambildataorderan'])
         ->name('ambildataorderan'); //sidebar
-
-
     Route::get('/Billing', [BillingController::class, 'Billing'])
         ->name('Billing'); //sidebar
     Route::post('/Formlayanan', [BillingController::class, 'Formlayanan'])
