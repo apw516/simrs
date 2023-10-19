@@ -599,6 +599,10 @@
                                                             {{ $k->keterangan_tindak_lanjut }}</td>
                                                     </tr>
                                                     <tr>
+                                                        <td class="text-bold font-italic">Hasil Expertisi</td>
+                                                        <td>{{ $k->evaluasi }}</td>
+                                                    </tr>
+                                                    <tr>
                                                         <td class="text-bold font-italic">Jawab Konsul Ke poli lain</td>
                                                         <td> {{ $k->keterangan_tindak_lanjut_2 }}</td>
                                                     </tr>
