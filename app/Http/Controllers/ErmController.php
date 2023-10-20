@@ -536,6 +536,7 @@ class ErmController extends Controller
         WHERE id = (SELECT MAX(id) FROM assesmen_dokters WHERE id_pasien = ? AND kode_unit = ? ) AND id_pasien = ? AND kode_unit = ?', [$kunjungan[0]->no_rm, $unit, $kunjungan[0]->no_rm, $unit]);
         $first_assdok = DB::select('SELECT * FROM assesmen_dokters
         WHERE id = (SELECT MIN(id) FROM assesmen_dokters WHERE id_pasien = ? AND kode_unit = ? ) AND id_pasien = ? AND kode_unit = ?', [$kunjungan[0]->no_rm, $unit, $kunjungan[0]->no_rm, $unit]);
+        $now = $this->get_date();
         if (auth()->user()->unit != '1028') {
             if (count($resume_perawat) > 0) {
                 if (count($resume) > 0) {
@@ -645,7 +646,8 @@ class ErmController extends Controller
                                 'first_assdok',
                                 'penyakit',
                                 'hasil_ro',
-                                'ref_resume'
+                                'ref_resume',
+                                'now'
                             ]));
                         }
                     }
@@ -2475,7 +2477,7 @@ class ErmController extends Controller
                     'pic' => auth()->user()->id,
                     'unit_pengirim' => auth()->user()->unit,
                     'diagnosa' => $dataSet_3['diagnosakerja'],
-                    'tgl_periksa' => '2023-07-07',
+                    'tgl_periksa' => $this->get_date(),
                     'dok_kirim' => auth()->user()->kode_paramedis,
                     'status_layanan' => '3',
                     'status_retur' => 'OPN',
@@ -2550,7 +2552,7 @@ class ErmController extends Controller
                     'pic' => auth()->user()->id,
                     'unit_pengirim' => auth()->user()->unit,
                     'diagnosa' => $dataSet_3['diagnosakerja'],
-                    'tgl_periksa' => '2023-07-07',
+                    'tgl_periksa' => $this->get_date(),
                     'dok_kirim' => auth()->user()->kode_paramedis,
                     'status_layanan' => '3',
                     'status_retur' => 'OPN',
@@ -3535,7 +3537,7 @@ class ErmController extends Controller
                         'kode_tipe_transaksi' => 2,
                         'pic' => auth()->user()->id,
                         'unit_pengirim' => auth()->user()->unit,
-                        'tgl_periksa' => $this->get_now(),
+                        'tgl_periksa' => $this->get_date(),
                         'diagnosa' => $diagnosakerja,
                         'dok_kirim' => auth()->user()->kode_paramedis,
                         'status_layanan' => '3',
@@ -3608,7 +3610,7 @@ class ErmController extends Controller
                     'pic' => auth()->user()->id,
                     'unit_pengirim' => auth()->user()->unit,
                     'diagnosa' => $dataSet_3['diagnosakerja'],
-                    'tgl_periksa' => '2023-07-07',
+                    'tgl_periksa' => $this->get_date(),
                     'dok_kirim' => auth()->user()->kode_paramedis,
                     'status_layanan' => '3',
                     'status_retur' => 'OPN',
@@ -3683,7 +3685,7 @@ class ErmController extends Controller
                     'pic' => auth()->user()->id,
                     'unit_pengirim' => auth()->user()->unit,
                     'diagnosa' => $dataSet_3['diagnosakerja'],
-                    'tgl_periksa' => '2023-07-07',
+                    'tgl_periksa' => $this->get_date(),
                     'dok_kirim' => auth()->user()->kode_paramedis,
                     'status_layanan' => '3',
                     'status_retur' => 'OPN',
