@@ -1,7 +1,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-teal elevation-4">
       <!-- Brand Logo -->
-      <a href="index3.html" class="brand-link">
+      <a href="index3.html" class="brand-link  bg-teal">
           <img width="100%" height="80%" src="{{ asset('public/img/LOGO2.png') }}" alt="AdminLTE Logo" class=""
               style="opacity: .8">
           {{-- <span class="brand-text font-weight-light">SEMERUSMART</span> --}}
