@@ -9,18 +9,19 @@
     <title>
         {{ $title }}
     </title>
-    <link href='{{ asset('public/img/logo_rs.png')}}' rel='shortcut icon'>
+    <link href='{{ asset('public/img/logo_rs.png') }}' rel='shortcut icon'>
     <!-- Google Font: Source Sans Pro -->
     {{-- <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"> --}}
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{ asset('public/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="{{ asset('public/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('public/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('public/dist/css/adminlte.min.css') }}">
     <!-- DataTables -->
-    <link rel="stylesheet" href="{{ asset('public/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }} ">
+    <link rel="stylesheet"
+        href="{{ asset('public/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }} ">
     <link rel="stylesheet" href="{{ asset('public/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('public/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('public/dist/css/datepicker.css') }}" rel="stylesheet">
@@ -64,10 +65,11 @@
     </style>
 </head>
 
-<body id="my" class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed sidebar-collapse">
+<body id="my"
+    class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed sidebar-collapse">
     <div class="preloader" id="loader">
         <div class="loading">
-            <img src="{{ asset("public/img/fb.gif") }}" width="80">
+            <img src="{{ asset('public/img/fb.gif') }}" width="80">
             <p>Harap Tunggu</p>
         </div>
     </div>
