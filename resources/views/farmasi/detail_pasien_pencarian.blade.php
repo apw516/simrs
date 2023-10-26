@@ -238,7 +238,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form class="headerracikan">
                     <div class="form-group row">
                         <label for="inputPassword" class="col-sm-2 col-form-label">Nama Racikan</label>
                         <div class="col-sm-5">
@@ -372,9 +372,11 @@
                             </form>
                         </div>
                         <div class="card-footer bg-danger">
-                            <div class="grantotal_racikan">
+                            <form action="" class="formtotal_racikan">
+                                <div class="grantotal_racikan">
 
-                            </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -789,7 +791,7 @@
         dosis_awal = $('#dosis_awal').val()
         dosis_racik = $('#dosis_racik').val()
         namaracikan = $('#namaracikan').val()
-        tiperacikan = $('#tiperacikan').val()
+        tiperacikan = $('#tiperacikan:checked').val()
         status = $('#status:checked').val()
         if (status == 80) {
             so = 'REGULER'
@@ -860,7 +862,8 @@
                                 '"></div><div class="form-group col-md-2"><label for="inputPassword4">Sub Total</label><input readonly type="" class="form-control form-control-sm text-xs" id="" name="sub_total_order" value="' +
                                 subtotalracik_2 +
                                 '"></div><i class="bi bi-x-square remove_field form-group col-md-1 text-danger" kode2="' +
-                                kode + '" subtot="' + subtot2 + '" jenis="' + status +
+                                kode + '" gtkomponen="' + subtotalracik_2 + '"subtot="' + subtot2 +
+                                '" jenis="' + status +
                                 '" nama_barang="' + namabarang +
                                 '" kode_barang="' + kode + '" id_stok="' + id_stok + '" harga2="' +
                                 harga2 + '" satuan="' +
@@ -877,7 +880,6 @@
                             jasaembalaseracik = $('#jasaembalaseracik').val()
                             jasaresepracik = $('#jasaresepracik').val()
                             grandtotalracik = $('#grandtotal_racikan').val()
-                            tiperacikan
                             $.ajax({
                                 type: 'post',
                                 data: {
@@ -905,43 +907,13 @@
             if (x < max_fields) { //max input box allowed
                 $(wrapper).on("click", ".remove_field", function(e) { //user click on remove
                     kode = $(this).attr('kode2')
-                    subtot3 = $(this).attr('subtot')
-                    jenis = $(this).attr('jenis')
-                    a = $(this).attr('nama_barang')
-                    b = $(this).attr('kode_barang')
-                    c = $(this).attr('id_stok')
-                    d = $(this).attr('harga2')
-                    z = $(this).attr('satuan')
-                    f = $(this).attr('stok')
-                    g = $(this).attr('qty')
-                    h = $(this).attr('harga')
-                    i = $(this).attr('disc')
-                    j = $(this).attr('dosis')
-                    k = $(this).attr('sub')
-                    l = $(this).attr('sub2')
-                    st = $(this).attr('status')
-                    $('#pre_nama_barang').val(a)
-                    $('#pre_kode').val(b)
-                    $('#pre_id_ti').val(c)
-                    $('#harga2').val(d)
-                    $('#pre_satuan').val(z)
-                    $('#pre_stok').val(f)
-                    $('#pre_qty').val(g)
-                    $('#pre_harga').val(h)
-                    $('#pre_disc').val(i)
-                    $('#pre_dosis').val(j)
-                    $('#pre_sub').val(k)
-                    $('#pre_sub_2').val(l)
-
-
-                    totalitem = $('#jumlahkomponen').val()
-                    totalitemracik2 = $('#totalitemracik2').val()
-                    grandtotal = $('#grandtotal2').val()
-                    jumlahitem = $('#jumlahitem').val()
-                    resepreguler = $('#resepreguler').val()
-                    resepkronis = $('#resepkronis').val()
-                    resephibah = $('#resephibah').val()
-                    resepkemo = $('#resepkemo').val()
+                    harga_total_komponen = $(this).attr('gtkomponen')
+                    total_racik = $('#totalitemracik2').val()
+                    jumlahkomponen = $('#jumlahkomponen').val()
+                    jasabacaracik = $('#jasabacaracik').val()
+                    jasaembalaseracik = $('#jasaembalaseracik').val()
+                    jasaresepracik = $('#jasaresepracik').val()
+                    grandtotal_racikan = $('#grandtotal_racikan').val()
                     $('#' + kode).removeAttr('status', true)
                     e.preventDefault();
                     $(this).parent('div').remove();
@@ -950,18 +922,15 @@
                         type: 'post',
                         data: {
                             _token: "{{ csrf_token() }}",
-                            subtot3,
-                            totalitem,
-                            grandtotal,
-                            jumlahitem,
-                            jenis,
-                            resepreguler,
-                            resepkronis,
-                            resephibah,
-                            resepkemo,
-                            totalitemracik2,
-                            d,
-                            qtyracikan
+                            harga_total_komponen,
+                            total_racik,
+                            jumlahkomponen,
+                            qtyracikan,
+                            jasabacaracik,
+                            jasaembalaseracik,
+                            jasaresepracik,
+                            grandtotal_racikan,
+                            tiperacikan
                         },
                         url: '<?= route('minus_grand_total_retur') ?>',
                         success: function(response) {
@@ -974,6 +943,42 @@
     }
 
     function simpanracikan() {
-        alert('ok')
+        var data1 = $('.form_draf_obat_racik').serializeArray();
+        var data2 = $('.formtotal_racikan').serializeArray();
+        var data3 = $('.headerracikan').serializeArray();
+        $.ajax({
+            async: true,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                _token: "{{ csrf_token() }}",
+                data1: JSON.stringify(data1),
+                data2: JSON.stringify(data2),
+                data3: JSON.stringify(data3)
+            },
+            url: '<?= route('simpanracikan_draft') ?>',
+            error: function(data) {
+                spinner.hide()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ooops....',
+                    text: 'Sepertinya ada masalah......',
+                    footer: ''
+                })
+            },
+            success: function(data) {
+                spinner.hide()
+                if (data.kode == 500) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oopss...',
+                        text: data.message,
+                        footer: ''
+                    })
+                } else {
+
+                }
+            }
+        });
     }
 </script>

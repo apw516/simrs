@@ -684,6 +684,7 @@ Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
     Route::get('/cetaketiket/{kodekunjungan}', [FarmasiController::class, 'CetakEtiket'])->middleware('auth')->name('CetakEtiket');
     Route::get('/cetaknotafarmasi/{kodekunjungan}', [FarmasiController::class, 'cetaknotafarmasi'])->middleware('auth')->name('CetakNotaFarmasi');
     Route::post('/jumlah_grand_total_racikan}', [FarmasiController::class, 'jumlahGrandtotalracikan'])->middleware('auth')->name('jumlah_grand_total_racikan');
+    Route::post('/simpanracikan_draft', [FarmasiController::class, 'simpanracikan_draft'])->middleware('auth')->name('simpanracikan_draft');
     // Route::get('/test_print', [FarmasiController::class, 'test_print'])->middleware('auth')->name('test_print');
 });
 

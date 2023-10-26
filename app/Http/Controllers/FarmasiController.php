@@ -1268,27 +1268,27 @@ class FarmasiController extends Controller
         $grantotalracik = $request->grandtotalracik;
         if ($jumlahkomponen == 'null') {
             $jumlahkomponen = 1;
-            if($tiperacikan == 1){
+            if ($tiperacikan == 1) {
                 //nonpowder
                 $jasaembalase = 0;
-            }elseif($tiperacikan == 2){
+            } elseif ($tiperacikan == 2) {
                 $jasaembalase = 700;
                 //powder
             }
         } else {
             $jumlahkomponen = $request->jumlahkomponen + 1;
-            if($tiperacikan == 1){
+            if ($tiperacikan == 1) {
                 //nonpowder
                 $jasaembalase = 0;
-            }elseif($tiperacikan == 2){
+            } elseif ($tiperacikan == 2) {
                 $jasaembalase = 700 + $jasaembal;
                 //powder
             }
         }
-        if($tiperacikan == 1){
+        if ($tiperacikan == 1) {
             //nonpowder
             $jasaresep = 7000;
-        }elseif($tiperacikan == 2){
+        } elseif ($tiperacikan == 2) {
             $jasaresep = 1000;
             //powder
         }
@@ -1375,19 +1375,45 @@ class FarmasiController extends Controller
     }
     public function minus_grand_total_retur(Request $request)
     {
+        $hargakomponen = $request->harga_total_komponen;
+        $totalracik = $request->total_racik;
+        $new_total_item_racik = $totalracik - $hargakomponen;
+        $jumlahkomponen = $request->jumlahkomponen - 1;
+        $jumlahkomponen = $jumlahkomponen;
         $qtyracikan = $request->qtyracikan;
-        $totalitem = $request->totalitem;
-        $totalharga = $request->totalitemracik2;
-        $harga = $request->d;
-        $jumlahkomponen = $totalitem - 1;
-        $new_total_item_racik = $totalharga - $harga;
-        if ($new_total_item_racik < 0) {
-            $new_total_item_racik = 0;
+
+        $jasaracik = $request->jasabacaracik;
+        $jasaembal = $request->jasaembalaseracik;
+        $jasaresep = $request->jasaresepracik;
+        $gtracikan = $request->grandtotal_racikan;
+
+
+        $jasabaca = 0;
+        if($request->tiperacikan == 1){
+            $jasaembalase = 0;
+            if($jumlahkomponen <= 0){
+                $jasaresep = 0;
+            }else{
+                $jasaresep = 7000;
+            }
+        }else{
+            $jasaembalase = $jasaembal - 700;
+            if($jumlahkomponen <= 0){
+                $jasaresep = 0;
+                $jasaembalase = 0;
+            }else{
+                $jasaresep = 1000;
+            }
         }
+        $grantotalracik = $new_total_item_racik + $jasaembalase + $jasaresep;
         return view('farmasi.grand_total_racikan', compact([
-            'qtyracikan',
             'jumlahkomponen',
-            'new_total_item_racik'
+            'qtyracikan',
+            'new_total_item_racik',
+            'jasaembalase',
+            'grantotalracik',
+            'jasabaca',
+            'jasaresep'
         ]));
     }
     public function get_now()
@@ -2079,5 +2105,32 @@ class FarmasiController extends Controller
         }
         date_default_timezone_set('Asia/Jakarta');
         return 'RETDET' . date('ymd') . $kd;
+    }
+    public function simpanracikan_draft(Request $request)
+    {
+        $komponen_racik = json_decode($_POST['data1'], true);
+        // dd($komponen_racik);
+        $total_racikan = json_decode($_POST['data2'], true);
+        $headerracikan = json_decode($_POST['data3'], true);
+        $arrayindex_racikan = [];
+        foreach ($komponen_racik as $nama) {
+            $index = $nama['name'];
+            $value = $nama['value'];
+            $dataSet[$index] = $value;
+            if ($index == 'sub_total_order') {
+                $arrayindex_far[] = $dataSet;
+            }
+        }
+        foreach ($headerracikan as $head) {
+            $index =  $head['name'];
+            $value =  $head['value'];
+            $dataSet_head[$index] = $value;
+        }
+        foreach ($total_racikan as $total) {
+            $index =  $total['name'];
+            $value =  $total['value'];
+            $dataSet_gt[$index] = $value;
+        }
+        dd($dataSet_head);
     }
 }
