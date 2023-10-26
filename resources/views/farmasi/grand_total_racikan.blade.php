@@ -25,28 +25,28 @@
         <div class="col-md-2">
             <div class="form-group">
                 <label for="exampleInputEmail1">Jasa Baca</label>
-                <input readonly type="text" class="form-control" id="jumlahitem" value=""
+                <input readonly type="text" class="form-control" id="jasabacaracik" value="{{ $jasabaca }}"
                     aria-describedby="emailHelp">
             </div>
         </div>
         <div class="col-md-2">
             <div class="form-group">
                 <label for="exampleInputEmail1">Jasa Embalase</label>
-                <input readonly type="text" class="form-control" id="jumlahitem" value=""
+                <input readonly type="text" class="form-control" id="jasaembalaseracik" value="{{ $jasaembalase }}"
                     aria-describedby="emailHelp">
             </div>
         </div>
         <div class="col-md-2">
             <div class="form-group">
                 <label for="exampleInputEmail1">Jasa Resep</label>
-                <input readonly type="text" class="form-control" id="jumlahitem" value=""
+                <input readonly type="text" class="form-control" id="jasaresepracik" value="{{ $jasaresep }}"
                     aria-describedby="emailHelp">
             </div>
         </div>
         <div class="col-md-2">
             <div class="form-group">
                 <label for="exampleInputEmail1">Grand Total Racikan</label>
-                <input readonly type="text" class="form-control" id="jumlahitem" value=""
+                <input readonly type="text" class="form-control" id="grandtotal_racikan" value="{{ $grantotalracik }}"
                     aria-describedby="emailHelp">
             </div>
         </div>

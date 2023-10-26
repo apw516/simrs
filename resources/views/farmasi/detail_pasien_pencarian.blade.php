@@ -788,7 +788,8 @@
         qtyracikan = $('#qtyracikan').val()
         dosis_awal = $('#dosis_awal').val()
         dosis_racik = $('#dosis_racik').val()
-
+        namaracikan = $('#namaracikan').val()
+        tiperacikan = $('#tiperacikan').val()
         status = $('#status:checked').val()
         if (status == 80) {
             so = 'REGULER'
@@ -799,11 +800,11 @@
         } else {
             so = 'HIBAH'
         }
-        if (kode == '' || qtyracikan == '') {
+        if (kode == '' || qtyracikan == '' || namaracikan == '') {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'qty racikan tidak boleh kosong / tidak ada obat yang dipilih !',
+                text: 'nama racikan harap diisis / qty racikan tidak boleh kosong / tidak ada obat yang dipilih !',
                 footer: '<a href="">Why do I have this issue?</a>'
             })
         } else {
@@ -872,6 +873,11 @@
                             jumlahkomponen = $('#jumlahkomponen').val()
                             totalitemracik = $('#totalitemracik2').val()
                             totalitem = $('#totalitem').val()
+                            jasabacaracik = $('#jasabacaracik').val()
+                            jasaembalaseracik = $('#jasaembalaseracik').val()
+                            jasaresepracik = $('#jasaresepracik').val()
+                            grandtotalracik = $('#grandtotal_racikan').val()
+                            tiperacikan
                             $.ajax({
                                 type: 'post',
                                 data: {
@@ -880,7 +886,12 @@
                                     jumlahkomponen,
                                     totalitem,
                                     totalitemracik,
-                                    subtotalracik_2
+                                    subtotalracik_2,
+                                    jasabacaracik,
+                                    jasaembalaseracik,
+                                    jasaresepracik,
+                                    grandtotalracik,
+                                    tiperacikan
                                 },
                                 url: '<?= route('jumlah_grand_total_racikan') ?>',
                                 success: function(response) {

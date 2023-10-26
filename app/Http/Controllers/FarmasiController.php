@@ -91,12 +91,12 @@ class FarmasiController extends Controller
         $poliklinik = $request->poliklinik;
         $tanggalcari = $request->tanggalcari;
         $now = $this->get_date();
-        if($tanggalcari == $now){
-            $kunjungan = DB::select('SELECT date(tgl_masuk) as tgl_masuk,no_rm,kode_kunjungan,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat,fc_nama_unit1(kode_unit) AS nama_unit,kode_unit, fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin FROM ts_kunjungan WHERE kode_unit = ? AND status_kunjungan = ? AND date(tgl_masuk) = ?', [$poliklinik, '1',$tanggalcari]);
-        }else{
-            $kunjungan = DB::select('SELECT date(tgl_masuk) as tgl_masuk,no_rm,kode_kunjungan,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat,fc_nama_unit1(kode_unit) AS nama_unit,kode_unit, fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin FROM ts_kunjungan WHERE kode_unit = ? AND status_kunjungan <> ? AND date(tgl_masuk) = ?', [$poliklinik, '8',$tanggalcari]);
+        if ($tanggalcari == $now) {
+            $kunjungan = DB::select('SELECT date(tgl_masuk) as tgl_masuk,no_rm,kode_kunjungan,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat,fc_nama_unit1(kode_unit) AS nama_unit,kode_unit, fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin FROM ts_kunjungan WHERE kode_unit = ? AND status_kunjungan = ? AND date(tgl_masuk) = ?', [$poliklinik, '1', $tanggalcari]);
+        } else {
+            $kunjungan = DB::select('SELECT date(tgl_masuk) as tgl_masuk,no_rm,kode_kunjungan,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat,fc_nama_unit1(kode_unit) AS nama_unit,kode_unit, fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin FROM ts_kunjungan WHERE kode_unit = ? AND status_kunjungan <> ? AND date(tgl_masuk) = ?', [$poliklinik, '8', $tanggalcari]);
         }
-            return view('farmasi.tabel_pasien_poli', compact([
+        return view('farmasi.tabel_pasien_poli', compact([
             'kunjungan'
         ]));
         // $mt_pasien = DB::select('Select no_rm,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$rm]);
@@ -110,11 +110,11 @@ class FarmasiController extends Controller
         $rm = $request->rm;
         $kodeunit = $request->kodeunit;
         $kodekunjungan = $request->kodekunjungan;
-        $kunjungan = DB::select('SELECT date(tgl_masuk) as tgl_masuk,no_rm,kode_kunjungan,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat,fc_nama_unit1(kode_unit) AS nama_unit,kode_unit, fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin FROM ts_kunjungan WHERE no_rm = ? AND kode_unit = ? AND status_kunjungan <> ? AND kode_kunjungan = ?', [$rm, $kodeunit, '8',$kodekunjungan]);
+        $kunjungan = DB::select('SELECT date(tgl_masuk) as tgl_masuk,no_rm,kode_kunjungan,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat,fc_nama_unit1(kode_unit) AS nama_unit,kode_unit, fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin FROM ts_kunjungan WHERE no_rm = ? AND kode_unit = ? AND status_kunjungan <> ? AND kode_kunjungan = ?', [$rm, $kodeunit, '8', $kodekunjungan]);
         $mt_pasien = DB::select('Select no_rm,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$rm]);
         $orderan = db::select('SELECT * ,fc_nama_unit1(unit_pengirim) AS nama_unit,fc_nama_paramedis1(dok_kirim) AS nama_dokter FROM ts_layanan_detail_order a
         LEFT OUTER JOIN ts_layanan_header_order b ON a.`row_id_header` = b.`id`
-        WHERE DATE(a.`tgl_layanan_detail`) = ? AND b.`kode_kunjungan` = ?', ([$kunjungan[0]->tgl_masuk,$kunjungan[0]->kode_kunjungan]));
+        WHERE DATE(a.`tgl_layanan_detail`) = ? AND b.`kode_kunjungan` = ?', ([$kunjungan[0]->tgl_masuk, $kunjungan[0]->kode_kunjungan]));
         return view('farmasi.detail_pasien_pencarian', compact([
             'mt_pasien',
             'kunjungan',
@@ -1259,16 +1259,49 @@ class FarmasiController extends Controller
     {
         $qtyracikan = $request->qtyracikan;
         $jumlahkomponen = $request->jumlahkomponen;
+        $tiperacikan = $request->tiperacikan;
         $new_total_item_racik = $request->subtotalracik_2 + $request->totalitemracik;
+
+        $jasabaca = $request->jasabacaracik;
+        $jasaembal = $request->jasaembalaseracik;
+        $jasaresepracik = $request->jasaresepracik;
+        $grantotalracik = $request->grandtotalracik;
         if ($jumlahkomponen == 'null') {
             $jumlahkomponen = 1;
+            if($tiperacikan == 1){
+                //nonpowder
+                $jasaembalase = 0;
+            }elseif($tiperacikan == 2){
+                $jasaembalase = 700;
+                //powder
+            }
         } else {
             $jumlahkomponen = $request->jumlahkomponen + 1;
-        };
-        return view('farmasi.grand_total_racikan',compact([
+            if($tiperacikan == 1){
+                //nonpowder
+                $jasaembalase = 0;
+            }elseif($tiperacikan == 2){
+                $jasaembalase = 700 + $jasaembal;
+                //powder
+            }
+        }
+        if($tiperacikan == 1){
+            //nonpowder
+            $jasaresep = 7000;
+        }elseif($tiperacikan == 2){
+            $jasaresep = 1000;
+            //powder
+        }
+        $jasabaca = 0;
+        $grantotalracik = $new_total_item_racik + $jasaembalase + $jasaresep;
+        return view('farmasi.grand_total_racikan', compact([
             'qtyracikan',
             'jumlahkomponen',
-            'new_total_item_racik'
+            'new_total_item_racik',
+            'jasaembalase',
+            'jasaresep',
+            'grantotalracik',
+            'jasabaca'
         ]));
     }
     public function minus_grand_total(Request $request)
@@ -1348,10 +1381,10 @@ class FarmasiController extends Controller
         $harga = $request->d;
         $jumlahkomponen = $totalitem - 1;
         $new_total_item_racik = $totalharga - $harga;
-        if($new_total_item_racik < 0){
+        if ($new_total_item_racik < 0) {
             $new_total_item_racik = 0;
         }
-        return view('farmasi.grand_total_racikan',compact([
+        return view('farmasi.grand_total_racikan', compact([
             'qtyracikan',
             'jumlahkomponen',
             'new_total_item_racik'
@@ -1812,7 +1845,7 @@ class FarmasiController extends Controller
             $value =  $nama['value'];
             $dataSet[$index] = $value;
         }
-        if(trim($dataSet['jumlahretur']) == ''){
+        if (trim($dataSet['jumlahretur']) == '') {
             $data = [
                 'kode' => 500,
                 'message' => 'Jumlah retur tidak boleh kosong !',
@@ -1820,7 +1853,7 @@ class FarmasiController extends Controller
             echo json_encode($data);
             die;
         }
-        if($dataSet['jumlah'] <= 0){
+        if ($dataSet['jumlah'] <= 0) {
             $data = [
                 'kode' => 500,
                 'message' => 'Gagal , semua obat sudah diretur !',
@@ -1836,7 +1869,7 @@ class FarmasiController extends Controller
         //proses hitung retur dits layanan detail
         $tarif_layanan = $get_detail[0]->total_tarif;
         $jumlah_layanan = $get_detail[0]->jumlah_layanan;
-        if($jumlah_layanan - $dataSet['jumlahretur'] < 0){
+        if ($jumlah_layanan - $dataSet['jumlahretur'] < 0) {
             $data = [
                 'kode' => 500,
                 'message' => 'Gagal , Jumlah retur lebih banyak dari qty awal !',
