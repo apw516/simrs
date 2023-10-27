@@ -135,7 +135,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9']], function () {
         ->name('berkaserm'); //sidebar
     Route::post('/cariberkasnya_pasien', [RanapController::class, 'cariberkasnya_pasien'])
         ->name('cariberkasnya_pasien'); //sidebar
-    Route::get('/datapasienranap', [SimrsController::class, 'datapasienranap'])
+    Route::post('/carisuratkontrol_ranap', [RanapController::class, 'carisuratkontrol_ranap'])
+        ->name('carisuratkontrol_ranap');     Route::get('/datapasienranap', [SimrsController::class, 'datapasienranap'])
         ->name('datapasienranap'); //sidebar
     Route::post('/lihatcatatanpasien', [SimrsController::class, 'lihatcatatanpasien'])
         ->name('lihatcatatanpasien'); //sidebar
@@ -676,21 +677,4 @@ Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
     Route::post('/simpanretur', [FarmasiController::class, 'simpanretur'])->middleware('auth')->name('simpanretur');
     Route::get('/cetaketiket/{kodekunjungan}', [FarmasiController::class, 'CetakEtiket'])->middleware('auth')->name('CetakEtiket');
     Route::get('/cetaknotafarmasi/{kodekunjungan}', [FarmasiController::class, 'cetaknotafarmasi'])->middleware('auth')->name('CetakNotaFarmasi');
-    // Route::get('/test_print', [FarmasiController::class, 'test_print'])->middleware('auth')->name('test_print');
 });
-
-
-Route::group(['middleware' => ['auth', 'hak_akses1:99']], function () {
-    Route::get('/antrianigd', [AntrianIgd::class, 'index']);
-    Route::post('/ambildatapasien_igd', [AntrianIgd::class, 'datapasien_igd'])->name('ambildatapasien_igd');
-    // Route::post('/simpanpemeriksaanperawat_igd', [AntrianIgd::class, 'simpanpasien'])->name('simpanpemeriksaanperawat_igd');
-});
-
-
-
-
-
-
-
-
-// Route::get('/pendaftaran', [SimrsController::class, 'Pendaftaran'])->middleware('auth');

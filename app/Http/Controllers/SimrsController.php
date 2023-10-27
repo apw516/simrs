@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use PDF;
+// use PDF;
 // use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Mike42\Escpos\Printer;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
@@ -12,6 +12,7 @@ use Mike42\Escpos\EscposImage;
 use Mike42\Escpos\GdEscposImage;
 use Illuminate\Support\Facades\Auth;
 use Codedge\Fpdf\Fpdf\Fpdf;
+use Codedge\Fpdf\Fpdf\PDF2;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
@@ -3664,5 +3665,9 @@ class SimrsController extends Controller
             'rm',
             'mt_pasien',
         ]));
+    }
+    public function Cetaklabel($rm)
+    {
+        $dtpx = DB::select("CALL SP_LABEL_PASIEN('$rm')");
     }
 }
