@@ -3671,7 +3671,6 @@ class SimrsController extends Controller
         $QUERY = $PDO->prepare("CALL SP_LABEL_PASIEN('$rm')");
         $QUERY->execute();
         $data = $QUERY->fetchAll();
-        dd($data);
         $filename = 'C:\cetakanerm\label_RM\label_rm.jrxml';
         $config = ['driver' => 'array', 'data' => $data];
         $report = new PHPJasperXML();
