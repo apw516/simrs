@@ -41,6 +41,7 @@ use App\Models\ts_rujukan;
 use App\Models\jkn_antrian;
 use App\Models\Status;
 use App\Models\tracer;
+use simitsdk\phpjasperxml\PHPJasperXML;
 
 class SimrsController extends Controller
 {
@@ -880,9 +881,7 @@ class SimrsController extends Controller
                 ];
                 echo json_encode($data);
                 die;
-            }
-            else if (count($cek_kunjungan_aktif) > 0)
-            {
+            } else if (count($cek_kunjungan_aktif) > 0) {
                 $data = [
                     'kode' => 500,
                     'message' => 'status kunjungan pasien masih aktif ! Sudah didaftarkan'
@@ -3668,6 +3667,27 @@ class SimrsController extends Controller
     }
     public function Cetaklabel($rm)
     {
-        $dtpx = DB::select("CALL SP_LABEL_PASIEN('$rm')");
+        $PDO = DB::connection()->getPdo();
+        $QUERY = $PDO->prepare("CALL SP_LABEL_PASIEN('$rm')");
+        $QUERY->execute();
+        $data = $QUERY->fetchAll();
+        dd($data);
+        $filename = 'C:\cetakanerm\label_RM\label_rm.jrxml';
+        $config = ['driver' => 'array', 'data' => $data];
+        $report = new PHPJasperXML();
+        $report->load_xml_file($filename)
+            ->setDataSource($config)
+            ->export('Pdf');
+
+
+
+        // $dtpx = DB::select("CALL SP_LABEL_PASIEN('$rm')");
+        // // $pdf = new PDF2('L', 'cm', array('5', '3'));
+        // $pdf = new fpdf('P', 'mm', 'A4');
+        // $pdf->SetFont('Arial', 'B', 16);
+        // // $pdf->setXY(0,10);
+        // // $pdf->Cell(20, 10, 'Title', 20, 1, 'C');
+        // $pdf->Output();
+        // exit;
     }
 }
