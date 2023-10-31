@@ -3671,15 +3671,12 @@ class SimrsController extends Controller
         $QUERY = $PDO->prepare("CALL SP_LABEL_PASIEN('$rm')");
         $QUERY->execute();
         $data = $QUERY->fetchAll();
-        $filename = 'C:\cetakan erm\label_RM\label_rm.jrxml';
+        $filename = 'C:\cetakanerm\label_rm.jrxml';
         $config = ['driver' => 'array', 'data' => $data];
         $report = new PHPJasperXML();
         $report->load_xml_file($filename)
             ->setDataSource($config)
             ->export('Pdf');
-
-
-
         // $dtpx = DB::select("CALL SP_LABEL_PASIEN('$rm')");
         // // $pdf = new PDF2('L', 'cm', array('5', '3'));
         // $pdf = new fpdf('P', 'mm', 'A4');
