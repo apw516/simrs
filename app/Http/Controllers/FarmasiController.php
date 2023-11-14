@@ -115,10 +115,12 @@ class FarmasiController extends Controller
         $orderan = db::select('SELECT * ,fc_nama_unit1(unit_pengirim) AS nama_unit,fc_nama_paramedis1(dok_kirim) AS nama_dokter FROM ts_layanan_detail_order a
         LEFT OUTER JOIN ts_layanan_header_order b ON a.`row_id_header` = b.`id`
         WHERE DATE(a.`tgl_layanan_detail`) = ? AND b.`kode_kunjungan` = ?', ([$kunjungan[0]->tgl_masuk, $kunjungan[0]->kode_kunjungan]));
+        $riwyat_order = DB::connection('mysql4')->select('SELECT *,fc_nama_unit1(kode_unit) AS unit_tujuan,fc_nama_unit1(unit_pengirim) AS unit_pengirim,FC_NAMA_PARAMEDIS1(dok_kirim) AS Dokter_kirim FROM ts_layanan_header WHERE kode_unit BETWEEN ? AND ? AND kode_kunjungan = ?',['4001','4013',$kodekunjungan]);
         return view('farmasi.detail_pasien_pencarian', compact([
             'mt_pasien',
             'kunjungan',
-            'orderan'
+            'orderan',
+            'riwyat_order'
         ]));
     }
     public function ambil_data_order()
@@ -684,87 +686,6 @@ class FarmasiController extends Controller
 
             $now = $this->get_now();
             $totalheader = 0;
-            //create layanan detail
-            // foreach ($arrayindex_kemo as $a) {
-            //     $mt_barang = DB::select('select * from mt_barang where kode_barang = ?', [$a['kode_barang_order']]);
-            //     $total = $a['harga2_order'] * $a['qty_order'];
-            //     $diskon = $a['disc_order'];
-            //     $hitung = $diskon / 100 * $total;
-            //     $grandtotal = $total - $hitung + 1200 + 500;
-
-            //     if ($data_kunjungan[0]->kode_penjamin != 'P01') {
-            //         $tagihan_pribadi = 0;
-            //         $tagihan_penjamin = $grandtotal;
-            //     } else {
-            //         $tagihan_pribadi = $grandtotal;
-            //         $tagihan_penjamin = 0;
-            //     }
-            //     $kode_detail_obat_kemo = $this->createLayanandetail();
-            //     $ts_layanan_detail = [
-            //         'id_layanan_detail' => $kode_detail_obat_kemo,
-            //         'kode_layanan_header' => $kode_layanan_header,
-            //         'kode_tarif_detail' => '',
-            //         'total_tarif' => $a['harga2_order'],
-            //         'jumlah_layanan' => $a['qty_order'],
-            //         'total_layanan' => $total,
-            //         'diskon_layanan' => $a['disc_order'],
-            //         'grantotal_layanan' => $grandtotal,
-            //         'status_layanan_detail' => 'OPN',
-            //         'tgl_layanan_detail' => $now,
-            //         'kode_barang' => $a['kode_barang_order'],
-            //         'aturan_pakai' => $a['dosis_order'],
-            //         'kategori_resep' => $kategori_resep,
-            //         'satuan_barang' => $mt_barang[0]->satuan,
-            //         'tipe_anestesi' => $a['status_order_2'],
-            //         'tagihan_pribadi' => $tagihan_pribadi,
-            //         'tagihan_penjamin' => $tagihan_penjamin,
-            //         'tgl_layanan_detail_2' => $now,
-            //         'row_id_header' => $header->id,
-            //     ];
-            //     $detail = ts_layanan_detail_dummy::create($ts_layanan_detail);
-            //     //insert_ti_kartu_stok
-            //     $cek_stok_curr = db::select('SELECT * FROM ti_kartu_stok WHERE NO = ( SELECT MAX(a.no ) AS nomor FROM ti_kartu_stok a WHERE kode_barang = ? AND kode_unit = ? )', ([$a['kode_barang_order'], auth()->user()->unit]));
-            //     $stok_last = $cek_stok_curr[0]->stok_current;
-            //     $stok_current = $cek_stok_curr[0]->stok_current - $a['qty_order'];
-
-            //     $data_ti_kartu_stok = [
-            //         'no_dokumen' => $kode_layanan_header,
-            //         'no_dokumen_detail' => $kode_detail_obat_kemo,
-            //         'tgl_stok' => $this->get_now(),
-            //         'kode_unit' => auth()->user()->unit,
-            //         'kode_barang' => $a['kode_barang_order'],
-            //         'stok_last' => $stok_last,
-            //         'stok_out' => $a['qty_order'],
-            //         'stok_current' => $stok_current,
-            //         'harga_beli' => $mt_barang[0]->harga_beli,
-            //         'act' => '1',
-            //         'act_ed' => '1',
-            //         'input_by' => auth()->user()->id,
-            //         'keterangan' => $data_kunjungan[0]->no_rm . '|' . $data_kunjungan[0]->nama_pasien . '|' . $data_kunjungan[0]->alamat_pasien,
-            //     ];
-            //     $insert_ti_kartu_stok = ti_kartu_stok::create($data_ti_kartu_stok);
-            //     //end of insert ti_kartu_Stok
-
-            //     $ts_layanan_detail2 = [
-            //         'id_layanan_detail' => $this->createLayanandetail(),
-            //         'kode_layanan_header' => $kode_layanan_header,
-            //         'kode_tarif_detail' => 'TX23513',
-            //         'total_tarif' => $jsf[0]->jasa_resep + $jsf[0]->jasa_embalase,
-            //         'jumlah_layanan' => 1,
-            //         'total_layanan' => $jsf[0]->jasa_resep + $jsf[0]->jasa_embalase,
-            //         'grantotal_layanan' => $jsf[0]->jasa_resep + $jsf[0]->jasa_embalase,
-            //         'status_layanan_detail' => 'OPN',
-            //         'tgl_layanan_detail' => $now,
-            //         'tagihan_pribadi' => '0',
-            //         'tagihan_penjamin' => '0',
-            //         'tgl_layanan_detail_2' => $now,
-            //         'row_id_header' => $header->id,
-            //     ];
-            //     $detail2 = ts_layanan_detail_dummy::create($ts_layanan_detail2);
-            //     $totalheader = $totalheader + $grandtotal;
-            // }
-            //end layanan detail
-
             //create layanan detail obat
             foreach ($arrayindex_kemo as $a) {
                 $mt_barang = DB::select('select * from mt_barang where kode_barang = ?', [$a['kode_barang_order']]);
@@ -1005,86 +926,6 @@ class FarmasiController extends Controller
                 }
                 $totalheader = $totalheader + $grandtotal;
             }
-
-            // foreach ($arrayindex_hibah as $a) {
-            //     $mt_barang = DB::select('select * from mt_barang where kode_barang = ?', [$a['kode_barang_order']]);
-            //     $total = $a['harga2_order'] * $a['qty_order'];
-            //     $diskon = $a['disc_order'];
-            //     $hitung = $diskon / 100 * $total;
-            //     $grandtotal = $total - $hitung + 0 + 0;
-
-            //     if ($data_kunjungan[0]->kode_penjamin != 'P01') {
-            //         $tagihan_pribadi = 0;
-            //         $tagihan_penjamin = $grandtotal;
-            //     } else {
-            //         $tagihan_pribadi = $grandtotal;
-            //         $tagihan_penjamin = 0;
-            //     }
-            //     $kode_detail_obat_hibah = $this->createLayanandetail();
-            //     $ts_layanan_detail = [
-            //         'id_layanan_detail' => $kode_detail_obat_hibah,
-            //         'kode_layanan_header' => $kode_layanan_header,
-            //         'kode_tarif_detail' => '',
-            //         'total_tarif' => $a['harga2_order'],
-            //         'jumlah_layanan' => $a['qty_order'],
-            //         'total_layanan' => $total,
-            //         'diskon_layanan' => $a['disc_order'],
-            //         'grantotal_layanan' => $grandtotal,
-            //         'status_layanan_detail' => 'OPN',
-            //         'tgl_layanan_detail' => $now,
-            //         'kode_barang' => $a['kode_barang_order'],
-            //         'aturan_pakai' => $a['dosis_order'],
-            //         'kategori_resep' => $kategori_resep,
-            //         'satuan_barang' => $mt_barang[0]->satuan,
-            //         'tipe_anestesi' => $a['status_order_2'],
-            //         'tagihan_pribadi' => $tagihan_pribadi,
-            //         'tagihan_penjamin' => $tagihan_penjamin,
-            //         'tgl_layanan_detail_2' => $now,
-            //         'row_id_header' => $header->id,
-            //     ];
-            //     $detail = ts_layanan_detail_dummy::create($ts_layanan_detail);
-            //     //insert_ti_kartu_stok
-            //     $cek_stok_curr = db::select('SELECT * FROM ti_kartu_stok WHERE NO = ( SELECT MAX(a.no ) AS nomor FROM ti_kartu_stok a WHERE kode_barang = ? AND kode_unit = ? )', ([$a['kode_barang_order'], auth()->user()->unit]));
-            //     $stok_last = $cek_stok_curr[0]->stok_current;
-            //     $stok_current = $cek_stok_curr[0]->stok_current - $a['qty_order'];
-
-            //     $data_ti_kartu_stok = [
-            //         'no_dokumen' => $kode_layanan_header,
-            //         'no_dokumen_detail' => $kode_detail_obat_hibah,
-            //         'tgl_stok' => $this->get_now(),
-            //         'kode_unit' => auth()->user()->unit,
-            //         'kode_barang' => $a['kode_barang_order'],
-            //         'stok_last' => $stok_last,
-            //         'stok_out' => $a['qty_order'],
-            //         'stok_current' => $stok_current,
-            //         'harga_beli' => $mt_barang[0]->harga_beli,
-            //         'act' => '1',
-            //         'act_ed' => '1',
-            //         'input_by' => auth()->user()->id,
-            //         'keterangan' => $data_kunjungan[0]->no_rm . '|' . $data_kunjungan[0]->nama_pasien . '|' . $data_kunjungan[0]->alamat_pasien,
-            //     ];
-            //     $insert_ti_kartu_stok = ti_kartu_stok::create($data_ti_kartu_stok);
-            //     //end of insert ti_kartu_Stok
-
-            //     $ts_layanan_detail2 = [
-            //         'id_layanan_detail' => $this->createLayanandetail(),
-            //         'kode_layanan_header' => $kode_layanan_header,
-            //         'kode_tarif_detail' => 'TX23513',
-            //         'total_tarif' => 0,
-            //         'jumlah_layanan' => 1,
-            //         'total_layanan' => 0,
-            //         'grantotal_layanan' => 0,
-            //         'status_layanan_detail' => 'OPN',
-            //         'tgl_layanan_detail' => $now,
-            //         'tagihan_pribadi' => '0',
-            //         'tagihan_penjamin' => '0',
-            //         'tgl_layanan_detail_2' => $now,
-            //         'row_id_header' => $header->id,
-            //     ];
-            //     $detail2 = ts_layanan_detail_dummy::create($ts_layanan_detail2);
-            //     $totalheader = $totalheader + $grandtotal;
-            // }
-            //end layanan detail
             //insert ti_kartu_stok dan jasa embalase
             $get_detail_obat = DB::connection('mysql4')->select('select * from ts_layanan_detail where row_id_header = ? and kode_tarif_detail = ?', [$header->id, '']);
             foreach ($get_detail_obat as $do) {
@@ -1206,7 +1047,6 @@ class FarmasiController extends Controller
         } else if ($status == '83') {
             $resep_hibah = $resep_hibah + 1;
         }
-
         if ($resep_reguler > 0) {
             $reguler = 1;
         } else {
@@ -1261,7 +1101,6 @@ class FarmasiController extends Controller
         $jumlahkomponen = $request->jumlahkomponen;
         $tiperacikan = $request->tiperacikan;
         $new_total_item_racik = $request->subtotalracik_2 + $request->totalitemracik;
-
         $jasabaca = $request->jasabacaracik;
         $jasaembal = $request->jasaembalaseracik;
         $jasaresepracik = $request->jasaresepracik;
@@ -1272,8 +1111,9 @@ class FarmasiController extends Controller
                 //nonpowder
                 $jasaembalase = 0;
             } elseif ($tiperacikan == 2) {
-                $jasaembalase = 700;
+                $jasaembalase = 500;
                 //powder
+                $jasabaca = 1200;
             }
         } else {
             $jumlahkomponen = $request->jumlahkomponen + 1;
@@ -1281,7 +1121,8 @@ class FarmasiController extends Controller
                 //nonpowder
                 $jasaembalase = 0;
             } elseif ($tiperacikan == 2) {
-                $jasaembalase = 700 + $jasaembal;
+                $jasabaca = $jasabaca + 1200;
+                $jasaembalase = 500 + $jasaembal;
                 //powder
             }
         }
@@ -1292,8 +1133,7 @@ class FarmasiController extends Controller
             $jasaresep = 1000;
             //powder
         }
-        $jasabaca = 0;
-        $grantotalracik = $new_total_item_racik + $jasaembalase + $jasaresep;
+        $grantotalracik = $new_total_item_racik + $jasaembalase + $jasaresep + $jasabaca;
         return view('farmasi.grand_total_racikan', compact([
             'qtyracikan',
             'jumlahkomponen',
@@ -1397,7 +1237,8 @@ class FarmasiController extends Controller
                 $jasaresep = 7000;
             }
         }else{
-            $jasaembalase = $jasaembal - 700;
+            $jasabaca = $jasaracik - 1200;
+            $jasaembalase = $jasaembal - 500;
             if($jumlahkomponen <= 0){
                 $jasaresep = 0;
                 $jasaembalase = 0;
@@ -2109,7 +1950,6 @@ class FarmasiController extends Controller
     public function simpanracikan_draft(Request $request)
     {
         $komponen_racik = json_decode($_POST['data1'], true);
-        // dd($komponen_racik);
         $total_racikan = json_decode($_POST['data2'], true);
         $headerracikan = json_decode($_POST['data3'], true);
         $arrayindex_racikan = [];
@@ -2131,6 +1971,16 @@ class FarmasiController extends Controller
             $value =  $total['value'];
             $dataSet_gt[$index] = $value;
         }
-        dd($dataSet_head);
+        $data_mt_racikan = [
+            'kode_racik' => '',
+            'tgl_racik' => $this->get_now(),
+            'nama_racik' => $dataSet_head['namaracikan'],
+            'total_racik' => $dataSet_gt['totalitemracik2'],
+            'qty_racik' => $dataSet_gt['jumlahitem'],
+            'kemasan' => $dataSet_head['kemasan'],
+            'hrg_kemasan' => $dataSet_gt['jasaembalaseracik'],
+        ];
+        // dd($dataSet_head);
+        dd($data_mt_racikan);
     }
 }

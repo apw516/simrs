@@ -68,6 +68,37 @@
                         <div class="card">
                             <div class="card-header bg-warning">Data Layanan Resep</div>
                             <div class="card-body">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header bg-info">Riwayat Resep Hari Ini</div>
+                                        <div class="card-body">
+                                            <table id="tabel-riwayat-obat-tdy" class="table table-sm table-bordered table-hover">
+                                                <thead>
+                                                    <th>Kode Layanan Header</th>
+                                                    <th>Tgl Entry</th>
+                                                    <th>Unit Pengirim</th>
+                                                    <th>Unit Tujuan</th>
+                                                    <th>Dok Pengirim</th>
+                                                    <th>Total Layanan</th>
+                                                    <th>===</th>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($riwyat_order as $r )
+                                                    <tr>
+                                                        <td>{{ $r->kode_layanan_header }}</td>
+                                                        <td>{{ $r->tgl_entry }}</td>
+                                                        <td>{{ $r->unit_pengirim }}</td>
+                                                        <td>{{ $r->unit_tujuan }}</td>
+                                                        <td>{{ $r->Dokter_kirim }}</td>
+                                                        <td>IDR {{ number_format($r->total_layanan, 2) }}</td>
+                                                        <td><button class="btn btn-sm btn-info">Detail</button></td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                                 <button class="btn btn-success" data-toggle="modal" data-target="#modalcariobat"><i
                                         class="bi bi-search ml-1 mr-2"></i>Cari Obat</button>
                                 <button class="btn btn-danger" data-toggle="modal" data-target="#modalobatracik"><i
@@ -427,6 +458,16 @@
 </div>
 
 <script>
+     $(function() {
+        $("#tabel-riwayat-obat-tdy").DataTable({
+            "responsive": false,
+            "lengthChange": false,
+            "autoWidth": true,
+            "pageLength": 6,
+            "searching": true,
+            "ordering": false,
+        })
+    });
     function hitungsubtotal1() {
         diskon = $('#pre_disc').val()
         if (diskon > 0) {
@@ -873,12 +914,13 @@
                                 '" status="' + status +
                                 '"></i></div>'
                             );
-                            jumlahkomponen = $('#jumlahkomponen').val()
-                            totalitemracik = $('#totalitemracik2').val()
-                            totalitem = $('#totalitem').val()
-                            jasabacaracik = $('#jasabacaracik').val()
-                            jasaembalaseracik = $('#jasaembalaseracik').val()
-                            jasaresepracik = $('#jasaresepracik').val()
+
+                            jumlahkomponen = $('#jumlahkomponen_racikan_gt').val()
+                            totalitemracik = $('#totalitemracik2_gt').val()
+                            totalitem = $('#totalitemracik_racikan_gt').val()
+                            jasabacaracik = $('#jasabacaracik_gt').val()
+                            jasaembalaseracik = $('#jasaembalaseracik_gt').val()
+                            jasaresepracik = $('#jasaresepracik_gt').val()
                             grandtotalracik = $('#grandtotal_racikan').val()
                             $.ajax({
                                 type: 'post',
@@ -908,12 +950,12 @@
                 $(wrapper).on("click", ".remove_field", function(e) { //user click on remove
                     kode = $(this).attr('kode2')
                     harga_total_komponen = $(this).attr('gtkomponen')
-                    total_racik = $('#totalitemracik2').val()
-                    jumlahkomponen = $('#jumlahkomponen').val()
-                    jasabacaracik = $('#jasabacaracik').val()
-                    jasaembalaseracik = $('#jasaembalaseracik').val()
-                    jasaresepracik = $('#jasaresepracik').val()
-                    grandtotal_racikan = $('#grandtotal_racikan').val()
+                    total_racik = $('#totalitemracik2_gt').val()
+                    jumlahkomponen = $('#jumlahkomponen_racikan_gt').val()
+                    jasabacaracik = $('#jasabacaracik_gt').val()
+                    jasaembalaseracik = $('#jasaembalaseracik_gt').val()
+                    jasaresepracik = $('#jasaresepracik_gt').val()
+                    grandtotal_racikan = $('#grandtotal_racikan_gt').val()
                     $('#' + kode).removeAttr('status', true)
                     e.preventDefault();
                     $(this).parent('div').remove();
@@ -934,7 +976,7 @@
                         },
                         url: '<?= route('minus_grand_total_retur') ?>',
                         success: function(response) {
-                            $('.grantotal_racikan').html(response);
+                            $('.grandtotal_racikan_gt').html(response);
                         }
                     });
                 })
