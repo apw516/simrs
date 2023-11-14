@@ -1261,6 +1261,9 @@ class SimrsController extends Controller
                 'ket_kll' => $request->keteranganlaka,
                 'pic1' => auth()->user()->id_simrs,
                 'tingkat_faskes' => $request->asalrujukan,
+                'tujuankunjungan' => $request->tujuankunjungan,
+                'flagprocedure' => $request->flagprocedure,
+                'assesmen_pelayanan' => $request->asessment,
             ];
             $ts_sep = ts_sep::create($data_ts_sep);
             //insert tracer
