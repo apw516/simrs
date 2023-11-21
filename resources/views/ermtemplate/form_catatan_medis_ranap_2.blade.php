@@ -18,6 +18,10 @@
             data-target="#modalhasilrad"><i class="bi bi-journal-text"></i> Hasil Radiologi</button>
         <button class="btn btn-info mb-2 liathasil_pa" nomorrm="{{ $rm }}" data-toggle="modal"
             data-target="#modalhasilpa"><i class="bi bi-journal-text"></i> Hasil Lab PA</button>
+        <button class="btn btn-info mb-2 liathasil_uro" nomorrm="{{ $rm }}" data-toggle="modal"
+            data-target="#modalhasiluro"><i class="bi bi-journal-text"></i> Expertisi Urologi</button>
+        <button class="btn btn-info mb-2 liathasil_obg" nomorrm="{{ $rm }}" data-toggle="modal"
+            data-target="#modalhasilobgyn"><i class="bi bi-journal-text"></i> Expertisi Obgyn</button>
         <div class="accordion" id="accordionExample">
             @php
                 $urutan = 1;
@@ -914,6 +918,50 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalhasiluro" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hasil Expertisi Urologi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_hasil_penunjang_uro">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalhasilobgyn" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hasil Expertisi Obgyn</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_hasil_penunjang_obg">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $(".riwayatorderfarmasi").on('click', function(event) {
         kodekunjungan = $(this).attr('kodekunjungan')
@@ -1145,6 +1193,40 @@
             url: '<?= route('lihathasilpenunjang_pa') ?>',
             success: function(response) {
                 $('.v_hasil_penunjang_pa').html(response);
+                spinner.hide()
+            }
+        });
+    })
+    $(".liathasil_uro").click(function() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm
+            },
+            url: '<?= route('lihathasilpenunjang_uro') ?>',
+            success: function(response) {
+                $('.v_hasil_penunjang_uro').html(response);
+                spinner.hide()
+            }
+        });
+    })
+    $(".liathasil_obg").click(function() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm
+            },
+            url: '<?= route('lihathasilpenunjang_obg') ?>',
+            success: function(response) {
+                $('.v_hasil_penunjang_obg').html(response);
                 spinner.hide()
             }
         });

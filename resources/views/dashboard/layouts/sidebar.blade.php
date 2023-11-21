@@ -65,6 +65,17 @@
                           </a>
                       </li>
                   @endif
+                  @if (auth()->user()->hak_akses == '102')
+                      <li class="nav-item">
+                          <a href="{{ route('berkaserm') }}"
+                              class="nav-link @if ($title == 'SIMRS - Berkas ERM') active @endif">
+                              <i class="nav-icon fas fa-th"></i>
+                              <p style="font-size:12px">
+                                  Berkas ERM
+                              </p>
+                          </a>
+                      </li>
+                  @endif
                   @if (auth()->user()->hak_akses == '9')
                       <li class="nav-item">
                           <a href="{{ route('berkaserm') }}"
@@ -546,7 +557,8 @@
                   @if (auth()->user()->hak_akses == 6)
                       <li class="nav-header">FARMASI</li>
                       <li class="nav-item">
-                          <a href="{{ route('index_layanan_resep')}}" class="nav-link @if ($sidebar == 'farmasi_1') active @endif">
+                          <a href="{{ route('index_layanan_resep') }}"
+                              class="nav-link @if ($sidebar == 'farmasi_1') active @endif">
                               <i class="nav-icon fas fa-th"></i>
                               <p>
                                   Layanan Resep
@@ -562,7 +574,8 @@
                           </a>
                       </li> --}}
                       <li class="nav-item">
-                          <a href="{{ route('cari_resep')}}" class="nav-link @if ($sidebar == 'farmasi_3') active @endif">
+                          <a href="{{ route('cari_resep') }}"
+                              class="nav-link @if ($sidebar == 'farmasi_3') active @endif">
                               <i class="nav-icon fas fa-th"></i>
                               <p>
                                   Cari Resep
@@ -570,7 +583,8 @@
                           </a>
                       </li>
                       <li class="nav-item">
-                          <a href="{{ route('kartu_stok')}}" class="nav-link @if ($sidebar == 'farmasi_4') active @endif">
+                          <a href="{{ route('kartu_stok') }}"
+                              class="nav-link @if ($sidebar == 'farmasi_4') active @endif">
                               <i class="nav-icon fas fa-th"></i>
                               <p>
                                   Kartu Stok

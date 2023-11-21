@@ -7093,6 +7093,24 @@ class ErmController extends Controller
             'rm'
         ]));
     }
+    public function lihathasilpenunjang_uro(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $hasil_ex = DB::select('SELECT * FROM assesmen_dokters  WHERE id_pasien = ? and kode_unit =?', [$rm,'1027']);
+        return view('ermtemplate.view_hasil_penunjang_uro', compact([
+            'hasil_ex',
+            'rm'
+        ]));
+    }
+    public function lihathasilpenunjang_obg(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $hasil_ex = DB::select('SELECT * FROM assesmen_dokters  WHERE id_pasien = ? and kode_unit =?', [$rm,'1012']);
+        return view('ermtemplate.view_hasil_penunjang_obg', compact([
+            'hasil_ex',
+            'rm'
+        ]));
+    }
     public function ambil_form_igd(Request $request)
     {
         $id_antrian = $request->id;

@@ -90,6 +90,10 @@ Route::post('lihathasilpenunjang_rad', [ErmController::class, 'lihathasilpenunja
     ->name('lihathasilpenunjang_rad'); //sidebar
 Route::post('lihathasilpenunjang_pa', [ErmController::class, 'lihathasilpenunjang_pa'])
     ->name('lihathasilpenunjang_pa'); //sidebar
+Route::post('lihathasilpenunjang_uro', [ErmController::class, 'lihathasilpenunjang_uro'])
+    ->name('lihathasilpenunjang_uro'); //sidebar
+Route::post('lihathasilpenunjang_obg', [ErmController::class, 'lihathasilpenunjang_obg'])
+    ->name('lihathasilpenunjang_obg'); //sidebar
 
 Route::get('/register', [RegisterController::class, 'index'])->middleware('guest')->name('register');
 Route::get('/profil', [RegisterController::class, 'profil'])->name('profil');
@@ -124,7 +128,7 @@ Route::post('/reloadorder', [PenunjangController::class, 'reloadorder'])
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 Route::post('/ambil_grafik_all_poli', [DashboardController::class, 'ambil_grafik_all_poli'])->middleware('auth')->name('ambil_grafik_all_poli');
 Route::post('/ambil_grafik_by_poli', [DashboardController::class, 'ambil_grafik_by_poli'])->middleware('auth')->name('ambil_grafik_by_poli');
-Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9']], function () {
+Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9,102']], function () {
     Route::get('/pendaftaran', [SimrsController::class, 'Pendaftaran'])
         ->name('pendaftaran'); //sidebar
     Route::get('/pendaftaran2', [SimrsController::class, 'Pendaftaran2'])
