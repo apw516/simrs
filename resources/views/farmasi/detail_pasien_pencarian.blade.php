@@ -976,7 +976,7 @@
                         },
                         url: '<?= route('minus_grand_total_retur') ?>',
                         success: function(response) {
-                            $('.grandtotal_racikan_gt').html(response);
+                            $('.grantotal_racikan').html(response);
                         }
                     });
                 })
@@ -988,6 +988,7 @@
         var data1 = $('.form_draf_obat_racik').serializeArray();
         var data2 = $('.formtotal_racikan').serializeArray();
         var data3 = $('.headerracikan').serializeArray();
+        kodekunjungan = $('#kodekunjungan').val()
         $.ajax({
             async: true,
             type: 'post',
@@ -996,7 +997,8 @@
                 _token: "{{ csrf_token() }}",
                 data1: JSON.stringify(data1),
                 data2: JSON.stringify(data2),
-                data3: JSON.stringify(data3)
+                data3: JSON.stringify(data3),
+                kodekunjungan
             },
             url: '<?= route('simpanracikan_draft') ?>',
             error: function(data) {
