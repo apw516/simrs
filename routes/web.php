@@ -682,3 +682,5 @@ Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
     Route::get('/cetaketiket/{kodekunjungan}', [FarmasiController::class, 'CetakEtiket'])->middleware('auth')->name('CetakEtiket');
     Route::get('/cetaknotafarmasi/{kodekunjungan}', [FarmasiController::class, 'cetaknotafarmasi'])->middleware('auth')->name('CetakNotaFarmasi');
 });
+
+Route::get('get_riwayat_sep/{nomorkartu}/{tglawal}/{tglakhir}', [SimrsController::class, 'cari_riwayat_sep'])->name('cari_riwayat_sep'); //formpasien_bpjs

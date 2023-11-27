@@ -3689,4 +3689,10 @@ class SimrsController extends Controller
         // $pdf->Output();
         // exit;
     }
+    public function cari_riwayat_sep($noka,$tgl_awal,$tglakhir)
+    {
+        $v = new VclaimModel();
+        $riwayat = $v->get_data_kunjungan_peserta($noka, $tgl_awal,$tglakhir);
+        return $riwayat;
+    }
 }
