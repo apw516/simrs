@@ -799,7 +799,7 @@ class ErmController extends Controller
                 echo json_encode($data);
                 die;
             }
-            sleep(60);
+
             $data = [
                 'counter' => $dataSet['counter'],
                 'no_rm' => $dataSet['nomorrm'],
