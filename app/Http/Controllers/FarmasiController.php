@@ -7,6 +7,7 @@ use App\Models\ts_layanan_header_dummy;
 use App\Models\ti_kartu_stok;
 use App\Models\ts_retur_detail;
 use App\Models\ts_retur_header;
+use App\Models\barang_bpjs;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Codedge\code128\PDF_Code128 as Code128PDF_Code128;
@@ -20,6 +21,7 @@ use Codedge\Fpdf\Fpdf\PDF;
 use Codedge\Fpdf\code128\PDF_Code128;
 use Codedge\Fpdf\Fpdf128;
 use \Milon\Barcode\DNS1D;
+use App\Models\WsBpjsFarmasi;
 
 class FarmasiController extends Controller
 {
@@ -91,12 +93,12 @@ class FarmasiController extends Controller
         $poliklinik = $request->poliklinik;
         $tanggalcari = $request->tanggalcari;
         $now = $this->get_date();
-        if($tanggalcari == $now){
-            $kunjungan = DB::select('SELECT date(tgl_masuk) as tgl_masuk,no_rm,kode_kunjungan,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat,fc_nama_unit1(kode_unit) AS nama_unit,kode_unit, fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin FROM ts_kunjungan WHERE kode_unit = ? AND status_kunjungan = ? AND date(tgl_masuk) = ?', [$poliklinik, '1',$tanggalcari]);
-        }else{
-            $kunjungan = DB::select('SELECT date(tgl_masuk) as tgl_masuk,no_rm,kode_kunjungan,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat,fc_nama_unit1(kode_unit) AS nama_unit,kode_unit, fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin FROM ts_kunjungan WHERE kode_unit = ? AND status_kunjungan <> ? AND date(tgl_masuk) = ?', [$poliklinik, '8',$tanggalcari]);
+        if ($tanggalcari == $now) {
+            $kunjungan = DB::select('SELECT date(tgl_masuk) as tgl_masuk,no_rm,kode_kunjungan,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat,fc_nama_unit1(kode_unit) AS nama_unit,kode_unit, fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin FROM ts_kunjungan WHERE kode_unit = ? AND status_kunjungan = ? AND date(tgl_masuk) = ?', [$poliklinik, '1', $tanggalcari]);
+        } else {
+            $kunjungan = DB::select('SELECT date(tgl_masuk) as tgl_masuk,no_rm,kode_kunjungan,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat,fc_nama_unit1(kode_unit) AS nama_unit,kode_unit, fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin FROM ts_kunjungan WHERE kode_unit = ? AND status_kunjungan <> ? AND date(tgl_masuk) = ?', [$poliklinik, '8', $tanggalcari]);
         }
-            return view('farmasi.tabel_pasien_poli', compact([
+        return view('farmasi.tabel_pasien_poli', compact([
             'kunjungan'
         ]));
         // $mt_pasien = DB::select('Select no_rm,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$rm]);
@@ -110,11 +112,11 @@ class FarmasiController extends Controller
         $rm = $request->rm;
         $kodeunit = $request->kodeunit;
         $kodekunjungan = $request->kodekunjungan;
-        $kunjungan = DB::select('SELECT date(tgl_masuk) as tgl_masuk,no_rm,kode_kunjungan,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat,fc_nama_unit1(kode_unit) AS nama_unit,kode_unit, fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin FROM ts_kunjungan WHERE no_rm = ? AND kode_unit = ? AND status_kunjungan <> ? AND kode_kunjungan = ?', [$rm, $kodeunit, '8',$kodekunjungan]);
+        $kunjungan = DB::select('SELECT date(tgl_masuk) as tgl_masuk,no_rm,kode_kunjungan,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat,fc_nama_unit1(kode_unit) AS nama_unit,kode_unit, fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin FROM ts_kunjungan WHERE no_rm = ? AND kode_unit = ? AND status_kunjungan <> ? AND kode_kunjungan = ?', [$rm, $kodeunit, '8', $kodekunjungan]);
         $mt_pasien = DB::select('Select no_rm,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$rm]);
         $orderan = db::select('SELECT * ,fc_nama_unit1(unit_pengirim) AS nama_unit,fc_nama_paramedis1(dok_kirim) AS nama_dokter FROM ts_layanan_detail_order a
         LEFT OUTER JOIN ts_layanan_header_order b ON a.`row_id_header` = b.`id`
-        WHERE DATE(a.`tgl_layanan_detail`) = ? AND b.`kode_kunjungan` = ?', ([$kunjungan[0]->tgl_masuk,$kunjungan[0]->kode_kunjungan]));
+        WHERE DATE(a.`tgl_layanan_detail`) = ? AND b.`kode_kunjungan` = ?', ([$kunjungan[0]->tgl_masuk, $kunjungan[0]->kode_kunjungan]));
         return view('farmasi.detail_pasien_pencarian', compact([
             'mt_pasien',
             'kunjungan',
@@ -1755,7 +1757,7 @@ class FarmasiController extends Controller
             $value =  $nama['value'];
             $dataSet[$index] = $value;
         }
-        if(trim($dataSet['jumlahretur']) == ''){
+        if (trim($dataSet['jumlahretur']) == '') {
             $data = [
                 'kode' => 500,
                 'message' => 'Jumlah retur tidak boleh kosong !',
@@ -1763,7 +1765,7 @@ class FarmasiController extends Controller
             echo json_encode($data);
             die;
         }
-        if($dataSet['jumlah'] <= 0){
+        if ($dataSet['jumlah'] <= 0) {
             $data = [
                 'kode' => 500,
                 'message' => 'Gagal , semua obat sudah diretur !',
@@ -1779,7 +1781,7 @@ class FarmasiController extends Controller
         //proses hitung retur dits layanan detail
         $tarif_layanan = $get_detail[0]->total_tarif;
         $jumlah_layanan = $get_detail[0]->jumlah_layanan;
-        if($jumlah_layanan - $dataSet['jumlahretur'] < 0){
+        if ($jumlah_layanan - $dataSet['jumlahretur'] < 0) {
             $data = [
                 'kode' => 500,
                 'message' => 'Gagal , Jumlah retur lebih banyak dari qty awal !',
@@ -1989,5 +1991,43 @@ class FarmasiController extends Controller
         }
         date_default_timezone_set('Asia/Jakarta');
         return 'RETDET' . date('ymd') . $kd;
+    }
+    public function test_dpho()
+    {
+        $v = new WsBpjsFarmasi();
+        $p = $v->dpho();
+        if ($p->metaData->code == 200) {
+            try {
+                foreach ($p->response->list as $ob) {
+                    // dd($ob->kodeobat);
+                    $prb = 0;
+                    $kronis = 0;
+                    $kemo = 0;
+                    if ($ob->prb == 'True') {
+                        $prb = 1;
+                    }
+                    if ($ob->kronis == 'True') {
+                        $kronis = 1;
+                    }
+                    if ($ob->kemo == 'True') {
+                        $kemo = 1;
+                    }
+                    $b_bpjs = [
+                        'kodeobat' => $ob->kodeobat,
+                        'namaobat' => $ob->namaobat,
+                        'prb' => $prb,
+                        'kronis' => $kronis,
+                        'kemo' => $kemo,
+                        'harga' => $ob->harga,
+                        'restriksi' => $ob->restriksi,
+                        'generik' => $ob->generik,
+                        'api_respon' => $p->metaData->code,
+                    ];
+                    barang_bpjs::create($b_bpjs);
+                }
+            } catch (\Exception $e) {
+                $err = $e->getMessage();
+            }
+        }
     }
 }

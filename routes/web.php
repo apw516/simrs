@@ -684,3 +684,4 @@ Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
 });
 
 Route::get('get_riwayat_sep/{nomorkartu}/{tglawal}/{tglakhir}', [SimrsController::class, 'cari_riwayat_sep'])->name('cari_riwayat_sep'); //formpasien_bpjs
+Route::get('get_dpho', [FarmasiController::class, 'test_dpho'])->name('test_dpho'); //formpasien_bpjs
