@@ -102,7 +102,7 @@
             "responsive": true,
             "lengthChange": false,
             "autoWidth": true,
-            "pageLength": 3,
+            "pageLength": 10,
             "searching": true
         })
     });

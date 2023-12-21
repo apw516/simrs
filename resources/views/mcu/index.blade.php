@@ -131,6 +131,7 @@
                                 text: data.message,
                                 footer: ''
                             })
+                            location_reload()
                         }
                     }
                 });
