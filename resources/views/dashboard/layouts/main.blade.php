@@ -59,6 +59,10 @@
             /* has to be larger than 1050 */
         }
 
+        .ui-autocomplete {
+            z-index: 5000;
+        }
+
         .modal {
             overflow: auto !important;
         }

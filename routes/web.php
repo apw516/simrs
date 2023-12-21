@@ -14,10 +14,21 @@ use App\Http\Controllers\PenunjangController;
 use App\Http\Controllers\AntrianIgd;
 use App\Http\Controllers\ErmIgdController;
 use App\Http\Controllers\FarmasiController;
+use App\Http\Controllers\McuController;
 
 
 Route::get('/', [LoginController::class, 'index']);
 Route::get('datauser', [LoginController::class, 'datauser'])->middleware('auth')->name('datauser');
+Route::get('index_mcu', [McuController::class, 'index_mcu'])->middleware('auth')->name('index_mcu');
+Route::post('simpanheader', [McuController::class, 'simpanheader'])->middleware('auth')->name('simpanheader');
+Route::post('simpaneditheader', [McuController::class, 'simpaneditheader'])->middleware('auth')->name('simpaneditheader');
+Route::post('ambildataheader_mcu', [McuController::class, 'ambildataheader_mcu'])->middleware('auth')->name('ambildataheader_mcu');
+Route::post('ambil_v_jasmani', [McuController::class, 'ambil_v_jasmani'])->middleware('auth')->name('ambil_v_jasmani');
+Route::post('ambil_v_napsa', [McuController::class, 'ambil_v_napsa'])->middleware('auth')->name('ambil_v_napsa');
+Route::post('ambil_v_edit_header', [McuController::class, 'ambil_v_edit_header'])->middleware('auth')->name('ambil_v_edit_header');
+Route::post('simpanjasmani', [McuController::class, 'simpanjasmani'])->middleware('auth')->name('simpanjasmani');
+Route::post('simpannapsa', [McuController::class, 'simpannapsa'])->middleware('auth')->name('simpannapsa');
+Route::get('caripasien_mcu', [McuController::class, 'caripasien_mcu'])->middleware('auth')->name('caripasien_mcu');
 // Route::get('/register', [LoginController::class, 'register'])->name('/register');
 Route::get('/login', [LoginController::class, 'index'])->middleware('guest')->name('login');
 Route::post('/login', [LoginController::class, 'authenticate']);

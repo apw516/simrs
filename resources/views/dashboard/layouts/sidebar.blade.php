@@ -553,6 +553,13 @@
                               <p>Data User</p>
                           </a>
                       </li>
+                      <li class="nav-item ">
+                          <a href="{{ route('index_mcu') }}"
+                              class="nav-link @if ($sidebar == 'index_mcu') active @endif">
+                              <i class="bi bi-person-lines-fill nav-icon"></i>
+                              <p>MCU admin</p>
+                          </a>
+                      </li>
                   @endif
                   @if (auth()->user()->hak_akses == 6)
                       <li class="nav-header">FARMASI</li>
