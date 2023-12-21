@@ -137,7 +137,8 @@
                 });
             }
             $(document).ready(function() {
-                $('#nomorrm').autocomplete({
+                $('#nomorrm').autocomplete(
+                    {
                     source: "<?= route('caripasien_mcu') ?>",
                     select: function(event, ui) {
                         $('[id="nomorrm"]').val(ui.item.label);

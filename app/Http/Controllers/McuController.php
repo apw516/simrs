@@ -9,6 +9,7 @@ use App\Models\suratjasmani;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+
 class McuController extends Controller
 {
     public function index_mcu()
@@ -27,18 +28,21 @@ class McuController extends Controller
     public function caripasien_mcu(request $request)
     {
         $r = $request['term'];
-        $result = Pasien::where('no_rm', 'LIKE', "%{$r}%")->get();
-        if (count($result) > 0) {
-            foreach ($result as $row)
-                $arr_result[] = array(
-                    'label' => $row['no_rm']. ' | ' . $row['nama_px'].' | ' .$row['tgl_lahir'],
-                    'rm' => $row['no_rm'],
-                    'nama' => strtoupper($row['nama_px']),
-                );
-            echo json_encode($arr_result);
+        if (strlen($r) > 6) {
+            $result = Pasien::where('no_rm', 'LIKE', "%{$r}%")->get();
+            if (count($result) > 0) {
+                foreach ($result as $row)
+                    $arr_result[] = array(
+                        'label' => $row['no_rm'] . ' | ' . $row['nama_px'] . ' | ' . $row['tgl_lahir'],
+                        'rm' => $row['no_rm'],
+                        'nama' => strtoupper($row['nama_px']),
+                    );
+                echo json_encode($arr_result);
+            }
         }
     }
-    public function simpanheader(Request $request){
+    public function simpanheader(Request $request)
+    {
         $dataheader = json_decode($_POST['data'], true);
         foreach ($dataheader as $nama) {
             $index = $nama['name'];
@@ -54,15 +58,15 @@ class McuController extends Controller
             'bb' => $dataSet['beratbadan'],
             'td' => $dataSet['tekanandarah'],
         ];
-        $cek = DB::select('select * from ts_header_surat_mcu where no_rm = ?',[$dataSet['nomorrm2']]);
-        if(count($cek) > 0){
+        $cek = DB::select('select * from ts_header_surat_mcu where no_rm = ?', [$dataSet['nomorrm2']]);
+        if (count($cek) > 0) {
             $data = [
                 'kode' => 500,
                 'message' => 'Header Sudah Ada ! Untuk perubahan silahkan update header ...',
             ];
             echo json_encode($data);
             die;
-        }else{
+        } else {
             headersurat::create($data_s);
             $data = [
                 'kode' => 200,
@@ -72,7 +76,8 @@ class McuController extends Controller
             die;
         }
     }
-    public function simpaneditheader(Request $request){
+    public function simpaneditheader(Request $request)
+    {
         $dataheader = json_decode($_POST['data'], true);
         foreach ($dataheader as $nama) {
             $index = $nama['name'];
@@ -90,14 +95,15 @@ class McuController extends Controller
         ];
         $id = $dataSet['id'];
         headersurat::whereRaw('id = ?', array($id))->update($data_s);
-            $data = [
-                'kode' => 200,
-                'message' => 'Data Berhasil Diedit',
-            ];
-            echo json_encode($data);
-            die;
+        $data = [
+            'kode' => 200,
+            'message' => 'Data Berhasil Diedit',
+        ];
+        echo json_encode($data);
+        die;
     }
-    public function simpanjasmani(Request $request){
+    public function simpanjasmani(Request $request)
+    {
         $dataheader = json_decode($_POST['data'], true);
         foreach ($dataheader as $nama) {
             $index = $nama['name'];
@@ -120,8 +126,8 @@ class McuController extends Controller
         JOIN mt_lokasi_regencies ON mt_lokasi_regencies.id = mt_pasien.kode_kabupaten
         JOIN mt_lokasi_districts ON mt_lokasi_districts.id = mt_pasien.kode_kecamatan
         JOIN mt_lokasi_villages ON mt_lokasi_villages.id = mt_pasien.kode_desa
-        WHERE mt_pasien.no_rm = ?",[$rm]);
-        $h = DB::select('select * from ts_header_surat_mcu where no_rm = ?',[$rm]);
+        WHERE mt_pasien.no_rm = ?", [$rm]);
+        $h = DB::select('select * from ts_header_surat_mcu where no_rm = ?', [$rm]);
         $data = [
             'no_rm'          => $rm,
             'no_surat'       => $dataSet['nomorsurat'],
@@ -154,7 +160,8 @@ class McuController extends Controller
         echo json_encode($data);
         die;
     }
-    public function simpannapsa(Request $request){
+    public function simpannapsa(Request $request)
+    {
         $dataheader = json_decode($_POST['data'], true);
         foreach ($dataheader as $nama) {
             $index = $nama['name'];
@@ -177,8 +184,8 @@ class McuController extends Controller
         JOIN mt_lokasi_regencies ON mt_lokasi_regencies.id = mt_pasien.kode_kabupaten
         JOIN mt_lokasi_districts ON mt_lokasi_districts.id = mt_pasien.kode_kecamatan
         JOIN mt_lokasi_villages ON mt_lokasi_villages.id = mt_pasien.kode_desa
-        WHERE mt_pasien.no_rm = ?",[$rm]);
-        $h = DB::select('select * from ts_header_surat_mcu where no_rm = ?',[$rm]);
+        WHERE mt_pasien.no_rm = ?", [$rm]);
+        $h = DB::select('select * from ts_header_surat_mcu where no_rm = ?', [$rm]);
 
         $data = [
             'no_rm'          => $rm,
@@ -218,7 +225,7 @@ class McuController extends Controller
     public function ambildataheader_mcu()
     {
         $dh = DB::select('select *,fc_alamat4(b.no_rm) as alamat_px,date(b.tgl_lahir) as tgl_lahir from ts_header_surat_mcu a inner join mt_pasien b on a.no_rm = b.no_rm');
-        return view('mcu.tabel_header',compact(
+        return view('mcu.tabel_header', compact(
             [
                 'dh'
             ]
@@ -239,30 +246,33 @@ class McuController extends Controller
         $now = $date . ' ' . $time;
         return $now;
     }
-    public function ambil_v_jasmani(request $request){
+    public function ambil_v_jasmani(request $request)
+    {
         $rm = $request->rm;
         $date = $this->get_date();
-        $p = DB::select('select * from mt_pasien where no_rm = ?',[$rm]);
-        return view('mcu.form_jasmani',compact([
+        $p = DB::select('select * from mt_pasien where no_rm = ?', [$rm]);
+        return view('mcu.form_jasmani', compact([
             'rm',
             'p',
             'date'
         ]));
     }
-    public function ambil_v_napsa(request $request){
+    public function ambil_v_napsa(request $request)
+    {
         $rm = $request->rm;
         $date = $this->get_date();
-        $p = DB::select('select * from mt_pasien where no_rm = ?',[$rm]);
-        return view('mcu.form_napsa',compact([
+        $p = DB::select('select * from mt_pasien where no_rm = ?', [$rm]);
+        return view('mcu.form_napsa', compact([
             'rm',
             'p',
             'date'
         ]));
     }
-    public function ambil_v_edit_header(request $request){
-        $p = DB::select('select * from ts_header_surat_mcu where id = ?',[$request->id]);
-        return view('mcu.form_edit_header',compact([
-           'p'
+    public function ambil_v_edit_header(request $request)
+    {
+        $p = DB::select('select * from ts_header_surat_mcu where id = ?', [$request->id]);
+        return view('mcu.form_edit_header', compact([
+            'p'
         ]));
     }
 }
