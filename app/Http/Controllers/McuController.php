@@ -88,108 +88,114 @@ class McuController extends Controller
             echo json_encode($data);
             die;
         } else {
-
             headersurat::create($data_s);
-            //surat jasmani
-            $p = DB::select("SELECT mt_pasien.*,date(tgl_lahir) as tanggal_lahir,mt_lokasi_provinces.name AS nama_propinsi
-        ,IF(mt_lokasi_regencies.name LIKE '%KABUPATEN%'
-        ,CONCAT('KABUPATEN ',LEFT(mt_lokasi_regencies.name
-        ,LOCATE(' ',mt_lokasi_regencies.name) - 1))
-        ,CONCAT('KOTA ',LEFT(mt_lokasi_regencies.name
-        ,LOCATE(' ',mt_lokasi_regencies.name) - 1))) AS nama_kabupaten_kota,mt_lokasi_districts.name AS nama_kecamatan
-        ,IF(mt_lokasi_regencies.name LIKE '%KABUPATEN%'
-        ,CONCAT('Desa ',mt_lokasi_villages.name)
-        ,CONCAT('Kelurahan ',mt_lokasi_villages.name)) AS nama_desa_kelurahan
-        FROM mt_pasien
-        JOIN mt_lokasi_provinces ON mt_lokasi_provinces.id = mt_pasien.kode_propinsi
-        JOIN mt_lokasi_regencies ON mt_lokasi_regencies.id = mt_pasien.kode_kabupaten
-        JOIN mt_lokasi_districts ON mt_lokasi_districts.id = mt_pasien.kode_kecamatan
-        JOIN mt_lokasi_villages ON mt_lokasi_villages.id = mt_pasien.kode_desa
-        WHERE mt_pasien.no_rm = ?", [$rm]);
-            $h = DB::select('select * from ts_header_surat_mcu where no_rm = ?', [$rm]);
-            $data = [
-                'no_rm'          => $rm,
-                'no_surat'       => "400.7.22.1 / " . $dataSet['suratjasmani'] . " / MCU / 2023",
-                'nama_px'        => strtoupper($p[0]->nama_px),
-                'tempat_lahir'   => ucwords(strtolower($p[0]->tempat_lahir)),
-                'tgl_lahir'      => $p[0]->tanggal_lahir,
-                'alamat'         => $h[0]->alamat,
-                'desa'           => ucwords(strtolower($p[0]->nama_desa_kelurahan)),
-                'kecamatan'      => ucwords(strtolower($p[0]->nama_kecamatan)),
-                'kabupaten'      => ucwords(strtolower($p[0]->nama_kabupaten_kota)),
-                'result'         => 'SEHAT',
-                'keterangan'         => 'Jasmani',
-                'pekerjaan'      => $h[0]->pekerjaan,
-                'bb'             => $h[0]->bb,
-                'tb'             => $h[0]->tb,
-                'td'             => $h[0]->td,
-                'keperluan'      => $dataSet['keperluan'],
-                'tgl_surat'      => $dataSet['tglsurat'],
-                'kode_paramedis' => 'DOK065',
-                'status'         => 'A',
-                'data_created'   => date('Y-m-d H:i:s'),
-                'id_user'        => '37',
-            ];
-            suratjasmani::create($data);
-            $data = [
-                'no_rm'          => $rm,
-                'no_surat'       => "400.7.22.1 / " . $dataSet['suratrohani'] . " / MCU / 2023",
-                'nama_px'        => strtoupper($p[0]->nama_px),
-                'tempat_lahir'   => ucwords(strtolower($p[0]->tempat_lahir)),
-                'tgl_lahir'      => $p[0]->tanggal_lahir,
-                'alamat'         => $h[0]->alamat,
-                'desa'           => ucwords(strtolower($p[0]->nama_desa_kelurahan)),
-                'kecamatan'      => ucwords(strtolower($p[0]->nama_kecamatan)),
-                'kabupaten'      => ucwords(strtolower($p[0]->nama_kabupaten_kota)),
-                'result'         => 'SEHAT',
-                'keterangan'         => 'Rohani',
-                'pekerjaan'      => $h[0]->pekerjaan,
-                'bb'             => $h[0]->bb,
-                'tb'             => $h[0]->tb,
-                'td'             => $h[0]->td,
-                'keperluan'      => $dataSet['keperluan'],
-                'tgl_surat'      => $dataSet['tglsurat'],
-                'kode_paramedis' => 'DOK334',
-                'status'         => 'A',
-                'data_created'   => date('Y-m-d H:i:s'),
-                'id_user'        => '37',
-            ];
-            suratjasmani::create($data);
-            //suratnapsa
-            $data = [
-                'no_rm'          => $rm,
-                'no_surat'       => "400.7.22.1 / " . $dataSet['suratnapsa'] . " / MCU / 2023",
-                'nama_px'        => strtoupper($p[0]->nama_px),
-                'umur'           => date_diff(date_create($p[0]->tgl_lahir), date_create(date('Y-m-d')))->format('%y'),
-                'tempat_lahir'   => ucwords(strtolower($p[0]->tempat_lahir)),
-                'tgl_lahir'      => $p[0]->tanggal_lahir,
-                'pekerjaan'      => $h[0]->pekerjaan,
-                'alamat'         => $h[0]->alamat,
-                'desa'           => ucwords(strtolower($p[0]->nama_desa_kelurahan)),
-                'kecamatan'      => ucwords(strtolower($p[0]->nama_kecamatan)),
-                'kabupaten'      => ucwords(strtolower($p[0]->nama_kabupaten_kota)),
-                'result'         => 'SEHAT',
-                'dipergunakan'   => $dataSet['keperluan'],
-                'bb'             => $h[0]->bb,
-                'tb'             => $h[0]->tb,
-                'td'             => $h[0]->td,
-                'jenis_kelamin'  => strtoupper($p[0]->jenis_kelamin),
-                'tgl_surat'      => $dataSet['tglsurat'],
-                'kode_paramedis' => 'DOK065',
-                'status'         => 'A',
-                'data_created'   => $this->get_now(),
-                'id_user'        => '37',
-                'data_updated'   => $this->get_now(),
-                'user_updated'   => '37',
-            ];
-            suratnapsa::create($data);
-            $data = [
-                'kode' => 200,
-                'message' => 'Data Berhasil disimpan',
-            ];
-            echo json_encode($data);
-            die;
         }
+
+        //surat jasmani
+        $p = DB::select("SELECT mt_pasien.*,date(tgl_lahir) as tanggal_lahir,mt_lokasi_provinces.name AS nama_propinsi
+               ,IF(mt_lokasi_regencies.name LIKE '%KABUPATEN%'
+               ,CONCAT('KABUPATEN ',LEFT(mt_lokasi_regencies.name
+               ,LOCATE(' ',mt_lokasi_regencies.name) - 1))
+               ,CONCAT('KOTA ',LEFT(mt_lokasi_regencies.name
+               ,LOCATE(' ',mt_lokasi_regencies.name) - 1))) AS nama_kabupaten_kota,mt_lokasi_districts.name AS nama_kecamatan
+               ,IF(mt_lokasi_regencies.name LIKE '%KABUPATEN%'
+               ,CONCAT('Desa ',mt_lokasi_villages.name)
+               ,CONCAT('Kelurahan ',mt_lokasi_villages.name)) AS nama_desa_kelurahan
+               FROM mt_pasien
+               JOIN mt_lokasi_provinces ON mt_lokasi_provinces.id = mt_pasien.kode_propinsi
+               JOIN mt_lokasi_regencies ON mt_lokasi_regencies.id = mt_pasien.kode_kabupaten
+               JOIN mt_lokasi_districts ON mt_lokasi_districts.id = mt_pasien.kode_kecamatan
+               JOIN mt_lokasi_villages ON mt_lokasi_villages.id = mt_pasien.kode_desa
+               WHERE mt_pasien.no_rm = ?", [$rm]);
+        $h = DB::select('select * from ts_header_surat_mcu where no_rm = ?', [$rm]);
+        $data = [
+            'no_rm'          => $rm,
+            'no_surat'       => "400.7.22.1 / " . $dataSet['suratjasmani'] . " / MCU / 2023",
+            'nama_px'        => strtoupper($p[0]->nama_px),
+            'tempat_lahir'   => ucwords(strtolower($p[0]->tempat_lahir)),
+            'tgl_lahir'      => $p[0]->tanggal_lahir,
+            'alamat'         => $h[0]->alamat,
+            'desa'           => ucwords(strtolower($p[0]->nama_desa_kelurahan)),
+            'kecamatan'      => ucwords(strtolower($p[0]->nama_kecamatan)),
+            'kabupaten'      => ucwords(strtolower($p[0]->nama_kabupaten_kota)),
+            'result'         => 'SEHAT',
+            'keterangan'         => 'Jasmani',
+            'pekerjaan'      => $h[0]->pekerjaan,
+            'bb'             => $h[0]->bb,
+            'tb'             => $h[0]->tb,
+            'td'             => $h[0]->td,
+            'keperluan'      => $dataSet['keperluan'],
+            'tgl_surat'      => $dataSet['tglsurat'],
+            'kode_paramedis' => 'DOK065',
+            'status'         => 'A',
+            'data_created'   => date('Y-m-d H:i:s'),
+            'id_user'        => '37',
+        ];
+        if ($dataSet['suratjasmani'] != '') {
+            suratjasmani::create($data);
+        }
+        $data = [
+            'no_rm'          => $rm,
+            'no_surat'       => "400.7.22.1 / " . $dataSet['suratrohani'] . " / MCU / 2023",
+            'nama_px'        => strtoupper($p[0]->nama_px),
+            'tempat_lahir'   => ucwords(strtolower($p[0]->tempat_lahir)),
+            'tgl_lahir'      => $p[0]->tanggal_lahir,
+            'alamat'         => $h[0]->alamat,
+            'desa'           => ucwords(strtolower($p[0]->nama_desa_kelurahan)),
+            'kecamatan'      => ucwords(strtolower($p[0]->nama_kecamatan)),
+            'kabupaten'      => ucwords(strtolower($p[0]->nama_kabupaten_kota)),
+            'result'         => 'SEHAT',
+            'keterangan'         => 'Rohani',
+            'pekerjaan'      => $h[0]->pekerjaan,
+            'bb'             => $h[0]->bb,
+            'tb'             => $h[0]->tb,
+            'td'             => $h[0]->td,
+            'keperluan'      => $dataSet['keperluan'],
+            'tgl_surat'      => $dataSet['tglsurat'],
+            'kode_paramedis' => 'DOK334',
+            'status'         => 'A',
+            'data_created'   => date('Y-m-d H:i:s'),
+            'id_user'        => '37',
+        ];
+        if ($dataSet['suratrohani'] != '') {
+            suratjasmani::create($data);
+        }
+        //suratnapsa
+        $data = [
+            'no_rm'          => $rm,
+            'no_surat'       => "400.7.22.1 / " . $dataSet['suratnapsa'] . " / MCU / 2023",
+            'nama_px'        => strtoupper($p[0]->nama_px),
+            'umur'           => date_diff(date_create($p[0]->tgl_lahir), date_create(date('Y-m-d')))->format('%y'),
+            'tempat_lahir'   => ucwords(strtolower($p[0]->tempat_lahir)),
+            'tgl_lahir'      => $p[0]->tanggal_lahir,
+            'pekerjaan'      => $h[0]->pekerjaan,
+            'alamat'         => $h[0]->alamat,
+            'desa'           => ucwords(strtolower($p[0]->nama_desa_kelurahan)),
+            'kecamatan'      => ucwords(strtolower($p[0]->nama_kecamatan)),
+            'kabupaten'      => ucwords(strtolower($p[0]->nama_kabupaten_kota)),
+            'result'         => 'SEHAT',
+            'dipergunakan'   => $dataSet['keperluan'],
+            'bb'             => $h[0]->bb,
+            'tb'             => $h[0]->tb,
+            'td'             => $h[0]->td,
+            'jenis_kelamin'  => strtoupper($p[0]->jenis_kelamin),
+            'tgl_surat'      => $dataSet['tglsurat'],
+            'kode_paramedis' => 'DOK065',
+            'status'         => 'A',
+            'data_created'   => $this->get_now(),
+            'id_user'        => '37',
+            'data_updated'   => $this->get_now(),
+            'user_updated'   => '37',
+        ];
+        if ($dataSet['suratnapsa'] != '') {
+            suratnapsa::create($data);
+        }
+        $data = [
+            'kode' => 200,
+            'message' => 'Data Berhasil disimpan',
+        ];
+        echo json_encode($data);
+        die;
     }
     public function simpaneditheader(Request $request)
     {
@@ -348,7 +354,7 @@ class McuController extends Controller
     }
     public function ambildatasurat()
     {
-        $dh = DB::select('select * from ts_mcu_jasroh where keterangan = ? order by id_surat desc',['rohani']);
+        $dh = DB::select('select * from ts_mcu_jasroh where keterangan = ? order by id_surat desc', ['rohani']);
         return view('mcu.tabel_data_rohani', compact(
             [
                 'dh'
@@ -401,7 +407,7 @@ class McuController extends Controller
     }
     public function cetak_rohani($id)
     {
-        $surat = DB::select('select * from ts_mcu_jasroh where id_surat = ?',[$id]);
+        $surat = DB::select('select * from ts_mcu_jasroh where id_surat = ?', [$id]);
         $tgl_lahir = Carbon::parse($surat[0]->tgl_lahir)->isoFormat('D MMMM Y');
         $tgl_surat = Carbon::parse($surat[0]->tgl_surat)->isoFormat('D MMMM Y');
         $pdf = new Fpdf('P', 'mm', 'Legal');
@@ -451,7 +457,7 @@ class McuController extends Controller
         $pdf->Cell(40, 10, ':  RSUD Waled Kabupaten Cirebon');
 
         $pdf->SetXY(20, 115);
-        $pdf->MultiCell(165, 5, 'Telah melakukan pemeriksaan psikiatri / MMPI pada Tanggal '.$tgl_surat . ' terhadap : ');
+        $pdf->MultiCell(165, 5, 'Telah melakukan pemeriksaan psikiatri / MMPI pada Tanggal ' . $tgl_surat . ' terhadap : ');
 
         $y = $pdf->GetY() + 5;
 
@@ -460,7 +466,7 @@ class McuController extends Controller
         $pdf->SetXY(85, $y);
         $pdf->Cell(40, 10, ':');
         $pdf->SetXY(90, $y + 2);
-        $pdf->MultiCell(95, 7,$surat[0]->nama_px);
+        $pdf->MultiCell(95, 7, $surat[0]->nama_px);
 
 
         $y = $pdf->GetY();
@@ -470,7 +476,7 @@ class McuController extends Controller
         $pdf->SetXY(85, $y);
         $pdf->Cell(40, 10, ':');
         $pdf->SetXY(90, $y + 2);
-        $pdf->MultiCell(95, 7,$surat[0]->tempat_lahir.' ,'. $tgl_lahir);
+        $pdf->MultiCell(95, 7, $surat[0]->tempat_lahir . ' ,' . $tgl_lahir);
         $y = $pdf->GetY();
 
         $pdf->SetXY(20, $y);
@@ -478,7 +484,7 @@ class McuController extends Controller
         $pdf->SetXY(85, $y);
         $pdf->Cell(40, 10, ':');
         $pdf->SetXY(90, $y + 2);
-        $pdf->MultiCell(95, 7, $surat[0]->pekerjaan );
+        $pdf->MultiCell(95, 7, $surat[0]->pekerjaan);
         $y = $pdf->GetY();
 
         $pdf->SetXY(20, $y);
@@ -486,7 +492,7 @@ class McuController extends Controller
         $pdf->SetXY(85, $y);
         $pdf->Cell(40, 10, ':');
         $pdf->SetXY(90, $y + 2);
-        $pdf->MultiCell(95, 7, $surat[0]->alamat.' '. $surat[0]->desa.' Kec. '.$surat[0]->kecamatan .'  '.$surat[0]->kabupaten);
+        $pdf->MultiCell(95, 7, $surat[0]->alamat . ' ' . $surat[0]->desa . ' Kec. ' . $surat[0]->kecamatan . '  ' . $surat[0]->kabupaten);
 
         $y = $pdf->GetY();
 
@@ -536,7 +542,7 @@ class McuController extends Controller
         $pdf->SetFont('Times', '', 15);
 
         $pdf->SetXY(125, $y);
-        $pdf->Cell(40, 10, 'Cirebon, '.$tgl_surat);
+        $pdf->Cell(40, 10, 'Cirebon, ' . $tgl_surat);
         $y = $pdf->GetY() + 6;
         $pdf->SetXY(135, $y);
         $pdf->Cell(40, 10, 'Dokter Pemeriksa');
