@@ -564,7 +564,14 @@
                           <a href="{{ route('suratkejiwaan_index') }}"
                               class="nav-link @if ($sidebar == 'suratkejiwaan') active @endif">
                               <i class="bi bi-person-lines-fill nav-icon"></i>
-                              <p>Cetak Surat Kejiwaan</p>
+                              <p>Cetak Surat Jasmani</p>
+                          </a>
+                      </li>
+                      <li class="nav-item ">
+                          <a href="{{ route('suratnapsa_index') }}"
+                              class="nav-link @if ($sidebar == 'suratnapsa') active @endif">
+                              <i class="bi bi-person-lines-fill nav-icon"></i>
+                              <p>Cetak Surat Napsa</p>
                           </a>
                       </li>
                   @endif

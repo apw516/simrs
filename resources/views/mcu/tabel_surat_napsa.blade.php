@@ -5,7 +5,7 @@
             <div class="row mb-3">
                 <div class="row mb-2">
                     <div class="col-sm-12">
-                        <h1 class="m-0">Cetak Surat Jasmani</h1>
+                        <h1 class="m-0">Cetak Surat Napza</h1>
                     </div>
                 </div>
             </div>
@@ -29,7 +29,7 @@
                     data: {
                         _token: "{{ csrf_token() }}",
                     },
-                    url: '<?= route('ambildatasurat') ?>',
+                    url: '<?= route('ambildatasuratnapsa') ?>',
                     success: function(response) {
                         spinner.hide()
                         $('.vpasien').html(response);

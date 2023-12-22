@@ -44,6 +44,21 @@ class McuController extends Controller
             'date'
         ]));
     }
+    public function suratnapsa_index()
+    {
+        $title = 'SIMRS - ERM';
+        $sidebar = 'suratnapsa';
+        $sidebar_m = '2';
+        $date = $this->get_date();
+        $paramedis = DB::select('select *,fc_nama_unit1(unit) as nama_unit from mt_paramedis');
+        return view('mcu.tabel_surat_napsa', compact([
+            'title',
+            'sidebar',
+            'sidebar_m',
+            'paramedis',
+            'date'
+        ]));
+    }
     public function caripasien_mcu(request $request)
     {
         $r = $request['term'];
@@ -354,8 +369,17 @@ class McuController extends Controller
     }
     public function ambildatasurat()
     {
-        $dh = DB::select('select * from ts_mcu_jasroh where keterangan = ? order by id_surat desc', ['rohani']);
+        $dh = DB::select('select * from ts_mcu_jasroh where keterangan = ? order by id_surat desc', ['jasmani']);
         return view('mcu.tabel_data_rohani', compact(
+            [
+                'dh'
+            ]
+        ));
+    }
+    public function ambildatasuratnapsa()
+    {
+        $dh = DB::select('select * from ts_mcu_narkoba  order by id_surat desc');
+        return view('mcu.tabel_data_napsa', compact(
             [
                 'dh'
             ]
