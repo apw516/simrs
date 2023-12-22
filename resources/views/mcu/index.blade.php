@@ -50,17 +50,56 @@
                                         <label for="exampleInputPassword1">Pekerjaan</label>
                                         <input type="text" class="form-control" id="pekerjaan" name="pekerjaan">
                                     </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputPassword1">Tinggi Badan</label>
-                                        <input type="text" class="form-control" id="tinggi badan" name="tinggibadan">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1">Tinggi Badan</label>
+                                                <input type="text" class="form-control" id="tinggi badan" name="tinggibadan">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1">Berat Badan</label>
+                                                <input type="text" class="form-control" id="beratbadan" name="beratbadan">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1">Tekanan Darah</label>
+                                                <input type="text" class="form-control" id="tekanandarah" name="tekanandarah" value="120/80">
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputPassword1">Berat Badan</label>
-                                        <input type="text" class="form-control" id="beratbadan" name="beratbadan">
+                                        <label for="exampleInputPassword1">Tgl Surat</label>
+                                        <input type="text" class="form-control" id="tglsurat" name="tglsurat" value="{{ $date}}">
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputPassword1">Tekanan Darah</label>
-                                        <input type="text" class="form-control" id="tekanandarah" name="tekanandarah">
+                                        <label for="exampleInputPassword1">Keperluan</label>
+                                        <input type="text" class="form-control" id="keperluan" name="keperluan" value="Persyaratan Pemberkasan PPPK">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1">No Surat Napsa</label>
+                                                <input type="text" class="form-control" id="suratnapsa" name="suratnapsa">
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1">No Surat Jasmani</label>
+                                                <input type="text" class="form-control" id="suratjasmani" name="suratjasmani">
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1">No Surat Rohani</label>
+                                                <input type="text" class="form-control" id="suratrohani" name="suratrohani">
+                                            </div>
+
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -77,7 +116,6 @@
               $(document).ready(function() {
                 ambildataheader()
             });
-
             function ambildataheader() {
                 spinner = $('#loader')
                 spinner.show();
@@ -144,6 +182,7 @@
                         $('[id="nomorrm"]').val(ui.item.label);
                         $('[id="nomorrm2"]').val(ui.item.rm);
                         $('[id="namapasien"]').val(ui.item.nama);
+                        $('[id="alamat"]').val(ui.item.alamat);
                     }
                 });
             });

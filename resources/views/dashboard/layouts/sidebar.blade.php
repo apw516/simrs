@@ -560,6 +560,13 @@
                               <p>MCU admin</p>
                           </a>
                       </li>
+                      <li class="nav-item ">
+                          <a href="{{ route('suratkejiwaan_index') }}"
+                              class="nav-link @if ($sidebar == 'suratkejiwaan') active @endif">
+                              <i class="bi bi-person-lines-fill nav-icon"></i>
+                              <p>Cetak Surat Kejiwaan</p>
+                          </a>
+                      </li>
                   @endif
                   @if (auth()->user()->hak_akses == 6)
                       <li class="nav-header">FARMASI</li>

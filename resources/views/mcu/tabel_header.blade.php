@@ -1,6 +1,6 @@
 <div class="row mt-4">
     <div class="col-md-12">
-        <table id="tabelheader" class="table table-sm table-bordered table-hover">
+        <table id="tabelheader" class="table table-sm table-bordered table-hover text-xs">
             <thead>
                 <th>Nomor RM</th>
                 <th>Nama</th>
@@ -16,12 +16,14 @@
                         <td>{{ $d->tgl_lahir }}</td>
                         <td>{{ $d->alamat_px}} | {{ $d->alamat }}</td>
                         <td>
-                            <button id="{{ $d->id }}"class="btn btn-warning editheader" data-toggle="modal"
+                            <button id="{{ $d->id }}"class="btn btn-warning btn-sm editheader" data-toggle="modal"
                                 data-target="#modaleditheader"><i class="bi bi-pencil-square"></i></button>
-                            <button norm="{{ $d->no_rm }}"class="btn btn-success jasmani" data-toggle="modal"
+                            <button norm="{{ $d->no_rm }}"class="btn btn-sm btn-success jasmani" data-toggle="modal"
                                 data-target="#modaljasmani">Jasmani</button>
-                            <button norm="{{ $d->no_rm }}"class="btn btn-warning napsa" data-toggle="modal"
+                            <button norm="{{ $d->no_rm }}"class="btn btn-warning btn-sm napsa" data-toggle="modal"
                                 data-target="#modalnapsa">Napsa</button>
+                            <button norm="{{ $d->no_rm }}"class="btn btn-success btn-sm napsa" data-toggle="modal"
+                                data-target="#modalnapsa">Rohani</button>
                         </td>
                     </tr>
                 @endforeach
@@ -99,7 +101,7 @@
 <script>
     $(function() {
         $("#tabelheader").DataTable({
-            "responsive": true,
+            "responsive": false,
             "lengthChange": false,
             "autoWidth": true,
             "pageLength": 10,
