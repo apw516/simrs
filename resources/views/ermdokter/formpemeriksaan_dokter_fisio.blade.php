@@ -433,7 +433,7 @@
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                            id="pilihtindaklanjut" value="KONTROL">
+                            id="pilihtindaklanjut" value="KONTROL" checked>
                         <label class="form-check-label" for="inlineRadio2">KONTROL</label>
                     </div>
                     <div class="form-check form-check-inline">
