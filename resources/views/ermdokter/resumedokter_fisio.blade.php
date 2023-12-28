@@ -43,6 +43,10 @@
                     <td>: {{ $resume['0']->riwayatlain}} | {{ $resume['0']->ket_riwayatlain}}</td>
                 </tr>
                 <tr>
+                    <td>Tindak Lanjut</td>
+                    <td>: {{ $resume['0']->tindak_lanjut}} | {{ $resume['0']->keterangan_tindak_lanjut}}</td>
+                </tr>
+                <tr>
                     <td>Jawaban Konsul</td>
                     <td>: {{ $resume['0']->keterangan_tindak_lanjut_2}} </td>
                 </tr>

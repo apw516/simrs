@@ -66,6 +66,11 @@
                     </li>
                     @else
                     <li class="nav-item" id="pemeriksaan">
+                        <a href="#" class="nav-link" onclick="formtindaklanjut()">
+                            <i class="fas fa-inbox mr-2"></i>Form Tindak Lanjut
+                        </a>
+                    </li>
+                    <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formpemeriksaan_fisio()">
                             <i class="fas fa-inbox mr-2"></i>CPPT Fisioterapi
                         </a>

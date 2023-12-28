@@ -420,6 +420,50 @@
                 </div>
             </div>
         </form>
+        <form action="" class="formtindaklanjut">
+            <div class="card">
+                <div class="card-header bg-light">Tindak Lanjut <button type="button"
+                        class="btn btn-success float-right riwayatkonsul" data-toggle="modal"
+                        data-target="#modalriwayatkonsul">Riwayat Konsul</button></div>
+                <div class="card-body">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
+                            id="pilihtindaklanjut" value="KONSUL KE POLI LAIN">
+                        <label class="form-check-label" for="inlineRadio1">KONSUL KE POLI LAIN</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
+                            id="pilihtindaklanjut" value="KONTROL">
+                        <label class="form-check-label" for="inlineRadio2">KONTROL</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
+                            id="pilihtindaklanjut" value="PASIEN DIPULANGKAN">
+                        <label class="form-check-label" for="inlineRadio2">PULANG</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
+                            id="pilihtindaklanjut" value="RUJUK KELUAR">
+                        <label class="form-check-label" for="inlineRadio2">RUJUK KELUAR</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
+                            id="pilihtindaklanjut" value="RUJUK RAWAT INAP">
+                        <label class="form-check-label" for="inlineRadio2">RAWAT INAP</label>
+                    </div>
+                    <div class="form-check form-check-inline mb-2">
+                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
+                            id="pilihtindaklanjut" value="PASIEN MENINGGAL">
+                        <label class="form-check-label" for="inlineRadio2">PASIEN MENINGGAL</label>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="exampleInputEmail1">Keterangan</label>
+                        <textarea type="text" class="form-control" id="keterangantindaklanjut" name="keterangantindaklanjut"
+                            aria-describedby="emailHelp"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
         <div class="card">
             <div class="card-header bg-light">Order Farmasi <button type="button"
                     class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
@@ -526,6 +570,7 @@
 </div>
 <script>
     function simpanhasil() {
+        var datatindaklanjut = $('.formtindaklanjut').serializeArray();
         var data = $('.formpemeriksaan_fisio').serializeArray();
         var data2 = $('.arrayobat').serializeArray();
         var kodekunjungan = $('#kodekunjungan').val()
@@ -543,6 +588,7 @@
                 _token: "{{ csrf_token() }}",
                 data: JSON.stringify(data),
                 dataobat: JSON.stringify(data2),
+                datatindaklanjut: JSON.stringify(datatindaklanjut),
                 kodekunjungan,
                 counter,
                 unit,

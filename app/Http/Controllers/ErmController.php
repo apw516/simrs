@@ -3834,10 +3834,16 @@ class ErmController extends Controller
     {
         $data = json_decode($_POST['data'], true);
         $dataobat = json_decode($_POST['dataobat'], true);
+        $datatindaklanjut = json_decode($_POST['datatindaklanjut'], true);
         foreach ($data as $nama) {
             $index =  $nama['name'];
             $value =  $nama['value'];
             $dataSet[$index] = $value;
+        }
+        foreach ($datatindaklanjut as $nama_1) {
+            $index =  $nama_1['name'];
+            $value =  $nama_1['value'];
+            $dataSet_tindaklanjut[$index] = $value;
         }
         $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
         $cek = DB::select('SELECT * from assesmen_dokters WHERE tgl_kunjungan = ? AND id_pasien = ? AND kode_unit = ?', [$kunjungan[0]->tgl_masuk, $request->nomorrm, $request->unit]);
@@ -3866,6 +3872,8 @@ class ErmController extends Controller
             'evaluasi' => $dataSet['evaluasi'],
             'riwayatlain' => $dataSet['supekpenyakit'],
             'ket_riwayatlain' => $dataSet['keterangansuspek'],
+            'tindak_lanjut' => $dataSet_tindaklanjut['pilihtindaklanjut'],
+            'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'],
             // 'keluhan_pasien' => $dataSet['keluhanutama'],
             'keterangan_tindak_lanjut_2' => trim($dataSet['jawabankonsul']),
             'status' => '0'
