@@ -1153,7 +1153,38 @@
                             class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
                             onclick="ambilresep()">Template resep</button></div>
                     <div class="card-body">
-                        <div class="form-group mt-2">
+                            <div class="form-row">
+                              <div class="form-group col-md-3">
+                                <label for="inputEmail4">Cari obat</label>
+                                <input type="email" class="form-control" id="inputEmail4">
+                              </div>
+                              <div class="form-group col-md-2">
+                                <button class="btn btn-primary" style="margin-top:32px">Cari Obat</button>
+                              </div>
+                            </div>
+                            <div class="v_tabel_obat">
+                                <table id="tabel_obat_reguler" class="table table-sm table-bordered table-hover">
+                                    <thead>
+                                        <th>Nama Barang /Layanan</th>
+                                        <th>Tipe</th>
+                                        <th>Stok Current</th>
+                                        <th>Satuan</th>
+                                        <th>Harga Jual</th>
+                                    </thead>
+                                    <tbody>
+                                        {{-- @foreach ($pencarian_obat as $p)
+                                            <tr class="pilihobat" satuan="{{ $p->satuan }}" kode="{{ $p->kode_barang }}" namaobat="{{ $p->nama_barang }}" tarif2="{{ $p->harga_jual }}" tarif="IDR {{ number_format($p->harga_jual, 2) }}" stok_current="{{ $p->stok_current }}" no="{{ $p->NO }}" aturan="{{ $p->aturan_pakai }}">
+                                                <td>{{ $p->nama_barang }}</td>
+                                                <td>{{ $p->nama_tipe }}</td>
+                                                <td>{{ $p->stok_current }}</td>
+                                                <td>{{ $p->satuan }}</td>
+                                                <td>IDR {{ number_format($p->harga_jual, 2) }} </td>
+                                            </tr>
+                                        @endforeach --}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {{-- <div class="form-group mt-2">
                             <button type="button" class="btn btn-success tambahobat" onclick="addform()">+ Tambah
                                 Obat</button>
                         </div>
@@ -1171,7 +1202,7 @@
                             </div>
                             <input hidden type="text" class="form-control col-md-3 mb-3" id="namaresep"
                                 name="namaresep" placeholder="isi nama resep ...">
-                        </form>
+                        </form> --}}
                     </div>
                 </div>
                 {{-- formtindaknlanjut --}}
