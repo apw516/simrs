@@ -1,11 +1,11 @@
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <aside class="main-sidebar sidebar-dark-info elevation-4">
       <!-- Brand Logo -->
-      <a href="index3.html" class="brand-link">
-          <img width="100%" src="{{ asset('public/img/LOGO2.png')}}" alt="AdminLTE Logo" class=""
-              style="opacity: .8">
-          {{-- <span class="brand-text font-weight-light">SEMERUSMART</span> --}}
-      </a>
+      <a href="index3.html" class="brand-link  bg-dark">
+        <img width="100%" height="80%" src="{{ asset('public/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class=""
+            style="opacity: .8">
+        {{-- <span class="brand-text font-weight-light">SEMERUSMART</span> --}}
+    </a>
 
       <!-- Sidebar -->
       <div class="sidebar">

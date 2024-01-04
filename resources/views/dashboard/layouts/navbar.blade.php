@@ -1,4 +1,4 @@
-<nav class="main-header navbar navbar-expand navbar-teal navbar-light">
+<nav class="main-header navbar navbar-expand navbar-dark navbar-dark">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">
@@ -12,25 +12,25 @@
                 style="opacity: .8"> --}}
         <div class="btn-group" role="group">
             @if (auth()->user()->unit == '3001')
-                <button type="button" class="btn btn-outline-dark" data-toggle="modal"
+                <button type="button" class="btn btn-outline-light" data-toggle="modal"
                     data-target="#modalinfopasienbpjs"><i class="bi bi-person-plus"></i> Info Pasien
                     BPJS</button>
-                <button type="button" class="btn btn-outline-dark" data-toggle="modal"
+                <button type="button" class="btn btn-outline-light" data-toggle="modal"
                     data-target="#modalpengajuansep"><i class="bi bi-send-plus-fill"></i> Pengajuan SEP
                     Bckdate / Finger</button>
-                <button type="button" class="btn btn-outline-dark" data-toggle="modal"
+                <button type="button" class="btn btn-outline-light" data-toggle="modal"
                     data-target="#modalpencarianrujukan"><i class="bi bi-send-plus-fill"></i> Cari
                     Rujukan</button>
                 {{-- <button type="button" class="btn btn-outline-dark" data-toggle="modal"
                     data-target="#modalpencariansep"><i class="bi bi-send-plus-fill"></i> Cari
                     SEP</button> --}}
-                <button type="button" class="btn btn-outline-dark" data-toggle="modal"
+                <button type="button" class="btn btn-outline-light" data-toggle="modal"
                     data-target="#modalupdatetglpulang"><i class="bi bi-send-plus-fill mr-2"></i>Update tanggal
                     pulang</button>
-                <button type="button" class="btn btn-outline-dark" data-toggle="modal"
+                <button type="button" class="btn btn-outline-light" data-toggle="modal"
                     data-target="#modalpencariansep"><i class="bi bi-send-plus-fill"></i> Cari
                     SEP</button>
-                <button type="button" class="btn btn-outline-dark" data-toggle="modal"
+                <button type="button" class="btn btn-outline-light" data-toggle="modal"
                     data-target="#modalcetaklabel"><i class="bi bi-printer mr-1"></i> Cetak Label</button>
             @endif
         </div>
