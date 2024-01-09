@@ -16,7 +16,7 @@
                 <div class="card-header">Hasil Expertise</div>
                 <div class="card-body">
                     @foreach ($hasil_rad as $r )
-                    <iframe src ="http://192.168.2.233/expertise/cetak0.php?IDs={{ $r->id_header }}&IDd={{ $r->id_detail }}&tgl_cetak={{ $date }}" width="100%" height="600px"></iframe>
+                    <iframe src ="http://192.168.2.233/expertise/cetak.php?IDs={{ $r->id_header }}&IDd={{ $r->id_detail }}&tgl_cetak={{ $date }}" width="100%" height="600px"></iframe>
                     @endforeach
                 </div>
             </div>
