@@ -61,12 +61,10 @@
                     }
                 });
             }
-
             function batalpilih() {
                 $(".formpasien").attr('hidden', true);
                 $(".vpasien").removeAttr('hidden', true);
             }
-
             function ambildatapasien() {
                 $(".formpasien").attr('hidden', true);
                 $(".vpasien").removeAttr('hidden', true);
