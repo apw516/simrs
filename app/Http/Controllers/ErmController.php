@@ -252,7 +252,7 @@ class ErmController extends Controller
         ,fc_nama_unit1(a.kode_unit) AS nama_unit FROM ts_kunjungan a
         LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`kode_kunjungan` = b.kode_kunjungan AND b.`kode_unit` = a.`kode_unit`
         LEFT OUTER JOIN assesmen_dokters c ON a.`kode_kunjungan` = c.`id_kunjungan` AND c.`kode_unit` = a.`kode_unit`
-        WHERE a.no_rm = ? AND a.status_kunjungan NOT IN(8,11) ORDER BY a.kode_kunjungan DESC LIMIT 5', [$request->rm]);
+        WHERE a.no_rm = ? AND a.status_kunjungan NOT IN(8,11) ORDER BY a.kode_kunjungan DESC LIMIT 10', [$request->rm]);
         return view('ermtemplate.form_catatan_medis', compact([
             'kunjungan',
             'rm'
@@ -3834,10 +3834,16 @@ class ErmController extends Controller
     {
         $data = json_decode($_POST['data'], true);
         $dataobat = json_decode($_POST['dataobat'], true);
+        $datatindaklanjut = json_decode($_POST['datatindaklanjut'], true);
         foreach ($data as $nama) {
             $index =  $nama['name'];
             $value =  $nama['value'];
             $dataSet[$index] = $value;
+        }
+        foreach ($datatindaklanjut as $nama_1) {
+            $index =  $nama_1['name'];
+            $value =  $nama_1['value'];
+            $dataSet_tindaklanjut[$index] = $value;
         }
         $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
         $cek = DB::select('SELECT * from assesmen_dokters WHERE tgl_kunjungan = ? AND id_pasien = ? AND kode_unit = ?', [$kunjungan[0]->tgl_masuk, $request->nomorrm, $request->unit]);
@@ -3867,6 +3873,8 @@ class ErmController extends Controller
             'riwayatlain' => $dataSet['supekpenyakit'],
             'ket_riwayatlain' => $dataSet['keterangansuspek'],
             // 'keluhan_pasien' => $dataSet['keluhanutama'],
+            'tindak_lanjut' => $dataSet_tindaklanjut['pilihtindaklanjut'],
+            'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'],
             'keterangan_tindak_lanjut_2' => trim($dataSet['jawabankonsul']),
             'status' => '0'
         ];

@@ -420,6 +420,52 @@
                 </div>
             </div>
         </form>
+         {{-- formtindaknlanjut --}}
+         <form action="" class="formtindaklanjut">
+            <div class="card">
+                <div class="card-header bg-light">Tindak Lanjut <button type="button"
+                        class="btn btn-success float-right riwayatkonsul" data-toggle="modal"
+                        data-target="#modalriwayatkonsul">Riwayat Konsul</button></div>
+                <div class="card-body">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
+                            id="pilihtindaklanjut" value="KONSUL KE POLI LAIN">
+                        <label class="form-check-label" for="inlineRadio1">KONSUL KE POLI LAIN</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
+                            id="pilihtindaklanjut" value="KONTROL" checked>
+                        <label class="form-check-label" for="inlineRadio2">KONTROL</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
+                            id="pilihtindaklanjut" value="PASIEN DIPULANGKAN">
+                        <label class="form-check-label" for="inlineRadio2">PULANG</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
+                            id="pilihtindaklanjut" value="RUJUK KELUAR">
+                        <label class="form-check-label" for="inlineRadio2">RUJUK KELUAR</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
+                            id="pilihtindaklanjut" value="RUJUK RAWAT INAP">
+                        <label class="form-check-label" for="inlineRadio2">RAWAT INAP</label>
+                    </div>
+                    <div class="form-check form-check-inline mb-2">
+                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
+                            id="pilihtindaklanjut" value="PASIEN MENINGGAL">
+                        <label class="form-check-label" for="inlineRadio2">PASIEN MENINGGAL</label>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="exampleInputEmail1">Keterangan</label>
+                        <textarea type="text" class="form-control" id="keterangantindaklanjut" name="keterangantindaklanjut"
+                            aria-describedby="emailHelp"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+        {{-- formtindakan --}}
         <div class="card">
             <div class="card-header bg-light">Order Farmasi <button type="button"
                     class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
@@ -524,11 +570,36 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalriwayatkonsul" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Riwayat Konsul</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="view_riwayat_konsul">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     function simpanhasil() {
         var data = $('.formpemeriksaan_fisio').serializeArray();
         var data2 = $('.arrayobat').serializeArray();
         var kodekunjungan = $('#kodekunjungan').val()
+        var datatindaklanjut = $('.formtindaklanjut').serializeArray();
         var counter = $('#counter').val()
         var unit = $('#unit').val()
         var nomorrm = $('#nomorrm').val()
@@ -543,6 +614,7 @@
                 _token: "{{ csrf_token() }}",
                 data: JSON.stringify(data),
                 dataobat: JSON.stringify(data2),
+                datatindaklanjut: JSON.stringify(datatindaklanjut),
                 kodekunjungan,
                 counter,
                 unit,
@@ -652,6 +724,19 @@
             url: '<?= route('lihathasilpenunjang_rad') ?>',
             success: function(response) {
                 $('.v_hasil_penunjang_rad').html(response);
+                spinner.hide()
+            }
+        });
+    })
+    $(".riwayatkonsul").click(function() {
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}"
+            },
+            url: '<?= route('riwayatkonsul') ?>',
+            success: function(response) {
+                $('.view_riwayat_konsul').html(response);
                 spinner.hide()
             }
         });

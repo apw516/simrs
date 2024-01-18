@@ -71,6 +71,11 @@
                         </a>
                     </li>
                     <li class="nav-item" id="pemeriksaan">
+                        <a href="#" class="nav-link" onclick="formtindaklanjut()">
+                            <i class="fas fa-inbox mr-2"></i>Form Tindak Lanjut
+                        </a>
+                    </li>
+                    <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formpemeriksaan_wicara()">
                             <i class="fas fa-inbox mr-2"></i>CPPT Terapiwicara
                         </a>
