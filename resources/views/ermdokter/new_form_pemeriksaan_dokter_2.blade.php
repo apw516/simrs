@@ -1268,7 +1268,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div @if(auth()->user()->unit != '1012' && auth()->user()->unit != '1027' ) hidden @endif class="col-md-12">
+                                    <div @if(auth()->user()->unit != '1012' && auth()->user()->unit != '1027' && auth()->user()->id != '220' ) hidden @endif class="col-md-12">
                                         <div class="card">
                                             <div class="card-header text-bold bg-dark">Hasil Expertisi</div>
                                             <div class="card-body">
