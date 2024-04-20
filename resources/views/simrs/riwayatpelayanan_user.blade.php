@@ -9,7 +9,7 @@
                 <!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard')}}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Riwayat pelayanan user</li>
                     </ol>
                 </div>
@@ -33,13 +33,13 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <label for="">Tanggal awal</label>
-                            <input type="text" class="form-control datepicker" data-date-format="yyyy-mm-dd" id="tanggalawal"
-                                placeholder="Tanggal sep ..">
+                            <input type="text" class="form-control datepicker" data-date-format="yyyy-mm-dd"
+                                id="tanggalawal" placeholder="Tanggal sep ..">
                         </div>
                         <div class="col-sm-4">
                             <label for="">Tanggal akhir</label>
-                            <input type="text" class="form-control datepicker" data-date-format="yyyy-mm-dd" id="tanggalakhir"
-                                placeholder="Tanggal sep ..">
+                            <input type="text" class="form-control datepicker" data-date-format="yyyy-mm-dd"
+                                id="tanggalakhir" placeholder="Tanggal sep ..">
                         </div>
                         <div class="col-sm-2">
                             <label for=""></label>
@@ -50,57 +50,58 @@
                     </div>
                 </div>
                 <div class="vriwayatdaftar">
-                <table id="tabelriwayatpelayanan_local" class="table table-sm text-xs table-bordered">
-                    <thead>
-                        <th>nomor rm</th>
-                        {{-- <th>kode kunjungan</th> --}}
-                        <th>tgl masuk</th>
-                        <th>tgl keluar</th>
-                        <th>nama</th>
-                        <th>penjamin</th>
-                        <th>unit</th>
-                        <th>dokter</th>
-                        <th>user</th>
-                        <th>no sep</th>
-                        <th>--</th>
-                    </thead>
-                    <tbody>
-                        @foreach ($datakunjungan as $d)
-                            <tr>
-                                <td>{{ $d->no_rm }}</td>
-                                {{-- <td>{{ $d->kode_kunjungan }}</td> --}}
-                                <td>{{ $d->tgl_masuk }}</td>
-                                <td>{{ $d->tgl_keluar }}</td>
-                                <td>{{ $d->nama_px }}</td>
-                                <td>{{ $d->nama_penjamin }}</td>
-                                <td>{{ $d->nama_unit }}</td>
-                                <td>{{ $d->dokter }}</td>
-                                {{-- <td>{{ $d->status }}</td> --}}
-                                <td>{{ $d->nama_user }}</td>
-                                <td>{{ $d->no_sep }}</td>
-                                <td>
-                                    <button class="badge badge-primary detailkunjungan" nomorrm ="{{ $d->no_rm }}"
-                                        kodekunjungan="{{ $d->kode_kunjungan }}" data-placement="right" title="detail"><i
-                                            class="bi bi-eye text-sm" data-toggle="modal"
-                                            data-target="#detailkunjungan"></i></button>
-                                    <button class="badge badge-danger batal" kodekunjungan="{{ $d->kode_kunjungan }}"
-                                        data-placement="right" title="batal periksa"><i
-                                            class="bi bi-trash text-sm"></i></button>
-                                    {{-- <button class="badge badge-success pulangkan" nama="{{ $d->nama_px }}"
+                    <table id="tabelriwayatpelayanan_local" class="table table-sm text-xs table-bordered">
+                        <thead>
+                            <th>nomor rm</th>
+                            {{-- <th>kode kunjungan</th> --}}
+                            <th>tgl masuk</th>
+                            <th>tgl keluar</th>
+                            <th>nama</th>
+                            <th>penjamin</th>
+                            <th>unit</th>
+                            <th>dokter</th>
+                            <th>user</th>
+                            <th>no sep</th>
+                            <th>--</th>
+                        </thead>
+                        <tbody>
+                            @foreach ($datakunjungan as $d)
+                                @if (auth()->user()->id_simrs == $d->pic)
+                                    <tr>
+                                        <td>{{ $d->no_rm }}</td>
+                                        {{-- <td>{{ $d->kode_kunjungan }}</td> --}}
+                                        <td>{{ $d->tgl_masuk }}</td>
+                                        <td>{{ $d->tgl_keluar }}</td>
+                                        <td>{{ $d->nama_px }}</td>
+                                        <td>{{ $d->nama_penjamin }}</td>
+                                        <td>{{ $d->nama_unit }}</td>
+                                        <td>{{ $d->dokter }}</td>
+                                        {{-- <td>{{ $d->status }}</td> --}}
+                                        <td>{{ $d->nama_user }}</td>
+                                        <td>{{ $d->no_sep }}</td>
+                                        <td>
+                                            <button class="badge badge-primary detailkunjungan"
+                                                nomorrm ="{{ $d->no_rm }}" kodekunjungan="{{ $d->kode_kunjungan }}"
+                                                data-placement="right" title="detail"><i class="bi bi-eye text-sm"
+                                                    data-toggle="modal" data-target="#detailkunjungan"></i></button>
+                                            <button class="badge badge-danger batal"
+                                                kodekunjungan="{{ $d->kode_kunjungan }}" data-placement="right"
+                                                title="batal periksa"><i class="bi bi-trash text-sm"></i></button>
+                                            {{-- <button class="badge badge-success pulangkan" nama="{{ $d->nama_px }}"
                                         kodekunjungan2="{{ $d->kode_kunjungan }}" data-placement="right"
                                         title="pulangkan pasien" data-toggle="modal" data-target="#modalpulangkanpasien"><i
                                             class="bi bi-pencil-square text-sm"></i></button>
                                 </td> --}}
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                    </tr>
+                                @endif
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </section>
-    <div class="modal fade" id="modalpulangkanpasien" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="modalpulangkanpasien" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-md">
             <div class="modal-content">
                 <div class="modal-header">
@@ -162,13 +163,16 @@
                 "responsive": false,
                 "lengthChange": false,
                 "autoWidth": true,
-                "pageLength": 5,
+                "pageLength": 20,
                 "searching": true,
+                "dom": 'Bfrtip',
                 "order": [
                     [1, "desc"]
-                ]
-            })
+                ],
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)')
         });
+
         function caririwayatdaftar() {
             tanggalawal = $('#tanggalawal').val()
             tanggalakhir = $('#tanggalakhir').val()
@@ -181,7 +185,7 @@
                     tanggalakhir,
                     tanggalawal
                 },
-                url: '<?= route('caririwayatpelayanan_user');?>',
+                url: '<?= route('caririwayatpelayanan_user') ?>',
                 error: function(data) {
                     spinner.hide();
                     alert('error!')
@@ -202,9 +206,10 @@
                 type: 'post',
                 data: {
                     _token: "{{ csrf_token() }}",
-                    kodekunjungan,nomorrm
+                    kodekunjungan,
+                    nomorrm
                 },
-                url: '<?= route('detailkunjungan');?>',
+                url: '<?= route('detailkunjungan') ?>',
                 error: function(data) {
                     spinner.hide()
                     Swal.fire({
@@ -241,7 +246,7 @@
                         },
                         dataType: 'Json',
                         Async: true,
-                        url: '<?= route('batalperiksa');?>',
+                        url: '<?= route('batalperiksa') ?>',
                         error: function(data) {
                             spinner.hide()
                             Swal.fire({
@@ -281,14 +286,14 @@
 
         function pulangkanpasien() {
             spinner = $('#loader');
-            spinner.show();            
+            spinner.show();
             kodekunjungan = $('#kode_kunjungan_simrs').val()
             status = $('#status_pulang2').val()
             tanggalpulang = $('#pulang_tanggal2').val()
             tanggalmeninggal = $('#tanggal_meninggal2').val()
             suratmeninggal = $('#surat_meninggal2').val()
             nomorlp = $('#nomor_lp_manual2').val()
-            if (status != 6 || status != 7 ) {
+            if (status != 6 || status != 7) {
                 tanggalmeninggal = ''
                 suratmeninggal = ''
             }
@@ -305,7 +310,7 @@
                     suratmeninggal,
                     nomorlp
                 },
-                url: '<?= route('updatepulang');?>',
+                url: '<?= route('updatepulang') ?>',
                 error: function(data) {
                     spinner.hide()
                     Swal.fire({
