@@ -502,6 +502,7 @@
   <script src="{{ asset('public/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
   <script src="{{ asset('public/dist/js/bootstrap-datepicker.js') }}"></script>
   <!-- AdminLTE for demo purposes -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.10.8/sweetalert2.all.js"></script>
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="{{ asset('public/dist/js/demo.js') }}"></script>
   <script>
