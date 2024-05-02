@@ -42,6 +42,13 @@
                                 id="tanggalakhir" placeholder="Tanggal sep ..">
                         </div>
                         <div class="col-sm-2">
+                            <label for="">Jenis pasien</label>
+                            <select class="form-control" id="jenispasien">
+                                <option value="1">Semua Pasien</option>
+                                <option value="2">Pasien Baru</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
                             <label for=""></label>
                             <button type="submit" data-toggle="collapse" href="#cardriwayatpelayanan"
                                 class="btn btn-dark mt-4 btn-lg" onclick="caririwayatdaftar()">Cari Riwayat</button>
@@ -52,6 +59,7 @@
                 <div class="vriwayatdaftar">
                     <table id="tabelriwayatpelayanan_local" class="table table-sm text-xs table-bordered">
                         <thead>
+                            <th>Kunjungan ke - </th>
                             <th>nomor rm</th>
                             {{-- <th>kode kunjungan</th> --}}
                             <th>tgl masuk</th>
@@ -68,6 +76,7 @@
                             @foreach ($datakunjungan as $d)
                                 @if (auth()->user()->id_simrs == $d->pic)
                                     <tr>
+                                        <td>{{ $d->Kun }}</td>
                                         <td>{{ $d->no_rm }}</td>
                                         {{-- <td>{{ $d->kode_kunjungan }}</td> --}}
                                         <td>{{ $d->tgl_masuk }}</td>
@@ -176,6 +185,7 @@
         function caririwayatdaftar() {
             tanggalawal = $('#tanggalawal').val()
             tanggalakhir = $('#tanggalakhir').val()
+            jenispasien = $('#jenispasien').val()
             spinner = $('#loader');
             spinner.show();
             $.ajax({
@@ -183,7 +193,7 @@
                 data: {
                     _token: "{{ csrf_token() }}",
                     tanggalakhir,
-                    tanggalawal
+                    tanggalawal,jenispasien
                 },
                 url: '<?= route('caririwayatpelayanan_user') ?>',
                 error: function(data) {

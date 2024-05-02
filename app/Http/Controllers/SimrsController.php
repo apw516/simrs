@@ -2259,7 +2259,25 @@ class SimrsController extends Controller
     {
         $now = $request->tanggalakhir;
         $d2 = $request->tanggalawal;
-        $data_kunjungan = DB::select("CALL SP_RIWAYAT_KUNJUNGAN_RS('$d2','$now')");
+        $jenispasien = $request->jenispasien;
+        if ($jenispasien == 1) {
+            $data_kunjungan = DB::select("CALL SP_RIWAYAT_KUNJUNGAN_RS('$d2','$now')");
+        } else {
+            $data_kunjungan = DB::select("SELECT counter as Kun, kode_kunjungan
+        ,fc_nama_unit1(kode_unit) AS nama_unit
+        ,DATE(tgl_masuk) AS tgl_masuk
+        ,DATE(tgl_keluar) AS tgl_keluar
+        ,fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin
+        ,fc_NAMA_USER(pic) AS nama_user
+        ,pic
+        ,fc_nama_px(no_rm) AS nama_px
+        ,no_rm
+        ,no_sep
+        ,fc_nama_paramedis1(kode_paramedis) AS dokter
+        ,keterangan2 AS sep
+        FROM ts_kunjungan WHERE pic = ? AND DATE(tgl_masuk) BETWEEN ? AND ? AND counter = ?
+        ", [auth()->user()->id_simrs, $d2, $now,1]);
+        }
         return view('simrs.caririwayatpelayanan_user', [
             'datakunjungan' => $data_kunjungan
         ]);
@@ -3689,10 +3707,10 @@ class SimrsController extends Controller
         // $pdf->Output();
         // exit;
     }
-    public function cari_riwayat_sep($noka,$tgl_awal,$tglakhir)
+    public function cari_riwayat_sep($noka, $tgl_awal, $tglakhir)
     {
         $v = new VclaimModel();
-        $riwayat = $v->get_data_kunjungan_peserta($noka, $tgl_awal,$tglakhir);
+        $riwayat = $v->get_data_kunjungan_peserta($noka, $tgl_awal, $tglakhir);
         return $riwayat;
     }
 }

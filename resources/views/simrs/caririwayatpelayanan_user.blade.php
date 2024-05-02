@@ -1,5 +1,6 @@
 <table id="tabelriwayatpelayanan_local" class="table table-sm text-xs table-bordered">
     <thead>
+        <th>Kunjungan ke -</th>
         <th>nomor rm</th>
         {{-- <th>kode kunjungan</th> --}}
         <th>tgl masuk</th>
@@ -16,6 +17,7 @@
         @foreach ($datakunjungan as $d)
             @if (auth()->user()->id_simrs == $d->pic)
                 <tr>
+                    <td>{{ $d->Kun }}</td>
                     <td>{{ $d->no_rm }}</td>
                     {{-- <td>{{ $d->kode_kunjungan }}</td> --}}
                     <td>{{ $d->tgl_masuk }}</td>
