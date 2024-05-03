@@ -1,6 +1,6 @@
 <button class="btn btn-danger" onclick="ambildatapasien()">Kembali</button>
 <div class="row mt-3">
-    <div class="col-md-2">
+    <div class="col-md-2">test
         <!-- Profile Image -->
         <div class="card card-primary card-outline">
             <div class="card-body box-profile">
