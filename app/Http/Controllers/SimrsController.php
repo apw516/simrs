@@ -2209,17 +2209,42 @@ class SimrsController extends Controller
     }
     public function get_rm()
     {
+        // $y = DB::select('SELECT MAX(RIGHT(no_rm,6)) AS kd_max FROM mt_pasien');
+        // if (count($y) > 0) {
+        //     foreach ($y as $k) {
+        //         $tmp = ((int) $k->kd_max) + 1;
+        //         $kd = sprintf("%06s", $tmp);
+        //     }
+        // } else {
+        //     $kd = "0001";
+        // }
+        // date_default_timezone_set('Asia/Jakarta');
+        // return date('y') . $kd;
         $y = DB::select('SELECT MAX(RIGHT(no_rm,6)) AS kd_max FROM mt_pasien');
-        if (count($y) > 0) {
-            foreach ($y as $k) {
-                $tmp = ((int) $k->kd_max) + 1;
-                $kd = sprintf("%06s", $tmp);
+        if($y[0]->kd_max >= 999999){
+            $y = DB::select('SELECT MAX(RIGHT(no_rm,6)) AS kd_max FROM mt_pasien where SUBSTRING(no_rm,3,1) = ?',['A']);
+            if (count($y) > 0) {
+                foreach ($y as $k) {
+                    $tmp = ((int) $k->kd_max) + 1;
+                    $kd = sprintf("%06s", $tmp);
+                }
+            } else {
+                $kd = "000001";
             }
-        } else {
-            $kd = "0001";
+            date_default_timezone_set('Asia/Jakarta');
+            return date('y') .'A'.$kd;
+        }else{
+            if (count($y) > 0) {
+                foreach ($y as $k) {
+                    $tmp = ((int) $k->kd_max) + 1;
+                    $kd = sprintf("%06s", $tmp);
+                }
+            } else {
+                $kd = "0001";
+            }
+            date_default_timezone_set('Asia/Jakarta');
+            return date('y') . $kd;
         }
-        date_default_timezone_set('Asia/Jakarta');
-        return date('y') . $kd;
     }
     public function datakunjungan()
     {
