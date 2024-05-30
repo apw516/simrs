@@ -1,6 +1,6 @@
 <button class="btn btn-danger" onclick="ambildatapasien()">Kembali</button>
 <div class="row mt-3">
-    <div class="col-md-2">test
+    <div class="col-md-2">
         <!-- Profile Image -->
         <div class="card card-primary card-outline">
             <div class="card-body box-profile">
@@ -50,10 +50,10 @@
             </div>
             <div class="card-body p-0">
                 <ul class="nav nav-pills flex-column">
-                    @if($pic == auth()->user()->id || $pic == '')
+                    {{-- @if($pic == auth()->user()->id || $pic == '') --}}
                     <li class="nav-item" id="pemeriksaan">
-                        <a href="#" class="nav-link" onclick="formpemeriksaandokter()">
-                            <i class="fas fa-inbox mr-2"></i>Catatan Perkembangan Pasien Terintegrasi ( CPPT )
+                        <a href="#" class="nav-link" onclick="formpemeriksaandokter2()">
+                            <i class="fas fa-inbox mr-2"></i>Assesment Rawat Jalan
                         </a>
                     </li>
                     {{-- <li class="nav-item" id="pemeriksaan">
@@ -88,7 +88,7 @@
                             <i class="fas fa-inbox mr-2"></i>Tindak Lanjut
                         </a>
                     </li> --}}
-                    @endif
+                    {{-- @endif --}}
                     <li class="nav-item">
                         <a href="#" class="nav-link" onclick="resume()">
                             <i class="fas fa-filter mr-2"></i> Resume
@@ -140,6 +140,25 @@
                 kodekunjungan
             },
             url: '<?= route('formpemeriksaan_dokter') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    function formpemeriksaandokter2() {
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('v2_formpemeriksaan_dokter') ?>',
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()

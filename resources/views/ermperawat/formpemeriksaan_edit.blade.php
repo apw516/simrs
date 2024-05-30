@@ -1,5 +1,8 @@
+<div class="hasil_pemeriksaan_dokter">
+
+</div>
 <div class="card">
-    <div class="card-header bg-info">Catatan Perkembangan Pasien Terintegrasi ( CPPT )</div>
+    <div class="card-header bg-info">Assesment Keperawatan / Kebidanan</div>
     <div class="card-body">
         <form action="" class="formpemeriksaanperawat">
             <input hidden type="text" name="kodekunjungan" class="form-control"
@@ -1274,13 +1277,33 @@
 <link rel="stylesheet" href="{{ asset('public/dist/css/datepicker.css') }}" rel="stylesheet">
 <script src="{{ asset('public/dist/js/bootstrap-datepicker.js') }}"></script>
 <script>
+      $(document).ready(function() {
+        ambilhasilassesmentmedis()
+    })
     $(function() {
         $(".datepicker").datepicker({
             autoclose: true,
             todayHighlight: true,
         }).datepicker('update', new Date());
     });
-
+    function ambilhasilassesmentmedis()
+    {
+        kodekunjungan = $('#kodekunjungan').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('hasilassesmentmedis') ?>',
+            success: function(response) {
+                $('.hasil_pemeriksaan_dokter').html(response);
+                spinner.hide()
+            }
+        })
+    }
     function simpanhasil() {
         spinner = $('#loader')
         spinner.show();

@@ -44,7 +44,7 @@
                     @if(auth()->user()->unit != '1028')
                     <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formpemeriksaan()">
-                            <i class="fas fa-inbox mr-2"></i>Catatan Perkembangan Pasien Terintegrasi ( CPPT )
+                            <i class="fas fa-inbox mr-2"></i>Assesment Keperawatan / Kebidanan
                         </a>
                     </li>
                     @if(auth()->user()->unit == '1029')

@@ -10,11 +10,12 @@ use App\Http\Controllers\BillingController;
 use App\Http\Controllers\BedmonitoringController;
 use App\Http\Controllers\RanapController;
 use App\Http\Controllers\ErmController;
+use App\Http\Controllers\ErmController_v2;
 use App\Http\Controllers\PenunjangController;
 use App\Http\Controllers\AntrianIgd;
 use App\Http\Controllers\ErmIgdController;
 use App\Http\Controllers\FarmasiController;
-
+use App\Http\Controllers\FarmasiV2Controller;
 
 Route::get('/', [LoginController::class, 'index']);
 Route::get('datauser', [LoginController::class, 'datauser'])->middleware('auth')->name('datauser');
@@ -453,7 +454,20 @@ Route::group(['middleware' => ['auth', 'hak_akses1:9']], function () {
         ->name('simpanajuan'); //sidebar
 });
 //erm
+
+
 Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
+    //v2
+    Route::post('hasilassesmentmedis', [ErmController_v2::class, 'hasilassesmentmedis'])
+    ->name('hasilassesmentmedis'); //sidebar
+    Route::post('kirimorderfarmasi', [ErmController_v2::class, 'kirimorderfarmasi'])
+    ->name('kirimorderfarmasi'); //sidebar
+    Route::post('kirimorderlab', [ErmController_v2::class, 'kirimorderlab'])
+    ->name('kirimorderlab'); //sidebar
+    Route::post('kirimorderrad', [ErmController_v2::class, 'kirimorderrad'])
+    ->name('kirimorderrad'); //sidebar
+
+
     Route::get('/indexperawat', [ErmController::class, 'indexPerawat'])
         ->name('indexperawat'); //sidebar
     Route::get('/indexigd', [ErmIgdController::class, 'indexigd'])
@@ -658,6 +672,40 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('riwayatkonsul'); //sidebar
     Route::post('hasilsumarilis', [ErmController::class, 'hasilsumarilis'])
         ->name('hasilsumarilis'); //sidebar
+
+    // v_2
+
+
+    Route::post('v2_formpemeriksaan_dokter', [ErmController_v2::class, 'formpemeriksaan_dokter'])
+        ->name('v2_formpemeriksaan_dokter'); //sidebar
+    Route::post('v2_simpanpemeriksaandokter', [ErmController_v2::class, 'Simpan_pemeriksaan_dokter'])
+        ->name('v2_simpanpemeriksaandokter'); //sidebar
+    Route::post('v2_riwayatkunjungan', [ErmController_v2::class, 'Ambil_Riwayat_kunjungan'])
+        ->name('v2_riwayatkunjungan'); //sidebar
+    Route::post('v2_cari_obat_reguler', [ErmController_v2::class, 'Cari_obat_reguler'])
+        ->name('v2_cari_obat_reguler'); //sidebar
+    Route::post('v2_cari_obat_komponen', [ErmController_v2::class, 'Cari_obat_komponen'])
+        ->name('v2_cari_obat_komponen'); //sidebar
+    Route::post('v2_add_draft_komponen', [ErmController_v2::class, 'Add_draft_komponen'])
+        ->name('v2_add_draft_komponen'); //sidebar
+    Route::post('ambil_riwayat_order_farmasi', [ErmController_v2::class, 'Ambil_riwayat_order_farmasi'])
+        ->name('ambil_riwayat_order_farmasi'); //sidebar
+    Route::post('ambil_riwayat_order_lab', [ErmController_v2::class, 'ambil_riwayat_order_lab'])
+        ->name('ambil_riwayat_order_lab'); //sidebar
+    Route::post('ambil_riwayat_order_rad', [ErmController_v2::class, 'ambil_riwayat_order_rad'])
+        ->name('ambil_riwayat_order_rad'); //sidebar
+    Route::post('ambil_riwayat_pemakaian_obat', [ErmController_v2::class, 'Ambil_riwayat_pemakaian_obat'])
+        ->name('ambil_riwayat_pemakaian_obat'); //sidebar
+    Route::post('ambil_riwayat_racikan', [ErmController_v2::class, 'ambil_riwayat_racikan'])
+        ->name('ambil_riwayat_racikan'); //sidebar
+    Route::post('batal_detail_order_farmasi', [ErmController_v2::class, 'Batal_detail_order_farmasi'])
+        ->name('batal_detail_order_farmasi'); //sidebar
+    Route::post('batal_detail_order_lab', [ErmController_v2::class, 'batal_detail_order_lab'])
+        ->name('batal_detail_order_lab'); //sidebar
+    Route::post('batal_detail_order_rad', [ErmController_v2::class, 'batal_detail_order_rad'])
+        ->name('batal_detail_order_rad'); //sidebar
+    Route::post('ambil_riwayat_tindakan_Tdy', [ErmController_v2::class, 'ambil_riwayat_tindakan_today'])
+        ->name('ambil_riwayat_tindakan_Tdy'); //sidebar
 });
 
 
@@ -684,3 +732,5 @@ Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
 });
 
 Route::get('get_riwayat_sep/{nomorkartu}/{tglawal}/{tglakhir}', [SimrsController::class, 'cari_riwayat_sep'])->name('cari_riwayat_sep'); //formpasien_bpjs
+Route::get('layananfarmasi', [FarmasiV2Controller::class, 'indexlayanan'])->name('layananfarmasi'); //formpasien_bpjs
+Route::post('ambilantrianreguler', [FarmasiV2Controller::class, 'ambilantrianreguler'])->name('ambilantrianreguler'); //formpasien_bpjs
