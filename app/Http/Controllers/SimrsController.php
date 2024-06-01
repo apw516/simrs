@@ -2222,7 +2222,7 @@ class SimrsController extends Controller
         // return date('y') . $kd;
         $y = DB::select('SELECT MAX(RIGHT(no_rm,6)) AS kd_max FROM mt_pasien');
         if($y[0]->kd_max >= 999999){
-            $y = DB::select('SELECT MAX(RIGHT(no_rm,6)) AS kd_max FROM mt_pasien where SUBSTRING(no_rm,3,1) = ?',['A']);
+            $y = DB::select('SELECT MAX(RIGHT(no_rm,6)) AS kd_max FROM mt_pasien where LEFT(no_rm,2) = ?',['01']);
             if (count($y) > 0) {
                 foreach ($y as $k) {
                     $tmp = ((int) $k->kd_max) + 1;
@@ -2232,7 +2232,7 @@ class SimrsController extends Controller
                 $kd = "000001";
             }
             date_default_timezone_set('Asia/Jakarta');
-            return date('y') .'A'.$kd;
+            return '01'.$kd;
         }else{
             if (count($y) > 0) {
                 foreach ($y as $k) {
