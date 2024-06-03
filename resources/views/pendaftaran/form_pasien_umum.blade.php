@@ -58,7 +58,7 @@
                                     <div class="form-row">
                                         <div class="col">
                                             <input type="text" readonly class="form-control" id="namapasien"
-                                                placeholder="First name">
+                                                placeholder="First name" value="{{$mt_pasien[0]->nama_px}}">
                                         </div>
                                         <div class="col">
                                             <input type="text" readonly class="form-control" id="nomorrm"
@@ -140,7 +140,7 @@
                                                 <input readonly type="text" class="form-control mb-2"
                                                     id="unitref" placeholder="Unit">
                                             </div>
-                                            
+
 
 
                                             <div class="col-auto">
@@ -343,7 +343,7 @@
         kodebedranap = $('#kodebedranap').val()
         idruangan = $('#idruangan').val()
         koderef = $('#kodekunjunganref').val()
-        dokterref = $('#dokterref').val()      
+        dokterref = $('#dokterref').val()
         if (kodepolitujuan == '') {
             if (jenispelayanan == 1) {
                 if(koderef == ''){
@@ -423,7 +423,7 @@
                     }
                 });
                 //end of pasien ranap
-                }              
+                }
             } else {
                 alert('silahkan pilih poli tujuan ...')
             }
