@@ -7058,10 +7058,22 @@ class ErmController extends Controller
 
         $riwayat_upload = DB::select('select *,fc_nama_unit2(kode_unit) as nama_unit from erm_upload_gambar where kodekunjungan = ?', [$kodekunjungan]);
 
+        $ts_kunjungan = db::select('select * from ts_kunjungan where kode_kunjungan = ?',[$kodekunjungan]);
+        $rm = $ts_kunjungan[0]->no_rm;
+        $hasil_lab = DB::select('SELECT * FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` WHERE a.`no_rm` = ? AND b.`kode_unit` = ? ORDER BY a.`kode_kunjungan`DESC ', [$rm, '3002']);
+        $hasil_rad = DB::select('SELECT * FROM ts_hasil_expertisi WHERE no_rm = ? ', [$rm]);
+        $date = $this->get_date();
+        $hasil_pa = DB::select('SELECT * FROM ts_hasil_expertisi_pa  WHERE no_rm = ? ', [$rm]);
+
         return view('ermtemplate.resumepasien_rm', compact([
+            'hasil_lab',
+            'rm',
+            'hasil_rad',
+            'hasil_pa',
             'resume_1',
             'resume',
             'formkhusus',
+            'date',
             'riwayat_tindakan',
             'riwayat_order',
             'riwayat_upload',
