@@ -383,7 +383,6 @@ class SimrsController extends Controller
             echo "<div class='alert alert-danger' role='alert'> $err </div>";
             die;
         }
-
         $status_code = $noka->metaData->code;
         $status_message = $noka->metaData->message;
         if ($status_code != 200) {
