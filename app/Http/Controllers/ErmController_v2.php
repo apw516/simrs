@@ -865,8 +865,8 @@ class ErmController_v2 extends Controller
         INNER JOIN mt_tarif_detail c ON b.kode_tarif_detail = c.`KODE_TARIF_DETAIL`
         INNER JOIN mt_tarif_header d ON c.`KODE_TARIF_HEADER` = d.`KODE_TARIF_HEADER`
         WHERE a.`kode_kunjungan` = ? AND b.`status_layanan_detail` = 'OPN' AND a.`status_layanan` = 1 AND a.kode_unit = ?", [$kodekunjungan, '3003']);
-        $antrian = DB::connection('mysql2')->select('select * from ts_antrian_farmasi where kode_kunjungan = ?',[$kodekunjungan]);
-        return view('V2_erm.hasilpemeriksaandokter', compact('assdok', 'of', 'kodekunjungan', 'oL', 'oR','antrian'));
+        $antrian = DB::connection('mysql2')->select('select * from ts_antrian_farmasi where kode_kunjungan = ?', [$kodekunjungan]);
+        return view('V2_erm.hasilpemeriksaandokter', compact('assdok', 'of', 'kodekunjungan', 'oL', 'oR', 'antrian'));
     }
     public function kirimorderfarmasi(Request $request)
     {
@@ -881,6 +881,15 @@ class ErmController_v2 extends Controller
 
         $cek_antrian = db::connection('mysql2')->select('select * from ts_antrian_farmasi where kode_kunjungan = ?', [$kodekunjungan]);
         if (count($cek_antrian) > 0) {
+            $status_antrian = $cek_antrian[0]->status_antrian;
+            $orderan = db::connection('mysql2')->select("select * from ts_layanan_header_order where kode_kunjungan = '$kodekunjungan' and kode_unit in ('4002','4008') and status_order = '1'");
+            if (count($orderan) > 0) {
+                if ($status_antrian == 1) {
+                    // ts_antrian_farmasi::create($data_antrian);
+                    ts_antrian_farmasi::whereRaw('kode_kunjungan = ?', array($kodekunjungan))->update(['status_antrian' => '0']);
+
+                }
+            }
             $data = [
                 'kode' => 200,
                 'message' => 'Oder berhasil dikirim!',
@@ -1013,7 +1022,7 @@ class ErmController_v2 extends Controller
             $kd = "001";
         }
         date_default_timezone_set('Asia/Jakarta');
-        return 'A - '.$pref . $kd;
+        return 'A - ' . $pref . $kd;
     }
     public function get_nomor_antrian_racikan($pref, $kodeunit)
     {
@@ -1031,6 +1040,6 @@ class ErmController_v2 extends Controller
             $kd = "001";
         }
         date_default_timezone_set('Asia/Jakarta');
-        return 'B - '.$pref . $kd;
+        return 'B - ' . $pref . $kd;
     }
 }
