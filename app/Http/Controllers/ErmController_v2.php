@@ -887,7 +887,6 @@ class ErmController_v2 extends Controller
                 if ($status_antrian == 1) {
                     // ts_antrian_farmasi::create($data_antrian);
                     ts_antrian_farmasi::whereRaw('kode_kunjungan = ?', array($kodekunjungan))->update(['status_antrian' => '0']);
-
                 }
             }
             $data = [
