@@ -203,16 +203,15 @@
                             </tr>
                             <tr>
                                 <td class="text-bold font-italic">Riwayat Psikologis</td>
-                                <td colspan="3" class="text-bold">
+                                <td class="text-bold">
                                     {{ $resume_1[0]->Riwayatpsikologi }}
                                 </td>
-                            </tr>
-                            <tr>
-                                <td class="text-bold font-italic"></td>
-                                <td colspan="3" class="text-bold">
-                                    {{ $resume_1[0]->keterangan_riwayat_psikolog }}
+                                <td class="text-bold font-italic">BB/TB/IMT</td>
+                                <td class="text-bold">
+                                    {{ $resume_1[0]->beratbadan }}/ {{ $resume_1[0]->tinggibadan }}/{{ $resume_1[0]->imt }}
                                 </td>
                             </tr>
+
                         </tbody>
                     </table>
 
