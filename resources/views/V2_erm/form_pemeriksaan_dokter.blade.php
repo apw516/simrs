@@ -1061,10 +1061,6 @@
             }
         });
     }
-
-
-
-
     function riwayat_tindakan() {
         kodekunjungan = $('#kodekunjungan').val()
         spinner = $('#loader')

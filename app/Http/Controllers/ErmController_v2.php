@@ -619,8 +619,8 @@ class ErmController_v2 extends Controller
         // dd($array_list);
         $list_ket = [];
         foreach ($array_list as $arr) {
-            $list_ket[] = $arr['namaobat'] . ' Dosis Awal : ' . $arr['dosis'] . ' Dosis Racik : ' . $arr['dosisracik'];
             $qty = $arr['dosisracik'] * $dataSet['jumlahracikan'] / $arr['dosis'];
+            $list_ket[] = $arr['namaobat'] . ' Dosis Awal : ' . $arr['dosis'] . ' Dosis Racik : ' . $arr['dosisracik'].' Kebutuhan obat :'.$qty;
             $data_detail = [
                 'id_header' => $header->id,
                 'kode_barang' => $arr['kodebarang'],
