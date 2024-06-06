@@ -957,7 +957,6 @@ class SimrsController extends Controller
         }
         //insert ke ts_kunjungan
         $ts_kunjungan = ts_kunjungan::create($data_ts_kunjungan);
-
         $data_antrian = [
             "nomorkartu" => "$request->nomorkartu",
             "nik" => "$request->nik",
