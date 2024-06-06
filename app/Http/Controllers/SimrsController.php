@@ -795,38 +795,7 @@ class SimrsController extends Controller
             $nomorreferensi = $request->suratkontrol;
             $tujuan = 3;
         }
-        $data_antrian = [
-            "nomorkartu" => "$request->nomorkartu",
-            "nik" => "$request->nik",
-            "nohp" => "$request->nomortelepon",
-            "kodepoli" => "$request->kodepolitujuan",
-            "norm" => "$request->norm",
-            "tanggalperiksa" => "$request->tglsep",
-            "kodedokter" => $request->kodedokterlayan,
-            "jampraktek" => $jampraktek[0]->jadwal,
-            "jeniskunjungan" => "$tujuan",
-            "nomorreferensi" => "$nomorreferensi",
-            "method" => "Bridging",
-            "user" => auth()->user()->nama
-        ];
-        if ($request->kodepolitujuan != 'HDL') {
-            $antrian = $mw->ambilantrean2($data_antrian);
-            // $kodebooking = 0;
-            // if (isset($antrian->metadata->code)) {
-            //     $status_a = $antrian->metadata->code;
-            //     if ($status_a == 200) {
-            //         $time = Carbon::now();
-            //         $timestamp = $time->timestamp * 1000;
-            //         $kodebooking = $antrian->response->kodebooking;
-            //         $taskid = [
-            //             "kodebooking" => "$kodebooking",
-            //             "taskid" => "3",
-            //             "waktu" => $timestamp
-            //         ];
-            //         $taskid_r = $mw->update_antrian($taskid);
-            //     }
-            // }
-        }
+
         //END OF AMBIL ANTRIAN
         $dt = Carbon::now();
         $v = new VclaimModel();
@@ -988,6 +957,27 @@ class SimrsController extends Controller
         }
         //insert ke ts_kunjungan
         $ts_kunjungan = ts_kunjungan::create($data_ts_kunjungan);
+
+        $data_antrian = [
+            "nomorkartu" => "$request->nomorkartu",
+            "nik" => "$request->nik",
+            "nohp" => "$request->nomortelepon",
+            "kodepoli" => "$request->kodepolitujuan",
+            "norm" => "$request->norm",
+            "tanggalperiksa" => "$request->tglsep",
+            "kodedokter" => $request->kodedokterlayan,
+            "jampraktek" => $jampraktek[0]->jadwal,
+            "jeniskunjungan" => "$tujuan",
+            "kode_kunjungan" => "$ts_kunjungan->id",
+            "nomorreferensi" => "$nomorreferensi",
+            "method" => "Bridging",
+            "user" => auth()->user()->nama
+        ];
+        if ($request->kodepolitujuan != 'HDL') {
+            $antrian = $mw->ambilantrean2($data_antrian);
+        }
+
+
         //membuat kode layanan header menggunakan store procedure
         if ($kelas_unit == 1 || $kelas_unit == 2) {
             //jika kelas penunjang  seperti hd,lab dll tidak akan tebentuk layanan header
@@ -2219,8 +2209,8 @@ class SimrsController extends Controller
         // date_default_timezone_set('Asia/Jakarta');
         // return date('y') . $kd;
         $y = DB::select('SELECT MAX(RIGHT(no_rm,6)) AS kd_max FROM mt_pasien');
-        if($y[0]->kd_max >= 999999){
-            $y = DB::select('SELECT MAX(RIGHT(no_rm,6)) AS kd_max FROM mt_pasien where LEFT(no_rm,2) = ?',['01']);
+        if ($y[0]->kd_max >= 999999) {
+            $y = DB::select('SELECT MAX(RIGHT(no_rm,6)) AS kd_max FROM mt_pasien where LEFT(no_rm,2) = ?', ['01']);
             if (count($y) > 0) {
                 foreach ($y as $k) {
                     $tmp = ((int) $k->kd_max) + 1;
@@ -2230,8 +2220,8 @@ class SimrsController extends Controller
                 $kd = "000001";
             }
             date_default_timezone_set('Asia/Jakarta');
-            return '01'.$kd;
-        }else{
+            return '01' . $kd;
+        } else {
             if (count($y) > 0) {
                 foreach ($y as $k) {
                     $tmp = ((int) $k->kd_max) + 1;
@@ -2299,7 +2289,7 @@ class SimrsController extends Controller
         ,fc_nama_paramedis1(kode_paramedis) AS dokter
         ,keterangan2 AS sep
         FROM ts_kunjungan WHERE pic = ? AND DATE(tgl_masuk) BETWEEN ? AND ? AND counter = ?
-        ", [auth()->user()->id_simrs, $d2, $now,1]);
+        ", [auth()->user()->id_simrs, $d2, $now, 1]);
         }
         return view('simrs.caririwayatpelayanan_user', [
             'datakunjungan' => $data_kunjungan
