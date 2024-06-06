@@ -704,6 +704,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('batal_detail_order_lab'); //sidebar
     Route::post('batal_detail_order_rad', [ErmController_v2::class, 'batal_detail_order_rad'])
         ->name('batal_detail_order_rad'); //sidebar
+    Route::post('batal_tindakan_poli', [ErmController_v2::class, 'batal_tindakan_poli'])
+        ->name('batal_tindakan_poli'); //sidebar
     Route::post('ambil_riwayat_tindakan_Tdy', [ErmController_v2::class, 'ambil_riwayat_tindakan_today'])
         ->name('ambil_riwayat_tindakan_Tdy'); //sidebar
 });

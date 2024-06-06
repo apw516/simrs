@@ -85,11 +85,11 @@ class ErmController_v2 extends Controller
     public function ambil_riwayat_tindakan_today(Request $request)
     {
         $kodekunjungan = $request->kodekunjungan;
-        $riwayat_tindakan = DB::connection('mysql')->select('SELECT *,d.NAMA_TARIF,fc_nama_tarif(b.kode_tarif_detail) as nama_tarif,b.id as id_detail FROM ts_layanan_header a
+        $riwayat_tindakan = DB::connection('mysql2')->select('SELECT *,d.NAMA_TARIF,fc_nama_tarif(b.kode_tarif_detail) as nama_tarif,b.id as id_detail FROM ts_layanan_header a
         INNER JOIN ts_layanan_detail b ON a.id = b.`row_id_header`
         INNER JOIN mt_tarif_detail c ON b.kode_tarif_detail = c.`KODE_TARIF_DETAIL`
         INNER JOIN mt_tarif_header d ON c.`KODE_TARIF_HEADER` = d.`KODE_TARIF_HEADER`
-        WHERE kode_kunjungan = ? and status_layanan = ?', [$kodekunjungan, '1']);
+        WHERE kode_kunjungan = ? and status_layanan = ? and status_layanan_detail = ?', [$kodekunjungan, '1', 'OPN']);
         return view('V2_erm.tabel_riwayat_tindakan', compact('riwayat_tindakan'));
     }
     public function Ambil_riwayat_pemakaian_obat(Request $request)
@@ -227,6 +227,17 @@ class ErmController_v2 extends Controller
             echo json_encode($data);
             die;
         }
+        $pulang = (empty($dataSet['pulangsembuh'])) ? 0 : $dataSet['pulangsembuh'];
+        $kontrol = (empty($dataSet['kontrol'])) ? 0 : $dataSet['kontrol'];
+        $konsul = (empty($dataSet['konsulpoli'])) ? 0 : $dataSet['konsulpoli'];
+        $rawatinap = (empty($dataSet['rawatinap'])) ? 0 : $dataSet['rawatinap'];
+        $rujukkeluar = (empty($dataSet['rujukekluar'])) ? 0 : $dataSet['rujukekluar'];
+        // pulangsembuh
+        // kontrol
+        // konsulpoli
+        // rawatinap
+        // rujukekluar
+        // keterangantindaklanjut
         $data = [
             'id_kunjungan' => $dataSet['kodekunjungan'],
             'id_pasien' => $ts_kunjungan[0]->no_rm,
@@ -252,6 +263,7 @@ class ErmController_v2 extends Controller
             'diagnosakerja' => $dataSet['diagnosaprimer'],
             'diagnosabanding' => $dataSet['diagnosasekunder'],
             'rencanakerja' => $dataSet['rencanaterapi'],
+            'tindak_lanjut' => $pulang.'|'.$kontrol.'|'.$konsul.'|'.$rawatinap.'|'.$rujukkeluar.'|'.trim($dataSet['keterangantindaklanjut']),
             'versi' => 2
         ];
         // dd($dataSet);
@@ -620,7 +632,7 @@ class ErmController_v2 extends Controller
         $list_ket = [];
         foreach ($array_list as $arr) {
             $qty = $arr['dosisracik'] * $dataSet['jumlahracikan'] / $arr['dosis'];
-            $list_ket[] = $arr['namaobat'] . ' Dosis Awal : ' . $arr['dosis'] . ' Dosis Racik : ' . $arr['dosisracik'].' Kebutuhan obat :'.$qty;
+            $list_ket[] = $arr['namaobat'] . ' Dosis Awal : ' . $arr['dosis'] . ' Dosis Racik : ' . $arr['dosisracik'] . ' Kebutuhan obat :' . $qty;
             $data_detail = [
                 'id_header' => $header->id,
                 'kode_barang' => $arr['kodebarang'],
@@ -786,23 +798,33 @@ class ErmController_v2 extends Controller
         $id = $request->id;
         $ts_layanan_detail = db::connection('mysql2')->select('select * from ts_layanan_detail_order where id = ?', [$id]);
         $row_id_header = $ts_layanan_detail[0]->row_id_header;
-        $asdok = ts_layanan_detail_order::whereRaw('id = ?', array($id))->update(['status_layanan_detail' => 'CCL']);
-        $DETAIL = db::connection('mysql2')->select('select * from ts_layanan_detail_order where row_id_header = ? and status_layanan_detail = ?', [$row_id_header, 'OPN']);
-        if (count($DETAIL) == 0) {
-            ts_layanan_header_order::whereRaw('id = ?', array($row_id_header))->update(['status_layanan' => '3']);
+        $header = db::connection('mysql2')->select('select * from ts_layanan_header_order where id = ?', [$row_id_header]);
+        if ($header[0]->status_order == 1) {
             $data = [
-                'kode' => 200,
-                'message' => 'Order Layanan  berhasil dibatalkan !'
+                'kode' => 500,
+                'message' => 'Gagal, order sedang diproses !'
             ];
             echo json_encode($data);
             die;
         } else {
-            $data = [
-                'kode' => 200,
-                'message' => 'Order Layanan ' . $ts_layanan_detail[0]->kode_tarif_detail . ' berhasil dibatalkan !'
-            ];
-            echo json_encode($data);
-            die;
+            $asdok = ts_layanan_detail_order::whereRaw('id = ?', array($id))->update(['status_layanan_detail' => 'CCL']);
+            $DETAIL = db::connection('mysql2')->select('select * from ts_layanan_detail_order where row_id_header = ? and status_layanan_detail = ?', [$row_id_header, 'OPN']);
+            if (count($DETAIL) == 0) {
+                ts_layanan_header_order::whereRaw('id = ?', array($row_id_header))->update(['status_layanan' => '3']);
+                $data = [
+                    'kode' => 200,
+                    'message' => 'Order Layanan  berhasil dibatalkan !'
+                ];
+                echo json_encode($data);
+                die;
+            } else {
+                $data = [
+                    'kode' => 200,
+                    'message' => 'Order Layanan ' . $ts_layanan_detail[0]->kode_tarif_detail . ' berhasil dibatalkan !'
+                ];
+                echo json_encode($data);
+                die;
+            }
         }
     }
     public function batal_detail_order_rad(Request $request)
@@ -810,23 +832,34 @@ class ErmController_v2 extends Controller
         $id = $request->id;
         $ts_layanan_detail = db::connection('mysql2')->select('select * from ts_layanan_detail_order where id = ?', [$id]);
         $row_id_header = $ts_layanan_detail[0]->row_id_header;
-        $asdok = ts_layanan_detail_order::whereRaw('id = ?', array($id))->update(['status_layanan_detail' => 'CCL']);
-        $DETAIL = db::connection('mysql2')->select('select * from ts_layanan_detail_order where row_id_header = ? and status_layanan_detail = ?', [$row_id_header, 'OPN']);
-        if (count($DETAIL) == 0) {
-            ts_layanan_header_order::whereRaw('id = ?', array($row_id_header))->update(['status_layanan' => '3']);
+        $header = db::connection('mysql2')->select('select * from ts_layanan_header_order where id = ?', [$row_id_header]);
+        if ($header[0]->status_order == 1) {
             $data = [
-                'kode' => 200,
-                'message' => 'Order Layanan  berhasil dibatalkan !'
+                'kode' => 500,
+                'message' => 'Gagal, order sedang diproses !'
             ];
             echo json_encode($data);
             die;
         } else {
-            $data = [
-                'kode' => 200,
-                'message' => 'Order Layanan ' . $ts_layanan_detail[0]->kode_tarif_detail . ' berhasil dibatalkan !'
-            ];
-            echo json_encode($data);
-            die;
+
+            $asdok = ts_layanan_detail_order::whereRaw('id = ?', array($id))->update(['status_layanan_detail' => 'CCL']);
+            $DETAIL = db::connection('mysql2')->select('select * from ts_layanan_detail_order where row_id_header = ? and status_layanan_detail = ?', [$row_id_header, 'OPN']);
+            if (count($DETAIL) == 0) {
+                ts_layanan_header_order::whereRaw('id = ?', array($row_id_header))->update(['status_layanan' => '3']);
+                $data = [
+                    'kode' => 200,
+                    'message' => 'Order Layanan  berhasil dibatalkan !'
+                ];
+                echo json_encode($data);
+                die;
+            } else {
+                $data = [
+                    'kode' => 200,
+                    'message' => 'Order Layanan ' . $ts_layanan_detail[0]->kode_tarif_detail . ' berhasil dibatalkan !'
+                ];
+                echo json_encode($data);
+                die;
+            }
         }
     }
     public function hasilassesmentmedis(Request $request)
@@ -982,6 +1015,56 @@ class ErmController_v2 extends Controller
         $data = [
             'kode' => 200,
             'message' => 'orderan dikirim'
+        ];
+        echo json_encode($data);
+        die;
+    }
+    public function batal_tindakan_poli(request $Request)
+    {
+        $detail = DB::connection('mysql2')->select('select * from ts_layanan_detail where id = ?', [$Request->id]);
+        $update = [
+            'total_tarif' => 0,
+            'jumlah_retur' => $detail[0]->jumlah_layanan,
+            'total_layanan' => 0,
+            'grantotal_layanan' => 0,
+            'status_layanan_detail' => 'CCL',
+            'tagihan_pribadi' => '0',
+            'tagihan_penjamin' => '0',
+        ];
+        ts_layanan_detail_dummy::whereRaw('id = ?', array($Request->id))->update($update);
+
+        $id_header = $detail[0]->row_id_header;
+        $header = DB::connection('mysql2')->select('select * from ts_layanan_header where id = ?', [$id_header]);
+        if ($header[0]->tagihan_pribadi == 0) {
+            $tagihan_penjamin = $header[0]->tagihan_penjamin - $detail[0]->grantotal_layanan;
+            $total_layanan = $tagihan_penjamin;
+            $tagihan_pribadi = 0;
+        } else {
+            $tagihan_pribadi = $header[0]->tagihan_pribadi - $detail[0]->grantotal_layanan;
+            $total_layanan = $tagihan_pribadi;
+            $tagihan_penjamin = 0;
+        }
+        if ($total_layanan == 0) {
+            $status_layanan = 3;
+            $status_retur = 'CLS';
+            $data_header = [
+                'tagihan_pribadi' => $tagihan_pribadi,
+                'tagihan_penjamin' => $tagihan_penjamin,
+                'total_layanan' => $total_layanan,
+                'status_layanan' => $status_layanan,
+                'status_retur' => $status_retur,
+            ];
+        } else {
+            $data_header = [
+                'tagihan_pribadi' => $tagihan_pribadi,
+                'tagihan_penjamin' => $tagihan_penjamin,
+                'total_layanan' => $total_layanan
+            ];
+        }
+        ts_layanan_header_dummy::whereRaw('id = ?', array($id_header))->update($data_header);
+        $data = [
+            'kode' => 200,
+            'message' => 'Tindakan berhasil dibatalkan'
         ];
         echo json_encode($data);
         die;

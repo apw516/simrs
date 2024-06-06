@@ -5,7 +5,7 @@
             <table class="table">
                 @foreach ($assdok as $a)
                     <tr>
-                        <td width="15%" class="text-bold">Diagnosa Kerja</td>
+                        <td width="20%" class="text-bold">Diagnosa Kerja</td>
                         <td class="font-italic">: {{ $a->diagnosakerja }}</td>
                     </tr>
                     <tr>
@@ -25,10 +25,51 @@
                         <td class="text-bold">Rencana Terapi</td>
                         <td class="font-italic">: {{ $a->rencanakerja }}</td>
                     </tr>
+                    <tr>
+                        @php
+                            $tl = explode('|', $a->tindak_lanjut);
+                        @endphp
+                        <td class="text-bold">Tindak Lanjut</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input @if($tl[0] == 1) checked @endif class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3"
+                                onclick="return false">
+                                <label class="form-check-label" for="inlineCheckbox3">Pulang / sembuh</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input @if($tl[1] == 1) checked @endif class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3"
+                                onclick="return false" >
+                                <label class="form-check-label" for="inlineCheckbox3">Kontrol</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input @if($tl[2] == 1) checked @endif class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3"
+                                onclick="return false">
+                                <label class="form-check-label" for="inlineCheckbox3">Konsul</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input @if($tl[3] == 1) checked @endif class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3"
+                                onclick="return false">
+                                <label class="form-check-label" for="inlineCheckbox3">Rawat Inap</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input @if($tl[4] == 1) checked @endif class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3"
+                                onclick="return false">
+                                <label class="form-check-label" for="inlineCheckbox3">Rujuk Keluar</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-bold">Keterangan Tindak Lanjut</td>
+                        <td>: {{ $tl[5] }}</td>
+                    </tr>
                 @endforeach
             </table>
             <div class="card mt-2">
-                <div class="card-header bg-light">Order Farmasi @if(count($antrian) > 0) <p class="float-right text-bold font-lg">Nomor Antrian Farmasi : {{ $antrian[0]->nomor_antrian }} </p>@endif</div>
+                <div class="card-header bg-light">Order Farmasi @if (count($antrian) > 0)
+                        <p class="float-right text-bold font-lg">Nomor Antrian Farmasi :
+                            {{ $antrian[0]->nomor_antrian }} </p>
+                    @endif
+                </div>
                 <div class="card-body">
                     <table class="table table-sm table-bordered table-hover text-sm">
                         <thead class="bg-dark">
@@ -66,7 +107,8 @@
                     </table>
                 </div>
                 <div class="card-footer bg-light">
-                    <button @if(count($of) == 0) disabled @endif  class="btn btn-success float-right kirimfarmasi" kodekunjungan="{{ $kodekunjungan }}"><i
+                    <button @if (count($of) == 0) disabled @endif
+                        class="btn btn-success float-right kirimfarmasi" kodekunjungan="{{ $kodekunjungan }}"><i
                             class="bi bi-send-check mr-1"></i> Kirim Ke Farmasi</button>
                 </div>
             </div>
@@ -102,7 +144,8 @@
                     </table>
                 </div>
                 <div class="card-footer bg-light">
-                    <button @if(count($oL) == 0) disabled @endif  class="btn btn-success float-right kirimlab" kodekunjungan="{{ $kodekunjungan }}"><i
+                    <button @if (count($oL) == 0) disabled @endif
+                        class="btn btn-success float-right kirimlab" kodekunjungan="{{ $kodekunjungan }}"><i
                             class="bi bi-send-check mr-1"></i> Kirim Ke Laboratorium</button>
                 </div>
             </div>
@@ -138,7 +181,8 @@
                     </table>
                 </div>
                 <div class="card-footer bg-light">
-                    <button @if(count($oR) == 0) disabled @endif class="btn btn-success float-right kirimrad" kodekunjungan="{{ $kodekunjungan }}"><i
+                    <button @if (count($oR) == 0) disabled @endif
+                        class="btn btn-success float-right kirimrad" kodekunjungan="{{ $kodekunjungan }}"><i
                             class="bi bi-send-check mr-1"></i> Kirim Ke Radiologi</button>
                 </div>
             </div>

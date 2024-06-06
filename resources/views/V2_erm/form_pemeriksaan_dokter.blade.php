@@ -288,7 +288,48 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            @if (count($last_assdok) > 0)
+                @php
+                    $tl = explode('|',$last_assdok[0]->tindak_lanjut);
+                @endphp
+            @endif
+            <div class="card">
+                <div class="card-header">Tindak Lanjut</div>
+                <div class="card-body">
+                    <div class="form-check form-check-inline">
+                        <input @if(count($last_assdok) > 0) @if($last_assdok[0]->versi == 2) @if($tl[0] == 1) checked @endif @endif @endif class="form-check-input" type="checkbox" name="pulangsembuh" id="pulangsembuh" value="1">
+                        <label class="form-check-label" for="inlineCheckbox1">Pulang / Sembuh</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input @if(count($last_assdok) > 0) @if($last_assdok[0]->versi == 2) @if($tl[1] == 1) checked @endif @endif @endif class="form-check-input" type="checkbox" name="kontrol" id="kontrol" value="1">
+                        <label class="form-check-label" for="inlineCheckbox2">Kontrol</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input @if(count($last_assdok) > 0) @if($last_assdok[0]->versi == 2) @if($tl[2] == 1) checked @endif @endif @endif class="form-check-input" type="checkbox" name="konsulpoli" id="konsulpoli" value="1">
+                        <label class="form-check-label" for="inlineCheckbox2">Konsul Poli lain</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input @if(count($last_assdok) > 0) @if($last_assdok[0]->versi == 2) @if($tl[3] == 1) checked @endif @endif @endif class="form-check-input" type="checkbox" name="rawatinap" id="rawatinap" value="1">
+                        <label class="form-check-label" for="inlineCheckbox2">Rawat Inap</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input @if(count($last_assdok) > 0) @if($last_assdok[0]->versi == 2) @if($tl[4] == 1) checked @endif @endif @endif class="form-check-input" type="checkbox" name="rujukekluar" id="rujukekluar" value="1">
+                        <label class="form-check-label" for="inlineCheckbox2">Rujuk Keluar</label>
+                      </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group container">
+                <label for="exampleFormControlTextarea1">Keterangan Tindak Lanjut</label>
+                <textarea class="form-control" id="keterangantindaklanjut" name="keterangantindaklanjut" rows="3" placeholder="Ketik keterangan tindak lanjut ...">@if(count($last_assdok) > 0) @if($last_assdok[0]->versi == 2) {{$tl[5]}} @endif @endif</textarea>
+              </div>
+        </div>
+    </div>
     </form>
+
     <div class="accordion" id="accordionExample_penunjang1">
         <div class="card">
             <div class="card-header bg-light" id="headingOne_Penunjang">
@@ -1061,6 +1102,7 @@
             }
         });
     }
+
     function riwayat_tindakan() {
         kodekunjungan = $('#kodekunjungan').val()
         spinner = $('#loader')

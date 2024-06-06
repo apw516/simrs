@@ -9,7 +9,7 @@ class ts_layanan_detail_dummy extends Model
 {
     use HasFactory;
     protected $table = 'ts_layanan_detail';
-    protected $connection = 'mysql4';
+    protected $connection = 'mysql2';
     protected $guarded = ['id'];
     public function mt_tarif_detail(){
         return $this->hasOne(mt_tarif_detail::class,'kode_tarif_detail','KODE_TARIF_DETAIL');
