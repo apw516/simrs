@@ -37,6 +37,22 @@ class antrianmarwan extends Model
             return 'RTO';
         }
     }
+    public function ambilantrean2($data_antrian)
+    {
+        $client = new Client();
+        $header = $this->header();
+        $url = 'http://192.168.2.30/siramah/api/antrian/ambil_antrians';
+        try{
+            $response = $client->request('POST', $url, [
+                'headers' => $header,
+                'form_params' => $data_antrian
+                ]);
+            $response = json_decode($response->getBody());
+            return $response;
+        }catch(ClientException){
+            return 'RTO';
+        }
+    }
     public function batalantrian($data_batal_antrian)
     {
         $client = new Client();

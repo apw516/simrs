@@ -807,27 +807,25 @@ class SimrsController extends Controller
             "jeniskunjungan" => "$tujuan",
             "nomorreferensi" => "$nomorreferensi",
             "method" => "Bridging",
-            "kode_kunjungan" => "",
-            "nomorsep" => "",
             "user" => auth()->user()->nama
         ];
         if ($request->kodepolitujuan != 'HDL') {
-            $antrian = $mw->ambilantrean($data_antrian);
-            $kodebooking = 0;
-            if (isset($antrian->metadata->code)) {
-                $status_a = $antrian->metadata->code;
-                if ($status_a == 200) {
-                    $time = Carbon::now();
-                    $timestamp = $time->timestamp * 1000;
-                    $kodebooking = $antrian->response->kodebooking;
-                    $taskid = [
-                        "kodebooking" => "$kodebooking",
-                        "taskid" => "3",
-                        "waktu" => $timestamp
-                    ];
-                    $taskid_r = $mw->update_antrian($taskid);
-                }
-            }
+            $antrian = $mw->ambilantrean2($data_antrian);
+            // $kodebooking = 0;
+            // if (isset($antrian->metadata->code)) {
+            //     $status_a = $antrian->metadata->code;
+            //     if ($status_a == 200) {
+            //         $time = Carbon::now();
+            //         $timestamp = $time->timestamp * 1000;
+            //         $kodebooking = $antrian->response->kodebooking;
+            //         $taskid = [
+            //             "kodebooking" => "$kodebooking",
+            //             "taskid" => "3",
+            //             "waktu" => $timestamp
+            //         ];
+            //         $taskid_r = $mw->update_antrian($taskid);
+            //     }
+            // }
         }
         //END OF AMBIL ANTRIAN
         $dt = Carbon::now();
@@ -1178,19 +1176,19 @@ class SimrsController extends Controller
                 DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
             }
             // //batal antrian
-            if ($request->kodepolitujuan != 'HDL') {
-                if (isset($antrian->metadata->code)) {
-                    $status_a = $antrian->metadata->code;
-                    if ($status_a == 200) {
-                        $kodebooking = $antrian->response->kodebooking;
-                        $batal = [
-                            "kodebooking" => "$kodebooking",
-                            "keterangan" => "system error"
-                        ];
-                        $mw->batalantrian($batal);
-                    }
-                }
-            }
+            // if ($request->kodepolitujuan != 'HDL') {
+            //     if (isset($antrian->metadata->code)) {
+            //         $status_a = $antrian->metadata->code;
+            //         if ($status_a == 200) {
+            //             $kodebooking = $antrian->response->kodebooking;
+            //             $batal = [
+            //                 "kodebooking" => "$kodebooking",
+            //                 "keterangan" => "system error"
+            //             ];
+            //             $mw->batalantrian($batal);
+            //         }
+            //     }
+            // }
             //end of batal antrian
             $data = [
                 'kode' => 500,
@@ -1276,16 +1274,16 @@ class SimrsController extends Controller
             //insert ke tracer
             tracer::create($data_tracer);
             //update antrian marwan
-            if ($request->kodepolitujuan != 'HDL') {
-                if (isset($antrian->metadata->code)) {
-                    $status_a = $antrian->metadata->code;
-                    if ($status_a == 200) {
-                        $kodebooking = $antrian->response->kodebooking;
-                        jkn_antrian::where('kodebooking', $kodebooking)
-                            ->update(['nomorsep' => $sep->noSep, 'kode_kunjungan' => $ts_kunjungan->id]);
-                    }
-                }
-            }
+            // if ($request->kodepolitujuan != 'HDL') {
+            //     if (isset($antrian->metadata->code)) {
+            //         $status_a = $antrian->metadata->code;
+            //         if ($status_a == 200) {
+            //             $kodebooking = $antrian->response->kodebooking;
+            //             jkn_antrian::where('kodebooking', $kodebooking)
+            //                 ->update(['nomorsep' => $sep->noSep, 'kode_kunjungan' => $ts_kunjungan->id]);
+            //         }
+            //     }
+            // }
             //end of update antrian
             $pasien = Pasien::where('no_rm', '=', "$request->norm")->get();
             $data = [
@@ -1303,19 +1301,19 @@ class SimrsController extends Controller
                 DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
             }
             //batal antrian
-            if ($request->kodepolitujuan != 'HDL') {
-                if (isset($antrian->metadata->code)) {
-                    $status_a = $antrian->metadata->code;
-                    if ($status_a == 200) {
-                        $kodebooking = $antrian->response->kodebooking;
-                        $batal = [
-                            "kodebooking" => "$kodebooking",
-                            "keterangan" => "system error"
-                        ];
-                        $mw->batalantrian($batal);
-                    }
-                }
-            }
+            // if ($request->kodepolitujuan != 'HDL') {
+            //     if (isset($antrian->metadata->code)) {
+            //         $status_a = $antrian->metadata->code;
+            //         if ($status_a == 200) {
+            //             $kodebooking = $antrian->response->kodebooking;
+            //             $batal = [
+            //                 "kodebooking" => "$kodebooking",
+            //                 "keterangan" => "system error"
+            //             ];
+            //             $mw->batalantrian($batal);
+            //         }
+            //     }
+            // }
             //end of batal antrian
             $data = [
                 'kode' => 201,
@@ -1330,19 +1328,19 @@ class SimrsController extends Controller
                 DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
             }
             // //batal antrian
-            if ($request->kodepolitujuan != 'HDL') {
-                if (isset($antrian->metadata->code)) {
-                    $status_a = $antrian->metadata->code;
-                    if ($status_a == 200) {
-                        $kodebooking = $antrian->response->kodebooking;
-                        $batal = [
-                            "kodebooking" => "$kodebooking",
-                            "keterangan" => "system error"
-                        ];
-                        $mw->batalantrian($batal);
-                    }
-                }
-            }
+            // if ($request->kodepolitujuan != 'HDL') {
+            //     if (isset($antrian->metadata->code)) {
+            //         $status_a = $antrian->metadata->code;
+            //         if ($status_a == 200) {
+            //             $kodebooking = $antrian->response->kodebooking;
+            //             $batal = [
+            //                 "kodebooking" => "$kodebooking",
+            //                 "keterangan" => "system error"
+            //             ];
+            //             $mw->batalantrian($batal);
+            //         }
+            //     }
+            // }
             //end of batal antrian
             $data = [
                 'kode' => 500,
