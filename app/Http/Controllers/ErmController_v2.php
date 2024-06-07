@@ -21,11 +21,11 @@ class ErmController_v2 extends Controller
         $kodekunjungan = $request->kodekunjungan;
         $nomorrm = $request->nomorrm;
         $resume_perawat = DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE kode_kunjungan = ?', [$request->kodekunjungan]);
-        $last_assdok = DB::connection('mysql')->select('SELECT * FROM assesmen_dokters
+        $last_assdok = DB::connection('mysql2')->select('SELECT * FROM assesmen_dokters
         WHERE id_pasien = ? AND kode_unit = ? AND id = (SELECT MAX(id) FROM assesmen_dokters WHERE id_pasien = ? AND kode_unit = ?)', [$nomorrm, auth()->user()->unit, $nomorrm, auth()->user()->unit]);
         // dd($last_assdok);
         $mt_pasien = DB::select('select *,fc_umur(no_rm) as usia from mt_pasien where no_rm = ?', [$nomorrm]);
-        $assdok_now = DB::connection('mysql')->select('SELECT * from assesmen_dokters WHERE id_kunjungan = ?', [$request->kodekunjungan]);
+        $assdok_now = DB::connection('mysql2')->select('SELECT * from assesmen_dokters WHERE id_kunjungan = ?', [$request->kodekunjungan]);
         $kelas = '3';
         $layanan = '';
         $unit = auth()->user()->unit;
@@ -36,6 +36,67 @@ class ErmController_v2 extends Controller
         return view('V2_erm.form_pemeriksaan_dokter', compact([
             'kodekunjungan', 'resume_perawat', 'last_assdok', 'assdok_now', 'mt_pasien', 'nomorrm', 'layanan', 'layanan_lab', 'layanan_rad'
         ]));
+    }
+    public function ambil_form_pemeriksaan_dokter_V2(Request $request)
+    {
+        $unit = auth()->user()->unit;
+        $kodekunjungan = $request->kodekunjungan;
+        $nomorrm = $request->rm;
+        $resume_perawat = DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE kode_kunjungan = ?', [$request->kodekunjungan]);
+        $last_assdok = DB::connection('mysql2')->select('SELECT * FROM assesmen_dokters
+        WHERE id_pasien = ? AND kode_unit = ? AND id = (SELECT MAX(id) FROM assesmen_dokters WHERE id_pasien = ? AND kode_unit = ?)', [$nomorrm, auth()->user()->unit, $nomorrm, auth()->user()->unit]);
+        // dd($last_assdok);
+        $mt_pasien = DB::select('select *,fc_umur(no_rm) as usia from mt_pasien where no_rm = ?', [$nomorrm]);
+        $assdok_now = DB::connection('mysql2')->select('SELECT * from assesmen_dokters WHERE id_kunjungan = ?', [$request->kodekunjungan]);
+        $kelas = '3';
+        $layanan = '';
+        $unit = auth()->user()->unit;
+        $layanan = $this->carilayanan($kelas, $layanan, $unit);
+        $layanan_rad = DB::select("CALL SP_CARI_TARIF_PELAYANAN_RAD_ORDER('1','','$kelas')");
+        $layanan_lab = DB::select("CALL SP_CARI_TARIF_PELAYANAN_LAB_ORDER('1','','$kelas')");
+        if ($unit == '1028') {
+            return view('V2_erm.form_pemeriksaan_dokter_rehabilitasi_medis', compact([
+                'kodekunjungan', 'resume_perawat', 'last_assdok', 'assdok_now', 'mt_pasien', 'nomorrm', 'layanan', 'layanan_lab', 'layanan_rad'
+            ]));
+        } else {
+            return view('V2_erm.form_pemeriksaan_dokter_poli', compact([
+                'kodekunjungan', 'resume_perawat', 'last_assdok', 'assdok_now', 'mt_pasien', 'nomorrm', 'layanan', 'layanan_lab', 'layanan_rad'
+            ]));
+        }
+    }
+    public function ambil_form_order_tindakan_V2(Request $request)
+    {
+        $kelas = '3';
+        $layanan = '';
+        $unit = auth()->user()->unit;
+        $layanan = $this->carilayanan($kelas, $layanan, $unit);
+        return view('V2_erm.form_order_tindakan', compact([
+            'layanan'
+        ]));
+    }
+    public function ambil_form_order_laboratorium_V2(Request $request)
+    {
+        $kelas = '3';
+        $layanan = '';
+        $unit = auth()->user()->unit;
+        $layanan_lab = DB::select("CALL SP_CARI_TARIF_PELAYANAN_LAB_ORDER('1','','$kelas')");
+        return view('V2_erm.form_order_lab', compact([
+            'layanan_lab'
+        ]));
+    }
+    public function ambil_form_order_radiologi_V2(Request $request)
+    {
+        $kelas = '3';
+        $layanan = '';
+        $unit = auth()->user()->unit;
+        $layanan_rad = DB::select("CALL SP_CARI_TARIF_PELAYANAN_RAD_ORDER('1','','$kelas')");
+        return view('V2_erm.form_order_rad', compact([
+            'layanan_rad'
+        ]));
+    }
+    public function ambil_form_order_farmasi_V2(Request $request)
+    {
+        return view('V2_erm.form_order_farmasi', compact([]));
     }
     public function carilayanan($kelas, $nama, $unit)
     {
@@ -211,61 +272,101 @@ class ErmController_v2 extends Controller
         }
         $ts_kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$dataSet['kodekunjungan']]);
         $resume_perawat = DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE kode_kunjungan = ?', [$dataSet['kodekunjungan']]);
-        if (empty($dataSet['sumberdata'])) {
-            $data = [
-                'kode' => 500,
-                'message' => 'Sumber data pemeriksaan belum dipilih !'
-            ];
-            echo json_encode($data);
-            die;
-        }
-        if (empty($dataSet['riwayatalergi'])) {
-            $data = [
-                'kode' => 500,
-                'message' => 'Riwayat alergi belum dipilih !'
-            ];
-            echo json_encode($data);
-            die;
+        if(count($resume_perawat) > 0){
+            $id_asskep = $resume_perawat[0]->id;
+        }else{
+            $id_asskep = 0;
         }
         $pulang = (empty($dataSet['pulangsembuh'])) ? 0 : $dataSet['pulangsembuh'];
         $kontrol = (empty($dataSet['kontrol'])) ? 0 : $dataSet['kontrol'];
         $konsul = (empty($dataSet['konsulpoli'])) ? 0 : $dataSet['konsulpoli'];
         $rawatinap = (empty($dataSet['rawatinap'])) ? 0 : $dataSet['rawatinap'];
         $rujukkeluar = (empty($dataSet['rujukekluar'])) ? 0 : $dataSet['rujukekluar'];
-        // pulangsembuh
-        // kontrol
-        // konsulpoli
-        // rawatinap
-        // rujukekluar
-        // keterangantindaklanjut
-        $data = [
-            'id_kunjungan' => $dataSet['kodekunjungan'],
-            'id_pasien' => $ts_kunjungan[0]->no_rm,
-            'id_asskep' => $resume_perawat[0]->id,
-            'pic' => auth()->user()->id,
-            'nama_dokter' => auth()->user()->nama,
-            'tgl_entry' => $this->get_now(),
-            'tgl_kunjungan' => $ts_kunjungan[0]->tgl_masuk,
-            'tgl_pemeriksaan' => $this->get_now(),
-            'sumber_data' => $dataSet['sumberdata'],
-            'tekanan_darah' => $dataSet['tekanandarah'],
-            'frekuensi_nadi' => $dataSet['frekuensinadi'],
-            'frekuensi_nafas' => $dataSet['frekuensinafas'],
-            'suhu_tubuh' => $dataSet['suhu'],
-            'beratbadan' => $dataSet['bb'],
-            'umur' => $dataSet['usia1'],
-            'kode_unit' => auth()->user()->unit,
-            'keluhan_pasien' => $dataSet['keluhanutama'],
-            'ket_riwayatlain' => $dataSet['riwayatpenyakitdahulu'],
-            'riwayat_alergi' => $dataSet['riwayatalergi'],
-            'keterangan_alergi' => $dataSet['keteranganriwayatalergi'],
-            'pemeriksaan_fisik' => $dataSet['pemeriksaanfisik'],
-            'diagnosakerja' => $dataSet['diagnosaprimer'],
-            'diagnosabanding' => $dataSet['diagnosasekunder'],
-            'rencanakerja' => $dataSet['rencanaterapi'],
-            'tindak_lanjut' => $pulang.'|'.$kontrol.'|'.$konsul.'|'.$rawatinap.'|'.$rujukkeluar.'|'.trim($dataSet['keterangantindaklanjut']),
-            'versi' => 2
-        ];
+        if (auth()->user()->unit == '1028') {
+            //fisioterapi
+            $data = [
+                'id_kunjungan' => $dataSet['kodekunjungan'],
+                'id_pasien' => $ts_kunjungan[0]->no_rm,
+                'id_asskep' => $id_asskep,
+                'pic' => auth()->user()->id,
+                'kode_unit' => auth()->user()->unit,
+                'nama_dokter' => auth()->user()->nama,
+                'tgl_entry' => $this->get_now(),
+                'tgl_kunjungan' => $ts_kunjungan[0]->tgl_masuk,
+                'tgl_pemeriksaan' => $this->get_now(),
+                'tekanan_darah' => $dataSet['tekanandarah'],
+                'frekuensi_nadi' => $dataSet['frekuensinadi'],
+                'frekuensi_nafas' => $dataSet['frekuensinafas'],
+                'suhu_tubuh' => $dataSet['suhu'],
+                'umur' => $dataSet['umur'],
+                'beratbadan' => $dataSet['beratbadan'],
+                'anamnesa' => $dataSet['anamnesa'],
+                'pemeriksaan_fisik' => $dataSet['pemeriksaanfisik'],
+                'diagnosakerja' => $dataSet['diagnosaprimer'],
+                'diagnosabanding' => $dataSet['diagnosabanding'],
+                'rencanakerja' => $dataSet['pemeriksaanpenunjang'],
+                // 'tatalaksana_kfr' => $dataSet['tatalaksankfr'],
+                'anjuran' => $dataSet['anjuran'],
+                'evaluasi' => $dataSet['evaluasi'],
+                'riwayatlain' => $dataSet['suspekpenyakit'],
+                'ket_riwayatlain' => $dataSet['keterangansuspek'],
+                // 'keluhan_pasien' => $dataSet['keluhanutama'],
+                'tindak_lanjut' => $pulang . '|' . $kontrol . '|' . $konsul . '|' . $rawatinap . '|' . $rujukkeluar . '|' . trim($dataSet['keterangantindaklanjut']),
+                'versi' => '2'
+            ];
+        } else {
+            if (empty($dataSet['sumberdata'])) {
+                $data = [
+                    'kode' => 500,
+                    'message' => 'Sumber data pemeriksaan belum dipilih !'
+                ];
+                echo json_encode($data);
+                die;
+            }
+            if (empty($dataSet['riwayatalergi'])) {
+                $data = [
+                    'kode' => 500,
+                    'message' => 'Riwayat alergi belum dipilih !'
+                ];
+                echo json_encode($data);
+                die;
+            }
+
+            // pulangsembuh
+            // kontrol
+            // konsulpoli
+            // rawatinap
+            // rujukekluar
+            // keterangantindaklanjut
+            $data = [
+                'id_kunjungan' => $dataSet['kodekunjungan'],
+                'id_pasien' => $ts_kunjungan[0]->no_rm,
+                'id_asskep' => $resume_perawat[0]->id,
+                'pic' => auth()->user()->id,
+                'nama_dokter' => auth()->user()->nama,
+                'tgl_entry' => $this->get_now(),
+                'tgl_kunjungan' => $ts_kunjungan[0]->tgl_masuk,
+                'tgl_pemeriksaan' => $this->get_now(),
+                'sumber_data' => $dataSet['sumberdata'],
+                'tekanan_darah' => $dataSet['tekanandarah'],
+                'frekuensi_nadi' => $dataSet['frekuensinadi'],
+                'frekuensi_nafas' => $dataSet['frekuensinafas'],
+                'suhu_tubuh' => $dataSet['suhu'],
+                'beratbadan' => $dataSet['bb'],
+                'umur' => $dataSet['usia1'],
+                'kode_unit' => auth()->user()->unit,
+                'keluhan_pasien' => $dataSet['keluhanutama'],
+                'ket_riwayatlain' => $dataSet['riwayatpenyakitdahulu'],
+                'riwayat_alergi' => $dataSet['riwayatalergi'],
+                'keterangan_alergi' => $dataSet['keteranganriwayatalergi'],
+                'pemeriksaan_fisik' => $dataSet['pemeriksaanfisik'],
+                'diagnosakerja' => $dataSet['diagnosaprimer'],
+                'diagnosabanding' => $dataSet['diagnosasekunder'],
+                'rencanakerja' => $dataSet['rencanaterapi'],
+                'tindak_lanjut' => $pulang . '|' . $kontrol . '|' . $konsul . '|' . $rawatinap . '|' . $rujukkeluar . '|' . trim($dataSet['keterangantindaklanjut']),
+                'versi' => 2
+            ];
+        }
         // dd($dataSet);
         $cek = DB::connection('mysql2')->select('select * from assesmen_dokters where id_kunjungan = ?', [$dataSet['kodekunjungan']]);
         if (count($cek) > 0) {
@@ -433,6 +534,7 @@ class ErmController_v2 extends Controller
                             'aturan_pakai' => $a['aturanpakai'],
                             'keterangan' => $a['keterangan'],
                             'kategori_resep' => $TIPE,
+                            'status_layanan_detail' => 'OPN',
                             'satuan_barang' => $a['sediaan'],
                             'tipe_anestesi' => $a['kronis'],
                             'row_id_header' => $header_f->id,
@@ -606,7 +708,6 @@ class ErmController_v2 extends Controller
             $unit_tujuan = '4008';
         }
         $jumlah_racikan = $dataSet['jumlahracikan'];
-
         $data_header = [
             'nama_racikan' => $dataSet['namaracikan'],
             'tipe_racikan' => $dataSet['tiperacikan'],

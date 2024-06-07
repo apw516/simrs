@@ -6,7 +6,7 @@
                  <div class="timeline timeline-inverse">
                      <!-- timeline time label -->
                      <div class="time-label">
-                         <span class="bg-dark">
+                         <span class="bg-warning">
                              {{ $k->tgl_masuk }} {{ $k->nama_unit }}
                          </span>
                      </div>

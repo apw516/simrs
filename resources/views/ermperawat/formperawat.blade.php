@@ -150,7 +150,7 @@
                 nomorrm,
                 kodekunjungan
             },
-            url: '<?= route('formtindaklanjut') ?>',
+            url: '<?= route('hasilassesmentmedis') ?>',
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()

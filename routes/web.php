@@ -708,6 +708,16 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('batal_tindakan_poli'); //sidebar
     Route::post('ambil_riwayat_tindakan_Tdy', [ErmController_v2::class, 'ambil_riwayat_tindakan_today'])
         ->name('ambil_riwayat_tindakan_Tdy'); //sidebar
+    Route::post('ambil_form_pemeriksaan_dokter_V2', [ErmController_v2::class, 'ambil_form_pemeriksaan_dokter_V2'])
+        ->name('ambil_form_pemeriksaan_dokter_V2'); //sidebar
+    Route::post('ambil_form_order_tindakan_V2', [ErmController_v2::class, 'ambil_form_order_tindakan_V2'])
+        ->name('ambil_form_order_tindakan_V2'); //sidebar
+    Route::post('ambil_form_order_farmasi_V2', [ErmController_v2::class, 'ambil_form_order_farmasi_V2'])
+        ->name('ambil_form_order_farmasi_V2'); //sidebar
+    Route::post('ambil_form_order_laboratorium_V2', [ErmController_v2::class, 'ambil_form_order_laboratorium_V2'])
+        ->name('ambil_form_order_laboratorium_V2'); //sidebar
+    Route::post('ambil_form_order_radiologi_V2', [ErmController_v2::class, 'ambil_form_order_radiologi_V2'])
+        ->name('ambil_form_order_radiologi_V2'); //sidebar
 });
 
 

@@ -239,6 +239,7 @@
                                 footer: ''
                             })
                             ambilhasilassesmentmedis()
+                            formtindaklanjut()
                         }
                     }
                 });
@@ -294,6 +295,7 @@
                                 footer: ''
                             })
                             ambilhasilassesmentmedis()
+                            formtindaklanjut()
                         }
                     }
                 });
@@ -349,10 +351,29 @@
                                 footer: ''
                             })
                             ambilhasilassesmentmedis()
+                            formtindaklanjut()
                         }
                     }
                 });
             }
         });
     });
+    function ambilhasilassesmentmedis()
+    {
+        kodekunjungan = $('#kodekunjungan').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('hasilassesmentmedis') ?>',
+            success: function(response) {
+                $('.hasil_pemeriksaan_dokter').html(response);
+                spinner.hide()
+            }
+        })
+    }
 </script>
