@@ -1,6 +1,6 @@
 @foreach ($header as $h )
     <div class="card">
-        <div class="card-header bg-info">{{ $h->nama_racikan}} | {{ $h->tgl_entry }}</div>
+        <div class="card-header bg-info">{{ $h->nama_racikan}} | {{ $h->tgl_entry }} <button class="btn btn-warning btn-sm float-right pilihracikan" idracikan="{{ $h->id }}"><i class="bi bi-check2-square mr-1 ml-1"></i>Pilih</button></div>
         <div class="card-body">
             {{-- Jumlah Racikan : {{ $h->jumlah_racikan }}
             Aturan Pakai : {{ $h->aturan_pakai }} --}}
@@ -42,3 +42,38 @@
         </div>
     </div>
 @endforeach
+<script>
+    $(".pilihracikan").on('click', function(event) {
+        id = $(this).attr('idracikan')
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                id
+            },
+            url: '<?= route('v2_add_riwayat_racik') ?>',
+            error: function(data) {
+                spinner.hide()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ooops....',
+                    text: 'Sepertinya ada masalah......',
+                    footer: ''
+                })
+            },
+            success: function(response, data) {
+                spinner.hide()
+                var wrapper = $(".field_order_farmasi");
+                $('#riwayatracikan').modal('hide');
+                $(wrapper).append(response);
+                $(wrapper).on("click", ".remove_field", function(e) { //user click on remove
+                    e.preventDefault();
+                    $(this).parent('div').remove();
+                    x--;
+                })
+            }
+        });
+    });
+</script>

@@ -158,7 +158,7 @@ class ErmController_v2 extends Controller
         $kodekunjungan = $request->kodekunjungan;
         $ts_kunjungan = DB::connection('mysql')->select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
         $rm = $ts_kunjungan[0]->no_rm;
-        $ts_kunjungan_list = DB::connection('mysql')->select('select *,fc_nama_paramedis1(kode_paramedis) as nama_dokter ,fc_nama_unit1(kode_unit) as unit from ts_kunjungan where no_rm = ? and status_kunjungan != ? order by kode_kunjungan desc', [$rm, 8]);
+        $ts_kunjungan_list = DB::connection('mysql')->select('select *,fc_nama_paramedis1(kode_paramedis) as nama_dokter ,fc_nama_unit1(a.kode_unit) as unit,b.id as id_header from ts_kunjungan a inner join ts_layanan_header b on a.kode_kunjungan = b.kode_kunjungan where a.no_rm = ? and status_kunjungan != ? order by a.kode_kunjungan desc', [$rm, 8]);
 
         $riwayat_pemakaian = DB::connection('mysql')->select("SELECT date(a.`tgl_masuk`) as tgl_masuk
         ,fc_nama_unit1(a.`kode_unit`) AS unit_asal
@@ -177,6 +177,145 @@ class ErmController_v2 extends Controller
         INNER JOIN ts_layanan_detail c ON b.id = c.row_id_header
         WHERE a.no_rm = ? AND b.kode_unit IN ('4002','4008') AND c.`kode_barang` IS NOT NULL AND c.kode_barang != ''", [$rm]);
         return view('V2_erm.tabel_riwayat_pemakaian_obat', compact('riwayat_pemakaian', 'ts_kunjungan_list'));
+    }
+    public function v2_add_riwayat_pemakaian_obat(Request $request)
+    {
+        $detail = DB::select('select * from ts_layanan_detail where row_id_header = ?', [$request->id]);
+        $rm = $request->rm;
+        $kode_kunjungan = $request->kodekunjungan;
+        // dd($kode_kunjungan);
+        $riwayat_pemakaian = DB::connection('mysql')->select("SELECT date(a.`tgl_masuk`) as tgl_masuk
+       ,fc_nama_unit1(a.`kode_unit`) AS unit_asal
+       ,a.`kode_kunjungan`
+       ,fc_nama_barang(c.`kode_barang`) AS nama_barang
+       ,c.jumlah_layanan
+       ,c.aturan_pakai
+       ,c.`kode_barang`
+       ,fc_nama_paramedis1(a.kode_paramedis) AS nama_dokter
+       ,a.`kode_paramedis`
+       ,fc_nama_penjamin(a.`kode_penjamin`) AS nama_penjamin
+       ,fc_nama_unit1(b.`kode_unit`) AS unit_tujuan
+       ,b.id AS id_header
+       ,d.dosis
+       ,d.satuan
+       ,d.nama_generik
+       FROM ts_kunjungan  a
+       INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+       INNER JOIN ts_layanan_detail c ON b.id = c.row_id_header
+       INNER JOIN mt_barang d on c.kode_barang = d.kode_barang
+       WHERE a.no_rm = ? AND b.kode_unit IN ('4002','4008') AND c.`kode_barang` IS NOT NULL AND c.kode_barang != '' AND a.kode_kunjungan = ?", [$rm, $kode_kunjungan]);
+        $str = "";
+        foreach ($riwayat_pemakaian as $d) {
+            $str .=   "<div class='row mt-2 text-xs'><div class='col-md-2'>
+                        <div class='form-group'>
+                            <label for='exampleFormControlInput1'>Nama Obat</label>
+                            <input readonly type='text' class='form-control form-control-sm' id='nama_obat' name='namaobat' value='$d->nama_barang'placeholder='name@example.com'>
+                            <input hidden readonly type='text' class='form-control form-control-sm' id='kodebarang' name='kodebarang' value='$d->kode_barang'placeholder='name@example.com'>
+                        </div>
+                        </div>
+                        <div hidden class='col-md-2'>
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Nama Generik</label>
+                                <input readonly type='text' class='form-control form-control-sm' id='namagenerik' name='namagenerik' value='$d->nama_generik' placeholder='name@example.com'>
+                            </div>
+                        </div>
+                        <div class='col-md-1'>
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Dosis</label>
+                                <input readonly type='text' class='form-control form-control-sm' id='dosis' name='dosis' value='$d->dosis' placeholder='name@example.com'>
+                            </div>
+                        </div>
+                        <div class='col-md-1'>
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Sediaan</label>
+                                <input readonly type='text' class='form-control form-control-sm' id='sediaan' name='sediaan' value='$d->satuan' placeholder='name@example.com'>
+                            </div>
+                        </div>
+                        <div class='col-md-1'>
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Kronis</label>
+                                <select class='form-control form-control-sm' id='kronis' name='kronis'><option value='0'>TIDAK</option><option value='1'>YA</option></select>
+                            </div>
+                        </div>
+                        <div class='col-md-1'>
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Jumlah</label>
+                                <input type='text' class='form-control form-control-sm' id='jumlah' name='jumlah' value='$d->jumlah_layanan' placeholder='name@example.com'>
+                            </div>
+                        </div>
+                        <div class='col-md-2'>
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Aturan Pakai</label>
+                                <textarea type='text' class='form-control form-control-sm' id='aturanpakai' name='aturanpakai' value='' placeholder='name@example.com'>$d->aturan_pakai</textarea>
+                            </div>
+                        </div>
+                        <div class='col-md-2'>
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Keterangan</label>
+                                <textarea type='text' class='form-control form-control-sm' id='keterangan' name='keterangan' value='' placeholder='name@example.com'></textarea>
+                            </div>
+                        </div>
+                        <i class='bi bi-x-square remove_field form-group col-md-1 text-danger' kode2='' subtot='' jenis='' nama_barang='' kode_barang='' id_stok='' harga2='' satuan='' stok='' qty='' harga='' disc='' dosis='' sub='' sub2='' status='80' jenisracik='racikan'></i></div>";
+        }
+        // $str .= "</div>";
+        return $str;
+    }
+    public function v2_add_riwayat_racik(Request $request)
+    {
+        $header = DB::connection('mysql2')->select('select * from ts_header_racikan_order where id =?',[$request->id]);
+        // dd($header);
+         return "<div class='row mt-2 text-xs'>
+        <div class='col-md-2'>
+            <div class='form-group'>
+                <label for='exampleFormControlInput1'>Nama Obat</label>
+                <input readonly type='text' class='form-control form-control-sm' id='nama_obat' name='namaobat' value='$header[0][nama_racikan]'placeholder='name@example.com'>
+                <input hidden readonly type='text' class='form-control form-control-sm' id='kodebarang' name='kodebarang' value='$header[0]->id' placeholder='name@example.com'>
+            </div>
+        </div>
+        <div hidden class='col-md-2'>
+            <div class='form-group'>
+                <label for='exampleFormControlInput1'>Nama Generik</label>
+                <input readonly type='text' class='form-control form-control-sm' id='namagenerik' name='namagenerik' value='RACIKAN' placeholder='name@example.com'>
+            </div>
+        </div>
+        <div class='col-md-1'>
+            <div class='form-group'>
+                <label for='exampleFormControlInput1'>Dosis</label>
+                <input readonly type='text' class='form-control form-control-sm' id='dosis' name='dosis' value='-' placeholder='name@example.com'>
+            </div>
+        </div>
+        <div class='col-md-1'>
+            <div class='form-group'>
+                <label for='exampleFormControlInput1'>Sediaan</label>
+                <input readonly type='text' class='form-control form-control-sm' id='sediaan' name='sediaan' value='' placeholder='name@example.com'>
+            </div>
+        </div>
+        <div class='col-md-1'>
+            <div class='form-group'>
+                <label for='exampleFormControlInput1'>Kronis</label>
+                <select class='form-control form-control-sm' id='kronis' name='kronis'><option value='0'>TIDAK</option><option value='1'>YA</option></select>
+            </div>
+        </div>
+        <div class='col-md-1'>
+            <div class='form-group'>
+                <label for='exampleFormControlInput1'>Jumlah</label>
+                <input readonly type='text' class='form-control form-control-sm' id='jumlah' name='jumlah' value='$header[0]->jumlah_racikan' placeholder='name@example.com'>
+            </div>
+        </div>
+        <div class='col-md-2'>
+            <div class='form-group'>
+                <label for='exampleFormControlInput1'>Aturan Pakai</label>
+                <textarea readonly type='text' class='form-control form-control-sm' id='aturanpakai' name='aturanpakai' value='' placeholder='name@example.com'>$header[0]->aturan_pakai</textarea>
+            </div>
+        </div>
+        <div class='col-md-2'>
+            <div class='form-group'>
+                <label for='exampleFormControlInput1'>Keterangan</label>
+                <textarea readonly type='text' class='form-control form-control-sm' id='keterangan' name='keterangan' value='' placeholder='name@example.com'></textarea>
+            </div>
+        </div>
+        <i class='bi bi-x-square remove_field form-group col-md-1 text-danger' kode2='' subtot='' jenis='' nama_barang='' kode_barang='' id_stok='' harga2='' satuan='' stok='' qty='' harga='' disc='' dosis='' sub='' sub2='' status='80' jenisracik='racikan'></i>
+    </div>";
     }
     public function ambil_riwayat_racikan()
     {
@@ -272,9 +411,9 @@ class ErmController_v2 extends Controller
         }
         $ts_kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$dataSet['kodekunjungan']]);
         $resume_perawat = DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE kode_kunjungan = ?', [$dataSet['kodekunjungan']]);
-        if(count($resume_perawat) > 0){
+        if (count($resume_perawat) > 0) {
             $id_asskep = $resume_perawat[0]->id;
-        }else{
+        } else {
             $id_asskep = 0;
         }
         $pulang = (empty($dataSet['pulangsembuh'])) ? 0 : $dataSet['pulangsembuh'];
@@ -487,7 +626,7 @@ class ErmController_v2 extends Controller
         }
         try {
             if (count($data_order_farmasi) > 0) {
-                if ($ts_kunjungan[0]->kode_penjamin == 'PO1') {
+                if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
                     $unit_kirim = '4002';
                     $kode_transaksi = '1';
                 } else {
@@ -1074,7 +1213,7 @@ class ErmController_v2 extends Controller
             } else {
                 $data = [
                     'kode' => 500,
-                    'message' => 'Order belum dikirim poli !',
+                    'message' => 'Order belum dikirim ke poli !',
                 ];
                 echo json_encode($data);
                 die;

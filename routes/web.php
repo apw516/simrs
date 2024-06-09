@@ -718,6 +718,10 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('ambil_form_order_laboratorium_V2'); //sidebar
     Route::post('ambil_form_order_radiologi_V2', [ErmController_v2::class, 'ambil_form_order_radiologi_V2'])
         ->name('ambil_form_order_radiologi_V2'); //sidebar
+    Route::post('v2_add_riwayat_pemakaian_obat', [ErmController_v2::class, 'v2_add_riwayat_pemakaian_obat'])
+        ->name('v2_add_riwayat_pemakaian_obat'); //sidebar
+    Route::post('v2_add_riwayat_racik', [ErmController_v2::class, 'v2_add_riwayat_racik'])
+        ->name('v2_add_riwayat_racik'); //sidebar
 });
 
 

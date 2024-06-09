@@ -119,7 +119,8 @@
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="sumberdata" id="sumberdata"
                             value="1"
-                            @if (count($assdok_now) > 0) @if ($assdok_now[0]->versi == 2) @if ($assdok_now[0]->sumber_data == 1) checked @endif @endif
+                            @if (count($assdok_now) > 0) @if ($assdok_now[0]->versi == 2) @if ($assdok_now[0]->sumber_data == 1) checked @endif
+                            @endif
                     @else
                         checked
                         @endif>
@@ -137,7 +138,11 @@
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Keluhan Utama</label>
                 <div class="col-sm-10">
-                    <textarea rows="5" type="text" class="form-control" id="keluhanutama" name="keluhanutama">@if (count($assdok_now) > 0) {{ $assdok_now[0]->keluhan_pasien }} @else @if (count($resume_perawat) > 0) {{ $resume_perawat[0]->keluhanutama }} @endif @endif</textarea>
+                    <textarea rows="5" type="text" class="form-control" id="keluhanutama" name="keluhanutama">
+@if (count($assdok_now) > 0) {{ $assdok_now[0]->keluhan_pasien }}
+@else
+@if (count($resume_perawat) > 0) {{ $resume_perawat[0]->keluhanutama }} @endif @endif
+</textarea>
                 </div>
             </div>
             <div class="form-group row">
@@ -145,7 +150,9 @@
                     dahulu</label>
                 <div class="col-sm-10">
                     <textarea rows="5" type="text" class="form-control" id="riwayatpenyakitdahulu"
-                        name="riwayatpenyakitdahulu">@if (count($last_assdok) > 0){{ $last_assdok[0]->ket_riwayatlain }}@endif</textarea>
+                        name="riwayatpenyakitdahulu">
+@if (count($last_assdok) > 0){{ $last_assdok[0]->ket_riwayatlain }}@endif
+</textarea>
                 </div>
             </div>
             <div class="form-group row">
@@ -153,7 +160,11 @@
                 <div class="col-sm-10">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="riwayatalergi" id="riwayatalergi"
-                            value="1" @if (count($assdok_now) > 0) @if ($assdok_now[0]->versi == 2) @if ($assdok_now[0]->riwayat_alergi == 1) checked @endif @endif @else checked @endif>
+                            value="1"
+                            @if (count($assdok_now) > 0) @if ($assdok_now[0]->versi == 2) @if ($assdok_now[0]->riwayat_alergi == 1) checked @endif
+                            @endif
+                    @else
+                        checked @endif>
                         <label class="form-check-label" for="inlineRadio1">Tidak</label>
                     </div>
                     <div class="form-check form-check-inline">
@@ -164,7 +175,9 @@
                         <label class="form-check-label" for="inlineRadio2">Ya</label>
                     </div><br>
                     <textarea rows="5" type="text" class="form-control" id="keteranganriwayatalergi"
-                        name="keteranganriwayatalergi">@if (count($last_assdok) > 0){{ $last_assdok[0]->keterangan_alergi }}@endif</textarea>
+                        name="keteranganriwayatalergi">
+@if (count($last_assdok) > 0){{ $last_assdok[0]->keterangan_alergi }}@endif
+</textarea>
                 </div>
             </div>
             <div class="row">
@@ -172,7 +185,8 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1">Pemeriksaan Fisik ( O )</label>
                         <textarea rows="5" type="text" class="form-control" id="pemeriksaanfisik" name="pemeriksaanfisik"
-                            rows="4" aria-describedby="emailHelp"> @if (count($last_assdok) > 0) @if ($last_assdok[0]->versi == 1){{ $last_assdok[0]->keadaanumum }} {{ $last_assdok[0]->kesadaran }} {{ $last_assdok[0]->pemeriksaan_fisik }}@else{{ $last_assdok[0]->pemeriksaan_fisik }} @endif @endif</textarea>
+                            rows="4" aria-describedby="emailHelp"> @if (count($last_assdok) > 0) @if ($last_assdok[0]->versi == 1){{ $last_assdok[0]->keadaanumum }} {{ $last_assdok[0]->kesadaran }} {{ $last_assdok[0]->pemeriksaan_fisik }}@else{{ $last_assdok[0]->pemeriksaan_fisik }} @endif @endif
+</textarea>
                     </div>
                 </div>
             </div>
@@ -181,14 +195,16 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1">Diagnosa primer ( A )</label>
                         <input type="text" class="form-control" id="diagnosaprimer" name="diagnosaprimer"
-                            aria-describedby="emailHelp" value="@if (count($last_assdok) > 0) {{ $last_assdok[0]->diagnosakerja }} @endif">
+                            aria-describedby="emailHelp"
+                            value="@if (count($last_assdok) > 0) {{ $last_assdok[0]->diagnosakerja }} @endif">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Diagnosa Sekunder</label>
                         <input type="text" class="form-control" id="diagnosasekunder" name="diagnosasekunder"
-                            aria-describedby="emailHelp" value="@if (count($last_assdok) > 0) {{ $last_assdok[0]->diagnosabanding }} @endif">
+                            aria-describedby="emailHelp"
+                            value="@if (count($last_assdok) > 0) {{ $last_assdok[0]->diagnosabanding }} @endif">
                     </div>
                 </div>
             </div>
@@ -197,7 +213,9 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1">Rencana Terapi ( P )</label>
                         <textarea type="text" class="form-control" id="rencanaterapi" name="rencanaterapi" rows="4"
-                            aria-describedby="emailHelp">@if (count($last_assdok) > 0){{ $last_assdok[0]->rencanakerja }}@endif</textarea>
+                            aria-describedby="emailHelp">
+@if (count($last_assdok) > 0){{ $last_assdok[0]->rencanakerja }}@endif
+</textarea>
                     </div>
                 </div>
             </div>
@@ -257,4 +275,4 @@
                     </div>
                 </div>
             </div>
-        </form>
+</form>
