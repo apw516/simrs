@@ -1146,16 +1146,15 @@ class ErmController_v2 extends Controller
         $kodekunjungan = $request->kodekunjungan;
         $kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
         if ($kunjungan[0]->kode_penjamin == 'P01') {
-            $a = ts_layanan_header_order::whereRaw('kode_kunjungan = ? and status_layanan = ? and kode_unit = ? and status_order = ?', array($kodekunjungan, '1', '4002', '99'))->update(['status_order' => '1']);
+            $a = ts_layanan_header_order::whereRaw('kode_kunjungan = ? and status_layanan = ? and kode_unit = ? and status_order = ?', array($kodekunjungan, '1', '4002', '99'))->update(['status_order' => '98']);
         } else {
-            $a = ts_layanan_header_order::whereRaw('kode_kunjungan = ? and status_layanan = ? and kode_unit = ? and status_order = ?', array($kodekunjungan, '1', '4008', '99'))->update(['status_order' => '1']);
+            $a = ts_layanan_header_order::whereRaw('kode_kunjungan = ? and status_layanan = ? and kode_unit = ? and status_order = ?', array($kodekunjungan, '1', '4008', '99'))->update(['status_order' => '98']);
         }
         //create antrian
-
         $cek_antrian = db::connection('mysql2')->select('select * from ts_antrian_farmasi where kode_kunjungan = ?', [$kodekunjungan]);
         if (count($cek_antrian) > 0) {
             $status_antrian = $cek_antrian[0]->status_antrian;
-            $orderan = db::connection('mysql2')->select("select * from ts_layanan_header_order where kode_kunjungan = '$kodekunjungan' and kode_unit in ('4002','4008') and status_order = '1'");
+            $orderan = db::connection('mysql2')->select("select * from ts_layanan_header_order where kode_kunjungan = '$kodekunjungan' and kode_unit in ('4002','4008') and status_order = '98'");
             if (count($orderan) > 0) {
                 if ($status_antrian == 1) {
                     // ts_antrian_farmasi::create($data_antrian);
@@ -1169,7 +1168,7 @@ class ErmController_v2 extends Controller
             echo json_encode($data);
             die;
         } else {
-            $orderan = db::connection('mysql2')->select("select * from ts_layanan_header_order where kode_kunjungan = '$kodekunjungan' and kode_unit in ('4002','4008') and status_order = '1'");
+            $orderan = db::connection('mysql2')->select("select * from ts_layanan_header_order where kode_kunjungan = '$kodekunjungan' and kode_unit in ('4002','4008') and status_order = '98'");
             if (count($orderan) > 0) {
                 $cek_racikan = DB::connection('mysql2')->select("SELECT DISTINCT b.kode_kunjungan
                 ,b.`no_rm`
@@ -1180,7 +1179,7 @@ class ErmController_v2 extends Controller
                 ,a.status_order
                 FROM ts_layanan_header_order a
                 INNER JOIN simrs_waled.ts_kunjungan b ON a.kode_kunjungan = b.`kode_kunjungan`
-                WHERE a.kode_kunjungan = '$kodekunjungan' and a.status_order = '1'");
+                WHERE a.kode_kunjungan = '$kodekunjungan' and a.status_order = '98'");
                 $mt_unit = db::select('select * from mt_unit where kode_unit = ?', [$orderan[0]->kode_unit]);
                 $pref = $mt_unit[0]->prefix_unit;
                 $kodeunit = $mt_unit[0]->kode_unit;
@@ -1202,7 +1201,7 @@ class ErmController_v2 extends Controller
                 ];
                 ts_antrian_farmasi::create($data_antrian);
                 foreach ($orderan as $od) {
-                    $update = ts_layanan_header_order::whereRaw('kode_kunjungan = ? and kode_unit = ? and status_layanan = ?', array($kodekunjungan, $kodeunit, 1))->update(['status_order' => '1']);
+                    $update = ts_layanan_header_order::whereRaw('kode_kunjungan = ? and kode_unit = ? and status_layanan = ?', array($kodekunjungan, $kodeunit, 1))->update(['status_order' => '98']);
                 }
                 $data = [
                     'kode' => 200,

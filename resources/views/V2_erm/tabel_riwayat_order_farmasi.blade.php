@@ -21,7 +21,7 @@
                         Belum dikirim
                     @elseif($r->status_order == 0)
                         Terkirim Ke farmasi
-                    @elseif($r->status_order == 1)
+                    @elseif($r->status_order == 98)
                         Dalam antrian farmasi
                     @elseif($r->status_order == 2)
                         Sudah dilayani farmasi

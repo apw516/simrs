@@ -94,7 +94,7 @@
                                             Belum dikirim
                                         @elseif($f->status_order == '0')
                                             Terkirim ke farmasi
-                                        @elseif($f->status_order == 1)
+                                        @elseif($f->status_order == 98)
                                             Dalam antrian farmasi
                                         @elseif($f->status_order == 2)
                                             Sudah dilayani farmasi
