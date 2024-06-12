@@ -85,7 +85,7 @@
                         <input type="text" class="form-control" id="namaobatreguler"
                             placeholder="Masukan nama obat ...">
                     </div>
-                    <button type="button" class="btn btn-primary mb-2" onclick="cariobatreguler()"><i
+                    <button type="button" class="btn btn-primary mb-2" id="cariobatreguler"><i
                             class="bi bi-search"></i> Cari Obat</button>
                 </div>
                 <div class="v_tabel_obat_reguler mt-3">
@@ -167,7 +167,7 @@
                                 <input type="text" class="form-control" id="namakomponen"
                                     placeholder="Masukan nama obat ...">
                             </div>
-                            <button type="button" class="btn btn-primary mb-2" onclick="carikomponenracikan()"><i
+                            <button type="button" class="btn btn-primary mb-2" id="carikomponenracik"><i
                                     class="bi bi-search"></i> Cari Obat</button>
                         </div>
                         <div class="v_tabel_obat_komponen mt-3">
@@ -235,6 +235,58 @@
 </div>
 
 <script>
+    var input = document.getElementById("namaobatreguler");
+    input.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            document.getElementById("cariobatreguler").click();
+        }
+    });
+    var input = document.getElementById("namakomponen");
+    input.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            document.getElementById("carikomponenracik").click();
+        }
+    });
+    $("#cariobatreguler").on('click', function(event) {
+        nama = $('#namaobatreguler').val()
+        kodekunjungan = $('#kodekunjungan').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nama,
+                kodekunjungan
+            },
+            url: '<?= route('v2_cari_obat_reguler') ?>',
+            success: function(response) {
+                $('.v_tabel_obat_reguler').html(response);
+                spinner.hide()
+            }
+        });
+    })
+    $("#carikomponenracik").on('click', function(event) {
+        nama = $('#namakomponen').val()
+        kodekunjungan = $('#kodekunjungan').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nama,
+                kodekunjungan
+            },
+            url: '<?= route('v2_cari_obat_komponen') ?>',
+            success: function(response) {
+                $('.v_tabel_obat_komponen').html(response);
+                spinner.hide()
+            }
+        });
+    })
     $(document).ready(function() {
         ambilriwayatkunjungan()
         riwayat_racikan()
