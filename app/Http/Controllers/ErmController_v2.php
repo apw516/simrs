@@ -13,6 +13,7 @@ use App\Models\ts_layanan_detail_dummy;
 use App\Models\ts_layanan_detail_order;
 use App\Models\ts_layanan_header_dummy;
 use App\Models\ts_layanan_header_order;
+use App\Models\VclaimModel;
 
 class ErmController_v2 extends Controller
 {
@@ -475,7 +476,9 @@ class ErmController_v2 extends Controller
                 'ket_riwayatlain' => $dataSet['keterangansuspek'],
                 // 'keluhan_pasien' => $dataSet['keluhanutama'],
                 'tindak_lanjut' => $pulang . '|' . $kontrol . '|' . $konsul . '|' . $rawatinap . '|' . $rujukkeluar . '|' . trim($dataSet['keterangantindaklanjut']),
-                'versi' => '2'
+                'versi' => '2',
+                'status' => '1',
+                'signature' => 'SUDAH VALIDASI'
             ];
         } else {
             if (empty($dataSet['sumberdata'])) {
@@ -527,7 +530,9 @@ class ErmController_v2 extends Controller
                 'diagnosabanding' => $dataSet['diagnosasekunder'],
                 'rencanakerja' => $dataSet['rencanaterapi'],
                 'tindak_lanjut' => $pulang . '|' . $kontrol . '|' . $konsul . '|' . $rawatinap . '|' . $rujukkeluar . '|' . trim($dataSet['keterangantindaklanjut']),
-                'versi' => 2
+                'versi' => 2,
+                'status' => '1',
+                'signature' => 'SUDAH VALIDASI'
             ];
         }
         // dd($dataSet);
@@ -1130,7 +1135,10 @@ class ErmController_v2 extends Controller
     public function hasilassesmentmedis(Request $request)
     {
         $kodekunjungan = $request->kodekunjungan;
+
         $assdok = DB::connection('mysql2')->select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
+        // dd($assdok);
+        $data_kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?',[$kodekunjungan]);
         $of = DB::connection('mysql2')->select("SELECT
         a.id AS id_header
         ,b.`id` AS id_detail
@@ -1153,18 +1161,23 @@ class ErmController_v2 extends Controller
         WHERE a.`kode_kunjungan` = '$kodekunjungan' AND b.status_layanan_detail = 'OPN'
         AND a.status_layanan != '3'
         AND a.`kode_unit` IN ('4008','4002')");
+
         $oL = db::connection('mysql2')->select("SELECT *,fc_nama_unit1(a.kode_unit) as nama_unit,a.id AS id_header,b.id AS id_detail,b.`kode_tarif_detail`,b.`jumlah_layanan`,d.`NAMA_TARIF` FROM ts_layanan_header_order a
         INNER JOIN ts_layanan_detail_order b ON a.id = b.`row_id_header`
         INNER JOIN mt_tarif_detail c ON b.kode_tarif_detail = c.`KODE_TARIF_DETAIL`
         INNER JOIN mt_tarif_header d ON c.`KODE_TARIF_HEADER` = d.`KODE_TARIF_HEADER`
         WHERE a.`kode_kunjungan` = ? AND b.`status_layanan_detail` = 'OPN' AND a.`status_layanan` = 1 AND a.kode_unit = ?", [$kodekunjungan, '3002']);
+
         $oR = db::connection('mysql2')->select("SELECT *,fc_nama_unit1(a.kode_unit) as nama_unit,a.id AS id_header,b.id AS id_detail,b.`kode_tarif_detail`,b.`jumlah_layanan`,d.`NAMA_TARIF` FROM ts_layanan_header_order a
         INNER JOIN ts_layanan_detail_order b ON a.id = b.`row_id_header`
         INNER JOIN mt_tarif_detail c ON b.kode_tarif_detail = c.`KODE_TARIF_DETAIL`
         INNER JOIN mt_tarif_header d ON c.`KODE_TARIF_HEADER` = d.`KODE_TARIF_HEADER`
         WHERE a.`kode_kunjungan` = ? AND b.`status_layanan_detail` = 'OPN' AND a.`status_layanan` = 1 AND a.kode_unit = ?", [$kodekunjungan, '3003']);
         $antrian = DB::connection('mysql2')->select('select * from ts_antrian_farmasi where kode_kunjungan = ?', [$kodekunjungan]);
-        return view('V2_erm.hasilpemeriksaandokter', compact('assdok', 'of', 'kodekunjungan', 'oL', 'oR', 'antrian'));
+
+        $mt_pasien = DB::select('select * from mt_pasien where no_rm = ?',[$data_kunjungan[0]->no_rm]);
+        $unit = DB::select('select * from mt_unit where group_unit = ?',['J']);
+        return view('V2_erm.hasilpemeriksaandokter', compact('assdok', 'of', 'kodekunjungan', 'oL', 'oR', 'antrian','data_kunjungan','mt_pasien','unit'));
     }
     public function kirimorderfarmasi(Request $request)
     {
@@ -1387,5 +1400,87 @@ class ErmController_v2 extends Controller
         }
         date_default_timezone_set('Asia/Jakarta');
         return 'B - ' . $pref . $kd;
+    }
+    public function v2_carisep_kontrol(Request $request)
+    {
+        $sep = $request->sep;
+        $idpic = $request->idpic;
+        $nomorkartu = $request->nomorkartu;
+        $dokter = DB::select('select a.kode_paramedis,b.kode_dpjp,b.nama_dokter from user a inner join mt_kuota_dokter_poli b on a.kode_paramedis = b.kode_dokter where a.id = ?',[$idpic]);
+        if(count($dokter) > 0){
+            $dpjp = $dokter[0]->kode_dpjp;
+            $nama = $dokter[0]->nama_dokter;
+        }else{
+            $dpjp = 0;
+            $nama = 'Dokter belum mengisi';
+        }
+        if(strlen($sep) > 1){
+            $v = new VclaimModel();
+            $hasilsep = $v->carisep($sep);
+            $nosep = $hasilsep->response->noSep;
+            // $poli = $v->Datapoli(2, $nosep, $request->tanggal);
+            $rujukan = $hasilsep->response->noRujukan;
+            $cek_rujukan = substr($rujukan,0,8);
+            if($cek_rujukan == '1018R001'){
+                $jenis_rujukan = '1';
+                $kunjungan = 'Kunjungan pasca rawat inap, silahkan cari sep sebelum rawat inap untuk dibuatkan surat kontrol';
+                return view('V2_erm.cari_sep_bpjs',compact([
+                    'kunjungan','nomorkartu'
+                ]));
+                }else{
+                    $jenis_rujukan = '2';
+                    return view('V2_erm.form_buat_suratkontrol',compact([
+                        'nosep','dpjp','nama','nomorkartu'
+                    ]));
+            }
+        }else{
+            $jenis_rujukan = '1';
+            $kunjungan = 'Tidak ada nomor sep atau nomor sep';
+            return view('V2_erm.cari_sep_bpjs',compact('kunjungan','nomorkartu'));
+        }
+    }
+    public function v2_cari_poli_kontrol(request $request)
+    {
+        $v = new VclaimModel();
+        $poli = $v->Datapoli(2, $request->sep, $request->tgl);
+        if($poli->metaData->code == 200){
+            return view('V2_erm.tabel_poli_kontrol',compact([
+                'poli'
+            ]));
+        }else{
+            echo $poli->metaData->message;
+        }
+    }
+    public function v2_cari_dokter_kontrol(request $request)
+    {
+        $v = new VclaimModel();
+        $dokter = $v->Datadokter(2, $request->kode, $request->tgl);
+        if($dokter->metaData->code == 200){
+            return view('V2_erm.tabel_dokter_kontrol',compact([
+                'dokter'
+            ]));
+        }else{
+            echo $dokter->metaData->message;
+        }
+    }
+    public function v2_cari_riwayat_sep(Request $request)
+    {
+        $v = new VclaimModel();
+        $data = $v->get_data_kunjungan_peserta($request->nomorkartubpjs,$request->tglawal,$request->tglakhir);
+        if($data->metaData->code == 200){
+            return view('V2_erm.riwayat_sep',compact([
+                'data'
+            ]));
+        }
+    }
+    public function v2_cari_riwayat_surat_kontrol(Request $request)
+    {
+        $v = new VclaimModel();
+        $data = $v->ListRencanaKontrol_peserta($request->bulan,$request->tahun,$request->nomorkartu,$request->jenis);
+        if($data->metaData->code == 200){
+            return view('V2_erm.riwayat_surat_kontrol',compact([
+                'data'
+            ]));
+        }
     }
 }

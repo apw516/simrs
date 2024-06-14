@@ -1,9 +1,13 @@
 @if (count($assdok) > 0)
+    <input hidden type="text" id="kodekunjunganhariini" value="{{ $kodekunjungan }}">
     <div class="card">
         <div class="card-header"> <i class="bi bi-bookmark-plus mr-1"></i> Hasil Assesment Medis</div>
         <div class="card-body">
             <table class="table">
                 @foreach ($assdok as $a)
+                    <input hidden type="text" value="{{ $a->pic }}" id="idpic">
+                    <input hidden type="text" value="{{ $mt_pasien[0]->no_Bpjs }}" id="nomorkartu">
+                    <input hidden type="text" value="{{ $data_kunjungan[0]->no_sep }}" id="nomorsepnya">
                     <tr>
                         <td width="20%" class="text-bold">Diagnosa Kerja</td>
                         <td class="font-italic">: {{ $a->diagnosakerja }}</td>
@@ -32,164 +36,289 @@
                         <td class="text-bold">Tindak Lanjut</td>
                         <td>
                             <div class="form-check form-check-inline">
-                                <input @if($tl[0] == 1) checked @endif class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3"
-                                onclick="return false">
+                                <input @if($a->versi == 2 ) @if($tl[0] == 1) checked @endif @endif class="form-check-input"
+                                    type="checkbox" id="inlineCheckbox3" value="option3" onclick="return false">
                                 <label class="form-check-label" for="inlineCheckbox3">Pulang / sembuh</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input @if($tl[1] == 1) checked @endif class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3"
-                                onclick="return false" >
+                                <input @if($a->versi == 2 ) @if ($tl[1] == 1) checked @endif  @endif class="form-check-input"
+                                    type="checkbox" id="inlineCheckbox3" value="option3" onclick="return false">
                                 <label class="form-check-label" for="inlineCheckbox3">Kontrol</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input @if($tl[2] == 1) checked @endif class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3"
-                                onclick="return false">
+                                <input @if($a->versi == 2 ) @if ($tl[2] == 1) checked @endif  @endif class="form-check-input"
+                                    type="checkbox" id="inlineCheckbox3" value="option3" onclick="return false">
                                 <label class="form-check-label" for="inlineCheckbox3">Konsul</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input @if($tl[3] == 1) checked @endif class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3"
-                                onclick="return false">
+                                <input @if($a->versi == 2 ) @if ($tl[3] == 1) checked @endif  @endif class="form-check-input"
+                                    type="checkbox" id="inlineCheckbox3" value="option3" onclick="return false">
                                 <label class="form-check-label" for="inlineCheckbox3">Rawat Inap</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input @if($tl[4] == 1) checked @endif class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3"
-                                onclick="return false">
+                                <input @if($a->versi == 2 ) @if ($tl[4] == 1) checked @endif  @endif class="form-check-input"
+                                    type="checkbox" id="inlineCheckbox3" value="option3" onclick="return false">
                                 <label class="form-check-label" for="inlineCheckbox3">Rujuk Keluar</label>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td class="text-bold">Keterangan Tindak Lanjut</td>
-                        <td>: {{ $tl[5] }}</td>
+                        <td>:@if($a->versi == 2 ){{ $tl[5] }}  @endif</td>
                     </tr>
                 @endforeach
             </table>
-            <div class="card mt-2">
-                <div class="card-header bg-light">Order Farmasi @if (count($antrian) > 0)
-                        <p class="float-right text-bold font-lg">Nomor Antrian Farmasi :
-                            {{ $antrian[0]->nomor_antrian }} </p>
-                    @endif
-                </div>
+            <div class="card mt-3">
+                <div class="card-header bg-info text-bold text-lg">Form Tindak Lanjut</div>
                 <div class="card-body">
-                    <table class="table table-sm table-bordered table-hover text-sm">
-                        <thead class="bg-dark">
-                            <th>Unit Tujuan</th>
-                            <th>Nama Barang</th>
-                            <th>Jumlah</th>
-                            <th>Keterangan</th>
-                            <th>Aturan Pakai</th>
-                            <th>status header</th>
-                            {{-- <th>status detail</th> --}}
-                        </thead>
-                        <tbody>
-                            @foreach ($of as $f)
-                                <tr>
-                                    <td>{{ $f->unit_tujuan }}</td>
-                                    <td>{{ $f->kode_tarif_detail }}</td>
-                                    <td>{{ $f->jumlah_layanan }}</td>
-                                    <td>{{ $f->keterangan }}</td>
-                                    <td>{{ $f->aturan_pakai }}</td>
-                                    <td>
-                                        @if ($f->status_order == '99')
-                                            Belum dikirim
-                                        @elseif($f->status_order == '0')
-                                            Terkirim ke farmasi
-                                        @elseif($f->status_order == 98)
-                                            Dalam antrian farmasi
-                                        @elseif($f->status_order == 2)
-                                            Sudah dilayani farmasi
-                                        @endif
-                                    </td>
-                                    {{-- <td>{{ $f->status_layanan_detail}}</td> --}}
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    <div class="accordion" id="accordionExample">
+                        <div class="card">
+                            <div class="card-header" id="headingOne">
+                                <h2 class="mb-0">
+                                    <button class="btn text-dark font-italic text-bold btn-block text-left"
+                                        type="button" data-toggle="collapse" data-target="#collapseOne"
+                                        aria-expanded="true" aria-controls="collapseOne">
+                                        Surat Kontrol
+                                    </button>
+                                </h2>
+                            </div>
+                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
+                                data-parent="#accordionExample">
+                                <div class="card-body">
+                                    <p class="text-bold text-lg">NO SEP : {{ $data_kunjungan[0]->no_sep }} <button
+                                            class="ml-3 badge btn-sm btn-success carisep" onclick="carisep()">Pilih</button>
+
+                                    <div class="v_hasil_sep">
+
+                                    </div>
+                                    <div class="v_hasil_sep2">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="headingTwo">
+                                    <h2 class="mb-0">
+                                        <button class="btn font-italic text-bold btn-block text-left collapsed"
+                                            type="button" data-toggle="collapse" data-target="#collapseTwo"
+                                            aria-expanded="false" aria-controls="collapseTwo">
+                                            Konsul Antar Poli
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                    data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <table id="tabelunitkonsul" class="table table-sm">
+                                                    <thead>
+                                                        <th>Unit</th>
+                                                        <th class="text-center">Action</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($unit as $u)
+                                                            <tr>
+                                                                <td>{{ $u->nama_unit }}</td>
+                                                                <td class="text-center"><button
+                                                                        class="btn btn-success pilihpoli"
+                                                                        kodeunit="{{ $u->kode_unit }}"
+                                                                        namaunit={{ $u->nama_unit }}>Pilih</button>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card">
+                                                    <div class="card-header">List poli yang dipilih</div>
+                                                    <div class="card-body">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="headingThree">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-block text-left collapsed font-italic text-bold"
+                                            type="button" data-toggle="collapse" data-target="#collapseThree"
+                                            aria-expanded="false" aria-controls="collapseThree">
+                                            Surat Perintah Rawat Inap ( SPRI )
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                                    data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        And lastly, the placeholder content for the third and final accordion panel.
+                                        This
+                                        panel is hidden by default.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="headingFour">
+                                    <h2 class="mb-0">
+                                        <button class="btn font-italic text-bold btn-block text-left collapsed"
+                                            type="button" data-toggle="collapse" data-target="#collapseFour"
+                                            aria-expanded="false" aria-controls="collapseFour">
+                                            Rujuk Keluar ( Rujuk ke rumah sakit lain )
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseFour" class="collapse" aria-labelledby="headingFour"
+                                    data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        And lastly, the placeholder content for the third and final accordion panel.
+                                        This
+                                        panel is hidden by default.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-footer bg-light">
-                    <button @if (count($of) == 0) disabled @endif
-                        class="btn btn-success float-right kirimfarmasi" kodekunjungan="{{ $kodekunjungan }}"><i
-                            class="bi bi-send-check mr-1"></i> Kirim Ke Farmasi</button>
+                <div class="card mt-2">
+                    <div class="card-header bg-info text-bold text-lg">Order Farmasi @if (count($antrian) > 0)
+                            <p class="float-right text-bold font-lg">Nomor Antrian Farmasi :
+                                {{ $antrian[0]->nomor_antrian }} </p>
+                        @endif
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm table-bordered table-hover text-sm">
+                            <thead class="bg-dark">
+                                <th>Unit Tujuan</th>
+                                <th>Nama Barang</th>
+                                <th>Jumlah</th>
+                                <th>Keterangan</th>
+                                <th>Aturan Pakai</th>
+                                <th>status header</th>
+                                {{-- <th>status detail</th> --}}
+                            </thead>
+                            <tbody>
+                                @foreach ($of as $f)
+                                    <tr>
+                                        <td>{{ $f->unit_tujuan }}</td>
+                                        <td>{{ $f->kode_tarif_detail }}</td>
+                                        <td>{{ $f->jumlah_layanan }}</td>
+                                        <td>{{ $f->keterangan }}</td>
+                                        <td>{{ $f->aturan_pakai }}</td>
+                                        <td>
+                                            @if ($f->status_order == '99')
+                                                Belum dikirim
+                                            @elseif($f->status_order == '0')
+                                                Terkirim ke farmasi
+                                            @elseif($f->status_order == 98)
+                                                Dalam antrian farmasi
+                                            @elseif($f->status_order == 2)
+                                                Sudah dilayani farmasi
+                                            @endif
+                                        </td>
+                                        {{-- <td>{{ $f->status_layanan_detail}}</td> --}}
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer bg-light">
+                        <button @if (count($of) == 0) disabled @endif
+                            class="btn btn-success float-right kirimfarmasi" kodekunjungan="{{ $kodekunjungan }}"><i
+                                class="bi bi-send-check mr-1"></i> Kirim Ke Farmasi</button>
+                    </div>
                 </div>
-            </div>
-            <div class="card">
-                <div class="card-header">Order Laboratorium</div>
-                <div class="card-body">
-                    <table class="table table-sm table-bordered table-hover text-sm">
-                        <thead class="bg-dark">
-                            <th>Unit Tujuan</th>
-                            <th>Nama Layanan</th>
-                            <th>Jumlah</th>
-                            <th>===</th>
-                        </thead>
-                        <tbody>
-                            @foreach ($oL as $f)
-                                <tr>
-                                    <td>{{ $f->nama_unit }}</td>
-                                    <td>{{ $f->NAMA_TARIF }}</td>
-                                    <td>{{ $f->jumlah_layanan }}</td>
-                                    <td>
-                                        @if ($f->status_order == '99')
-                                            Belum dikirim
-                                        @elseif($f->status_order == '0')
-                                            Terkirim ke Laboratorium
-                                        @elseif($f->status_order == 1)
-                                            Dalam antrian Laboratorium
-                                        @endif
-                                    </td>
-                                    {{-- <td>{{ $f->status_layanan_detail}}</td> --}}
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                <div class="card">
+                    <div class="card-header bg-info text-bold text-lg">Order Laboratorium</div>
+                    <div class="card-body">
+                        <table class="table table-sm table-bordered table-hover text-sm">
+                            <thead class="bg-dark">
+                                <th>Unit Tujuan</th>
+                                <th>Nama Layanan</th>
+                                <th>Jumlah</th>
+                                <th>===</th>
+                            </thead>
+                            <tbody>
+                                @foreach ($oL as $f)
+                                    <tr>
+                                        <td>{{ $f->nama_unit }}</td>
+                                        <td>{{ $f->NAMA_TARIF }}</td>
+                                        <td>{{ $f->jumlah_layanan }}</td>
+                                        <td>
+                                            @if ($f->status_order == '99')
+                                                Belum dikirim
+                                            @elseif($f->status_order == '0')
+                                                Terkirim ke Laboratorium
+                                            @elseif($f->status_order == 1)
+                                                Dalam antrian Laboratorium
+                                            @endif
+                                        </td>
+                                        {{-- <td>{{ $f->status_layanan_detail}}</td> --}}
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer bg-light">
+                        <button @if (count($oL) == 0) disabled @endif
+                            class="btn btn-success float-right kirimlab" kodekunjungan="{{ $kodekunjungan }}"><i
+                                class="bi bi-send-check mr-1"></i> Kirim Ke Laboratorium</button>
+                    </div>
                 </div>
-                <div class="card-footer bg-light">
-                    <button @if (count($oL) == 0) disabled @endif
-                        class="btn btn-success float-right kirimlab" kodekunjungan="{{ $kodekunjungan }}"><i
-                            class="bi bi-send-check mr-1"></i> Kirim Ke Laboratorium</button>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">Order Radiologi</div>
-                <div class="card-body">
-                    <table class="table table-sm table-bordered table-hover text-sm">
-                        <thead class="bg-dark">
-                            <th>Unit Tujuan</th>
-                            <th>Nama Layanan</th>
-                            <th>Jumlah</th>
-                            <th>===</th>
-                        </thead>
-                        <tbody>
-                            @foreach ($oR as $f)
-                                <tr>
-                                    <td>{{ $f->nama_unit }}</td>
-                                    <td>{{ $f->NAMA_TARIF }}</td>
-                                    <td>{{ $f->jumlah_layanan }}</td>
-                                    <td>
-                                        @if ($f->status_order == '99')
-                                            Belum dikirim
-                                        @elseif($f->status_order == '0')
-                                            Terkirim ke Radiologi
-                                        @elseif($f->status_order == 1)
-                                            Dalam antrian Radiologi
-                                        @endif
-                                    </td>
-                                    {{-- <td>{{ $f->status_layanan_detail}}</td> --}}
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                <div class="card-footer bg-light">
-                    <button @if (count($oR) == 0) disabled @endif
-                        class="btn btn-success float-right kirimrad" kodekunjungan="{{ $kodekunjungan }}"><i
-                            class="bi bi-send-check mr-1"></i> Kirim Ke Radiologi</button>
+                <div class="card">
+                    <div class="card-header bg-info text-bold text-lg">Order Radiologi</div>
+                    <div class="card-body">
+                        <table class="table table-sm table-bordered table-hover text-sm">
+                            <thead class="bg-dark">
+                                <th>Unit Tujuan</th>
+                                <th>Nama Layanan</th>
+                                <th>Jumlah</th>
+                                <th>===</th>
+                            </thead>
+                            <tbody>
+                                @foreach ($oR as $f)
+                                    <tr>
+                                        <td>{{ $f->nama_unit }}</td>
+                                        <td>{{ $f->NAMA_TARIF }}</td>
+                                        <td>{{ $f->jumlah_layanan }}</td>
+                                        <td>
+                                            @if ($f->status_order == '99')
+                                                Belum dikirim
+                                            @elseif($f->status_order == '0')
+                                                Terkirim ke Radiologi
+                                            @elseif($f->status_order == 1)
+                                                Dalam antrian Radiologi
+                                            @endif
+                                        </td>
+                                        {{-- <td>{{ $f->status_layanan_detail}}</td> --}}
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer bg-light">
+                        <button @if (count($oR) == 0) disabled @endif
+                            class="btn btn-success float-right kirimrad" kodekunjungan="{{ $kodekunjungan }}"><i
+                                class="bi bi-send-check mr-1"></i> Kirim Ke Radiologi</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @else
+        <div class="card">
+            <div class="card-header"> <i class="bi bi-bookmark-plus mr-1"></i> Hasil Assesment Medis</div>
+            <div class="card-body">
+                <h5>Dokter belum mengisi !</h5>
+            </div>
+        </div>
 @endif
 <script>
+    $(document).ready(function() {
+        carisep()
+    })
     $(".kirimfarmasi").on('click', function(event) {
         Swal.fire({
             title: "Anda yakin ?",
@@ -358,8 +487,8 @@
             }
         });
     });
-    function ambilhasilassesmentmedis()
-    {
+
+    function ambilhasilassesmentmedis() {
         kodekunjungan = $('#kodekunjungan').val()
         spinner = $('#loader')
         spinner.show();
@@ -376,4 +505,62 @@
             }
         })
     }
+    $(".carisep").on('click', function(event) {
+        sep = $(this).attr('sep')
+        spinner = $('#loader')
+        idpic = $('#idpic').val()
+        nomorkartu = $('#nomorkartu').val()
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                sep,
+                idpic,
+                nomorkartu
+            },
+            url: '<?= route('v2_carisep_kontrol') ?>',
+            success: function(response) {
+                $('.v_hasil_sep').html(response);
+                spinner.hide()
+            }
+        });
+    })
+
+    function carisep() {
+        sep = $('#nomorsepnya').val()
+        spinner = $('#loader')
+        idpic = $('#idpic').val()
+        nomorkartu = $('#nomorkartu').val()
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                sep,
+                idpic,
+                nomorkartu
+            },
+            url: '<?= route('v2_carisep_kontrol') ?>',
+            success: function(response) {
+                $('.v_hasil_sep').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    $(function() {
+        $("#tabelunitkonsul").DataTable({
+            "responsive": false,
+            "lengthChange": false,
+            "autoWidth": true,
+            "pageLength": 5,
+            "searching": true
+        })
+    });
+    $(".pilihpoli").on('click', function(event) {
+        kodeunit = $(this).attr('kodeunit')
+        namaunit = $(this).attr('namaunit')
+        kodekunjungan = $('#kodekunjunganhariini').val()
+
+    })
 </script>

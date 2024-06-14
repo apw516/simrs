@@ -456,7 +456,7 @@ Route::group(['middleware' => ['auth', 'hak_akses1:9']], function () {
 //erm
 
 
-Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
+    Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
     //v2
     Route::post('hasilassesmentmedis', [ErmController_v2::class, 'hasilassesmentmedis'])
     ->name('hasilassesmentmedis'); //sidebar
@@ -466,6 +466,16 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
     ->name('kirimorderlab'); //sidebar
     Route::post('kirimorderrad', [ErmController_v2::class, 'kirimorderrad'])
     ->name('kirimorderrad'); //sidebar
+    Route::post('v2_carisep_kontrol', [ErmController_v2::class, 'v2_carisep_kontrol'])
+    ->name('v2_carisep_kontrol'); //sidebar
+    Route::post('v2_cari_poli_kontrol', [ErmController_v2::class, 'v2_cari_poli_kontrol'])
+    ->name('v2_cari_poli_kontrol'); //sidebar
+    Route::post('v2_cari_dokter_kontrol', [ErmController_v2::class, 'v2_cari_dokter_kontrol'])
+    ->name('v2_cari_dokter_kontrol'); //sidebar
+    Route::post('v2_cari_riwayat_sep', [ErmController_v2::class, 'v2_cari_riwayat_sep'])
+    ->name('v2_cari_riwayat_sep'); //sidebar
+    Route::post('v2_cari_riwayat_surat_kontrol', [ErmController_v2::class, 'v2_cari_riwayat_surat_kontrol'])
+    ->name('v2_cari_riwayat_surat_kontrol'); //sidebar
 
 
     Route::get('/indexperawat', [ErmController::class, 'indexPerawat'])
