@@ -22,7 +22,7 @@
                     @else
                     <br>{{ $kunjungan[0]->diagx }}</p>
                     @endif
-                <a href="#" onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})" class="btn btn-primary btn-block"><b>Catatan
+                <a href="#" onclick="formcatatanmedis2()" class="btn btn-primary btn-block"><b>Catatan
                         Medis</b></a>
                 <input hidden type="text" id="kodekunjungan" value="{{ $kunjungan[0]->kode_kunjungan }}">
                 <input hidden type="text" id="nomorrm" value="{{ $kunjungan[0]->no_rm }}">
@@ -93,7 +93,7 @@
                             <i class="fas fa-inbox mr-2"></i>Upload Berkas
                         </a>
                     </li>
-                     <li class="nav-item" id="pemeriksaan">
+                     <li hidden class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="goto_suratkontrol()">
                             <i class="fas fa-inbox mr-2"></i>Buat Surat Kontrol
                         </a>
@@ -118,11 +118,28 @@
 </div>
 <script>
     $(document).ready(function() {
-        rm = $('#nomorrm').val()
-        formcatatanmedis(rm)
+        formcatatanmedis2()
     })
 
-    function formcatatanmedis(rm) {
+    function formcatatanmedis() {
+        spinner = $('#loader')
+        spinner.show();
+        rm = $('#nomorrm').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm
+            },
+            url: '<?= route('ambilcatatanmedis_pasien') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    function formcatatanmedis2() {
+        rm = $('#nomorrm').val()
         spinner = $('#loader')
         spinner.show();
         $.ajax({
@@ -131,7 +148,7 @@
                 _token: "{{ csrf_token() }}",
                 rm
             },
-            url: '<?= route('ambilcatatanmedis_pasien') ?>',
+            url: '<?= route('ambilcatatanmedis_pasien2') ?>',
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()

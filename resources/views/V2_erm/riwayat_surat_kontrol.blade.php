@@ -1,18 +1,18 @@
 <div class="container">
     <h5>Data Surat Kontrol Berdasarkan Nomor Kartu ...</h5>
-    <table id="tabelsuratkontrol_peserta2" class="table table-bordered table-sm text-xs mt-3">
+    <table id="tabelsuratkontrol_peserta2" class="table table-bordered table-sm text-sm mt-3">
         <thead>
-            {{-- <th>nomor kartu</th> --}}
-            <th>Nama</th>
-            <th>Terbit Sep</th>
-            <th>Tgl Sep</th>
+            <th>Nama Pasien</th>
             <th>Nomor surat</th>
-            <th>Jn pelayanan</th>
+            <th>Digunakan</th>
+            <th>SEP Asal</th>
+            <th>Keterangan</th>
+            {{-- <th>Jn pelayanan</th>
             <th>Jn kontrol</th>
             <th>Tgl kontrol</th>
-            <th>Tgl terbit</th>
-            <th>SEP asal</th>
-            <th>poli asal</th>
+            <th>Tgl terbit</th> --}}
+            {{-- <th>SEP asal</th> --}}
+            {{-- <th>poli asal</th> --}}
             <th>poli tujuan</th>
             <th>dokter</th>
             <th>--</th>
@@ -21,24 +21,24 @@
             @if ($data->metaData->code == 200)
                 @foreach ($data->response->list as $d)
                     <tr>
-                        {{-- <td>{{ $d->noKartu }}</td> --}}
                         <td>{{ $d->nama }}</td>
+                        <td>{{ $d->noSuratKontrol }} | {{ $d->tglRencanaKontrol }}</td>
                         <td>{{ $d->terbitSEP }}</td>
-                        <td>{{ $d->tglSEP }}</td>
-                        <td>{{ $d->noSuratKontrol }}</td>
-                        <td>{{ $d->jnsPelayanan }}</td>
+                        <td>{{ $d->noSepAsalKontrol }} | {{ $d->tglSEP }}</td>
+                        <td>{{ $d->namaJnsKontrol }} | {{ $d->jnsPelayanan }} | {{ $d->namaPoliTujuan }}</td>
+                        {{-- <td>{{ $d->tglSEP }}</td> --}}
+                        {{-- <td>{{ $d->jnsPelayanan }}</td>
                         <td>{{ $d->namaJnsKontrol }}</td>
                         <td>{{ $d->tglRencanaKontrol }}</td>
-                        <td>{{ $d->tglTerbitKontrol }}</td>
-                        <td>{{ $d->noSepAsalKontrol }}</td>
-                        <td>{{ $d->namaPoliAsal }}</td>
+                        <td>{{ $d->tglTerbitKontrol }}</td> --}}
+                        {{-- <td>{{ $d->namaPoliAsal }}</td> --}}
                         <td>{{ $d->namaPoliTujuan }}</td>
                         <td>{{ $d->namaDokter }}</td>
                         <td>
-                            <button nomorsurat="{{ $d->noSuratKontrol }}" class="badge badge-info cetaksuratkontrol"><i class="bi bi-printer-fill"></i></button>
-                            <button nomorsurat="{{ $d->noSuratKontrol }}" class="badge badge-danger hapussurat"><i
+                            <button disabled nomorsurat="{{ $d->noSuratKontrol }}" class="badge badge-info cetaksuratkontrol"><i class="bi bi-printer-fill"></i></button>
+                            <button disabled nomorsurat="{{ $d->noSuratKontrol }}" class="badge badge-danger hapussurat"><i
                                     class="bi bi-trash"></i></button>
-                            <button tglkontrol="{{ $d->tglRencanaKontrol }}" jenissurat="{{ $d->jnsKontrol }}"
+                            <button disabled tglkontrol="{{ $d->tglRencanaKontrol }}" jenissurat="{{ $d->jnsKontrol }}"
                                 suratkontrol="{{ $d->noSuratKontrol }}" nomorsep="{{ $d->noSepAsalKontrol }}"
                                 nomorkartu="{{ $d->noKartu }}" namapolitujuan="{{ $d->namaPoliTujuan }}"
                                 kodepolitujuan="{{ $d->poliTujuan }}" namadokter="{{ $d->namaDokter }}"
@@ -56,7 +56,7 @@
 <script>
     $(function() {
         $("#tabelsuratkontrol_peserta2").DataTable({
-            "responsive": true,
+            "responsive": false,
             "lengthChange": false,
             "autoWidth": true,
             "pageLength": 3,
