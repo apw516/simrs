@@ -59,7 +59,7 @@
                         <table class="table table-sm text-sm text-bold">
                             <tr>
                                 <td width="40%">Nomor RM</td>
-                                <td>: {{ $asskep[0]->no_rm }}</td>
+                                <td>: {{ $mt_pasien[0]->no_rm }}</td>
                             </tr>
                             <tr>
                                 <td>Nama</td>
@@ -82,7 +82,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" class="text-bold text-center">ASSESMEN KEPERAWATAN<br> RAWAT JALAN {{ strtoupper($kunjungan[0]->nama_unit )}}</td>
+                    <td colspan="2" class="text-bold text-center">ASSESMEN MEDIS<br> RAWAT JALAN {{ strtoupper($kunjungan[0]->nama_unit )}}</td>
                 </tr>
                 <tr>
                     <td colspan="3">Tanggal kunjungan : @php echo date('d-M-Y',strtotime($kunjungan[0]->tgl_masuk)) @endphp</td>
@@ -93,29 +93,87 @@
             <tbody>
                 <tr>
                     <td width="40%" class="text-bold">Sumber Data</td>
-                    <td class="font-italic">{{ $asskep[0]->sumberdataperiksa }}</td>
+                    <td class="font-italic">{{ $assdok[0]->sumber_data }}</td>
                 </tr>
                 <tr>
                     <td class="text-bold">Keluhan utama</td>
-                    <td class="font-italic">{{ $asskep[0]->keluhanutama }}</td>
+                    <td class="font-italic">{{ $assdok[0]->keluhan_pasien }}</td>
                 </tr>
                 <tr>
-                    <td colspan="2" class="text-center text-bold bg-secondary">
-                <tr>
-                    <td class="text-bold">Apakah Pasien mengeluh nyeri</td>
-                    <td class="font-italic">{{ $asskep[0]->Keluhannyeri }}</td>
+                    <td class="text-bold">Riwayat Penyakit Dahulu</td>
+                    <td class="font-italic">{{ $assdok[0]->ket_riwayatlain }}</td>
                 </tr>
                 <tr>
-                    <td class="text-bold">Skala Nyeri</td>
-                    <td class="font-italic">{{ $asskep[0]->skalenyeripasien }}</td>
+                    <td class="text-bold">Riwayat Alergi</td>
+                    <td class="font-italic">{{ $assdok[0]->riwayat_alergi }} {{ $assdok[0]->keterangan_alergi }}</td>
                 </tr>
                 <tr>
-                    <td colspan="2" class="text-center"><img width="50%"
-                            src="{{ asset('public/img/skalanyeri.jpg') }}" alt=""></td>
+                    <td class="text-bold">Pemeriksaan Fisik ( O )</td>
+                    <td class="font-italic">{{ $assdok[0]->pemeriksaan_fisik }}</td>
+                </tr>
+                <tr>
+                    <td class="text-bold">Diagnosis ( A )</td>
+                    <td class="font-italic">{{ $assdok[0]->diagnosakerja }}</td>
+                </tr>
+                <tr>
+                    <td class="text-bold">Diagnosis Sekunder</td>
+                    <td class="font-italic">{{ $assdok[0]->diagnosabanding }}</td>
+                </tr>
+                <tr>
+                    <td class="text-bold">Rencana Terapi ( P )</td>
+                    <td class="font-italic">{{ $assdok[0]->rencanakerja }}</td>
+                </tr>
+                <tr>
+                    <td class="text-bold">Tindak Lanjut</td>
+                    <td class="font-italic">{{ $assdok[0]->tindak_lanjut }}</td>
+                </tr>
+                <tr>
+                    <td class="text-bold">Riwayat Pemakaian Obat</td>
+                    <td class="font-italic">
+                        <table class="table table-sm table-bordered text-xs">
+                            <thead>
+                                <th>Nama Obat</th>
+                                <th>Jumlah</th>
+                                <th>Aturan Pakai</th>
+                            </thead>
+                            <tbody>
+                                @foreach ($data_obat as $d )
+                                    <tr>
+                                        <td>{{ $d->nama_barang}}</td>
+                                        <td>{{ $d->jumlah_layanan}}</td>
+                                        <td>{{ $d->aturan_pakai }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-bold">Riwayat Pemeriksaan Penunjang</td>
+                    <td class="font-italic">
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <th>Nama Pemeriksaan</th>
+                                <th>Unit</th>
+                            </thead>
+                            <tbody>
+                                @foreach ($data_penunjang as $dp )
+                                    <tr>
+                                        <td>{{ $dp->NAMA_TARIF}}</td>
+                                        <td>{{ $dp->nama_unit}}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-bold">Nama Dokter Pemeriksa</td>
+                    <td>{{ $assdok[0]->nama_dokter }}</td>
                 </tr>
             </tbody>
         </table>
-        <table class="table table-sm text-xs">
+        {{-- <table class="table table-sm text-xs">
             <tbody>
                 <tr>
                     <td colspan="4" class="text-center text-bold bg-secondary">Tanda Tanda vital</td>
@@ -158,105 +216,7 @@
                         {{ $asskep[0]->keterangancacattubuh }}</td>
                 </tr>
             </tbody>
-        </table>
-    </main>
-    <main>
-        <table class="table table-sm text-xs">
-            <tbody>
-                <tr>
-                    <td class="text-center text-bold bg-secondary">Assesmen Resiko Jatuh</td>
-                </tr>
-                <tr>
-                    <td class="text-center text-bold bg-secondary">Metode Up and Go</td>
-                </tr>
-                <tr>
-                    <td>
-                        <table class="table table-sm text-xs">
-                            <thead>
-                                <th>Faktor Resiko</th>
-                                <th>Skala</th>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>a</td>
-                                    <td>Perhatikan cara berjalan pasien saat akan duduk dikursi. Apakah pasien tampak
-                                        tidak seimbang ( sempoyongan / limbung ) ?</td>
-                                </tr>
-                                <tr>
-                                    <td>b</td>
-                                    <td>Apakah pasien memegang pinggiran kursi atau meja atau benda lain sebagai
-                                        penopang saat akan duduk ?</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-bold font-italic">Hasil : {{ $asskep[0]->resikojatuh }}</td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm text-xs" style="margin-top:60px">
-            <tbody>
-                <tr>
-                    <td class="text-center text-bold bg-secondary">Skrinning Gizi</td>
-                </tr>
-                <tr>
-                    <td class="text-center text-bold bg-secondary">Metode Malnutrition Screnning Tools ( Pasien Dewasa )
-                    </td>
-                </tr>
-                <tr>
-                    <td>1. Apakah pasien mengalami penurunan berat badan yang tidak diinginkan dalam 6 bulan terakhir ?
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-bold font-italic bg-secondary">Hasil : {{ $asskep[0]->Skrininggizi }}</td>
-                </tr>
-                <tr>
-                    <td>2. Apakah asupan makanan berkurang karena berkurangnya nafsu makan</td>
-                </tr>
-                <tr>
-                    <td class="text-bold font-italic bg-secondary">Hasil : {{ $asskep[0]->status_asupanmkanan }}</td>
-                </tr>
-                <tr>
-                    <td>3. Pasien dengan diagnosa khusus : Penyakit DM / Ginjal / Hati / Paru / Stroke / Kanker /
-                        Penurunan imunitas geriatri, lain lain...</td>
-                </tr>
-                <tr>
-                    <td class="text-bold font-italic bg-secondary">Hasil : {{ $asskep[0]->diagnosakhusus }}</td>
-                </tr>
-                <tr>
-                    <td>4. Bila skor >= 2, pasien beresiko malnutrisi dilakukan pengkajian lanjut oleh ahli gizi</td>
-                </tr>
-                <tr>
-                    <td class="text-bold font-italic bg-secondary">Hasil : {{ $asskep[0]->resikomalnutrisi }}</td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm text-xs">
-            <tbody>
-                <tr>
-                    <td width="40%" class="font-italic">Diagnosa keperawatan / kebidanan</td>
-                    <td class="text-bold font-italic">{{ $asskep[0]->diagnosakeperawatan }}</td>
-                </tr>
-                <tr>
-                    <td class="font-italic">Rencana Keperawatan / kebidanan</td>
-                    <td class="text-bold font-italic">{{ $asskep[0]->rencanakeperawatan }}</td>
-                </tr>
-                <tr>
-                    <td class="font-italic">Tindakan Keperawatan / kebidanan </td>
-                    <td class="text-bold font-italic">{{ $asskep[0]->tindakankeperawatan }}</td>
-                </tr>
-                <tr>
-                    <td class="font-italic">Evaluasi Keperawatan / kebidanan</td>
-                    <td class="text-bold font-italic">{{ $asskep[0]->evaluasikeperawatan }}</td>
-                </tr>
-                <tr>
-                    <td class="font-italic">Nama Perawat</td>
-                    <td class="text-bold font-italic">{{ $asskep[0]->namapemeriksa }}</td>
-                </tr>
-            </tbody>
-        </table>
+        </table> --}}
     </main>
 </body>
 

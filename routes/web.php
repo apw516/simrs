@@ -772,5 +772,7 @@ Route::get('layananfarmasi', [FarmasiV2Controller::class, 'indexlayanan'])->name
 Route::post('ambilantrianreguler', [FarmasiV2Controller::class, 'ambilantrianreguler'])->name('ambilantrianreguler'); //formpasien_bpjs
 Route::get('cetakanerm', [CetakanController::class, 'cetakanerm'])->name('cetakanerm'); //formpasien_bpjs
 Route::post('cetakanasskep', [CetakanController::class, 'cetakanasskep'])->name('cetakanasskep'); //formpasien_bpjs
+Route::post('cetakanassdok', [CetakanController::class, 'cetakanassdok'])->name('cetakanassdok'); //formpasien_bpjs
 Route::get('pdfcetakanasskep/{kodekunjungan}', [CetakanController::class, 'pdfcetakanasskep'])->name('pdfcetakanasskep'); //formpasien_bpjs
+Route::get('pdfcetakanassdok/{kodekunjungan}', [CetakanController::class, 'pdfcetakanassdok'])->name('pdfcetakanasskep'); //formpasien_bpjs
 

@@ -60,7 +60,7 @@
                              <div class="timeline-footer">
                                  <a href="#" class="btn btn-primary btn-sm btncetakasskep"
                                      kodekunjungan="{{ $k->kode_kunjungan }}" data-toggle="modal"
-                                     data-target="#modalcetakanasskep"><i class="bi bi-ticket-detailed mr-1"></i>
+                                     data-target="#modalcetakanasskep"><i class="bi bi-printer"></i>
                                      Cetak</a>
                              </div>
                          </div>
@@ -152,7 +152,8 @@
                                  </table>
                              </div>
                              <div class="timeline-footer">
-                                 <a class="btn btn-primary btn-flat btn-sm"><i class="bi bi-print mr-1"></i> Cetak</a>
+                                 <a class="btn btn-primary btn-flat btn-sm btncetakassdok" kodekunjungan="{{ $k->kode_kunjungan }}" data-toggle="modal"
+                                    data-target="#modalcetakanassdok"><i class="bi bi-printer"></i> Cetak</a>
                              </div>
                          </div>
                      </div>
@@ -188,6 +189,27 @@
          </div>
      </div>
  </div>
+ <div class="modal fade" id="modalcetakanassdok" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal-dialog modal-xxl">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h5 class="modal-title" id="exampleModalLabel">Cetak Assesmen Medis Rawat Jalan</h5>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                 </button>
+             </div>
+             <div class="modal-body">
+                 <div class="v_cetakan_assdok">
+
+                 </div>
+             </div>
+             <div class="modal-footer">
+                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                 <button type="button" class="btn btn-primary">Save changes</button>
+             </div>
+         </div>
+     </div>
+ </div>
  <script>
      $(".btncetakasskep").on('click', function(event) {
          kodekunjungan = $(this).attr('kodekunjungan')
@@ -201,6 +223,22 @@
              url: '<?= route('cetakanasskep') ?>',
              success: function(response) {
                  $('.v_cetakan_asskep').html(response);
+                 spinner.hide()
+             }
+         });
+     })
+     $(".btncetakassdok").on('click', function(event) {
+         kodekunjungan = $(this).attr('kodekunjungan')
+         spinner = $('#loader')
+         spinner.show();
+         $.ajax({
+             type: 'post',
+             data: {
+                 _token: "{{ csrf_token() }}",kodekunjungan
+             },
+             url: '<?= route('cetakanassdok') ?>',
+             success: function(response) {
+                 $('.v_cetakan_assdok').html(response);
                  spinner.hide()
              }
          });

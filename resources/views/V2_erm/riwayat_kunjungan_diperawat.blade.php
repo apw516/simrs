@@ -10,7 +10,7 @@
                              <!-- timeline time label -->
                              <div class="time-label">
                                  <span class="bg-success text-lg">
-                                    @php echo date('d-M-Y',strtotime($k->tgl_masuk)) @endphp  |  {{ $k->nama_unit }}
+                                     @php echo date('d-M-Y',strtotime($k->tgl_masuk)) @endphp | {{ $k->nama_unit }}
                                  </span>
                              </div>
                              <!-- /.timeline-label -->
@@ -19,7 +19,8 @@
                                  <i class="fas fa-comments bg-primary"></i>
 
                                  <div class="timeline-item">
-                                     <span class="time text-dark text-lg text-bold">@php echo date('d-M-Y',strtotime($k->tgl_masuk)) @endphp  / {{ $a->namapemeriksa }} /   {{ $k->nama_unit }}</span>
+                                     <span class="time text-dark text-lg text-bold">@php echo date('d-M-Y',strtotime($k->tgl_masuk)) @endphp /
+                                         {{ $a->namapemeriksa }} / {{ $k->nama_unit }}</span>
 
                                      <h3 class="timeline-header"><a href="#" class="text-dark">Assesment
                                              keperawatan /
@@ -66,8 +67,10 @@
                                          </table>
                                      </div>
                                      <div class="timeline-footer">
-                                         <a href="#" class="btn btn-primary btn-sm"><i
-                                                 class="bi bi-ticket-detailed mr-1"></i> Detail</a>
+                                         <a href="#" class="btn btn-primary btn-sm btncetakasskep"
+                                             kodekunjungan="{{ $k->kode_kunjungan }}" data-toggle="modal"
+                                             data-target="#modalcetakanasskep"><i class="bi bi-printer"></i>
+                                             Cetak</a>
                                      </div>
                                  </div>
                              </div>
@@ -77,7 +80,8 @@
                                  <i class="fas fa-comments bg-warning"></i>
 
                                  <div class="timeline-item">
-                                     <span class="time text-dark text-lg text-bold"> @php echo date('d-M-Y',strtotime($k->tgl_masuk)) @endphp  / {{ $a->nama_dokter }} /   {{ $k->nama_unit }}</span>
+                                     <span class="time text-dark text-lg text-bold"> @php echo date('d-M-Y',strtotime($k->tgl_masuk)) @endphp /
+                                         {{ $a->nama_dokter }} / {{ $k->nama_unit }}</span>
 
                                      <h3 class="timeline-header "><a href="#" class="text-dark">Assesment Medis
                                      </h3>
@@ -106,39 +110,39 @@
                                                  <td class="font-italic">: {{ $a->rencanakerja }}</td>
                                              </tr>
                                              <tr>
-                                                <td class="text-bold">Riwayat pemakaian obat</td>
-                                                <td class="font-italic">
-                                                    <table class="table table-sm table-bordered table-striped">
-                                                        <thead>
-                                                            <th>Nama Obat</th>
-                                                            <th>Jumlah</th>
-                                                            <th>Aturan pakai</th>
-                                                            <th>keterangan</th>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach ($data_h as $h )
-                                                                {{-- @if($h->kode_kunjungan == $a->kode_kunjungan) --}}
-                                                                    @foreach ($h as $d )
-                                                                        @if($d->kode_kunjungan == $a->kode_kunjungan)
-                                                                        <tr>
-                                                                            <td> {{ $d->nama_barang}}</td>
-                                                                            <td> {{ $d->jumlah_layanan}}</td>
-                                                                            <td> {{ $d->aturan_pakai}}</td>
-                                                                            <td> {{ $d->keterangan01}}</td>
-                                                                        </tr>
-                                                                        @endif
-                                                                    @endforeach
-                                                                {{-- @endif --}}
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                </td>
+                                                 <td class="text-bold">Riwayat pemakaian obat</td>
+                                                 <td class="font-italic">
+                                                     <table class="table table-sm table-bordered table-striped">
+                                                         <thead>
+                                                             <th>Nama Obat</th>
+                                                             <th>Jumlah</th>
+                                                             <th>Aturan pakai</th>
+                                                             <th>keterangan</th>
+                                                         </thead>
+                                                         <tbody>
+                                                             @foreach ($data_h as $h)
+                                                                 {{-- @if ($h->kode_kunjungan == $a->kode_kunjungan) --}}
+                                                                 @foreach ($h as $d)
+                                                                     @if ($d->kode_kunjungan == $a->kode_kunjungan)
+                                                                         <tr>
+                                                                             <td> {{ $d->nama_barang }}</td>
+                                                                             <td> {{ $d->jumlah_layanan }}</td>
+                                                                             <td> {{ $d->aturan_pakai }}</td>
+                                                                             <td> {{ $d->keterangan01 }}</td>
+                                                                         </tr>
+                                                                     @endif
+                                                                 @endforeach
+                                                                 {{-- @endif --}}
+                                                             @endforeach
+                                                         </tbody>
+                                                     </table>
+                                                 </td>
                                              </tr>
                                          </table>
                                      </div>
                                      <div class="timeline-footer">
-                                         <a href="#" class="btn btn-primary btn-flat btn-sm"><i
-                                                 class="bi bi-ticket-detailed mr-1"></i> Detail</a>
+                                        <a class="btn btn-primary btn-flat btn-sm btncetakassdok" kodekunjungan="{{ $k->kode_kunjungan }}" data-toggle="modal"
+                                            data-target="#modalcetakanassdok"><i class="bi bi-printer"></i> Cetak</a>
                                      </div>
                                  </div>
                              </div>
@@ -149,3 +153,85 @@
          </div>
      </div>
  </div>
+ <style>
+     .modal-xxl {
+         max-width: 80%;
+     }
+ </style>
+ <div class="modal fade" id="modalcetakanasskep" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal-dialog modal-xxl">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h5 class="modal-title" id="exampleModalLabel">Cetak Assesmen Keperawatan Rawat Jalan</h5>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                 </button>
+             </div>
+             <div class="modal-body">
+                 <div class="v_cetakan_asskep">
+
+                 </div>
+             </div>
+             <div class="modal-footer">
+                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                 <button type="button" class="btn btn-primary">Save changes</button>
+             </div>
+         </div>
+     </div>
+ </div>
+ <div class="modal fade" id="modalcetakanassdok" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xxl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cetak Assesmen Medis Rawat Jalan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_cetakan_assdok">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+ <script>
+     $(".btncetakasskep").on('click', function(event) {
+         kodekunjungan = $(this).attr('kodekunjungan')
+         spinner = $('#loader')
+         spinner.show();
+         $.ajax({
+             type: 'post',
+             data: {
+                 _token: "{{ csrf_token() }}",
+                 kodekunjungan
+             },
+             url: '<?= route('cetakanasskep') ?>',
+             success: function(response) {
+                 $('.v_cetakan_asskep').html(response);
+                 spinner.hide()
+             }
+         });
+     })
+     $(".btncetakassdok").on('click', function(event) {
+         kodekunjungan = $(this).attr('kodekunjungan')
+         spinner = $('#loader')
+         spinner.show();
+         $.ajax({
+             type: 'post',
+             data: {
+                 _token: "{{ csrf_token() }}",kodekunjungan
+             },
+             url: '<?= route('cetakanassdok') ?>',
+             success: function(response) {
+                 $('.v_cetakan_assdok').html(response);
+                 spinner.hide()
+             }
+         });
+     })
+ </script>
