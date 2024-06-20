@@ -15,6 +15,7 @@ use App\Http\Controllers\PenunjangController;
 use App\Http\Controllers\AntrianIgd;
 use App\Http\Controllers\ErmIgdController;
 use App\Http\Controllers\FarmasiController;
+use App\Http\Controllers\CetakanController;
 use App\Http\Controllers\FarmasiV2Controller;
 
 Route::get('/', [LoginController::class, 'index']);
@@ -27,6 +28,8 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('bedmonitoring', [BedmonitoringController::class, 'index'])->name('bedmonitoring');
 Route::post('/ambilcatatanmedis_pasien', [ErmController::class, 'ambilcatatanmedis_pasien'])
     ->name('ambilcatatanmedis_pasien'); //sidebar
+Route::post('/ambilcatatanmedis_pasien2', [ErmController_v2::class, 'ambilcatatanmedis_pasien2'])
+    ->name('ambilcatatanmedis_pasien2'); //sidebar
 Route::get('cetakresume/{kodekunjungan}', [ErmController::class, 'cetakresume']); //formpasien_bpjs
 Route::get('cetakresumeperawat/{rm}/{counter}', [ErmController::class, 'cetakresumeperawat']); //formpasien_bpjs
 Route::get('cetakresumedokter/{rm}/{counter}', [ErmController::class, 'cetakresumedokter']); //formpasien_bpjs
@@ -476,6 +479,13 @@ Route::group(['middleware' => ['auth', 'hak_akses1:9']], function () {
     ->name('v2_cari_riwayat_sep'); //sidebar
     Route::post('v2_cari_riwayat_surat_kontrol', [ErmController_v2::class, 'v2_cari_riwayat_surat_kontrol'])
     ->name('v2_cari_riwayat_surat_kontrol'); //sidebar
+    Route::post('v2_simpankonsul', [ErmController_v2::class, 'v2_simpankonsul'])
+    ->name('v2_simpankonsul'); //sidebar
+
+    Route::post('ambilriwayatkonsul', [ErmController_v2::class, 'ambilriwayatkonsul'])
+    ->name('ambilriwayatkonsul'); //sidebar
+    Route::post('batal_konsul', [ErmController_v2::class, 'batal_konsul'])
+    ->name('batal_konsul'); //sidebar
 
 
     Route::get('/indexperawat', [ErmController::class, 'indexPerawat'])
@@ -760,3 +770,9 @@ Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
 Route::get('get_riwayat_sep/{nomorkartu}/{tglawal}/{tglakhir}', [SimrsController::class, 'cari_riwayat_sep'])->name('cari_riwayat_sep'); //formpasien_bpjs
 Route::get('layananfarmasi', [FarmasiV2Controller::class, 'indexlayanan'])->name('layananfarmasi'); //formpasien_bpjs
 Route::post('ambilantrianreguler', [FarmasiV2Controller::class, 'ambilantrianreguler'])->name('ambilantrianreguler'); //formpasien_bpjs
+Route::get('cetakanerm', [CetakanController::class, 'cetakanerm'])->name('cetakanerm'); //formpasien_bpjs
+Route::post('cetakanasskep', [CetakanController::class, 'cetakanasskep'])->name('cetakanasskep'); //formpasien_bpjs
+Route::post('cetakanassdok', [CetakanController::class, 'cetakanassdok'])->name('cetakanassdok'); //formpasien_bpjs
+Route::get('pdfcetakanasskep/{kodekunjungan}', [CetakanController::class, 'pdfcetakanasskep'])->name('pdfcetakanasskep'); //formpasien_bpjs
+Route::get('pdfcetakanassdok/{kodekunjungan}', [CetakanController::class, 'pdfcetakanassdok'])->name('pdfcetakanasskep'); //formpasien_bpjs
+

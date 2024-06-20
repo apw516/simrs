@@ -36,35 +36,47 @@
                         <td class="text-bold">Tindak Lanjut</td>
                         <td>
                             <div class="form-check form-check-inline">
-                                <input @if($a->versi == 2 ) @if($tl[0] == 1) checked @endif @endif class="form-check-input"
-                                    type="checkbox" id="inlineCheckbox3" value="option3" onclick="return false">
+                                <input
+                                    @if ($a->versi == 2) @if ($tl[0] == 1) checked @endif
+                                    @endif class="form-check-input"
+                                type="checkbox" id="inlineCheckbox3" value="option3" onclick="return false">
                                 <label class="form-check-label" for="inlineCheckbox3">Pulang / sembuh</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input @if($a->versi == 2 ) @if ($tl[1] == 1) checked @endif  @endif class="form-check-input"
-                                    type="checkbox" id="inlineCheckbox3" value="option3" onclick="return false">
+                                <input
+                                    @if ($a->versi == 2) @if ($tl[1] == 1) checked @endif
+                                    @endif class="form-check-input"
+                                type="checkbox" id="inlineCheckbox3" value="option3" onclick="return false">
                                 <label class="form-check-label" for="inlineCheckbox3">Kontrol</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input @if($a->versi == 2 ) @if ($tl[2] == 1) checked @endif  @endif class="form-check-input"
-                                    type="checkbox" id="inlineCheckbox3" value="option3" onclick="return false">
+                                <input
+                                    @if ($a->versi == 2) @if ($tl[2] == 1) checked @endif
+                                    @endif class="form-check-input"
+                                type="checkbox" id="inlineCheckbox3" value="option3" onclick="return false">
                                 <label class="form-check-label" for="inlineCheckbox3">Konsul</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input @if($a->versi == 2 ) @if ($tl[3] == 1) checked @endif  @endif class="form-check-input"
-                                    type="checkbox" id="inlineCheckbox3" value="option3" onclick="return false">
+                                <input
+                                    @if ($a->versi == 2) @if ($tl[3] == 1) checked @endif
+                                    @endif class="form-check-input"
+                                type="checkbox" id="inlineCheckbox3" value="option3" onclick="return false">
                                 <label class="form-check-label" for="inlineCheckbox3">Rawat Inap</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input @if($a->versi == 2 ) @if ($tl[4] == 1) checked @endif  @endif class="form-check-input"
-                                    type="checkbox" id="inlineCheckbox3" value="option3" onclick="return false">
+                                <input
+                                    @if ($a->versi == 2) @if ($tl[4] == 1) checked @endif
+                                    @endif class="form-check-input"
+                                type="checkbox" id="inlineCheckbox3" value="option3" onclick="return false">
                                 <label class="form-check-label" for="inlineCheckbox3">Rujuk Keluar</label>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td class="text-bold">Keterangan Tindak Lanjut</td>
-                        <td>:@if($a->versi == 2 ){{ $tl[5] }}  @endif</td>
+                        <td>:@if ($a->versi == 2){{ $tl[5] }}
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
             </table>
@@ -78,15 +90,17 @@
                                     <button class="btn text-dark font-italic text-bold btn-block text-left"
                                         type="button" data-toggle="collapse" data-target="#collapseOne"
                                         aria-expanded="true" aria-controls="collapseOne">
-                                        Surat Kontrol
+                                        Surat Kontrol <a onclick="goto_suratkontrol()" class="float-right">Buat surat
+                                            kontrol</a>
                                     </button>
                                 </h2>
                             </div>
                             <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
                                 data-parent="#accordionExample">
                                 <div class="card-body">
-                                    <p class="text-bold text-lg">NO SEP : {{ $data_kunjungan[0]->no_sep }} <button
-                                            class="ml-3 badge btn-sm btn-success carisep" onclick="carisep()">Pilih</button>
+                                    <p class="text-bold text-lg">NO SEP : {{ $data_kunjungan[0]->no_sep }}
+                                        {{-- <button
+                                            class="ml-3 badge btn-sm btn-success carisep" onclick="carisep()">Pilih</button> --}}
 
                                     <div class="v_hasil_sep">
 
@@ -109,32 +123,55 @@
                                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
                                     data-parent="#accordionExample">
                                     <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <table id="tabelunitkonsul" class="table table-sm">
-                                                    <thead>
-                                                        <th>Unit</th>
-                                                        <th class="text-center">Action</th>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($unit as $u)
-                                                            <tr>
-                                                                <td>{{ $u->nama_unit }}</td>
-                                                                <td class="text-center"><button
-                                                                        class="btn btn-success pilihpoli"
-                                                                        kodeunit="{{ $u->kode_unit }}"
-                                                                        namaunit={{ $u->nama_unit }}>Pilih</button>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="card">
-                                                    <div class="card-header">List poli yang dipilih</div>
-                                                    <div class="card-body">
+                                        <div class="card">
+                                            <div class="card">
+                                                <div class="card-header">Riwayat konsul hari ini</div>
+                                                <div class="card-body">
+                                                    <div class="v_tabel_riwayat_konsul">
 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-header">Form konsul</div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <table id="tabelunitkonsul" class="table table-sm">
+                                                            <thead>
+                                                                <th>Unit</th>
+                                                                <th class="text-center">Action</th>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach ($unit as $u)
+                                                                    <tr>
+                                                                        <td>{{ $u->nama_unit }}</td>
+                                                                        <td class="text-center"><button
+                                                                                class="btn btn-success pilihpoli"
+                                                                                kodeunit="{{ $u->kode_unit }}"
+                                                                                namaunit={{ $u->nama_unit }}>Pilih</button>
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="card">
+                                                            <div class="card-header">List poli yang dipilih</div>
+                                                            <div class="card-body">
+                                                                <form action="" method="post"
+                                                                    class="formkonsul">
+                                                                    <div class="field_konsul" id="field_konsul_1">
+                                                                        <div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                                <textarea class="form-control" name="keterangankonsul" id="keterangankonsul" cols="30" rows="3" placeholder="ketik keterangan konsul ...">@if($a->versi == 2){{ $tl[5] }}@endif</textarea>
+                                                            </div>
+                                                            <div class="card-footer">
+                                                                <button class="btn btn-success" onclick="simpankonsul()">Simpan</button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -155,9 +192,7 @@
                                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
                                     data-parent="#accordionExample">
                                     <div class="card-body">
-                                        And lastly, the placeholder content for the third and final accordion panel.
-                                        This
-                                        panel is hidden by default.
+                                        <h5 class="text-danger">Dalam pengembangan...</h5>
                                     </div>
                                 </div>
                             </div>
@@ -174,9 +209,7 @@
                                 <div id="collapseFour" class="collapse" aria-labelledby="headingFour"
                                     data-parent="#accordionExample">
                                     <div class="card-body">
-                                        And lastly, the placeholder content for the third and final accordion panel.
-                                        This
-                                        panel is hidden by default.
+                                        <h5 class="text-danger">Dalam pengembangan...</h5>
                                     </div>
                                 </div>
                             </div>
@@ -318,6 +351,7 @@
 <script>
     $(document).ready(function() {
         carisep()
+        ambilriwayatkonsul()
     })
     $(".kirimfarmasi").on('click', function(event) {
         Swal.fire({
@@ -563,4 +597,100 @@
         kodekunjungan = $('#kodekunjunganhariini').val()
 
     })
+
+    function goto_suratkontrol() {
+        window.open("http://192.168.2.30/siramah/kunjunganPoliklinik");
+    }
+    $(".pilihpoli").on('click', function(event) {
+        var max_fields = 10; //maximum input boxes allowed
+        var wrapper = $(".field_konsul"); //Fields wrapper
+        var x = 1; //initlal text box count
+        // e.preventDefault();
+        kodeunit = $(this).attr('kodeunit')
+        namaunit = $(this).attr('namaunit')
+        if (x < max_fields) { //max input box allowed
+            x++; //text box increment
+            $(wrapper).append(
+                '<div class="form-row text-xs"><div class="form-group col-md-5"><label for="">Nama Poli</label><input readonly type="" class="form-control form-control-sm" id="" name="namapolikonsul" value="' +
+                namaunit +
+                '"><input hidden readonly type="" class="form-control form-control-sm" id="" name="kodeunitkonsul" value="' +
+                kodeunit +
+                '"></div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger" kode2=""></i></div>'
+            );
+            $(wrapper).on("click", ".remove_field", function(e) { //user click on remove
+                e.preventDefault();
+                $(this).parent('div').remove();
+                x--;
+            })
+        }
+    });
+    function simpankonsul()
+    {
+        var data = $('.formkonsul').serializeArray();
+        kodekunjungan = $('#kodekunjunganhariini').val()
+        keterangankonsul = $('#keterangankonsul').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            async: true,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                _token: "{{ csrf_token() }}",
+                data: JSON.stringify(data),kodekunjungan,keterangankonsul
+            },
+            url: '<?= route('v2_simpankonsul') ?>',
+            error: function(data) {
+                spinner.hide()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ooops....',
+                    text: 'Sepertinya ada masalah......',
+                    footer: ''
+                })
+            },
+            success: function(data) {
+                spinner.hide()
+                if (data.kode == 500) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oopss...',
+                        text: data.message,
+                        footer: ''
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'OK',
+                        text: data.message,
+                        footer: ''
+                    })
+                    document.getElementById('field_konsul_1').innerHTML = "";
+                    ambilriwayatkonsul()
+                }
+            }
+        });
+    }
+    function ambilriwayatkonsul()
+    {
+        kodekunjungan = $('#kodekunjunganhariini').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('ambilriwayatkonsul') ?>',
+            error : function(data){
+                spinner.hide()
+                alert('error')
+            },
+            success: function(response) {
+                $('.v_tabel_riwayat_konsul').html(response);
+                spinner.hide()
+            }
+        })
+    }
 </script>

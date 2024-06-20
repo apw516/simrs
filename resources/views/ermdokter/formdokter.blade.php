@@ -31,8 +31,8 @@
                     @else
                     <br>{{ $kunjungan[0]->diagx }}</p>
                     @endif
-                <a href="#" onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})" class="btn btn-primary btn-block"><b>Catatan
-                        Medis</b></a>
+                {{-- <a href="#" onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})" class="btn btn-primary btn-block"><b>Catatan
+                        Medis</b></a> --}}
                 <input hidden type="text" id="kodekunjungan" value="{{ $kunjungan[0]->kode_kunjungan }}">
                 <input hidden type="text" id="nomorrm" value="{{ $kunjungan[0]->no_rm }}">
             </div>
@@ -109,7 +109,7 @@
 <script>
     $(document).ready(function() {
         rm = $('#nomorrm').val()
-        formcatatanmedis(rm)
+        formpemeriksaandokter2()
     })
     function formcatatanmedis(rm) {
         spinner = $('#loader')

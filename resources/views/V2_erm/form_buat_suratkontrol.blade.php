@@ -53,18 +53,18 @@
                         <div class="form-group">
                             <label for="exampleFormControlSelect1">Bulan</label>
                             <select class="form-control" id="bulan">
-                              <option value="01">Januari</option>
-                              <option value="02">Februari</option>
-                              <option value="03">Maret</option>
-                              <option value="04">April</option>
-                              <option value="05">Mei</option>
-                              <option value="06">Juni</option>
-                              <option value="07">Januari</option>
-                              <option value="08">Januari</option>
-                              <option value="09">Januari</option>
-                              <option value="10">Januari</option>
-                              <option value="11">Januari</option>
-                              <option value="12">Januari</option>
+                              <option value="01" @if($bulan == '01') selected @endif>Januari</option>
+                              <option value="02" @if($bulan == '02') selected @endif>Februari</option>
+                              <option value="03" @if($bulan == '03') selected @endif>Maret</option>
+                              <option value="04" @if($bulan == '04') selected @endif>April</option>
+                              <option value="05" @if($bulan == '05') selected @endif>Mei</option>
+                              <option value="06" @if($bulan == '06') selected @endif>Juni</option>
+                              <option value="07" @if($bulan == '07') selected @endif>Juli</option>
+                              <option value="08" @if($bulan == '08') selected @endif>Agustus</option>
+                              <option value="09" @if($bulan == '09') selected @endif>September</option>
+                              <option value="10" @if($bulan == '10') selected @endif>Oktober</option>
+                              <option value="11" @if($bulan == '11') selected @endif>November</option>
+                              <option value="12" @if($bulan == '12') selected @endif>Desember</option>
                             </select>
                           </div>
                     </div>
@@ -72,7 +72,10 @@
                         <div class="form-group">
                             <label for="exampleFormControlSelect1">Tahun</label>
                             <select class="form-control" id="tahun">
-                              <option value="2024">2024</option>
+                              <option value="2023" @if($tahun == '2023') selected @endif>2023</option>
+                              <option value="2024" @if($tahun == '2024') selected @endif>2024</option>
+                              <option value="2025" @if($tahun == '2025') selected @endif>2025</option>
+                              <option value="2026" @if($tahun == '2026') selected @endif>2026</option>
                             </select>
                           </div>
                     </div>
