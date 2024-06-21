@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Carbon\Carbon;
 
 class CetakanController extends Controller
 {
@@ -34,10 +35,22 @@ class CetakanController extends Controller
     }
     public function pdfcetakanasskep($kodekunjungan)
     {
+
         $kunjungan = DB::select('select *,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?',[$kodekunjungan]);
         $mt_pasien = DB::select('select *,date(tgl_lahir) as tanggal_lahir from mt_pasien where no_rm = ?',[$kunjungan[0]->no_rm]);
         $asskep = DB::select('select * from erm_hasil_assesmen_keperawatan_rajal where kode_kunjungan = ?',[$kodekunjungan]);
-        $pdf = PDF::loadview('cetakanerm.previewasskep',compact(['asskep','kunjungan','mt_pasien']));
+        if($kunjungan[0]->kode_unit == '1028'){
+            $tindkan = db::select("SELECT fc_nama_unit1(a.`kode_unit`) AS nama_unit,a.`kode_kunjungan`,b.`jumlah_layanan`,a.kode_unit,b.`kode_tarif_detail`,d.`NAMA_TARIF` FROM ts_layanan_header a
+            INNER JOIN ts_layanan_detail b ON a.id = b.`row_id_header`
+            INNER JOIN mt_tarif_detail c ON b.`kode_tarif_detail` = c.`KODE_TARIF_DETAIL`
+            INNER JOIN mt_tarif_header d ON c.`KODE_TARIF_HEADER` = d.`KODE_TARIF_HEADER`
+            WHERE a.kode_kunjungan = '$kodekunjungan'
+            AND a.kode_unit IN ('3010','3009')
+            AND a.status_layanan != 3");
+        }else{
+            $tindkan = [];
+        }
+        $pdf = PDF::loadview('cetakanerm.previewasskep',compact(['asskep','kunjungan','mt_pasien','tindkan']));
         // $pdf->setPaper('A4', 'portrait');
         return $pdf->stream('assesmen_keperawatan_rawat_jalan-pdf');
     }
