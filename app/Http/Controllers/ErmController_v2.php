@@ -60,7 +60,12 @@ class ErmController_v2 extends Controller
             return view('V2_erm.form_pemeriksaan_dokter_rehabilitasi_medis', compact([
                 'kodekunjungan', 'resume_perawat', 'last_assdok', 'assdok_now', 'mt_pasien', 'nomorrm', 'layanan', 'layanan_lab', 'layanan_rad'
             ]));
-        } else {
+        }elseif($unit == '1026'){
+            return view('V2_erm.form_pemeriksaan_dokter_anestesi', compact([
+                'kodekunjungan', 'resume_perawat', 'last_assdok', 'assdok_now', 'mt_pasien', 'nomorrm', 'layanan', 'layanan_lab', 'layanan_rad'
+            ]));
+        }
+        else {
             return view('V2_erm.form_pemeriksaan_dokter_poli', compact([
                 'kodekunjungan', 'resume_perawat', 'last_assdok', 'assdok_now', 'mt_pasien', 'nomorrm', 'layanan', 'layanan_lab', 'layanan_rad'
             ]));
@@ -460,6 +465,7 @@ class ErmController_v2 extends Controller
         if (auth()->user()->unit == '1028') {
             //fisioterapi
             $data = [
+                'counter' => $ts_kunjungan[0]->counter,
                 'id_kunjungan' => $dataSet['kodekunjungan'],
                 'id_pasien' => $ts_kunjungan[0]->no_rm,
                 'id_asskep' => $id_asskep,
@@ -480,18 +486,74 @@ class ErmController_v2 extends Controller
                 'diagnosakerja' => $dataSet['diagnosaprimer'],
                 'diagnosabanding' => $dataSet['diagnosabanding'],
                 'rencanakerja' => $dataSet['pemeriksaanpenunjang'],
-                // 'tatalaksana_kfr' => $dataSet['tatalaksankfr'],
                 'anjuran' => $dataSet['anjuran'],
                 'evaluasi' => $dataSet['evaluasi'],
                 'riwayatlain' => $dataSet['suspekpenyakit'],
                 'ket_riwayatlain' => $dataSet['keterangansuspek'],
-                // 'keluhan_pasien' => $dataSet['keluhanutama'],
                 'tindak_lanjut' => $pulang . '|' . $kontrol . '|' . $konsul . '|' . $rawatinap . '|' . $rujukkeluar . '|' . trim($dataSet['keterangantindaklanjut']),
                 'versi' => '2',
                 'status' => '1',
                 'signature' => 'SUDAH VALIDASI'
             ];
-        } else {
+        } elseif(auth()->user()->unit == '1026'){
+            if (empty($dataSet['sumberdata'])) {
+                $data = [
+                    'kode' => 500,
+                    'message' => 'Sumber data pemeriksaan belum dipilih !'
+                ];
+                echo json_encode($data);
+                die;
+            }
+            if (empty($dataSet['assesmen'])) {
+                $data = [
+                    'kode' => 500,
+                    'message' => 'assesmen pemeriksaan belum dipilih !'
+                ];
+                echo json_encode($data);
+                die;
+            }
+            $data = [
+                'counter' => $ts_kunjungan[0]->counter,
+                'id_kunjungan' => $dataSet['kodekunjungan'],
+                'id_pasien' => $ts_kunjungan[0]->no_rm,
+                'id_asskep' => $resume_perawat[0]->id,
+                'pic' => auth()->user()->id,
+                'nama_dokter' => auth()->user()->nama,
+                'tgl_entry' => $this->get_now(),
+                'tgl_kunjungan' => $ts_kunjungan[0]->tgl_masuk,
+                'tgl_pemeriksaan' => $this->get_now(),
+                'sumber_data' => trim($dataSet['sumberdata']),
+                'tekanan_darah' => trim($dataSet['tekanandarah']),
+                'frekuensi_nadi' => trim($dataSet['frekuensinadi']),
+                'frekuensi_nafas' => trim($dataSet['frekuensinafas']),
+                'suhu_tubuh' => trim($dataSet['suhu']),
+                'beratbadan' => trim($dataSet['bb']),
+                'umur' => trim($dataSet['usia1']),
+                'kode_unit' => auth()->user()->unit,
+                'keluhan_pasien' => trim($dataSet['keluhanutama']),
+                'ket_riwayatlain' => trim($dataSet['riwayatpenyakitdahulu']),
+                'diagnosakerja' => trim($dataSet['diagnosakerja']),
+                'diagnosabanding' => trim($dataSet['diagnosabanding']),
+                'alergi' => trim($dataSet['alergi']),
+                'medikasi' => trim($dataSet['medikasi']),
+                'postillnes' => trim($dataSet['post']),
+                'lastmeal' => trim($dataSet['lastmeal']),
+                'event' => trim($dataSet['event']),
+                'cor' => trim($dataSet['cor']),
+                'pulmo' => trim($dataSet['pulmo']),
+                'gigi' => trim($dataSet['gigi']),
+                'ekstremitas' => trim($dataSet['ekstremitas']),
+                'LEMON' => trim($dataSet['L']) . ' | ' . trim($dataSet['E']) . ' | ' . trim($dataSet['M']) . ' | ' . trim($dataSet['O']) . ' | ' . trim($dataSet['N']),
+                // 'rencanakerja' => trim($dataSet['rencanaterapi']),
+                'tindak_lanjut' => $dataSet['assesmen'],
+                // 'tindak_lanjut' => $pulang . '|' . $kontrol . '|' . $konsul . '|' . $rawatinap . '|' . $rujukkeluar . '|' . trim(trim($dataSet['keterangantindaklanjut'])),
+                'keterangan_tindak_lanjut' => trim($dataSet['saran']),
+                'keterangan_tindak_lanjut_2' => trim($dataSet['jawabankonsul']),
+                'versi' => 2,
+                'status' => '1',
+                'signature' => 'SUDAH VALIDASI'
+            ];
+        }else {
             if (empty($dataSet['sumberdata'])) {
                 $data = [
                     'kode' => 500,
@@ -516,6 +578,7 @@ class ErmController_v2 extends Controller
             // rujukekluar
             // keterangantindaklanjut
             $data = [
+                'counter' => $ts_kunjungan[0]->counter,
                 'id_kunjungan' => $dataSet['kodekunjungan'],
                 'id_pasien' => $ts_kunjungan[0]->no_rm,
                 'id_asskep' => $resume_perawat[0]->id,

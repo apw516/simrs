@@ -69,13 +69,17 @@
                      <!-- timeline item -->
                      <div>
                          <i class="fas fa-comments bg-warning"></i>
-
                          <div class="timeline-item">
                              <span class="time text-dark text-lg text-bold"> @php echo date('d-M-Y',strtotime($k->tgl_masuk)) @endphp / {{ $a->nama_dokter }}
                                  / {{ $k->nama_unit }}</span>
 
                              <h3 class="timeline-header "><a href="#" class="text-dark">Assesment Medis</h3>
                              <div class="timeline-body">
+                                @if($k->kode_unit == '1028')
+
+                                @elseif($k->kode_unit == '1026')
+
+                                @else
                                  <table class="table">
                                      <tr>
                                          <td width="15%" class="text-bold">Sumber Data</td>
@@ -150,6 +154,7 @@
                                          </td>
                                      </tr>
                                  </table>
+                                 @endif
                              </div>
                              <div class="timeline-footer">
                                  <a class="btn btn-primary btn-flat btn-sm btncetakassdok" kodekunjungan="{{ $k->kode_kunjungan }}" data-toggle="modal"
