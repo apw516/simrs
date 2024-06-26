@@ -1735,12 +1735,14 @@ class ErmController_v2 extends Controller
             $dataSet[$index] = $value;
         }
         $kodekunjungan = $dataSet['kodekunjungan'];
-        // $id = $dataSet['idassesmen'];
+        $asskep = DB::select('select * from erm_hasil_assesmen_keperawatan_rajal where kode_kunjungan = ?',[$kodekunjungan]);
+
+        $id = $asskep[0]->id;
         $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$kodekunjungan]);
         $datamata = [
             'no_rm' => $kunjungan[0]->no_rm,
             'kode_kunjungan' => $kodekunjungan,
-            // 'id_asskep' => $id,
+            'id_asskep' => $id,
             'tgl_entry' => $this->get_now(),
             'status' => '0',
             'tajampenglihatandekat' => $dataSet['hasilpemeriksaan'],
