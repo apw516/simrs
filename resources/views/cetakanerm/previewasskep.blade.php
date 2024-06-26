@@ -476,6 +476,10 @@
                     <td class="font-italic">Nama Perawat</td>
                     <td class="text-bold font-italic">{{ $asskep[0]->namapemeriksa }}</td>
                 </tr>
+                <tr>
+                    <td class="font-italic">Tanggal pemeriksaan</td>
+                    <td class="text-bold font-italic">{{ $asskep[0]->tanggalperiksa }}</td>
+                </tr>
             </tbody>
         </table>
     </main>
@@ -644,6 +648,10 @@
                 <tr>
                     <td class="font-italic">Nama Perawat</td>
                     <td class="text-bold font-italic">{{ $asskep[0]->namapemeriksa }}</td>
+                </tr>
+                <tr>
+                    <td class="font-italic">Tanggal pemeriksaan</td>
+                    <td class="text-bold font-italic">{{ $asskep[0]->tanggalperiksa }}</td>
                 </tr>
             </tbody>
         </table>

@@ -125,6 +125,13 @@ Route::post('/gambarcatatan', [ErmController::class, 'gambarcatatan'])
 Route::get('/kontakkami', [SimrsController::class, 'kontakkami'])
     ->name('kontakkami'); //sidebar
 
+Route::get('/index_data_pemakaian_obat', [FarmasiV2Controller::class, 'index_data_pemakaian'])
+    ->name('index_data_pemakaian_obat'); //sidebar
+Route::post('ambil_data_pemakaian', [FarmasiV2Controller::class, 'ambil_data_pemakaian'])->name('ambil_data_pemakaian');
+Route::get('pdflaporanpemakaian/{tglawal}/{tglakhir}/{unit}', [FarmasiV2Controller::class, 'Cetak_Data_pemakaian'])->name('Cetak_Data_pemakaian');
+
+// Route::get('index_data_pemakaian_obat',[FarmasiV2Controller::class'index_data_pemakaian'])->name('index_data_pemakaian_obat');
+
 
 //reloadorder
 Route::post('/reloadorder', [PenunjangController::class, 'reloadorder'])
@@ -457,8 +464,6 @@ Route::group(['middleware' => ['auth', 'hak_akses1:9']], function () {
         ->name('simpanajuan'); //sidebar
 });
 //erm
-
-
     Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
     //v2
     Route::post('hasilassesmentmedis', [ErmController_v2::class, 'hasilassesmentmedis'])
@@ -584,8 +589,16 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('indexdokter_igd'); //sidebar
     Route::get('/indexdokter_ro', [ErmController::class, 'indexdokter_ro'])
         ->name('indexdokter_ro'); //sidebar
+
     Route::post('/form_pemeriksaan_ro', [ErmController::class, 'form_pemeriksaan_ro'])
         ->name('form_pemeriksaan_ro'); //sidebar
+
+    Route::post('/form_pemeriksaan_ro2', [ErmController_v2::class, 'form_pemeriksaan_ro2'])
+        ->name('form_pemeriksaan_ro2'); //sidebar
+    Route::post('/v2_simpanpemeriksaan_ro_2', [ErmController_v2::class, 'simpanpemeriksaan_ro'])
+        ->name('v2_simpanpemeriksaan_ro_2'); //sidebar
+
+
     Route::post('/simpanpemeriksaan_ro', [ErmController::class, 'simpanpemeriksaan_ro'])
         ->name('simpanpemeriksaan_ro'); //sidebar
     Route::post('/simpanpemeriksaan_ro_2', [ErmController::class, 'simpanpemeriksaan_ro_2'])

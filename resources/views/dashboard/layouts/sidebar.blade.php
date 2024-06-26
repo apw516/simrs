@@ -554,40 +554,14 @@
                           </a>
                       </li>
                   @endif
-                  @if (auth()->user()->hak_akses == 6)
+                  @if (auth()->user()->hak_akses == 101)
                       <li class="nav-header">FARMASI</li>
                       <li class="nav-item">
-                          <a href="{{ route('index_layanan_resep') }}"
-                              class="nav-link @if ($sidebar == 'farmasi_1') active @endif">
+                          <a href="{{ route('index_data_pemakaian_obat') }}"
+                              class="nav-link @if ($sidebar == 'datapemakaianobat') active @endif">
                               <i class="nav-icon fas fa-th"></i>
                               <p>
-                                  Layanan Resep
-                              </p>
-                          </a>
-                      </li>
-                      {{-- <li class="nav-item">
-                          <a href="" class="nav-link @if ($sidebar == '2') active @endif">
-                              <i class="nav-icon fas fa-th"></i>
-                              <p>
-                                  Retur Resep
-                              </p>
-                          </a>
-                      </li> --}}
-                      <li class="nav-item">
-                          <a href="{{ route('cari_resep') }}"
-                              class="nav-link @if ($sidebar == 'farmasi_3') active @endif">
-                              <i class="nav-icon fas fa-th"></i>
-                              <p>
-                                  Cari Resep
-                              </p>
-                          </a>
-                      </li>
-                      <li class="nav-item">
-                          <a href="{{ route('kartu_stok') }}"
-                              class="nav-link @if ($sidebar == 'farmasi_4') active @endif">
-                              <i class="nav-icon fas fa-th"></i>
-                              <p>
-                                  Kartu Stok
+                                  Data Pemakaian Obat
                               </p>
                           </a>
                       </li>

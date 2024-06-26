@@ -190,6 +190,23 @@
                     </div>
                 </div>
             </div>
+            @if ($unit == '1014')
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Pemeriksaan RO MATA</label>
+                            <textarea rows="20" type="text" class="form-control" id="ro_mata" name="ro_mata" rows="4"
+                                aria-describedby="emailHelp">
+@foreach ($RO_MATA as $r)
+{{ $r->tajampenglihatandekat }}
+@endforeach
+</textarea>
+                            <input hidden type="text" id="id_ro" name="id_ro"
+                                value="@foreach ($RO_MATA as $rm) {{ $r->id }} @endforeach">
+                        </div>
+                    </div>
+                </div>
+            @endif
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -268,7 +285,9 @@
                                 <div class="form-group container-fluid">
                                     <label for="exampleFormControlTextarea1">Keterangan Tindak Lanjut</label>
                                     <textarea class="form-control" id="keterangantindaklanjut" name="keterangantindaklanjut" rows="3"
-                                        placeholder="Ketik keterangan tindak lanjut ...">@if (count($last_assdok) > 0) @if ($last_assdok[0]->versi == 2) {{ $tl[5] }} @endif @endif</textarea>
+                                        placeholder="Ketik keterangan tindak lanjut ...">
+@if (count($last_assdok) > 0) @if ($last_assdok[0]->versi == 2) {{ $tl[5] }} @endif @endif
+</textarea>
                                 </div>
                             </div>
                         </div>

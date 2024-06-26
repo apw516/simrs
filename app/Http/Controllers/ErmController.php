@@ -822,6 +822,7 @@ class ErmController extends Controller
                 'kode_unit' => $dataSet['unit'],
                 'kode_kunjungan' => $dataSet['kodekunjungan'],
                 'tanggalkunjungan' => $dataSet['tanggalkunjungan'],
+                'tanggalperiksa' => $this->get_now(),
                 'sumberdataperiksa' => $dataSet['sumberdata'],
                 'keluhanutama' => trim($dataSet['keluhanutama']),
                 'tekanandarah' => $dataSet['tekanandarah'],

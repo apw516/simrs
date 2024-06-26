@@ -192,6 +192,10 @@
                 <td class="text-bold">Nama Dokter Pemeriksa</td>
                 <td colspan="3">{{ $assdok[0]->nama_dokter }}</td>
             </tr>
+            <tr>
+                <td class="text-bold">Tgl Pemeriksaan</td>
+                <td colspan="3">{{ $assdok[0]->tgl_pemeriksaan }}</td>
+            </tr>
         </table>
         @elseif($kunjungan[0]->kode_unit == '1026')
         <table class="table table-sm text-xs">
@@ -319,6 +323,10 @@
                     <td class="text-bold">Nama Dokter Pemeriksa</td>
                     <td colspan="3">{{ $assdok[0]->nama_dokter }}</td>
                 </tr>
+                <tr>
+                    <td class="text-bold">Tgl Pemeriksaan</td>
+                    <td colspan="3">{{ $assdok[0]->tgl_pemeriksaan }}</td>
+                </tr>
             </tbody>
         @else
         <table class="table table-sm text-xs">
@@ -402,6 +410,10 @@
                 <tr>
                     <td class="text-bold">Nama Dokter Pemeriksa</td>
                     <td>{{ $assdok[0]->nama_dokter }}</td>
+                </tr>
+                <tr>
+                    <td class="text-bold">Tgl Pemeriksaan</td>
+                    <td>{{ $assdok[0]->tgl_pemeriksaan }}</td>
                 </tr>
             </tbody>
         </table>
