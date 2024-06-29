@@ -190,6 +190,32 @@
                     </div>
                 </div>
             </div>
+            <div hidden class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header bg-light">Pemeriksaan Khusus</div>
+                        <div class="card-body">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="pk"
+                                    id="pk" value="0" checked onclick="cekpk()">
+                                <label class="form-check-label" for="inlineRadio1">Tidak Ada</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="pk"
+                                    id="pk" value="1" onclick="cekpk()">
+                                <label class="form-check-label" for="inlineRadio2">Ada</label>
+                            </div>
+                            <div class="row mt-4 form_pemeriksaan_khusus">
+                                <div class="col-md-12">
+                                    <div class="v_form_pk">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             @if ($unit == '1014')
                 <div class="row">
                     <div class="col-md-12">
@@ -295,3 +321,48 @@
                 </div>
             </div>
 </form>
+<script>
+    $(document).ready(function() {
+        cekpk()
+    })
+    function cekpk()
+    {
+        val = $('#pk:checked').val()
+        if(val == 0){
+            $('.form_pemeriksaan_khusus').removeAttr('hidden',true)
+            ambilform_gambar_kosong()
+        }else{
+            $('.form_pemeriksaan_khusus').removeAttr('hidden',true)
+            ambilform_gambar_poli()
+        }
+    }
+    function ambilform_gambar_kosong(){
+        kodekunjungan = $('#kodekunjungan').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('ambilgambar_kosong') ?>',
+            success: function(response) {
+                $('.v_form_pk').html(response);
+            }
+        });
+    }
+    function ambilform_gambar_poli()
+    {
+        kodekunjungan = $('#kodekunjungan').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('ambilgambar_poli') ?>',
+            success: function(response) {
+                $('.v_form_pk').html(response);
+            }
+        });
+    }
+</script>

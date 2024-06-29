@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -16,7 +15,6 @@ use App\Models\ts_layanan_header_order;
 use App\Models\VclaimModel;
 use App\Models\ts_kunjungan;
 use App\Models\erm_mata_kanan_kiri;
-
 class ErmController_v2 extends Controller
 {
     public function formpemeriksaan_dokter(Request $request)
@@ -453,7 +451,7 @@ class ErmController_v2 extends Controller
             }
         }
         $ts_kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$dataSet['kodekunjungan']]);
-        $resume_perawat = DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE kode_kunjungan = ?', [$dataSet['kodekunjungan']]);
+        $resume_perawat = DB::connection('mysql')->select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE kode_kunjungan = ?', [$dataSet['kodekunjungan']]);
         if (count($resume_perawat) > 0) {
             $id_asskep = $resume_perawat[0]->id;
         } else {
@@ -1735,8 +1733,7 @@ class ErmController_v2 extends Controller
             $dataSet[$index] = $value;
         }
         $kodekunjungan = $dataSet['kodekunjungan'];
-        $asskep = DB::select('select * from erm_hasil_assesmen_keperawatan_rajal where kode_kunjungan = ?',[$kodekunjungan]);
-
+        $asskep = DB::connection('mysql4')->select('select * from erm_hasil_assesmen_keperawatan_rajal where kode_kunjungan = ?',[$kodekunjungan]);
         $id = $asskep[0]->id;
         $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$kodekunjungan]);
         $datamata = [
@@ -1773,4 +1770,20 @@ class ErmController_v2 extends Controller
         echo json_encode($data);
         die;
     }
+    function ambilgambar_kosong(Request $request)
+    {
+        echo '<h4 class="text-danger">Tidak ada pemeriksaan khusus ...</h4>';
+    }
+    function ambilgambar_poli(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        $unit = auth()->user()->unit;
+        if($unit == '1014'){
+            //poli mata
+        return view('form_khusus.poli_mata');
+        }
+        // echo '<h4 class="text-danger">ada pemeriksaan khusus ...</h4>';
+    }
+//     ambilgambar_kosong
+// ambilgambar_poli
 }

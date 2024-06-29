@@ -755,6 +755,10 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('v2_add_riwayat_pemakaian_obat'); //sidebar
     Route::post('v2_add_riwayat_racik', [ErmController_v2::class, 'v2_add_riwayat_racik'])
         ->name('v2_add_riwayat_racik'); //sidebar
+    Route::post('ambilgambar_kosong', [ErmController_v2::class, 'ambilgambar_kosong'])
+        ->name('ambilgambar_kosong'); //sidebar
+    Route::post('ambilgambar_poli', [ErmController_v2::class, 'ambilgambar_poli'])
+        ->name('ambilgambar_poli'); //sidebar
 });
 
 
