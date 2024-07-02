@@ -114,7 +114,7 @@
                 kodekunjungan,
                 rm
             },
-            url: '<?= route('form_pemeriksaan_ro2') ?>',
+            url: '<?= route('form_pemeriksaan_ro') ?>',
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()

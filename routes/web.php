@@ -759,6 +759,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('ambilgambar_kosong'); //sidebar
     Route::post('ambilgambar_poli', [ErmController_v2::class, 'ambilgambar_poli'])
         ->name('ambilgambar_poli'); //sidebar
+    Route::post('ambil_form_pemeriksaan_khusus', [ErmController_v2::class, 'ambil_form_pemeriksaan_khusus'])
+        ->name('ambil_form_pemeriksaan_khusus'); //sidebar
 });
 
 

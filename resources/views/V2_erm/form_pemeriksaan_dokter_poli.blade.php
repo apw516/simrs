@@ -190,19 +190,19 @@
                     </div>
                 </div>
             </div>
-            <div hidden class="row">
+            {{-- <div hidden class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header bg-light">Pemeriksaan Khusus</div>
+                        <div class="card-header bg-light">Penandaan Gambar</div>
                         <div class="card-body">
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="pk"
-                                    id="pk" value="0" checked onclick="cekpk()">
+                                <input class="form-check-input" type="radio" name="pk" id="pk"
+                                    value="0" checked onclick="cekpk()">
                                 <label class="form-check-label" for="inlineRadio1">Tidak Ada</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="pk"
-                                    id="pk" value="1" onclick="cekpk()">
+                                <input class="form-check-input" type="radio" name="pk" id="pk"
+                                    value="1" onclick="cekpk()">
                                 <label class="form-check-label" for="inlineRadio2">Ada</label>
                             </div>
                             <div class="row mt-4 form_pemeriksaan_khusus">
@@ -215,24 +215,10 @@
                         </div>
                     </div>
                 </div>
+            </div> --}}
+            <div class="v_form_khusus">
+
             </div>
-            @if ($unit == '1014')
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Pemeriksaan RO MATA</label>
-                            <textarea rows="20" type="text" class="form-control" id="ro_mata" name="ro_mata" rows="4"
-                                aria-describedby="emailHelp">
-@foreach ($RO_MATA as $r)
-{{ $r->tajampenglihatandekat }}
-@endforeach
-</textarea>
-                            <input hidden type="text" id="id_ro" name="id_ro"
-                                value="@foreach ($RO_MATA as $rm) {{ $r->id }} @endforeach">
-                        </div>
-                    </div>
-                </div>
-            @endif
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -275,7 +261,8 @@
                             <div class="form-check form-check-inline">
                                 <input
                                     @if (count($last_assdok) > 0) @if ($last_assdok[0]->versi == 2) @if ($tl[0] == 1) checked @endif
-                                    @endif @endif class="form-check-input"
+                                    @endif
+                                @endif class="form-check-input"
                                 type="checkbox" name="pulangsembuh" id="pulangsembuh" value="1">
                                 <label class="form-check-label" for="inlineCheckbox1">Pulang / Sembuh</label>
                             </div>
@@ -324,19 +311,21 @@
 <script>
     $(document).ready(function() {
         cekpk()
+        ambilform_khusus()
     })
-    function cekpk()
-    {
+
+    function cekpk() {
         val = $('#pk:checked').val()
-        if(val == 0){
-            $('.form_pemeriksaan_khusus').removeAttr('hidden',true)
+        if (val == 0) {
+            $('.form_pemeriksaan_khusus').removeAttr('hidden', true)
             ambilform_gambar_kosong()
-        }else{
-            $('.form_pemeriksaan_khusus').removeAttr('hidden',true)
+        } else {
+            $('.form_pemeriksaan_khusus').removeAttr('hidden', true)
             ambilform_gambar_poli()
         }
     }
-    function ambilform_gambar_kosong(){
+
+    function ambilform_gambar_kosong() {
         kodekunjungan = $('#kodekunjungan').val()
         $.ajax({
             type: 'post',
@@ -350,8 +339,8 @@
             }
         });
     }
-    function ambilform_gambar_poli()
-    {
+
+    function ambilform_gambar_poli() {
         kodekunjungan = $('#kodekunjungan').val()
         $.ajax({
             type: 'post',
@@ -362,6 +351,20 @@
             url: '<?= route('ambilgambar_poli') ?>',
             success: function(response) {
                 $('.v_form_pk').html(response);
+            }
+        });
+    }
+    function ambilform_khusus(){
+        kodekunjungan = $('#kodekunjungan').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('ambil_form_pemeriksaan_khusus') ?>',
+            success: function(response) {
+                $('.v_form_khusus').html(response);
             }
         });
     }

@@ -886,7 +886,7 @@ class VclaimController extends Controller
                     "obat" => $obat
                 ]
             ]
-        ];    
+        ];
         $v = new VclaimModel();
         $prb = $v->InsertPRB($data);
         $data1 = [
@@ -952,9 +952,70 @@ class VclaimController extends Controller
     public function vclaimcaridataklaim(Request $request)
     {
         $v = new VclaimModel();
-        $dataklaim = $v->get_data_klaim($request->tanggalpulangsep, $request->jenislayan,$request->status);
-        return view('vclaim.tabeldataklaim', [
-            'data' => $dataklaim
+        $awal = $request->tanggalawal;
+        $akhir = $request->tanggalakhir;
+        $tanggalawal = substr($awal,-2);
+        $tanggalakhir = substr($akhir,-2);
+        $tahunbulan = substr($awal,0,7);
+        $dataklaimfull = array();
+        for($i = $tanggalawal;$i <= $tanggalakhir;$i++){
+            $hitung = strlen($i);
+            $tgl = $i;
+            if($hitung == 1){
+                $tgl = '0'.$i;
+            }
+            $tanggalpulang = $tahunbulan.'-'.$tgl;
+            $dataklaim = $v->get_data_klaim($tanggalpulang, $request->jenislayan,$request->status);
+            if($dataklaim->metaData->code == 200){
+                $datanya = $dataklaim->response->klaim;
+                $index = $tgl;
+                $value = $datanya;
+                $dataSet[$index] = $value;
+                array_push($dataklaimfull,$value);
+            }
+        }
+        if($request->jenislayan == '1'){
+            $jns = 2;
+        }else{
+            $jns = 1;
+        }
+        $ts_kunjungan = DB::select('select *,fc_nama_unit1(kode_unit) as nama_unit,fc_NAMA_PARAMEDIS1(kode_paramedis) as nama_dokter from ts_kunjungan where date(tgl_masuk) between ? and ? and left(kode_unit,1) = ?',[$awal,$akhir,$jns]);
+        // dd($dataklaimfull);
+        $datajoin = array();
+        foreach($ts_kunjungan as $d){
+            $index = $d->counter;
+            $value = $d->no_sep;
+            $dataSet[$index] = $value;
+            foreach($dataklaimfull as $dk){
+                foreach($dk as $dd){
+                    if($dd->noSEP == $d->no_sep){
+                        $arr = [
+                            'counter' => $d->counter,
+                            'kodekunjungan' => $d->kode_kunjungan,
+                            'tgl_kunjungan' => $d->tgl_masuk,
+                            'tgl_sep' => $dd->tglSep,
+                            'kodekunjungan' => $d->kode_kunjungan,
+                            'sep' => $d->no_sep,
+                            'nama' => $dd->peserta->nama,
+                            'unit' => $d->nama_unit,
+                            'nama_dokter' => $d->nama_dokter,
+                            'poli_sep' => $dd->poli,
+                            'nama_diag' => $dd->Inacbg->nama,
+                            'biaya' => $dd->biaya->byPengajuan,
+                            'biaya_acc' => $dd->biaya->bySetujui,
+                            'biaya_trf_rs' => $dd->biaya->byTarifRS,
+                            'status' => $dd->status,
+                        ];
+                        array_push($datajoin,$arr);
+                    }
+                }
+            }
+
+        }
+        return view('vclaim.tabeldataklaim2', [
+            'data' => $dataklaimfull,
+            'ts_kunjungan' => $ts_kunjungan,
+            'datajoin' => $datajoin
         ]);
     }
     public function vclaimcaririwayatpeserta(Request $request)
@@ -1094,7 +1155,7 @@ class VclaimController extends Controller
                 ];
                 $v = new VclaimModel();
                 $datasep = $v->insertsep2($get_sep);
-                if ($datasep == 'RTO') {                  
+                if ($datasep == 'RTO') {
                     $data = [
                         'kode' => 500,
                         'message' => 'The Network connection lost, please try again ...'
@@ -1102,7 +1163,7 @@ class VclaimController extends Controller
                     echo json_encode($data);
                 } else if ($datasep->metaData->code == 200) {
                     ts_kunjungan::whereRaw('kode_kunjungan = ? and no_rm = ?', array($kodekunjungan, $nomorrm ))->update(['no_sep' => $datasep->response->sep->noSep
-                    ]);   
+                    ]);
                     //insert ts_sep
                     $sep = $datasep->response->sep;
                     if ($keterangankll == '0') {
@@ -1148,7 +1209,7 @@ class VclaimController extends Controller
                         'pic1' => auth()->user()->id_simrs,
                         'tingkat_faskes' => $request->asalrujukan,
                     ];
-                    $ts_sep = ts_sep::create($data_ts_sep);                    
+                    $ts_sep = ts_sep::create($data_ts_sep);
                     $pasien = Pasien::where('no_rm', '=', "$nomorrm")->get();
                     $data = [
                         'kode' => 200,
@@ -1256,17 +1317,17 @@ class VclaimController extends Controller
         $pdf->SetXY(138, 100);
         $pdf->Cell(10, 7, $s->response->namaDokter, 0, 1);
 
-     
+
         $pdf->SetFont('Arial', 'I', 10);
         $pdf->SetXY(10, 100);
         $pdf->Cell(10, 7, 'tgl entry -' . $s->response->tglTerbit . ' ,.Tanggal cetak ' . date('y-m-d h:i:s'), 0, 1);
         $pdf->SetFont('Arial', '', 8);
-    
+
         $pdf->SetFont('Arial', '', 12);
         $pdf->Line(150, 100, 190, 100);
         $pdf->Output();
 
-        exit;     
+        exit;
     }
 }
 

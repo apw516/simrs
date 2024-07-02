@@ -1,5 +1,5 @@
 <h2 class="text-bold mt-3 text-info">Data Klaim</h2>
-<table id="kunjunganpasienrawatjalan" class="table table-bordered table-sm text-xs">
+<table id="kunjunganpasienrawatjalan" class="table table-bordered table-sm text-xs mt-3">
     <thead>
         <th>Nama</th>
         <th>RM</th>

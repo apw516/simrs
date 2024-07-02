@@ -21,20 +21,24 @@
     </div>
 
     <section class="content">
-        <div class="container">
+        <div class="container mb-5">
             <div class="row mt-3">
-                <div class="col-sm-3">
-                    <label for="exampleInputEmail1">Tanggal Pulang</label>
-                    <input type="text " data-date-format="yyyy-mm-dd" class="form-control datepicker" id="tanggalpulang">
+                <div class="col-sm-2">
+                    <label for="exampleInputEmail1">Tanggal Awal</label>
+                    <input type="text " data-date-format="yyyy-mm-dd" class="form-control datepicker" id="tanggalawal">
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
+                    <label for="exampleInputEmail1">Tanggal Akhir</label>
+                    <input type="text " data-date-format="yyyy-mm-dd" class="form-control datepicker" id="tanggalakhir">
+                </div>
+                <div class="col-sm-2">
                     <label for="exampleInputEmail1">Jenis Pelayanan</label>
                     <select class="form-control" id="jenislayan">
                         <option value="1">Rawat Inap</option>
                         <option value="2">Rawat Jalan</option>
                     </select>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     <label for="exampleInputEmail1">Status Klaim</label>
                     <select class="form-control" id="status">
                         <option value="1">Proses Verifikasi</option>
@@ -51,15 +55,16 @@
                 </div>
             </div>
         </div>
-        <div class="container">
+        <div class="container-fluid">
             <div class="view_dataklaim">
 
             </div>
         </div>
     </section>
     <script>
-       function vclaim_dataklaim() {       
-            tanggalpulangsep = $('#tanggalpulang').val()
+        function vclaim_dataklaim() {
+            tanggalawal = $('#tanggalawal').val()
+            tanggalakhir = $('#tanggalakhir').val()
             jenislayan = $('#jenislayan').val()
             status = $('#status').val()
             spinner = $('#loader');
@@ -68,7 +73,8 @@
                 type: 'post',
                 data: {
                     _token: "{{ csrf_token() }}",
-                    tanggalpulangsep,
+                    tanggalawal,
+                    tanggalakhir,
                     jenislayan,
                     status
                 },

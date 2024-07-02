@@ -418,6 +418,7 @@ class ErmController_v2 extends Controller
             $value =  $nama['value'];
             $dataSet[$index] = $value;
         }
+        dd($dataSet);
         foreach ($data_order_farmasi as $nama) {
             $index =  $nama['name'];
             $value =  $nama['value'];
@@ -609,13 +610,35 @@ class ErmController_v2 extends Controller
                 'signature' => 'SUDAH VALIDASI'
             ];
             if(auth()->user()->unit == '1014'){
-                $data_ro = [
-                    'tajampenglihatandekat' => $dataSet['ro_mata'],
+                    $datamata = [
+                    'no_rm' => $ts_kunjungan[0]->no_rm,
+                    'kode_kunjungan' => $dataSet['kodekunjungan'],
                     'nama_dokter' => auth()->user()->nama,
                     'id_dokter' => auth()->user()->id,
-                    'id_asskep' => $resume_perawat[0]->id
+                    'tgl_entry' => $this->get_now(),
+                    'status' => '0',
+                    'tajampenglihatandekat' => $dataSet['hasilperiksalain'],
+                    'tekananintraokular' => $dataSet['tekanan_intra_okular'],
+                    'catatanpemeriksaanlain' => $dataSet['catatan_pemeriksaan_lainnya'],
+                    'palpebra' => $dataSet['palpebra'],
+                    'konjungtiva' => $dataSet['konjungtiva'],
+                    'kornea' => $dataSet['kornea'],
+                    'bilikmatadepan' => $dataSet['bilik_mata_depan'],
+                    'pupil' => $dataSet['pupil'],
+                    'iris' => $dataSet['iris'],
+                    'lensa' => $dataSet['lensa'],
+                    'funduskopi' => $dataSet['funduskopi'],
+                    'status_oftamologis_khusus' => $dataSet['oftamologis'],
+                    'masalahmedis' => $dataSet['masalahmedis'],
+                    'prognosis' => $dataSet['prognosis'],
                 ];
-                erm_mata_kanan_kiri::whereRaw('id = ?', array($dataSet['id_ro']))->update($data_ro);
+                $cekmata = DB::connection('mysql4')->select('select * from erm_mata_kanan_kiri where id = ?', [$dataSet['id_ro']]);
+                if (count($cekmata) > 0) {
+                    erm_mata_kanan_kiri::whereRaw('id = ?', array($dataSet['id_ro']))->update($datamata);
+                } else {
+                    erm_mata_kanan_kiri::create($datamata);
+                }
+
 
             }
         }
@@ -1784,6 +1807,21 @@ class ErmController_v2 extends Controller
         }
         // echo '<h4 class="text-danger">ada pemeriksaan khusus ...</h4>';
     }
-//     ambilgambar_kosong
-// ambilgambar_poli
+    function ambil_form_pemeriksaan_khusus(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        $ts_kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?',[$kodekunjungan]);
+        if($ts_kunjungan[0]->kode_unit == '1014'){
+            $RO_MATA = db::connection('mysql')->select('select * from erm_mata_kanan_kiri where kode_kunjungan = ? ',[$kodekunjungan]);
+            return view('V2_erm.form_pemeriksaan_khusus_poli_mata',compact([
+                'RO_MATA'
+            ]));
+        }elseif($ts_kunjungan[0]->kode_unit == '1019'){
+            $penyakit = DB::select('SELECT * from mt_penyakit');
+            return view('V2_erm.form_pemeriksaan_khusus_poli_tht',compact([
+                'penyakit'
+            ]));
+        }
+
+    }
 }
