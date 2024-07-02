@@ -210,7 +210,6 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9,102']], function () {
     Route::get('/cetakrujukan/{nomorrujukan}', [SimrsController::class, 'cetakrujukan']); //formpasien_bpjs
     Route::get('datakunjungan/cetaksep/{kodekunjungan}', [SimrsController::class, 'Cetaksep']); //formpasien_bpjs
     Route::get('/cetaksep_v/{sep}', [SimrsController::class, 'Cetaksep_v']); //formpasien_bpjs
-    Route::get('/cetaklabel/{kodekunjungan}', [SimrsController::class, 'Cetaklabel']); //formpasien_bpjs
     Route::get('cetakstruk/{kodekunjungan}', [SimrsController::class, 'Cetakstruk']); //formpasien_bpjs
     Route::get('datakunjungan/cetakstruk/{kodekunjungan}', [SimrsController::class, 'Cetakstruk']); //formpasien_bpjs
     Route::post('Pendaftaran/buatsuratkontrol', [SimrsController::class, 'Buatsuratkontrol'])
@@ -684,3 +683,4 @@ Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
 });
 
 Route::get('get_riwayat_sep/{nomorkartu}/{tglawal}/{tglakhir}', [SimrsController::class, 'cari_riwayat_sep'])->name('cari_riwayat_sep'); //formpasien_bpjs
+Route::get('/cetaklabel/{kodekunjungan}', [SimrsController::class, 'Cetaklabel']); //formpasien_bpjs
