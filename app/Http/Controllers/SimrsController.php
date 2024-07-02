@@ -792,7 +792,7 @@ class SimrsController extends Controller
     public function Simpansep(Request $request)
     {
         //antrian
-        // dd($this->get_client_ip());
+        $ipclient = $this->get_client_ip();
         $mw = new antrianmarwan();
         $day = $request->tglsep;
         $today = strtoupper(Carbon::parse($day)->dayName);
@@ -1270,6 +1270,7 @@ class SimrsController extends Controller
                 'tujuankunjungan' => $request->tujuankunjungan,
                 'flagprocedure' => $request->flagprocedure,
                 'assesmen_pelayanan' => $request->asessment,
+                'ip_user' => $ipclient
             ];
             $ts_sep = ts_sep::create($data_ts_sep);
             //insert tracer
