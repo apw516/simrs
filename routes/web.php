@@ -729,6 +729,10 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('ambil_riwayat_order_rad'); //sidebar
     Route::post('ambil_riwayat_pemakaian_obat', [ErmController_v2::class, 'Ambil_riwayat_pemakaian_obat'])
         ->name('ambil_riwayat_pemakaian_obat'); //sidebar
+    Route::post('ambil_riwayat_pemakaian_obat_by_dokter', [ErmController_v2::class, 'Ambil_riwayat_pemakaian_obat_by_dokter'])
+        ->name('ambil_riwayat_pemakaian_obat_by_dokter'); //sidebar
+    Route::post('ambil_riwayat_template_obat_by_dokter', [ErmController_v2::class, 'ambil_riwayat_template_obat_by_dokter'])
+        ->name('ambil_riwayat_template_obat_by_dokter'); //sidebar
     Route::post('ambil_riwayat_racikan', [ErmController_v2::class, 'ambil_riwayat_racikan'])
         ->name('ambil_riwayat_racikan'); //sidebar
     Route::post('batal_detail_order_farmasi', [ErmController_v2::class, 'Batal_detail_order_farmasi'])
@@ -751,8 +755,12 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('ambil_form_order_laboratorium_V2'); //sidebar
     Route::post('ambil_form_order_radiologi_V2', [ErmController_v2::class, 'ambil_form_order_radiologi_V2'])
         ->name('ambil_form_order_radiologi_V2'); //sidebar
+    Route::post('v2_add_riwayat_pemakaian_obat_by_dokter', [ErmController_v2::class, 'v2_add_riwayat_pemakaian_obat_by_dokter'])
+        ->name('v2_add_riwayat_pemakaian_obat_by_dokter'); //sidebar
     Route::post('v2_add_riwayat_pemakaian_obat', [ErmController_v2::class, 'v2_add_riwayat_pemakaian_obat'])
         ->name('v2_add_riwayat_pemakaian_obat'); //sidebar
+    Route::post('v2_add_riwayat_template_pemakaian_obat', [ErmController_v2::class, 'v2_add_riwayat_template_pemakaian_obat'])
+        ->name('v2_add_riwayat_template_pemakaian_obat'); //sidebar
     Route::post('v2_add_riwayat_racik', [ErmController_v2::class, 'v2_add_riwayat_racik'])
         ->name('v2_add_riwayat_racik'); //sidebar
     Route::post('ambilgambar_kosong', [ErmController_v2::class, 'ambilgambar_kosong'])

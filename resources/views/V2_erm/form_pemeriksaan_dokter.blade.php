@@ -233,6 +233,48 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="riwayatresepdokter" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Riwayat Resep {{ auth()->user()->nama }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body ex1">
+                <div class="v_r_resep_anda">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="riwayattemplateresep" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Template Resep {{ auth()->user()->nama }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body ex1">
+                <div class="v_t_resep_anda">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     var input = document.getElementById("namaobatreguler");
@@ -296,6 +338,8 @@
         ambilformfarmasi()
         ambilformlaboratorium()
         ambilformradiolgi()
+        riwayat_resep_dokter()
+        riwayat_template_resep_dokter()
     })
     function formsemua(){
         ambilformpemmeriksaan()
@@ -412,6 +456,7 @@
     function simpanpemeriksaandokter() {
         var data = $('.formpemeriksaan').serializeArray();
         var data_order_farmasi = $('.formorderfarmasi').serializeArray();
+        var form_template = $('.form_template').serializeArray();
         var data_billing_tindakan = $('.formbillingtindakan').serializeArray();
         var data_order_lab = $('.form_order_lab').serializeArray();
         var data_order_rad = $('.form_order_rad').serializeArray();
@@ -424,6 +469,7 @@
             data: {
                 _token: "{{ csrf_token() }}",
                 data: JSON.stringify(data),
+                form_template: JSON.stringify(form_template),
                 data_order_farmasi: JSON.stringify(data_order_farmasi),
                 data_order_lab: JSON.stringify(data_order_lab),
                 data_order_rad: JSON.stringify(data_order_rad),
@@ -668,6 +714,48 @@
             success: function(response) {
                 spinner.hide()
                 $('.v_r_ob').html(response);
+            }
+        });
+    }
+    function riwayat_resep_dokter() {
+        kodekunjungan = $('#kodekunjungan').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('ambil_riwayat_pemakaian_obat_by_dokter') ?>',
+            error: function(response) {
+                spinner.hide()
+                alert('error')
+            },
+            success: function(response) {
+                spinner.hide()
+                $('.v_r_resep_anda').html(response);
+            }
+        });
+    }
+    function riwayat_template_resep_dokter() {
+        kodekunjungan = $('#kodekunjungan').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('ambil_riwayat_template_obat_by_dokter') ?>',
+            error: function(response) {
+                spinner.hide()
+                alert('error')
+            },
+            success: function(response) {
+                spinner.hide()
+                $('.v_t_resep_anda').html(response);
             }
         });
     }

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -15,6 +16,8 @@ use App\Models\ts_layanan_header_order;
 use App\Models\VclaimModel;
 use App\Models\ts_kunjungan;
 use App\Models\erm_mata_kanan_kiri;
+use App\Models\template_resep_header;
+use App\Models\template_resep_detail;
 class ErmController_v2 extends Controller
 {
     public function formpemeriksaan_dokter(Request $request)
@@ -56,7 +59,7 @@ class ErmController_v2 extends Controller
         $layanan_rad = DB::select("CALL SP_CARI_TARIF_PELAYANAN_RAD_ORDER('1','','$kelas')");
         $layanan_lab = DB::select("CALL SP_CARI_TARIF_PELAYANAN_LAB_ORDER('1','','$kelas')");
 
-        $RO_MATA = db::connection('mysql4')->select('select * from erm_mata_kanan_kiri where kode_kunjungan = ? ',[$kodekunjungan]);
+        $RO_MATA = db::connection('mysql4')->select('select * from erm_mata_kanan_kiri where kode_kunjungan = ? ', [$kodekunjungan]);
         if ($unit == '1028') {
             return view('V2_erm.form_pemeriksaan_dokter_rehabilitasi_medis', compact([
                 'kodekunjungan', 'resume_perawat', 'last_assdok', 'assdok_now', 'mt_pasien', 'nomorrm', 'layanan', 'layanan_lab', 'layanan_rad'
@@ -67,7 +70,7 @@ class ErmController_v2 extends Controller
             ]));
         } else {
             return view('V2_erm.form_pemeriksaan_dokter_poli', compact([
-                'kodekunjungan', 'resume_perawat', 'last_assdok', 'assdok_now', 'mt_pasien', 'nomorrm', 'layanan', 'layanan_lab', 'layanan_rad','RO_MATA','unit'
+                'kodekunjungan', 'resume_perawat', 'last_assdok', 'assdok_now', 'mt_pasien', 'nomorrm', 'layanan', 'layanan_lab', 'layanan_rad', 'RO_MATA', 'unit'
             ]));
         }
     }
@@ -175,8 +178,7 @@ class ErmController_v2 extends Controller
         $kodekunjungan = $request->kodekunjungan;
         $ts_kunjungan = DB::connection('mysql')->select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
         $rm = $ts_kunjungan[0]->no_rm;
-        $ts_kunjungan_list = DB::connection('mysql')->select('select *,fc_nama_paramedis1(kode_paramedis) as nama_dokter ,fc_nama_unit1(a.kode_unit) as unit,b.id as id_header from ts_kunjungan a inner join ts_layanan_header b on a.kode_kunjungan = b.kode_kunjungan where a.no_rm = ? and status_kunjungan != ? order by a.kode_kunjungan desc', [$rm, 8]);
-
+        $ts_kunjungan_list = DB::connection('mysql')->select('select *,fc_nama_paramedis1(kode_paramedis) as nama_dokter ,fc_nama_unit1(a.kode_unit) as unit,b.id as id_header from ts_kunjungan a inner join ts_layanan_header b on a.kode_kunjungan = b.kode_kunjungan where a.no_rm = ? and left(a.kode_unit,1) = 1 and status_kunjungan != ? order by a.kode_kunjungan desc', [$rm, 8]);
         $riwayat_pemakaian = DB::connection('mysql')->select("SELECT date(a.`tgl_masuk`) as tgl_masuk
         ,fc_nama_unit1(a.`kode_unit`) AS unit_asal
         ,a.`kode_kunjungan`
@@ -195,10 +197,64 @@ class ErmController_v2 extends Controller
         WHERE a.no_rm = ? AND b.kode_unit IN ('4002','4008') AND c.`kode_barang` IS NOT NULL AND c.kode_barang != ''", [$rm]);
         return view('V2_erm.tabel_riwayat_pemakaian_obat', compact('riwayat_pemakaian', 'ts_kunjungan_list'));
     }
+    public function Ambil_riwayat_pemakaian_obat_by_dokter(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        $ts_kunjungan = DB::connection('mysql')->select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+        $rm = $ts_kunjungan[0]->no_rm;
+
+        $HEADER = db::connection('mysql')->select('SELECT
+        kode_kunjungan
+        ,id
+        ,a.`unit_pengirim`
+        ,fc_nama_unit1(a.unit_pengirim) as unit
+        ,date(a.`tgl_entry`) as tgl_entry
+        ,a.`dok_kirim`
+        ,fc_nama_paramedis1(a.dok_kirim) as nama_dokter
+        ,a.kode_layanan_header FROM ts_layanan_header a
+        WHERE a.kode_kunjungan
+        IN (SELECT kode_kunjungan FROM ts_kunjungan WHERE kode_paramedis = ? AND status_kunjungan NOT IN (8,11))
+        AND kode_unit IN (4008,4002)
+        AND LEFT(a.unit_pengirim,1) = 1  AND dok_kirim = ?
+        ORDER BY id DESC LIMIT 100
+        ', [auth()->user()->kode_paramedis, auth()->user()->kode_paramedis]);
+        // $ts_kunjungan_list = DB::connection('mysql')->select('select *,fc_nama_paramedis1(kode_paramedis) as nama_dokter ,fc_nama_unit1(a.kode_unit) as unit,b.id as id_header from ts_kunjungan a inner join ts_layanan_header b on a.kode_kunjungan = b.kode_kunjungan where a.kode_paramedis = ? and left(a.kode_unit,1) = 1 and status_kunjungan != ? order by a.kode_kunjungan desc LIMIT 100', [auth()->user()->kode_paramedis, 8]);
+
+        $riwayat_pemakaian = DB::connection('mysql')->select("SELECT date(a.`tgl_masuk`) as tgl_masuk
+        ,fc_nama_unit1(a.`kode_unit`) AS unit_asal
+        ,a.`kode_kunjungan`
+        ,fc_nama_barang(c.`kode_barang`) AS nama_barang
+        ,c.jumlah_layanan
+        ,c.aturan_pakai
+        ,c.`kode_barang`
+        ,fc_nama_paramedis1(a.kode_paramedis) AS nama_dokter
+        ,a.`kode_paramedis`
+        ,fc_nama_penjamin(a.`kode_penjamin`) AS nama_penjamin
+        ,fc_nama_unit1(b.`kode_unit`) AS unit_tujuan
+        ,b.id AS id_header
+        FROM ts_kunjungan  a
+        INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+        INNER JOIN ts_layanan_detail c ON b.id = c.row_id_header
+        WHERE a.kode_paramedis = ? AND b.kode_unit IN ('4002','4008') AND c.`kode_barang` IS NOT NULL AND c.kode_barang != '' AND left(a.kode_unit,1) = '1' ORDER BY a.kode_kunjungan desc LIMIT 100", [auth()->user()->kode_paramedis]);
+
+        return view('V2_erm.tabel_riwayat_pemakaian_obat_by_dokter', compact('riwayat_pemakaian', 'HEADER'));
+    }
+    public function ambil_riwayat_template_obat_by_dokter(Request $request)
+    {
+        $header = db::connection('mysql2')->select('select * from erm_template_resep_header where kode_paramedis = ?',[auth()->user()->kode_paramedis]);
+
+        $detail = db::connection('mysql2')->select('SELECT * FROM erm_template_resep_header a
+        INNER JOIN erm_template_resep_detail b ON a.`id` = b.id_header
+        WHERE a.`kode_paramedis` = ?',[auth()->user()->kode_paramedis]);
+        return view('V2_erm.tabel_template_obat',compact([
+            'header',
+            'detail'
+        ]));
+    }
     public function v2_add_riwayat_pemakaian_obat(Request $request)
     {
         $detail = DB::select('select * from ts_layanan_detail where row_id_header = ?', [$request->id]);
-        $rm = $request->rm;
+        // $rm = $request->rm;
         $kode_kunjungan = $request->kodekunjungan;
         // dd($kode_kunjungan);
         $riwayat_pemakaian = DB::connection('mysql')->select("SELECT date(a.`tgl_masuk`) as tgl_masuk
@@ -220,7 +276,7 @@ class ErmController_v2 extends Controller
        INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
        INNER JOIN ts_layanan_detail c ON b.id = c.row_id_header
        INNER JOIN mt_barang d on c.kode_barang = d.kode_barang
-       WHERE a.no_rm = ? AND b.kode_unit IN ('4002','4008') AND c.`kode_barang` IS NOT NULL AND c.kode_barang != '' AND a.kode_kunjungan = ?", [$rm, $kode_kunjungan]);
+       WHERE b.kode_unit IN ('4002','4008') AND c.`kode_barang` IS NOT NULL AND c.kode_barang != '' AND a.kode_kunjungan = ?", [$kode_kunjungan]);
         $str = "";
         foreach ($riwayat_pemakaian as $d) {
             $str .=   "<div class='row mt-2 text-xs'><div class='col-md-2'>
@@ -270,6 +326,151 @@ class ErmController_v2 extends Controller
                             <div class='form-group'>
                                 <label for='exampleFormControlInput1'>Keterangan</label>
                                 <textarea type='text' class='form-control form-control-sm' id='keterangan' name='keterangan' value='' placeholder='name@example.com'></textarea>
+                            </div>
+                        </div>
+                        <i class='bi bi-x-square remove_field form-group col-md-1 text-danger' kode2='' subtot='' jenis='' nama_barang='' kode_barang='' id_stok='' harga2='' satuan='' stok='' qty='' harga='' disc='' dosis='' sub='' sub2='' status='80' jenisracik='racikan'></i></div>";
+        }
+        // $str .= "</div>";
+        return $str;
+    }
+    public function v2_add_riwayat_pemakaian_obat_by_dokter(Request $request)
+    {
+        $detail = DB::select('select * from ts_layanan_detail where row_id_header = ?', [$request->id]);
+        // $rm = $request->rm;
+        $kode_kunjungan = $request->kodekunjungan;
+        // dd($kode_kunjungan);
+        $riwayat_pemakaian = DB::connection('mysql')->select("SELECT date(a.`tgl_masuk`) as tgl_masuk
+       ,fc_nama_unit1(a.`kode_unit`) AS unit_asal
+       ,a.`kode_kunjungan`
+       ,fc_nama_barang(c.`kode_barang`) AS nama_barang
+       ,c.jumlah_layanan
+       ,c.aturan_pakai
+       ,c.`kode_barang`
+       ,fc_nama_paramedis1(a.kode_paramedis) AS nama_dokter
+       ,a.`kode_paramedis`
+       ,fc_nama_penjamin(a.`kode_penjamin`) AS nama_penjamin
+       ,fc_nama_unit1(b.`kode_unit`) AS unit_tujuan
+       ,b.id AS id_header
+       ,d.dosis
+       ,d.satuan
+       ,d.nama_generik
+       FROM ts_kunjungan  a
+       INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+       INNER JOIN ts_layanan_detail c ON b.id = c.row_id_header
+       INNER JOIN mt_barang d on c.kode_barang = d.kode_barang
+       WHERE b.kode_unit IN ('4002','4008') AND c.`kode_barang` IS NOT NULL AND c.kode_barang != '' AND a.kode_kunjungan = ?", [$kode_kunjungan]);
+        $str = "";
+        foreach ($riwayat_pemakaian as $d) {
+            $str .=   "<div class='row mt-2 text-xs'><div class='col-md-2'>
+                        <div class='form-group'>
+                            <label for='exampleFormControlInput1'>Nama Obat</label>
+                            <input readonly type='text' class='form-control form-control-sm' id='nama_obat' name='namaobat' value='$d->nama_barang'placeholder='name@example.com'>
+                            <input hidden readonly type='text' class='form-control form-control-sm' id='kodebarang' name='kodebarang' value='$d->kode_barang'placeholder='name@example.com'>
+                        </div>
+                        </div>
+                        <div hidden class='col-md-2'>
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Nama Generik</label>
+                                <input readonly type='text' class='form-control form-control-sm' id='namagenerik' name='namagenerik' value='$d->nama_generik' placeholder='name@example.com'>
+                            </div>
+                        </div>
+                        <div class='col-md-1'>
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Dosis</label>
+                                <input readonly type='text' class='form-control form-control-sm' id='dosis' name='dosis' value='$d->dosis' placeholder='name@example.com'>
+                            </div>
+                        </div>
+                        <div class='col-md-1'>
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Sediaan</label>
+                                <input readonly type='text' class='form-control form-control-sm' id='sediaan' name='sediaan' value='$d->satuan' placeholder='name@example.com'>
+                            </div>
+                        </div>
+                        <div class='col-md-1'>
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Kronis</label>
+                                <select class='form-control form-control-sm' id='kronis' name='kronis'><option value='0'>TIDAK</option><option value='1'>YA</option></select>
+                            </div>
+                        </div>
+                        <div class='col-md-1'>
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Jumlah</label>
+                                <input type='text' class='form-control form-control-sm' id='jumlah' name='jumlah' value='$d->jumlah_layanan' placeholder='name@example.com'>
+                            </div>
+                        </div>
+                        <div class='col-md-2'>
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Aturan Pakai</label>
+                                <textarea type='text' class='form-control form-control-sm' id='aturanpakai' name='aturanpakai' value='' placeholder='name@example.com'>$d->aturan_pakai</textarea>
+                            </div>
+                        </div>
+                        <div class='col-md-2'>
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Keterangan</label>
+                                <textarea type='text' class='form-control form-control-sm' id='keterangan' name='keterangan' value='' placeholder='name@example.com'></textarea>
+                            </div>
+                        </div>
+                        <i class='bi bi-x-square remove_field form-group col-md-1 text-danger' kode2='' subtot='' jenis='' nama_barang='' kode_barang='' id_stok='' harga2='' satuan='' stok='' qty='' harga='' disc='' dosis='' sub='' sub2='' status='80' jenisracik='racikan'></i></div>";
+        }
+        // $str .= "</div>";
+        return $str;
+    }
+    public function v2_add_riwayat_template_pemakaian_obat(Request $request)
+    {
+        $detail = DB::select('select * from ts_layanan_detail where row_id_header = ?', [$request->id]);
+        // $rm = $request->rm;
+        $kode_kunjungan = $request->kodekunjungan;
+        // dd($kode_kunjungan);
+        $template = DB::connection('mysql2')->select('select * from erm_template_resep_detail where id_header =?',[$request->id]);
+        $str = "";
+        foreach ($template as $d) {
+            $str .=   "<div class='row mt-2 text-xs'><div class='col-md-2'>
+                        <div class='form-group'>
+                            <label for='exampleFormControlInput1'>Nama Obat</label>
+                            <input readonly type='text' class='form-control form-control-sm' id='nama_obat' name='namaobat' value='$d->nama_barang'placeholder='name@example.com'>
+                            <input hidden readonly type='text' class='form-control form-control-sm' id='kodebarang' name='kodebarang' value='$d->kode_barang'placeholder='name@example.com'>
+                        </div>
+                        </div>
+                        <div hidden class='col-md-2'>
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Nama Generik</label>
+                                <input readonly type='text' class='form-control form-control-sm' id='namagenerik' name='namagenerik' value='$d->nama_generik' placeholder='name@example.com'>
+                            </div>
+                        </div>
+                        <div class='col-md-1'>
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Dosis</label>
+                                <input readonly type='text' class='form-control form-control-sm' id='dosis' name='dosis' value='$d->dosis' placeholder='name@example.com'>
+                            </div>
+                        </div>
+                        <div class='col-md-1'>
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Sediaan</label>
+                                <input readonly type='text' class='form-control form-control-sm' id='sediaan' name='sediaan' value='$d->sediaan' placeholder='name@example.com'>
+                            </div>
+                        </div>
+                        <div class='col-md-1'>
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Kronis</label>
+                                <select class='form-control form-control-sm' id='kronis' name='kronis'><option value='0'>TIDAK</option><option value='1'>YA</option></select>
+                            </div>
+                        </div>
+                        <div class='col-md-1'>
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Jumlah</label>
+                                <input type='text' class='form-control form-control-sm' id='jumlah' name='jumlah' value='$d->qty' placeholder='name@example.com'>
+                            </div>
+                        </div>
+                        <div class='col-md-2'>
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Aturan Pakai</label>
+                                <textarea type='text' class='form-control form-control-sm' id='aturanpakai' name='aturanpakai' value='' placeholder='name@example.com'>$d->aturan_pakai</textarea>
+                            </div>
+                        </div>
+                        <div class='col-md-2'>
+                            <div class='form-group'>
+                                <label for='exampleFormControlInput1'>Keterangan</label>
+                                <textarea type='text' class='form-control form-control-sm' id='keterangan' name='keterangan' value='' placeholder='name@example.com'>$d->keterangan</textarea>
                             </div>
                         </div>
                         <i class='bi bi-x-square remove_field form-group col-md-1 text-danger' kode2='' subtot='' jenis='' nama_barang='' kode_barang='' id_stok='' harga2='' satuan='' stok='' qty='' harga='' disc='' dosis='' sub='' sub2='' status='80' jenisracik='racikan'></i></div>";
@@ -411,6 +612,7 @@ class ErmController_v2 extends Controller
         $data = json_decode($_POST['data'], true);
         $data_billing_tindakan = json_decode($_POST['data_billing_tindakan'], true);
         $data_order_farmasi = json_decode($_POST['data_order_farmasi'], true);
+        $form_template = json_decode($_POST['form_template'], true);
         $data_order_rad = json_decode($_POST['data_order_rad'], true);
         $data_order_lab = json_decode($_POST['data_order_lab'], true);
         foreach ($data as $nama) {
@@ -418,7 +620,11 @@ class ErmController_v2 extends Controller
             $value =  $nama['value'];
             $dataSet[$index] = $value;
         }
-        dd($dataSet);
+        foreach ($form_template as $dad) {
+            $index =  $dad['name'];
+            $value =  $dad['value'];
+            $dataSettemplate[$index] = $value;
+        }
         foreach ($data_order_farmasi as $nama) {
             $index =  $nama['name'];
             $value =  $nama['value'];
@@ -427,6 +633,25 @@ class ErmController_v2 extends Controller
                 $arrayindex_far[] = $dataSet_order_farmasi;
             }
         }
+
+        if (count($data_order_farmasi) > 0) {
+            if (empty($dataSettemplate['cektemplate'])) {
+            } else {
+                if (strlen($dataSettemplate['namatemplate'] < 1)) {
+                    $data = [
+                        'kode' => 500,
+                        'message' => 'Nama template harus diisi !'
+                    ];
+                    echo json_encode($data);
+                    die;
+                }
+            };
+        }
+        // if(count($data_order_farmasi) > 2){
+        //     dd('ada resep');
+        // }else{
+        //     dd('tidak ada resep');
+        // }
         foreach ($data_billing_tindakan as $a) {
             $index =  $a['name'];
             $value =  $a['value'];
@@ -609,8 +834,8 @@ class ErmController_v2 extends Controller
                 'status' => '1',
                 'signature' => 'SUDAH VALIDASI'
             ];
-            if(auth()->user()->unit == '1014'){
-                    $datamata = [
+            if (auth()->user()->unit == '1014') {
+                $datamata = [
                     'no_rm' => $ts_kunjungan[0]->no_rm,
                     'kode_kunjungan' => $dataSet['kodekunjungan'],
                     'nama_dokter' => auth()->user()->nama,
@@ -638,8 +863,6 @@ class ErmController_v2 extends Controller
                 } else {
                     erm_mata_kanan_kiri::create($datamata);
                 }
-
-
             }
         }
         // dd($dataSet);
@@ -762,6 +985,48 @@ class ErmController_v2 extends Controller
         }
         try {
             if (count($data_order_farmasi) > 0) {
+
+                if (empty($dataSettemplate['cektemplate'])) {
+                } else {
+                    $header_template = [
+                        'nama_resep' => $dataSettemplate['namatemplate'],
+                        'kode_paramedis' => auth()->user()->kode_paramedis,
+                        'kode_unit' => auth()->user()->unit,
+                        'tgl_entry' => $this->get_now(),
+                        'status' => 1
+                    ];
+                    $ht = template_resep_header::create($header_template);
+                    foreach ($arrayindex_far as $a) {
+                        try {
+                            if ($a['namagenerik'] == 'RACIKAN') {
+                                $TIPE = 'racikan';
+                            } else {
+                                $TIPE = 'reguler';
+                            }
+                            $detail_template = [
+                                'id_header' => $ht->id,
+                                'nama_barang' => $a['namaobat'],
+                                'kode_barang' => $a['kodebarang'],
+                                'qty' => $a['jumlah'],
+                                'aturan_pakai' => $a['aturanpakai'],
+                                'jenis' => $TIPE,
+                                'keterangan' => $a['keterangan'],
+                                'dosis' => $a['dosis'],
+                                'sediaan' => $a['sediaan'],
+                                'nama_generik' => $a['namagenerik'],
+                            ];
+                            template_resep_detail::create($detail_template);
+                        } catch (\Exception $e) {
+                            $back = [
+                                'kode' => 500,
+                                'message' => $e->getMessage()
+                            ];
+                            echo json_encode($back);
+                            die;
+                        }
+                    }
+                };
+
                 if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
                     $unit_kirim = '4002';
                     $kode_transaksi = '1';
@@ -807,7 +1072,6 @@ class ErmController_v2 extends Controller
                             'tgl_layanan_detail1' => $tgl,
                             'kode_barang' => $a['kodebarang'],
                             'aturan_pakai' => $a['aturanpakai'],
-                            'keterangan' => $a['keterangan'],
                             'kategori_resep' => $TIPE,
                             'status_layanan_detail' => 'OPN',
                             'satuan_barang' => $a['sediaan'],
@@ -1744,7 +2008,7 @@ class ErmController_v2 extends Controller
         $kodekunjungan = $request->kodekunjungan;
         $ro_lama = DB::select('SELECT * FROM erm_mata_kanan_kiri WHERE id = (SELECT MAX(id)FROM erm_mata_kanan_kiri WHERE no_rm = ? ) AND no_rm = ?', [$rm, $rm]);
         return view('V2_erm.form_ro_2', compact([
-            'ro_lama','kodekunjungan','rm'
+            'ro_lama', 'kodekunjungan', 'rm'
         ]));
     }
     function simpanpemeriksaan_ro(Request $request)
@@ -1756,7 +2020,7 @@ class ErmController_v2 extends Controller
             $dataSet[$index] = $value;
         }
         $kodekunjungan = $dataSet['kodekunjungan'];
-        $asskep = DB::connection('mysql4')->select('select * from erm_hasil_assesmen_keperawatan_rajal where kode_kunjungan = ?',[$kodekunjungan]);
+        $asskep = DB::connection('mysql4')->select('select * from erm_hasil_assesmen_keperawatan_rajal where kode_kunjungan = ?', [$kodekunjungan]);
         $id = $asskep[0]->id;
         $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$kodekunjungan]);
         $datamata = [
@@ -1769,7 +2033,7 @@ class ErmController_v2 extends Controller
             'tekananintraokular' => '-',
             'catatanpemeriksaanlain' => '-',
             'palpebra' => '',
-            'konjungtiva' =>'-',
+            'konjungtiva' => '-',
             'kornea' => '-',
             'bilikmatadepan' => '-',
             'pupil' => '-',
@@ -1801,27 +2065,26 @@ class ErmController_v2 extends Controller
     {
         $kodekunjungan = $request->kodekunjungan;
         $unit = auth()->user()->unit;
-        if($unit == '1014'){
+        if ($unit == '1014') {
             //poli mata
-        return view('form_khusus.poli_mata');
+            return view('form_khusus.poli_mata');
         }
         // echo '<h4 class="text-danger">ada pemeriksaan khusus ...</h4>';
     }
     function ambil_form_pemeriksaan_khusus(Request $request)
     {
         $kodekunjungan = $request->kodekunjungan;
-        $ts_kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?',[$kodekunjungan]);
-        if($ts_kunjungan[0]->kode_unit == '1014'){
-            $RO_MATA = db::connection('mysql')->select('select * from erm_mata_kanan_kiri where kode_kunjungan = ? ',[$kodekunjungan]);
-            return view('V2_erm.form_pemeriksaan_khusus_poli_mata',compact([
+        $ts_kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+        if ($ts_kunjungan[0]->kode_unit == '1014') {
+            $RO_MATA = db::connection('mysql')->select('select * from erm_mata_kanan_kiri where kode_kunjungan = ? ', [$kodekunjungan]);
+            return view('V2_erm.form_pemeriksaan_khusus_poli_mata', compact([
                 'RO_MATA'
             ]));
-        }elseif($ts_kunjungan[0]->kode_unit == '1019'){
+        } elseif ($ts_kunjungan[0]->kode_unit == '1019') {
             $penyakit = DB::select('SELECT * from mt_penyakit');
-            return view('V2_erm.form_pemeriksaan_khusus_poli_tht',compact([
+            return view('V2_erm.form_pemeriksaan_khusus_poli_tht', compact([
                 'penyakit'
             ]));
         }
-
     }
 }

@@ -31,12 +31,18 @@
                             <button type="button" class="btn btn-primary" data-toggle="modal"
                                 data-target="#modalobatracik"><i class="bi bi-plus"></i> Obat
                                 Racikan</button>
-                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                            <button hidden type="button" class="btn btn-primary" data-toggle="modal"
                                 data-target="#riwayatpemakaianobatmodal"><i class="bi bi-plus"></i>
-                                Riwayat Pemakaian Obat</button>
-                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                Riwayat Pemakaian Obat Pasien</button>
+                            <button type="button" class="btn btn-warning" data-toggle="modal"
                                 data-target="#riwayatracikan"><i class="bi bi-plus"></i>
                                 Riwayat Racikan</button>
+                            <button type="button" class="btn btn-warning" data-toggle="modal"
+                                data-target="#riwayatresepdokter"><i class="bi bi-plus"></i>
+                                Riwayat Resep</button>
+                            <button type="button" class="btn btn-warning" data-toggle="modal"
+                                data-target="#riwayattemplateresep"><i class="bi bi-plus"></i>
+                                Template Resep</button>
                         </div>
                     </div>
                     <div class="container-fluid">
@@ -46,6 +52,17 @@
                             <div class="field_order_farmasi" id="field_fix_1">
                                 <div>
                                 </div>
+                            </div>
+                        </form>
+                        <form action="" class="form_template">
+                            <div class="form-group form-check mt-3">
+                                <input type="checkbox" class="form-check-input" id="cektemplate" name="cektemplate">
+                                <label class="form-check-label" for="exampleCheck1">Simpan sebagai template</label>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Nama Template</label>
+                                <input type="text" class="form-control col-md-6" id="namatemplate"
+                                    name="namatemplate" placeholder="masukan nama template ...">
                             </div>
                         </form>
                     </div>
@@ -58,6 +75,7 @@
     $(document).ready(function() {
         riwayat_order_farmasi()
     })
+
     function riwayat_order_farmasi() {
         kodekunjungan = $('#kodekunjungan').val()
         spinner = $('#loader')

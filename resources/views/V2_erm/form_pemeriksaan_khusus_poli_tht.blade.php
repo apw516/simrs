@@ -1,20 +1,32 @@
  <style>
-input[type="radio"] {
-  -ms-transform: scale(1.5); /* IE 9 */
-  -webkit-transform: scale(1.5); /* Chrome, Safari, Opera */
-  transform: scale(1.5);
-}
+     input[type="radio"] {
+         -ms-transform: scale(1.5);
+         /* IE 9 */
+         -webkit-transform: scale(1.5);
+         /* Chrome, Safari, Opera */
+         transform: scale(1.5);
+     }
  </style>
  <div class="row">
      <div class="col-md-12">
          <div class="card">
              <div class="card-header bg-secondary">Pemeriksaan Khusus</div>
              <div class="card-body">
+                 <div class="form-check form-check-inline mb-4">
+                     <input class="form-check-input" type="radio" name="cekpemeriksaankhusus"
+                         id="cekpemeriksaankhusus" value="0" selected>
+                     <label class="form-check-label" for="inlineRadio1">Tidak Ada</label>
+                 </div>
+                 <div class="form-check form-check-inline mb-4">
+                     <input class="form-check-input" type="radio" name="cekpemeriksaankhusus"
+                         id="cekpemeriksaankhusus" value="1">
+                     <label class="form-check-label" for="1">Ada</label>
+                 </div>
                  <div class="accordion" id="accordionExampletelinga">
                      <div class="card">
                          <div class="card-header" id="headingOnetelinga">
                              <h2 class="mb-0">
-                                 <button class="btn btn-link btn-block text-left text-dark text-bold collapsed"
+                                 <button disabled class="btn btn-link btn-block text-left text-dark text-bold collapsed"
                                      type="button" data-toggle="collapse" data-target="#collapseOnetelinga"
                                      aria-expanded="true" aria-controls="collapseOnetelinga">
                                      Pemeriksaan Telinga
@@ -146,7 +158,8 @@ input[type="radio"] {
                                                                      <div class="col-md-4">
                                                                          <div class="form-group form-check">
                                                                              <input type="checkbox"
-                                                                                 class="form-check-input" id=""
+                                                                                 class="form-check-input"
+                                                                                 id=""
                                                                                  name="{{ $p->nama_pemeriksaan }}kanan"
                                                                                  value="1">
                                                                              <label class="form-check-label"
@@ -223,7 +236,8 @@ input[type="radio"] {
                      <div class="card">
                          <div class="card-header" id="headingTwohidung">
                              <h2 class="mb-0">
-                                 <button class="btn btn-link btn-block text-left collapsed text-dark text-bold"
+                                 <button disabled
+                                     class="btn btn-link btn-block text-left collapsed text-dark text-bold"
                                      type="button" data-toggle="collapse" data-target="#collapseTwohidung"
                                      aria-expanded="false" aria-controls="collapseTwohidung">
                                      Pemeriksaan Hidung
@@ -503,7 +517,8 @@ input[type="radio"] {
                      <div class="card">
                          <div class="card-header" id="headingThreetenggorokan">
                              <h2 class="mb-0">
-                                 <button class="btn btn-link btn-block text-left collapsed text-dark text-bold"
+                                 <button disabled
+                                     class="btn btn-link btn-block text-left collapsed text-dark text-bold"
                                      type="button" data-toggle="collapse" data-target="#collapseThreetenggorokan"
                                      aria-expanded="false" aria-controls="collapseThreetenggorokan">
                                      Pemeriksaan Tenggorokan
@@ -545,7 +560,9 @@ input[type="radio"] {
                                                                  name="suaraserak" id="suaraserak" value="5">5
                                                          </td>
                                                          <td width="5%"><input type="text"
-                                                                 class="form-control form-control-sm" id="nilaisuaraserak" name="nilaisuaraserak" value="0"></td>
+                                                                 class="form-control form-control-sm"
+                                                                 id="nilaisuaraserak" name="nilaisuaraserak"
+                                                                 value="0"></td>
                                                      </tr>
                                                      <tr>
                                                          <td>2</td>
@@ -564,7 +581,9 @@ input[type="radio"] {
                                                          <td> <input class="form-check-input" type="radio"
                                                                  name="berdehem" id="berdehem" value="5">5</td>
                                                          <td><input type="text"
-                                                                 class="form-control form-control-sm" id="nilaiberdehem" name="nilaiberdehem" value="0"></td>
+                                                                 class="form-control form-control-sm"
+                                                                 id="nilaiberdehem" name="nilaiberdehem"
+                                                                 value="0"></td>
                                                      </tr>
                                                      <tr>
                                                          <td>3</td>
@@ -588,7 +607,9 @@ input[type="radio"] {
                                                                  name="nasaldrip" id="nasaldrip" value="5">5
                                                          </td>
                                                          <td><input type="text"
-                                                                 class="form-control form-control-sm" id="niainasaldrip" name="nilainasaldrip" value="0"></td>
+                                                                 class="form-control form-control-sm"
+                                                                 id="niainasaldrip" name="nilainasaldrip"
+                                                                 value="0"></td>
                                                      </tr>
                                                      <tr>
                                                          <td>4</td>
@@ -612,7 +633,9 @@ input[type="radio"] {
                                                                  name="sulitmenelan" id="sulitmenelan"
                                                                  value="5">5</td>
                                                          <td><input type="text"
-                                                                 class="form-control form-control-sm" id="nilaisulitmenelan" name="nilaisulitmenelan" value="0"></td>
+                                                                 class="form-control form-control-sm"
+                                                                 id="nilaisulitmenelan" name="nilaisulitmenelan"
+                                                                 value="0"></td>
                                                      </tr>
                                                      <tr>
                                                          <td>5</td>
@@ -636,7 +659,9 @@ input[type="radio"] {
                                                                  name="batukbatuk" id="batukbatuk" value="5">5
                                                          </td>
                                                          <td><input type="text"
-                                                                 class="form-control form-control-sm" id="nilaibatukbatuk" name="nilaibatukbatuk" value="0"></td>
+                                                                 class="form-control form-control-sm"
+                                                                 id="nilaibatukbatuk" name="nilaibatukbatuk"
+                                                                 value="0"></td>
                                                      </tr>
                                                      <tr>
                                                          <td>6</td>
@@ -660,7 +685,9 @@ input[type="radio"] {
                                                                  name="sulitbernafas" id="sulitbernafas"
                                                                  value="5">5</td>
                                                          <td><input type="text"
-                                                                 class="form-control form-control-sm" id="nilaisulitbernafas" name="nilaisulitbernafas" value="0"></td>
+                                                                 class="form-control form-control-sm"
+                                                                 id="nilaisulitbernafas" name="nilaisulitbernafas"
+                                                                 value="0"></td>
                                                      </tr>
                                                      <tr>
                                                          <td>7</td>
@@ -684,7 +711,9 @@ input[type="radio"] {
                                                                  name="batukmengganggu" id="batukmengganggu"
                                                                  value="5">5</td>
                                                          <td><input type="text"
-                                                                 class="form-control form-control-sm" id="nilaibatukmengganggu" name="nilaibatukmengganggu" value="0"></td>
+                                                                 class="form-control form-control-sm"
+                                                                 id="nilaibatukmengganggu" name="nilaibatukmengganggu"
+                                                                 value="0"></td>
                                                      </tr>
                                                      <tr>
                                                          <td>8</td>
@@ -708,7 +737,9 @@ input[type="radio"] {
                                                                  name="lendirtenggorokan" id="lendirtenggorokan"
                                                                  value="5">5</td>
                                                          <td><input type="text"
-                                                                 class="form-control form-control-sm" name="nilailendirtenggorokan" id="nilailendirtenggorokan" value="0"></td>
+                                                                 class="form-control form-control-sm"
+                                                                 name="nilailendirtenggorokan"
+                                                                 id="nilailendirtenggorokan" value="0"></td>
                                                      </tr>
                                                      <tr>
                                                          <td>9</td>
@@ -732,11 +763,15 @@ input[type="radio"] {
                                                                  name="asamlambungnaik" id="asamlambungnaik"
                                                                  value="5">5</td>
                                                          <td><input type="text"
-                                                                 class="form-control form-control-sm" name="nilaiasamlambungnaik" id="nilaiasamlambungnaik" value="0"></td>
+                                                                 class="form-control form-control-sm"
+                                                                 name="nilaiasamlambungnaik" id="nilaiasamlambungnaik"
+                                                                 value="0"></td>
                                                      </tr>
                                                      <tr>
-                                                        <td colspan="8" class="text-center text-bold">Total</td>
-                                                        <td><input type="text" class="form-control" value="0" name="totalrsi" id="totalrsi"></td>
+                                                         <td colspan="7" class="text-center text-bold">Total</td>
+                                                         <td colspan="2"><input type="text"
+                                                                 class="form-control" value="0" name="totalrsi2"
+                                                                 id="totalrsi2"></td>
                                                      </tr>
                                                  </table>
                                                  <table class="table table-sm table-bordered mt-3">
@@ -757,7 +792,8 @@ input[type="radio"] {
                                                                      name="edemasubglotik" id="edemasubglotik"
                                                                      value="2"> 2 = Ada</td>
                                                              <td><input type="text" class="form-control"
-                                                                     rows="1" cols="1" value="0" name="nilaiedema" id="nilaiedema"></td>
+                                                                     rows="1" cols="1" value="0"
+                                                                     name="nilaiedema" id="nilaiedema"></td>
                                                          </tr>
                                                          <tr>
                                                              <td>2</td>
@@ -771,7 +807,9 @@ input[type="radio"] {
                                                                      class="form-check-input" type="radio"
                                                                      name="Obliterasi" id="Obliterasi"
                                                                      value="4"> 4 = Komplet</td>
-                                                             <td><input type="text" class="form-control" name="nilaiobliterasi" id="nilaiobliterasi" value="0"></td>
+                                                             <td><input type="text" class="form-control"
+                                                                     name="nilaiobliterasi" id="nilaiobliterasi"
+                                                                     value="0"></td>
                                                          </tr>
                                                          <tr>
                                                              <td>3</td>
@@ -786,16 +824,18 @@ input[type="radio"] {
                                                                      name="Eritema" id="Eritema" value="4">4 =
                                                                  Difus
                                                              </td>
-                                                             <td><input type="text" class="form-control" value="0" name="nilaieritema" id="nilaieritema"></td>
+                                                             <td><input type="text" class="form-control"
+                                                                     value="0" name="nilaieritema"
+                                                                     id="nilaieritema"></td>
                                                          </tr>
                                                          <tr>
                                                              <td>4</td>
                                                              <td>Edema pita suara</td>
                                                              <td>
-                                                                <input class="form-check-input" type="radio"
+                                                                 <input class="form-check-input" type="radio"
                                                                      name="edemapitasuara" id="edemapitasuara"
                                                                      value="0" checked> 0 = Tidak ada <br>
-                                                                <input class="form-check-input" type="radio"
+                                                                 <input class="form-check-input" type="radio"
                                                                      name="edemapitasuara" id="edemapitasuara"
                                                                      value="1">1 = ringan <br> <input
                                                                      class="form-check-input" type="radio"
@@ -807,15 +847,19 @@ input[type="radio"] {
                                                                      class="form-check-input" type="radio"
                                                                      name="edemapitasuara" id="edemapitasuara"
                                                                      value="4">4 =
-                                                                 polipoid</td>
-                                                             <td><input type="text" class="form-control" value="0" name="nilaiedemapitasuara" id="nilaiedemapitasuara"></td>
+                                                                 polipoid
+                                                             </td>
+                                                             <td><input type="text" class="form-control"
+                                                                     value="0" name="nilaiedemapitasuara"
+                                                                     id="nilaiedemapitasuara"></td>
                                                          </tr>
                                                          <tr>
                                                              <td>5</td>
                                                              <td>Edema laring difus</td>
                                                              <td> <input class="form-check-input" type="radio"
-                                                                name="edemalaring" id="edemalaring"
-                                                                value="0" checked> 0 = Tidak ada <br><input class="form-check-input" type="radio"
+                                                                     name="edemalaring" id="edemalaring"
+                                                                     value="0" checked> 0 = Tidak ada <br><input
+                                                                     class="form-check-input" type="radio"
                                                                      name="edemalaring" id="edemalaring"
                                                                      value="1">1 = ringan <br> <input
                                                                      class="form-check-input" type="radio"
@@ -828,16 +872,19 @@ input[type="radio"] {
                                                                      name="edemalaring" id="edemalaring"
                                                                      value="4">4 =
                                                                  obstruksi</td>
-                                                             <td><input type="text" class="form-control" value="0" name="nilaiedemalaring" id="nilaiedemalaring"></td>
+                                                             <td><input type="text" class="form-control"
+                                                                     value="0" name="nilaiedemalaring"
+                                                                     id="nilaiedemalaring"></td>
                                                          </tr>
                                                          <tr>
                                                              <td>6</td>
                                                              <td>Hipertrofi komisura posterior</td>
                                                              <td> <input class="form-check-input" type="radio"
-                                                                name="Hipertrofi" id="Hipertrofi"
-                                                                value="0" checked> 0 = Tidak ada <br><input class="form-check-input" type="radio"
-                                                                     name="Hipertrofi" id="Hipertrofi" value="1"
-                                                                     >1 = ringan <br> <input
+                                                                     name="Hipertrofi" id="Hipertrofi" value="0"
+                                                                     checked> 0 = Tidak ada <br><input
+                                                                     class="form-check-input" type="radio"
+                                                                     name="Hipertrofi" id="Hipertrofi"
+                                                                     value="1">1 = ringan <br> <input
                                                                      class="form-check-input" type="radio"
                                                                      name="Hipertrofi" id="Hipertrofi"
                                                                      value="2">2 = sedang <br> <input
@@ -848,7 +895,9 @@ input[type="radio"] {
                                                                      name="Hipertrofi" id="Hipertrofi"
                                                                      value="4">4 =
                                                                  obstruksi</td>
-                                                             <td><input type="text" class="form-control" value="0" name="nilaihipertrofi" id="nilaihipertrofi"></td>
+                                                             <td><input type="text" class="form-control"
+                                                                     value="0" name="nilaihipertrofi"
+                                                                     id="nilaihipertrofi"></td>
                                                          </tr>
                                                          <tr>
                                                              <td>7</td>
@@ -859,7 +908,9 @@ input[type="radio"] {
                                                                      class="form-check-input" type="radio"
                                                                      name="Granuloma" id="Granuloma" value="2">2
                                                                  = ada </td>
-                                                             <td><input type="text" class="form-control" value="0" name="nilaigranuloma" id="nilaigranuloma"></td>
+                                                             <td><input type="text" class="form-control"
+                                                                     value="0" name="nilaigranuloma"
+                                                                     id="nilaigranuloma"></td>
                                                          </tr>
                                                          <tr>
                                                              <td>8</td>
@@ -870,18 +921,20 @@ input[type="radio"] {
                                                                      class="form-check-input" type="radio"
                                                                      name="Mukus" id="Mukus" value="2">2 =
                                                                  ada </td>
-                                                             <td><input type="text" class="form-control" value="0" name="nilaimukus" id="nilaimukus"></td>
+                                                             <td><input type="text" class="form-control"
+                                                                     value="0" name="nilaimukus"
+                                                                     id="nilaimukus"></td>
                                                          </tr>
                                                          <tr>
                                                              <td></td>
                                                              <td>Tonisila Lingualis</td>
                                                              <td>
-                                                                <input class="form-check-input" type="radio"
+                                                                 <input class="form-check-input" type="radio"
+                                                                     name="Tonisila" id="Tonisila" value="0"
+                                                                     checked> 0 = Tidak ada <br>
+                                                                 <input class="form-check-input" type="radio"
                                                                      name="Tonisila" id="Tonisila"
-                                                                     value="0" checked> 0 = Tidak ada <br>
-                                                                <input class="form-check-input" type="radio"
-                                                                     name="Tonisila" id="Tonisila" value="1"
-                                                                     >Hipertrofi grade I <br>
+                                                                     value="1">Hipertrofi grade I <br>
                                                                  <input class="form-check-input" type="radio"
                                                                      name="Tonisila" id="Tonisila" value="2">
                                                                  Hipertrofi grade II <br>
@@ -889,11 +942,15 @@ input[type="radio"] {
                                                                      name="Tonisila" id="Tonisila"
                                                                      value="3">Hipertrofi grade III
                                                              </td>
-                                                             <td><input type="text" class="form-control" value="0" name="nilaitonisila" id="nilaitonisila"></td>
+                                                             <td><input type="text" class="form-control"
+                                                                     value="0" name="nilaitonisila"
+                                                                     id="nilaitonisila"></td>
                                                          </tr>
                                                          <tr>
                                                              <td colspan="3">Total</td>
-                                                             <td><input type="text" class="form-control" name="totalpatologis" id="totalpatologis" value="0"></td>
+                                                             <td><input type="text" class="form-control"
+                                                                     name="totalpatologis" id="totalpatologis"
+                                                                     value="0"></td>
                                                          </tr>
                                                      </tbody>
                                                  </table>
@@ -909,111 +966,126 @@ input[type="radio"] {
          </div>
      </div>
  </div>
-<script>
-    $('[name=suaraserak]').on('click', function(event) {
-        val = $(this).attr('value')
-        $('#nilaisuaraserak').val(val)
-    })
-    $('[name=berdehem]').on('click', function(event) {
-        val = $(this).attr('value')
-        $('#nilaiberdehem').val(val)
-    })
-    $('[name=nasaldrip]').on('click', function(event) {
-        val = $(this).attr('value')
-        $('#niainasaldrip').val(val)
-    })
-    $('[name=sulitmenelan]').on('click', function(event) {
-        val = $(this).attr('value')
-        $('#nilaisulitmenelan').val(val)
-    })
-    $('[name=batukbatuk]').on('click', function(event) {
-        val = $(this).attr('value')
-        $('#nilaibatukbatuk').val(val)
-    })
-    $('[name=sulitbernafas]').on('click', function(event) {
-        val = $(this).attr('value')
-        $('#nilaisulitbernafas').val(val)
-    })
-    $('[name=batukmengganggu]').on('click', function(event) {
-        val = $(this).attr('value')
-        $('#nilaibatukmengganggu').val(val)
-    })
-    $('[name=lendirtenggorokan]').on('click', function(event) {
-        val = $(this).attr('value')
-        $('#nilailendirtenggorokan').val(val)
-    })
-    $('[name=asamlambungnaik]').on('click', function(event) {
-        val = $(this).attr('value')
-        $('#nilaiasamlambungnaik').val(val)
-    })
+ <script>
+     $('[name=suaraserak]').on('click', function(event) {
+         val = $(this).attr('value')
+         $('#nilaisuaraserak').val(val)
+         hitungtotalrsi()
+     })
+     $('[name=berdehem]').on('click', function(event) {
+         val = $(this).attr('value')
+         $('#nilaiberdehem').val(val)
+         hitungtotalrsi()
+     })
+     $('[name=nasaldrip]').on('click', function(event) {
+         val = $(this).attr('value')
+         $('#niainasaldrip').val(val)
+         hitungtotalrsi()
+     })
+     $('[name=sulitmenelan]').on('click', function(event) {
+         val = $(this).attr('value')
+         $('#nilaisulitmenelan').val(val)
+         hitungtotalrsi()
+     })
+     $('[name=batukbatuk]').on('click', function(event) {
+         val = $(this).attr('value')
+         $('#nilaibatukbatuk').val(val)
+         hitungtotalrsi()
+     })
+     $('[name=sulitbernafas]').on('click', function(event) {
+         val = $(this).attr('value')
+         $('#nilaisulitbernafas').val(val)
+         hitungtotalrsi()
+     })
+     $('[name=batukmengganggu]').on('click', function(event) {
+         val = $(this).attr('value')
+         $('#nilaibatukmengganggu').val(val)
+         hitungtotalrsi()
+     })
+     $('[name=lendirtenggorokan]').on('click', function(event) {
+         val = $(this).attr('value')
+         $('#nilailendirtenggorokan').val(val)
+         hitungtotalrsi()
+     })
+     $('[name=asamlambungnaik]').on('click', function(event) {
+         val = $(this).attr('value')
+         $('#nilaiasamlambungnaik').val(val)
+         hitungtotalrsi()
+     })
 
+     $('[name=edemasubglotik]').on('click', function(event) {
+         val = $(this).attr('value')
+         $('#nilaiedema').val(val)
+         hitungtotalpatologis()
+     })
+     $('[name=Obliterasi]').on('click', function(event) {
+         val = $(this).attr('value')
+         $('#nilaiobliterasi').val(val)
+         hitungtotalpatologis()
+     })
+     $('[name=Eritema]').on('click', function(event) {
+         val = $(this).attr('value')
+         $('#nilaieritema').val(val)
+         hitungtotalpatologis()
+     })
+     $('[name=Hipertrofi]').on('click', function(event) {
+         val = $(this).attr('value')
+         $('#nilaihipertrofi').val(val)
+         hitungtotalpatologis()
+     })
+     $('[name=Granuloma]').on('click', function(event) {
+         val = $(this).attr('value')
+         $('#nilaigranuloma').val(val)
+         hitungtotalpatologis()
+     })
+     $('[name=Mukus]').on('click', function(event) {
+         val = $(this).attr('value')
+         $('#nilaimukus').val(val)
+         hitungtotalpatologis()
+     })
+     $('[name=Tonisila]').on('click', function(event) {
+         val = $(this).attr('value')
+         $('#nilaitonisila').val(val)
+         hitungtotalpatologis()
+     })
+     $('[name=edemapitasuara]').on('click', function(event) {
+         val = $(this).attr('value')
+         $('#nilaiedemapitasuara').val(val)
+         hitungtotalpatologis()
+     })
+     $('[name=edemalaring]').on('click', function(event) {
+         val = $(this).attr('value')
+         $('#nilaiedemalaring').val(val)
+         hitungtotalpatologis()
+     })
+     $('[name=cekpemeriksaankhusus]').on('click', function(event) {
+         value1 = $('#cekpemeriksaankhusus:selected').val();
+     })
+     function hitungtotalpatologis() {
+         a = parseInt($('#nilaiedema').val())
+         b = parseInt($('#nilaiobliterasi').val())
+         c = parseInt($('#nilaieritema').val())
+         d = parseInt($('#nilaihipertrofi').val())
+         e = parseInt($('#nilaigranuloma').val())
+         f = parseInt($('#nilaimukus').val())
+         g = parseInt($('#nilaitonisila').val())
+         h = parseInt($('#nilaiedemapitasuara').val())
+         i = parseInt($('#nilaiedemalaring').val())
+         total = a + b + c + d + e + f + g + h + i
+         $('#totalpatologis').val(total)
+     }
 
-    $('[name=edemasubglotik]').on('click', function(event) {
-        val = $(this).attr('value')
-        $('#nilaiedema').val(val)
-        a = $('#nilaiedema').val()
-        b = $('#nilaiobliterasi').val()
-        a = $('#nilaieritema').val()
-        a = $('#nilaihipertrofi').val()
-        a = $('#nilaigranuloma').val()
-        a = $('#nilaimukus').val()
-        a = $('#nilaitonisila').val()
-        a = $('#nilaiedemapitasuara').val()
-        a = $('#nilaiedemalaring').val()
-    })
-    $('[name=Obliterasi]').on('click', function(event) {
-        val = $(this).attr('value')
-        $('#nilaiobliterasi').val(val)
-    })
-    $('[name=Eritema]').on('click', function(event) {
-        val = $(this).attr('value')
-        $('#nilaieritema').val(val)
-    })
-    $('[name=Hipertrofi]').on('click', function(event) {
-        val = $(this).attr('value')
-        $('#nilaihipertrofi').val(val)
-    })
-    $('[name=Granuloma]').on('click', function(event) {
-        val = $(this).attr('value')
-        $('#nilaigranuloma').val(val)
-    })
-    $('[name=Mukus]').on('click', function(event) {
-        val = $(this).attr('value')
-        $('#nilaimukus').val(val)
-    })
-    $('[name=Tonisila]').on('click', function(event) {
-        val = $(this).attr('value')
-        $('#nilaitonisila').val(val)
-    })
-    $('[name=edemapitasuara]').on('click', function(event) {
-        val = $(this).attr('value')
-        $('#nilaiedemapitasuara').val(val)
-    })
-    $('[name=edemalaring]').on('click', function(event) {
-        val = $(this).attr('value')
-        $('#nilaiedemalaring').val(val)
-    })
-
-    function hitungtotalpatologis(total){
-        $('#totalpatologis').val(total)
-    }
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+     function hitungtotalrsi() {
+         a = parseInt($('#nilaisuaraserak').val())
+         b = parseInt($('#nilaiberdehem').val())
+         c = parseInt($('#niainasaldrip').val())
+         d = parseInt($('#nilaisulitmenelan').val())
+         e = parseInt($('#nilaibatukbatuk').val())
+         f = parseInt($('#nilaisulitbernafas').val())
+         g = parseInt($('#nilaibatukmengganggu').val())
+         h = parseInt($('#nilailendirtenggorokan').val())
+         i = parseInt($('#nilaiasamlambungnaik').val())
+         rsi = a + b + c + d + e + f + g + h + i
+         $('#totalrsi2').val(rsi)
+     }
+ </script>
