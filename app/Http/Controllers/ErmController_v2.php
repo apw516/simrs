@@ -18,6 +18,8 @@ use App\Models\ts_kunjungan;
 use App\Models\erm_mata_kanan_kiri;
 use App\Models\template_resep_header;
 use App\Models\template_resep_detail;
+use App\Models\erm_form_khusus_tht;
+
 class ErmController_v2 extends Controller
 {
     public function formpemeriksaan_dokter(Request $request)
@@ -241,12 +243,12 @@ class ErmController_v2 extends Controller
     }
     public function ambil_riwayat_template_obat_by_dokter(Request $request)
     {
-        $header = db::connection('mysql2')->select('select * from erm_template_resep_header where kode_paramedis = ?',[auth()->user()->kode_paramedis]);
+        $header = db::connection('mysql2')->select('select * from erm_template_resep_header where kode_paramedis = ?', [auth()->user()->kode_paramedis]);
 
         $detail = db::connection('mysql2')->select('SELECT * FROM erm_template_resep_header a
         INNER JOIN erm_template_resep_detail b ON a.`id` = b.id_header
-        WHERE a.`kode_paramedis` = ?',[auth()->user()->kode_paramedis]);
-        return view('V2_erm.tabel_template_obat',compact([
+        WHERE a.`kode_paramedis` = ?', [auth()->user()->kode_paramedis]);
+        return view('V2_erm.tabel_template_obat', compact([
             'header',
             'detail'
         ]));
@@ -421,7 +423,7 @@ class ErmController_v2 extends Controller
         // $rm = $request->rm;
         $kode_kunjungan = $request->kodekunjungan;
         // dd($kode_kunjungan);
-        $template = DB::connection('mysql2')->select('select * from erm_template_resep_detail where id_header =?',[$request->id]);
+        $template = DB::connection('mysql2')->select('select * from erm_template_resep_detail where id_header =?', [$request->id]);
         $str = "";
         foreach ($template as $d) {
             $str .=   "<div class='row mt-2 text-xs'><div class='col-md-2'>
@@ -719,6 +721,7 @@ class ErmController_v2 extends Controller
                 'tindak_lanjut' => $pulang . '|' . $kontrol . '|' . $konsul . '|' . $rawatinap . '|' . $rujukkeluar . '|' . trim($dataSet['keterangantindaklanjut']),
                 'versi' => '2',
                 'status' => '1',
+                'pemeriksaan_khusus' => (empty($dataSet['cekpemeriksaankhusus'])) ? 0 : $dataSet['cekpemeriksaankhusus'],
                 'signature' => 'SUDAH VALIDASI'
             ];
         } elseif (auth()->user()->unit == '1026') {
@@ -777,6 +780,7 @@ class ErmController_v2 extends Controller
                 'keterangan_tindak_lanjut_2' => trim($dataSet['jawabankonsul']),
                 'versi' => 2,
                 'status' => '1',
+                'pemeriksaan_khusus' => (empty($dataSet['cekpemeriksaankhusus'])) ? 0 : $dataSet['cekpemeriksaankhusus'],
                 'signature' => 'SUDAH VALIDASI'
             ];
         } else {
@@ -832,6 +836,7 @@ class ErmController_v2 extends Controller
                 'tindak_lanjut' => $pulang . '|' . $kontrol . '|' . $konsul . '|' . $rawatinap . '|' . $rujukkeluar . '|' . trim(trim($dataSet['keterangantindaklanjut'])),
                 'versi' => 2,
                 'status' => '1',
+                'pemeriksaan_khusus' => (empty($dataSet['cekpemeriksaankhusus'])) ? 0 : $dataSet['cekpemeriksaankhusus'],
                 'signature' => 'SUDAH VALIDASI'
             ];
             if (auth()->user()->unit == '1014') {
@@ -873,6 +878,12 @@ class ErmController_v2 extends Controller
         } else {
             $asdok = assesmenawaldokter::create($data);
             $id_assdok = $asdok->id;
+        }
+
+        if (auth()->user()->unit == '1019') {
+            if ($dataSet['cekpemeriksaankhusus'] == 1) {
+                $save_pk = $this->mappingpemeriksaantht($dataSet,$id_assdok);
+            }
         }
         //order farmasi
         // dd($arrayindex_far);
@@ -1228,6 +1239,145 @@ class ErmController_v2 extends Controller
         ];
         echo json_encode($data);
         die;
+    }
+    public function mappingpemeriksaantht($dataSet,$id_assdok)
+    {
+        //telinga kiri
+        $lapangkiri = (empty($dataSet['Lapangkiri'])) ? 0 : $dataSet['Lapangkiri'];
+        $sempitkiri = (empty($dataSet['Sempitkiri'])) ? 0 : $dataSet['Sempitkiri'];
+        $Destruksikiri = (empty($dataSet['Destruksikiri'])) ? 0 : $dataSet['Destruksikiri'];
+        $Serumenkiri = (empty($dataSet['Serumenkiri'])) ? 0 : $dataSet['Serumenkiri'];
+        $Sekretkiri = (empty($dataSet['Sekretkiri'])) ? 0 : $dataSet['Sekretkiri'];
+        $Jamurkiri = (empty($dataSet['Jamurkiri'])) ? 0 : $dataSet['Jamurkiri'];
+        $Kolesteatomakiri = (empty($dataSet['Kolesteatomakiri'])) ? 0 : $dataSet['Kolesteatomakiri'];
+        $Masaataujaringankiri = (empty($dataSet['Massa atau Jaringankiri'])) ? 0 : $dataSet['Massa atau Jaringankiri'];
+        $Bendaasingkiri = (empty($dataSet['Benda Asingkiri'])) ? 0 : $dataSet['Benda Asingkiri'];
+        $LTlainkiri = (empty($dataSet['LT Lain-Lainkiri'])) ? 0 : $dataSet['LT Lain-Lainkiri'];
+        $ltketeranganlainkiri = $dataSet['ltketeranganlainkiri'];
+        $intaknormalkiri = (empty($dataSet['Intak - Normalkiri'])) ? 0 : $dataSet['Intak - Normalkiri'];
+        $intakhiperemiskiri = (empty($dataSet['Intak - Hiperemiskiri'])) ? 0 : $dataSet['Intak - Hiperemiskiri'];
+        $intakbulgingkiri = (empty($dataSet['Intak - Bulgingkiri'])) ? 0 : $dataSet['Intak - Bulgingkiri'];
+        $intakretraksikiri = (empty($dataSet['Intak - Retraksikiri'])) ? 0 : $dataSet['Intak - Retraksikiri'];
+        $intaksklerotikkiri = (empty($dataSet['Intak - Sklerotikkiri'])) ? 0 : $dataSet['Intak - Sklerotikkiri'];
+        $perforasisentralkiri = (empty($dataSet['Perforasi - Sentralkiri'])) ? 0 : $dataSet['Perforasi - Sentralkiri'];
+        $perforasiatikkiri = (empty($dataSet['Perforasi - Atikkiri'])) ? 0 : $dataSet['Perforasi - Atikkiri'];
+        $perforasimarginalkiri = (empty($dataSet['Perforasi - Marginalkiri'])) ? 0 : $dataSet['Perforasi - Marginalkiri'];
+        $perforasilainlainkiri = (empty($dataSet['Perforasi - Lain-Lainkiri'])) ? 0 : $dataSet['Perforasi - Lain-Lainkiri'];
+        $mtketeranganlainkiri = $dataSet['mtketeranganlainkiri'];
+        $mukosakiri = $dataSet['mukosakiri'];
+        $oslkelkiri = $dataSet['oslkelkiri'];
+        $Isthmuskiri = $dataSet['Isthmuskiri'];
+        $keteranganlainkiri = $dataSet['keteranganlainkiri'];
+
+        $telingakiri = $lapangkiri . '|' . $sempitkiri . '|' . $Destruksikiri . '|' . $Serumenkiri . '|' . $Sekretkiri . '|' . $Jamurkiri . '|' . $Kolesteatomakiri . '|' . $Masaataujaringankiri . '|' . $Bendaasingkiri . '|' . $LTlainkiri . '|' . $ltketeranganlainkiri . '|' . $intaknormalkiri . '|' . $intakhiperemiskiri . '|' . $intakbulgingkiri . '|' . $intakretraksikiri . '|' . $intaksklerotikkiri . '|' . $perforasisentralkiri . '|' . $perforasiatikkiri . '|' . $perforasimarginalkiri . '|' . $perforasilainlainkiri . '|' . $mtketeranganlainkiri . '|' . $mukosakiri . '|' . $oslkelkiri . '|' . $Isthmuskiri . '|' . $keteranganlainkiri;
+
+        //telinga kanan
+        $lapangkanan = (empty($dataSet['Lapangkanan'])) ? 0 : $dataSet['Lapangkanan'];
+        $sempitkanan = (empty($dataSet['Sempitkanan'])) ? 0 : $dataSet['Sempitkanan'];
+        $Destruksikanan = (empty($dataSet['Destruksikanan'])) ? 0 : $dataSet['Destruksikanan'];
+        $Serumenkanan = (empty($dataSet['Serumenkanan'])) ? 0 : $dataSet['Serumenkanan'];
+        $Sekretkanan = (empty($dataSet['Sekretkanan'])) ? 0 : $dataSet['Sekretkanan'];
+        $Jamurkanan = (empty($dataSet['Jamurkanan'])) ? 0 : $dataSet['Jamurkanan'];
+        $Kolesteatomakanan = (empty($dataSet['Kolesteatomakanan'])) ? 0 : $dataSet['Kolesteatomakanan'];
+        $Masaataujaringankanan = (empty($dataSet['Massa atau Jaringankanan'])) ? 0 : $dataSet['Massa atau Jaringankanan'];
+        $Bendaasingkanan = (empty($dataSet['Benda Asingkanan'])) ? 0 : $dataSet['Benda Asingkanan'];
+        $LTlainkanan = (empty($dataSet['LT Lain-Lainkanan'])) ? 0 : $dataSet['LT Lain-Lainkanan'];
+        $ltketeranganlainkanan = $dataSet['ltketeranganlainkanan'];
+        $intaknormalkanan = (empty($dataSet['Intak - Normalkanan'])) ? 0 : $dataSet['Intak - Normalkanan'];
+        $intakhiperemiskanan = (empty($dataSet['Intak - Hiperemiskanan'])) ? 0 : $dataSet['Intak - Hiperemiskanan'];
+        $intakbulgingkanan = (empty($dataSet['Intak - Bulgingkanan'])) ? 0 : $dataSet['Intak - Bulgingkanan'];
+        $intakretraksikanan = (empty($dataSet['Intak - Retraksikanan'])) ? 0 : $dataSet['Intak - Retraksikanan'];
+        $intaksklerotikkanan = (empty($dataSet['Intak - Sklerotikkanan'])) ? 0 : $dataSet['Intak - Sklerotikkanan'];
+        $perforasisentralkanan = (empty($dataSet['Perforasi - Sentralkanan'])) ? 0 : $dataSet['Perforasi - Sentralkanan'];
+        $perforasiatikkanan = (empty($dataSet['Perforasi - Atikkanan'])) ? 0 : $dataSet['Perforasi - Atikkanan'];
+        $perforasimarginalkanan = (empty($dataSet['Perforasi - Marginalkanan'])) ? 0 : $dataSet['Perforasi - Marginalkanan'];
+        $perforasilainlainkanan = (empty($dataSet['Perforasi - Lain-Lainkanan'])) ? 0 : $dataSet['Perforasi - Lain-Lainkanan'];
+        $mtketeranganlainkanan = $dataSet['mtketeranganlainkanan'];
+        $mukosakanan = $dataSet['mukosakanan'];
+        $oslkelkanan = $dataSet['oslkelkanan'];
+        $Isthmuskanan = $dataSet['Isthmuskanan'];
+        $keteranganlainkanan = $dataSet['keteranganlainkanan'];
+
+        $telingakanan = $lapangkanan . '|' . $sempitkanan . '|' . $Destruksikanan . '|' . $Serumenkanan . '|' . $Sekretkanan . '|' . $Jamurkanan . '|' . $Kolesteatomakanan . '|' . $Masaataujaringankanan . '|' . $Bendaasingkanan . '|' . $LTlainkanan . '|' . $ltketeranganlainkanan . '|' . $intaknormalkanan . '|' . $intakhiperemiskanan . '|' . $intakbulgingkanan . '|' . $intakretraksikanan . '|' . $intaksklerotikkanan . '|' . $perforasisentralkanan . '|' . $perforasiatikkanan . '|' . $perforasimarginalkanan . '|' . $perforasilainlainkanan . '|' . $mtketeranganlainkanan . '|' . $mukosakanan . '|' . $oslkelkanan . '|' . $Isthmuskanan . '|' . $keteranganlainkanan;
+
+        $kesimpulantelinga = $dataSet['kesimpulantelinga'];
+        $anjurantelinga = $dataSet['anjurantelinga'];
+
+        //hidungkiri
+        $hidunglapangkiri = (empty($dataSet['hidungLapangkiri'])) ? 0 : $dataSet['hidungLapangkiri'];
+        $hidungSempitkiri = (empty($dataSet['hidungSempitkiri'])) ? 0 : $dataSet['hidungSempitkiri'];
+        $hidungMukosaPucatkiri = (empty($dataSet['hidungMukosa Pucatkiri'])) ? 0 : $dataSet['hidungMukosa Pucatkiri'];
+        $hidungMukosaHiperemiskiri = (empty($dataSet['hidungMukosa Hiperemiskiri'])) ? 0 : $dataSet['hidungMukosa Hiperemiskiri'];
+        $hidungKavumNasiMukosaEdemakiri = (empty($dataSet['hidungKavum Nasi Mukosa Edemakiri'])) ? 0 : $dataSet['hidungKavum Nasi Mukosa Edemakiri'];
+        $hidungMassakiri = (empty($dataSet['hidungMassakiri'])) ? 0 : $dataSet['hidungMassakiri'];
+        $hidungKavumNasiPolipkiri = (empty($dataSet['hidungKavum Nasi Polipkiri'])) ? 0 : $dataSet['hidungKavum Nasi Polipkiri'];
+        $hidungEutrofikiri = (empty($dataSet['hidungEutrofikiri'])) ? 0 : $dataSet['hidungEutrofikiri'];
+        $hidungSempitkihidungHipertrofikiriri = (empty($dataSet['hidungHipertrofikiri'])) ? 0 : $dataSet['hidungHipertrofikiri'];
+        $hidungAtrofikiri = (empty($dataSet['hidungAtrofikiri'])) ? 0 : $dataSet['hidungAtrofikiri'];
+        $hidungTerbukakiri = (empty($dataSet['hidungTerbukakiri'])) ? 0 : $dataSet['hidungTerbukakiri'];
+        $hidungTertutupkiri = (empty($dataSet['hidungTertutupkiri'])) ? 0 : $dataSet['hidungTertutupkiri'];
+        $hidungMukosaEdemakiri = (empty($dataSet['hidungMukosa Edemakiri'])) ? 0 : $dataSet['hidungMukosa Edemakiri'];
+        $hidungSeptumPolipkiri = (empty($dataSet['hidungSeptum Polipkiri'])) ? 0 : $dataSet['hidungSeptum Polipkiri'];
+        $hidungSekretkiri = (empty($dataSet['hidungSekretkiri'])) ? 0 : $dataSet['hidungSekretkiri'];
+        $hidungLuruskiri = (empty($dataSet['hidungLuruskiri'])) ? 0 : $dataSet['hidungLuruskiri'];
+        $hidungDeviasikiri = (empty($dataSet['hidungDeviasikiri'])) ? 0 : $dataSet['hidungDeviasikiri'];
+        $hidungSpinakiri = (empty($dataSet['hidungSpinakiri'])) ? 0 : $dataSet['hidungSpinakiri'];
+        $hidungNormalkiri = (empty($dataSet[' hidungNormalkiri'])) ? 0 : $dataSet[' hidungNormalkiri'];
+        $hidungAdenoidkiri = (empty($dataSet[' hidungAdenoidkiri'])) ? 0 : $dataSet[' hidungAdenoidkiri'];
+        $hidungKeradangankiri = (empty($dataSet[' hidungKeradangankiri'])) ? 0 : $dataSet[' hidungKeradangankiri'];
+        $hidungMassakiri2 = (empty($dataSet[' ns  hidungMassakiri'])) ? 0 : $dataSet[' ns  hidungMassakiri'];
+        $lainlainhidungkiri = $dataSet['lain-lainhidungkiri'];
+
+        $hidungkiri = $hidunglapangkiri . '|' . $hidungSempitkiri . '|' . $hidungMukosaPucatkiri . '|' . $hidungMukosaHiperemiskiri . '|' . $hidungKavumNasiMukosaEdemakiri . '|' . $hidungMassakiri . '|' . $hidungKavumNasiPolipkiri . '|' . $hidungEutrofikiri . '|' . $hidungSempitkihidungHipertrofikiriri . '|' . $hidungAtrofikiri . '|' . $hidungTerbukakiri . '|' . $hidungTertutupkiri . '|' . $hidungMukosaEdemakiri . '|' . $hidungSeptumPolipkiri . '|' . $hidungSekretkiri . '|' . $hidungLuruskiri . '|' . $hidungDeviasikiri . '|' . $hidungSpinakiri . '|' . $hidungNormalkiri . '|' . $hidungAdenoidkiri . '|' . $hidungKeradangankiri . '|' . $hidungMassakiri2 . '|' . $lainlainhidungkiri;
+        // dd($dataSet);
+        //hidungkanan
+        $hidunglapangkanan = (empty($dataSet['hidungLapangkanan'])) ? 0 : $dataSet['hidungLapangkanan'];
+        $hidungSempitkanan = (empty($dataSet['hidungSempitkanan'])) ? 0 : $dataSet['hidungSempitkanan'];
+        $hidungMukosaPucatkanan = (empty($dataSet['hidungMukosa Pucatkanan'])) ? 0 : $dataSet['hidungMukosa Pucatkanan'];
+        $hidungMukosaHiperemiskanan = (empty($dataSet['hidungMukosa Hiperemiskanan'])) ? 0 : $dataSet['hidungMukosa Hiperemiskanan'];
+        $hidungKavumNasiMukosaEdemakanan = (empty($dataSet['hidungKavum Nasi Mukosa Edemakanan'])) ? 0 : $dataSet['hidungKavum Nasi Mukosa Edemakanan'];
+        $hidungMassakanan = (empty($dataSet['hidungMassakanan'])) ? 0 : $dataSet['hidungMassakanan'];
+        $hidungKavumNasiPolipkanan = (empty($dataSet['hidungKavum Nasi Polipkanan'])) ? 0 : $dataSet['hidungKavum Nasi Polipkanan'];
+        $hidungEutrofikanan = (empty($dataSet['hidungEutrofikanan'])) ? 0 : $dataSet['hidungEutrofikanan'];
+        $hidungSempitkihidungHipertrofikananri = (empty($dataSet['hidungHipertrofikanan'])) ? 0 : $dataSet['hidungHipertrofikanan'];
+        $hidungAtrofikanan = (empty($dataSet['hidungAtrofikanan'])) ? 0 : $dataSet['hidungAtrofikanan'];
+        $hidungTerbukakanan = (empty($dataSet['hidungTerbukakanan'])) ? 0 : $dataSet['hidungTerbukakanan'];
+        $hidungTertutupkanan = (empty($dataSet['hidungTertutupkanan'])) ? 0 : $dataSet['hidungTertutupkanan'];
+        $hidungMukosaEdemakanan = (empty($dataSet['hidungMukosa Edemakanan'])) ? 0 : $dataSet['hidungMukosa Edemakanan'];
+        $hidungSeptumPolipkanan = (empty($dataSet['hidungSeptum Polipkanan'])) ? 0 : $dataSet['hidungSeptum Polipkanan'];
+        $hidungSekretkanan = (empty($dataSet['hidungSekretkanan'])) ? 0 : $dataSet['hidungSekretkanan'];
+        $hidungLuruskanan = (empty($dataSet['hidungLuruskanan'])) ? 0 : $dataSet['hidungLuruskanan'];
+        $hidungDeviasikanan = (empty($dataSet['hidungDeviasikanan'])) ? 0 : $dataSet['hidungDeviasikanan'];
+        $hidungSpinakanan = (empty($dataSet['hidungSpinakanan'])) ? 0 : $dataSet['hidungSpinakanan'];
+        $hidungNormalkanan = (empty($dataSet[' hidungNormalkanan'])) ? 0 : $dataSet[' hidungNormalkanan'];
+        $hidungAdenoidkanan = (empty($dataSet[' hidungAdenoidkanan'])) ? 0 : $dataSet[' hidungAdenoidkanan'];
+        $hidungKeradangankanan = (empty($dataSet[' hidungKeradangankanan'])) ? 0 : $dataSet[' hidungKeradangankanan'];
+        $hidungMassakanan2 = (empty($dataSet[' ns  hidungMassakanan'])) ? 0 : $dataSet[' ns  hidungMassakanan'];
+        $lainlainhidungkanan = $dataSet['lain-lainhidungkanan'];
+        $hidungkanan = $hidunglapangkanan . '|' . $hidungSempitkanan . '|' . $hidungMukosaPucatkanan . '|' . $hidungMukosaHiperemiskanan . '|' . $hidungKavumNasiMukosaEdemakanan . '|' . $hidungMassakanan . '|' . $hidungKavumNasiPolipkanan . '|' . $hidungEutrofikanan . '|' . $hidungSempitkihidungHipertrofikananri . '|' . $hidungAtrofikanan . '|' . $hidungTerbukakanan . '|' . $hidungTertutupkanan . '|' . $hidungMukosaEdemakanan . '|' . $hidungSeptumPolipkanan . '|' . $hidungSekretkanan . '|' . $hidungLuruskanan . '|' . $hidungDeviasikanan . '|' . $hidungSpinakanan . '|' . $hidungNormalkanan . '|' . $hidungAdenoidkanan . '|' . $hidungKeradangankanan . '|' . $hidungMassakanan2 . '|' . $lainlainhidungkanan;
+        $kesimpulanhidung = $dataSet['kesimpulanhidung'];
+
+        $tenggorokan = $dataSet['suaraserak'] . '|' . $dataSet['nilaisuaraserak'] . '|' . $dataSet['berdehem'] . '|' . $dataSet['nilaiberdehem'] . '|' . $dataSet['nasaldrip'] . '|' . $dataSet['nilainasaldrip'] . '|' . $dataSet['sulitmenelan'] . '|' . $dataSet['nilaisulitmenelan'] . '|' . $dataSet['batukbatuk'] . '|' . $dataSet['nilaibatukbatuk'] . '|' . $dataSet['sulitbernafas'] . '|' . $dataSet['nilaisulitbernafas'] . '|' . $dataSet['batukmengganggu'] . '|' . $dataSet['nilaibatukmengganggu'] . '|' . $dataSet['lendirtenggorokan'] . '|' . $dataSet['nilailendirtenggorokan'] . '|' . $dataSet['asamlambungnaik'] . '|' . $dataSet['nilaiasamlambungnaik'] . '|' . $dataSet['totalrsi2'] . '|' . $dataSet['edemasubglotik'] . '|' . $dataSet['nilaiedema'] . '|' . $dataSet['Obliterasi'] . '|' . $dataSet['nilaiobliterasi'] . '|' . $dataSet['Eritema'] . '|' . $dataSet['nilaieritema'] . '|' . $dataSet['edemapitasuara'] . '|' . $dataSet['nilaiedemapitasuara'] . '|' . $dataSet['edemalaring'] . '|' . $dataSet['nilaiedemalaring'] . '|' . $dataSet['Hipertrofi'] . '|' . $dataSet['nilaihipertrofi'] . '|' . $dataSet['Granuloma'] . '|' . $dataSet['nilaigranuloma'] . '|' . $dataSet['Mukus'] . '|' . $dataSet['nilaimukus'] . '|' . $dataSet['Tonisila'] . '|' . $dataSet['nilaitonisila'] . '|' . $dataSet['totalpatologis'];
+        $data_tht = [
+            'kode_kunjungan' => $dataSet['kodekunjungan'],
+            'id_asdok' => $id_assdok,
+            'telingakanan' => $telingakanan,
+            'telingakiri' => $telingakiri,
+            'hidungkanan' => $hidungkanan,
+            'hidungkiri' => $hidungkiri,
+            'kesimpulantelinga' => $kesimpulantelinga,
+            'anjurantelinga' => $anjurantelinga,
+            'kesimpulanhidung' => $kesimpulanhidung,
+            'RSI_TENGGOROKAN' => $tenggorokan
+        ];
+        $cek = DB::connection('mysql2')->select('select * from erm_form_khusus_tht where kode_kunjungan = ?',[$dataSet['kodekunjungan']]);
+        if(count($cek) > 0){
+            erm_form_khusus_tht::whereRaw('kode_kunjungan = ?', array($dataSet['kodekunjungan']))->update($data_tht);
+            $id_assdok = $cek[0]->id;
+        }else{
+            erm_form_khusus_tht::create($data_tht);
+        }
+        return 'ok';
     }
     public function Add_draft_komponen(Request $request)
     {
@@ -2075,6 +2225,7 @@ class ErmController_v2 extends Controller
     {
         $kodekunjungan = $request->kodekunjungan;
         $ts_kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+        $data_assesment = db::connection('mysql2')->select('select * from assesmen_dokters where id_kunjungan = ?',[$kodekunjungan]);
         if ($ts_kunjungan[0]->kode_unit == '1014') {
             $RO_MATA = db::connection('mysql')->select('select * from erm_mata_kanan_kiri where kode_kunjungan = ? ', [$kodekunjungan]);
             return view('V2_erm.form_pemeriksaan_khusus_poli_mata', compact([
@@ -2082,8 +2233,17 @@ class ErmController_v2 extends Controller
             ]));
         } elseif ($ts_kunjungan[0]->kode_unit == '1019') {
             $penyakit = DB::select('SELECT * from mt_penyakit');
+            if(count($data_assesment) > 0){
+                if($data_assesment[0]->pemeriksaan_khusus == 1){
+                    $data_pk = DB::connection('mysql2')->select('select * from erm_form_khusus_tht where kode_kunjungan = ?',[$kodekunjungan]);
+                }else{
+                    $data_pk = [];
+                }
+            }else{
+                $data_pk = [];
+            }
             return view('V2_erm.form_pemeriksaan_khusus_poli_tht', compact([
-                'penyakit'
+                'penyakit','data_assesment','data_pk'
             ]));
         }
     }
