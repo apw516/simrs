@@ -422,9 +422,9 @@ class SimrsController extends Controller
                 'riwayat_kunjungan' => DB::select("CALL SP_RIWAYAT_KUNJUNGAN_PX('$request->nomorrm')"),
                 'alasan_masuk' => DB::select('select * from mt_alasan_masuk'),
                 'mt_penjamin' => DB::select('select * from mt_penjamin'),
-                'mt_unit' => mt_unit::where('kelas_unit', '=', "2")->get()
+                'mt_unit' => mt_unit::where('kelas_unit', '=', "2")->get(),
                 // 'nomorrm' => $request->nomorrm,
-                // 'mt_pasien' => Pasien::where('no_rm', $request->nomorrm)->get(),
+                'mt_pasien' => Pasien::where('no_rm', $request->nomorrm)->get(),
                 // 'mt_unit' => mt_unit::where('kelas_unit', 2)->get(),
                 // 'provinsi' => $v->referensi_propinsi(),
                 // 'cek_kunjungan' => $total
