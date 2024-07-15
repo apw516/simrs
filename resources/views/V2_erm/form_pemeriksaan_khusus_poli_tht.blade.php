@@ -32,7 +32,7 @@
                      <div class="card">
                          <div class="card-header" id="headingOnetelinga">
                              <h2 class="mb-0">
-                                 <button disabled class="btn btn-link btn-block text-left text-dark text-bold collapsed"
+                                 <button disabled class="btn btn-link btn-block text-left text-dark text-bold collapsed colpk"
                                      type="button" data-toggle="collapse" data-target="#collapseOnetelinga"
                                      aria-expanded="true" aria-controls="collapseOnetelinga">
                                      Pemeriksaan Telinga
@@ -336,7 +336,7 @@
                          <div class="card-header" id="headingTwohidung">
                              <h2 class="mb-0">
                                  <button disabled
-                                     class="btn btn-link btn-block text-left collapsed text-dark text-bold"
+                                     class="btn btn-link btn-block text-left collapsed text-dark text-bold colpk"
                                      type="button" data-toggle="collapse" data-target="#collapseTwohidung"
                                      aria-expanded="false" aria-controls="collapseTwohidung">
                                      Pemeriksaan Hidung
@@ -711,7 +711,7 @@
                          <div class="card-header" id="headingThreetenggorokan">
                              <h2 class="mb-0">
                                  <button disabled
-                                     class="btn btn-link btn-block text-left collapsed text-dark text-bold"
+                                     class="btn btn-link btn-block text-left collapsed text-dark text-bold colpk"
                                      type="button" data-toggle="collapse" data-target="#collapseThreetenggorokan"
                                      aria-expanded="false" aria-controls="collapseThreetenggorokan">
                                      Pemeriksaan Tenggorokan
@@ -1263,9 +1263,9 @@
      function cekp() {
          val1 = $('#cekpemeriksaankhusus').val()
          if (val1 == 1) {
-             $('.collapsed').removeAttr('disabled', true)
+             $('.colpk').removeAttr('disabled', true)
          } else {
-             $('.collapsed').attr('disabled', true)
+             $('.colpk').attr('disabled', true)
          }
      }
 
