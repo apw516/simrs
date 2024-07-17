@@ -815,7 +815,11 @@ class ErmController extends Controller
                 echo json_encode($data);
                 die;
             }
-
+            if(empty($dataSet['pasienmengeluhnyeri'])){
+                $skalanyeri = 0;
+            }else{
+                $skalanyeri = 1;
+            }
             $data = [
                 'counter' => $dataSet['counter'],
                 'no_rm' => $dataSet['nomorrm'],
@@ -835,7 +839,7 @@ class ErmController extends Controller
                 'keterangan_alat_bantu' => $dataSet['keteranganalatbantulain'],
                 'cacattubuh' => $dataSet['cacattubuh'],
                 'keterangancacattubuh' => $dataSet['keterangancacattubuhlainnya'],
-                'Keluhannyeri' => $dataSet['pasienmengeluhnyeri'],
+                'Keluhannyeri' => $skalanyeri,
                 'skalenyeripasien' => $dataSet['skalanyeripasien'],
                 'face' => $dataSet['Face'],
                 'leg' => $dataSet['Leg'],
