@@ -57,7 +57,7 @@
                 <div class="v_form_order_radiologi">
 
                 </div>
-                <button type="button" class="btn btn-success float-right" onclick="simpanpemeriksaandokter()"><i
+                <button @if(count($assdok_now) > 0) @if($assdok_now[0]->pic != auth()->user()->id ) disabled @endif @endif type="button" class="btn btn-success float-right" onclick="simpanpemeriksaandokter()"><i
                     class="bi bi-save"></i>
                     Simpan</button>
                     <button type="button" class="btn btn-danger float-right ml-1 mr-1" onclick="ambildatapasien()()"><i

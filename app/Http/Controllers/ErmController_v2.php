@@ -27,11 +27,11 @@ class ErmController_v2 extends Controller
         $kodekunjungan = $request->kodekunjungan;
         $nomorrm = $request->nomorrm;
         $resume_perawat = DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE kode_kunjungan = ?', [$request->kodekunjungan]);
-        $last_assdok = DB::connection('mysql2')->select('SELECT * FROM assesmen_dokters
+        $last_assdok = DB::connection('mysql')->select('SELECT * FROM assesmen_dokters
         WHERE id_pasien = ? AND kode_unit = ? AND id = (SELECT MAX(id) FROM assesmen_dokters WHERE id_pasien = ? AND kode_unit = ?)', [$nomorrm, auth()->user()->unit, $nomorrm, auth()->user()->unit]);
         // dd($last_assdok);
         $mt_pasien = DB::select('select *,fc_umur(no_rm) as usia from mt_pasien where no_rm = ?', [$nomorrm]);
-        $assdok_now = DB::connection('mysql2')->select('SELECT * from assesmen_dokters WHERE id_kunjungan = ?', [$request->kodekunjungan]);
+        $assdok_now = DB::connection('mysql')->select('SELECT * from assesmen_dokters WHERE id_kunjungan = ?', [$request->kodekunjungan]);
         $kelas = '3';
         $layanan = '';
         $unit = auth()->user()->unit;
