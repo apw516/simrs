@@ -2345,7 +2345,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-bold font-italic">Diagnosa banding</td>
+                                <td class="text-bold font-italic">Diagnosa sekunder</td>
                                 <td colspan="2">
                                     <textarea name="diagnosabanding" id="diagnosabanding" class="form-control">{{ $resume[0]->diagnosabanding }}</textarea>
                                 </td>
