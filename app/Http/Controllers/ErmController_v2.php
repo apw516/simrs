@@ -745,7 +745,7 @@ class ErmController_v2 extends Controller
                 'counter' => $ts_kunjungan[0]->counter,
                 'id_kunjungan' => $dataSet['kodekunjungan'],
                 'id_pasien' => $ts_kunjungan[0]->no_rm,
-                'id_asskep' => $resume_perawat[0]->id,
+                'id_asskep' => $id_asskep,
                 'pic' => auth()->user()->id,
                 'nama_dokter' => auth()->user()->nama,
                 'tgl_entry' => $this->get_now(),
@@ -811,7 +811,7 @@ class ErmController_v2 extends Controller
                 'counter' => $ts_kunjungan[0]->counter,
                 'id_kunjungan' => $dataSet['kodekunjungan'],
                 'id_pasien' => $ts_kunjungan[0]->no_rm,
-                'id_asskep' => $resume_perawat[0]->id,
+                'id_asskep' => $id_asskep,
                 'pic' => auth()->user()->id,
                 'nama_dokter' => auth()->user()->nama,
                 'tgl_entry' => $this->get_now(),
@@ -2227,7 +2227,7 @@ class ErmController_v2 extends Controller
         $ts_kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
         $data_assesment = db::connection('mysql2')->select('select * from assesmen_dokters where id_kunjungan = ?',[$kodekunjungan]);
         if ($ts_kunjungan[0]->kode_unit == '1014') {
-            $RO_MATA = db::connection('mysql')->select('select * from erm_mata_kanan_kiri where kode_kunjungan = ? ', [$kodekunjungan]);
+            $RO_MATA = db::connection('mysql2')->select('select * from erm_mata_kanan_kiri where kode_kunjungan = ? ', [$kodekunjungan]);
             return view('V2_erm.form_pemeriksaan_khusus_poli_mata', compact([
                 'RO_MATA'
             ]));
