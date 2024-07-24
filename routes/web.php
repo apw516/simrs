@@ -705,10 +705,7 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('riwayatkonsul'); //sidebar
     Route::post('hasilsumarilis', [ErmController::class, 'hasilsumarilis'])
         ->name('hasilsumarilis'); //sidebar
-
     // v_2
-
-
     Route::post('v2_formpemeriksaan_dokter', [ErmController_v2::class, 'formpemeriksaan_dokter'])
         ->name('v2_formpemeriksaan_dokter'); //sidebar
     Route::post('v2_simpanpemeriksaandokter', [ErmController_v2::class, 'Simpan_pemeriksaan_dokter'])
