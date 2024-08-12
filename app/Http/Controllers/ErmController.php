@@ -4223,6 +4223,24 @@ class ErmController extends Controller
             'status' => '0',
             'signature' => ''
         ];
+        $di_diagnosa = [
+            'no_rm' => $dataSet['nomorrm'],
+            'kode_unit' => $dataSet['unit'],
+            'counter' => $dataSet['counter'],
+            'kode_kunjungan' => $dataSet['kodekunjungan'],
+            'pic' => 0,
+            'input_date' => $this->get_now(),
+            'diag_00' => trim($dataSet['diagnosawd']),
+            'alasan_pulang' => 0,
+            'rs_rujukan' => 'ERM RAWAT JALAN',
+            'kode_paramedis' => auth()->user()->kode_paramedis,
+        ];
+        $cek = DB::select('select * from di_pasien_diagnosa_frunit where kode_kunjungan = ?', [$dataSet['kodekunjungan']]);
+        if (count($cek) > 0) {
+            di_diagnosa::whereRaw('kode_kunjungan = ?', array($dataSet['kodekunjungan']))->update($di_diagnosa);
+        } else {
+            di_diagnosa::create($di_diagnosa);
+        }
         if (count($cek) > 0) {
             assesmenawaldokter::whereRaw('id_pasien = ? and kode_unit = ? and id_kunjungan = ?', array($dataSet['nomorrm'],  $dataSet['unit'], $dataSet['kodekunjungan']))->update($data);
             $id_assesmen = $cek[0]->id;
@@ -4355,6 +4373,8 @@ class ErmController extends Controller
             }
         }
         //end of farmasi
+
+
 
         $data = [
             'kode' => 200,
