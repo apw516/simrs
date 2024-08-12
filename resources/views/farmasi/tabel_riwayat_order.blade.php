@@ -1,4 +1,4 @@
-<table id="tabel_riwayat_obat" class="table table-sm table-bordered table-hover text-xs">
+<table id="tabel_riwayat_obat" class="table table-sm table-bordered table-hover text-xs bg-light">
     <thead>
         <th>Tanggal Entry</th>
         <th>NO RM</th>
