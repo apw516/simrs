@@ -6,11 +6,13 @@
     </thead>
     <tbody>
         @foreach ($datatarif as $d )
+            @if($d->kode_unit != '4008')
             <tr>
                 <td>{{ $d->NAMA_TARIF}}</td>
                 <td>{{ $d->jumlah_layanan}}</td>
                 <td>Rp. {{ number_format($d->grantotal_layanan, 2, ",", ".")}}</td>
             </tr>
+            @endif
         @endforeach
     </tbody>
 </table>
