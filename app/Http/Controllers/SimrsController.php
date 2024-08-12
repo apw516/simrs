@@ -771,19 +771,20 @@ class SimrsController extends Controller
             'f2' => $r2
         ]);
     }
-    function get_client_ip() {
+    function get_client_ip()
+    {
         $ipaddress = '';
         if (getenv('HTTP_CLIENT_IP'))
             $ipaddress = getenv('HTTP_CLIENT_IP');
-        else if(getenv('HTTP_X_FORWARDED_FOR'))
+        else if (getenv('HTTP_X_FORWARDED_FOR'))
             $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
-        else if(getenv('HTTP_X_FORWARDED'))
+        else if (getenv('HTTP_X_FORWARDED'))
             $ipaddress = getenv('HTTP_X_FORWARDED');
-        else if(getenv('HTTP_FORWARDED_FOR'))
+        else if (getenv('HTTP_FORWARDED_FOR'))
             $ipaddress = getenv('HTTP_FORWARDED_FOR');
-        else if(getenv('HTTP_FORWARDED'))
-           $ipaddress = getenv('HTTP_FORWARDED');
-        else if(getenv('REMOTE_ADDR'))
+        else if (getenv('HTTP_FORWARDED'))
+            $ipaddress = getenv('HTTP_FORWARDED');
+        else if (getenv('REMOTE_ADDR'))
             $ipaddress = getenv('REMOTE_ADDR');
         else
             $ipaddress = 'UNKNOWN';
@@ -1207,7 +1208,8 @@ class SimrsController extends Controller
             echo json_encode($data);
         } else if ($datasep->metaData->code == 200) {
             ts_kunjungan::whereRaw('kode_kunjungan = ? and no_rm = ? and kode_unit = ?', array($ts_kunjungan->id, $request->norm, $kodeunit))->update([
-                'status_kunjungan' => 1, 'no_sep' => $datasep->response->sep->noSep
+                'status_kunjungan' => 1,
+                'no_sep' => $datasep->response->sep->noSep
             ]);
             if ($kelas_unit == 1 || $kelas_unit == 2) {
                 //jika kelas penunjang  seperti hd,lab dll tidak akan tebentuk layanan header
@@ -1677,8 +1679,13 @@ class SimrsController extends Controller
                 $grand_total_tarif = $tarif;
             } else {
                 //jika pasien rawat jalan
-                $tarif1 = $unit[0]->mt_tarif_detail->tarif_rajal;
-                $tarif2 = $unit[0]->mt_tarif_detail2->tarif_rajal;
+                if ($unit[0]->kode_unit == '1015') {
+                    $tarif1 = 0;
+                    $tarif2 = 0;
+                } else {
+                    $tarif1 = $unit[0]->mt_tarif_detail->tarif_rajal;
+                    $tarif2 = $unit[0]->mt_tarif_detail2->tarif_rajal;
+                }
                 $tagihanpribadi1 = $tarif1;
                 $tagihanpenjamin1 = $tarif1;
                 $tagihanpribadi2 = $tarif2;
@@ -1695,42 +1702,44 @@ class SimrsController extends Controller
                     $tagihanpenjamin2 = $tarif2;
                 }
                 $tgl_detail = $tgl_masuk_time;
-                $id_detail1 = $this->createLayanandetail();
-                $save_detail1 = [
-                    'id_layanan_detail' => $id_detail1,
-                    'kode_layanan_header' => $kode_layanan_header,
-                    'kode_tarif_detail' => $unit[0]['kode_tarif_adm'],
-                    'total_tarif' => $tarif1,
-                    'jumlah_layanan' => '1',
-                    'diskon_layanan' => '0',
-                    'total_layanan' => $tarif1,
-                    'grantotal_layanan' => $tarif1,
-                    'status_layanan_detail' => 'OPN',
-                    'tgl_layanan_detail' => $tgl_detail,
-                    'tagihan_pribadi' => $tagihanpribadi1,
-                    'tagihan_penjamin' => $tagihanpenjamin1,
-                    'tgl_layanan_detail_2' => $tgl_detail,
-                    'row_id_header' => $ts_layanan_header->id
-                ];
-                $ts_layanan_detail = ts_layanan_detail::create($save_detail1);
-                $id_detail2 = $this->createLayanandetail();
-                $save_detail2 = [
-                    'id_layanan_detail' => $id_detail2,
-                    'kode_layanan_header' => $kode_layanan_header,
-                    'kode_tarif_detail' => $unit[0]['kode_tarif_karcis'],
-                    'total_tarif' => $tarif2,
-                    'jumlah_layanan' => '1',
-                    'diskon_layanan' => '0',
-                    'total_layanan' => $tarif2,
-                    'grantotal_layanan' => $tarif2,
-                    'status_layanan_detail' => 'OPN',
-                    'tgl_layanan_detail' => $tgl_detail,
-                    'tagihan_pribadi' => $tagihanpribadi2,
-                    'tagihan_penjamin' => $tagihanpenjamin2,
-                    'tgl_layanan_detail_2' => $tgl_detail,
-                    'row_id_header' => $ts_layanan_header->id
-                ];
-                ts_layanan_detail::create($save_detail2);
+                if ($unit[0]->kode_unit != '1015') {
+                    $id_detail1 = $this->createLayanandetail();
+                    $save_detail1 = [
+                        'id_layanan_detail' => $id_detail1,
+                        'kode_layanan_header' => $kode_layanan_header,
+                        'kode_tarif_detail' => $unit[0]['kode_tarif_adm'],
+                        'total_tarif' => $tarif1,
+                        'jumlah_layanan' => '1',
+                        'diskon_layanan' => '0',
+                        'total_layanan' => $tarif1,
+                        'grantotal_layanan' => $tarif1,
+                        'status_layanan_detail' => 'OPN',
+                        'tgl_layanan_detail' => $tgl_detail,
+                        'tagihan_pribadi' => $tagihanpribadi1,
+                        'tagihan_penjamin' => $tagihanpenjamin1,
+                        'tgl_layanan_detail_2' => $tgl_detail,
+                        'row_id_header' => $ts_layanan_header->id
+                    ];
+                    $ts_layanan_detail = ts_layanan_detail::create($save_detail1);
+                    $id_detail2 = $this->createLayanandetail();
+                    $save_detail2 = [
+                        'id_layanan_detail' => $id_detail2,
+                        'kode_layanan_header' => $kode_layanan_header,
+                        'kode_tarif_detail' => $unit[0]['kode_tarif_karcis'],
+                        'total_tarif' => $tarif2,
+                        'jumlah_layanan' => '1',
+                        'diskon_layanan' => '0',
+                        'total_layanan' => $tarif2,
+                        'grantotal_layanan' => $tarif2,
+                        'status_layanan_detail' => 'OPN',
+                        'tgl_layanan_detail' => $tgl_detail,
+                        'tagihan_pribadi' => $tagihanpribadi2,
+                        'tagihan_penjamin' => $tagihanpenjamin2,
+                        'tgl_layanan_detail_2' => $tgl_detail,
+                        'row_id_header' => $ts_layanan_header->id
+                    ];
+                    ts_layanan_detail::create($save_detail2);
+                }
                 $grand_total_tarif = $tarif1 + $tarif2;
             }
         }
@@ -2068,7 +2077,8 @@ class SimrsController extends Controller
                 echo json_encode($data);
             } else if ($datasep->metaData->code == 200) {
                 ts_kunjungan::whereRaw('kode_kunjungan = ? and no_rm = ? and kode_unit = ?', array($ts_kunjungan->id, $rm, $unitranap))->update([
-                    'status_kunjungan' => 1, 'no_sep' => $datasep->response->sep->noSep
+                    'status_kunjungan' => 1,
+                    'no_sep' => $datasep->response->sep->noSep
                 ]);
 
                 DB::table('mt_ruangan')->where('id_ruangan', $idruangan_ranap)->update(['status_incharge' => 1]);
@@ -2076,7 +2086,8 @@ class SimrsController extends Controller
                 //update jika perubahan penjamin
                 if ($penjamin_lama != $penjamin && $penjamin != 'P01') {
                     ts_kunjungan::whereRaw('kode_kunjungan = ?', array($kodekunjungan_ref))->update([
-                        'kode_penjamin' => $penjamin, 'his_penjamin' => $penjamin_lama
+                        'kode_penjamin' => $penjamin,
+                        'his_penjamin' => $penjamin_lama
                     ]);
                 }
 
@@ -2174,7 +2185,8 @@ class SimrsController extends Controller
             //update jika perubahan penjamin
             if ($penjamin_lama != $penjamin && $penjamin != 'P01') {
                 ts_kunjungan::whereRaw('kode_kunjungan = ?', array($kodekunjungan_ref))->update([
-                    'kode_penjamin' => $penjamin, 'his_penjamin' => $penjamin_lama
+                    'kode_penjamin' => $penjamin,
+                    'his_penjamin' => $penjamin_lama
                 ]);
             }
 
@@ -3704,7 +3716,10 @@ class SimrsController extends Controller
             LEFT JOIN mt_pasien d ON a.no_rm = d.no_rm
             WHERE kode_unit = ? and status_kunjungan = ?', [$user, 1]);
         return view('ranap.datapasien', compact([
-            'title', 'sidebar', 'sidebar_m', 'datapasien'
+            'title',
+            'sidebar',
+            'sidebar_m',
+            'datapasien'
         ]));
     }
     public function lihatcatatanpasien(Request $request)
