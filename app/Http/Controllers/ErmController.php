@@ -4235,8 +4235,8 @@ class ErmController extends Controller
             'rs_rujukan' => 'ERM RAWAT JALAN',
             'kode_paramedis' => auth()->user()->kode_paramedis,
         ];
-        $cek = DB::select('select * from di_pasien_diagnosa_frunit where kode_kunjungan = ?', [$dataSet['kodekunjungan']]);
-        if (count($cek) > 0) {
+        $cek2 = DB::select('select * from di_pasien_diagnosa_frunit where kode_kunjungan = ?', [$dataSet['kodekunjungan']]);
+        if (count($cek2) > 0) {
             di_diagnosa::whereRaw('kode_kunjungan = ?', array($dataSet['kodekunjungan']))->update($di_diagnosa);
         } else {
             di_diagnosa::create($di_diagnosa);
