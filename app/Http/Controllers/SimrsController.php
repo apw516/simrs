@@ -1679,7 +1679,7 @@ class SimrsController extends Controller
                 $grand_total_tarif = $tarif;
             } else {
                 //jika pasien rawat jalan
-                if ($unit[0]->kode_unit == '1015') {
+                if ($unit[0]->kode_unit == '1015' || $unit[0]->kode_unit != '1028') {
                     $tarif1 = 0;
                     $tarif2 = 0;
                 } else {
@@ -1702,7 +1702,7 @@ class SimrsController extends Controller
                     $tagihanpenjamin2 = $tarif2;
                 }
                 $tgl_detail = $tgl_masuk_time;
-                if ($unit[0]->kode_unit != '1015') {
+                if ($unit[0]->kode_unit != '1015' || $unit[0]->kode_unit != '1028') {
                     $id_detail1 = $this->createLayanandetail();
                     $save_detail1 = [
                         'id_layanan_detail' => $id_detail1,

@@ -24,9 +24,13 @@
     <div class="card-body table-responsive p-5" style="height: 757Px">
         <div class="jumbotron">
             {{-- <h1 class="display-4">Tindak Lanjut</h1> --}}
-            <p class="lead mt-4"><strong>* {{ $assdok[0]->tindak_lanjut }}</strong></p>
+            <p class="lead mt-4"><strong>* @foreach ($assdok as $as)
+                {{ $as->tindak_lanjut }}
+            @endforeach</strong></p>
             <hr class="my-4">
-            <p>diisi oleh : {{ $assdok[0]->nama_dokter }} | {{ $assdok[0]->tgl_pemeriksaan }}</p>
+            <p>diisi oleh :  @foreach ($assdok as $as)
+                {{ $as->nama_dokter }} @endforeach |  @foreach ($assdok as $as)
+                {{ $as->tgl_pemeriksaan }} @endforeach</p>
             {{-- <a class="btn btn-primary btn-lg btntindaklanjut" jenis="surkon" role="button"><i
                     class="bi bi-plus-lg mr-1"></i> Surat Kontrol</a> --}}
             <a class="btn btn-primary btn-lg btntindaklanjut" jenis="konsul" role="button"><i

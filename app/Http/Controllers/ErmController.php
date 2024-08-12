@@ -6793,14 +6793,14 @@ class ErmController extends Controller
         $kodekunjungan = $request->kodekunjungan;
         $assdok = DB::select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
         $cek_konsul  = DB::select('select *,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where ref_kunjungan = ? and status_kunjungan != ?', [$kodekunjungan, '8']);
-        if (count($assdok) > 0) {
+        // if (count($assdok) > 0) {
             return view('ermtemplate.formtindaklanjut', compact([
                 'assdok',
                 'cek_konsul'
             ]));
-        } else {
-            return view('ermtemplate.dokterbelummengisi');
-        }
+        // } else {
+        //     return view('ermtemplate.dokterbelummengisi');
+        // }
     }
     public function formbillingtindakan(Request $request)
     {
@@ -7009,6 +7009,7 @@ class ErmController extends Controller
             'pic' => auth()->user()->id_simrs,
             'no_sep' => '',
         ];
+        // dd($data_ts_kunjungan);
         $kodeunit = $dataSet['idpolitujuan'];
         $r = DB::connection('mysql4')->select("CALL GET_NOMOR_LAYANAN_HEADER('$kodeunit')");
         $kode_layanan_header = $r[0]->no_trx_layanan;
@@ -7018,17 +7019,17 @@ class ErmController extends Controller
             DB::connection('mysql4')->select('insert into mt_nomor_trx (tgl,no_trx_layanan,unit) values (?,?,?)', [date('Y-m-d h:i:s'), $kode_layanan_header, $kodeunit]);
         }
         $ts_kunjungan = ts_kunjungan2::create($data_ts_kunjungan);
-        $tarif = DB::select('select * from mt_tarif_detail where KODE_TARIF_DETAIL = ?', [$unit[0]->kode_tarif_konsul . '3']);
+        $tarif = DB::select('select * from mt_tarif_detail where KODE_TARIF_DETAIL = ?', [$unit[0]->kode_tarif_karcis]);
         //bpjs kode tipe transaksi 2 kalo umum 1
         $get_kunjungan_pref = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
         if ($get_kunjungan_pref[0]->kode_penjamin == 'P01') {
             $kode_tipe_transaksi = 1;
-            $tagihan_pribadi =  $tarif[0]->TOTAL_TARIF_CURRENT;
+            $tagihan_pribadi =  $tarif[0]->tarif_rajal;
             $tagihan_penjamin = 0;
         } else {
             $kode_tipe_transaksi = 2;
             $tagihan_pribadi = 0;
-            $tagihan_penjamin =  $tarif[0]->TOTAL_TARIF_CURRENT;
+            $tagihan_penjamin =  $tarif[0]->tarif_rajal;
         }
         $data_layanan_header = [
             'kode_layanan_header' => $kode_layanan_header,
@@ -7048,12 +7049,12 @@ class ErmController extends Controller
         $save_detail1 = [
             'id_layanan_detail' => $id_detail1,
             'kode_layanan_header' => $kode_layanan_header,
-            'kode_tarif_detail' => $unit[0]->kode_tarif_konsul . '3',
-            'total_tarif' => $tarif[0]->TOTAL_TARIF_CURRENT,
+            'kode_tarif_detail' => $unit[0]->kode_tarif_karcis,
+            'total_tarif' => $tarif[0]->tarif_rajal,
             'jumlah_layanan' => '1',
             'diskon_layanan' => '0',
-            'total_layanan' => $tarif[0]->TOTAL_TARIF_CURRENT,
-            'grantotal_layanan' => $tarif[0]->TOTAL_TARIF_CURRENT,
+            'total_layanan' => $tarif[0]->tarif_rajal,
+            'grantotal_layanan' => $tarif[0]->tarif_rajal,
             'status_layanan_detail' => 'OPN',
             'tgl_layanan_detail' => $this->get_now(),
             'tagihan_penjamin' => $tagihan_penjamin,
@@ -7063,7 +7064,7 @@ class ErmController extends Controller
         ];
         $ts_layanan_detail = ts_layanan_detail_dummy::create($save_detail1);
         ts_layanan_header_dummy::where('kode_kunjungan', $ts_kunjungan->id)
-            ->update(['status_layanan' => 2, 'total_layanan' => $tarif[0]->TOTAL_TARIF_CURRENT, 'tagihan_penjamin' => $tagihan_penjamin, 'tagihan_pribadi' => $tagihan_pribadi]);
+            ->update(['status_layanan' => 2, 'total_layanan' => $tarif[0]->tarif_rajal, 'tagihan_penjamin' => $tagihan_penjamin, 'tagihan_pribadi' => $tagihan_pribadi]);
         $data = [
             'kode' => 200,
             'message' => 'Data berhasil disimpan !'
