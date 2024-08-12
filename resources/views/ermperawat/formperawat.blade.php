@@ -41,6 +41,11 @@
             </div>
             <div class="card-body p-0">
                 <ul class="nav nav-pills flex-column">
+                    <li class="nav-item" id="pemeriksaan">
+                        <a href="#" class="nav-link" onclick="formbillingtindakan()">
+                            <i class="fas fa-inbox mr-2"></i>Billing Tindakan PoliKlinik
+                        </a>
+                    </li>
                     @if(auth()->user()->unit != '1028')
                     <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formpemeriksaan()">
@@ -121,7 +126,6 @@
         rm = $('#nomorrm').val()
         formcatatanmedis(rm)
     })
-
     function formcatatanmedis(rm) {
         spinner = $('#loader')
         spinner.show();
@@ -132,6 +136,25 @@
                 rm
             },
             url: '<?= route('ambilcatatanmedis_pasien') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    function formbillingtindakan() {
+        spinner = $('#loader')
+        spinner.show();
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('formbillingtindakan') ?>',
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()

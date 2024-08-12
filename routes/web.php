@@ -473,10 +473,18 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('formpemeriksaan_fisio'); //sidebar
     Route::post('/formtindaklanjut', [ErmController::class, 'formtindaklanjut'])
         ->name('formtindaklanjut'); //sidebar
+    Route::post('/formbillingtindakan', [ErmController::class, 'formbillingtindakan'])
+        ->name('formbillingtindakan'); //sidebar
     Route::post('/formpemeriksaan_wicara', [ErmController::class, 'formpemeriksaan_perawat_wicara'])
         ->name('formpemeriksaan_wicara'); //sidebar
     Route::post('/simpanpemeriksaanperawat', [ErmController::class, 'simpanpemeriksaanperawat'])
         ->name('simpanpemeriksaanperawat'); //sidebar
+    Route::post('/simpanbilling', [ErmController::class, 'simpanbilling'])
+        ->name('simpanbilling'); //sidebar
+    Route::post('/riwayattindakanpoli', [ErmController::class, 'riwayattindakanpoli'])
+        ->name('riwayattindakanpoli'); //sidebar
+    Route::get('/caridokter', [ErmController::class, 'caridokter'])
+        ->name('caridokter'); //sidebar
     Route::post('/simpanpemeriksaanperawat_igd', [ErmController::class, 'simpanpemeriksaanperawat_igd'])
         ->name('simpanpemeriksaanperawat_igd'); //sidebar
     Route::post('/resumepasien', [ErmController::class, 'resumepasien'])
