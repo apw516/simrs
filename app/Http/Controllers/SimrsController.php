@@ -792,6 +792,8 @@ class SimrsController extends Controller
     public function Simpansep(Request $request)
     {
         //antrian
+        // $unit = mt_unit::where('KDPOLI', '=', "$request->kodepolitujuan")->get();
+        // dd($unit);
         $ipclient = $this->get_client_ip();
         $mw = new antrianmarwan();
         $day = $request->tglsep;
@@ -1044,8 +1046,8 @@ class SimrsController extends Controller
                 $grand_total_tarif = $tarif;
             } else {
                 //jika pasien rawat jalan
-                $tarif1 = $unit[0]->mt_tarif_detail->TOTAL_TARIF_CURRENT;
-                $tarif2 = $unit[0]->mt_tarif_detail2->TOTAL_TARIF_CURRENT;
+                $tarif1 = $unit[0]->mt_tarif_detail->tarif_rajal;
+                $tarif2 = $unit[0]->mt_tarif_detail2->tarif_rajal;
                 $tgl_detail = $tgl_masuk_time;
                 $id_detail1 = $this->createLayanandetail();
                 $save_detail1 = [
