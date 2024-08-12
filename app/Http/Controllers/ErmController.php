@@ -4529,7 +4529,7 @@ class ErmController extends Controller
     }
     public function carilayanan($kelas, $nama, $unit)
     {
-        $layanan = DB::select("CALL SP_PANGGIL_TARIF_TINDAKAN_RS('$kelas','$nama','$unit')");
+        $layanan = DB::select("CALL SP_PANGGIL_TARIF_TINDAKAN_RS_2('$kelas','$nama','$unit')");
         return $layanan;
     }
     public function simpanlayanan(Request $request)
