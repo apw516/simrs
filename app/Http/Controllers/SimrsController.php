@@ -1913,7 +1913,7 @@ class SimrsController extends Controller
                 DB::select('insert into mt_nomor_trx (tgl,no_trx_layanan,unit) values (?,?,?)', [date('Y-m-d h:i:s'), $kode_layanan_header, $unitranap]);
             }
             if ($penjamin == "P01") {
-                dd($penjamin);
+                // dd($penjamin);
                 $data_layanan_header = [
                     'kode_layanan_header' => $kode_layanan_header,
                     'tgl_entry' =>   $tgl_masuk_time,
@@ -1944,7 +1944,7 @@ class SimrsController extends Controller
             $ts_layanan_header = ts_layanan_header::create($data_layanan_header);
             //menentukan tarif
             //jika pasien rawat inap maka hanya memakai tarif admin ranap
-            $tarif = $unit[0]->mt_tarif_detail3->TOTAL_TARIF_CURRENT;
+            $tarif = $unit[0]->mt_tarif_detail3->tarif_ranap;
             $id_detail = $this->createLayanandetail();
             $tgl_detail = date('Y-m-d h:i:s');
             $tagihanpribadi = $tarif;
