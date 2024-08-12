@@ -1677,8 +1677,8 @@ class SimrsController extends Controller
                 $grand_total_tarif = $tarif;
             } else {
                 //jika pasien rawat jalan
-                $tarif1 = $unit[0]->mt_tarif_detail->TOTAL_TARIF_CURRENT;
-                $tarif2 = $unit[0]->mt_tarif_detail2->TOTAL_TARIF_CURRENT;
+                $tarif1 = $unit[0]->mt_tarif_detail->tarif_rajal;
+                $tarif2 = $unit[0]->mt_tarif_detail2->tarif_rajal;
                 $tagihanpribadi1 = $tarif1;
                 $tagihanpenjamin1 = $tarif1;
                 $tagihanpribadi2 = $tarif2;
