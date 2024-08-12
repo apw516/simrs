@@ -34,7 +34,9 @@
                             <tr>
                                 <td>{{ $l->kode }}</td>
                                 <td>{{ $l->Tindakan }}</td>
-                                <td>{{ $l->tarif }}</td>
+                                <td>
+                                    Rp. {{ number_format( $l->tarif, 2, ",", ".")}}
+                                </td>
                                 <td><button class="btn btn-success pilihlayanan" kode = "{{ $l->kode }}"
                                         namatindakan = "{{ $l->Tindakan }}" tarif = "{{ $l->tarif }}"
                                         id="{{ $l->kode }}">Pilih layanan</button></td>
