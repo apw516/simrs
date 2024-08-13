@@ -39,7 +39,7 @@
     $(document).ready(function() {
         $(document).ready(function() {
         $('#namadokter').autocomplete({
-            source: "<?= route('caridokter') ?>",
+            source: "<?= route('caridokter_erm') ?>",
             select: function(event, ui) {
                 $('[id="namadokter"]').val(ui.item.label);
                 $('[id="kodeparamedis_konsul"]').val(ui.item.kode);
