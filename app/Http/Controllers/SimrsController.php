@@ -1679,7 +1679,7 @@ class SimrsController extends Controller
                 $grand_total_tarif = $tarif;
             } else {
                 //jika pasien rawat jalan
-                if ($unit[0]->kode_unit == '1015' || $unit[0]->kode_unit != '1028') {
+                if ($unit[0]->kode_unit == '1015' || $unit[0]->kode_unit == '1028') {
                     $tarif1 = 0;
                     $tarif2 = 0;
                 } else {
