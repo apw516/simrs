@@ -1550,6 +1550,7 @@ class SimrsController extends Controller
                 'kode_penjamin' => $request->penjamin,
                 'kelas' => 3,
                 'hak_kelas' => 3,
+                'keterangan2' => 'WEB',
                 'pic' => auth()->user()->id_simrs,
                 'no_sep' => '',
                 'id_alasan_masuk' => $request->alasanmasuk
