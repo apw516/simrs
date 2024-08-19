@@ -483,6 +483,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('simpanbilling'); //sidebar
     Route::post('/riwayattindakanpoli', [ErmController::class, 'riwayattindakanpoli'])
         ->name('riwayattindakanpoli'); //sidebar
+    Route::post('/returtindakan', [ErmController::class, 'returtindakan'])
+        ->name('returtindakan'); //sidebar
     Route::get('/caridokter_erm', [ErmController::class, 'caridokter'])
         ->name('caridokter_erm'); //sidebar
     Route::post('/simpanpemeriksaanperawat_igd', [ErmController::class, 'simpanpemeriksaanperawat_igd'])

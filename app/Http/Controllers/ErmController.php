@@ -6794,10 +6794,10 @@ class ErmController extends Controller
         $assdok = DB::select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
         $cek_konsul  = DB::select('select *,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where ref_kunjungan = ? and status_kunjungan != ?', [$kodekunjungan, '8']);
         // if (count($assdok) > 0) {
-            return view('ermtemplate.formtindaklanjut', compact([
-                'assdok',
-                'cek_konsul'
-            ]));
+        return view('ermtemplate.formtindaklanjut', compact([
+            'assdok',
+            'cek_konsul'
+        ]));
         // } else {
         //     return view('ermtemplate.dokterbelummengisi');
         // }
@@ -6805,7 +6805,7 @@ class ErmController extends Controller
     public function formbillingtindakan(Request $request)
     {
         $kodekunjungan = $request->kodekunjungan;
-        $data_kunjungan = DB::select('select *,date(tgl_masuk) as tgl_masuk2,fc_NAMA_PARAMEDIS1(kode_paramedis) as nama_dokter from ts_kunjungan where kode_kunjungan = ?',[$kodekunjungan]);
+        $data_kunjungan = DB::select('select *,date(tgl_masuk) as tgl_masuk2,fc_NAMA_PARAMEDIS1(kode_paramedis) as nama_dokter from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
         $unit = auth()->user()->unit;
         $layanan = DB::select("CALL SP_PANGGIL_TARIF_TINDAKAN_RS_2('3','','$unit')");
         return view('ermtemplate.formbillingtindakan', compact([
@@ -6818,7 +6818,7 @@ class ErmController extends Controller
         $datatindakan = json_decode($_POST['data'], true);
 
         $kode_kunjungan = $request->kodekunjungan;
-        $kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?',[$kode_kunjungan]);
+        $kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kode_kunjungan]);
         if (count($datatindakan) > 0) {
             $dt = Carbon::now()->timezone('Asia/Jakarta');
             $date = $dt->toDateString();
@@ -6911,7 +6911,7 @@ class ErmController extends Controller
                         ->update(['status_layanan' => 1, 'total_layanan' => $grand_total_tarif, 'tagihan_penjamin' => $grand_total_tarif]);
                 }
                 ts_kunjungan::where('kode_kunjungan', $kunjungan[0]->kode_kunjungan)
-                ->update(['kode_paramedis' => $request->kodeparamedis]);
+                    ->update(['kode_paramedis' => $request->kodeparamedis]);
 
                 $back = [
                     'kode' => 200,
@@ -6932,14 +6932,77 @@ class ErmController extends Controller
     public function riwayattindakanpoli(Request $request)
     {
         $kodekunjungan = $request->kodekunjungan;
-        $datatarif = DB::SELECT("SELECT *,d.`NAMA_TARIF` AS nama_Tarif FROM ts_layanan_header a
+        $datatarif = DB::connection('mysql2')->SELECT("SELECT *,d.`NAMA_TARIF` AS nama_Tarif,b.id as id_detail FROM ts_layanan_header a
         INNER JOIN ts_layanan_detail b ON a.`id` = b.`row_id_header`
         INNER JOIN mt_tarif_detail c ON b.`kode_tarif_detail` = c.`KODE_TARIF_DETAIL`
         INNER JOIN mt_tarif_header d ON c.`KODE_TARIF_HEADER` = d.`KODE_TARIF_HEADER`
-        WHERE a.`kode_kunjungan` = ?",[$kodekunjungan]);
-        return view('ermtemplate.tableriwayattindakan_poli',compact([
+        WHERE a.`kode_kunjungan` = ? AND b.status_layanan_detail = ?", [$kodekunjungan, 'OPN']);
+        return view('ermtemplate.tableriwayattindakan_poli', compact([
             'datatarif'
         ]));
+    }
+    public function returtindakan(Request $request)
+    {
+        try {
+            $data_detail = DB::connection('mysql2')->select('select * from ts_layanan_detail where id = ?', [$request->iddetail]);
+            $id_header = $data_detail[0]->row_id_header;
+            $data_retur_detail = [
+                'jumlah_retur' => $data_detail[0]->jumlah_layanan,
+                'status_layanan_detail' => 'CCL',
+            ];
+            ts_layanan_detail_dummy::where('id', $request->iddetail)
+                ->update($data_retur_detail);
+
+            $data_detail = DB::connection('mysql2')->select('select * from ts_layanan_detail where row_id_header = ? and status_layanan_detail = ?', [$id_header, 'OPN']);
+            $data_header = DB::connection('mysql2')->select('select * from ts_layanan_header where id = ?', [$id_header]);
+            $data_kunjungan = DB::connection('mysql')->select('select * from ts_kunjungan where kode_kunjungan = ?', [$data_header[0]->kode_kunjungan]);
+            $penjamin = $data_kunjungan[0]->kode_penjamin;
+            if (count($data_detail) > 0) {
+                // dd('TIDAK HABIS RETUR');
+                $status_layanan = 1;
+                $status_retur = 'OPN';
+                $total_layanan = $data_header[0]->total_layanan - $data_detail[0]->grantotal_layanan;
+                $status_pembayaran = 'OPN';
+                if ($penjamin == 'P01') {
+                    $tagihan_pribadi = $data_header[0]->tagihan_pribadi - $data_detail[0]->grantotal_layanan;
+                    $tagihan_penjamin = 0;
+                } else {
+                    $tagihan_penjamin = $data_header[0]->tagihan_penjamin - $data_detail[0]->grantotal_layanan;
+                    $tagihan_pribadi = 0;
+                }
+            } else {
+                $status_layanan = 3;
+                $status_retur = 'CLS';
+                $total_layanan = '0';
+                $status_pembayaran = 'CCL';
+                $tagihan_penjamin = 0;
+                $tagihan_pribadi  = 0;
+            }
+            $data_retur_header = [
+                'status_layanan' => $status_layanan,
+                'status_retur' => $status_retur,
+                'total_layanan' => $total_layanan,
+                'status_pembayaran' => $status_pembayaran,
+                'tagihan_penjamin' => $tagihan_penjamin,
+                'tagihan_pribadi' => $tagihan_pribadi,
+                'pic2' => auth()->user()->id_simrs
+            ];
+            ts_layanan_header_dummy::where('id', $id_header)
+                ->update($data_retur_header);
+            $data = [
+                'kode' => 200,
+                'message' => 'Data berhasil retur !'
+            ];
+            echo json_encode($data);
+            die;
+        } catch (\Exception $e) {
+            $data = [
+                'kode' => 500,
+                'message' => $e->getMessage()
+            ];
+            echo json_encode($data);
+            die;
+        }
     }
     public function caridokter(Request $request)
     {
@@ -7049,7 +7112,7 @@ class ErmController extends Controller
         $save_detail1 = [
             'id_layanan_detail' => $id_detail1,
             'kode_layanan_header' => $kode_layanan_header,
-            'kode_tarif_detail' =>'TX2380',
+            'kode_tarif_detail' => 'TX2380',
             'total_tarif' => $tarif[0]->TOTAL_TARIF_CURRENT,
             'jumlah_layanan' => '1',
             'diskon_layanan' => '0',
