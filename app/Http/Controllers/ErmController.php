@@ -6936,7 +6936,7 @@ class ErmController extends Controller
         INNER JOIN ts_layanan_detail b ON a.`id` = b.`row_id_header`
         INNER JOIN mt_tarif_detail c ON b.`kode_tarif_detail` = c.`KODE_TARIF_DETAIL`
         INNER JOIN mt_tarif_header d ON c.`KODE_TARIF_HEADER` = d.`KODE_TARIF_HEADER`
-        WHERE a.`kode_kunjungan` = ? AND b.status_layanan_detail = ?", [$kodekunjungan, 'OPN']);
+        WHERE a.`kode_kunjungan` = ? AND b.status_layanan_detail = ? AND a.kode_unit = ?", [$kodekunjungan, 'OPN',auth()->user()->unit]);
         return view('ermtemplate.tableriwayattindakan_poli', compact([
             'datatarif'
         ]));
