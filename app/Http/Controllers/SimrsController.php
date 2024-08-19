@@ -1942,39 +1942,39 @@ class SimrsController extends Controller
                 //data yg diinsert ke ts_layanan_header
             }
             //simpan ke layanan header
-            $ts_layanan_header = ts_layanan_header::create($data_layanan_header);
+            // $ts_layanan_header = ts_layanan_header::create($data_layanan_header);
             //menentukan tarif
             //jika pasien rawat inap maka hanya memakai tarif admin ranap
-            $tarif = $unit[0]->mt_tarif_detail3->tarif_ranap;
-            $id_detail = $this->createLayanandetail();
-            $tgl_detail = date('Y-m-d h:i:s');
-            $tagihanpribadi = $tarif;
-            $tagihanpenjamin = $tarif;
-            if ($penjamin == "P01") {
-                $tagihanpribadi = $tarif;
-                $tagihanpenjamin = '0';
-            } else {
-                $tagihanpribadi = '0';
-                $tagihanpenjamin = $tarif;
-            }
-            $save_detail1 = [
-                'id_layanan_detail' => $id_detail,
-                'kode_layanan_header' => $kode_layanan_header,
-                'kode_tarif_detail' => $unit[0]['kode_tarif_adm'] . $kelas_ranap,
-                'total_tarif' => $tarif,
-                'jumlah_layanan' => '1',
-                'diskon_layanan' => '0',
-                'total_layanan' => $tarif,
-                'grantotal_layanan' => $tarif,
-                'status_layanan_detail' => 'OPN',
-                'tgl_layanan_detail' => $tgl_masuk_time,
-                'tagihan_pribadi' => $tagihanpribadi,
-                'tagihan_penjamin' => $tagihanpenjamin,
-                'tgl_layanan_detail_2' => $tgl_detail,
-                'row_id_header' => $ts_layanan_header->id
-            ];
-            $ts_layanan_detail = ts_layanan_detail::create($save_detail1);
-            $grand_total_tarif = $tarif;
+            // $tarif = $unit[0]->mt_tarif_detail3->tarif_ranap;
+            // $id_detail = $this->createLayanandetail();
+            // $tgl_detail = date('Y-m-d h:i:s');
+            // $tagihanpribadi = $tarif;
+            // $tagihanpenjamin = $tarif;
+            // if ($penjamin == "P01") {
+            //     $tagihanpribadi = $tarif;
+            //     $tagihanpenjamin = '0';
+            // } else {
+            //     $tagihanpribadi = '0';
+            //     $tagihanpenjamin = $tarif;
+            // }
+            // $save_detail1 = [
+            //     'id_layanan_detail' => $id_detail,
+            //     'kode_layanan_header' => $kode_layanan_header,
+            //     'kode_tarif_detail' => $unit[0]['kode_tarif_adm'] . $kelas_ranap,
+            //     'total_tarif' => $tarif,
+            //     'jumlah_layanan' => '1',
+            //     'diskon_layanan' => '0',
+            //     'total_layanan' => $tarif,
+            //     'grantotal_layanan' => $tarif,
+            //     'status_layanan_detail' => 'OPN',
+            //     'tgl_layanan_detail' => $tgl_masuk_time,
+            //     'tagihan_pribadi' => $tagihanpribadi,
+            //     'tagihan_penjamin' => $tagihanpenjamin,
+            //     'tgl_layanan_detail_2' => $tgl_detail,
+            //     'row_id_header' => $ts_layanan_header->id
+            // ];
+            // $ts_layanan_detail = ts_layanan_detail::create($save_detail1);
+            // $grand_total_tarif = $tarif;
         }
         if ($naik_kelas == 1) {
             $kelasrawat = $kelas_ranap;
@@ -2066,11 +2066,11 @@ class SimrsController extends Controller
             $datasep = $v->insertsep2($get_sep);
             if ($datasep == 'RTO') {
                 DB::table('ts_kunjungan')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
-                if ($kelas_unit == 1 || $kelas_unit == 2) {
-                    //jika kelas penunjang  seperti hd,lab dll tidak akan tebentuk layanan header
-                    DB::table('ts_layanan_header')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
-                    DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
-                }
+                // if ($kelas_unit == 1 || $kelas_unit == 2) {
+                //     //jika kelas penunjang  seperti hd,lab dll tidak akan tebentuk layanan header
+                //     DB::table('ts_layanan_header')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
+                //     DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
+                // }
                 $data = [
                     'kode' => 500,
                     'message' => 'The Network connection lost, please try again ...'
@@ -2094,11 +2094,11 @@ class SimrsController extends Controller
 
                 //update ts_layanan_header
                 if ($penjamin == "P01") {
-                    ts_layanan_header::where('kode_kunjungan', $ts_kunjungan->id)
-                        ->update(['status_layanan' => 1, 'total_layanan' => $grand_total_tarif, 'tagihan_pribadi' => $grand_total_tarif]);
+                    // ts_layanan_header::where('kode_kunjungan', $ts_kunjungan->id)
+                    //     ->update(['status_layanan' => 1, 'total_layanan' => $grand_total_tarif, 'tagihan_pribadi' => $grand_total_tarif]);
                 } else {
-                    ts_layanan_header::where('kode_kunjungan', $ts_kunjungan->id)
-                        ->update(['status_layanan' => 2, 'total_layanan' => $grand_total_tarif, 'tagihan_penjamin' => $grand_total_tarif]);
+                    // ts_layanan_header::where('kode_kunjungan', $ts_kunjungan->id)
+                    //     ->update(['status_layanan' => 2, 'total_layanan' => $grand_total_tarif, 'tagihan_penjamin' => $grand_total_tarif]);
                 }
                 //insert ts_sep
                 $sep = $datasep->response->sep;
@@ -2168,8 +2168,8 @@ class SimrsController extends Controller
                 DB::table('ts_kunjungan')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
                 if ($kelas_unit == 1 || $kelas_unit == 2) {
                     //jika kelas penunjang  seperti hd,lab dll tidak akan tebentuk layanan header
-                    DB::table('ts_layanan_header')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
-                    DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
+                    // DB::table('ts_layanan_header')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
+                    // DB::table('ts_layanan_detail')->where('row_id_header', $ts_layanan_header->id)->delete();
                 }
                 $data = [
                     'kode' => 201,
@@ -2194,11 +2194,11 @@ class SimrsController extends Controller
             DB::table('mt_ruangan')->where('id_ruangan', $idruangan_ranap)->update(['status_incharge' => 1]);
             //update ts_layanan_header
             if ($penjamin == "P01") {
-                ts_layanan_header::where('kode_kunjungan', $ts_kunjungan->id)
-                    ->update(['status_layanan' => 1, 'total_layanan' => $grand_total_tarif, 'tagihan_pribadi' => $grand_total_tarif]);
+                // ts_layanan_header::where('kode_kunjungan', $ts_kunjungan->id)
+                //     ->update(['status_layanan' => 1, 'total_layanan' => $grand_total_tarif, 'tagihan_pribadi' => $grand_total_tarif]);
             } else {
-                ts_layanan_header::where('kode_kunjungan', $ts_kunjungan->id)
-                    ->update(['status_layanan' => 2, 'total_layanan' => $grand_total_tarif, 'tagihan_penjamin' => $grand_total_tarif]);
+                // ts_layanan_header::where('kode_kunjungan', $ts_kunjungan->id)
+                //     ->update(['status_layanan' => 2, 'total_layanan' => $grand_total_tarif, 'tagihan_penjamin' => $grand_total_tarif]);
             }
             $pasien = Pasien::where('no_rm', '=', "$rm")->get();
             $data = [
