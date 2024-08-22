@@ -455,7 +455,7 @@ class SimrsController extends Controller
         $v = new VclaimModel();
         // $result = $v->referensi_poli($request['term']);
         $r = 'JANTUNG';
-        $result = DB::table('mt_unit')->where('nama_unit', 'LIKE', '%' . $request['term'] . '%')->where('kelas_unit', '=', '1')->get();
+        $result = DB::table('mt_unit')->where('nama_unit', 'LIKE', '%' . $request['term'] . '%')->where('kelas_unit', '=', '1')->orWhere('kelas_unit', '=', '3')->get();
         if (count($result) > 0) {
             foreach ($result as $row)
                 $arr_result[] = array(
