@@ -1552,7 +1552,7 @@ class SimrsController extends Controller
                 'hak_kelas' => 3,
                 'keterangan2' => 'WEB',
                 'pic' => auth()->user()->id_simrs,
-                'no_sep' => '',
+                'no_sep' => $request->sep,
                 'id_alasan_masuk' => $request->alasanmasuk
             );
             // if ($request->kodepolitujuan != '1002') {
@@ -1593,7 +1593,7 @@ class SimrsController extends Controller
                 'kelas' => $request->kelasranap,
                 'hak_kelas' => $request->kelasranap,
                 'pic' => auth()->user()->id_simrs,
-                'no_sep' => '',
+                'no_sep' => $request->sep,
                 'id_alasan_masuk' => $request->alasanmasuk
             );
         }
