@@ -1898,6 +1898,7 @@ class SimrsController extends Controller
             'hak_kelas' => $hakkelasbpjs,
             'pic' => auth()->user()->id_simrs,
             'no_sep' => '',
+            'is_ranap_daftar' => 1,
             'id_alasan_masuk' => $alasanmasuk
         );
         $ts_kunjungan = ts_kunjungan::create($data_ts_kunjungan);
