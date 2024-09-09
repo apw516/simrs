@@ -1879,6 +1879,11 @@ class SimrsController extends Controller
         $unit = mt_unit::where('kode_unit', '=', "$unitranap")->get();
         // $mt_penjamin = DB::select('select * from mt_penjamin_bpjs where kode_penjamin_simrs = ?', [$request->penjamin]);
         // dd($request->koderef);
+        if($penjamin == 'P01'){
+            $JP = 0;
+        }else{
+            $JP = 1;
+        }
         $data_ts_kunjungan = array(
             'counter' => $counter,
             'no_rm' => $rm,
@@ -1899,6 +1904,8 @@ class SimrsController extends Controller
             'pic' => auth()->user()->id_simrs,
             'no_sep' => '',
             'is_ranap_daftar' => 1,
+            'jp_daftar' => $JP,
+            'form_send_by' => 1,
             'id_alasan_masuk' => $alasanmasuk
         );
         $ts_kunjungan = ts_kunjungan::create($data_ts_kunjungan);
