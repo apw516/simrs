@@ -1041,16 +1041,16 @@ class ErmController extends Controller
                 $cek = DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE tanggalkunjungan = ? AND no_rm = ? AND kode_unit = ?', [$dataSet['tanggalkunjungan'], $dataSet['nomorrm'], $dataSet['unit']]);
                 if (count($cek) > 0) {
                     $cek2 = DB::select('SELECT * from assesmen_dokters WHERE tgl_kunjungan = ? AND id_pasien = ? AND kode_unit = ?', [$dataSet['tanggalkunjungan'], $dataSet['nomorrm'], $dataSet['unit']]);
-                    if (count($cek2) > 0) {
-                        $data = [
-                            'kode' => 500,
-                            'message' => 'Dokter sudah mengisi assesmen awal medis ... !'
-                        ];
-                        echo json_encode($data);
-                        die;
-                    } else {
+                    // if (count($cek2) > 0) {
+                    //     $data = [
+                    //         'kode' => 500,
+                    //         'message' => 'Dokter sudah mengisi assesmen awal medis ... !'
+                    //     ];
+                    //     echo json_encode($data);
+                    //     die;
+                    // } else {
                         assesmenawalperawat::whereRaw('no_rm = ? and kode_unit = ? and tanggalkunjungan = ?', array($dataSet['nomorrm'],  $dataSet['unit'], $dataSet['tanggalkunjungan']))->update($data);
-                    }
+                    // }
                 } else {
                     $erm_assesmen = assesmenawalperawat::create($data);
                 }
