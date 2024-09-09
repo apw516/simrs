@@ -7186,6 +7186,7 @@ class ErmController extends Controller
     {
         if (empty($request->tglawal)) {
             $now = date('Y-m-d');
+            $last = $request->tglakhir;
             $status = 1;
         } else {
             if ($request->tglawal == $this->get_date()) {
@@ -7194,11 +7195,12 @@ class ErmController extends Controller
                 $status = 2;
             }
             $now = $request->tglawal;
+            $last = $request->tglakhir;
         }
         if (!empty($request->pilihunit)) {
-            $dataerm = db::select('SELECT keterangan2,no_rm,fc_nama_px(no_rm) as nama,tgl_masuk,kode_unit,fc_nama_unit1(kode_unit) as nama_unit FROM ts_kunjungan WHERE DATE(tgl_masuk) = ? AND LEFT(kode_unit,1) = ? AND status_kunjungan = ? AND kode_unit = ?', [$now, 1, $status, $request->pilihunit]);
+            $dataerm = db::select('SELECT keterangan2,no_rm,fc_nama_px(no_rm) as nama,tgl_masuk,kode_unit,fc_nama_unit1(kode_unit) as nama_unit FROM ts_kunjungan WHERE DATE(tgl_masuk) BETWEEN ?  AND ? AND LEFT(kode_unit,1) = ? AND status_kunjungan = ? AND kode_unit = ?', [$now,$last, 1, $status, $request->pilihunit]);
         } else {
-            $dataerm = db::select('SELECT keterangan2,no_rm,fc_nama_px(no_rm) as nama,tgl_masuk,kode_unit,fc_nama_unit1(kode_unit) as nama_unit FROM ts_kunjungan WHERE DATE(tgl_masuk) = ? AND LEFT(kode_unit,1) = ? AND status_kunjungan = ?', [$now, 1, $status]);
+            $dataerm = db::select('SELECT keterangan2,no_rm,fc_nama_px(no_rm) as nama,tgl_masuk,kode_unit,fc_nama_unit1(kode_unit) as nama_unit FROM ts_kunjungan WHERE DATE(tgl_masuk) BETWEEN ?  AND ? AND LEFT(kode_unit,1) = ? AND status_kunjungan = ?', [$now,$last, 1, $status]);
         }
         return view('ermtemplate.tabel_kunjungan_tdy', compact([
             'dataerm',

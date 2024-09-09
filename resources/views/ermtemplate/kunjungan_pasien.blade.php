@@ -20,6 +20,11 @@
                             <input type="date" class="form-control" id="tglawal" placeholder="Password"
                                 value="{{ $now }}">
                         </div>
+                        <div class="form-group mx-sm-3 mb-2">
+                            <label for="inputPassword2" class="sr-only"></label>
+                            <input type="date" class="form-control" id="tglakhir" placeholder="Password"
+                                value="{{ $now }}">
+                        </div>
                         <div class="form-group mx-sm-4 mb-2">
                             <label for="inputPassword2" class="sr-only"></label>
                             <select class="form-control" id="pilihunit" name="pilihunit">
@@ -62,12 +67,13 @@
                 spinner = $('#loader')
                 spinner.show();
                 tglawal = $('#tglawal').val()
+                tglakhir = $('#tglakhir').val()
                 pilihunit = $('#pilihunit').val()
                 $.ajax({
                     type: 'post',
                     data: {
                         _token: "{{ csrf_token() }}",
-                        tglawal,
+                        tglawal,tglakhir,
                         pilihunit
                     },
                     url: '<?= route('ambil_kunjungan_hari_ini') ?>',
