@@ -7082,7 +7082,7 @@ class ErmController extends Controller
             DB::connection('mysql4')->select('insert into mt_nomor_trx (tgl,no_trx_layanan,unit) values (?,?,?)', [date('Y-m-d h:i:s'), $kode_layanan_header, $kodeunit]);
         }
         $ts_kunjungan = ts_kunjungan2::create($data_ts_kunjungan);
-        $tarif = DB::select('select * from mt_tarif_detail where KODE_TARIF_DETAIL = ?', ['TX46883']);
+        $tarif = DB::select('select * from mt_tarif_detail where KODE_TARIF_DETAIL = ?', ['TX52183']);
         //bpjs kode tipe transaksi 2 kalo umum 1
         $get_kunjungan_pref = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
         if ($get_kunjungan_pref[0]->kode_penjamin == 'P01') {
@@ -7112,7 +7112,7 @@ class ErmController extends Controller
         $save_detail1 = [
             'id_layanan_detail' => $id_detail1,
             'kode_layanan_header' => $kode_layanan_header,
-            'kode_tarif_detail' => 'TX2380',
+            'kode_tarif_detail' => 'TX5218',
             'total_tarif' => $tarif[0]->tarif_rajal,
             'jumlah_layanan' => '1',
             'diskon_layanan' => '0',
