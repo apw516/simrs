@@ -14,6 +14,10 @@ use App\Http\Controllers\PenunjangController;
 use App\Http\Controllers\AntrianIgd;
 use App\Http\Controllers\ErmIgdController;
 use App\Http\Controllers\FarmasiController;
+use App\Http\Controllers\ReportingController;
+
+Route::get('/berkas_ersep', [ReportingController::class, 'index'])->middleware('auth')->name('berkas_ersep');
+Route::post('/ambildataeresep', [ReportingController::class, 'ambilDataEresep'])->middleware('auth')->name('ambildataeresep');
 
 
 Route::get('/', [LoginController::class, 'index']);
@@ -128,6 +132,9 @@ Route::post('/reloadorder', [PenunjangController::class, 'reloadorder'])
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 Route::post('/ambil_grafik_all_poli', [DashboardController::class, 'ambil_grafik_all_poli'])->middleware('auth')->name('ambil_grafik_all_poli');
 Route::post('/ambil_grafik_by_poli', [DashboardController::class, 'ambil_grafik_by_poli'])->middleware('auth')->name('ambil_grafik_by_poli');
+
+Route::get('/berkas_ersep', [ReportingController::class, 'index'])->middleware('auth')->name('berkas_ersep');
+
 Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9,102']], function () {
     Route::get('/pendaftaran', [SimrsController::class, 'Pendaftaran'])
         ->name('pendaftaran'); //sidebar

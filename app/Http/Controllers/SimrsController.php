@@ -1060,7 +1060,7 @@ class SimrsController extends Controller
                     'diskon_layanan' => '0',
                     'total_layanan' => $tarif1,
                     'grantotal_layanan' => $tarif1,
-                    'status_layanan_detail' => 'OPN',
+                    'status_layanan_detail' => 'CCL',
                     'tgl_layanan_detail' => $tgl_detail,
                     'tagihan_penjamin' => $tarif1,
                     'tgl_layanan_detail_2' => $tgl_detail,

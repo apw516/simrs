@@ -632,6 +632,15 @@
                                   </a>
                               </li>
                           </ul>
+                          <ul class="nav nav-treeview">
+                              <li class="nav-item">
+                                  <a href="{{ route('berkas_ersep') }}"
+                                      class="nav-link @if ($sidebar_m == 'berkas_eresep') active @endif">
+                                      <i class="far fa-circle nav-icon"></i>
+                                      <p>Berkas E - Resep</p>
+                                  </a>
+                              </li>
+                          </ul>
                       </li>
                   @endif
                   <li class="nav-header"> <i class="nav-icon bi bi-person-circle mr-2"></i> INFO AKUN</li>
