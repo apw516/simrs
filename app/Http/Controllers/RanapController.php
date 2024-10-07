@@ -21,7 +21,7 @@ use App\Models\ts_kunjungan;
 use App\Models\ajuan_buka_kunjungan;
 
 
-class RanapController extends Controller
+class RanapController extends VclaimController
 {
     public function index()
     {
@@ -31,6 +31,7 @@ class RanapController extends Controller
         $title = 'SIMRS -SEP RAWAT INAP';
         $sidebar = 'RANAP';
         $sidebar_m = 'SEP RANAP';
+        $this->get_app();
         return view('ranap.datasep', [
             'title' => $title,
             'sidebar' => $sidebar,
@@ -53,6 +54,7 @@ class RanapController extends Controller
         $no_bpjs = $mt_pasien[0]->no_Bpjs;
         $sep = $request->nomorsurat;
         $cek_sep = $v->carisep($sep);
+        $this->get_app();
         if($no_bpjs != $cek_sep->response->peserta->noKartu){
             $data = [
                 'metaData' =>

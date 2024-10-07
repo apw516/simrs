@@ -32,6 +32,10 @@ class VclaimController extends Controller
             // 'data_pasien' => Pasien::where('tgl_entry', date('Y-m-d'))->get()
         ]);
     }
+    public function get_app()
+    {
+        sleep(23);
+    }
     public function Suratkontrol()
     {
         $title = 'SIMRS - DATA SURAT KONTROL';
@@ -886,7 +890,7 @@ class VclaimController extends Controller
                     "obat" => $obat
                 ]
             ]
-        ];    
+        ];
         $v = new VclaimModel();
         $prb = $v->InsertPRB($data);
         $data1 = [
@@ -1094,7 +1098,7 @@ class VclaimController extends Controller
                 ];
                 $v = new VclaimModel();
                 $datasep = $v->insertsep2($get_sep);
-                if ($datasep == 'RTO') {                  
+                if ($datasep == 'RTO') {
                     $data = [
                         'kode' => 500,
                         'message' => 'The Network connection lost, please try again ...'
@@ -1102,7 +1106,7 @@ class VclaimController extends Controller
                     echo json_encode($data);
                 } else if ($datasep->metaData->code == 200) {
                     ts_kunjungan::whereRaw('kode_kunjungan = ? and no_rm = ?', array($kodekunjungan, $nomorrm ))->update(['no_sep' => $datasep->response->sep->noSep
-                    ]);   
+                    ]);
                     //insert ts_sep
                     $sep = $datasep->response->sep;
                     if ($keterangankll == '0') {
@@ -1148,7 +1152,7 @@ class VclaimController extends Controller
                         'pic1' => auth()->user()->id_simrs,
                         'tingkat_faskes' => $request->asalrujukan,
                     ];
-                    $ts_sep = ts_sep::create($data_ts_sep);                    
+                    $ts_sep = ts_sep::create($data_ts_sep);
                     $pasien = Pasien::where('no_rm', '=', "$nomorrm")->get();
                     $data = [
                         'kode' => 200,
@@ -1256,17 +1260,17 @@ class VclaimController extends Controller
         $pdf->SetXY(138, 100);
         $pdf->Cell(10, 7, $s->response->namaDokter, 0, 1);
 
-     
+
         $pdf->SetFont('Arial', 'I', 10);
         $pdf->SetXY(10, 100);
         $pdf->Cell(10, 7, 'tgl entry -' . $s->response->tglTerbit . ' ,.Tanggal cetak ' . date('y-m-d h:i:s'), 0, 1);
         $pdf->SetFont('Arial', '', 8);
-    
+
         $pdf->SetFont('Arial', '', 12);
         $pdf->Line(150, 100, 190, 100);
         $pdf->Output();
 
-        exit;     
+        exit;
     }
 }
 
