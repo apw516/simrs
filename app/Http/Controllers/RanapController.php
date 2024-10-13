@@ -31,7 +31,7 @@ class RanapController extends VclaimController
         $title = 'SIMRS -SEP RAWAT INAP';
         $sidebar = 'RANAP';
         $sidebar_m = 'SEP RANAP';
-        $this->get_app();
+        // $this->get_app();
         return view('ranap.datasep', [
             'title' => $title,
             'sidebar' => $sidebar,
@@ -54,7 +54,7 @@ class RanapController extends VclaimController
         $no_bpjs = $mt_pasien[0]->no_Bpjs;
         $sep = $request->nomorsurat;
         $cek_sep = $v->carisep($sep);
-        $this->get_app();
+        // $this->get_app();
         if($no_bpjs != $cek_sep->response->peserta->noKartu){
             $data = [
                 'metaData' =>
