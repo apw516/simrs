@@ -1683,6 +1683,10 @@ class SimrsController extends Controller
                 if ($unit[0]->kode_unit == '1015' || $unit[0]->kode_unit == '1028') {
                     $tarif1 = 0;
                     $tarif2 = 0;
+                    if($unit[0]->kode_unit == '1015'){
+                        $tarif1 = $unit[0]->mt_tarif_detail->tarif_rajal;
+                        $tarif2 = $unit[0]->mt_tarif_detail2->tarif_rajal;
+                    }
                 } else {
                     $tarif1 = $unit[0]->mt_tarif_detail->tarif_rajal;
                     $tarif2 = $unit[0]->mt_tarif_detail2->tarif_rajal;
