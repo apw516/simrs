@@ -1691,6 +1691,7 @@ class SimrsController extends Controller
                     $tarif1 = $unit[0]->mt_tarif_detail->tarif_rajal;
                     $tarif2 = $unit[0]->mt_tarif_detail2->tarif_rajal;
                 }
+
                 $tagihanpribadi1 = $tarif1;
                 $tagihanpenjamin1 = $tarif1;
                 $tagihanpribadi2 = $tarif2;
