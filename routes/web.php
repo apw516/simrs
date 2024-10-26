@@ -135,7 +135,7 @@ Route::post('/ambil_grafik_by_poli', [DashboardController::class, 'ambil_grafik_
 
 Route::get('/berkas_ersep', [ReportingController::class, 'index'])->middleware('auth')->name('berkas_ersep');
 
-Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9,102']], function () {
+Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9,102,101']], function () {
     Route::get('/pendaftaran', [SimrsController::class, 'Pendaftaran'])
         ->name('pendaftaran'); //sidebar
     Route::get('/pendaftaran2', [SimrsController::class, 'Pendaftaran2'])

@@ -625,6 +625,15 @@
                           </ul>
                           <ul class="nav nav-treeview">
                               <li class="nav-item">
+                                  <a href="{{ route('berkaserm') }}"
+                                      class="nav-link @if ($title == 'SIMRS - Berkas ERM') active @endif">
+                                      <i class="far fa-circle nav-icon"></i>
+                                      <p>Berkas ERM by No RM</p>
+                                  </a>
+                              </li>
+                          </ul>
+                          <ul class="nav nav-treeview">
+                              <li class="nav-item">
                                   <a href="{{ route('berkas_erm') }}"
                                       class="nav-link @if ($sidebar_m == 'berkas_erm') active @endif">
                                       <i class="far fa-circle nav-icon"></i>
