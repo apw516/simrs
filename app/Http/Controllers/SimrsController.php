@@ -808,6 +808,26 @@ class SimrsController extends Controller
             echo json_encode($data);
             die;
         }
+        $jammulai = $jampraktek[0]->jadwal;
+        $jammulai1 = substr($jammulai,0,2);
+        $menitmulai = substr($jammulai,3,2);
+
+        $dt = Carbon::now();
+        $sekarang = $dt->toTimeString();
+        $sekarang1 = substr($sekarang,0,5);
+        $jamsekarang = substr($sekarang1,0,2);
+        $menitsekarang = substr($sekarang1,3,2);
+        $hasil = (intVal($jammulai1) - intVal($jamsekarang)) * 60 + (intVal($menitmulai) - intVal($menitsekarang));
+        $hasil = $hasil / 60;
+        $hasil = number_format($hasil,2);
+        if($hasil > 1){
+            $data = [
+                'kode' => 500,
+                'message' => 'Pasien bisa didaftarkkan 1 jam sebelum poli dibuka, Jadwal Poli ' .$jammulai
+            ];
+            echo json_encode($data);
+            die;
+        }
         // end antrian
         // ambil antrian
         if ($request->tujuankunjungan == 0) {
@@ -995,7 +1015,17 @@ class SimrsController extends Controller
             "user" => auth()->user()->nama
         ];
         if ($request->kodepolitujuan != 'HDL') {
-            $antrian = $mw->ambilantrean2($data_antrian);
+            try{
+                $antrian = $mw->ambilantrean2($data_antrian);
+            }catch (\Exception $e) {
+                $err = $e->getMessage();
+                $data = [
+                    'kode' => 500,
+                    'message' => 'Gagal ambil antrian online ...( '.$err .' )'
+                ];
+                echo json_encode($data);
+                die;
+            }
         }
 
 
