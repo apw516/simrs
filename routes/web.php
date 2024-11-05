@@ -248,7 +248,7 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9,102,101']], function ()
     Route::get('Pendaftaran/caridiagnosa', [SimrsController::class, 'Caridiagnosa'])
         ->name('caridiagnosa'); //form[asien_bpjs
     Route::get('Pendaftaran/cariobat', [SimrsController::class, 'cariobat'])
-        ->name('cariobat'); //form[asien_bpjs
+        ->name('cariobatprb'); //form[asien_bpjs
     Route::get('Pendaftaran/cariprocedure', [SimrsController::class, 'cariprocedure'])
         ->name('cariprocedure'); //form[asien_bpjs
     Route::post('Pendaftaran/carikabupaten', [SimrsController::class, 'Carikabupaten'])
@@ -557,7 +557,7 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
     Route::get('caripoli_konsul', [SimrsController::class, 'Caripoli_rs'])
         ->name('caripoli_konsul'); //formpasien_bpjs
 });
-Route::group(['middleware' => ['auth', 'hak_akses1:5,7,2']], function () {
+Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
     Route::get('/cariobat', [ErmController::class, 'cariobat_form'])
         ->name('cariobat'); //formpasien_bpjs
     Route::get('/indexdokter', [ErmController::class, 'indexdokter'])

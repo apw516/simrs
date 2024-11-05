@@ -31,7 +31,7 @@
 <script>
     $(document).ready(function() {
            $('#namaobat1').autocomplete({
-               source: "<?= route('cariobat') ?>",
+               source: "<?= route('cariobatprb') ?>",
                select: function(event, ui) {
                    $('[id="namaobat1"]').val(ui.item.label);
                    $('[id="kodeobat1"]').val(ui.item.kode);
