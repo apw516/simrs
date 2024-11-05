@@ -12,12 +12,14 @@
                         <select id="signa1_1" class="form-control">
                             <option value="1">Signa 1</option>
                             <option value="2">Signa 2</option>
+                            <option value="3">Signa 3</option>
                         </select>
                     </div>
                     <div class="col">
                         <select id="signa2_1" class="form-control">
                             <option value="1">Signa 1</option>
                             <option value="2">Signa 2</option>
+                            <option value="3">Signa 3</option>
                         </select>
                     </div>
                     <div class="col">
