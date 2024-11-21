@@ -42,6 +42,9 @@ use App\Models\jkn_antrian;
 use App\Models\Status;
 use App\Models\tracer;
 use simitsdk\phpjasperxml\PHPJasperXML;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use BaconQrCode\Renderer\GDLibRenderer;
+use BaconQrCode\Writer;
 
 class SimrsController extends Controller
 {
@@ -3018,6 +3021,15 @@ class SimrsController extends Controller
     public function Cetaksep_v(Request $request)
     {
         //ambil data sep
+        // phpinfo();
+        // $url = url();
+        // $renderer = new GDLibRenderer(400);
+        // $writer = new Writer($renderer);
+        // $writer->writeFile('Hello World!', 'qrcode.png');
+        // dd
+        // $qrcode = QrCode :: size( 500 )->format('png')->produce('tst',storage_path ( 'app/public/qrcode/'.str_slug('test').'.png' )) ;
+        // QrCode::format('png')->generate('Make me into a QrCode!', 'C:\filesbarcodesep/qrcode.svg');
+
         $sep = $request->sep;
         // $sep = ts_sep::where('no_SEP', $sep)->get();
         // $cek = count($sep);
@@ -3034,6 +3046,7 @@ class SimrsController extends Controller
         $pdf->SetFont('Arial', '', 15);
         $pdf->Image('public/img/logobpjs.png', 1, -5, 60, 40);
         $pdf->Image('public/img/logo_rs.png', 170, 4, 35, 25);
+        // $pdf->Image('C:\filesbarcodesep/qrcode.svg', 170, 4, 35, 25);
         $pdf->SetXY(70, 8);
         $pdf->Cell(10, 7, 'SURAT ELIGIBILITAS PESERTA', 0, 1);
         $pdf->SetXY(73, 14);
