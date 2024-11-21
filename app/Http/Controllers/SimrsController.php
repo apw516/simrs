@@ -1020,6 +1020,15 @@ class SimrsController extends Controller
         if ($request->kodepolitujuan != 'HDL') {
             try{
                 $antrian = $mw->ambilantrean2($data_antrian);
+                if($antrian->metadata->code != 200)
+                {
+                    $data = [
+                        'kode' => 500,
+                        'message' => 'Gagal ambil antrian online ...'
+                    ];
+                    echo json_encode($data);
+                    die;
+                }
             }catch (\Exception $e) {
                 $err = $e->getMessage();
                 $data = [
