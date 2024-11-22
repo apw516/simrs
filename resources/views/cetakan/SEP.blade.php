@@ -141,7 +141,7 @@
                 <table style="font-size: 12px; width:60%">
                     <tr>
                         <td colspan="2" style="text-align: center; ">Persetujuan <br>Pasien/Keluarga Pasien <br>
-                            <img src="data:image/png;base64, {{ base64_encode(QrCode::generate($nsep)) }} ">
+                            <img src="data:image/png;base64, {{ base64_encode(QrCode::generate($sep->response->peserta->noKartu)) }} ">
                         </td>
                     </tr>
                     <tr>
