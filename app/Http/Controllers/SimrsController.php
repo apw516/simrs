@@ -3436,7 +3436,7 @@ class SimrsController extends Controller
             'nsep','now'
         ]));
         // return $pdf->download('document.pdf');
-        $customPaper = [0, 0, 21.50, 14.00];
+        $customPaper = [0, 0, 8.464567, 5.51181];
         $pdf->setPaper('a4', 'portrait');
         $title = $sep1;
         return $pdf->stream("$title", array("Attachment" => false));
