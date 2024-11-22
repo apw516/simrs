@@ -2,18 +2,18 @@
     use Carbon\Carbon;
 @endphp
 <div class="scaled-content">
-    <table style="font-size: 12px; margin-top:50px; width:100%;">
+    <table style="font-size: 12px; margin-top:0px; width:100%;">
         <tr>
             <td colspan="2" style="padding-left:50px;">
                 <table>
                     <td>
-                        <img src="{{ asset('public/img/logobpjs.png') }}" style="height:100px; padding-right:0px;">
+                        <img src="{{ public_path('img/logobpjs.png') }}" style="height:100px; padding-right:0px;">
                     </td>
                     <td><span style="font-size: 12px; padding-left:10px; padding-bottom:0px;font-weight:bold">SURAT
                             ELEGIBILITAS PESERTA
                             <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RSUD WALED KAB CIREBON</span></td>
                     <td>
-                        <img src="{{ asset('public/img/logo_rs.png') }}"
+                        <img src="{{ public_path('img/logo_rs.png') }}"
                             style="height:70px; padding-right:0px; margin-top:10px;margin-left:160px">
                     </td>
                 </table>
@@ -22,7 +22,7 @@
         <tr>
             <td style="padding-left:50px; width:60%;">
                 <table cellspacing="0" cellpadding="5" style="width:100%">
-                    <tr style="font-weight: bold;font-size: 18px">
+                    <tr style="font-weight: bold;font-size: 12px">
                         <td>No. SEP</td>
                         <td>: {{ $sep->response->noSep }}</td>
                         <td></td>
@@ -156,14 +156,7 @@
     </table>
 </div>
 <style>
-    @page {
-        margin: 0px;
-        size: 10.5cm 16cm;
-        size: portrait;
-    }
-
     body {
-        margin: 3px;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
     }
 

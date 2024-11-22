@@ -3436,8 +3436,7 @@ class SimrsController extends Controller
             'nsep','now'
         ]));
         // return $pdf->download('document.pdf');
-        $customPaper = [0, 0, 8.464567, 5.51181];
-        $pdf->setPaper('a4', 'portrait');
+        $pdf->setPaper(array(0,0,609.4488,635.433), 'portrait');
         $title = $sep1;
         return $pdf->stream("$title", array("Attachment" => false));
 
@@ -3662,12 +3661,8 @@ class SimrsController extends Controller
         ]));
         // return $pdf->download('document.pdf');
         $title = $request->sep;
+        // $pdf->setPaper(array(0,0,609.4488,5.433), 'portrait');
         return $pdf->stream("$title", array("Attachment" => false));
-
-        // exit(0);
-        // return view('CETAKAN.SEP',compact([
-        //     'sep','peserta'
-        // ]));
     }
     public function simpanpasien(Request $request)
     {

@@ -212,11 +212,11 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9,102,101']], function ()
         ->name('simpanrujukan'); //formpasien_bpjs
     Route::post('Pendaftaran/simpansepranap', [SimrsController::class, 'Simpansepranap'])
         ->name('simpansepranap'); //formpasien_bpjs
-    Route::get('/cetaksep/{kodekunjungan}', [SimrsController::class, 'Cetaksep2']); //formpasien_bpjs
+    Route::get('/cetaksep/{kodekunjungan}', [SimrsController::class, 'Cetaksep']); //formpasien_bpjs
     Route::get('/cetaksurkon/{nomorsurat}', [VclaimController::class, 'Cetaksurkon']); //formpasien_bpjs
     Route::get('/cetakrujukan/{nomorrujukan}', [SimrsController::class, 'cetakrujukan']); //formpasien_bpjs
     Route::get('datakunjungan/cetaksep/{kodekunjungan}', [SimrsController::class, 'Cetaksep']); //formpasien_bpjs
-    Route::get('/cetaksep_v/{sep}', [SimrsController::class, 'Cetaksep_v2']); //formpasien_bpjs
+    Route::get('/cetaksep_v/{sep}', [SimrsController::class, 'Cetaksep_v']); //formpasien_bpjs
     Route::get('cetakstruk/{kodekunjungan}', [SimrsController::class, 'Cetakstruk']); //formpasien_bpjs
     Route::get('datakunjungan/cetakstruk/{kodekunjungan}', [SimrsController::class, 'Cetakstruk']); //formpasien_bpjs
     Route::post('Pendaftaran/buatsuratkontrol', [SimrsController::class, 'Buatsuratkontrol'])
