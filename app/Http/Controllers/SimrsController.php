@@ -37,6 +37,7 @@ use App\Models\Kecamatan;
 use App\Models\Desa;
 use App\Models\mt_keluarga;
 use App\Models\mt_domisili;
+use App\Models\logantrian;
 use App\Models\ts_rujukan;
 use App\Models\jkn_antrian;
 use App\Models\Status;
@@ -813,21 +814,21 @@ class SimrsController extends Controller
             die;
         }
         $jammulai = $jampraktek[0]->jadwal;
-        $jammulai1 = substr($jammulai,0,2);
-        $menitmulai = substr($jammulai,3,2);
+        $jammulai1 = substr($jammulai, 0, 2);
+        $menitmulai = substr($jammulai, 3, 2);
 
         $dt = Carbon::now();
         $sekarang = $dt->toTimeString();
-        $sekarang1 = substr($sekarang,0,5);
-        $jamsekarang = substr($sekarang1,0,2);
-        $menitsekarang = substr($sekarang1,3,2);
+        $sekarang1 = substr($sekarang, 0, 5);
+        $jamsekarang = substr($sekarang1, 0, 2);
+        $menitsekarang = substr($sekarang1, 3, 2);
         $hasil = (intVal($jammulai1) - intVal($jamsekarang)) * 60 + (intVal($menitmulai) - intVal($menitsekarang));
         $hasil = $hasil / 60;
-        $hasil = number_format($hasil,2);
-        if($hasil > 1){
+        $hasil = number_format($hasil, 2);
+        if ($hasil > 1) {
             $data = [
                 'kode' => 500,
-                'message' => 'Pasien bisa didaftarkkan 1 jam sebelum poli dibuka, Jadwal Poli ' .$jammulai
+                'message' => 'Pasien bisa didaftarkkan 1 jam sebelum poli dibuka, Jadwal Poli ' . $jammulai
             ];
             echo json_encode($data);
             die;
@@ -839,7 +840,11 @@ class SimrsController extends Controller
             $tujuan = 1;
         } else if ($request->tujuankunjungan == 2) {
             $nomorreferensi = $request->suratkontrol;
-            $tujuan = 3;
+            if ($request->assesment == 2) {
+                $tujuan = 2;
+            } else {
+                $tujuan = 3;
+            }
         }
 
         //END OF AMBIL ANTRIAN
@@ -1019,22 +1024,27 @@ class SimrsController extends Controller
             "user" => auth()->user()->nama
         ];
         if ($request->kodepolitujuan != 'HDL') {
-            try{
+            try {
                 $antrian = $mw->ambilantrean2($data_antrian);
-                // if($antrian->metadata->code != 200)
-                // {
-                //     $data = [
-                //         'kode' => 500,
-                //         'message' => 'Gagal ambil antrian online ...'
-                //     ];
-                //     echo json_encode($data);
-                //     die;
-                // }
-            }catch (\Exception $e) {
+                if ($antrian->metadata->code != 200) {
+                    $data_log_antrian = [
+                        'kode_kunjungan' => $ts_kunjungan->id,
+                        'message' => $antrian->metadata->message,
+                        'kode_kunjungan' => $antrian->metadata->code,
+                    ];
+                    logantrian::create($data_log_antrian);
+                    // $data = [
+                    //     'kode' => 500,
+                    //     'message' => 'Gagal ambil antrian online ...'
+                    // ];
+                    // echo json_encode($data);
+                    // die;
+                }
+            } catch (\Exception $e) {
                 $err = $e->getMessage();
                 $data = [
                     'kode' => 500,
-                    'message' => 'Gagal ambil antrian online ...( '.$err .' )'
+                    'message' => 'Gagal ambil antrian online ...( ' . $err . ' )'
                 ];
                 echo json_encode($data);
                 die;
@@ -1726,7 +1736,7 @@ class SimrsController extends Controller
                 if ($unit[0]->kode_unit == '1015' || $unit[0]->kode_unit == '1028') {
                     $tarif1 = 0;
                     $tarif2 = 0;
-                    if($unit[0]->kode_unit == '1015'){
+                    if ($unit[0]->kode_unit == '1015') {
                         $tarif1 = $unit[0]->mt_tarif_detail->tarif_rajal;
                         $tarif2 = $unit[0]->mt_tarif_detail2->tarif_rajal;
                     }
@@ -1927,9 +1937,9 @@ class SimrsController extends Controller
         $unit = mt_unit::where('kode_unit', '=', "$unitranap")->get();
         // $mt_penjamin = DB::select('select * from mt_penjamin_bpjs where kode_penjamin_simrs = ?', [$request->penjamin]);
         // dd($request->koderef);
-        if($penjamin == 'P01'){
+        if ($penjamin == 'P01') {
             $JP = 0;
-        }else{
+        } else {
             $JP = 1;
         }
         $data_ts_kunjungan = array(
@@ -3219,7 +3229,8 @@ class SimrsController extends Controller
 
         exit;
     }
-    public function cetaksep_v2(Request $request){
+    public function cetaksep_v2(Request $request)
+    {
         $sep = $request->sep;
         $nsep = $request->sep;
         $v = new VclaimModel();
@@ -3229,8 +3240,11 @@ class SimrsController extends Controller
         // $qrcode = base64_encode(QrCode::format('svg')->size(200)->errorCorrection('H')->generate($sep));
         // dd($sep);
         $qrcode = QrCode::generate($request->sep);
-        $pdf = PDF::loadView('cetakan.SEP',compact([
-            'sep','peserta','qrcode','nsep'
+        $pdf = PDF::loadView('cetakan.SEP', compact([
+            'sep',
+            'peserta',
+            'qrcode',
+            'nsep'
         ]));
         // return $pdf->download('document.pdf');
         $title = $request->sep;
