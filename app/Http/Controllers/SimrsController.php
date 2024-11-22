@@ -3436,6 +3436,7 @@ class SimrsController extends Controller
             'nsep','now'
         ]));
         // return $pdf->download('document.pdf');
+        $pdf->setPaper('L', 'landscape');
         $title = $sep1;
         return $pdf->stream("$title", array("Attachment" => false));
 

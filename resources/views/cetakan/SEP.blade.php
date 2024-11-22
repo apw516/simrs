@@ -13,7 +13,8 @@
                             ELEGIBILITAS PESERTA
                             <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RSUD WALED KAB CIREBON</span></td>
                     <td>
-                        <img src="{{ asset('public/img/logo_rs.png') }}" style="height:70px; padding-right:0px; margin-top:10px;margin-left:160px">
+                        <img src="{{ asset('public/img/logo_rs.png') }}"
+                            style="height:70px; padding-right:0px; margin-top:10px;margin-left:160px">
                     </td>
                 </table>
             </td>
@@ -141,12 +142,13 @@
                 <table style="font-size: 12px; width:60%">
                     <tr>
                         <td colspan="2" style="text-align: center; ">Persetujuan <br>Pasien/Keluarga Pasien <br>
-                            <img src="data:image/png;base64, {{ base64_encode(QrCode::generate($sep->response->peserta->noKartu)) }} ">
+                            <img
+                                src="data:image/png;base64, {{ base64_encode(QrCode::generate($sep->response->peserta->noKartu)) }} ">
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: center; padding-top:10px; font-size: 8px;">Waktu:
-                           {{ $now }} WIB</td>
+                            {{ $now }} WIB</td>
                     </tr>
                 </table>
             </td>
@@ -156,8 +158,8 @@
 <style>
     @page {
         margin: 0px;
-        size: 21.50cm 14.00cm;
-        size: landscape;
+        size: 10.5cm 16cm;
+        size: portrait;
     }
 
     body {
