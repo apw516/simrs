@@ -156,6 +156,8 @@
 <style>
     @page {
         margin: 0px;
+        size: 21.50cm 14.00cm;
+        size: landscape;
     }
 
     body {
