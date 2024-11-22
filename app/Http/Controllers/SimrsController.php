@@ -3423,7 +3423,7 @@ class SimrsController extends Controller
         // $v = new VclaimModel();
         // $sep = $v->carisep($sep1);
         // $peserta = $v->get_peserta_noka($sep->response->peserta->noKartu, date('Y-m-d'));
-            $peserta = $v->get_peserta_noka($sep->response->peserta->noKartu, date('Y-m-d'));
+        $peserta = $v->get_peserta_noka($sep->response->peserta->noKartu, date('Y-m-d'));
         $data = ['title' => 'domPDF in Laravel 10'];
         // $qrcode = base64_encode(QrCode::format('svg')->size(200)->errorCorrection('H')->generate($sep));
         // dd($sep);
@@ -3436,7 +3436,8 @@ class SimrsController extends Controller
             'nsep','now'
         ]));
         // return $pdf->download('document.pdf');
-        $pdf->setPaper('L', 'landscape');
+        $customPaper = [0, 0, 21.50, 14.00];
+        $pdf->setPaper('a4', 'portrait');
         $title = $sep1;
         return $pdf->stream("$title", array("Attachment" => false));
 
