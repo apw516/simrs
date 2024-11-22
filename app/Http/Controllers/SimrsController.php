@@ -45,6 +45,7 @@ use simitsdk\phpjasperxml\PHPJasperXML;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use BaconQrCode\Renderer\GDLibRenderer;
 use BaconQrCode\Writer;
+use PDF;
 
 class SimrsController extends Controller
 {
@@ -1020,15 +1021,15 @@ class SimrsController extends Controller
         if ($request->kodepolitujuan != 'HDL') {
             try{
                 $antrian = $mw->ambilantrean2($data_antrian);
-                if($antrian->metadata->code != 200)
-                {
-                    $data = [
-                        'kode' => 500,
-                        'message' => 'Gagal ambil antrian online ...'
-                    ];
-                    echo json_encode($data);
-                    die;
-                }
+                // if($antrian->metadata->code != 200)
+                // {
+                //     $data = [
+                //         'kode' => 500,
+                //         'message' => 'Gagal ambil antrian online ...'
+                //     ];
+                //     echo json_encode($data);
+                //     die;
+                // }
             }catch (\Exception $e) {
                 $err = $e->getMessage();
                 $data = [
@@ -3217,6 +3218,28 @@ class SimrsController extends Controller
         $pdf->Output();
 
         exit;
+    }
+    public function cetaksep_v2(Request $request){
+        $sep = $request->sep;
+        $nsep = $request->sep;
+        $v = new VclaimModel();
+        $sep = $v->carisep($request->sep);
+        $peserta = $v->get_peserta_noka($sep->response->peserta->noKartu, date('Y-m-d'));
+        $data = ['title' => 'domPDF in Laravel 10'];
+        // $qrcode = base64_encode(QrCode::format('svg')->size(200)->errorCorrection('H')->generate($sep));
+        // dd($sep);
+        $qrcode = QrCode::generate($request->sep);
+        $pdf = PDF::loadView('cetakan.SEP',compact([
+            'sep','peserta','qrcode','nsep'
+        ]));
+        // return $pdf->download('document.pdf');
+        $title = $request->sep;
+        return $pdf->stream("$title", array("Attachment" => false));
+
+        // exit(0);
+        // return view('CETAKAN.SEP',compact([
+        //     'sep','peserta'
+        // ]));
     }
     public function simpanpasien(Request $request)
     {
