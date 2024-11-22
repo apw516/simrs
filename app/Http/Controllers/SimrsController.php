@@ -3229,6 +3229,14 @@ class SimrsController extends Controller
 
         exit;
     }
+    public function get_now()
+    {
+        $dt = Carbon::now()->timezone('Asia/Jakarta');
+        $date = $dt->toDateString();
+        $time = $dt->toTimeString();
+        $now = $date . ' ' . $time;
+        return $now;
+    }
     public function cetaksep_v2(Request $request)
     {
         $sep = $request->sep;
@@ -3239,12 +3247,13 @@ class SimrsController extends Controller
         $data = ['title' => 'domPDF in Laravel 10'];
         // $qrcode = base64_encode(QrCode::format('svg')->size(200)->errorCorrection('H')->generate($sep));
         // dd($sep);
+        $now = $this->get_now();
         $qrcode = QrCode::generate($request->sep);
         $pdf = PDF::loadView('cetakan.SEP', compact([
             'sep',
             'peserta',
             'qrcode',
-            'nsep'
+            'nsep','now'
         ]));
         // return $pdf->download('document.pdf');
         $title = $request->sep;

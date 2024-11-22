@@ -7,13 +7,13 @@
             <td colspan="2" style="padding-left:50px;">
                 <table>
                     <td>
-                        <img src="{{ asset('public/img/logobpjs.png') }}" style="height:140px; padding-righ:0px;">
+                        <img src="{{ asset('public/img/logobpjs.png') }}" style="height:100px; padding-right:0px;">
                     </td>
                     <td><span style="font-size: 12px; padding-left:10px; padding-bottom:0px;font-weight:bold">SURAT
                             ELEGIBILITAS PESERTA
                             <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RSUD WALED KAB CIREBON</span></td>
                     <td>
-                        <img src="{{ asset('public/img/logobpjs.png') }}" style="height:140px; padding-righ:0px;">
+                        <img src="{{ asset('public/img/logo_rs.png') }}" style="height:70px; padding-right:0px; margin-top:10px;margin-left:160px">
                     </td>
                 </table>
             </td>
@@ -21,7 +21,7 @@
         <tr>
             <td style="padding-left:50px; width:60%;">
                 <table cellspacing="0" cellpadding="5" style="width:100%">
-                    <tr style="font-weight: bold;font-size: 22px">
+                    <tr style="font-weight: bold;font-size: 18px">
                         <td>No. SEP</td>
                         <td>: {{ $sep->response->noSep }}</td>
                         <td></td>
@@ -49,7 +49,7 @@
                             &nbsp;&nbsp;</td>
                         <td>
 
-                            Kelamin :
+                            Jenis Kelamin :
                             {{ $sep->response->peserta->kelamin == 'L' ? 'Laki-Laki' : 'Perempuan' }}
                         </td>
                     </tr>
@@ -138,7 +138,7 @@
                 </table>
             </td>
             <td style="width:40%;">
-                <table style="font-size: 12px; width:100%;">
+                <table style="font-size: 12px; width:60%">
                     <tr>
                         <td colspan="2" style="text-align: center; ">Persetujuan <br>Pasien/Keluarga Pasien <br>
                             <img src="data:image/png;base64, {{ base64_encode(QrCode::generate($nsep)) }} ">
@@ -146,7 +146,7 @@
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: center; padding-top:10px; font-size: 8px;">Waktu:
-                            {{ Carbon::now() }} WIB</td>
+                           {{ $now }} WIB</td>
                     </tr>
                 </table>
             </td>
