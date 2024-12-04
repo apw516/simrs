@@ -701,3 +701,4 @@ Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
 
 Route::get('get_riwayat_sep/{nomorkartu}/{tglawal}/{tglakhir}', [SimrsController::class, 'cari_riwayat_sep'])->name('cari_riwayat_sep'); //formpasien_bpjs
 Route::get('/cetaklabel/{kodekunjungan}', [SimrsController::class, 'Cetaklabel']); //formpasien_bpjs
+Route::post('catatanmedispasien2', [ErmController::class, 'catatanmedispasien2'])->name('catatanmedispasien2'); //sidebar

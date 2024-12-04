@@ -1049,7 +1049,7 @@ class ErmController extends Controller
                     //     echo json_encode($data);
                     //     die;
                     // } else {
-                        assesmenawalperawat::whereRaw('no_rm = ? and kode_unit = ? and tanggalkunjungan = ?', array($dataSet['nomorrm'],  $dataSet['unit'], $dataSet['tanggalkunjungan']))->update($data);
+                    assesmenawalperawat::whereRaw('no_rm = ? and kode_unit = ? and tanggalkunjungan = ?', array($dataSet['nomorrm'],  $dataSet['unit'], $dataSet['tanggalkunjungan']))->update($data);
                     // }
                 } else {
                     $erm_assesmen = assesmenawalperawat::create($data);
@@ -6936,7 +6936,7 @@ class ErmController extends Controller
         INNER JOIN ts_layanan_detail b ON a.`id` = b.`row_id_header`
         INNER JOIN mt_tarif_detail c ON b.`kode_tarif_detail` = c.`KODE_TARIF_DETAIL`
         INNER JOIN mt_tarif_header d ON c.`KODE_TARIF_HEADER` = d.`KODE_TARIF_HEADER`
-        WHERE a.`kode_kunjungan` = ? AND b.status_layanan_detail = ? AND a.kode_unit = ?", [$kodekunjungan, 'OPN',auth()->user()->unit]);
+        WHERE a.`kode_kunjungan` = ? AND b.status_layanan_detail = ? AND a.kode_unit = ?", [$kodekunjungan, 'OPN', auth()->user()->unit]);
         return view('ermtemplate.tableriwayattindakan_poli', compact([
             'datatarif'
         ]));
@@ -7198,9 +7198,9 @@ class ErmController extends Controller
             $last = $request->tglakhir;
         }
         if (!empty($request->pilihunit)) {
-            $dataerm = db::select('SELECT keterangan2,no_rm,fc_nama_px(no_rm) as nama,tgl_masuk,kode_unit,fc_nama_unit1(kode_unit) as nama_unit FROM ts_kunjungan WHERE DATE(tgl_masuk) BETWEEN ?  AND ? AND LEFT(kode_unit,1) = ? AND status_kunjungan = ? AND kode_unit = ?', [$now,$last, 1, $status, $request->pilihunit]);
+            $dataerm = db::select('SELECT keterangan2,no_rm,fc_nama_px(no_rm) as nama,tgl_masuk,kode_unit,fc_nama_unit1(kode_unit) as nama_unit FROM ts_kunjungan WHERE DATE(tgl_masuk) BETWEEN ?  AND ? AND LEFT(kode_unit,1) = ? AND status_kunjungan = ? AND kode_unit = ?', [$now, $last, 1, $status, $request->pilihunit]);
         } else {
-            $dataerm = db::select('SELECT keterangan2,no_rm,fc_nama_px(no_rm) as nama,tgl_masuk,kode_unit,fc_nama_unit1(kode_unit) as nama_unit FROM ts_kunjungan WHERE DATE(tgl_masuk) BETWEEN ?  AND ? AND LEFT(kode_unit,1) = ? AND status_kunjungan = ?', [$now,$last, 1, $status]);
+            $dataerm = db::select('SELECT keterangan2,no_rm,fc_nama_px(no_rm) as nama,tgl_masuk,kode_unit,fc_nama_unit1(kode_unit) as nama_unit FROM ts_kunjungan WHERE DATE(tgl_masuk) BETWEEN ?  AND ? AND LEFT(kode_unit,1) = ? AND status_kunjungan = ?', [$now, $last, 1, $status]);
         }
         return view('ermtemplate.tabel_kunjungan_tdy', compact([
             'dataerm',
@@ -8223,5 +8223,53 @@ class ErmController extends Controller
         ];
         echo json_encode($data);
         die;
+    }
+    public function catatanmedispasien2(Request $request)
+    {
+        $rm = $request->nomorrm;
+
+        $first = DB::connection('mysql')->select('SELECT *,fc_nama_unit1(kode_unit) as nama_unit,date(tanggalkunjungan) as tgl FROM `erm_hasil_assesmen_keperawatan_rajal` WHERE no_rm = ? AND id = (select min(id) from erm_hasil_assesmen_keperawatan_rajal where no_rm = ?) limit 1', [$rm, $rm]);
+        $datapasien = db::select('select * from mt_pasien where no_rm = ?',[$rm]);
+        if (count($first) > 0) {
+            $assesmen_perawat = DB::select('select *,date(tanggalkunjungan) as tgl_k from erm_hasil_assesmen_keperawatan_rajal where kode_kunjungan > ? and no_rm = ?', [$first[0]->kode_kunjungan, $rm]);
+
+            $tanggal = date_create($first[0]->tgl);
+            $arr_date = [$first[0]->id];
+
+            foreach ($assesmen_perawat as $ap) {
+                $akhir = date_create($ap->tgl_k);
+                $bulan = date_diff($tanggal, $akhir);
+                $days = $bulan->days;
+                if ($days > 91) {
+                    $tanggal = $akhir;
+                    array_push($arr_date, $ap->id);
+                }
+            }
+
+            foreach ($arr_date as $as) {
+                assesmenawalperawat::whereRaw('id >= ? and no_rm = ?', array($as, $rm))->update(['jenis_berkas' => 2,'id_header' => $as]);
+                assesmenawalperawat::whereRaw('id = ?', array($as))->update(['jenis_berkas' => 1]);
+            }
+            $header = DB::connection('mysql2')->select('SELECT *,a.kode_unit as kode_unit_asskep,fc_nama_unit1(a.kode_unit) as namaunit FROM erm_hasil_assesmen_keperawatan_rajal a inner join assesmen_dokters b on a.kode_kunjungan = b.id_kunjungan
+            WHERE a.no_rm = ? and a.jenis_berkas = ? order by a.id desc', [$rm, 1]);
+            // dd($header);
+            // $header = $header[0]->id;
+            $index = 0;
+            $dataSet = [];
+            foreach ($header as $cp) {
+                $obat = db::select('select * from ts_layanan_header a inner join ts_layanan_detail b on a.id = b.row_id_header
+                inner join mt_barang c on b.kode_barang = c.kode_barang
+                where a.kode_kunjungan = ?
+                and kode_unit in (4001,4002,4003,4004,4005,4006,4007,4008,4009,4010,4011,4012,4013)', [$cp->kode_kunjungan]);
+                $dataSet[$index] = $obat;
+                $index++;
+            }
+        }
+        $mt_resiko = db::select('select * from mt_resiko_jatuh');
+        $mt_penurunan_bb = db::select('select * from mt_penurunan_bb');
+        $mt_skala_penurunan_bb = db::select('select * from mt_skala_penurunan_bb');
+        return view('ermtemplate.catatanmedispasien', compact([
+            'header','mt_resiko','mt_penurunan_bb','mt_skala_penurunan_bb','dataSet','datapasien'
+        ]));
     }
 }

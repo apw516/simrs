@@ -24,6 +24,9 @@
                 <hr class="my-4">
             </div>
         @endif
+        <div class="v_catatan_medis_2">
+
+        </div>
         <div class="card">
             <div class="card-header text-bold bg-success">+ SUBJECT ( S )</div>
             <div class="card-body">
@@ -3314,7 +3317,26 @@
         tindakanhariini()
         tindakanhariini_lab()
         tindakanhariini_rad()
+        ambilcatatanmedispasien()
     });
+    function ambilcatatanmedispasien()
+    {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm
+            },
+            url: '<?= route('catatanmedispasien2') ?>',
+            success: function(response) {
+                $('.v_catatan_medis_2').html(response);
+                spinner.hide()
+            }
+        });
+    }
     $(".riwayatkonsul").click(function() {
         $.ajax({
             type: 'post',
