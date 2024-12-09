@@ -702,3 +702,16 @@ Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
 Route::get('get_riwayat_sep/{nomorkartu}/{tglawal}/{tglakhir}', [SimrsController::class, 'cari_riwayat_sep'])->name('cari_riwayat_sep'); //formpasien_bpjs
 Route::get('/cetaklabel/{kodekunjungan}', [SimrsController::class, 'Cetaklabel']); //formpasien_bpjs
 Route::post('catatanmedispasien2', [ErmController::class, 'catatanmedispasien2'])->name('catatanmedispasien2'); //sidebar
+Route::post('ambilcppt2', [ErmController::class, 'ambilcppt2'])->name('ambilcppt2'); //sidebar
+Route::post('ambilformorderfarmasi2', [ErmController::class, 'ambilformorderfarmasi2'])->name('ambilformorderfarmasi2'); //sidebar
+Route::post('ambilriwayatreseppasien', [ErmController::class, 'ambilriwayatreseppasien'])->name('ambilriwayatreseppasien'); //sidebar
+Route::post('ambilriwayatresepdokter', [ErmController::class, 'ambilriwayatresepdokter'])->name('ambilriwayatresepdokter'); //sidebar
+Route::post('caristokobat2', [ErmController::class, 'caristokobat'])->name('caristokobat2'); //sidebar
+Route::post('caristokobat3', [ErmController::class, 'caristokobat2'])->name('caristokobat3'); //sidebar
+Route::post('ambil_detail_resep', [ErmController::class, 'ambil_detail_resep'])->name('ambil_detail_resep'); //sidebar
+Route::post('ambiltemplateresep', [ErmController::class, 'ambiltemplateresep'])->name('ambiltemplateresep'); //sidebar
+Route::post('ambil_detail_template_resep', [ErmController::class, 'ambil_detail_template_resep'])->name('ambil_detail_template_resep'); //sidebar
+Route::post('ambiltemplateracikan', [ErmController::class, 'ambiltemplateracikan'])->name('ambiltemplateracikan'); //sidebar
+Route::post('ambil_detail_racikan', [ErmController::class, 'ambil_detail_racikan'])->name('ambil_detail_racikan'); //sidebar
+Route::post('simpanracikan', [ErmController::class, 'simpanracikan'])->name('simpanracikan'); //sidebar
+Route::post('simpanracikan2', [ErmController::class, 'simpanracikan2'])->name('simpanracikan2'); //sidebar

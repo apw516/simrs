@@ -112,6 +112,7 @@
         formcatatanmedis(rm)
     })
     function formcatatanmedis(rm) {
+        rm = $('#nomorrm').val()
         spinner = $('#loader')
         spinner.show();
         $.ajax({

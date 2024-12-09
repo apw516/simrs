@@ -48,6 +48,24 @@
             transform: translate(-50%, -50%);
             font: 14px arial;
         }
+        .preloader3 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background-color: #fff;
+            opacity: 0.9;
+        }
+
+        .preloader3 .loading3 {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font: 14px arial;
+        }
 
         .datepicker {
             z-index: 1600 !important;

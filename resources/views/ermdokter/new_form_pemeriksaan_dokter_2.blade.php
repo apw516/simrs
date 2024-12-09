@@ -28,7 +28,12 @@
             </div>
         @endif
             <div class="v_catatan_medis_2">
-
+                <div class="preloader3" id="loader3">
+                    <div class="loading3">
+                        <img src="{{ asset('public/img/fb.gif') }}" width="80">
+                        <p>Harap Tunggu</p>
+                    </div>
+                </div>
             </div>
         <div class="card">
             <div class="card-header text-bold bg-success">+ SUBJECT ( S )</div>
@@ -1151,6 +1156,9 @@
                 </table>
                 </form>
                 {{-- formfarmasi --}}
+                <div class="v_orderfaramasi_v2">
+
+                </div>
                 <div class="card">
                     <div class="card-header bg-light">Order Farmasi <button type="button"
                             class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
@@ -1842,6 +1850,7 @@
         var datatindakan = $('.formtindakan').serializeArray();
         var formobat_farmasi = $('.formobat_farmasi').serializeArray();
         var formobatfarmasi2 = $('.arrayobat').serializeArray();
+        var draft_obat_yang_diorder2 = $('.draft_obat_yang_diorder2').serializeArray();
         var datatindaklanjut = $('.formtindaklanjut').serializeArray();
         var formpemeriksaankhusus = $('.formpemeriksaankhusus').serializeArray();
         var formtelingakanan = $('.formtelingakanan').serializeArray();
@@ -1852,6 +1861,8 @@
         var formkesimpulanhidung = $('.formkesimpulanhidung').serializeArray();
         var simpantemplate = $('#simpantemplate:checked').val()
         var namaresep = $('#namaresep').val()
+        var simpantemplateobat2 = $('#simpantemplateobat2:checked').val()
+        var namatemplate2 = $('#namatemplate2').val()
         var kodekunjungan = $('#kodekunjungan').val()
         var hasilexpertisi = $('#hasilexpertisi').val()
         spinner = $('#loader')
@@ -1870,9 +1881,12 @@
                 datatindaklanjut: JSON.stringify(datatindaklanjut),
                 formobat_farmasi: JSON.stringify(formobat_farmasi),
                 formobatfarmasi2: JSON.stringify(formobatfarmasi2),
+                draft_obat_yang_diorder2: JSON.stringify(draft_obat_yang_diorder2),
                 formpemeriksaankhusus: JSON.stringify(formpemeriksaankhusus),
                 simpantemplate,
                 namaresep,
+                simpantemplateobat2,
+                namatemplate2,
                 kodekunjungan,
                 gambar,
                 formtelingakanan: JSON.stringify(formtelingakanan),
@@ -2194,7 +2208,6 @@
             }
         });
     });
-
     function showMarkerArea(target) {
         const markerArea = new markerjs2.MarkerArea(target);
         markerArea.addEventListener("render", (event) => (target.src = event.dataUrl));
@@ -2204,10 +2217,12 @@
         ambilgambar()
         ambilriwayatobat()
         ambilcatatanmedispasien()
+        ambilformorderfarmasi2()
     })
     function ambilcatatanmedispasien()
     {
-        spinner = $('#loader')
+        spinner = $('#loader3')
+        spinner2 = $('#loader')
         spinner.show();
         nomorrm = $(this).attr('nomorrm')
         $.ajax({
@@ -2220,6 +2235,7 @@
             success: function(response) {
                 $('.v_catatan_medis_2').html(response);
                 spinner.hide()
+                spinner2.hide()
             }
         });
     }
@@ -2338,7 +2354,7 @@
     })
     $(".liatberkasluar").on('click', function(event) {
         rm = $(this).attr('rm')
-        spinner = $('#loader')
+        spinner = $('#lodater2')
         spinner.show();
         $.ajax({
             type: 'post',
@@ -2357,5 +2373,23 @@
             }
         });
     })
+
+    function ambilformorderfarmasi2(){
+        kodekunjungan = $('#kodekunjungan').val()
+        rm = $('#nomorrm').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",kodekunjungan,rm
+            },
+            url: '<?= route('ambilformorderfarmasi2') ?>',
+            error: function(data) {
+                alert('ok')
+            },
+            success: function(response) {
+                $('.v_orderfaramasi_v2').html(response)
+            }
+        });
+    }
 </script>
 <script src="{{ asset('public/marker/markerjs2.js') }}"></script>

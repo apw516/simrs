@@ -31,6 +31,12 @@ use App\Models\ts_sumarilis;
 use App\Models\ts_erm_transfusi_darah_reaksi;
 use App\Models\ts_erm_transfusi_darah_monitoring;
 use App\Models\di_diagnosa;
+use App\Models\erm_order_header_farmasi;
+use App\Models\erm_order_detail_farmasi;
+use App\Models\order_racikan_header;
+use App\Models\order_racikan_detail;
+use App\Models\erm_template_resep_header;
+use App\Models\erm_template_resep_detail;
 use Carbon\Carbon;
 use simitsdk\phpjasperxml\PHPJasperXML;
 use Illuminate\Support\Facades\Storage;
@@ -288,7 +294,8 @@ class ErmController extends Controller
         ,fc_nama_unit1(a.kode_unit) AS nama_unit FROM ts_kunjungan a
         LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`kode_kunjungan` = b.kode_kunjungan AND b.`kode_unit` = a.`kode_unit`
         LEFT OUTER JOIN assesmen_dokters c ON a.`kode_kunjungan` = c.`id_kunjungan` AND c.`kode_unit` = a.`kode_unit`
-        WHERE a.no_rm = ? AND a.status_kunjungan NOT IN(8,11) ORDER BY a.kode_kunjungan DESC LIMIT 20', [$request->rm]);
+        WHERE a.no_rm = ? AND a.status_kunjungan NOT IN(8,11) ORDER BY a.kode_kunjungan DESC LIMIT 20', [$rm]);
+        // dd($kunjungan);
         return view('ermtemplate.form_catatan_medis', compact([
             'kunjungan',
             'rm'
@@ -2034,6 +2041,12 @@ class ErmController extends Controller
         $datatindaklanjut = json_decode($_POST['datatindaklanjut'], true);
         $formobat_farmasi = json_decode($_POST['formobat_farmasi'], true);
         $formobatfarmasi2 = json_decode($_POST['formobatfarmasi2'], true);
+        $draft_obat_yang_diorder2 = json_decode($_POST['draft_obat_yang_diorder2'], true);
+        // draft_obat_yang_diorder2
+        // dd($draft_obat_yang_diorder2);
+
+
+        // namatemplate2
         if (count($datatindaklanjut) == 1) {
             $data = [
                 'kode' => 500,
@@ -2140,7 +2153,6 @@ class ErmController extends Controller
         } else {
             $kesadaran = $dataSet_2['keterangankesadaran'];
         }
-
         $data = [
             'counter' => $dataSet_1['counter'],
             'kode_unit' => $dataSet_1['unit'],
@@ -2494,6 +2506,99 @@ class ErmController extends Controller
                     ];
                     echo json_encode($back);
                     die;
+                }
+            }
+
+            if (count($draft_obat_yang_diorder2) > 1) {
+                foreach ($draft_obat_yang_diorder2 as $obat) {
+                    $indexobat = $obat['name'];
+                    $valueobat = $obat['value'];
+                    $rm = $kunjungan[0]->no_rm;
+                    $dataSetobat[$indexobat] = $valueobat;
+                    if ($indexobat == 'keteranganorder') {
+                        $arrayindex_order[] = $dataSetobat;
+                    }
+                }
+                $simpantemplate2 = $request->simpantemplateobat2;
+                $namatemplate2 = $request->namatemplate2;
+                if ($simpantemplate2 == 1) {
+                    if ($namatemplate2 == '') {
+                        dd('nama harus diisi');
+                    } else {
+                        //simpan template resep
+                        $data_template_resep_header = [
+                            'nama_resep' => $request->namatemplate,
+                            'nama_dokter' => auth()->user()->nama,
+                            'kode_paramedis' => auth()->user()->kode_paramedis,
+                            'unit' => auth()->user()->unit,
+                            'tgl_entry' => $this->get_now()
+                        ];
+                        $headert = erm_template_resep_header::create($data_template_resep_header);
+                        foreach ($arrayindex_order as $arf) {
+                            $data_template_resep_detail = [
+                                'kode_barang' => $arf['kodeobat'],
+                                'id_resep_header' => $headert->id,
+                                'nama_barang' => $arf['namaobat'],
+                                'sediaan' => $arf['sediaan'],
+                                'dosis' => $arf['dosis'],
+                                'aturan_pakai' => $arf['aturanpakai'],
+                                'qty' => $arf['qty'],
+                                'pic' => auth()->user()->kode_paramedis,
+                                'tipe_anestesi' => $arf['tipeanestesi'],
+                            ];
+                            erm_template_resep_detail::create($data_template_resep_detail);
+                        }
+                    }
+                }
+                $mt_pasien = DB::select('select *,fc_alamat(no_rm) as alamat_px from mt_pasien where no_rm = ?', [$rm]);
+                $racikan = 0;
+                foreach ($arrayindex_order as $arf) {
+                    if ($arf['jenisobat'] == 'RACIKAN') {
+                        $racikan = $racikan + 1;
+                    }
+                }
+                if ($racikan > 0) {
+                    $jenis_antrian = 2;
+                } else {
+                    $jenis_antrian = 1;
+                }
+                $penjamin = $kunjungan[0]->kode_penjamin;
+                if ($penjamin == 'P01') {
+                    $tjfar = '4002';
+                } else {
+                    $tjfar = '4008';
+                }
+
+                $data_header_order = [
+                    'nomor_antrian' => '1',
+                    'no_rm' => $rm,
+                    'nama_pasien' => $mt_pasien[0]->nama_px,
+                    'alamat_pasien' => $mt_pasien[0]->alamat_px,
+                    'kode_kunjungan' => $kodekunjungan,
+                    'unit_tujuan' => $tjfar,
+                    'unit_pengirim' => auth()->user()->unit,
+                    'kode_paramedis' => auth()->user()->kode_paramedis,
+                    'nama_dokter' => auth()->user()->nama,
+                    'status_order' => '1',
+                    'jenis_antrian' => $jenis_antrian,
+                    'tgl_entry' => $this->get_now(),
+                ];
+                $ho = erm_order_header_farmasi::create($data_header_order);
+
+                foreach ($arrayindex_order as $arf) {
+                    $data_detail_order = [
+                        'id_header_order' => $ho->id,
+                        'kode_barang' => $arf['kodeobat'],
+                        'nama_barang' => $arf['namaobat'],
+                        'sediaan' => $arf['sediaan'],
+                        'dosis' => $arf['dosis'],
+                        'aturan_pakai' => $arf['aturanpakai'],
+                        'qty' => $arf['qty'],
+                        'tipe_anestesi' => $arf['tipeanestesi'],
+                        'keterangan' => $arf['keteranganorder'],
+                        'jenis_obat' => $arf['jenisobat']
+                    ];
+                    erm_order_detail_farmasi::create($data_detail_order);
                 }
             }
             //end of farmasi
@@ -8229,7 +8334,7 @@ class ErmController extends Controller
         $rm = $request->nomorrm;
 
         $first = DB::connection('mysql')->select('SELECT *,fc_nama_unit1(kode_unit) as nama_unit,date(tanggalkunjungan) as tgl FROM `erm_hasil_assesmen_keperawatan_rajal` WHERE no_rm = ? AND id = (select min(id) from erm_hasil_assesmen_keperawatan_rajal where no_rm = ?) limit 1', [$rm, $rm]);
-        $datapasien = db::select('select * from mt_pasien where no_rm = ?',[$rm]);
+        $datapasien = db::select('select * from mt_pasien where no_rm = ?', [$rm]);
         if (count($first) > 0) {
             $assesmen_perawat = DB::select('select *,date(tanggalkunjungan) as tgl_k from erm_hasil_assesmen_keperawatan_rajal where kode_kunjungan > ? and no_rm = ?', [$first[0]->kode_kunjungan, $rm]);
 
@@ -8247,10 +8352,10 @@ class ErmController extends Controller
             }
 
             foreach ($arr_date as $as) {
-                assesmenawalperawat::whereRaw('id >= ? and no_rm = ?', array($as, $rm))->update(['jenis_berkas' => 2,'id_header' => $as]);
+                assesmenawalperawat::whereRaw('id >= ? and no_rm = ?', array($as, $rm))->update(['jenis_berkas' => 2, 'id_header' => $as]);
                 assesmenawalperawat::whereRaw('id = ?', array($as))->update(['jenis_berkas' => 1]);
             }
-            $header = DB::connection('mysql2')->select('SELECT *,a.kode_unit as kode_unit_asskep,fc_nama_unit1(a.kode_unit) as namaunit FROM erm_hasil_assesmen_keperawatan_rajal a inner join assesmen_dokters b on a.kode_kunjungan = b.id_kunjungan
+            $header = DB::connection('mysql2')->select('SELECT *,a.id as idasskep,a.kode_unit as kode_unit_asskep,fc_nama_unit1(a.kode_unit) as namaunit,a.umur as umurasskep FROM erm_hasil_assesmen_keperawatan_rajal a left outer join assesmen_dokters b on a.kode_kunjungan = b.id_kunjungan
             WHERE a.no_rm = ? and a.jenis_berkas = ? order by a.id desc', [$rm, 1]);
             // dd($header);
             // $header = $header[0]->id;
@@ -8264,12 +8369,343 @@ class ErmController extends Controller
                 $dataSet[$index] = $obat;
                 $index++;
             }
+
+            $mt_resiko = db::select('select * from mt_resiko_jatuh');
+            $mt_penurunan_bb = db::select('select * from mt_penurunan_bb');
+            $mt_skala_penurunan_bb = db::select('select * from mt_skala_penurunan_bb');
+            return view('ermtemplate.catatanmedispasien', compact([
+                'header',
+                'mt_resiko',
+                'mt_penurunan_bb',
+                'mt_skala_penurunan_bb',
+                'dataSet',
+                'datapasien'
+            ]));
+        } else {
+            return view('ermtemplate.datatidakditemukan2');
         }
-        $mt_resiko = db::select('select * from mt_resiko_jatuh');
-        $mt_penurunan_bb = db::select('select * from mt_penurunan_bb');
-        $mt_skala_penurunan_bb = db::select('select * from mt_skala_penurunan_bb');
-        return view('ermtemplate.catatanmedispasien', compact([
-            'header','mt_resiko','mt_penurunan_bb','mt_skala_penurunan_bb','dataSet','datapasien'
+    }
+    public function ambilcppt2(Request $request)
+    {
+        $idheader = $request->idheader;
+        $cppt = DB::connection('mysql')->select('select *,date(a.tanggalkunjungan) as tglisi,a.kode_kunjungan,a.kode_unit as unit_asskep,fc_nama_unit1(a.kode_unit) as nama_unit,a.versi as versi_asskep,b.nama_dokter from erm_hasil_assesmen_keperawatan_rajal a left outer join assesmen_dokters b on a.kode_kunjungan = b.id_kunjungan
+            left outer join erm_mata_kanan_kiri c on a.kode_kunjungan = c.kode_kunjungan
+            where a.id_header = ? order by a.id desc', [$idheader]);
+        // dd($idheader);
+        $index = 0;
+        $dataSet = [];
+        foreach ($cppt as $cpt) {
+            $obat = db::select('select * from ts_layanan_header a inner join ts_layanan_detail b on a.id = b.row_id_header
+            inner join mt_barang c on b.kode_barang = c.kode_barang
+            where a.kode_kunjungan = ? and kode_unit in (4001,4002,4003,4004,4005,4006,4007,4008,4009,4010,4011,4012,4013) order by a.id desc', [$cpt->kode_kunjungan]);
+            $dataSet[$index] = $obat;
+            $index++;
+        }
+        $mriwayatpsikolog = DB::select('select * from mt_riwayat_psikologis');
+        return view('ermtemplate.cppt2', compact([
+            'cppt',
+            'dataSet',
+            'mriwayatpsikolog',
         ]));
+    }
+    public function ambilformorderfarmasi2(Request $request)
+    {
+        $no_rm = $request->rm;
+        $kodekunjungan = $request->kodekunjungan;
+        return view('ermtemplate.formorderfarmasi2', compact([
+            'no_rm',
+            'kodekunjungan'
+        ]));
+    }
+    public function ambilriwayatreseppasien(Request $request)
+    {
+        $rm = $request->no_rm;
+        $header = db::select('SELECT b.`kode_kunjungan`,b.`kode_layanan_header`,fc_nama_paramedis1(b.dok_kirim) AS nama_dokter,b.`dok_kirim`,b.`tgl_entry`,b.`unit_pengirim`,b.id as id_header FROM ts_kunjungan a
+        INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+        WHERE a.no_rm = ? AND b.`kode_unit` IN (4001,4002,4008) AND LEFT(a.kode_unit,1) = 1
+        ORDER BY a.`kode_kunjungan` DESC', ([$rm]));
+
+        $detail = db::select('SELECT d.nama_barang,c.jumlah_layanan,c.aturan_pakai,c.row_id_header FROM ts_kunjungan a
+        INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+        INNER JOIN ts_layanan_detail c ON b.id = c.row_id_header
+        INNER JOIN mt_barang d ON c.kode_barang = d.kode_barang
+        WHERE a.no_rm = ? AND b.`kode_unit` IN (4001,4002,4008)', ([$rm]));
+        return view('Form_order.riwayat_resep_pasien', compact([
+            'header',
+            'detail'
+        ]));
+    }
+    public function ambilriwayatresepdokter()
+    {
+        $kode_paramedis = auth()->user()->kode_paramedis;
+        $header = db::select('SELECT id,tgl_entry,fc_nama_paramedis1(a.dok_kirim) AS nama_dokter FROM ts_layanan_header a WHERE a.`dok_kirim` = ? AND a.`kode_unit` IN (4002,4008) ORDER BY a.id DESC LIMIT 100', ([$kode_paramedis]));
+        $detail = db::select('SELECT a.id,tgl_entry,fc_nama_paramedis1(a.dok_kirim) AS nama_dokter,c.nama_barang,b.jumlah_layanan,b.aturan_pakai,b.row_id_header FROM ts_layanan_header a
+        INNER JOIN ts_layanan_detail b ON a.id = b.row_id_header
+        INNER JOIN mt_barang c ON b.kode_barang = c.kode_barang
+        WHERE a.`dok_kirim` = ?
+        AND a.`kode_unit` IN (4002,4008) ORDER BY a.id DESC LIMIT 500', ([$kode_paramedis]));
+        return view('Form_order.riwayat_resep_dokter', compact([
+            'header',
+            'detail'
+        ]));
+    }
+    public function caristokobat(Request $request)
+    {
+        $nama = $request->nama;
+        $kode_kunjungan = $request->kode_kunjungan;
+        $data_kunjungan = db::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kode_kunjungan]);
+        if ($data_kunjungan[0]->kode_penjamin == 'P01') {
+            $unit = '4002';
+        } else {
+            $unit = '4008';
+        }
+        $data = db::connection('mysql')->select("CALL sp_cari_obat_stok_all_erm(?,?)", ([$nama, $unit]));
+        return view('Form_order.tabel_stok_obat', compact([
+            'data'
+        ]));
+    }
+    public function caristokobat2(Request $request)
+    {
+        $nama = $request->nama;
+        $kode_kunjungan = $request->kode_kunjungan;
+        $data_kunjungan = db::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kode_kunjungan]);
+        if ($data_kunjungan[0]->kode_penjamin == 'P01') {
+            $unit = '4002';
+        } else {
+            $unit = '4008';
+        }
+        $data = db::connection('mysql')->select("CALL sp_cari_obat_stok_all_erm(?,?)", ([$nama, $unit]));
+        return view('Form_order.tabel_stok_obat2', compact([
+            'data'
+        ]));
+    }
+    public function ambil_detail_resep(Request $request)
+    {
+        $idresep = $request->id;
+        $detail = db::select('SELECT a.id,tgl_entry,fc_nama_paramedis1(a.dok_kirim) AS nama_dokter,c.nama_barang,b.jumlah_layanan,b.aturan_pakai,b.row_id_header,c.dosis,c.sediaan,c.kode_barang,b.tipe_anestesi FROM ts_layanan_header a
+        INNER JOIN ts_layanan_detail b ON a.id = b.row_id_header
+        INNER JOIN mt_barang c ON b.kode_barang = c.kode_barang
+        WHERE b.`row_id_header` = ?', ([$idresep]));
+        $str = "";
+        foreach ($detail as $d) {
+            $str .= "<div class='form-row text-xs'><div class='form-group col-md-2'><label for=''>Nama Obat</label><input readonly type='' class='form-control form-control-sm text-xs edit_field' id='' name='namaobat' value='$d->nama_barang'><input hidden readonly type='' class='form-control form-control-sm' id='' name='kodeobat' value='$d->kode_barang'><input readonly type='' class='form-control form-control-sm' id='' name='jenisobat' value='REGULER'></div><div class='form-group col-md-1'><label for='inputPassword4'>Sediaan</label><input readonly type='' class='form-control form-control-sm' id='' name='sediaan' value='$d->sediaan'></div><div class='form-group col-md-1'><label for='inputPassword4'>Dosis</label><input readonly type='' class='form-control form-control-sm' id='' name='dosis' value='$d->dosis'></div><div class='form-group col-md-3'><label for='inputPassword4'>Aturan Pakai</label><textarea type='' class='form-control form-control-sm' id='' name='aturanpakai' rows='4'>$d->aturan_pakai</textarea></div><div class='form-group col-md-1'><label for='inputPassword4'>Qty</label><input type='' class='form-control form-control-sm' id='' name='qty' value='$d->jumlah_layanan'></div>
+            <div class='form-group col-md-1'><label for='exampleFormControlSelect1'>Tipe Anestesi</label><select class='form-control' name='tipeanestesi' id='tipeanestesi'><option value='80'>Reguler</option><option value='81'>Kronis</option><option value='82'>Kemoterapi</option></select></div><div class='form-group col-md-2'><label for='inputPassword4'>Keterangan</label><textarea type='' class='form-control form-control-sm' id='' name='keteranganorder' rows='4'></textarea></div>
+            <i class='bi bi-x-square remove_field form-group col-md-1 text-danger' kode2=''></i></div>";
+        }
+        return $str;
+    }
+    public function ambiltemplateresep(Request $request)
+    {
+        $kode_paramedis = auth()->user()->kode_paramedis;
+        $header = db::connection('mysql2')->select('select * from erm_template_resep_header where kode_paramedis = ?', ([$kode_paramedis]));
+        $detail = db::connection('mysql2')->select('select * from erm_template_resep_header a inner join erm_template_resep_detail  b on a.id = b.id_resep_header where a.kode_paramedis = ?', ([$kode_paramedis]));
+        return view('Form_order.templte_resep_dokter', compact([
+            'header',
+            'detail'
+        ]));
+    }
+    public function ambil_detail_template_resep(Request $request)
+    {
+        $idresep = $request->id;
+        $detail = db::connection('mysql2')->select('Select * from erm_template_resep_detail where id_resep_header = ?', ([$idresep]));
+        $str = "";
+        foreach ($detail as $d) {
+            $str .= "<div class='form-row text-xs'><div class='form-group col-md-2'><label for=''>Nama Obat</label><input readonly type='' class='form-control form-control-sm text-xs edit_field' id='' name='namaobat' value='$d->nama_barang'><input hidden readonly type='' class='form-control form-control-sm' id='' name='kodeobat' value='$d->kode_barang'><input readonly type='' class='form-control form-control-sm' id='' name='jenisobat' value='$d->jenisobat'></div><div class='form-group col-md-1'><label for='inputPassword4'>Sediaan</label><input readonly type='' class='form-control form-control-sm' id='' name='sediaan' value='$d->sediaan'></div><div class='form-group col-md-1'><label for='inputPassword4'>Dosis</label><input readonly type='' class='form-control form-control-sm' id='' name='dosis' value='$d->dosis'></div><div class='form-group col-md-3'><label for='inputPassword4'>Aturan Pakai</label><textarea type='' class='form-control form-control-sm' id='' name='aturanpakai' rows='4'>$d->aturan_pakai</textarea></div><div class='form-group col-md-1'><label for='inputPassword4'>Qty</label><input type='' class='form-control form-control-sm' id='' name='qty' value='$d->qty'></div>
+            <div class='form-group col-md-1'><label for='exampleFormControlSelect1'>Tipe Anestesi</label><select class='form-control' name='tipeanestesi' id='tipeanestesi'>
+            <option value='80'>Reguler</option>
+            <option value='81'>Kronis</option><option value='82'>Kemoterapi</option></select></div><div class='form-group col-md-2'><label for='inputPassword4'>Keterangan</label><textarea type='' class='form-control form-control-sm' id='' name='keteranganorder' rows='4'>$d->keterangan</textarea></div>
+            <i class='bi bi-x-square remove_field form-group col-md-1 text-danger' kode2=''></i></div>";
+        }
+        return $str;
+    }
+    public function ambiltemplateracikan(Request $request)
+    {
+        $dataracikan = db::connection('mysql2')->select('select * from order_racikan_header where kode_paramedis = ? and template = ?', [auth()->user()->kode_paramedis, 2]);
+        return view('Form_order.tabel_riwayat_racikan', compact([
+            'dataracikan'
+        ]));
+    }
+    public function ambil_detail_racikan(Request $request)
+    {
+        $idresep = $request->id;
+        $detail = db::connection('mysql2')->select('select * from order_racikan_header a where a.id = ?', [$idresep]);
+        // dd(count($detail));
+        // dd($detail);
+        $str = "";
+        foreach ($detail as $d) {
+            $str .= "<div class='form-row text-xs'><div class='form-group col-md-2'><label for=''>Nama Obat</label><input readonly type='' class='form-control form-control-sm text-xs edit_field' id='' name='namaobat' value='$d->nama_racikan'><input hidden readonly type='' class='form-control form-control-sm' id='' name='kodeobat' value='$d->id'><input readonly type='' class='form-control form-control-sm' id='' name='jenisobat' value='RACIKAN'></div><div class='form-group col-md-1'><label for='inputPassword4'>Sediaan</label><input readonly type='' class='form-control form-control-sm' id='' name='sediaan' value='$d->display_kemasan'></div><div class='form-group col-md-1'><label for='inputPassword4'>Dosis</label><input readonly type='' class='form-control form-control-sm' id='' name='dosis' value='0'></div><div class='form-group col-md-3'><label for='inputPassword4'>Aturan Pakai</label><textarea type='' class='form-control form-control-sm' id='' name='aturanpakai' rows='4'>$d->aturan_pakai</textarea></div><div class='form-group col-md-1'><label for='inputPassword4'>Qty</label><input type='' class='form-control form-control-sm' id='' name='qty' value='$d->qty'></div>
+            <div class='form-group col-md-1'><label for='exampleFormControlSelect1'>Tipe Anestesi</label><select class='form-control' name='tipeanestesi' id='tipeanestesi'><option value='80'>Reguler</option><option value='81'>Kronis</option><option value='82'>Kemoterapi</option></select></div><div class='form-group col-md-2'><label for='inputPassword4'>Keterangan</label><textarea type='' class='form-control form-control-sm' id='' name='keteranganorder' rows='8'>'$d->keterangan'</textarea></div>
+            <i class='bi bi-x-square remove_field form-group col-md-1 text-danger' kode2=''></i></div>";
+        }
+        return $str;
+    }
+    public function simpanracikan(Request $request)
+    {
+        $dataheaderracikan = json_decode($_POST['dataheaderracikan'], true);
+        $datadetailracikan = json_decode($_POST['datadetailracikan'], true);
+        foreach ($dataheaderracikan as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+        foreach ($datadetailracikan as $nama2) {
+            $index2 = $nama2['name'];
+            $value2 = $nama2['value'];
+            $dataSet2[$index2] = $value2;
+            if ($index2 == 'dosisracik') {
+                $array_racik[] = $dataSet2;
+            }
+        }
+        $jumlahracikan = $dataSet['jumlahracikan'];
+        $tiperacikan = $dataSet['tiperacikan'];
+        $kemasanracik = $dataSet['kemasan'];
+        $namaracikan = $dataSet['namaracikan'];
+        if ($namaracikan == '') {
+            $data = [
+                'kode' => 500,
+                'message' => 'Nama racikan wajib diisi !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if ($tiperacikan == 0) {
+            $data = [
+                'kode' => 500,
+                'message' => 'Tipe racikan wajib diisi !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if ($tiperacikan == 1) {
+            $tiperacik = 'POWDER';
+        } elseif ($tiperacikan == 2) {
+            $tiperacik = 'NON-POWDER';
+        }
+        if ($kemasanracik == 0) {
+            $data = [
+                'kode' => 500,
+                'message' => 'Kemasan racik wajib diisi !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        $data = [
+            'kode' => 200,
+            'message' => 'Racikan berhasil dibuat ...'
+        ];
+        echo json_encode($data);
+        die;
+    }
+    public function simpanracikan2(Request $request)
+    {
+        if (!empty($request->simpantemplate)) {
+            $simpantemplate = 2;
+        } else {
+            $simpantemplate = 1;
+        }
+        $dataheaderracikan = json_decode($_POST['dataheaderracikan'], true);
+        $datadetailracikan = json_decode($_POST['datadetailracikan'], true);
+        foreach ($dataheaderracikan as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+        foreach ($datadetailracikan as $nama2) {
+            $index2 = $nama2['name'];
+            $value2 = $nama2['value'];
+            $dataSet2[$index2] = $value2;
+            if ($index2 == 'dosisracik') {
+                $array_racik[] = $dataSet2;
+            }
+        }
+        $jumlahracikan = $dataSet['jumlahracikan'];
+        $tiperacikan = $dataSet['tiperacikan'];
+        $kodekemasanracik = $dataSet['kemasan'];
+        $namaracikan = $dataSet['namaracikan'];
+        if ($namaracikan == '') {
+            $data = [
+                'kode' => 500,
+                'message' => 'Nama racikan wajib diisi !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if ($tiperacikan == 0) {
+            $data = [
+                'kode' => 500,
+                'message' => 'Tipe racikan wajib diisi !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if ($tiperacikan == 1) {
+            $tiperacik = 'POWDER';
+        } elseif ($tiperacikan == 2) {
+            $tiperacik = 'NON-POWDER';
+        }
+        if ($kodekemasanracik == 0) {
+            $data = [
+                'kode' => 500,
+                'message' => 'Kemasan racik wajib diisi !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if ($kodekemasanracik == 1) {
+            $kemasanracik = 'KAPSUL';
+        } elseif ($kodekemasanracik == 2) {
+            $kemasanracik = 'KERTAS PERKAMEN';
+        } elseif ($kodekemasanracik == 3) {
+            $kemasanracik = 'POT SALEP';
+        }
+        if ($jumlahracikan <= 0) {
+            $data = [
+                'kode' => 500,
+                'message' => 'Jumlah racikan wajib diisi !'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        $data_header = [
+            'kode_paramedis' => auth()->user()->kode_paramedis,
+            'nama_racikan' => $dataSet['namaracikan'],
+            'tipe_racikan' => $dataSet['tiperacikan'],
+            'display_tipe' => $tiperacik,
+            'kemasan_racikan' => $dataSet['kemasan'],
+            'display_kemasan' => $kemasanracik,
+            'aturan_pakai' => $dataSet['aturanpakairacik'],
+            'qty' => $dataSet['jumlahracikan'],
+            'tgl_entry' => $this->get_now(),
+            'pic' => auth()->user()->id
+        ];
+        $dh = order_racikan_header::create($data_header);
+        $list_ket = '';
+        // DD($array_racik);
+        foreach ($array_racik as $arr) {
+            $qty = $arr['dosisracik'] * $dataSet['jumlahracikan'] / $arr['dosisawal'];
+            if (strlen($list_ket) > 0) {
+                $list_ket = $list_ket . ' | ' . $arr['namaobat'] . ' Dosis Awal : ' . $arr['dosisawal'] . ' Dosis Racik : ' . $arr['dosisracik'] . ' Kebutuhan obat :' . $qty;
+            } else {
+                $list_ket = $arr['namaobat'] . ' Dosis Awal : ' . $arr['dosisawal'] . ' Dosis Racik : ' . $arr['dosisracik'] . ' Kebutuhan obat :' . $qty;
+            }
+            $data_detail = [
+                'id_order_header' => $dh->id,
+                'nama_barang' => $arr['namaobat'],
+                'kode_barang' => $arr['kodeobat'],
+                'sediaan' => $arr['sediaan'],
+                'nama_generik' => $arr['namagenerik'],
+                'dosis_awal' => $arr['dosisawal'],
+                'dosis_racik' =>  $arr['dosisracik'],
+                'qty_obat' => $qty,
+                'tgl_entry' => $this->get_now(),
+            ];
+            order_racikan_detail::create($data_detail);
+        }
+        order_racikan_header::where('id', $dh->id)->update(['keterangan' => $list_ket, 'template' => $simpantemplate]);
+        $str = "";
+        $str .= "<div class='form-row text-xs'><div class='form-group col-md-2'><label for=''>Nama Obat</label><input readonly type='' class='form-control form-control-sm text-xs edit_field' id='' name='namaobat' value='$dataSet[namaracikan]'><input hidden readonly type='' class='form-control form-control-sm' id='' name='kodeobat' value='$dh->id'><input readonly type='' class='form-control form-control-sm' id='' name='jenisobat' value='RACIKAN'></div><div class='form-group col-md-1'><label for='inputPassword4'>Sediaan</label><input readonly type='' class='form-control form-control-sm' id='' name='sediaan' value='$kemasanracik'></div><div class='form-group col-md-1'><label for='inputPassword4'>Dosis</label><input type='' class='form-control form-control-sm' id='' name='dosis' value='0'></div><div class='form-group col-md-3'><label for='inputPassword4'>Aturan Pakai</label><textarea type='' class='form-control form-control-sm' id='' name='aturanpakai' rows='4'>$dataSet[aturanpakairacik]</textarea></div><div class='form-group col-md-1'><label for='inputPassword4'>Qty</label><input type='' class='form-control form-control-sm' id='' name='qty' value='$dataSet[jumlahracikan]'></div>
+            <div class='form-group col-md-1'><label for='exampleFormControlSelect1'>Tipe Anestesi</label><select class='form-control' name='tipeanestesi' id='tipeanestesi'><option value='80'>Reguler</option><option value='81'>Kronis</option><option value='82'>Kemoterapi</option></select></div><div class='form-group col-md-2'><label for='inputPassword4'>Keterangan</label><textarea type='' class='form-control form-control-sm' id='' name='keteranganorder' rows='4'>$list_ket</textarea></div>
+            <i class='bi bi-x-square remove_field form-group col-md-1 text-danger' kode2=''></i></div>";
+        return $str;
     }
 }
