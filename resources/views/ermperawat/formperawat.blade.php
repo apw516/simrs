@@ -66,7 +66,7 @@
                     @endif
                     <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formtindaklanjut()">
-                            <i class="fas fa-inbox mr-2"></i>Form Tindak Lanjut / Konsul
+                            <i class="fas fa-inbox mr-2"></i>Form Tindak Lanjut / Rujuk internal / Konsul
                         </a>
                     </li>
                     @else

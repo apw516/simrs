@@ -34,7 +34,7 @@
             {{-- <a class="btn btn-primary btn-lg btntindaklanjut" jenis="surkon" role="button"><i
                     class="bi bi-plus-lg mr-1"></i> Surat Kontrol</a> --}}
             <a class="btn btn-primary btn-lg btntindaklanjut" jenis="konsul" role="button"><i
-                    class="bi bi-plus-lg mr-1"></i> Konsul Poli Lain</a>
+                    class="bi bi-plus-lg mr-1"></i>Rujuk internal / Konsul Poli Lain</a>
             {{-- <a class="btn btn-primary btn-lg btntindaklanjut" jenis="rujukkeluar" role="button"><i
                     class="bi bi-plus-lg mr-1"></i> Rujuk Keluar</a> --}}
         </div>
