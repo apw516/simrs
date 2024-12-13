@@ -1183,13 +1183,18 @@
                         <div class="card-body">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                                    id="pilihtindaklanjut" value="RUJUK INTERNAL / KONSUL KE POLI LAIN">
-                                <label class="form-check-label" for="inlineRadio1">RUJUK INTERNAL / KONSUL KE POLI LAIN</label>
+                                    id="pilihtindaklanjut" value="KONSUL KE POLI LAIN">
+                                <label class="form-check-label" for="inlineRadio1">KONSUL KE POLI LAIN</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="pilihtindaklanjut"
                                     id="pilihtindaklanjut" value="KONTROL">
                                 <label class="form-check-label" for="inlineRadio2">KONTROL</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="pilihtindaklanjut"
+                                    id="pilihtindaklanjut" value="RUJUK INTERNAL">
+                                <label class="form-check-label" for="inlineRadio2">RUJUK INTERNAL</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="pilihtindaklanjut"

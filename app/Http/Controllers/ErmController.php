@@ -6802,6 +6802,20 @@ class ErmController extends Controller
         //     return view('ermtemplate.dokterbelummengisi');
         // }
     }
+    public function formtindaklanjut2(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        $assdok = DB::select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
+        $cek_konsul  = DB::select('select *,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where ref_kunjungan = ? and status_kunjungan != ?', [$kodekunjungan, '8']);
+        // if (count($assdok) > 0) {
+        return view('ermtemplate.formtindaklanjut2', compact([
+            'assdok',
+            'cek_konsul'
+        ]));
+        // } else {
+        //     return view('ermtemplate.dokterbelummengisi');
+        // }
+    }
     public function formbillingtindakan(Request $request)
     {
         $kodekunjungan = $request->kodekunjungan;

@@ -480,6 +480,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('formpemeriksaan_fisio'); //sidebar
     Route::post('/formtindaklanjut', [ErmController::class, 'formtindaklanjut'])
         ->name('formtindaklanjut'); //sidebar
+    Route::post('/formtindaklanjut2', [ErmController::class, 'formtindaklanjut2'])
+        ->name('formtindaklanjut2'); //sidebar
     Route::post('/formbillingtindakan', [ErmController::class, 'formbillingtindakan'])
         ->name('formbillingtindakan'); //sidebar
     Route::post('/formpemeriksaan_wicara', [ErmController::class, 'formpemeriksaan_perawat_wicara'])
