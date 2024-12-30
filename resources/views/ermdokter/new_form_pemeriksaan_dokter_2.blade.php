@@ -43,7 +43,6 @@
                                 </button>
                             </h2>
                         </div>
-
                         <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
                             data-parent="#accordionExample">
                             <div class="card-body bg-light">

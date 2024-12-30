@@ -6114,7 +6114,6 @@ class ErmController extends Controller
             $data['success'] = 2;
             $data['message'] = 'File not uploaded.';
         }
-
         return response()->json($data);
     }
     public function hapusgambarupload(Request $request)
