@@ -2411,7 +2411,7 @@
                     </table>
                 </form>
                 {{-- formfarmasi --}}
-                <div class="card">
+                <div hidden class="card">
                     <div class="card-header bg-light">Order Farmasi <button type="button"
                             class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
                             onclick="ambilresep()">Template resep</button></div>
@@ -2497,7 +2497,9 @@
                         </div>
                     </div>
                 </form>
+                <div class="V_ORDER_FARMASI_BARU">
 
+                </div>
                 <div class="accordion" id="accordionExample">
                     <div class="card">
                         <div class="card-header bg-danger" id="headingOne">
@@ -3105,6 +3107,9 @@
         var dataUrl1 = canvas1.toDataURL();
         $('#gambarcoret').val(dataUrl1)
         gambar = $('#gambarcoret').val()
+        var dataorderfarmasi = $('.draft_obat_yang_diorder').serializeArray();
+        var simpantemplatefar = $('#simpantemplatefar:checked').val()
+        var namatemplatefar = $('#namatemplatefar').val()
         var data1 = $('.form_pemeriksaan_1').serializeArray();
         var data2 = $('.form_pemeriksaan_2').serializeArray();
         var data3 = $('.form_pemeriksaan_3').serializeArray();
@@ -3134,6 +3139,9 @@
             dataType: 'json',
             data: {
                 _token: "{{ csrf_token() }}",
+                dataorderfarmasi: JSON.stringify(dataorderfarmasi),
+                simpantemplatefar,
+                namatemplatefar,
                 data1: JSON.stringify(data1),
                 data2: JSON.stringify(data2),
                 data3: JSON.stringify(data3),
@@ -3618,6 +3626,7 @@
     });
     $(document).ready(function() {
         orderobathariini()
+        ambilformorderfarmasi()
     });
 
     function orderobathariini() {
@@ -3747,5 +3756,27 @@
             }
         });
     })
+    function ambilformorderfarmasi()
+    {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan: $('#kodekunjungan').val(),
+                rm : $(this).attr('nomorrm')
+
+            },
+            url: '<?= route('ambilformorderfarmasi') ?>',
+            error: function(data) {
+                alert('ok')
+            },
+            success: function(response) {
+                $('.V_ORDER_FARMASI_BARU').html(response)
+                spinner.hide()
+            }
+        });
+    }
 </script>
 <script src="{{ asset('public/marker/markerjs2.js') }}"></script>

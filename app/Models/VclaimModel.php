@@ -45,8 +45,8 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "Peserta/nokartu/" . $noka . "/tglSEP/" . $tanggal;
-        $signature = $this->signature();       
-        // dd($signature); 
+        $signature = $this->signature();
+        // dd($signature);
         $response = $client->request('GET', $url, [
             'headers' => $signature,
             'allow_redirects' => true,
@@ -63,8 +63,8 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "Peserta/nik/" . $nik . "/tglSEP/" . $tanggal;
-        $signature = $this->signature();       
-        // dd($signature); 
+        $signature = $this->signature();
+        // dd($signature);
         $response = $client->request('GET', $url, [
             'headers' => $signature,
             'allow_redirects' => true,
@@ -81,8 +81,8 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "referensi/diagnosa/" . $diag;
-        $signature = $this->signature();       
-        // dd($signature); 
+        $signature = $this->signature();
+        // dd($signature);
         $response = $client->request('GET', $url, [
             'headers' => $signature,
             'allow_redirects' => true,
@@ -99,8 +99,8 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "referensi/poli/" . $poli;
-        $signature = $this->signature();       
-        // dd($signature); 
+        $signature = $this->signature();
+        // dd($signature);
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -115,7 +115,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "referensi/faskes/" . $nama .'/'. $jenis;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -130,7 +130,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "referensi/dokter/pelayanan/" . $jnspelayanan .'/tglPelayanan/'. $tglpelayanan.'/Spesialis/'.$kodespesialis;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -145,7 +145,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "referensi/propinsi";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -160,7 +160,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "referensi/kabupaten/propinsi/".$kodepropinsi;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -175,7 +175,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "referensi/kecamatan/kabupaten/".$kodekabupaten;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -190,7 +190,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "referensi/diagnosaprb";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -205,7 +205,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "referensi/obatprb/".$namaobat;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -220,7 +220,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "referensi/procedure/".$namaproce;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -235,7 +235,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "referensi/kelasrawat";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -250,7 +250,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "referensi/dokter/".$namadokter;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -265,7 +265,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "referensi/spesialistik";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -280,7 +280,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "referensi/ruangrawat";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -295,7 +295,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "referensi/carakeluar";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -310,7 +310,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "referensi/pascapulang";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -325,7 +325,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "Rujukan/ListSpesialistik/PPKRujukan/".$kode."/TglRujukan/".$tgl;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -340,7 +340,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "RencanaKontrol/ListSpesialistik/JnsKontrol/".$jenis."/nomor/".$nomor."/TglRencanaKontrol/".$tgl;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -355,7 +355,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "RencanaKontrol/JadwalPraktekDokter/JnsKontrol/".$jenis."/KdPoli/".$kodepoli."/TglRencanaKontrol/".$tgl;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -371,13 +371,13 @@ class VclaimModel extends Model
         $client = new Client();
         $data = json_encode($data_sep);
         $url = $this->baseUrl . "SEP/2.0/insert";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         try{
             $response = $client->request('POST', $url, [
                 'headers' => $signature,
                 'body' => $data,
                 'allow_redirects' => true,
-                'timeout' => 20 
+                'timeout' => 20
                 ]);
             $response = json_decode($response->getBody());
             if ($response->metaData->code == 200) {
@@ -387,14 +387,14 @@ class VclaimModel extends Model
             return $response;
         }catch(ClientException){
             return 'RTO';
-        }          
+        }
     }
     public function InsertSPRI($datasurat)
     {
         $client = new Client();
         $data = json_encode($datasurat);
         $url = $this->baseUrl . "RencanaKontrol/InsertSPRI";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('POST', $url, [
             'headers' => $signature,
             'body' => $data
@@ -404,14 +404,14 @@ class VclaimModel extends Model
             $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
             $response->response = json_decode($decrypt);
         }
-        return $response;  
+        return $response;
     }
     public function InsertPRB($datasurat)
     {
         $client = new Client();
         $data = json_encode($datasurat);
         $url = $this->baseUrl . "PRB/insert";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('POST', $url, [
             'headers' => $signature,
             'body' => $data
@@ -421,14 +421,14 @@ class VclaimModel extends Model
             $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
             $response->response = json_decode($decrypt);
         }
-        return $response;  
+        return $response;
     }
     public function UpdateSPRI($datasurat)
     {
         $client = new Client();
         $data = json_encode($datasurat);
         $url = $this->baseUrl . "RencanaKontrol/UpdateSPRI";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('PUT', $url, [
             'headers' => $signature,
             'body' => $data
@@ -438,14 +438,14 @@ class VclaimModel extends Model
             $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
             $response->response = json_decode($decrypt);
         }
-        return $response;  
+        return $response;
     }
     public function InserRencanakontrol($datasurat)
     {
         $client = new Client();
         $data = json_encode($datasurat);
         $url = $this->baseUrl . "RencanaKontrol/insert";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('POST', $url, [
             'headers' => $signature,
             'body' => $data
@@ -455,14 +455,14 @@ class VclaimModel extends Model
             $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
             $response->response = json_decode($decrypt);
         }
-        return $response;  
+        return $response;
     }
     public function updateRencanakontrol($datasurat)
     {
         $client = new Client();
         $data = json_encode($datasurat);
         $url = $this->baseUrl . "RencanaKontrol/Update";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('PUT', $url, [
             'headers' => $signature,
             'body' => $data
@@ -472,13 +472,13 @@ class VclaimModel extends Model
             $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
             $response->response = json_decode($decrypt);
         }
-        return $response;  
+        return $response;
     }
     public function ListRencanaKontrol_bycard($bulan,$tahun,$nomorkartu,$filter)
     {
         $client = new Client();
         $url = $this->baseUrl . "RencanaKontrol/ListRencanaKontrol/Bulan/".$bulan."/Tahun/".$tahun."/Nokartu/".$nomorkartu."/filter/".$filter;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -493,7 +493,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "RencanaKontrol/ListRencanaKontrol/tglAwal/".$awal."/tglAkhir/".$akhir."/filter/".$filter;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -508,7 +508,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "Rujukan/List/Peserta/".$nomorkartu;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -523,7 +523,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "Rujukan/RS/List/Peserta/".$nomorkartu;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -538,7 +538,8 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "Monitoring/Klaim/Tanggal/".$tgl."/JnsPelayanan/".$jenis."/Status/".$status;
-        $signature = $this->signature();       
+        // dd($url);
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -553,7 +554,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "monitoring/JasaRaharja/JnsPelayanan/".$jenis."/tglMulai/".$awal."/tglAkhir/".$akhir;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -568,7 +569,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "Monitoring/Kunjungan/Tanggal/".$tgl."/JnsPelayanan/".$jenis;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -583,7 +584,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "Monitoring/Kunjungan/Tanggal/".$tgl."/JnsPelayanan/1";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -598,7 +599,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "Monitoring/Kunjungan/Tanggal/".$tgl."/JnsPelayanan/2";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -613,7 +614,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "monitoring/HistoriPelayanan/NoKartu/".$nomorkartu."/tglMulai/".$tglawal."/tglAkhir/".$tglakhir;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -628,7 +629,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "Sep/updtglplg/list/bulan/".$bulan."/tahun/".$tahun."/";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -643,7 +644,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "SEP/".$nosep;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -658,7 +659,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "RencanaKontrol/nosep/".$nosep;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -673,7 +674,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "prb/".$prb."/nosep/".$nosep;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -688,7 +689,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "prb/tglMulai/".$tglawal."/tglAkhir/".$tglakhir;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -704,7 +705,7 @@ class VclaimModel extends Model
         $client = new Client();
         $data = json_encode($datasurat);
         $url = $this->baseUrl . "SEP/2.0/delete";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('DELETE', $url, [
             'headers' => $signature,
             'body' => $data
@@ -714,14 +715,14 @@ class VclaimModel extends Model
             $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
             $response->response = json_decode($decrypt);
         }
-        return $response; 
+        return $response;
     }
     public function updatetglpulang($datasurat)
     {
         $client = new Client();
         $data = json_encode($datasurat);
         $url = $this->baseUrl . "SEP/2.0/updtglplg";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('PUT', $url, [
             'headers' => $signature,
             'body' => $data
@@ -731,14 +732,14 @@ class VclaimModel extends Model
             $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
             $response->response = json_decode($decrypt);
         }
-        return $response; 
+        return $response;
     }
     public function updatesep($datasurat)
     {
         $client = new Client();
         $data = json_encode($datasurat);
         $url = $this->baseUrl . "SEP/2.0/update";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('PUT', $url, [
             'headers' => $signature,
             'body' => $data
@@ -748,14 +749,14 @@ class VclaimModel extends Model
             $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
             $response->response = json_decode($decrypt);
         }
-        return $response; 
+        return $response;
     }
     public function pengajuansep($datasurat)
     {
         $client = new Client();
         $data = json_encode($datasurat);
         $url = $this->baseUrl . "Sep/pengajuanSEP";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('POST', $url, [
             'headers' => $signature,
             'body' => $data
@@ -765,14 +766,14 @@ class VclaimModel extends Model
             $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
             $response->response = json_decode($decrypt);
         }
-        return $response; 
+        return $response;
     }
     public function aprrovalpengajuan($datasurat)
     {
         $client = new Client();
         $data = json_encode($datasurat);
         $url = $this->baseUrl . "Sep/aprovalSEP";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('POST', $url, [
             'headers' => $signature,
             'body' => $data
@@ -782,13 +783,13 @@ class VclaimModel extends Model
             $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
             $response->response = json_decode($decrypt);
         }
-        return $response; 
+        return $response;
     }
     public function carisep_internal($nosep)
     {
         $client = new Client();
         $url = $this->baseUrl . "SEP/Internal/".$nosep;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -803,7 +804,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "SEP/FingerPrint/List/Peserta/TglPelayanan/".$tgl;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -818,7 +819,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "RencanaKontrol/ListRencanaKontrol/Bulan/".$bulan."/Tahun/".$tahun."/Nokartu/".$noka."/filter/".$filter;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -834,7 +835,7 @@ class VclaimModel extends Model
         $client = new Client();
         $data = json_encode($data);
         $url = $this->baseUrl . "RencanaKontrol/Delete";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('DELETE', $url, [
             'headers' => $signature,
             'body' => $data
@@ -844,13 +845,13 @@ class VclaimModel extends Model
             $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
             $response->response = json_decode($decrypt);
         }
-        return $response; 
+        return $response;
     }
     public function jumlahseprujukan($faskes,$rujukan)
     {
         $client = new Client();
         $url = $this->baseUrl . "Rujukan/JumlahSEP/".$faskes."/".$rujukan;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -865,7 +866,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "Rujukan/".$rujukan;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -880,7 +881,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "Rujukan/RS/".$rujukan;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -895,7 +896,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "Rujukan/Keluar/".$rujukan;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -910,7 +911,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "Rujukan/Keluar/List/tglMulai/".$tglawal."/tglAkhir/".$tglakhir;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -925,7 +926,7 @@ class VclaimModel extends Model
     {
         $client = new Client();
         $url = $this->baseUrl . "Rujukan/Khusus/List/Bulan/".$bulan."/Tahun/".$tahun;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -941,13 +942,13 @@ class VclaimModel extends Model
         $client = new Client();
         $data = json_encode($data_rujukan);
         $url = $this->baseUrl . "Rujukan/2.0/insert";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         try{
             $response = $client->request('POST', $url, [
                 'headers' => $signature,
                 'body' => $data,
                 'allow_redirects' => true,
-                'timeout' => 20 
+                'timeout' => 20
                 ]);
             $response = json_decode($response->getBody());
             if ($response->metaData->code == 200) {
@@ -957,20 +958,20 @@ class VclaimModel extends Model
             return $response;
         }catch(ClientException){
             return 'RTO';
-        } 
+        }
     }
     public function insertrujukankhusus($data_rujukan)
     {
         $client = new Client();
         $data = json_encode($data_rujukan);
         $url = $this->baseUrl . "Rujukan/Khusus/insert";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         try{
             $response = $client->request('POST', $url, [
                 'headers' => $signature,
                 'body' => $data,
                 'allow_redirects' => true,
-                'timeout' => 20 
+                'timeout' => 20
                 ]);
             $response = json_decode($response->getBody());
             if ($response->metaData->code == 200) {
@@ -980,20 +981,20 @@ class VclaimModel extends Model
             return $response;
         }catch(ClientException){
             return 'RTO';
-        } 
+        }
     }
     public function updaterujukan($data_rujukan)
     {
         $client = new Client();
         $data = json_encode($data_rujukan);
         $url = $this->baseUrl . "Rujukan/2.0/Update";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         try{
             $response = $client->request('PUT', $url, [
                 'headers' => $signature,
                 'body' => $data,
                 'allow_redirects' => true,
-                'timeout' => 20 
+                'timeout' => 20
                 ]);
             $response = json_decode($response->getBody());
             if ($response->metaData->code == 200) {
@@ -1003,20 +1004,20 @@ class VclaimModel extends Model
             return $response;
         }catch(ClientException){
             return 'RTO';
-        } 
+        }
     }
     public function deleterujukan($data_rujukan)
     {
         $client = new Client();
         $data = json_encode($data_rujukan);
         $url = $this->baseUrl . "Rujukan/delete";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         try{
             $response = $client->request('DELETE', $url, [
                 'headers' => $signature,
                 'body' => $data,
                 'allow_redirects' => true,
-                'timeout' => 20 
+                'timeout' => 20
                 ]);
             $response = json_decode($response->getBody());
             if ($response->metaData->code == 200) {
@@ -1026,12 +1027,12 @@ class VclaimModel extends Model
             return $response;
         }catch(ClientException){
             return 'RTO';
-        } 
+        }
     }
     public function carisuratkontrol($nomor){
         $client = new Client();
         $url = $this->baseUrl . "RencanaKontrol/noSuratKontrol/".$nomor;
-        $signature = $this->signature();       
+        $signature = $this->signature();
         $response = $client->request('GET', $url, [
             'headers' => $signature
         ]);
@@ -1047,13 +1048,13 @@ class VclaimModel extends Model
         $client = new Client();
         $data = json_encode($dataantrian);
         $url = "https://app.rsudwaled.id/api/ambilantrean";
-        $signature = $this->signature();       
+        $signature = $this->signature();
         // try{
             $response = $client->request('POST', $url, [
                 'headers' => $signature,
                 'body' => $data,
                 'allow_redirects' => true,
-                'timeout' => 20 
+                'timeout' => 20
                 ]);
             // $response = json_decode($response->getBody());
             // if ($response->metaData->code == 200) {
@@ -1063,6 +1064,6 @@ class VclaimModel extends Model
             return $response;
         // }catch(ClientException){
         //     return 'RTO';
-        // } 
+        // }
     }
 }

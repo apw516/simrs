@@ -943,9 +943,9 @@ class VclaimController extends Controller
     {
         $v = new VclaimModel();
         $datakunjungan = $v->get_data_kunjungan($request->tanggalsep, $request->jenislayan);
-        if($request->jenislayan == 1){
+        if ($request->jenislayan == 1) {
             $jenis = 'Rawat Inap';
-        }else {
+        } else {
             $jenis = 'Rawat Jalan';
         }
         return view('vclaim.tabeldatakunjungan', [
@@ -956,15 +956,75 @@ class VclaimController extends Controller
     public function vclaimcaridataklaim(Request $request)
     {
         $v = new VclaimModel();
-        $dataklaim = $v->get_data_klaim($request->tanggalpulangsep, $request->jenislayan,$request->status);
-        return view('vclaim.tabeldataklaim', [
-            'data' => $dataklaim
+        $BULAN = $request->bulan;
+        $TAHUN = $request->tahun;
+        $jenislayan = $request->jenislayan;
+        $status = $request->status;
+        $akhir2 =  date("y-m-d", strtotime('-1 second', strtotime('+1 month', strtotime($BULAN . '/01/' . $TAHUN . ' 00:00:00'))));
+        $akhir =  date("d", strtotime('-1 second', strtotime('+1 month', strtotime($BULAN . '/01/' . $TAHUN . ' 00:00:00'))));
+        $awal = $TAHUN.'-'.$BULAN.'-'.'01';
+        $ts_kunjungan = db::select('SELECT *,date(tgl_masuk) as tgl_masuk2,fc_nama_paramedis1(kode_paramedis) as nama_dokter from ts_kunjungan a
+        LEFT OUTER JOIN mt_pasien b ON a.no_rm = b.no_rm
+        WHERE status_kunjungan != ? AND LEFT(kode_unit,1) = ? AND DATE(tgl_masuk) BETWEEN ? and ? ',[8,2,$awal,$akhir2]);
+        for ($x = 01; $x <= $akhir; $x++) {
+            if (strlen($x) == 1) {
+                $x = '0' . $x;
+            }
+            $tanggal =  $TAHUN . '-' . $BULAN . '-' . $x;
+            $dataklaim = $v->get_data_klaim($tanggal, $jenislayan, $status);
+            if ($dataklaim->metaData->code == 200) {
+                foreach ($dataklaim->response->klaim as $dt) {
+                    $dataSet['SEP'] = $dt->noSEP;
+                    $dataSet['TGL_SEP'] = $dt->tglSep;
+                    $dataSet['TGL_PULANG_sEP'] = $dt->tglPulang;
+                    $dataSet['nomor_kartu'] = $dt->peserta->noKartu;
+                    $dataSet['rm'] = $dt->peserta->noMR;
+                    $dataSet['nama'] = $dt->peserta->nama;
+                    $dataSet['inacbg_kode'] = $dt->Inacbg->kode;
+                    $dataSet['inacbg_nama'] = $dt->Inacbg->nama;
+                    $dataSet['biayapengajuan'] = $dt->biaya->byPengajuan;
+                    $dataSet['biayasetujui'] = $dt->biaya->bySetujui;
+                    $dataSet['biayatarifgrupper'] = $dt->biaya->byTarifGruper;
+                    $dataSet['biayatarifrs'] = $dt->biaya->byTarifRS;
+                    $dataSet['biayatopup'] = $dt->biaya->byTopup;
+                    $dataSet['status'] = $dt->status;
+                    $dataSet['poli'] = $dt->poli;
+                    $dataSet['kelasrawat'] = $dt->kelasRawat;
+                    $arrayRad[] = $dataSet;
+                }
+            }else{
+                $arrayRad = [];
+            }
+        }
+        // dd($arrayRad);
+        // $dataklaim = $v->get_data_klaim($request->tanggalpulangsep, $request->jenislayan,$request->status);
+        foreach($arrayRad as $ar){
+            foreach($ts_kunjungan as $ts){
+                if($ar['rm'] == $ts->no_rm && $ar['TGL_SEP'] == $ts->tgl_masuk2){
+                    $datanew['rm'] = $ar['rm'];
+                    $datanew['kodekunjungan'] = $ts->kode_kunjungan;
+                    $datanew['status_klaim'] = $ar['status'];
+                    $datanew['tgl_kunjungan'] = $ts->tgl_masuk2;
+                    $datanew['tgl_sep'] = $ar['TGL_SEP'];
+                    $datanew['Kode_paramedis'] = $ts->kode_paramedis;
+                    $datanew['nama_dokter'] = $ts->nama_dokter;
+                    $datanew['nomorsep'] = $ar['SEP'];
+                    $datanew['biayapengajuan'] = $dataSet['biayapengajuan'];
+                    $datanew['biayasetujui'] = $dataSet['biayasetujui'];
+
+                    $arraybaru[] = $datanew;
+                }
+            }
+        }
+        dd($arraybaru);
+        return view('vclaim.tabel_data_klaim2', [
+            'data' => $arrayRad
         ]);
     }
     public function vclaimcaririwayatpeserta(Request $request)
     {
         $v = new VclaimModel();
-        $riwayat = $v->get_data_kunjungan_peserta($request->nomorkartu_peserta, $request->tanggalawal,$request->tanggalakhir);
+        $riwayat = $v->get_data_kunjungan_peserta($request->nomorkartu_peserta, $request->tanggalawal, $request->tanggalakhir);
         return view('vclaim.tabelriwayatpeserta', [
             'data' => $riwayat
         ]);
@@ -972,7 +1032,7 @@ class VclaimController extends Controller
     public function vclaimcaridataklaimjr(Request $request)
     {
         $v = new VclaimModel();
-        $data = $v->get_data_klaim_jr($request->jenis,$request->tanggalawal, $request->tanggalakhir);
+        $data = $v->get_data_klaim_jr($request->jenis, $request->tanggalawal, $request->tanggalakhir);
         return view('vclaim.tabelklaimjr', [
             'data' => $data
         ]);
@@ -1007,170 +1067,171 @@ class VclaimController extends Controller
     }
     public function buatsep_manual(Request $request)
     {
-                $kodekunjungan = $request->kodekunjungan;
-                $a = $request->jenispelayanan_ranap;
-                $hakkelasbpjs = $request->hakkelasbpjs;
-                $keterangan_naik = $request->naikkelas;
-                $pembiayaan = $request->pembiayaan;
-                $penanggungjwb = $request->penanggugjawab;
-                $kelasrawat = $request->niakkelasranap;
-                $tgl_masuk = $request->tglmasukranap;
-                $nomorspri = $request->nomorspri;
-                $tglspri = $request->tglspri;
-                $kode_dpjp = $request->kodedpjp;
-                $kodediagnosa_ranap = $request->kodediagnosaranap;
-                $catatan = $request->catatan;
-                $keterangankll = $request->keterangan_kll;
-                $keterangansuplesi = $request->keterangansuplesi;
-                $suplesi = $request->sepsuplesi;
-                $tgllaka = $request->tglkejadianlaka;
-                $laporanpolisi = $request->nomorlp;
-                $provlaka = $request->provinsikejadian;
-                $kablaka = $request->kabupatenkejadian;
-                $keclaka = $request->kecamatankejadian;
-                $ketlaka = $request->keteranganlaka;
-                $nomorrm = $request->nomorrm;
-                $nomorkartu = $request->nomorkartu;
-                $nomortelp = $request->nomortelp;
-                $alasanmasuk = $request->alasanmasuk;
-                $get_sep = [
-                    "request" => [
-                        "t_sep" => [
-                            "noKartu" => "$nomorkartu",
-                            "tglSep" => "$tgl_masuk",
-                            "ppkPelayanan" => "1018R001",
-                            "jnsPelayanan" => "1",
-                            "klsRawat" => [
-                                "klsRawatHak" => "$hakkelasbpjs",
-                                "klsRawatNaik" => "$kelasrawat",
-                                "pembiayaan" => "$pembiayaan",
-                                "penanggungJawab" => "$penanggungjwb"
-                            ],
-                            "noMR" => "$nomorrm",
-                            "rujukan" => [
-                                "asalRujukan" => "2",
-                                "tglRujukan" => "$tglspri",
-                                "noRujukan" => "$nomorspri",
-                                "ppkRujukan" => "1018R001"
-                            ],
-                            "catatan" => "$catatan",
-                            "diagAwal" => "$kodediagnosa_ranap",
-                            "poli" => [
-                                "tujuan" => "",
-                                "eksekutif" => ""
-                            ],
-                            "cob" => [
-                                "cob" => "0"
-                            ],
-                            "katarak" => [
-                                "katarak" => "0"
-                            ],
-                            "jaminan" => [
-                                "lakaLantas" => "$keterangankll",
-                                "noLP" => "$laporanpolisi",
-                                "penjamin" => [
-                                    "tglKejadian" => "$tgllaka",
-                                    "keterangan" => "$ketlaka",
-                                    "suplesi" => [
-                                        "suplesi" => "$keterangansuplesi",
-                                        "noSepSuplesi" => "$suplesi",
-                                        "lokasiLaka" => [
-                                            "kdPropinsi" => "$provlaka",
-                                            "kdKabupaten" => "$kablaka",
-                                            "kdKecamatan" => "$keclaka"
-                                        ]
-                                    ]
+        $kodekunjungan = $request->kodekunjungan;
+        $a = $request->jenispelayanan_ranap;
+        $hakkelasbpjs = $request->hakkelasbpjs;
+        $keterangan_naik = $request->naikkelas;
+        $pembiayaan = $request->pembiayaan;
+        $penanggungjwb = $request->penanggugjawab;
+        $kelasrawat = $request->niakkelasranap;
+        $tgl_masuk = $request->tglmasukranap;
+        $nomorspri = $request->nomorspri;
+        $tglspri = $request->tglspri;
+        $kode_dpjp = $request->kodedpjp;
+        $kodediagnosa_ranap = $request->kodediagnosaranap;
+        $catatan = $request->catatan;
+        $keterangankll = $request->keterangan_kll;
+        $keterangansuplesi = $request->keterangansuplesi;
+        $suplesi = $request->sepsuplesi;
+        $tgllaka = $request->tglkejadianlaka;
+        $laporanpolisi = $request->nomorlp;
+        $provlaka = $request->provinsikejadian;
+        $kablaka = $request->kabupatenkejadian;
+        $keclaka = $request->kecamatankejadian;
+        $ketlaka = $request->keteranganlaka;
+        $nomorrm = $request->nomorrm;
+        $nomorkartu = $request->nomorkartu;
+        $nomortelp = $request->nomortelp;
+        $alasanmasuk = $request->alasanmasuk;
+        $get_sep = [
+            "request" => [
+                "t_sep" => [
+                    "noKartu" => "$nomorkartu",
+                    "tglSep" => "$tgl_masuk",
+                    "ppkPelayanan" => "1018R001",
+                    "jnsPelayanan" => "1",
+                    "klsRawat" => [
+                        "klsRawatHak" => "$hakkelasbpjs",
+                        "klsRawatNaik" => "$kelasrawat",
+                        "pembiayaan" => "$pembiayaan",
+                        "penanggungJawab" => "$penanggungjwb"
+                    ],
+                    "noMR" => "$nomorrm",
+                    "rujukan" => [
+                        "asalRujukan" => "2",
+                        "tglRujukan" => "$tglspri",
+                        "noRujukan" => "$nomorspri",
+                        "ppkRujukan" => "1018R001"
+                    ],
+                    "catatan" => "$catatan",
+                    "diagAwal" => "$kodediagnosa_ranap",
+                    "poli" => [
+                        "tujuan" => "",
+                        "eksekutif" => ""
+                    ],
+                    "cob" => [
+                        "cob" => "0"
+                    ],
+                    "katarak" => [
+                        "katarak" => "0"
+                    ],
+                    "jaminan" => [
+                        "lakaLantas" => "$keterangankll",
+                        "noLP" => "$laporanpolisi",
+                        "penjamin" => [
+                            "tglKejadian" => "$tgllaka",
+                            "keterangan" => "$ketlaka",
+                            "suplesi" => [
+                                "suplesi" => "$keterangansuplesi",
+                                "noSepSuplesi" => "$suplesi",
+                                "lokasiLaka" => [
+                                    "kdPropinsi" => "$provlaka",
+                                    "kdKabupaten" => "$kablaka",
+                                    "kdKecamatan" => "$keclaka"
                                 ]
-                            ],
-                            "tujuanKunj" => "0",
-                            "flagProcedure" => "",
-                            "kdPenunjang" => "",
-                            "assesmentPel" => "",
-                            "skdp" => [
-                                "noSurat" => "$nomorspri",
-                                "kodeDPJP" => "$kode_dpjp"
-                            ],
-                            "dpjpLayan" => "",
-                            "noTelp" => "$nomortelp",
-                            "user" => "waled | " . auth()->user()->id_simrs
+                            ]
                         ]
-                    ]
-                ];
-                $v = new VclaimModel();
-                $datasep = $v->insertsep2($get_sep);
-                if ($datasep == 'RTO') {
-                    $data = [
-                        'kode' => 500,
-                        'message' => 'The Network connection lost, please try again ...'
-                    ];
-                    echo json_encode($data);
-                } else if ($datasep->metaData->code == 200) {
-                    ts_kunjungan::whereRaw('kode_kunjungan = ? and no_rm = ?', array($kodekunjungan, $nomorrm ))->update(['no_sep' => $datasep->response->sep->noSep
-                    ]);
-                    //insert ts_sep
-                    $sep = $datasep->response->sep;
-                    if ($keterangankll == '0') {
-                        $CATKLL = "";
-                    } else if ($keterangankll == '1') {
-                        $CATKLL = "KLL dan bukan kecelakaan Kerja [BKK]";
-                    } else if ($keterangankll == '2') {
-                        $CATKLL = "KLL dan kecelakaan Kerja [KK]";
-                    } else if ($keterangankll == '3') {
-                        $CATKLL = "Kecelakaan Kerja [KK]";
-                    }
-                    $jk = $sep->peserta->kelamin;
-                    if ($jk == 'Laki-Laki') {
-                        $jk = 'L';
-                    } else {
-                        $jk = 'P';
-                    }
-                    $data_ts_sep = [
-                        'no_SEP' => $sep->noSep,
-                        'tgl_SEP' => $sep->tglSep,
-                        'no_kartu' => $sep->peserta->noKartu,
-                        'nama_peserta' => $sep->peserta->nama,
-                        'tgl_lahir' => $sep->peserta->tglLahir,
-                        'jenis_kelamin' => $jk,
-                        'poli_tujuan' => "",
-                        'asal_faskes' => "1018R001",
-                        'nama_asal_faskes' => "Rsud Waled",
-                        'diagnosa_awal' => $sep->diagnosa,
-                        'peserta' => $sep->peserta->jnsPeserta,
-                        'cob' => "",
-                        'jenis_rawat' => "Rawat Inap",
-                        'kls_rawat' => $sep->peserta->hakKelas,
-                        'no_rm' => $nomorrm,
-                        'catatan' => $sep->catatan . "  " . $CATKLL,
-                        'act' => 1,
-                        'alasan_masuk' => "$alasanmasuk",
-                        'no_tlp' => "$nomortelp",
-                        'kode_kunjungan' => "$kodekunjungan",
-                        'tgl_rujukan' => $tglspri,
-                        'no_skdp' => "",
-                        'dpjp' => '',
-                        'no_rujukan' => $nomorspri,
-                        'pic1' => auth()->user()->id_simrs,
-                        'tingkat_faskes' => $request->asalrujukan,
-                    ];
-                    $ts_sep = ts_sep::create($data_ts_sep);
-                    $pasien = Pasien::where('no_rm', '=', "$nomorrm")->get();
-                    $data = [
-                        'kode' => 200,
-                        'jenis' => 'BPJS',
-                        'message' => 'sukses',
-                        'kode_kunjungan' => $kodekunjungan,
-                        'nama' => $pasien[0]['nama_px']
-                    ];
-                    echo json_encode($data);
-                } else if ($datasep->metaData->code != 200) {
-                    $data = [
-                        'kode' => 201,
-                        'message' => $datasep->metaData->message
-                    ];
-                    echo json_encode($data);
-                }
+                    ],
+                    "tujuanKunj" => "0",
+                    "flagProcedure" => "",
+                    "kdPenunjang" => "",
+                    "assesmentPel" => "",
+                    "skdp" => [
+                        "noSurat" => "$nomorspri",
+                        "kodeDPJP" => "$kode_dpjp"
+                    ],
+                    "dpjpLayan" => "",
+                    "noTelp" => "$nomortelp",
+                    "user" => "waled | " . auth()->user()->id_simrs
+                ]
+            ]
+        ];
+        $v = new VclaimModel();
+        $datasep = $v->insertsep2($get_sep);
+        if ($datasep == 'RTO') {
+            $data = [
+                'kode' => 500,
+                'message' => 'The Network connection lost, please try again ...'
+            ];
+            echo json_encode($data);
+        } else if ($datasep->metaData->code == 200) {
+            ts_kunjungan::whereRaw('kode_kunjungan = ? and no_rm = ?', array($kodekunjungan, $nomorrm))->update([
+                'no_sep' => $datasep->response->sep->noSep
+            ]);
+            //insert ts_sep
+            $sep = $datasep->response->sep;
+            if ($keterangankll == '0') {
+                $CATKLL = "";
+            } else if ($keterangankll == '1') {
+                $CATKLL = "KLL dan bukan kecelakaan Kerja [BKK]";
+            } else if ($keterangankll == '2') {
+                $CATKLL = "KLL dan kecelakaan Kerja [KK]";
+            } else if ($keterangankll == '3') {
+                $CATKLL = "Kecelakaan Kerja [KK]";
+            }
+            $jk = $sep->peserta->kelamin;
+            if ($jk == 'Laki-Laki') {
+                $jk = 'L';
+            } else {
+                $jk = 'P';
+            }
+            $data_ts_sep = [
+                'no_SEP' => $sep->noSep,
+                'tgl_SEP' => $sep->tglSep,
+                'no_kartu' => $sep->peserta->noKartu,
+                'nama_peserta' => $sep->peserta->nama,
+                'tgl_lahir' => $sep->peserta->tglLahir,
+                'jenis_kelamin' => $jk,
+                'poli_tujuan' => "",
+                'asal_faskes' => "1018R001",
+                'nama_asal_faskes' => "Rsud Waled",
+                'diagnosa_awal' => $sep->diagnosa,
+                'peserta' => $sep->peserta->jnsPeserta,
+                'cob' => "",
+                'jenis_rawat' => "Rawat Inap",
+                'kls_rawat' => $sep->peserta->hakKelas,
+                'no_rm' => $nomorrm,
+                'catatan' => $sep->catatan . "  " . $CATKLL,
+                'act' => 1,
+                'alasan_masuk' => "$alasanmasuk",
+                'no_tlp' => "$nomortelp",
+                'kode_kunjungan' => "$kodekunjungan",
+                'tgl_rujukan' => $tglspri,
+                'no_skdp' => "",
+                'dpjp' => '',
+                'no_rujukan' => $nomorspri,
+                'pic1' => auth()->user()->id_simrs,
+                'tingkat_faskes' => $request->asalrujukan,
+            ];
+            $ts_sep = ts_sep::create($data_ts_sep);
+            $pasien = Pasien::where('no_rm', '=', "$nomorrm")->get();
+            $data = [
+                'kode' => 200,
+                'jenis' => 'BPJS',
+                'message' => 'sukses',
+                'kode_kunjungan' => $kodekunjungan,
+                'nama' => $pasien[0]['nama_px']
+            ];
+            echo json_encode($data);
+        } else if ($datasep->metaData->code != 200) {
+            $data = [
+                'kode' => 201,
+                'message' => $datasep->metaData->message
+            ];
+            echo json_encode($data);
+        }
     }
-     public function Cetaksurkon($nomorsurat)
+    public function Cetaksurkon($nomorsurat)
     {
         //ambil data sep
         // $sep = $request->sep;
@@ -1195,7 +1256,7 @@ class VclaimController extends Controller
         $pdf->Cell(10, 7, 'RSUD WALED KAB.CIREBON', 0, 1);
         $pdf->SetFont('Arial', 'B', 15);
         $pdf->SetXY(120, 36);
-        $pdf->Cell(10, 7, 'NO.'.' '.$s->response->noSuratKontrol , 0, 1);
+        $pdf->Cell(10, 7, 'NO.' . ' ' . $s->response->noSuratKontrol, 0, 1);
         $pdf->SetFont('Arial', '', 10);
         $pdf->SetXY(10, 30);
         $pdf->Cell(10, 7, 'Kepada Yth', 0, 1);
@@ -1203,7 +1264,7 @@ class VclaimController extends Controller
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetFont('Arial', '', 10);
         $pdf->SetXY(45, 30);
-        $pdf->Cell(10, 7, $s->response->namaDokter.','.$s->response->namaPoliTujuan, 0, 1);
+        $pdf->Cell(10, 7, $s->response->namaDokter . ',' . $s->response->namaPoliTujuan, 0, 1);
         $pdf->SetFont('Arial', '', 10);
         $pdf->SetXY(10, 38);
         $pdf->Cell(10, 7, 'Mohon Pemeriksaan dan Penanganan Lebih Lanjut :', 0, 1);
@@ -1239,7 +1300,7 @@ class VclaimController extends Controller
         $pdf->SetXY(40, 65);
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetXY(45, 65);
-        $pdf->Cell(10, 7,$s->response->sep->diagnosa, 0, 1);
+        $pdf->Cell(10, 7, $s->response->sep->diagnosa, 0, 1);
 
         $pdf->SetXY(10, 70);
         $pdf->Cell(10, 7, 'Rencana Kontrol', 0, 1);
@@ -1273,4 +1334,3 @@ class VclaimController extends Controller
         exit;
     }
 }
-

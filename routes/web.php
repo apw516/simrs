@@ -703,3 +703,20 @@ Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
 
 Route::get('get_riwayat_sep/{nomorkartu}/{tglawal}/{tglakhir}', [SimrsController::class, 'cari_riwayat_sep'])->name('cari_riwayat_sep'); //formpasien_bpjs
 Route::get('/cetaklabel/{kodekunjungan}', [SimrsController::class, 'Cetaklabel']); //formpasien_bpjs
+Route::post('ambilformorderfarmasi', [ErmController::class, 'ambilformorderfarmasi'])->name('ambilformorderfarmasi'); //formpasien_bpjs
+Route::post('ambilriwayatreseppasien', [ErmController::class, 'ambilriwayatreseppasien'])->name('ambilriwayatreseppasien'); //formpasien_bpjs
+Route::post('ambilriwayatorderhariini', [ErmController::class, 'ambilriwayatorderhariini'])->name('ambilriwayatorderhariini'); //formpasien_bpjs
+Route::post('ambil_detail_resep', [ErmController::class, 'ambil_detail_resep'])->name('ambil_detail_resep'); //formpasien_bpjs
+Route::post('ambilriwayatresepdokter', [ErmController::class, 'ambilriwayatresepdokter'])->name('ambilriwayatresepdokter'); //formpasien_bpjs
+Route::post('ambiltemplateresep', [ErmController::class, 'ambiltemplateresep'])->name('ambiltemplateresep'); //formpasien_bpjs
+Route::post('ambil_detail_template_resep', [ErmController::class, 'ambil_detail_template_resep'])->name('ambil_detail_template_resep'); //formpasien_bpjs
+Route::post('ambil_detail_racikan', [ErmController::class, 'ambil_detail_racikan'])->name('ambil_detail_racikan'); //formpasien_bpjs
+Route::post('ambiltemplateracikan', [ErmController::class, 'ambiltemplateracikan'])->name('ambiltemplateracikan'); //formpasien_bpjs
+Route::post('caristokobat', [ErmController::class, 'caristokobat'])->name('caristokobat'); //formpasien_bpjs
+Route::post('caristokobat2', [ErmController::class, 'caristokobat2'])->name('caristokobat2'); //formpasien_bpjs
+Route::post('simpanracikan', [ErmController::class, 'simpanracikan'])->name('simpanracikan'); //formpasien_bpjs
+Route::post('simpanracikan2', [ErmController::class, 'simpanracikan2'])->name('simpanracikan2'); //formpasien_bpjs
+Route::post('batalorderfarmasi_detail', [ErmController::class, 'batalorderfarmasi_detail'])->name('batalorderfarmasi_detail'); //formpasien_bpjs
+Route::post('batalorderfarmasi', [ErmController::class, 'batalorderfarmasi'])->name('batalorderfarmasi'); //formpasien_bpjs
+Route::post('ambilformeditorder', [ErmController::class, 'ambilformeditorder'])->name('ambilformeditorder'); //formpasien_bpjs
+Route::post('simpaneditorder', [ErmController::class, 'simpaneditorder'])->name('simpaneditorder'); //formpasien_bpjs

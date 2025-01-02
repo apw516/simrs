@@ -1147,7 +1147,7 @@
                 </table>
                 </form>
                 {{-- formfarmasi --}}
-                <div class="card">
+                <div hidden class="card">
                     <div class="card-header bg-light">Order Farmasi <button type="button"
                             class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
                             onclick="ambilresep()">Template resep</button></div>
@@ -1224,6 +1224,9 @@
                     </div>
                 </form>
                 {{-- formtindakan --}}
+                <div class="V_ORDER_FARMASI_BARU">
+
+                </div>
                 <div class="accordion" id="accordionExample">
                     <div class="card">
                         <div class="card-header bg-danger" id="headingOne">
@@ -1692,7 +1695,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="modaltemplate" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -1716,7 +1718,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="modalcatatankonsul" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -1749,7 +1750,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="modalriwayatkonsul" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -1773,7 +1773,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="modalscan_rm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -1825,7 +1824,6 @@
             todayHighlight: true,
         }).datepicker('update', new Date());
     });
-
     function simpanhasil() {
         var canvas1 = document.getElementById("myCanvas1");
         var ctx1 = canvas1.getContext("2d");
@@ -1834,6 +1832,7 @@
         var dataUrl1 = canvas1.toDataURL();
         $('#gambarcoret').val(dataUrl1)
         gambar = $('#gambarcoret').val()
+        var dataorderfarmasi = $('.draft_obat_yang_diorder').serializeArray();
         var data1 = $('.form_pemeriksaan_1').serializeArray();
         var data2 = $('.form_pemeriksaan_2').serializeArray();
         var data3 = $('.form_pemeriksaan_3').serializeArray();
@@ -1851,6 +1850,8 @@
         var formhidungkanan = $('.formhidungkanan').serializeArray();
         var formhidungkiri = $('.formhidungkiri').serializeArray();
         var formkesimpulanhidung = $('.formkesimpulanhidung').serializeArray();
+        var simpantemplatefar = $('#simpantemplatefar:checked').val()
+        var namatemplatefar = $('#namatemplatefar').val()
         var simpantemplate = $('#simpantemplate:checked').val()
         var namaresep = $('#namaresep').val()
         var kodekunjungan = $('#kodekunjungan').val()
@@ -1863,6 +1864,9 @@
             dataType: 'json',
             data: {
                 _token: "{{ csrf_token() }}",
+                dataorderfarmasi: JSON.stringify(dataorderfarmasi),
+                simpantemplatefar,
+                namatemplatefar,
                 data1: JSON.stringify(data1),
                 data2: JSON.stringify(data2),
                 data3: JSON.stringify(data3),
@@ -1930,7 +1934,6 @@
             }
         });
     })
-
     $(".lihathasilpenunjang_lab").click(function() {
         spinner = $('#loader')
         spinner.show();
@@ -1999,7 +2002,6 @@
             }
         });
     })
-
     function batalisi() {
         rm = $('#nomorrm').val()
         formcatatanmedis(rm)
@@ -2148,7 +2150,6 @@
             }
         }
     });
-
     function showname() {
         a = $('#simpantemplate:checked').val()
         if (a == 'on') {
@@ -2157,7 +2158,6 @@
             $('#namaresep').attr('Hidden', true)
         }
     }
-
     function ambilresep() {
         spinner = $('#loader')
         spinner.show();
@@ -2195,7 +2195,6 @@
             }
         });
     });
-
     function showMarkerArea(target) {
         const markerArea = new markerjs2.MarkerArea(target);
         markerArea.addEventListener("render", (event) => (target.src = event.dataUrl));
@@ -2204,8 +2203,8 @@
     $(document).ready(function() {
         ambilgambar()
         ambilriwayatobat()
+        ambilformorderfarmasi()
     })
-
     function ambilriwayatobat() {
         spinner = $('#loader')
         spinner.show();
@@ -2225,7 +2224,6 @@
             }
         });
     }
-
     function resetgambar() {
         $.ajax({
             type: 'post',
@@ -2242,7 +2240,6 @@
             }
         });
     }
-
     function ambilgambar() {
         $.ajax({
             type: 'post',
@@ -2259,7 +2256,6 @@
             }
         });
     }
-
     function addform() {
         var max_fields = 10;
         var wrapper = $(".formobatfarmasi2"); //Fields wrapper
@@ -2340,5 +2336,27 @@
             }
         });
     })
+    function ambilformorderfarmasi()
+    {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan: $('#kodekunjungan').val(),
+                rm : $(this).attr('nomorrm')
+
+            },
+            url: '<?= route('ambilformorderfarmasi') ?>',
+            error: function(data) {
+                alert('ok')
+            },
+            success: function(response) {
+                $('.V_ORDER_FARMASI_BARU').html(response)
+                spinner.hide()
+            }
+        });
+    }
 </script>
 <script src="{{ asset('public/marker/markerjs2.js') }}"></script>
