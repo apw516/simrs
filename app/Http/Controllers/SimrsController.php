@@ -801,29 +801,29 @@ class SimrsController extends Controller
         //antrian
         // $unit = mt_unit::where('KDPOLI', '=', "$request->kodepolitujuan")->get();
         // dd($unit);
-        try{
-            $sk = $request->suratkontrol;
-            $ceksurkon1 = $v->carisuratkontrol($sk);
-            if($ceksurkon1->metaData->code == 200){
-                $TGLterbit = $ceksurkon1->response->tglTerbit;
-                if ($TGLterbit == $request->tglsep){
-                    $data = [
-                        'kode' => 500,
-                        'message' => 'Tanggal terbit surat kontrol tidak boleh sama dengan tanggal SEP !'
-                    ];
-                    echo json_encode($data);
-                    die;
-                }
-            }
-        }catch(\Exception $e) {
-            $err = $e->getMessage();
-            $data = [
-                'kode' => 500,
-                'message' => $err
-            ];
-            echo json_encode($data);
-            die;
-        }
+        // try{
+        //     $sk = $request->suratkontrol;
+        //     $ceksurkon1 = $v->carisuratkontrol($sk);
+        //     if($ceksurkon1->metaData->code == 200){
+        //         $TGLterbit = $ceksurkon1->response->tglTerbit;
+        //         if ($TGLterbit == $request->tglsep){
+        //             $data = [
+        //                 'kode' => 500,
+        //                 'message' => 'Tanggal terbit surat kontrol tidak boleh sama dengan tanggal SEP !'
+        //             ];
+        //             echo json_encode($data);
+        //             die;
+        //         }
+        //     }
+        // }catch(\Exception $e) {
+        //     $err = $e->getMessage();
+        //     $data = [
+        //         'kode' => 500,
+        //         'message' => $err
+        //     ];
+        //     echo json_encode($data);
+        //     die;
+        // }
         $ipclient = $this->get_client_ip();
         $mw = new antrianmarwan();
         $day = $request->tglsep;
