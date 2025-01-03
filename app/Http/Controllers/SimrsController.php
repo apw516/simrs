@@ -837,18 +837,18 @@ class SimrsController extends Controller
             echo json_encode($data);
             die;
         }
-        $jammulai = $jampraktek[0]->jadwal;
-        $jammulai1 = substr($jammulai, 0, 2);
-        $menitmulai = substr($jammulai, 3, 2);
+        // $jammulai = $jampraktek[0]->jadwal;
+        // $jammulai1 = substr($jammulai, 0, 2);
+        // $menitmulai = substr($jammulai, 3, 2);
 
         $dt = Carbon::now();
-        $sekarang = $dt->toTimeString();
-        $sekarang1 = substr($sekarang, 0, 5);
-        $jamsekarang = substr($sekarang1, 0, 2);
-        $menitsekarang = substr($sekarang1, 3, 2);
-        $hasil = (intVal($jammulai1) - intVal($jamsekarang)) * 60 + (intVal($menitmulai) - intVal($menitsekarang));
-        $hasil = $hasil / 60;
-        $hasil = number_format($hasil, 2);
+        // $sekarang = $dt->toTimeString();
+        // $sekarang1 = substr($sekarang, 0, 5);
+        // $jamsekarang = substr($sekarang1, 0, 2);
+        // $menitsekarang = substr($sekarang1, 3, 2);
+        // $hasil = (intVal($jammulai1) - intVal($jamsekarang)) * 60 + (intVal($menitmulai) - intVal($menitsekarang));
+        // $hasil = $hasil / 60;
+        // $hasil = number_format($hasil, 2);
         // if ($hasil > 1) {
         //     $data = [
         //         'kode' => 500,
