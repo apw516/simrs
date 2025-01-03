@@ -849,14 +849,14 @@ class SimrsController extends Controller
         $hasil = (intVal($jammulai1) - intVal($jamsekarang)) * 60 + (intVal($menitmulai) - intVal($menitsekarang));
         $hasil = $hasil / 60;
         $hasil = number_format($hasil, 2);
-        if ($hasil > 1) {
-            $data = [
-                'kode' => 500,
-                'message' => 'Pasien bisa didaftarkkan 1 jam sebelum poli dibuka, Jadwal Poli ' . $jammulai
-            ];
-            echo json_encode($data);
-            die;
-        }
+        // if ($hasil > 1) {
+        //     $data = [
+        //         'kode' => 500,
+        //         'message' => 'Pasien bisa didaftarkkan 1 jam sebelum poli dibuka, Jadwal Poli ' . $jammulai
+        //     ];
+        //     echo json_encode($data);
+        //     die;
+        // }
         // end antrian
         // ambil antrian
         if ($request->tujuankunjungan == 0) {
