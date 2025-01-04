@@ -798,6 +798,28 @@ class SimrsController extends Controller
         //antrian
         // $unit = mt_unit::where('KDPOLI', '=', "$request->kodepolitujuan")->get();
         // dd($unit);
+        $ceksurkon = strlen($request->suratkontrol);
+        $dt = Carbon::now();
+        $v = new VclaimModel();
+        if ($ceksurkon > 5) {
+            $surkon = $request->suratkontrol;
+            try{
+                $hasilsurkon = $v->carisuratkontrol($request->suratkontrol);
+                if($hasilsurkon->metaData->code == '200'){
+                    $tglterbit = $hasilsurkon->response->tglTerbit;
+                    if($tglterbit == $request->tglsep){
+                        $data = [
+                            'kode' => 500,
+                            'message' => 'Tanggal terbit surat kontrol tidak boleh sama dengan tanggal sep !'
+                        ];
+                        echo json_encode($data);
+                        die;
+                    }
+                }
+            }catch (\Exception $e) {
+
+            }
+        }
         $ipclient = $this->get_client_ip();
         $mw = new antrianmarwan();
         $day = $request->tglsep;
@@ -812,21 +834,21 @@ class SimrsController extends Controller
             die;
         }
         $jammulai = $jampraktek[0]->jadwal;
-        $jammulai1 = substr($jammulai,0,2);
-        $menitmulai = substr($jammulai,3,2);
+        $jammulai1 = substr($jammulai, 0, 2);
+        $menitmulai = substr($jammulai, 3, 2);
 
         $dt = Carbon::now();
         $sekarang = $dt->toTimeString();
-        $sekarang1 = substr($sekarang,0,5);
-        $jamsekarang = substr($sekarang1,0,2);
-        $menitsekarang = substr($sekarang1,3,2);
+        $sekarang1 = substr($sekarang, 0, 5);
+        $jamsekarang = substr($sekarang1, 0, 2);
+        $menitsekarang = substr($sekarang1, 3, 2);
         $hasil = (intVal($jammulai1) - intVal($jamsekarang)) * 60 + (intVal($menitmulai) - intVal($menitsekarang));
         $hasil = $hasil / 60;
-        $hasil = number_format($hasil,2);
-        if($hasil > 1){
+        $hasil = number_format($hasil, 2);
+        if ($hasil > 1) {
             $data = [
                 'kode' => 500,
-                'message' => 'Pasien bisa didaftarkkan 1 jam sebelum poli dibuka, Jadwal Poli ' .$jammulai
+                'message' => 'Pasien bisa didaftarkkan 1 jam sebelum poli dibuka, Jadwal Poli ' . $jammulai
             ];
             echo json_encode($data);
             die;
@@ -842,9 +864,9 @@ class SimrsController extends Controller
         }
 
         //END OF AMBIL ANTRIAN
-        $dt = Carbon::now();
-        $v = new VclaimModel();
+
         $nomorrujukan = trim($request->nomorrujukan);
+        // kamarranap
         // kamarranap
         // bedranap
         // $d = $this->createLayanandetail();
@@ -852,22 +874,22 @@ class SimrsController extends Controller
         //cek sudah daftar belum
         //cek_kronis
         //cek pasien aktif
-        $cekrujukan = $v->carirujukan_byno($request->nomorrujukan);
-        if ($cekrujukan->metaData->code == 201) {
-            $cekrujukan = $v->carirujukan_byno_rs($request->nomorrujukan);
-        }
-        if ($cekrujukan->metaData->code == 201) {
-            $ceksurkon = $v->carisuratkontrol($request->suratkontrol);
-            if ($ceksurkon->response->sep->noSep == $request->nomorrujukan) {
-            } else {
-                $data = [
-                    'kode' => 500,
-                    'message' => 'Rujukan dan Surat Kontrol tidak sesuai !'
-                ];
-                echo json_encode($data);
-                die;
-            }
-        }
+        // $cekrujukan = $v->carirujukan_byno($request->nomorrujukan);
+        // if ($cekrujukan->metaData->code == 201) {
+        //     $cekrujukan = $v->carirujukan_byno_rs($request->nomorrujukan);
+        // }
+        // if ($cekrujukan->metaData->code == 201) {
+        //     $ceksurkon = $v->carisuratkontrol($request->suratkontrol);
+        //     if ($ceksurkon->response->sep->noSep == $request->nomorrujukan) {
+        //     } else {
+        //         $data = [
+        //             'kode' => 500,
+        //             'message' => 'Rujukan dan Surat Kontrol tidak sesuai !'
+        //         ];
+        //         echo json_encode($data);
+        //         die;
+        //     }
+        // }
         $cek_kunjungan_aktif = DB::select('select * from ts_kunjungan where no_rm = ? AND status_kunjungan = ?', [$request->norm, '1']);
         if ($request->jenispelayanan == 2) {
             $paramedis = Dokter::where('kode_dpjp', '=', "$request->kodedokterlayan")->get();
@@ -1018,13 +1040,13 @@ class SimrsController extends Controller
             "user" => auth()->user()->nama
         ];
         if ($request->kodepolitujuan != 'HDL') {
-            try{
+            try {
                 $antrian = $mw->ambilantrean2($data_antrian);
-            }catch (\Exception $e) {
+            } catch (\Exception $e) {
                 $err = $e->getMessage();
                 $data = [
                     'kode' => 500,
-                    'message' => 'Gagal ambil antrian online ...( '.$err .' )'
+                    'message' => 'Gagal ambil antrian online ...( ' . $err . ' )'
                 ];
                 echo json_encode($data);
                 die;
@@ -1211,6 +1233,7 @@ class SimrsController extends Controller
                 ]
             ]
         ];
+        $v = new VclaimModel();
         $datasep = $v->insertsep2($get_sep);
         if ($datasep == 'RTO') {
             DB::table('ts_kunjungan')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
@@ -1716,7 +1739,7 @@ class SimrsController extends Controller
                 if ($unit[0]->kode_unit == '1015' || $unit[0]->kode_unit == '1028') {
                     $tarif1 = 0;
                     $tarif2 = 0;
-                    if($unit[0]->kode_unit == '1015'){
+                    if ($unit[0]->kode_unit == '1015') {
                         $tarif1 = $unit[0]->mt_tarif_detail->tarif_rajal;
                         $tarif2 = $unit[0]->mt_tarif_detail2->tarif_rajal;
                     }
@@ -1917,9 +1940,9 @@ class SimrsController extends Controller
         $unit = mt_unit::where('kode_unit', '=', "$unitranap")->get();
         // $mt_penjamin = DB::select('select * from mt_penjamin_bpjs where kode_penjamin_simrs = ?', [$request->penjamin]);
         // dd($request->koderef);
-        if($penjamin == 'P01'){
+        if ($penjamin == 'P01') {
             $JP = 0;
-        }else{
+        } else {
             $JP = 1;
         }
         $data_ts_kunjungan = array(

@@ -8,6 +8,7 @@
         "php": "^8.0.2",
         "barryvdh/laravel-dompdf": "^1.0",
         "codedge/laravel-fpdf": "^1.8",
+        "elibyy/tcpdf-laravel": "^11.1",
         "geekcom/phpjasper": "^3.1",
         "goodnesskay/laravelpdfviewer": "^1.0",
         "guzzlehttp/guzzle": "^7.4",
