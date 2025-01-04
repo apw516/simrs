@@ -817,7 +817,6 @@ class SimrsController extends Controller
         $jammulai = $jampraktek[0]->jadwal;
         $jammulai1 = substr($jammulai,0,2);
         $menitmulai = substr($jammulai,3,2);
-
         $dt = Carbon::now();
         $sekarang = $dt->toTimeString();
         $sekarang1 = substr($sekarang,0,5);
