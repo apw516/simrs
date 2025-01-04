@@ -66,7 +66,12 @@
                     @endif
                     <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formtindaklanjut()">
-                            <i class="fas fa-inbox mr-2"></i>Form Tindak Lanjut / Konsul
+                            <i class="fas fa-inbox mr-2"></i>Form Tindak Lanjut / Rujuk internal / Konsul
+                        </a>
+                    </li>
+                    <li class="nav-item" id="pemeriksaan">
+                        <a href="#" class="nav-link" onclick="formtindaklanjut2()">
+                            <i class="fas fa-inbox mr-2"></i>Form Rujuk internal
                         </a>
                     </li>
                     @else
@@ -174,6 +179,25 @@
                 kodekunjungan
             },
             url: '<?= route('formtindaklanjut') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    function formtindaklanjut2() {
+        spinner = $('#loader')
+        spinner.show();
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('formtindaklanjut2') ?>',
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()

@@ -1,6 +1,6 @@
 
 <div class="card">
-    <div class="card-header bg-dark">FORM KONSUL</div>
+    <div class="card-header bg-dark">FORM RUJUKAN INTERNAL / KONSUL POLI LAIN</div>
     <div class="card-body">
         <input hidden type="" id="jenis" name="jenis" value="{{ $jenis }}">
         <form method="post" class="formkonsulan">

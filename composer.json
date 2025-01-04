@@ -6,7 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
-        "barryvdh/laravel-dompdf": "^1.0",
+        "barryvdh/laravel-dompdf": "1.0",
         "codedge/laravel-fpdf": "^1.8",
         "elibyy/tcpdf-laravel": "^11.1",
         "geekcom/phpjasper": "^3.1",

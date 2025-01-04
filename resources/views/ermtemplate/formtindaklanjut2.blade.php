@@ -1,5 +1,5 @@
 @if(count($cek_konsul) > 0)
-<label for="">Data Poliklinik konsul</label>
+<label for="">Data Poliklinik konsul dan rujuk internal</label>
 <table class="table table-sm table-bordered table-hover">
     <thead>
         <th>Nama Poli</th>
@@ -20,7 +20,7 @@
 </table>
 @endif
 <div class="card">
-    <div class="card-header bg-warning">Tindak Lanjut</div>
+    <div class="card-header bg-warning">Rujuk Internal</div>
     <div class="card-body table-responsive p-5" style="height: 757Px">
         <div class="jumbotron">
             {{-- <h1 class="display-4">Tindak Lanjut</h1> --}}
@@ -34,7 +34,7 @@
             {{-- <a class="btn btn-primary btn-lg btntindaklanjut" jenis="surkon" role="button"><i
                     class="bi bi-plus-lg mr-1"></i> Surat Kontrol</a> --}}
             <a class="btn btn-primary btn-lg btntindaklanjut" jenis="konsul" role="button"><i
-                    class="bi bi-plus-lg mr-1"></i>Konsul Poli Lain</a>
+                    class="bi bi-plus-lg mr-1"></i>Rujuk internal</a>
             {{-- <a class="btn btn-primary btn-lg btntindaklanjut" jenis="rujukkeluar" role="button"><i
                     class="bi bi-plus-lg mr-1"></i> Rujuk Keluar</a> --}}
         </div>

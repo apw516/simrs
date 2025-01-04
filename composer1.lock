@@ -10728,6 +10728,10 @@
         },
         {
             "name": "symfony/yaml",
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 587a246bb0012cb05382eee50a7775bb6990dce9
             "version": "v6.0.19",
             "source": {
                 "type": "git",
@@ -10742,6 +10746,10 @@
             },
             "require": {
                 "php": ">=8.0.2",
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 587a246bb0012cb05382eee50a7775bb6990dce9
             "version": "v6.3.3",
             "source": {
                 "type": "git",
@@ -10757,6 +10765,10 @@
             "require": {
                 "php": ">=8.1",
                 "symfony/deprecation-contracts": "^2.5|^3",
+<<<<<<< HEAD
+=======
+>>>>>>> 5c3806b7b5f1c6c1e3861d06e67ae24661b38be1
+>>>>>>> 587a246bb0012cb05382eee50a7775bb6990dce9
                 "symfony/polyfill-ctype": "^1.8"
             },
             "conflict": {
@@ -10794,8 +10806,16 @@
             "description": "Loads and dumps YAML files",
             "homepage": "https://symfony.com",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/yaml/tree/v6.0.19",
                 "source": "https://github.com/symfony/yaml/tree/v6.3.3"
+=======
+<<<<<<< HEAD
+                "source": "https://github.com/symfony/yaml/tree/v6.0.19"
+=======
+                "source": "https://github.com/symfony/yaml/tree/v6.3.3"
+>>>>>>> 5c3806b7b5f1c6c1e3861d06e67ae24661b38be1
+>>>>>>> 587a246bb0012cb05382eee50a7775bb6990dce9
             },
             "funding": [
                 {
@@ -10811,8 +10831,16 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2023-01-11T11:50:03+00:00",
             "time": "2023-07-31T07:08:24+00:00"
+=======
+<<<<<<< HEAD
+            "time": "2023-01-11T11:50:03+00:00"
+=======
+            "time": "2023-07-31T07:08:24+00:00"
+>>>>>>> 5c3806b7b5f1c6c1e3861d06e67ae24661b38be1
+>>>>>>> 587a246bb0012cb05382eee50a7775bb6990dce9
         },
         {
             "name": "theseer/tokenizer",

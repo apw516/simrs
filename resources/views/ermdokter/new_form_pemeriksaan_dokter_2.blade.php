@@ -43,7 +43,6 @@
                                 </button>
                             </h2>
                         </div>
-
                         <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
                             data-parent="#accordionExample">
                             <div class="card-body bg-light">
@@ -1190,6 +1189,11 @@
                                 <input class="form-check-input" type="radio" name="pilihtindaklanjut"
                                     id="pilihtindaklanjut" value="KONTROL">
                                 <label class="form-check-label" for="inlineRadio2">KONTROL</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="pilihtindaklanjut"
+                                    id="pilihtindaklanjut" value="RUJUK INTERNAL">
+                                <label class="form-check-label" for="inlineRadio2">RUJUK INTERNAL</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="pilihtindaklanjut"
