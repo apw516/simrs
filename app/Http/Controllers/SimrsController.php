@@ -798,6 +798,24 @@ class SimrsController extends Controller
     public function Simpansep(Request $request)
     {
         $v = new VclaimModel();
+        $surkon = $request->suratkontrol;
+        if (strlen($surkon) > 5) {
+            try {
+                $ceksurkon1 = $v->carisuratkontrol($surkon);
+                if($ceksurkon1->metaData == '200'){
+                    $tglterbit = $ceksurkon1->response->tglTerbit;
+                    if($tglterbit == $request->tglsep){
+                        $data = [
+                            'kode' => 500,
+                            'message' => 'Tanggal terbit surat kontrol tidak boleh sama dengan tanggal sep !'
+                        ];
+                        echo json_encode($data);
+                        die;
+                    }
+                }
+            } catch (\Exception $e) {
+            }
+        }
         //antrian
         // $unit = mt_unit::where('KDPOLI', '=', "$request->kodepolitujuan")->get();
         // dd($unit);
@@ -815,20 +833,20 @@ class SimrsController extends Controller
             die;
         }
         $jammulai = $jampraktek[0]->jadwal;
-        $jammulai1 = substr($jammulai,0,2);
-        $menitmulai = substr($jammulai,3,2);
+        $jammulai1 = substr($jammulai, 0, 2);
+        $menitmulai = substr($jammulai, 3, 2);
         $dt = Carbon::now();
         $sekarang = $dt->toTimeString();
-        $sekarang1 = substr($sekarang,0,5);
-        $jamsekarang = substr($sekarang1,0,2);
-        $menitsekarang = substr($sekarang1,3,2);
+        $sekarang1 = substr($sekarang, 0, 5);
+        $jamsekarang = substr($sekarang1, 0, 2);
+        $menitsekarang = substr($sekarang1, 3, 2);
         $hasil = (intVal($jammulai1) - intVal($jamsekarang)) * 60 + (intVal($menitmulai) - intVal($menitsekarang));
         $hasil = $hasil / 60;
-        $hasil = number_format($hasil,2);
-        if($hasil > 1){
+        $hasil = number_format($hasil, 2);
+        if ($hasil > 1) {
             $data = [
                 'kode' => 500,
-                'message' => 'Pasien bisa didaftarkkan 1 jam sebelum poli dibuka, Jadwal Poli ' .$jammulai
+                'message' => 'Pasien bisa didaftarkkan 1 jam sebelum poli dibuka, Jadwal Poli ' . $jammulai
             ];
             echo json_encode($data);
             die;
@@ -1027,7 +1045,7 @@ class SimrsController extends Controller
         if ($request->kodepolitujuan != 'HDL') {
             try {
                 $antrian = $mw->ambilantrean2($data_antrian);
-            }catch (\Exception $e) {
+            } catch (\Exception $e) {
                 $err = $e->getMessage();
                 $data = [
                     'kode' => 500,
@@ -3421,14 +3439,13 @@ class SimrsController extends Controller
             'sep',
             'peserta',
             'qrcode',
-            'nsep','now'
+            'nsep',
+            'now'
         ]));
         // return $pdf->download('document.pdf');
-        $pdf->setPaper(array(0,0,609.4488,635.433), 'portrait');
+        $pdf->setPaper(array(0, 0, 609.4488, 635.433), 'portrait');
         $title = $sep1;
         return $pdf->stream("$title", array("Attachment" => false));
-
-
     }
     public function Cetaksep_v(Request $request)
     {
@@ -3645,7 +3662,8 @@ class SimrsController extends Controller
             'sep',
             'peserta',
             'qrcode',
-            'nsep','now'
+            'nsep',
+            'now'
         ]));
         // return $pdf->download('document.pdf');
         $title = $request->sep;
