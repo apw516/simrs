@@ -853,17 +853,17 @@ class SimrsController extends Controller
         // }
         // // end antrian
         // // ambil antrian
-        // if ($request->tujuankunjungan == 0) {
-        //     $nomorreferensi = $request->nomorrujukan;
-        //     $tujuan = 1;
-        // } else if ($request->tujuankunjungan == 2) {
-        //     $nomorreferensi = $request->suratkontrol;
-        //     if ($request->assesment == 2) {
-        //         $tujuan = 2;
-        //     } else {
-        //         $tujuan = 3;
-        //     }
-        // }
+        if ($request->tujuankunjungan == 0) {
+            $nomorreferensi = $request->nomorrujukan;
+            $tujuan = 1;
+        } else if ($request->tujuankunjungan == 2) {
+            $nomorreferensi = $request->suratkontrol;
+            if ($request->assesment == 2) {
+                $tujuan = 2;
+            } else {
+                $tujuan = 3;
+            }
+        }
 
         //END OF AMBIL ANTRIAN
         $dt = Carbon::now();
