@@ -2149,7 +2149,31 @@
             todayHighlight: true,
         }).datepicker('update', new Date());
     });
+    $(document).ready(function() {
+        ambilformorderfarmasi()
+    })
+    function ambilformorderfarmasi()
+    {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan: $('#kodekunjungan').val(),
+                rm : $(this).attr('nomorrm')
 
+            },
+            url: '<?= route('ambilformorderfarmasi') ?>',
+            error: function(data) {
+                alert('ok')
+            },
+            success: function(response) {
+                $('.V_ORDER_FARMASI_BARU').html(response)
+                spinner.hide()
+            }
+        });
+    }
     function simpanhasil() {
         var canvas1 = document.getElementById("myCanvas1");
         var ctx1 = canvas1.getContext("2d");
@@ -2158,6 +2182,9 @@
         var dataUrl1 = canvas1.toDataURL();
         $('#gambarcoret').val(dataUrl1)
         gambar = $('#gambarcoret').val()
+        var dataorderfarmasi = $('.draft_obat_yang_diorder').serializeArray();
+        var simpantemplatefar = $('#simpantemplatefar:checked').val()
+        var namatemplatefar = $('#namatemplatefar').val()
         var data = $('.formpemeriksaandokter').serializeArray();
         var datatindakan = $('.formtindakan').serializeArray();
         var formobat_farmasi = $('.formobat_farmasi').serializeArray();
@@ -2181,6 +2208,9 @@
             dataType: 'json',
             data: {
                 _token: "{{ csrf_token() }}",
+                dataorderfarmasi: JSON.stringify(dataorderfarmasi),
+                simpantemplatefar,
+                namatemplatefar,
                 data: JSON.stringify(data),
                 datatindakan: JSON.stringify(datatindakan),
                 datatindaklanjut: JSON.stringify(datatindaklanjut),

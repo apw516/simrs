@@ -513,7 +513,10 @@
                 </tbody>
             </table>
         </form>
-        <div class="card">
+        <div class="V_ORDER_FARMASI_BARU">
+
+        </div>
+        <div hidden class="card">
             <div class="card-header bg-light">Order Farmasi <button type="button"
                     class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
                     onclick="ambilresep()">Template resep</button></div>
@@ -2194,7 +2197,31 @@
             todayHighlight: true,
         }).datepicker('update', new Date());
     });
+    $(document).ready(function() {
+        ambilformorderfarmasi()
+    })
+    function ambilformorderfarmasi()
+    {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan: $('#kodekunjungan').val(),
+                rm : $(this).attr('nomorrm')
 
+            },
+            url: '<?= route('ambilformorderfarmasi') ?>',
+            error: function(data) {
+                alert('ok')
+            },
+            success: function(response) {
+                $('.V_ORDER_FARMASI_BARU').html(response)
+                spinner.hide()
+            }
+        });
+    }
     function simpanhasil() {
         var canvas1 = document.getElementById("myCanvas1");
         var ctx1 = canvas1.getContext("2d");
@@ -2203,6 +2230,9 @@
         var dataUrl1 = canvas1.toDataURL();
         $('#gambarcoret').val(dataUrl1)
         gambar = $('#gambarcoret').val()
+        var dataorderfarmasi = $('.draft_obat_yang_diorder').serializeArray();
+        var simpantemplatefar = $('#simpantemplatefar:checked').val()
+        var namatemplatefar = $('#namatemplatefar').val()
         var data = $('.formpemeriksaandokter').serializeArray();
         var datatindakan = $('.formtindakan').serializeArray();
         var formobat_farmasi = $('.formobat_farmasi').serializeArray();
@@ -2227,6 +2257,9 @@
             data: {
                 _token: "{{ csrf_token() }}",
                 data: JSON.stringify(data),
+                dataorderfarmasi: JSON.stringify(dataorderfarmasi),
+                simpantemplatefar,
+                namatemplatefar,
                 datatindakan: JSON.stringify(datatindakan),
                 datatindaklanjut: JSON.stringify(datatindaklanjut),
                 formobat_farmasi: JSON.stringify(formobat_farmasi),
