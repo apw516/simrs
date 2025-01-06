@@ -797,6 +797,7 @@ class SimrsController extends Controller
     }
     public function Simpansep(Request $request)
     {
+        // dd($request->penjamin);
         $v = new VclaimModel();
         // $surkon = $request->suratkontrol;
         // if (strlen($surkon) > 5) {
