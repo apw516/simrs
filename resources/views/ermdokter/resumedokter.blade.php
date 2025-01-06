@@ -170,21 +170,19 @@
                             <thead>
                                 <th>Nama Obat</th>
                                 <th>Jenis</th>
-                                <th>Satuan</th>
+                                {{-- <th>Satuan</th> --}}
                                 <th>Jumlah</th>
                                 <th>Keterangan</th>
                             </thead>
                             <tbody>
-                                @foreach ($riwayat_order_f as $r)
-                                    @if ($r->status_layanan_header != '3')
+                                @foreach ($order_new as $r)
                                         <tr>
-                                            <td>{{ $r->kode_barang }}</td>
-                                            <td>{{ $r->kategori_resep }}</td>
-                                            <td>{{ $r->satuan_barang }}</td>
-                                            <td>{{ $r->jumlah_layanan }}</td>
+                                            <td>{{ $r->nama_barang }}</td>
+                                            <td>{{ $r->sediaan }}</td>
+                                            {{-- <td>{{ $r->satuan_barang }}</td> --}}
+                                            <td>{{ $r->qty }}</td>
                                             <td>{{ $r->aturan_pakai }}</td>
                                         </tr>
-                                    @endif
                                 @endforeach
                             </tbody>
                         </table>

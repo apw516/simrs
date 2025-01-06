@@ -244,7 +244,10 @@
                 </div>
             </div>
         </form>
-        <div class="card">
+        <div class="V_ORDER_FARMASI_BARU">
+
+        </div>
+        <div hidden class="card">
             <div class="card-header bg-light">Order Farmasi <button type="button"
                     class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
                     onclick="ambilresep()">Template resep</button></div>
@@ -361,7 +364,35 @@
     </div>
 </div>
 <script>
+      $(document).ready(function() {
+        ambilformorderfarmasi()
+    })
+    function ambilformorderfarmasi()
+    {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan: $('#kodekunjungan').val(),
+                rm : $(this).attr('nomorrm')
+
+            },
+            url: '<?= route('ambilformorderfarmasi') ?>',
+            error: function(data) {
+                alert('ok')
+            },
+            success: function(response) {
+                $('.V_ORDER_FARMASI_BARU').html(response)
+                spinner.hide()
+            }
+        });
+    }
     function simpanhasil() {
+        var dataorderfarmasi = $('.draft_obat_yang_diorder').serializeArray();
+        var simpantemplatefar = $('#simpantemplatefar:checked').val()
+        var namatemplatefar = $('#namatemplatefar').val()
         var data = $('.formpemeriksaan_fisio').serializeArray();
         var data2 = $('.arrayobat').serializeArray();
         var kodekunjungan = $('#kodekunjungan').val()
@@ -378,6 +409,9 @@
             dataType: 'json',
             data: {
                 _token: "{{ csrf_token() }}",
+                dataorderfarmasi: JSON.stringify(dataorderfarmasi),
+                simpantemplatefar,
+                namatemplatefar,
                 data: JSON.stringify(data),
                 dataobat: JSON.stringify(data2),
                 datatindaklanjut: JSON.stringify(datatindaklanjut),
