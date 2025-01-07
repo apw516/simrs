@@ -8,6 +8,7 @@ use Codedge\Fpdf\Fpdf\Fpdf;
 use Codedge\Fpdf\Fpdf\pdf;
 use Codedge\Fpdf\Fpdf\printresume;
 use App\Models\assesmenawalperawat;
+use App\Models\antrian_order_farmasi;
 use App\Models\erm_order_header_farmasi;
 use App\Models\erm_order_detail_farmasi;
 use App\Models\assesmenawalperawat_igd;
@@ -2304,8 +2305,22 @@ class ErmController extends Controller
             } else {
                 $tjfar = '4008';
             }
+            $cekantrian = db::connection('mysql2')->select('select * from mt_antrian_order_farmasi where kode_kunjungan = ?',[$kodekunjungan]);
+            if(count($cekantrian) > 0){
+                $antrian = $cekantrian[0]->nomor_antrian;
+            }else{
+                $antrian = $this->ambilantrianfarmasi($tjfar,$jenis_antrian);
+                $datantrian = [
+                    'nomor_antrian' => $antrian,
+                    'unit' => $tjfar,
+                    'tgl_entry' => $this->get_now(),
+                    'jenis_antrian' => $jenis_antrian,
+                    'kode_kunjungan' => $kodekunjungan,
+                ];
+                antrian_order_farmasi::create($datantrian);
+            }
             $data_header_order = [
-                // 'nomor_antrian' => '',
+                'nomor_antrian' => $antrian,
                 'no_rm' => $rm,
                 'nama_pasien' => $mt_pasien[0]->nama_px,
                 'alamat_pasien' => $mt_pasien[0]->alamat_px,
@@ -4814,6 +4829,34 @@ class ErmController extends Controller
         ];
         echo json_encode($data);
         die;
+    }
+    function ambilantrianfarmasi($kodeunit,$jenis)
+    {
+        $q = DB::connection('mysql2')->select('SELECT id,nomor_antrian,RIGHT(nomor_antrian,4) AS kd_max  FROM mt_antrian_order_farmasi
+        WHERE DATE(tgl_entry) = CURDATE() AND unit = ? and jenis_antrian = ?
+        ORDER BY id DESC
+        LIMIT 1',[$kodeunit,$jenis]);
+        $kd = "";
+        if (count($q) > 0) {
+            foreach ($q as $k) {
+                $tmp = ((int) $k->kd_max) + 1;
+                $kd = sprintf("%04s", $tmp);
+            }
+        } else {
+            $kd = "0001";
+        }
+        if($kodeunit == '4008'){
+            $unit = 'DP2';
+        }else{
+            $unit = 'DP1';
+        }
+        if($jenis == 2){
+            $kode = 'B';
+        }else{
+            $kode = 'A';
+        }
+        date_default_timezone_set('Asia/Jakarta');
+        return $kode.'-'.$unit. $kd;
     }
     public function simpanpemeriksaandokter_anesetesi(Request $request)
     {
