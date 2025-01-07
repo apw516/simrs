@@ -1180,6 +1180,19 @@
                                 class="btn btn-success float-right riwayatkonsul" data-toggle="modal"
                                 data-target="#modalriwayatkonsul">Riwayat Konsul</button></div>
                         <div class="card-body">
+                            @if ($selisih == 2)
+                            <div class="alert alert-warning" role="alert">
+                                @if (count($kunjunganKronis) > 0)
+                                    Pasien Kronis ,
+                                @endif Pasien Berpotensi PRB, dan melanjutkan pengobatan kembali ke faskes 1...
+                              </div>
+                            @elseif($selisih == 3)
+                            <div class="alert alert-warning" role="alert">
+                                @if (count($kunjunganKronis) > 0)
+                                    Pasien Kronis ,
+                                @endif Pasien PRB, dan melanjutkan pengobatan kembali ke faskes 1...
+                              </div>
+                            @endif
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="pilihtindaklanjut"
                                     id="pilihtindaklanjut" value="KONSUL KE POLI LAIN">

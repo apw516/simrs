@@ -31,6 +31,7 @@ use App\Models\ts_sumarilis;
 use App\Models\ts_erm_transfusi_darah_reaksi;
 use App\Models\ts_erm_transfusi_darah_monitoring;
 use App\Models\di_diagnosa;
+use App\Models\VclaimModel;
 use Carbon\Carbon;
 use simitsdk\phpjasperxml\PHPJasperXML;
 use Illuminate\Support\Facades\Storage;
@@ -232,6 +233,49 @@ class ErmController extends Controller
     {
         $mt_pasien = DB::select('Select no_rm,jenis_kelamin,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$request->rm]);
         $kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$request->kode]);
+        $unitk = $kunjungan[0]->kode_unit;
+        $kunjunganKronis = DB::select('select * from ts_kunjungan where no_rm = ? and kode_unit = ? and catatan = ?', [$request->rm,$unitk,'KRONIS']);
+        $rujukan = $kunjungan[0]->no_rujukan;
+        $cekrujukan1 = strlen($rujukan);
+        if ($cekrujukan1 > 5) {
+            $cekrujukan2 = substr($rujukan, 0, 8);
+            if ($cekrujukan2 != '1018R001') {
+                $v = new VclaimModel();
+                try {
+                    $detailrujukan = $v->carirujukan_byno($rujukan);
+                    if ($detailrujukan->metaData->code == 200) {
+                        $tglkunjungan = $detailrujukan->response->rujukan->tglKunjungan;
+                        $date1 = date_create($tglkunjungan);
+                        $date2 = date_create($this->get_date());
+                        $interval = date_diff($date1, $date2);
+                        $selisih = ($interval->m);
+                        $daterujukan = $tglkunjungan;
+                    } else {
+                        $detailrujukan = $v->carirujukanRS_byno_($rujukan);
+                        if ($detailrujukan->metaData->code == 200) {
+                            $tglkunjungan = $detailrujukan->response->rujukan->tglKunjungan;
+                            $date1 = date_create($tglkunjungan);
+                            $date2 = date_create($this->get_date());
+                            $interval = date_diff($date1, $date2);
+                            $selisih = ($interval->m);
+                            $daterujukan = $tglkunjungan;
+                        }else{
+                            $selisih = 0;
+                            $daterujukan = 0;
+                        }
+                    }
+                } catch (\Exception $e) {
+                    $selisih = 0;
+                    $daterujukan = 0;
+                }
+            }else{
+                $selisih = 0;
+                $daterujukan = 0;
+            }
+        } else {
+            $selisih = 0;
+            $daterujukan = 0;
+        }
         $pic = $request->pic;
         $unit = auth()->user()->unit;
         $last_assdok = DB::select('SELECT * FROM assesmen_dokters
@@ -248,7 +292,9 @@ class ErmController extends Controller
                 'mt_pasien',
                 'kunjungan',
                 'pic',
-                'last_assdok'
+                'last_assdok',
+                'selisih',
+                'daterujukan','kunjunganKronis'
             ]));
         }
     }
@@ -552,6 +598,50 @@ class ErmController extends Controller
     public function formpemeriksaan_dokter(Request $request)
     {
         $kunjungan = DB::select('select *,fc_nama_px(no_rm) as nama_pasien,fc_nama_paramedis(ref_paramedis) AS dokter_kirim,fc_nama_unit1(ref_unit) AS poli_asal from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
+        $unitk = $kunjungan[0]->kode_unit;
+        $rm = $kunjungan[0]->no_rm;
+        $kunjunganKronis = DB::select('select * from ts_kunjungan where no_rm = ? and kode_unit = ? and catatan = ?', [$rm,$unitk,'KRONIS']);
+        $rujukan = $kunjungan[0]->no_rujukan;
+        $cekrujukan1 = strlen($rujukan);
+        if ($cekrujukan1 > 5) {
+            $cekrujukan2 = substr($rujukan, 0, 8);
+            if ($cekrujukan2 != '1018R001') {
+                $v = new VclaimModel();
+                try {
+                    $detailrujukan = $v->carirujukan_byno($rujukan);
+                    if ($detailrujukan->metaData->code == 200) {
+                        $tglkunjungan = $detailrujukan->response->rujukan->tglKunjungan;
+                        $date1 = date_create($tglkunjungan);
+                        $date2 = date_create($this->get_date());
+                        $interval = date_diff($date1, $date2);
+                        $selisih = ($interval->m);
+                        $daterujukan = $tglkunjungan;
+                    } else {
+                        $detailrujukan = $v->carirujukanRS_byno_($rujukan);
+                        if ($detailrujukan->metaData->code == 200) {
+                            $tglkunjungan = $detailrujukan->response->rujukan->tglKunjungan;
+                            $date1 = date_create($tglkunjungan);
+                            $date2 = date_create($this->get_date());
+                            $interval = date_diff($date1, $date2);
+                            $selisih = ($interval->m);
+                            $daterujukan = $tglkunjungan;
+                        }else{
+                            $selisih = 0;
+                            $daterujukan = 0;
+                        }
+                    }
+                } catch (\Exception $e) {
+                    $selisih = 0;
+                    $daterujukan = 0;
+                }
+            }else{
+                $selisih = 0;
+                $daterujukan = 0;
+            }
+        } else {
+            $selisih = 0;
+            $daterujukan = 0;
+        }
         $ref_kunjungan = $kunjungan[0]->ref_kunjungan;
         if ($ref_kunjungan != 0) {
             $ref_resume = DB::select('select * from assesmen_dokters where id_kunjungan = ?', [$ref_kunjungan]);
@@ -608,7 +698,9 @@ class ErmController extends Controller
                                 'penyakit',
                                 'k1',
                                 'k2',
-                                'ref_resume'
+                                'ref_resume',
+                                'kunjunganKronis',
+                                'selisih'
                             ]));
                         } else {
                             return view('ermdokter.new_formpemeriksaan_dokter_edit_2', compact([
@@ -621,7 +713,9 @@ class ErmController extends Controller
                                 'penyakit',
                                 'k1',
                                 'k2',
-                                'ref_resume'
+                                'ref_resume',
+                                'kunjunganKronis',
+                                'selisih'
                             ]));
                         }
                     }
@@ -668,7 +762,9 @@ class ErmController extends Controller
                                 'first_assdok',
                                 'penyakit',
                                 'hasil_ro',
-                                'ref_resume'
+                                'ref_resume',
+                                'kunjunganKronis',
+                                'selisih'
                             ]));
                         } else {
                             return view('ermdokter.new_form_pemeriksaan_dokter_2', compact([
@@ -681,7 +777,9 @@ class ErmController extends Controller
                                 'first_assdok',
                                 'penyakit',
                                 'hasil_ro',
-                                'ref_resume'
+                                'ref_resume',
+                                'kunjunganKronis',
+                                'selisih'
                             ]));
                         }
                     }
@@ -705,7 +803,9 @@ class ErmController extends Controller
                     'resume_lain',
                     'last_assdok',
                     'kunjungan',
-                    'ref_resume'
+                    'ref_resume',
+                    'kunjunganKronis',
+                    'selisih'
                 ]));
             }
         }
@@ -1049,7 +1149,7 @@ class ErmController extends Controller
                     //     echo json_encode($data);
                     //     die;
                     // } else {
-                        assesmenawalperawat::whereRaw('no_rm = ? and kode_unit = ? and tanggalkunjungan = ?', array($dataSet['nomorrm'],  $dataSet['unit'], $dataSet['tanggalkunjungan']))->update($data);
+                    assesmenawalperawat::whereRaw('no_rm = ? and kode_unit = ? and tanggalkunjungan = ?', array($dataSet['nomorrm'],  $dataSet['unit'], $dataSet['tanggalkunjungan']))->update($data);
                     // }
                 } else {
                     $erm_assesmen = assesmenawalperawat::create($data);
@@ -4886,7 +4986,6 @@ class ErmController extends Controller
             'anjuran' => $request->anjuran,
             'tgl_entry' => $this->get_now()
         ];
-
         $datatelinga2 = [
             'id_assesmen_dokter' => $request->idassesmen,
             'nama_dokter' => auth()->user()->nama,
@@ -6791,11 +6890,57 @@ class ErmController extends Controller
     {
         $kodekunjungan = $request->kodekunjungan;
         $assdok = DB::select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
+        $kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+        $rm = $kunjungan[0]->no_rm;
+        $unitk = $kunjungan[0]->kode_unit;
+        $kunjunganKronis = DB::select('select * from ts_kunjungan where no_rm = ? and kode_unit = ? and catatan = ?', [$rm,$unitk,'KRONIS']);
+        $rujukan = $kunjungan[0]->no_rujukan;
+        $cekrujukan1 = strlen($rujukan);
+        if ($cekrujukan1 > 5) {
+            $cekrujukan2 = substr($rujukan, 0, 8);
+            if ($cekrujukan2 != '1018R001') {
+                $v = new VclaimModel();
+                try {
+                    $detailrujukan = $v->carirujukan_byno($rujukan);
+                    if ($detailrujukan->metaData->code == 200) {
+                        $tglkunjungan = $detailrujukan->response->rujukan->tglKunjungan;
+                        $date1 = date_create($tglkunjungan);
+                        $date2 = date_create($this->get_date());
+                        $interval = date_diff($date1, $date2);
+                        $selisih = ($interval->m);
+                        $daterujukan = $tglkunjungan;
+                    } else {
+                        $detailrujukan = $v->carirujukanRS_byno_($rujukan);
+                        if ($detailrujukan->metaData->code == 200) {
+                            $tglkunjungan = $detailrujukan->response->rujukan->tglKunjungan;
+                            $date1 = date_create($tglkunjungan);
+                            $date2 = date_create($this->get_date());
+                            $interval = date_diff($date1, $date2);
+                            $selisih = ($interval->m);
+                            $daterujukan = $tglkunjungan;
+                        }else{
+                            $selisih = 0;
+                            $daterujukan = 0;
+                        }
+                    }
+                } catch (\Exception $e) {
+                    $selisih = 0;
+                    $daterujukan = 0;
+                }
+            }else{
+                $selisih = 0;
+                $daterujukan = 0;
+            }
+        } else {
+            $selisih = 0;
+            $daterujukan = 0;
+        }
         $cek_konsul  = DB::select('select *,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where ref_kunjungan = ? and status_kunjungan != ?', [$kodekunjungan, '8']);
         // if (count($assdok) > 0) {
         return view('ermtemplate.formtindaklanjut', compact([
             'assdok',
-            'cek_konsul'
+            'cek_konsul','kunjunganKronis',
+            'selisih'
         ]));
         // } else {
         //     return view('ermtemplate.dokterbelummengisi');
@@ -6949,7 +7094,7 @@ class ErmController extends Controller
         INNER JOIN ts_layanan_detail b ON a.`id` = b.`row_id_header`
         INNER JOIN mt_tarif_detail c ON b.`kode_tarif_detail` = c.`KODE_TARIF_DETAIL`
         INNER JOIN mt_tarif_header d ON c.`KODE_TARIF_HEADER` = d.`KODE_TARIF_HEADER`
-        WHERE a.`kode_kunjungan` = ? AND b.status_layanan_detail = ? AND a.kode_unit = ?", [$kodekunjungan, 'OPN',auth()->user()->unit]);
+        WHERE a.`kode_kunjungan` = ? AND b.status_layanan_detail = ? AND a.kode_unit = ?", [$kodekunjungan, 'OPN', auth()->user()->unit]);
         return view('ermtemplate.tableriwayattindakan_poli', compact([
             'datatarif'
         ]));
@@ -7211,9 +7356,9 @@ class ErmController extends Controller
             $last = $request->tglakhir;
         }
         if (!empty($request->pilihunit)) {
-            $dataerm = db::select('SELECT keterangan2,no_rm,fc_nama_px(no_rm) as nama,tgl_masuk,kode_unit,fc_nama_unit1(kode_unit) as nama_unit FROM ts_kunjungan WHERE DATE(tgl_masuk) BETWEEN ?  AND ? AND LEFT(kode_unit,1) = ? AND status_kunjungan = ? AND kode_unit = ?', [$now,$last, 1, $status, $request->pilihunit]);
+            $dataerm = db::select('SELECT keterangan2,no_rm,fc_nama_px(no_rm) as nama,tgl_masuk,kode_unit,fc_nama_unit1(kode_unit) as nama_unit FROM ts_kunjungan WHERE DATE(tgl_masuk) BETWEEN ?  AND ? AND LEFT(kode_unit,1) = ? AND status_kunjungan = ? AND kode_unit = ?', [$now, $last, 1, $status, $request->pilihunit]);
         } else {
-            $dataerm = db::select('SELECT keterangan2,no_rm,fc_nama_px(no_rm) as nama,tgl_masuk,kode_unit,fc_nama_unit1(kode_unit) as nama_unit FROM ts_kunjungan WHERE DATE(tgl_masuk) BETWEEN ?  AND ? AND LEFT(kode_unit,1) = ? AND status_kunjungan = ?', [$now,$last, 1, $status]);
+            $dataerm = db::select('SELECT keterangan2,no_rm,fc_nama_px(no_rm) as nama,tgl_masuk,kode_unit,fc_nama_unit1(kode_unit) as nama_unit FROM ts_kunjungan WHERE DATE(tgl_masuk) BETWEEN ?  AND ? AND LEFT(kode_unit,1) = ? AND status_kunjungan = ?', [$now, $last, 1, $status]);
         }
         return view('ermtemplate.tabel_kunjungan_tdy', compact([
             'dataerm',
