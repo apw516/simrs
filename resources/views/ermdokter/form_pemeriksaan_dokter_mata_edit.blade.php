@@ -898,7 +898,7 @@
                         <input hidden type="text" id="selisih" value="{{ $selisih }}">
                         <input hidden type="text" value="" id="jumlahform">
                         <form action="" method="post" class="arrayobat">
-                            <div class="formobatfarmasi2">
+                            <div @if ($selisih > 70) hidden @endif class="formobatfarmasi2">
 
                             </div>
                             <div class="form-group form-check">
