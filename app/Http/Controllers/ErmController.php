@@ -2471,7 +2471,6 @@ class ErmController extends Controller
                 }
             }
             //end of input tindakan
-            if ($request->selisih <= 70) {
                 if (count($formobatfarmasi2) > 1) {
                     $simpantemplate = $request->simpantemplate;
                     // $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
@@ -2597,7 +2596,6 @@ class ErmController extends Controller
                         die;
                     }
                 }
-            }
             //end of farmasi
             $dt = Carbon::now()->timezone('Asia/Jakarta');
             $date = $dt->toDateString();
@@ -3605,7 +3603,6 @@ class ErmController extends Controller
                 }
             }
             //end of input tindakan
-            if ($request->selisih <= 70) {
                 if (count($formobatfarmasi2) > 1) {
                     $simpantemplate = $request->simpantemplate;
                     // $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
@@ -3731,7 +3728,6 @@ class ErmController extends Controller
                         die;
                     }
                 }
-            }
             //end of farmasi
             $dt = Carbon::now()->timezone('Asia/Jakarta');
             $date = $dt->toDateString();

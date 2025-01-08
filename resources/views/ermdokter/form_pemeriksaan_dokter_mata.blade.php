@@ -679,13 +679,13 @@
                           </div>
                         @endif
                         <div class="form-group mt-2">
-                            <button @if ($selisih > 70) disabled @endif type="button" class="btn btn-success tambahobat" onclick="addform()">+ Tambah
+                            <button type="button" class="btn btn-success tambahobat" onclick="addform()">+ Tambah
                                 Obat</button>
                         </div>
                         <input hidden type="text" id="selisih" value="{{ $selisih }}">
                         <input hidden type="text" value="" id="jumlahform">
                         <form action="" method="post" class="arrayobat">
-                            <div @if ($selisih > 70) hidden @endif  class="formobatfarmasi2">
+                            <div  class="formobatfarmasi2">
 
                             </div>
                             <div class="form-group form-check">
