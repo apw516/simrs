@@ -1152,10 +1152,18 @@
                             class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
                             onclick="ambilresep()">Template resep</button></div>
                     <div class="card-body">
+                        @if ($selisih > 70)
+                        <div class="alert alert-warning" role="alert">
+                            @if (count($kunjunganKronis) > 0)
+                                Pasien Kronis ,
+                            @endif Pasien Berpotensi PRB, dan melanjutkan pengobatan kembali ke faskes 1...
+                          </div>
+                        @endif
                         <div class="form-group mt-2">
-                            <button type="button" class="btn btn-success tambahobat" onclick="addform()">+ Tambah
+                            <button @if ($selisih > 70) disabled @endif type="button" class="btn btn-success tambahobat" onclick="addform()">+ Tambah
                                 Obat</button>
                         </div>
+                        <input hidden type="text" id="selisih" value="{{ $selisih }}">
                         <input hidden type="text" value="" id="jumlahform">
                         <form action="" method="post" class="arrayobat">
                             <div class="formobatfarmasi2">
@@ -1180,19 +1188,6 @@
                                 class="btn btn-success float-right riwayatkonsul" data-toggle="modal"
                                 data-target="#modalriwayatkonsul">Riwayat Konsul</button></div>
                         <div class="card-body">
-                            @if ($selisih == 2)
-                            <div class="alert alert-warning" role="alert">
-                                @if (count($kunjunganKronis) > 0)
-                                    Pasien Kronis ,
-                                @endif Pasien Berpotensi PRB, dan melanjutkan pengobatan kembali ke faskes 1...
-                              </div>
-                            @elseif($selisih == 3)
-                            <div class="alert alert-warning" role="alert">
-                                @if (count($kunjunganKronis) > 0)
-                                    Pasien Kronis ,
-                                @endif Pasien PRB, dan melanjutkan pengobatan kembali ke faskes 1...
-                              </div>
-                            @endif
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="pilihtindaklanjut"
                                     id="pilihtindaklanjut" value="KONSUL KE POLI LAIN">
@@ -1867,6 +1862,7 @@
         var simpantemplate = $('#simpantemplate:checked').val()
         var namaresep = $('#namaresep').val()
         var kodekunjungan = $('#kodekunjungan').val()
+        var selisih = $('#selisih').val()
         var hasilexpertisi = $('#hasilexpertisi').val()
         spinner = $('#loader')
         spinner.show();
@@ -1886,6 +1882,7 @@
                 formobatfarmasi2: JSON.stringify(formobatfarmasi2),
                 formpemeriksaankhusus: JSON.stringify(formpemeriksaankhusus),
                 simpantemplate,
+                selisih,
                 namaresep,
                 kodekunjungan,
                 gambar,

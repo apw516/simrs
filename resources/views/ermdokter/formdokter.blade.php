@@ -104,19 +104,20 @@
     </div>
     <!-- /.col -->
     <div class="col-md-10">
-        @if ($selisih == 2)
+        @if ($selisih > 70)
         <div class="alert alert-warning" role="alert">
             @if (count($kunjunganKronis) > 0)
                 Pasien Kronis ,
             @endif Pasien Berpotensi PRB, dan melanjutkan pengobatan kembali ke faskes 1...
           </div>
-        @elseif($selisih == 3)
+          @endif
+        {{-- @elseif($selisih == 3)
         <div class="alert alert-warning" role="alert">
             @if (count($kunjunganKronis) > 0)
                 Pasien Kronis ,
             @endif Pasien PRB, dan melanjutkan pengobatan kembali ke faskes 1...
           </div>
-        @endif
+        @endif --}}
         <div class="slide3">
         </div>
     </div>

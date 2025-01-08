@@ -2412,6 +2412,13 @@
                 </form>
                 {{-- formfarmasi --}}
                 <div class="card">
+                    @if ($selisih > 70)
+                    <div class="alert alert-warning" role="alert">
+                        @if (count($kunjunganKronis) > 0)
+                            Pasien Kronis ,
+                        @endif Pasien Berpotensi PRB, dan melanjutkan pengobatan kembali ke faskes 1...
+                      </div>
+                    @endif
                     <div class="card-header bg-light">Order Farmasi <button type="button"
                             class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
                             onclick="ambilresep()">Template resep</button></div>
@@ -2420,9 +2427,10 @@
 
                         </div>
                         <div class="form-group mt-2">
-                            <button type="button" class="btn btn-success tambahobat" onclick="addform()">+ Tambah
+                            <button @if ($selisih > 70) disabled @endif type="button" class="btn btn-success tambahobat" onclick="addform()">+ Tambah
                                 Obat</button>
                         </div>
+                        <input hidden type="text" id="selisih" value="{{ $selisih }}">
                         <input hidden type="text" value="" id="jumlahform">
                         <form action="" method="post" class="arrayobat">
                             <div class="formobatfarmasi2">
@@ -3126,6 +3134,7 @@
         var namaresep = $('#namaresep').val()
         var kodekunjungan = $('#kodekunjungan').val()
         var hasilexpertisi = $('#hasilexpertisi').val()
+        var selisih = $('#selisih').val()
         spinner = $('#loader')
         spinner.show();
         $.ajax({
@@ -3146,6 +3155,7 @@
                 simpantemplate,
                 namaresep,
                 kodekunjungan,
+                selisih,
                 gambar,
                 formtelingakanan: JSON.stringify(formtelingakanan),
                 formtelingakiri: JSON.stringify(formtelingakiri),

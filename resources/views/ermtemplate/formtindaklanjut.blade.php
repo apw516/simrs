@@ -24,17 +24,11 @@
     <div class="card-body table-responsive p-5" style="height: 757Px">
         <div class="jumbotron">
             {{-- <h1 class="display-4">Tindak Lanjut</h1> --}}
-            @if ($selisih == 2)
+            @if ($selisih > 70)
             <div class="alert alert-warning" role="alert">
                 @if (count($kunjunganKronis) > 0)
                     Pasien Kronis ,
                 @endif Pasien Berpotensi PRB, dan melanjutkan pengobatan kembali ke faskes 1...
-              </div>
-            @elseif($selisih == 3)
-            <div class="alert alert-warning" role="alert">
-                @if (count($kunjunganKronis) > 0)
-                    Pasien Kronis ,
-                @endif Pasien PRB, dan melanjutkan pengobatan kembali ke faskes 1...
               </div>
             @endif
             <p class="lead mt-4"><strong>* @foreach ($assdok as $as)
