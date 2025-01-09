@@ -1,23 +1,39 @@
-@if(count($cek_konsul) > 0)
-<label for="">Data Poliklinik konsul</label>
-<table class="table table-sm table-bordered table-hover">
-    <thead>
-        <th>Nama Poli</th>
-        <th>Diagnosa</th>
-        <th>Keterangan</th>
-        <th>---</th>
-    </thead>
-    <tbody>
-        @foreach ($cek_konsul as $c )
-            <tr>
-                <td>{{ $c->nama_unit}}</td>
-                <td>{{ $c->diagx}}</td>
-                <td>{{ $c->keterangan3}}</td>
-                <td><button class="badge badge-danger batalkonsul" kode="{{ $c->kode_kunjungan }}"><i class="bi bi-trash"></i></button></td>
-            </tr>
-        @endforeach
-    </tbody>
-</table>
+<div class="card">
+    <input hidden type="text" id="kodekunjunganorder" value="{{ $kodekunjungan }}">
+    <div class="card-header">Data Order Penunjang</div>
+    <div class="card-body">
+        <div class="v_order_farmasi">
+
+        </div>
+        <div class="v_order_lab">
+
+        </div>
+        <div class="v_order_rad">
+
+        </div>
+    </div>
+</div>
+@if (count($cek_konsul) > 0)
+    <label for="">Data Poliklinik konsul</label>
+    <table class="table table-sm table-bordered table-hover">
+        <thead>
+            <th>Nama Poli</th>
+            <th>Diagnosa</th>
+            <th>Keterangan</th>
+            <th>---</th>
+        </thead>
+        <tbody>
+            @foreach ($cek_konsul as $c)
+                <tr>
+                    <td>{{ $c->nama_unit }}</td>
+                    <td>{{ $c->diagx }}</td>
+                    <td>{{ $c->keterangan3 }}</td>
+                    <td><button class="badge badge-danger batalkonsul" kode="{{ $c->kode_kunjungan }}"><i
+                                class="bi bi-trash"></i></button></td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 @endif
 <div class="card">
     <div class="card-header bg-warning">Tindak Lanjut</div>
@@ -25,12 +41,17 @@
         <div class="jumbotron">
             {{-- <h1 class="display-4">Tindak Lanjut</h1> --}}
             <p class="lead mt-4"><strong>* @foreach ($assdok as $as)
-                {{ $as->tindak_lanjut }}
-            @endforeach</strong></p>
+                        {{ $as->tindak_lanjut }}
+                    @endforeach
+                </strong>
+            </p>
             <hr class="my-4">
-            <p>diisi oleh :  @foreach ($assdok as $as)
-                {{ $as->nama_dokter }} @endforeach |  @foreach ($assdok as $as)
-                {{ $as->tgl_pemeriksaan }} @endforeach</p>
+            <p>diisi oleh : @foreach ($assdok as $as)
+                    {{ $as->nama_dokter }}
+                    @endforeach | @foreach ($assdok as $as)
+                        {{ $as->tgl_pemeriksaan }}
+                    @endforeach
+            </p>
             {{-- <a class="btn btn-primary btn-lg btntindaklanjut" jenis="surkon" role="button"><i
                     class="bi bi-plus-lg mr-1"></i> Surat Kontrol</a> --}}
             <a class="btn btn-primary btn-lg btntindaklanjut" jenis="konsul" role="button"><i
@@ -46,6 +67,26 @@
     </div>
 </div>
 <script>
+    $(document).ready(function() {
+        kodekunjungan = $('#kodekunjunganorder').val()
+        ambildataorderfarmasi(kodekunjungan)
+    });
+
+    function ambildataorderfarmasi(kodekunjungan) {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",kodekunjungan
+            },
+            url: '<?= route('ambil_data_order_farmasi') ?>',
+            success: function(response) {
+                spinner.hide()
+                $('.v_order_farmasi').html(response);
+            }
+        });
+    }
     $(".btntindaklanjut").on('click', function(event) {
         kodekunjungan = $('#kodekunjungan').val()
         jenis = $(this).attr('jenis')
@@ -63,7 +104,7 @@
             }
         });
     });
-    $(".batalkonsul").on('click',function(event){
+    $(".batalkonsul").on('click', function(event) {
         kode = $(this).attr('kode')
         $.ajax({
             async: true,

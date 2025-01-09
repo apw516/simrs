@@ -7666,11 +7666,19 @@ class ErmController extends Controller
         // if (count($assdok) > 0) {
         return view('ermtemplate.formtindaklanjut', compact([
             'assdok',
-            'cek_konsul'
+            'cek_konsul',
+            'kodekunjungan'
         ]));
         // } else {
         //     return view('ermtemplate.dokterbelummengisi');
         // }
+    }
+    public function ambil_data_order_farmasi(Request $request){
+        $kodekunjungan = $request->kodekunjungan;
+        $headerorder = db::connection('mysql2')->select('select * from erm_header_order_farmasi a inner join erm_detail_order_farmasi b on a.id = b.id_header_order where a.kode_kunjungan = ?',[$kodekunjungan]);
+        return view('ermtemplate.dataorderfarmasi',compact([
+            'headerorder'
+        ]));
     }
     public function formtindaklanjut2(Request $request)
     {
