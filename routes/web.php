@@ -721,3 +721,5 @@ Route::post('batalorderfarmasi', [ErmController::class, 'batalorderfarmasi'])->n
 Route::post('ambilformeditorder', [ErmController::class, 'ambilformeditorder'])->name('ambilformeditorder'); //formpasien_bpjs
 Route::post('simpaneditorder', [ErmController::class, 'simpaneditorder'])->name('simpaneditorder'); //formpasien_bpjs
 Route::post('ambil_data_order_farmasi', [ErmController::class, 'ambil_data_order_farmasi'])->name('ambil_data_order_farmasi'); //formpasien_bpjs
+Route::post('ambil_data_order_lab', [ErmController::class, 'ambil_data_order_lab'])->name('ambil_data_order_lab'); //formpasien_bpjs
+Route::post('ambil_data_order_rad', [ErmController::class, 'ambil_data_order_rad'])->name('ambil_data_order_rad'); //formpasien_bpjs

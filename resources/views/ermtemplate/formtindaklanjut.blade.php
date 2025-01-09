@@ -70,6 +70,8 @@
     $(document).ready(function() {
         kodekunjungan = $('#kodekunjunganorder').val()
         ambildataorderfarmasi(kodekunjungan)
+        ambildataorderlab(kodekunjungan)
+        ambildataorderrad(kodekunjungan)
     });
 
     function ambildataorderfarmasi(kodekunjungan) {
@@ -84,6 +86,36 @@
             success: function(response) {
                 spinner.hide()
                 $('.v_order_farmasi').html(response);
+            }
+        });
+    }
+    function ambildataorderlab(kodekunjungan) {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",kodekunjungan
+            },
+            url: '<?= route('ambil_data_order_lab') ?>',
+            success: function(response) {
+                spinner.hide()
+                $('.v_order_lab').html(response);
+            }
+        });
+    }
+    function ambildataorderrad(kodekunjungan) {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",kodekunjungan
+            },
+            url: '<?= route('ambil_data_order_rad') ?>',
+            success: function(response) {
+                spinner.hide()
+                $('.v_order_rad').html(response);
             }
         });
     }

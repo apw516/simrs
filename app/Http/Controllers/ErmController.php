@@ -7680,6 +7680,20 @@ class ErmController extends Controller
             'headerorder'
         ]));
     }
+    public function ambil_data_order_lab(Request $request){
+        $kodekunjungan = $request->kodekunjungan;
+        $headerorder = db::connection('mysql')->select('select * from ts_layanan_header_order a inner join ts_layanan_detail_order b on a.id = b.row_id_header where a.kode_kunjungan = ? and a.kode_unit = ?',[$kodekunjungan,'3002']);
+        return view('ermtemplate.dataorderlab',compact([
+            'headerorder'
+        ]));
+    }
+    public function ambil_data_order_rad(Request $request){
+        $kodekunjungan = $request->kodekunjungan;
+        $headerorder = db::connection('mysql')->select('select * from ts_layanan_header_order a inner join ts_layanan_detail_order b on a.id = b.row_id_header where a.kode_kunjungan = ? and a.kode_unit = ?',[$kodekunjungan,'3003']);
+        return view('ermtemplate.dataorderrad',compact([
+            'headerorder'
+        ]));
+    }
     public function formtindaklanjut2(Request $request)
     {
         $kodekunjungan = $request->kodekunjungan;
