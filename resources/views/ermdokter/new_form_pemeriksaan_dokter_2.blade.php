@@ -1156,7 +1156,7 @@
                         <div class="alert alert-warning" role="alert">
                             @if (count($kunjunganKronis) > 0)
                                 Pasien Kronis ,
-                            @endif Pasien Berpotensi PRB, dan melanjutkan pengobatan kembali ke faskes 1...
+                                @endif Pasien Berpotensi PRB, dan melanjutkan pengobatan kembali ke faskes 1... <b>( Abaikan pesan ini jika diagnosa pasien tidak termasuk 9 diagnosa PRB ...)</b>
                           </div>
                         @endif
                         <div class="form-group mt-2">
