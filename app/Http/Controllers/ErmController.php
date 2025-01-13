@@ -3793,8 +3793,22 @@ class ErmController extends Controller
             } else {
                 $tjfar = '4008';
             }
+            $cekantrian = db::connection('mysql2')->select('select * from mt_antrian_order_farmasi where kode_kunjungan = ?',[$kodekunjungan]);
+            if(count($cekantrian) > 0){
+                $antrian = $cekantrian[0]->nomor_antrian;
+            }else{
+                $antrian = $this->ambilantrianfarmasi($tjfar,$jenis_antrian);
+                $datantrian = [
+                    'nomor_antrian' => $antrian,
+                    'unit' => $tjfar,
+                    'tgl_entry' => $this->get_now(),
+                    'jenis_antrian' => $jenis_antrian,
+                    'kode_kunjungan' => $kodekunjungan,
+                ];
+                antrian_order_farmasi::create($datantrian);
+            }
             $data_header_order = [
-                // 'nomor_antrian' => '',
+                'nomor_antrian' => $antrian,
                 'no_rm' => $rm,
                 'nama_pasien' => $mt_pasien[0]->nama_px,
                 'alamat_pasien' => $mt_pasien[0]->alamat_px,
@@ -4587,8 +4601,22 @@ class ErmController extends Controller
               } else {
                   $tjfar = '4008';
               }
+              $cekantrian = db::connection('mysql2')->select('select * from mt_antrian_order_farmasi where kode_kunjungan = ?',[$kodekunjungan]);
+              if(count($cekantrian) > 0){
+                  $antrian = $cekantrian[0]->nomor_antrian;
+              }else{
+                  $antrian = $this->ambilantrianfarmasi($tjfar,$jenis_antrian);
+                  $datantrian = [
+                      'nomor_antrian' => $antrian,
+                      'unit' => $tjfar,
+                      'tgl_entry' => $this->get_now(),
+                      'jenis_antrian' => $jenis_antrian,
+                      'kode_kunjungan' => $kodekunjungan,
+                  ];
+                  antrian_order_farmasi::create($datantrian);
+              }
               $data_header_order = [
-                  // 'nomor_antrian' => '',
+                  'nomor_antrian' => $antrian,
                   'no_rm' => $rm,
                   'nama_pasien' => $mt_pasien[0]->nama_px,
                   'alamat_pasien' => $mt_pasien[0]->alamat_px,
@@ -5000,8 +5028,22 @@ class ErmController extends Controller
             } else {
                 $tjfar = '4008';
             }
+            $cekantrian = db::connection('mysql2')->select('select * from mt_antrian_order_farmasi where kode_kunjungan = ?',[$kodekunjungan]);
+            if(count($cekantrian) > 0){
+                $antrian = $cekantrian[0]->nomor_antrian;
+            }else{
+                $antrian = $this->ambilantrianfarmasi($tjfar,$jenis_antrian);
+                $datantrian = [
+                    'nomor_antrian' => $antrian,
+                    'unit' => $tjfar,
+                    'tgl_entry' => $this->get_now(),
+                    'jenis_antrian' => $jenis_antrian,
+                    'kode_kunjungan' => $kodekunjungan,
+                ];
+                antrian_order_farmasi::create($datantrian);
+            }
             $data_header_order = [
-                // 'nomor_antrian' => '',
+                'nomor_antrian' => $antrian,
                 'no_rm' => $rm,
                 'nama_pasien' => $mt_pasien[0]->nama_px,
                 'alamat_pasien' => $mt_pasien[0]->alamat_px,
