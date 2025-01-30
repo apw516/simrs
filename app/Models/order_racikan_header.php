@@ -11,6 +11,6 @@ class order_racikan_header extends Model
     const UPDATED_AT = null;
     const CREATED_AT = null;
     protected $table = 'order_racikan_header';
-    protected $connection = 'mysql2';
+    protected $connection = 'mysql';
     protected $guarded = ['id'];
 }

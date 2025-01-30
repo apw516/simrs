@@ -11,6 +11,6 @@ class erm_template_resep_header extends Model
     const UPDATED_AT = null;
     const CREATED_AT = null;
     protected $table = 'erm_template_resep_header';
-    protected $connection = 'mysql2';
+    protected $connection = 'mysql';
     protected $guarded = ['id'];
 }

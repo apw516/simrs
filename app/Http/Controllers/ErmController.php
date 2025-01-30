@@ -2032,7 +2032,7 @@ class ErmController extends Controller
     public function batalorderfarmasi(Request $request)
     {
         $idheader = $request->idheader;
-        $cek_header = DB::connection('mysql2')->select('select * from erm_header_order_farmasi where id = ?', ([$idheader]));
+        $cek_header = DB::connection('mysql')->select('select * from erm_header_order_farmasi where id = ?', ([$idheader]));
         if ($cek_header[0]->status_order > 2) {
             $data = [
                 'kode' => 500,
@@ -2041,8 +2041,8 @@ class ErmController extends Controller
             echo json_encode($data);
             die;
         } else {
-            DB::connection('mysql2')->table('erm_header_order_farmasi')->where('id', $idheader)->delete();
-            DB::connection('mysql2')->table('erm_detail_order_farmasi')->where('id_header_order', $idheader)->delete();
+            DB::connection('mysql')->table('erm_header_order_farmasi')->where('id', $idheader)->delete();
+            DB::connection('mysql')->table('erm_detail_order_farmasi')->where('id_header_order', $idheader)->delete();
             $data = [
                 'kode' => 200,
                 'message' => 'Data order berhasil dibatalkan ...'
@@ -2054,8 +2054,8 @@ class ErmController extends Controller
     public function batalorderfarmasi_detail(Request $request)
     {
         $iddetail = $request->iddetail;
-        $cek_detail = DB::connection('mysql2')->select('select * from erm_detail_order_farmasi where id = ?', ([$iddetail]));
-        $cek_header = DB::connection('mysql2')->select('select * from erm_header_order_farmasi where id = ?', ([$cek_detail[0]->id_header_order]));
+        $cek_detail = DB::connection('mysql')->select('select * from erm_detail_order_farmasi where id = ?', ([$iddetail]));
+        $cek_header = DB::connection('mysql')->select('select * from erm_header_order_farmasi where id = ?', ([$cek_detail[0]->id_header_order]));
         if ($cek_header[0]->status_order > 2) {
             $data = [
                 'kode' => 500,
@@ -2064,7 +2064,7 @@ class ErmController extends Controller
             echo json_encode($data);
             die;
         } else {
-            DB::connection('mysql2')->table('erm_detail_order_farmasi')->where('id', $iddetail)->delete();
+            DB::connection('mysql')->table('erm_detail_order_farmasi')->where('id', $iddetail)->delete();
             $data = [
                 'kode' => 200,
                 'message' => 'Data order berhasil dibatalkan ...'
@@ -2104,8 +2104,8 @@ class ErmController extends Controller
     public function ambilriwayatorderhariini(Request $request)
     {
         $kodekunjungan = $request->kode_kunjungan;
-        $data_header = db::connection('mysql2')->select('select * from erm_header_order_farmasi where kode_kunjungan = ?', ([$kodekunjungan]));
-        $data_detail = db::connection('mysql2')->select('select *,b.id as iddetail from erm_header_order_farmasi a inner join erm_detail_order_farmasi b on a.id = b.id_header_order where a.kode_kunjungan = ?', ([$kodekunjungan]));
+        $data_header = db::connection('mysql')->select('select * from erm_header_order_farmasi where kode_kunjungan = ?', ([$kodekunjungan]));
+        $data_detail = db::connection('mysql')->select('select *,b.id as iddetail from erm_header_order_farmasi a inner join erm_detail_order_farmasi b on a.id = b.id_header_order where a.kode_kunjungan = ?', ([$kodekunjungan]));
         return view('Form_order.riwayat_order_hariini', compact([
             'data_header',
             'data_detail'
@@ -2141,7 +2141,7 @@ class ErmController extends Controller
     public function ambil_detail_template_resep(Request $request)
     {
         $idresep = $request->id;
-        $detail = db::connection('mysql2')->select('Select * from erm_template_resep_detail where id_resep_header = ?', ([$idresep]));
+        $detail = db::connection('mysql')->select('Select * from erm_template_resep_detail where id_resep_header = ?', ([$idresep]));
         $str = "";
         foreach ($detail as $d) {
             $str .= "<div class='form-row text-xs'><div class='form-group col-md-2'><label for=''>Nama Obat</label><input readonly type='' class='form-control form-control-sm text-xs edit_field' id='' name='namaobat' value='$d->nama_barang'><input hidden readonly type='' class='form-control form-control-sm' id='' name='kodeobat' value='$d->kode_barang'><input readonly type='' class='form-control form-control-sm' id='' name='jenisobat' value='$d->jenisobat'></div><div class='form-group col-md-1'><label for='inputPassword4'>Sediaan</label><input readonly type='' class='form-control form-control-sm' id='' name='sediaan' value='$d->sediaan'></div><div class='form-group col-md-1'><label for='inputPassword4'>Dosis</label><input readonly type='' class='form-control form-control-sm' id='' name='dosis' value='$d->dosis'></div><div class='form-group col-md-3'><label for='inputPassword4'>Aturan Pakai</label><textarea type='' class='form-control form-control-sm' id='' name='aturanpakai' rows='4'>$d->aturan_pakai</textarea></div><div class='form-group col-md-1'><label for='inputPassword4'>Qty</label><input type='' class='form-control form-control-sm' id='' name='qty' value='$d->qty'></div>
@@ -2183,7 +2183,7 @@ class ErmController extends Controller
     }
     public function ambiltemplateracikan(Request $request)
     {
-        $dataracikan = db::connection('mysql2')->select('select * from order_racikan_header where kode_paramedis = ? and template = ?', [auth()->user()->kode_paramedis, 2]);
+        $dataracikan = db::connection('mysql')->select('select * from order_racikan_header where kode_paramedis = ? and template = ?', [auth()->user()->kode_paramedis, 2]);
         return view('Form_order.tabel_riwayat_racikan', compact([
             'dataracikan'
         ]));
@@ -2305,7 +2305,7 @@ class ErmController extends Controller
             } else {
                 $tjfar = '4008';
             }
-            $cekantrian = db::connection('mysql2')->select('select * from mt_antrian_order_farmasi where kode_kunjungan = ?',[$kodekunjungan]);
+            $cekantrian = db::connection('mysql')->select('select * from mt_antrian_order_farmasi where kode_kunjungan = ?',[$kodekunjungan]);
             if(count($cekantrian) > 0){
                 $antrian = $cekantrian[0]->nomor_antrian;
             }else{
@@ -3542,8 +3542,8 @@ class ErmController extends Controller
     public function ambiltemplateresep()
     {
         $kode_paramedis = auth()->user()->kode_paramedis;
-        $header = db::connection('mysql2')->select('select * from erm_template_resep_header where kode_paramedis = ?', ([$kode_paramedis]));
-        $detail = db::connection('mysql2')->select('select * from erm_template_resep_header a inner join erm_template_resep_detail  b on a.id = b.id_resep_header where a.kode_paramedis = ?', ([$kode_paramedis]));
+        $header = db::connection('mysql')->select('select * from erm_template_resep_header where kode_paramedis = ?', ([$kode_paramedis]));
+        $detail = db::connection('mysql')->select('select * from erm_template_resep_header a inner join erm_template_resep_detail  b on a.id = b.id_resep_header where a.kode_paramedis = ?', ([$kode_paramedis]));
         return view('Form_order.templte_resep_dokter', compact([
             'header',
             'detail'
@@ -3552,7 +3552,7 @@ class ErmController extends Controller
     public function ambil_detail_racikan(Request $request)
     {
         $idresep = $request->id;
-        $detail = db::connection('mysql2')->select('select * from order_racikan_header a where a.id = ?', [$idresep]);
+        $detail = db::connection('mysql')->select('select * from order_racikan_header a where a.id = ?', [$idresep]);
         // dd(count($detail));
         // dd($detail);
         $str = "";
