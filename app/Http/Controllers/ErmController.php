@@ -7717,7 +7717,7 @@ class ErmController extends Controller
     }
     public function ambil_data_order_farmasi(Request $request){
         $kodekunjungan = $request->kodekunjungan;
-        $headerorder = db::connection('mysql2')->select('select * from erm_header_order_farmasi a inner join erm_detail_order_farmasi b on a.id = b.id_header_order where a.kode_kunjungan = ?',[$kodekunjungan]);
+        $headerorder = db::connection('mysql')->select('select * from erm_header_order_farmasi a inner join erm_detail_order_farmasi b on a.id = b.id_header_order where a.kode_kunjungan = ?',[$kodekunjungan]);
         return view('ermtemplate.dataorderfarmasi',compact([
             'headerorder'
         ]));

@@ -11,6 +11,6 @@ class erm_order_detail_farmasi extends Model
     const UPDATED_AT = null;
     const CREATED_AT = null;
     protected $table = 'erm_detail_order_farmasi';
-    protected $connection = 'mysql';
+    protected $connection = 'mysql2';
     protected $guarded = ['id'];
 }
