@@ -1078,7 +1078,7 @@
                 <table class="table table-sm">
                     <tbody>
                         <tr>
-                            <td class="text-bold font-italic">Diagnosa Primer</td>
+                            <td class="text-bold font-italic">Diagnosa Utama</td>
                             <td colspan="2">
                                 <textarea name="diagnosakerja" id="diagnosakerja" class="form-control">@if (count($last_assdok) > 0){{ $last_assdok[0]->diagnosakerja }}@endif</textarea>
                             </td>

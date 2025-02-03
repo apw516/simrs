@@ -2336,7 +2336,7 @@
                     <table class="table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-bold font-italic">Diagnosa Kerja</td>
+                                <td class="text-bold font-italic">Diagnosa Utama</td>
                                 <td colspan="2">
                                     <textarea name="diagnosakerja" id="diagnosakerja" class="form-control">{{ $resume[0]->diagnosakerja }}</textarea>
                                 </td>

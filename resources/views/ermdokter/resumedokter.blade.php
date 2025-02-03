@@ -148,7 +148,7 @@
                     <td colspan="3">{{ $resume[0]->kesadaran }}</td>
                 </tr>
                 <tr>
-                    <td>Diagnosa Kerja</td>
+                    <td>Diagnosa Utama</td>
                     <td colspan="3">{{ $resume[0]->diagnosakerja }}</td>
                 </tr>
                 <tr>
