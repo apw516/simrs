@@ -528,11 +528,11 @@
                     <td colspan="3">{{ $resume[0]->kesadaran }}</td>
                 </tr>
                 <tr>
-                    <td>Diagnosa Kerja</td>
+                    <td>Diagnosa utama</td>
                     <td colspan="3">{{ $resume[0]->diagnosakerja }}</td>
                 </tr>
                 <tr>
-                    <td>Diagnosa Banding</td>
+                    <td>Diagnosa sekunder</td>
                     <td colspan="3">{{ $resume[0]->diagnosabanding }}</td>
                 </tr>
                 <tr>

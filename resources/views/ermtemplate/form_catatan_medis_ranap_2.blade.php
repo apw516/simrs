@@ -560,11 +560,11 @@
                                                         <td>{{ $k->kesadaran }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="text-bold font-italic">Diagnosa Kerja</td>
+                                                        <td class="text-bold font-italic">Diagnosa Utama</td>
                                                         <td>{{ $k->diagnosakerja }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="text-bold font-italic">Diagnosa Banding</td>
+                                                        <td class="text-bold font-italic">Diagnosa Sekunder</td>
                                                         <td>{{ $k->diagnosabanding }}</td>
                                                     </tr>
                                                     <tr>
