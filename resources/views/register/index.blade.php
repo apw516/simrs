@@ -30,7 +30,7 @@
                             <div class="form-group first mb-2">
                                 <label for="username">Nama lengkap</label>
                                 <input type="text" class="form-control @error('nama') is-invalid @enderror"
-                                    id="nama" name="nama" autofocus required value="{{ old('nama') }}">
+                                    id="nama" name="nama" autofocus required    >
                                 @error('nama')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

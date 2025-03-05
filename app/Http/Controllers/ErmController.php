@@ -354,7 +354,6 @@ class ErmController extends Controller
         } else {
             erm_mata_kanan_kiri::create($datamata);
         }
-
         $data = [
             'kode' => 200,
             'message' => 'Data berhasil disimpan !'

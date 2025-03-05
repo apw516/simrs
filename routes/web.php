@@ -800,3 +800,10 @@ Route::post('cetakanassdok', [CetakanController::class, 'cetakanassdok'])->name(
 Route::get('pdfcetakanasskep/{kodekunjungan}', [CetakanController::class, 'pdfcetakanasskep'])->name('pdfcetakanasskep'); //formpasien_bpjs
 Route::get('pdfcetakanassdok/{kodekunjungan}', [CetakanController::class, 'pdfcetakanassdok'])->name('pdfcetakanasskep'); //formpasien_bpjs
 
+
+Route::post('/pendaftaran/cariinfoseppasien', [SimrsController::class, 'infosep'])
+->name('cariinfoseppasien');
+
+
+Route::get('/carisep_json/{kodekunjungan}', [SimrsController::class, 'jsonsep']);
+

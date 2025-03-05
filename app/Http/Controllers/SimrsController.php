@@ -430,6 +430,12 @@ class SimrsController extends Controller
             ]
         );
     }
+    public function jsonsep($sep)
+    {
+        $v = new VclaimModel();
+        $sep1 = $v->carisep($sep);
+        dd($sep1->response);
+    }
     public function Caripasien(Request $request)
     {
         return view('pendaftaran.pencarianpasien', [
