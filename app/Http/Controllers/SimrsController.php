@@ -434,7 +434,7 @@ class SimrsController extends Controller
     {
         $v = new VclaimModel();
         $sep1 = $v->carisep($sep);
-        dd($sep1->response);
+        dd(json_encode($sep1->response));
     }
     public function Caripasien(Request $request)
     {
