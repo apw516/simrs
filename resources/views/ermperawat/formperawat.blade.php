@@ -27,9 +27,7 @@
                 <input hidden type="text" id="kodekunjungan" value="{{ $kunjungan[0]->kode_kunjungan }}">
                 <input hidden type="text" id="nomorrm" value="{{ $kunjungan[0]->no_rm }}">
             </div>
-            <!-- /.card-body -->
         </div>
-        <!-- /.card -->
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Pemeriksaan</h3>
@@ -118,7 +116,6 @@
             <!-- /.card-body -->
         </div>
     </div>
-    <!-- /.col -->
     <div class="col-md-9">
         <div class="slide3">
 
