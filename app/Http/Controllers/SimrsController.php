@@ -3671,6 +3671,13 @@ class SimrsController extends Controller
         // $pdf->setPaper(array(0,0,609.4488,5.433), 'portrait');
         return $pdf->stream("$title", array("Attachment" => false));
     }
+    public function get_date()
+    {
+        $dt = Carbon::now()->timezone('Asia/Jakarta');
+        $date = $dt->toDateString();
+        $now = $date;
+        return $now;
+    }
     public function simpanpasien(Request $request)
     {
         $rm = $this->get_rm();
@@ -3691,6 +3698,7 @@ class SimrsController extends Controller
         if ($request->nomorbpjs == '') {
             $nobpjs = '0';
         }
+        $waktu = $this->get_now();
         $data_pasien = [
             'no_rm' => $rm,
             'no_Bpjs' => $nobpjs,
@@ -3714,8 +3722,9 @@ class SimrsController extends Controller
             'alamat' => $request->alamat,
             'no_tlp' => $request->nomortelp,
             'no_hp' => $request->nomortelp,
-            'tgl_entry' => date('Y-m-d h:i:s'),
+            'tgl_entry' => $waktu,
             'pic' => auth()->user()->id_simrs,
+            'user_create' => auth()->user()->nama,
             'kode_propinsi' => $request->provinsi,
             'kode_kabupaten' => $request->kabupaten,
             'kode_kecamatan' => $request->kecamatan,
@@ -3727,7 +3736,7 @@ class SimrsController extends Controller
             'hubungan_keluarga' => $request->hubungankeluarga,
             'alamat_keluarga' => $request->alamatkeluarga,
             'tlp_keluarga' => $request->telpkeluarga,
-            'input_date' => date('Y-m-d h:i:s'),
+            'input_date' => $waktu,
             'pic1' => auth()->user()->id_simrs
         ];
         $data_domisili = [
