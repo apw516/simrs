@@ -865,7 +865,8 @@ class SimrsController extends Controller
                 $tujuan = 3;
             }
         }
-
+//sleep for 3 seconds
+        sleep(50);
         //END OF AMBIL ANTRIAN
         $dt = Carbon::now();
         $v = new VclaimModel();
@@ -1056,8 +1057,6 @@ class SimrsController extends Controller
                 die;
             }
         }
-
-
         //membuat kode layanan header menggunakan store procedure
         if ($kelas_unit == 1 || $kelas_unit == 2) {
             //jika kelas penunjang  seperti hd,lab dll tidak akan tebentuk layanan header
