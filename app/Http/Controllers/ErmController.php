@@ -83,6 +83,7 @@ class ErmController extends Controller
     }
     public function ambildatapasienpoli()
     {
+        sleep(120);
         if (auth()->user()->unit == '1002') {
             $pasienigd = DB::connection('mysql4')->select('SELECT a.id AS id,a.nomor_antrian,a.`nama_px`,a.nomor_rm,a.`tgl_masuk`,b.id AS id_pemeriksaan,b.`namapemeriksa`,c.`id` AS id_pemeriksaan_dokter,c.`nama_dokter` AS namadokter FROM ts_antrian_igd a
             LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`id` = b.id_antrian
@@ -119,6 +120,7 @@ class ErmController extends Controller
     }
     public function ambildatapasienpoli_cari(Request $request)
     {
+        sleep(120);
         if (auth()->user()->unit == '1002') {
             $pasienigd = DB::select('SELECT * from mt_pasien_igd');
             return view('ermtemplate.tabelpasienigd', compact([
