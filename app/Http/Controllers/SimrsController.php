@@ -866,7 +866,7 @@ class SimrsController extends Controller
             }
         }
 //sleep for 3 seconds
-        sleep(50);
+        sleep(150);
         //END OF AMBIL ANTRIAN
         $dt = Carbon::now();
         $v = new VclaimModel();
