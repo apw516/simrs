@@ -2695,13 +2695,21 @@ class SimrsController extends Controller
             $pdf->Cell(10, 7, 'RSUD WALED KAB.CIREBON', 0, 1);
 
             $pdf->SetFont('Arial', '', 10);
-            $pdf->SetXY(10, 30);
+            $pdf->SetXY(10, 25);
             $pdf->Cell(10, 7, 'No. SEP', 0, 1);
+            $pdf->SetXY(40, 25);
+            $pdf->Cell(10, 7, ':', 0, 1);
+            $pdf->SetFont('Arial', 'B', 12);
+            $pdf->SetXY(45, 25);
+            $pdf->Cell(10, 7, $sep->response->noSep, 0, 1);
+            $pdf->SetFont('Arial', '', 10);
+            $pdf->SetXY(10, 30);
+            $pdf->Cell(10, 7, 'No. surat kontrol', 0, 1);
             $pdf->SetXY(40, 30);
             $pdf->Cell(10, 7, ':', 0, 1);
             $pdf->SetFont('Arial', 'B', 12);
             $pdf->SetXY(45, 30);
-            $pdf->Cell(10, 7, $sep->response->noSep, 0, 1);
+            $pdf->Cell(10, 7, $sep->response->kontrol->noSurat, 0, 1);
             $pdf->SetFont('Arial', '', 10);
             $pdf->SetXY(10, 35);
             $pdf->Cell(10, 7, 'Tgl. SEP', 0, 1);
@@ -3482,13 +3490,21 @@ class SimrsController extends Controller
         $pdf->Cell(10, 7, 'RSUD WALED KAB.CIREBON', 0, 1);
 
         $pdf->SetFont('Arial', '', 10);
-        $pdf->SetXY(10, 30);
+        $pdf->SetXY(10, 25);
         $pdf->Cell(10, 7, 'No. SEP', 0, 1);
+        $pdf->SetXY(40, 25);
+        $pdf->Cell(10, 7, ':', 0, 1);
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->SetXY(45, 25);
+        $pdf->Cell(10, 7, $sep->response->noSep, 0, 1);
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetXY(10, 30);
+        $pdf->Cell(10, 7, 'No. surat kontrol', 0, 1);
         $pdf->SetXY(40, 30);
         $pdf->Cell(10, 7, ':', 0, 1);
         $pdf->SetFont('Arial', 'B', 12);
         $pdf->SetXY(45, 30);
-        $pdf->Cell(10, 7, $sep->response->noSep, 0, 1);
+        $pdf->Cell(10, 7, $sep->response->kontrol->noSurat, 0, 1);
         $pdf->SetFont('Arial', '', 10);
         $pdf->SetXY(10, 35);
         $pdf->Cell(10, 7, 'Tgl. SEP', 0, 1);
