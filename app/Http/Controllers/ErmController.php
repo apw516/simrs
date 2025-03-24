@@ -2486,10 +2486,14 @@ class ErmController extends Controller
                     //jika penjamin bpjs order ke dp2
                     //jika penjamin umum order ke dp1
                     //kodeheader dibedakan menjadi ORF
-                    if ($penjamin == 'P01' || $penjamin == 'P15' || $penjamin == 'P16' || $penjamin == 'P17' || $penjamin == 'P20' || $penjamin == 'P22' || $penjamin == 'P28' || $penjamin == 'P29') {
+                    if(auth()->user()->unit == '3007'){
                         $unit = '4002';
-                    } else {
-                        $unit = '4008';
+                    }else{
+                        if ($penjamin == 'P01' || $penjamin == 'P15' || $penjamin == 'P16' || $penjamin == 'P17' || $penjamin == 'P20' || $penjamin == 'P22' || $penjamin == 'P28' || $penjamin == 'P29') {
+                            $unit = '4002';
+                        } else {
+                            $unit = '4008';
+                        }
                     }
                     $mtunit = DB::select('select * from mt_unit where kode_unit = ?', [$unit]);
                     $prefix_kunjungan = $mtunit[0]->prefix_unit;
