@@ -4235,6 +4235,8 @@ class SimrsController extends Controller
             'no_rujukan' => "$request->nomorrujukan",
             'status_kunjungan' => "$request->status_kunjungan",
             'catatan' => "$request->kronis",
+            'pic2' => auth()->user()->id_simrs,
+            'id_alasan_edit' => 'diedit melalui web',
         ];
         $update = ts_kunjungan::where('kode_kunjungan', $request->kode)->update($data);
         echo json_encode('ok');
