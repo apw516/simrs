@@ -238,8 +238,8 @@ class ErmController extends Controller
         $unitk = $kunjungan[0]->kode_unit;
         $kunjunganKronis = DB::select('select * from ts_kunjungan where no_rm = ? and kode_unit = ? and catatan = ?', [$request->rm, $unitk, 'KRONIS']);
         $rujukan = $kunjungan[0]->no_rujukan;
-        // $cekrujukan1 = strlen($rujukan);
-        $cekrujukan1 = 'AB';
+        $rujukan = 'AB';
+        $cekrujukan1 = strlen($rujukan);
         if ($cekrujukan1 > 5) {
             $cekrujukan2 = substr($rujukan, 0, 8);
             if ($cekrujukan2 != '1018R001') {
