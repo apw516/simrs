@@ -40,6 +40,11 @@
             <div class="card-body p-0">
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item" id="pemeriksaan">
+                        <a href="#" class="nav-link" onclick="formorderfarmasiperawat()">
+                            <i class="fas fa-inbox mr-2"></i>Form Order Farmasi
+                        </a>
+                    </li>
+                    <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formbillingtindakan()">
                             <i class="fas fa-inbox mr-2"></i>Billing Tindakan PoliKlinik
                         </a>
@@ -138,6 +143,25 @@
                 rm
             },
             url: '<?= route('ambilcatatanmedis_pasien') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    function formorderfarmasiperawat() {
+        spinner = $('#loader')
+        spinner.show();
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('dataorderfarmasi') ?>',
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()

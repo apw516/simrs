@@ -14,6 +14,7 @@ use App\Http\Controllers\PenunjangController;
 use App\Http\Controllers\AntrianIgd;
 use App\Http\Controllers\ErmIgdController;
 use App\Http\Controllers\FarmasiController;
+use App\Http\Controllers\newFarmasiController;
 use App\Http\Controllers\ReportingController;
 
 Route::get('/berkas_ersep', [ReportingController::class, 'index'])->middleware('auth')->name('berkas_ersep');
@@ -703,3 +704,27 @@ Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
 
 Route::get('get_riwayat_sep/{nomorkartu}/{tglawal}/{tglakhir}', [SimrsController::class, 'cari_riwayat_sep'])->name('cari_riwayat_sep'); //formpasien_bpjs
 Route::get('/cetaklabel/{kodekunjungan}', [SimrsController::class, 'Cetaklabel']); //formpasien_bpjs
+
+
+Route::post('ambilformfarmasi2', [newFarmasiController::class, 'ambilformfarmasi2'])->name('ambilformfarmasi2'); //formpasien_bpjs
+Route::post('riwayatresepdibuat', [newFarmasiController::class, 'riwayatresepdibuat'])->name('riwayatresepdibuat');
+Route::post('ambiltabelhasilcariobat', [newFarmasiController::class, 'ambiltabelhasilcariobat'])->name('ambiltabelhasilcariobat');
+
+Route::post('riwayattemplateresep', [newFarmasiController::class, 'riwayattemplateresep'])->name('riwayattemplateresep');
+Route::post('riwayatreseppasien', [newFarmasiController::class, 'riwayatreseppasien'])->name('riwayatreseppasien');
+Route::post('riwayatresepdokter', [newFarmasiController::class, 'riwayatresepdokter'])->name('riwayatresepdokter');
+Route::post('simpanorderobat', [newFarmasiController::class, 'simpanorderobat'])->name('simpanorderobat');
+Route::post('batalorderobat', [newFarmasiController::class, 'batalorderobat'])->name('batalorderobat');
+Route::post('kirimorderkefarmasi', [newFarmasiController::class, 'kirimorderkefarmasi'])->name('kirimorderkefarmasi');
+Route::post('batalkirimorder_action', [newFarmasiController::class, 'batalkirimorder_action'])->name('batalkirimorder_action');
+Route::post('ambil_detail_template', [newFarmasiController::class, 'ambil_detail_template'])->name('ambil_detail_template');
+Route::post('ambil_detail_resep', [newFarmasiController::class, 'ambil_detail_resep_pasien'])->name('ambil_detail_resep');
+//perawat
+Route::post('dataorderfarmasi', [newFarmasiController::class, 'dataorderfarmasi'])->name('dataorderfarmasi');
+
+
+
+
+
+
+

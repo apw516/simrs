@@ -244,7 +244,10 @@
                 </div>
             </div>
         </form>
-        <div class="card">
+          <div class="v_form_farmasi_2">
+
+        </div>
+        <div hidden class="card">
             <div class="card-header bg-light">Order Farmasi <button type="button"
                     class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
                     onclick="ambilresep()">Template resep</button></div>
@@ -441,7 +444,9 @@
     $(document).ready(function() {
         orderobathariini()
     });
-
+   $(document).ready(function() {
+        ambilformfarmasi2()
+    });
     function addform() {
         var max_fields = 10;
         var wrapper = $(".formobatfarmasi2"); //Fields wrapper
@@ -523,4 +528,27 @@
             }
         });
     })
+</script>
+<script>
+    function ambilformfarmasi2() {
+        kodekunjungan =  $('#kodekunjungan').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('ambilformfarmasi2') ?>',
+            error: function(data) {
+                spinner.hide();
+                alert('error')
+            },
+            success: function(response) {
+                spinner.hide();
+                $('.v_form_farmasi_2').html(response);
+            }
+        });
+    }
 </script>

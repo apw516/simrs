@@ -2411,7 +2411,10 @@
                     </table>
                 </form>
                 {{-- formfarmasi --}}
-                <div class="card">
+                <div class="v_form_farmasi_2">
+
+                </div>
+                <div hidden class="card">
                     @if ($selisih > 70)
                     <div class="alert alert-warning" role="alert">
                         @if (count($kunjunganKronis) > 0)
@@ -3330,6 +3333,7 @@
         tindakanhariini()
         tindakanhariini_lab()
         tindakanhariini_rad()
+        ambilformfarmasi2()
     });
     $(".riwayatkonsul").click(function() {
         $.ajax({
@@ -3759,3 +3763,26 @@
     })
 </script>
 <script src="{{ asset('public/marker/markerjs2.js') }}"></script>
+<script>
+    function ambilformfarmasi2() {
+        kodekunjungan =  $('#kodekunjungan').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('ambilformfarmasi2') ?>',
+            error: function(data) {
+                spinner.hide();
+                alert('error')
+            },
+            success: function(response) {
+                spinner.hide();
+                $('.v_form_farmasi_2').html(response);
+            }
+        });
+    }
+</script>
