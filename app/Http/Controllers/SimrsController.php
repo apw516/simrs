@@ -4307,4 +4307,10 @@ class SimrsController extends Controller
         $riwayat = $v->get_data_kunjungan_peserta($noka, $tgl_awal, $tglakhir);
         return $riwayat;
     }
+    public function carisep_2($nosep)
+    {
+        $v = new VclaimModel();
+        $sep = $v->carisep($nosep);
+        return $sep;
+    }
 }
