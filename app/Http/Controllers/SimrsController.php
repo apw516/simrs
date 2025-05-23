@@ -821,7 +821,7 @@ class SimrsController extends Controller
         // $unit = mt_unit::where('KDPOLI', '=', "$request->kodepolitujuan")->get();
         // dd($unit);
         $ipclient = $this->get_client_ip();
-        // $mw = new antrianmarwan();
+        $mw = new antrianmarwan();
         $day = $request->tglsep;
         $today = strtoupper(Carbon::parse($day)->dayName);
         $jampraktek = DB::select('select * from jkn_jadwal_dokter where kodedokter = ? and namahari = ?', [$request->kodedokterlayan, $today]);
@@ -1046,7 +1046,7 @@ class SimrsController extends Controller
         ];
         if ($request->kodepolitujuan != 'HDL') {
             try {
-                // $antrian = $mw->ambilantrean2($data_antrian);
+                $antrian = $mw->ambilantrean2($data_antrian);
             } catch (\Exception $e) {
                 $err = $e->getMessage();
                 $data = [
