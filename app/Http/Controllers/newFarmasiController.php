@@ -231,9 +231,12 @@ class newFarmasiController extends Controller
         $orderfarmasi = db::connection('mysql5')->select('select * from order_farmasi_header a inner join order_farmasi_detail b on a.id = b.idheader where a.kode_kunjungan = ? and a.status_antrian != 8 and b.status_detail = 1', [$header[0]->kode_kunjungan]);
 
         if (count($orderfarmasi) == 0) {
+            //membatalkan order
             DB::connection('mysql5')->table('order_farmasi_header')->where('kode_kunjungan', $header[0]->kode_kunjungan)->update(['status_antrian' => 8]);
-            $detail_antrian = db::connection('mysql5')->select('select * from erm_antrian_farmasi_detail where id_header_order = ?', [$detail[0]->idheader]);
-            DB::connection('mysql5')->table('erm_antrian_farmasi')->where('id', $detail_antrian[0]->idheader_antrian)->update(['status_antrian' => 8]);
+
+            $header_order = $header[0]->id;
+            //cek antrian
+            $detail_antrian = db::connection('mysql5')->select('select * from erm_antrian_farmasi_detail where id_header_order = ?',[$h])
         }
         $data = [
             'kode' => 200,
@@ -307,7 +310,7 @@ class newFarmasiController extends Controller
     public function get_nomor_urut($kodeunit)
     {
         $q = DB::connection('mysql5')->select('SELECT id,nomor_urut as kd_max FROM erm_antrian_farmasi
-        WHERE DATE(tanggal_kirim) = CURDATE() and kode_unit = ? LIMIT 1', [$kodeunit]);
+        WHERE DATE(tanggal_kirim) = CURDATE() and kode_unit = ? ORDER BY id DESC LIMIT 1', [$kodeunit]);
         $kd = "";
         if (count($q) > 0) {
             foreach ($q as $k) {
@@ -350,7 +353,7 @@ class newFarmasiController extends Controller
     {
         $kodekunjungan = $request->kodekunjungan;
         $rm = $request->nomorrm;
-        $orderfarmasi = db::connection('mysql5')->select('select *,a.status_antrian as status_antrian_a,c.nomor_urut as status_antrian_b,c.status_antrian as status_kirim from order_farmasi_header a
+        $orderfarmasi = db::connection('mysql5')->select('select *,b.id as iddetail,a.status_antrian as status_antrian_a,c.nomor_urut as status_antrian_b,c.status_antrian as status_kirim from order_farmasi_header a
         inner join order_farmasi_detail b on a.id = b.idheader
         left outer join erm_antrian_farmasi c on a.kode_kunjungan = c.kode_kunjungan
         where a.kode_kunjungan = ? and a.status_antrian != 8 and b.status_detail = 1', [$kodekunjungan]);

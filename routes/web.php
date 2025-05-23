@@ -16,6 +16,7 @@ use App\Http\Controllers\ErmIgdController;
 use App\Http\Controllers\FarmasiController;
 use App\Http\Controllers\newFarmasiController;
 use App\Http\Controllers\ReportingController;
+use App\Http\Controllers\newMasterController;
 
 Route::get('/berkas_ersep', [ReportingController::class, 'index'])->middleware('auth')->name('berkas_ersep');
 Route::post('/ambildataeresep', [ReportingController::class, 'ambilDataEresep'])->middleware('auth')->name('ambildataeresep');
@@ -724,6 +725,13 @@ Route::post('dataorderfarmasi', [newFarmasiController::class, 'dataorderfarmasi'
 
 
 
+
+Route::get('indexmastertarif', [newMasterController::class, 'indexmastertarif'])->middleware('auth')->name('indexmastertarif');
+Route::post('carinamatarif', [newMasterController::class, 'carinamatarif'])->middleware('auth')->name('carinamatarif');
+Route::post('detailmastertarif', [newMasterController::class, 'detailmastertarif'])->middleware('auth')->name('detailmastertarif');
+Route::post('ambilforminsertbhp', [newMasterController::class, 'ambilforminsertbhp'])->middleware('auth')->name('ambilforminsertbhp');
+Route::post('caribarangbhp', [newMasterController::class, 'caribarangbhp'])->middleware('auth')->name('caribarangbhp');
+Route::post('simpandatabhp', [newMasterController::class, 'simpandatabhp'])->middleware('auth')->name('simpandatabhp');
 
 
 

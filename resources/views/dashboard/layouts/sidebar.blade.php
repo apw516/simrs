@@ -544,6 +544,14 @@
                           </li>
                       @endif
                   @endif
+                   <li class="nav-header"> <i class="nav-icon bi bi-person-circle mr-2"></i>MASTER TARIF</li>
+                      <li class="nav-item ">
+                          <a href="{{ route('indexmastertarif') }}"
+                              class="nav-link @if ($sidebar == 'indexmastertarif') active @endif">
+                              <i class="bi bi-person-lines-fill nav-icon"></i>
+                              <p>Data Master Tarif</p>
+                          </a>
+                      </li>
                   @if (auth()->user()->nama == 'agyl')
                       <li class="nav-header"> <i class="nav-icon bi bi-person-circle mr-2"></i> ADMIN IT</li>
                       <li class="nav-item ">

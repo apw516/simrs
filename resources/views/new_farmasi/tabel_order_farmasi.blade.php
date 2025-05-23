@@ -25,7 +25,7 @@
                         <td>@if($d->status_antrian_a == 0) Belum dikirim @elseif($d->status_antrian_a == 1) Sudah dikirim @endif</td>
                         <td>
                             <button class="btn btn-sm btn-danger batalorder" namabarang="{{ $d->namabarang }}"
-                                iddetail="{{ $d->id }}" data-placement="top" title="retur order ..."><i
+                                iddetail="{{ $d->iddetail }}" data-placement="top" title="retur order ..."><i
                                     class="bi bi-recycle"></i>
                         </td>
                     </tr>
