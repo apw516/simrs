@@ -348,7 +348,7 @@ class newFarmasiController extends Controller
     public function batalkirimorder_action(Request $request)
     {
         $kodekunjungan = $request->kodekunjungan;
-        $antrian = db::connection('mysql5')->select('select *,a.id as idd,b.id_header_order as idx from erm_antrian_farmasi a inner join erm_antrian_farmasi_detail b on a.id = b.idheader_antrian where a.kode_kunjungan = ?', [$kodekunjungan]);
+        $antrian = db::connection('mysql5')->select('select *,a.id as idd,b.id_header_order as idx from erm_antrian_farmasi a inner join erm_antrian_farmasi_detail b on a.id = b.idheader_antrian where a.kode_kunjungan = ? and a.status_antrian = ?', [$kodekunjungan,0]);
         if (count($antrian) == 0) {
             $data = [
                 'kode' => 500,
@@ -378,7 +378,7 @@ class newFarmasiController extends Controller
         $orderfarmasi = db::connection('mysql5')->select('select *,b.id as iddetail,a.status_antrian as status_antrian_a,c.nomor_urut as status_antrian_b,c.status_antrian as status_kirim from order_farmasi_header a
         inner join order_farmasi_detail b on a.id = b.idheader
         left outer join erm_antrian_farmasi c on a.kode_kunjungan = c.kode_kunjungan
-        where a.kode_kunjungan = ? and a.status_antrian != 8 and b.status_detail = 1', [$kodekunjungan]);
+        where a.kode_kunjungan = ? and a.status_antrian != 8 and b.status_detail >= 1', [$kodekunjungan]);
         return view('new_farmasi.tabel_order_farmasi', compact([
             'orderfarmasi',
             'kodekunjungan'
@@ -617,7 +617,6 @@ class newFarmasiController extends Controller
             'diagnosa' => $diagnosa
         ];
         DB::connection('mysql4')->table('ts_layanan_header')->where('id', $layanan_header->id)->update($data_header_update);
-
         foreach ($arrayobat as $ob) {
             $id_antrian = $ob['idantrianheader'];
             $id_header_order = $ob['idheaderorder'];
@@ -625,7 +624,6 @@ class newFarmasiController extends Controller
             $cek_antrian = db::connection('mysql5')->select('select * from erm_antrian_farmasi where id = ? and status_antrian = ?',[$id_antrian,0]);
             $cek_order_header = db::connection('mysql5')->select('select * from order_farmasi_header where id = ? and status_antrian = ?',[$id_header_order,1]);
             $cek_order_detail = db::connection('mysql5')->select('select * from order_farmasi_detail where id = ? and status_detail = ?',[$iddetailorder,1]);
-
             if(count($cek_antrian) > 0){
                 DB::connection('mysql5')->table('erm_antrian_farmasi')->where('id', $id_antrian)->update(['status_antrian' => 1]);
             }
