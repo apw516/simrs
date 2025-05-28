@@ -1048,16 +1048,16 @@ class SimrsController extends Controller
         if ($request->kodepolitujuan != 'HDL') {
             try {
                 $antrian = $mw->ambilantrean2($data_antrian);
-                if ($antrian->metaData->code != 200) {
+                if ($antrian->metadata->code != 200) {
                     $dataket = [
                         'no_rm' =>$request->norm,
                         'tgl_entry' => $this->get_now(),
-                        'keterangan' =>$antrian->metaData->message,
+                        'keterangan' =>$antrian->metadata->message,
                     ];
                     ts_antrian_online::create($dataket);
                     $data = [
                         'kode' => 201,
-                        'message' => $antrian->metaData->message
+                        'message' => $antrian->metadata->message
                     ];
                     echo json_encode($data);
                     die;
