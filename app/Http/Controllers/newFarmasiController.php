@@ -43,7 +43,6 @@ class newFarmasiController extends Controller
     public function riwayatresepdibuat(Request $request)
     {
         $kodekunjungan = $request->kodekunjungan;
-        $riwayat = db::connection('mysql5')->select('select *,b.id as iddetail from order_farmasi_header a inner join order_farmasi_detail b on a.id = b.idheader where a.kode_kunjungan = ? and a.status_antrian != 8 and b.status_detail = 1', [$kodekunjungan]);
         return view('new_farmasi.tabel_riwayat_order_hari_ini', compact([
             'riwayat'
         ]));
@@ -375,12 +374,22 @@ class newFarmasiController extends Controller
     {
         $kodekunjungan = $request->kodekunjungan;
         $rm = $request->nomorrm;
-        $orderfarmasi = db::connection('mysql5')->select('select *,b.id as iddetail,a.status_antrian as status_antrian_a,c.nomor_urut as status_antrian_b,c.status_antrian as status_kirim from order_farmasi_header a
-        inner join order_farmasi_detail b on a.id = b.idheader
-        left outer join erm_antrian_farmasi c on a.kode_kunjungan = c.kode_kunjungan
-        where a.kode_kunjungan = ? and a.status_antrian != 8 and b.status_detail >= 1', [$kodekunjungan]);
+        $antrian = db::connection('mysql5')->select('SELECT * FROM erm_antrian_farmasi a
+        INNER JOIN erm_antrian_farmasi_detail b ON a.id = b.`idheader_antrian` WHERE a.`kode_kunjungan` = ?',[$kodekunjungan]);
+
+        $dataorder = db::connection('mysql5')->select('SELECT * FROM order_farmasi_header c INNER JOIN order_farmasi_detail d ON c.id = d.idheader WHERE c.kode_kunjungan = ? AND c.status_antrian != 8',[$kodekunjungan]);
+
+
+
+        // $orderfarmasi = db::connection('mysql5')->select('select *,b.id as iddetail,a.status_antrian as status_antrian_a,c.nomor_urut as status_antrian_b,c.status_antrian as status_kirim from order_farmasi_header a
+        // inner join order_farmasi_detail b on a.id = b.idheader
+        // left outer join erm_antrian_farmasi c on a.kode_kunjungan = c.kode_kunjungan
+        // where a.kode_kunjungan = ? and a.status_antrian != 8 and b.status_detail >= 1', [$kodekunjungan]);
+
+
         return view('new_farmasi.tabel_order_farmasi', compact([
-            'orderfarmasi',
+            'antrian',
+            'dataorder',
             'kodekunjungan'
         ]));
     }

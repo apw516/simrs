@@ -11,7 +11,7 @@
     </thead>
     <tbody>
         @foreach ($riwayat as $r)
-            <tr>
+            <tr @if($r->status_antrian == 2) class="bg-success" @endif>
                 <td>{{ $r->namabarang }}</td>
                 <td>{{ $r->tipeanestesi }} | {{ $r->jenisresep }} </td>
                 <td>{{ $r->jumlah }}</td>
@@ -23,11 +23,13 @@
                         Belum dikirim
                     @elseif ($r->status_antrian == 1)
                         Sudah dikirim
+                    @elseif ($r->status_antrian == 2)
+                        Sudah diterima
                     @endif
                     </button>
                 </td>
                 <td>
-                    <button class="btn btn-sm btn-danger bataloder" namabarang="{{ $r->namabarang }}"
+                    <button @if($r->status_antrian == 2) disabled @endif class="btn btn-sm btn-danger bataloder" namabarang="{{ $r->namabarang }}"
                         iddetail="{{ $r->iddetail }}"><i class="bi bi-recycle"></i>
                 </td>
             </tr>

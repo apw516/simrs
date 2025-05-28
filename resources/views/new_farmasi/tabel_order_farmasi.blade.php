@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-header">Data Order Farmasi</div>
     <div class="card-body">
-        <table id="tabeldataorder" class="table table-sm table-hover table-bordered">
+        {{-- <table id="tabeldataorder" class="table table-sm table-hover table-bordered">
             <thead>
                 <th>Nomor Antrian</th>
                 <th>Unit Tujuan</th>
@@ -14,25 +14,38 @@
             </thead>
             <tbody>
                 @foreach ($orderfarmasi as $d)
-                {{-- @if($d->status_kirim != 8 || $d->status_kirim = NULL) --}}
                     <tr iddetail="{{ $d->id }}" idheader="{{ $d->idheader }}">
                         <td>{{ $d->status_antrian_b }}</td>
-                        <td>@if($d->unit_tujuan == '4002') DEPO 1 @else DEPO 2 @endif </td>
+                        <td>
+                            @if ($d->unit_tujuan == '4002')
+                                DEPO 1
+                            @else
+                                DEPO 2
+                            @endif
+                        </td>
                         <td>{{ $d->namabarang }}</td>
                         <td>{{ $d->jumlah }}</td>
                         <td>{{ $d->jenisresep }}</td>
                         <td>{{ $d->aturanpakai }}</td>
-                        <td>@if($d->status_antrian_a == 0) Belum dikirim @elseif($d->status_antrian_a == 1) Sudah dikirim @elseif($d->status_antrian_a == 2) Sudah diterima  @endif</td>
                         <td>
-                            <button @if($d->status_antrian_a == 2) disabled @endif class="btn btn-sm btn-danger batalorder" namabarang="{{ $d->namabarang }}"
+                            @if ($d->status_antrian_a == 0)
+                                Belum dikirim
+                            @elseif($d->status_antrian_a == 1)
+                                Sudah dikirim
+                            @elseif($d->status_antrian_a == 2)
+                                Sudah diterima
+                            @endif
+                        </td>
+                        <td>
+                            <button @if ($d->status_antrian_a == 2) disabled @endif
+                                class="btn btn-sm btn-danger batalorder" namabarang="{{ $d->namabarang }}"
                                 iddetail="{{ $d->iddetail }}" data-placement="top" title="retur order ..."><i
                                     class="bi bi-recycle"></i>
                         </td>
                     </tr>
-                    {{-- @endif --}}
                 @endforeach
             </tbody>
-        </table>
+        </table> --}}
     </div>
     <div class="card-footer">
         <input hidden type="text" value="{{ $kodekunjungan }}" id="kodekunjungan">
@@ -69,22 +82,23 @@
             }
         });
     });
-    function batalsemuaorder()
-    {
-      Swal.fire({
+
+    function batalsemuaorder() {
+        Swal.fire({
             title: "Data order yang sudah dikirim akan dibatalkan ?",
             text: "anda bisa mengirimnya lagi nanti ...",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Ya, Kirim "
+            confirmButtonText: "Ya, batal "
         }).then((result) => {
             if (result.isConfirmed) {
                 batalkirimorder_action()
             }
         });
     }
+
     function kirimorder() {
         Swal.fire({
             title: "Data akan dikirim ke farmasi ?",
@@ -140,47 +154,62 @@
             }
         });
     }
+
     function batalkirimorder_action() {
-        kodekunjungan = $('#kodekunjungan').val()
-        $.ajax({
-            async: true,
-            type: 'post',
-            dataType: 'json',
-            data: {
-                _token: "{{ csrf_token() }}",
-                kodekunjungan
-            },
-            url: '<?= route('batalkirimorder_action') ?>',
-            error: function(data) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ooops....',
-                    text: 'Sepertinya ada masalah......',
-                    footer: ''
-                })
-            },
-            success: function(data) {
-                if (data.kode == 500) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oopss...',
-                        text: data.message,
-                        footer: ''
-                    })
-                } else {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'OK',
-                        text: data.message,
-                        footer: ''
-                    })
-                    formorderfarmasiperawat()
-                }
+        Swal.fire({
+            title: "order yang sudah diterima tidak bisa dibatalkan oleh sistem ...",
+            text: "Harap menghubungi petugas farmasi ...",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, lanjut "
+        }).then((result) => {
+            if (result.isConfirmed) {
+                kodekunjungan = $('#kodekunjungan').val()
+                $.ajax({
+                    async: true,
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        kodekunjungan
+                    },
+                    url: '<?= route('batalkirimorder_action') ?>',
+                    error: function(data) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Ooops....',
+                            text: 'Sepertinya ada masalah......',
+                            footer: ''
+                        })
+                    },
+                    success: function(data) {
+                        if (data.kode == 500) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oopss...',
+                                text: data.message,
+                                footer: ''
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'OK',
+                                text: data.message,
+                                footer: ''
+                            })
+                            formorderfarmasiperawat()
+                        }
+                    }
+                });
             }
         });
+
     }
+
     function batalorderobat(iddetail) {
-          $.ajax({
+        $.ajax({
             async: true,
             type: 'post',
             dataType: 'json',
