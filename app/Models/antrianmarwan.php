@@ -26,14 +26,14 @@ class antrianmarwan extends Model
         $client = new Client();
         $header = $this->header();
         $url = 'http://192.168.2.30/siramah/api/antrian/ambil_antrian';
-        try{
+        try {
             $response = $client->request('POST', $url, [
                 'headers' => $header,
                 'form_params' => $data_antrian
-                ]);
+            ]);
             $response = json_decode($response->getBody());
             return $response;
-        }catch(ClientException){
+        } catch (ClientException) {
             return 'RTO';
         }
     }
@@ -42,14 +42,14 @@ class antrianmarwan extends Model
         $client = new Client();
         $header = $this->header();
         $url = 'http://192.168.2.30/siramah/api/antrian/ambil_antrians';
-        try{
+        try {
             $response = $client->request('POST', $url, [
                 'headers' => $header,
                 'form_params' => $data_antrian
-                ]);
+            ]);
             $response = json_decode($response->getBody());
             return $response;
-        }catch(ClientException){
+        } catch (ClientException) {
             return 'RTO';
         }
     }
@@ -58,14 +58,14 @@ class antrianmarwan extends Model
         $client = new Client();
         $header = $this->header();
         $url = 'http://192.168.2.30/siramah/api/antrian/batal_antrian';
-        try{
+        try {
             $response = $client->request('POST', $url, [
                 'headers' => $header,
                 'form_params' => $data_batal_antrian
-                ]);
+            ]);
             $response = json_decode($response->getBody());
             return $response;
-        }catch(ClientException){
+        } catch (ClientException) {
             return 'RTO';
         }
     }
@@ -74,14 +74,14 @@ class antrianmarwan extends Model
         $client = new Client();
         $header = $this->header();
         $url = 'http://192.168.2.30/siramah/api/antrian/update_antrean_pendaftaran';
-        try{
+        try {
             $response = $client->request('POST', $url, [
                 'headers' => $header,
                 'form_params' => $taskid
-                ]);
+            ]);
             $response = json_decode($response->getBody());
             return $response;
-        }catch(ClientException){
+        } catch (ClientException) {
             return 'RTO';
         }
     }

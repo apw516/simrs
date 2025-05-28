@@ -42,6 +42,7 @@ use App\Models\ts_rujukan;
 use App\Models\jkn_antrian;
 use App\Models\Status;
 use App\Models\tracer;
+use App\Models\ts_antrian_online;
 use simitsdk\phpjasperxml\PHPJasperXML;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use BaconQrCode\Renderer\GDLibRenderer;
@@ -803,9 +804,9 @@ class SimrsController extends Controller
         if (strlen($surkon) > 5) {
             try {
                 $ceksurkon1 = $v->carisuratkontrol($surkon);
-                if($ceksurkon1->metaData == '200'){
+                if ($ceksurkon1->metaData == '200') {
                     $tglterbit = $ceksurkon1->response->tglTerbit;
-                    if($tglterbit == $request->tglsep){
+                    if ($tglterbit == $request->tglsep) {
                         $data = [
                             'kode' => 500,
                             'message' => 'Tanggal terbit surat kontrol tidak boleh sama dengan tanggal sep !'
@@ -1047,6 +1048,20 @@ class SimrsController extends Controller
         if ($request->kodepolitujuan != 'HDL') {
             try {
                 $antrian = $mw->ambilantrean2($data_antrian);
+                if ($antrian->metaData->code != 200) {
+                    $dataket = [
+                        'no_rm' =>$request->norm,
+                        'tgl_entry' => $this->get_now(),
+                        'keterangan' =>$antrian->metaData->message,
+                    ];
+                    ts_antrian_online::create($dataket);
+                    $data = [
+                        'kode' => 201,
+                        'message' => $antrian->metaData->message
+                    ];
+                    echo json_encode($data);
+                    die;
+                }
             } catch (\Exception $e) {
                 $err = $e->getMessage();
                 $data = [
@@ -1747,8 +1762,8 @@ class SimrsController extends Controller
                 //         $tarif2 = $unit[0]->mt_tarif_detail2->tarif_rajal;
                 //     }
                 // } else {
-                    $tarif1 = $unit[0]->mt_tarif_detail->tarif_rajal;
-                    $tarif2 = $unit[0]->mt_tarif_detail2->tarif_rajal;
+                $tarif1 = $unit[0]->mt_tarif_detail->tarif_rajal;
+                $tarif2 = $unit[0]->mt_tarif_detail2->tarif_rajal;
                 // }
 
                 $tagihanpribadi1 = $tarif1;
