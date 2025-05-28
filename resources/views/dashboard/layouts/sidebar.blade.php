@@ -544,11 +544,26 @@
                           </li>
                       @endif
                   @endif
-                   <li class="nav-header"> <i class="nav-icon bi bi-person-circle mr-2"></i>MASTER TARIF</li>
+                   <li class="nav-header"> FARMASI</li>
+                     <li class="nav-item ">
+                          <a href="{{ route('indexdataorderfarmasi') }}"
+                              class="nav-link @if ($sidebar == 'indexdataorder') active @endif">
+                              <i class="nav-icon fasbi bi-back"></i>
+                              <p>Data Order Resep</p>
+                          </a>
+                      </li>
+                     <li class="nav-item ">
+                          <a href="{{ route('indexmastertarif') }}"
+                              class="nav-link @if ($sidebar == 'indexriwayatpelayananresep') active @endif">
+                              <i class="nav-icon fasbi bi-back"></i>
+                              <p>Riwayat Pelayanan</p>
+                          </a>
+                      </li>
+                   <li class="nav-header"> MASTER TARIF</li>
                       <li class="nav-item ">
                           <a href="{{ route('indexmastertarif') }}"
                               class="nav-link @if ($sidebar == 'indexmastertarif') active @endif">
-                              <i class="bi bi-person-lines-fill nav-icon"></i>
+                              <i class="nav-icon fasbi bi-back"></i>
                               <p>Data Master Tarif</p>
                           </a>
                       </li>

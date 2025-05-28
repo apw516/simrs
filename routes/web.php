@@ -722,8 +722,12 @@ Route::post('ambil_detail_template', [newFarmasiController::class, 'ambil_detail
 Route::post('ambil_detail_resep', [newFarmasiController::class, 'ambil_detail_resep_pasien'])->name('ambil_detail_resep');
 //perawat
 Route::post('dataorderfarmasi', [newFarmasiController::class, 'dataorderfarmasi'])->name('dataorderfarmasi');
+Route::post('cariorderfarmasi', [newFarmasiController::class, 'cariorderfarmasi'])->name('cariorderfarmasi');
+Route::post('detailorderan', [newFarmasiController::class, 'detailorderan'])->name('detailorderan');
+Route::post('simpandatapelayanan', [newFarmasiController::class, 'simpandatapelayanan'])->name('simpandatapelayanan');
 
 
+Route::get('indexdataorderfarmasi', [newFarmasiController::class, 'indexdataorderfarmasi'])->middleware('auth')->name('indexdataorderfarmasi');
 
 
 Route::get('indexmastertarif', [newMasterController::class, 'indexmastertarif'])->middleware('auth')->name('indexmastertarif');
