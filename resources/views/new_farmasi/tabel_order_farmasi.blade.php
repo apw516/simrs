@@ -46,6 +46,49 @@
                 @endforeach
             </tbody>
         </table> --}}
+        @foreach ($headerorder as $d)
+            <div class="card">
+                <div class="card-header">
+                    Status Order : @if ($d->status_antrian == 0)
+                        Belum dikirim
+                    @elseif($d->status_antrian == 1)
+                        Sudah dikirim
+                    @elseif($d->status_antrian == 2)
+                        Sudah diterima
+                    @endif
+                    @foreach ($antrian as $ad )
+                        @if($d->id == $ad->id_header_order)
+                           <br> Nomor antrian : {{ $ad->nomor_urut }}
+                        @endif
+                    @endforeach
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <thead>
+                            <th>Nama barang</th>
+                            <th>Jumlah</th>
+                            <th>Aturan Pakai</th>
+                            <th></th>
+                        </thead>
+                        @foreach ($dataorder as $dd)
+                            @if ($dd->idheader == $d->id)
+                                <tr>
+                                    <td>{{ $dd->namabarang }}</td>
+                                    <td>{{ $dd->jumlah }}</td>
+                                    <td>{{ $dd->aturanpakai }}</td>
+                                    <td>
+                                        <button @if ($d->status_antrian == 2) disabled @endif
+                                            class="btn btn-sm btn-danger batalorder" namabarang="{{ $dd->namabarang }}"
+                                            iddetail="{{ $dd->iddetail }}" data-placement="top"
+                                            title="retur order ..."><i class="bi bi-recycle"></i>
+                                    </td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </table>
+                </div>
+            </div>
+        @endforeach
     </div>
     <div class="card-footer">
         <input hidden type="text" value="{{ $kodekunjungan }}" id="kodekunjungan">

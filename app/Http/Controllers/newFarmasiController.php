@@ -233,6 +233,7 @@ class newFarmasiController extends Controller
         $iddetail = $request->iddetail;
         $detail = db::connection('mysql5')->select('select * from order_farmasi_detail where id = ?', [$iddetail]);
         $header = db::connection('mysql5')->select('select * from order_farmasi_header where id = ?', [$detail[0]->idheader]);
+
         if ($header[0]->status_antrian == 2) {
             $data = [
                 'kode' => 500,
@@ -243,20 +244,23 @@ class newFarmasiController extends Controller
         }
         DB::connection('mysql5')->table('order_farmasi_detail')->where('id', $iddetail)->update(['status_detail' => 0]);
 
-        $orderfarmasi = db::connection('mysql5')->select('select * from order_farmasi_header a inner join order_farmasi_detail b on a.id = b.idheader where a.kode_kunjungan = ? and a.status_antrian != 8 and b.status_detail = 1', [$header[0]->kode_kunjungan]);
-
+        $orderfarmasi = db::connection('mysql5')->select('select * from order_farmasi_detail where idheader = ? and status_detail != 0', [$header[0]->id]);
         if (count($orderfarmasi) == 0) {
             //membatalkan order
-            DB::connection('mysql5')->table('order_farmasi_header')->where('kode_kunjungan', $header[0]->kode_kunjungan)->update(['status_antrian' => 8]);
-
+            DB::connection('mysql5')->table('order_farmasi_header')->where('id', $header[0]->id)->update(['status_antrian' => 8]);
             $header_order = $header[0]->id;
             //cek antrian
+
             $header_antrian = db::connection('mysql5')->select('select * from erm_antrian_farmasi_detail where id_header_order = ?', [$header_order]);
-            $id_header_antrian = $header_antrian[0]->idheader_antrian;
-            $cek_order2 = db::connection('mysql5')->select('select * from erm_antrian_farmasi_detail a inner join order_farmasi_header b on a.id_header_order = b.id where a.idheader_antrian = ? and b.status_antrian != 8', [$id_header_antrian]);
-            if (count($cek_order2) == 0) {
-                DB::connection('mysql5')->table('erm_antrian_farmasi')->where('id', $id_header_antrian)->delete();
-                DB::connection('mysql5')->table('erm_antrian_farmasi_detail')->where('idheader_antrian', $id_header_antrian)->delete();
+            if(count($header_antrian) > 0){
+
+                $id_header_antrian = $header_antrian[0]->idheader_antrian;
+                $cek_order2 = db::connection('mysql5')->select('select * from erm_antrian_farmasi_detail a inner join order_farmasi_header b on a.id_header_order = b.id where a.idheader_antrian = ? and b.status_antrian != ?', [$id_header_antrian,8]);
+
+                if (count($cek_order2) == 0) {
+                    DB::connection('mysql5')->table('erm_antrian_farmasi')->where('id', $id_header_antrian)->delete();
+                    DB::connection('mysql5')->table('erm_antrian_farmasi_detail')->where('idheader_antrian', $id_header_antrian)->delete();
+                }
             }
         }
         $data = [
@@ -374,10 +378,12 @@ class newFarmasiController extends Controller
     {
         $kodekunjungan = $request->kodekunjungan;
         $rm = $request->nomorrm;
+        $headerorder = db::connection('mysql5')->select('select * from order_farmasi_header where kode_kunjungan = ? and status_antrian != 8',[$kodekunjungan]);
+
         $antrian = db::connection('mysql5')->select('SELECT * FROM erm_antrian_farmasi a
         INNER JOIN erm_antrian_farmasi_detail b ON a.id = b.`idheader_antrian` WHERE a.`kode_kunjungan` = ?',[$kodekunjungan]);
 
-        $dataorder = db::connection('mysql5')->select('SELECT * FROM order_farmasi_header c INNER JOIN order_farmasi_detail d ON c.id = d.idheader WHERE c.kode_kunjungan = ? AND c.status_antrian != 8',[$kodekunjungan]);
+        $dataorder = db::connection('mysql5')->select('SELECT *,d.id as iddetail FROM order_farmasi_header c INNER JOIN order_farmasi_detail d ON c.id = d.idheader WHERE c.kode_kunjungan = ? AND c.status_antrian != 8 and d.status_detail != 0',[$kodekunjungan]);
 
 
 
@@ -389,6 +395,7 @@ class newFarmasiController extends Controller
 
         return view('new_farmasi.tabel_order_farmasi', compact([
             'antrian',
+            'headerorder',
             'dataorder',
             'kodekunjungan'
         ]));
