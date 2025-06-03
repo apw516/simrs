@@ -1252,7 +1252,7 @@ class SimrsController extends Controller
             ]
         ];
         $v = new VclaimModel();
-        sleep(150);
+        // sleep(150);
         $datasep = $v->insertsep2($get_sep);
         if ($datasep == 'RTO') {
             DB::table('ts_kunjungan')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
