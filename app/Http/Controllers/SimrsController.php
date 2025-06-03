@@ -1052,7 +1052,7 @@ class SimrsController extends Controller
                     $dataket = [
                         'no_rm' =>$request->norm,
                         'tgl_entry' => $this->get_now(),
-                        'keterangan' =>$antrian->metadata->message,
+                        'keterangan' =>$antrian->metadata->message.'|'. $tujuan .'|'.$nomorreferensi,
                     ];
                     ts_antrian_online::create($dataket);
                     $data = [
@@ -1160,7 +1160,6 @@ class SimrsController extends Controller
                 $grand_total_tarif = $tarif1 + $tarif2;
             }
         }
-
         //create sep  bridging bpjs
         $keterangansuplesi = 1;
         $katarak = 1;
