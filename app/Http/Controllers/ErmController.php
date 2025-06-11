@@ -8390,4 +8390,14 @@ class ErmController extends Controller
         echo json_encode($data);
         die;
     }
+    public function riwayatsumarilis(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        $no_rm = $request->nomorrm;
+        $data = db::select('select * from ts_hasil_sumarilis where no_rm = ? order by id desc',[$no_rm]);
+        return view('ermdokter.riwayatsumarilisi',compact([
+            'data'
+        ]));
+
+    }
 }

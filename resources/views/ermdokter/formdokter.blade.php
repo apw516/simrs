@@ -54,6 +54,13 @@
             <div class="card-body p-0">
                 <ul class="nav nav-pills flex-column">
                     @if ($pic == auth()->user()->id || $pic == '')
+                        @if(auth()->user()->unit == '1029' || auth()->user()->unit == '1045')
+                        <li class="nav-item" id="pemeriksaan">
+                            <a href="#" class="nav-link" onclick="riwayatsumarilis()">
+                                <i class="fas fa-inbox mr-2"></i>Riwayat Sumarilis
+                            </a>
+                        </li>
+                        @endif
                         <li class="nav-item" id="pemeriksaan">
                             <a href="#" class="nav-link" onclick="formpemeriksaandokter()">
                                 <i class="fas fa-inbox mr-2"></i>Catatan Perkembangan Pasien Terintegrasi ( CPPT )
@@ -299,6 +306,25 @@
                 kodekunjungan
             },
             url: '<?= route('resumepasien_dokter') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    function riwayatsumarilis() {
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('riwayatsumarilis') ?>',
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()

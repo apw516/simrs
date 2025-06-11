@@ -50,7 +50,7 @@
                             <i class="fas fa-inbox mr-2"></i>Catatan Perkembangan Pasien Terintegrasi ( CPPT )
                         </a>
                     </li>
-                    @if(auth()->user()->unit == '1029')
+                    @if(auth()->user()->unit == '1029' || auth()->user()->unit == '1045')
                     <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formsumarilis()">
                             <i class="fas fa-inbox mr-2"></i>SUMARILIS
