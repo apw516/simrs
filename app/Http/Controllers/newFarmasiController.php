@@ -43,8 +43,9 @@ class newFarmasiController extends Controller
     public function riwayatresepdibuat(Request $request)
     {
         $kodekunjungan = $request->kodekunjungan;
+        $dataorder = db::connection('mysql5')->select('select *,b.id as iddetail from order_farmasi_header a inner join order_farmasi_detail b on a.id = b.idheader where kode_kunjungan = ? and b.status_detail != 0',[$kodekunjungan]);
         return view('new_farmasi.tabel_riwayat_order_hari_ini', compact([
-            'riwayat'
+            'dataorder'
         ]));
     }
     public function ambiltabelhasilcariobat(Request $request)
@@ -65,6 +66,48 @@ class newFarmasiController extends Controller
             $data = db::select("CALL sp_cari_obat_stok_all_erm(?,?)", ([$nama, $unit]));
         }
         return view('new_farmasi.tabel_stok_obat', compact([
+            'data'
+        ]));
+    }
+    public function ambiltabelhasilcariobat_depo(Request $request)
+    {
+        $nama = $request->keyword;
+        $kodekunjungan = $request->kodekunjungan;
+        $status = $request->status;
+        if ($status == 2) {
+            $unit = '4002';
+            $data = db::select("CALL sp_cari_obat_stok_all_erm_2(?,?)", ([$nama, $unit]));
+        } else {
+            $ts_kunjungan = db::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+            if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
+                $unit = '4002';
+            } else {
+                $unit = '4008';
+            }
+            $data = db::select("CALL sp_cari_obat_stok_all_erm(?,?)", ([$nama, $unit]));
+        }
+        return view('depofarmasi.tabel_stok_obat_depo', compact([
+            'data'
+        ]));
+    }
+    public function ambiltabelhasilcarikomponenobat_depo(Request $request)
+    {
+        $nama = $request->keyword;
+        $kodekunjungan = $request->kodekunjungan;
+        $status = $request->status;
+        if ($status == 2) {
+            $unit = '4002';
+            $data = db::select("CALL sp_cari_obat_stok_all_erm_2(?,?)", ([$nama, $unit]));
+        } else {
+            $ts_kunjungan = db::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+            if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
+                $unit = '4002';
+            } else {
+                $unit = '4008';
+            }
+            $data = db::select("CALL sp_cari_obat_stok_all_erm(?,?)", ([$nama, $unit]));
+        }
+        return view('depofarmasi.tabel_komponen_obat_depo', compact([
             'data'
         ]));
     }
@@ -404,7 +447,7 @@ class newFarmasiController extends Controller
     {
         $unit = $request->unit;
         $tanggal = $request->tanggal;
-        $dataorder = db::connection('mysql5')->select('SELECT * FROM erm_antrian_farmasi a WHERE status_antrian != 8 and kode_unit = ? and date(tanggal_kirim) = ?', [$unit, $tanggal]);
+        $dataorder = db::connection('mysql5')->select('SELECT * FROM erm_antrian_farmasi a WHERE status_antrian = 0 and kode_unit = ? and date(tanggal_kirim) = ?', [$unit, $tanggal]);
         return view('depofarmasi.tabel_order_resep', compact([
             'dataorder'
         ]));
@@ -447,7 +490,7 @@ class newFarmasiController extends Controller
         // dd($dataorder2);
         return view('depofarmasi.detail_order_resep', compact([
             'header',
-            'dataorder2'
+            'dataorder2','idorder'
         ]));
     }
     public function simpandatapelayanan(Request $request)
@@ -469,7 +512,6 @@ class newFarmasiController extends Controller
                 $arrayobat[] = $dataSet2;
             }
         }
-
         $kodekunjungan = $request->kodekunjungan;
         $assdok = db::select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
         $ts_kunjungan = db::select('select *,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
@@ -521,7 +563,7 @@ class newFarmasiController extends Controller
             }
             if ($ob['tipeanestesi'] == 'REG') {
                 $tipeanes = '80';
-            } elseif ($ob['tipeanestesi'] == 'KRON') {
+            } elseif ($ob['tipeanestesi'] == 'KRONIS') {
                 $tipeanes = '81';
             }
             $datadetail = [
@@ -656,6 +698,15 @@ class newFarmasiController extends Controller
         ];
         echo json_encode($data);
         die;
+    }
+    public function riwayatresepdilayani(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        $datalayanan = db::connection('mysql4')->select('select *,a.id as idheader,b.id as iddetail from ts_layanan_header a inner join ts_layanan_detail b on a.id = b.row_id_header left outer join mt_barang c on b.kode_barang = c.kode_barang LEFT OUTER JOIN mt_tarif_header d ON SUBSTR(b.kode_tarif_detail,1,6) = d.KODE_TARIF_HEADER where a.kode_kunjungan = ? and a.kode_unit > 4000',[$kodekunjungan]);
+        $dataheader = db::connection('mysql4')->select('select *,fc_nama_unit1(kode_unit) as nama_unit,fc_NAMA_PARAMEDIS1(dok_kirim) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjaminx) as nama_penjamin from ts_layanan_header where kode_kunjungan = ?',[$kodekunjungan]);
+        return view('depofarmasi.tabel_riwayat_resepdilayani',compact([
+            'datalayanan','dataheader'
+        ]));
     }
     public function createLayanandetail()
     {

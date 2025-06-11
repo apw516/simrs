@@ -10,8 +10,8 @@
         <th>Action</th>
     </thead>
     <tbody>
-        @foreach ($riwayat as $r)
-            <tr @if($r->status_antrian == 2) class="bg-success" @endif>
+        @foreach ($dataorder as $r)
+            <tr>
                 <td>{{ $r->namabarang }}</td>
                 <td>{{ $r->tipeanestesi }} | {{ $r->jenisresep }} </td>
                 <td>{{ $r->jumlah }}</td>

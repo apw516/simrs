@@ -664,10 +664,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('ambilgambarpemeriksaan'); //sidebar
     Route::post('ambilgambarmatakiri', [ErmController::class, 'ambilgambarpemeriksaan_matakiri'])
         ->name('ambilgambarmatakiri'); //sidebar
-
     Route::post('ambilgambarmatakanan', [ErmController::class, 'ambilgambarpemeriksaan_matakanan'])
         ->name('ambilgambarmatakanan'); //sidebar
-
     Route::post('ambilgambarpemeriksaan_reset', [ErmController::class, 'ambilgambarpemeriksaan_reset'])
         ->name('ambilgambarpemeriksaan_reset'); //sidebar
     Route::post('matakiri_reset', [ErmController::class, 'matakiri_reset'])
@@ -679,7 +677,6 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
     Route::post('hasilsumarilis', [ErmController::class, 'hasilsumarilis'])
         ->name('hasilsumarilis'); //sidebar
 });
-
 
 //farmasi
 Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
@@ -702,15 +699,13 @@ Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
     Route::get('/cetaketiket/{kodekunjungan}', [FarmasiController::class, 'CetakEtiket'])->middleware('auth')->name('CetakEtiket');
     Route::get('/cetaknotafarmasi/{kodekunjungan}', [FarmasiController::class, 'cetaknotafarmasi'])->middleware('auth')->name('CetakNotaFarmasi');
 });
-
 Route::get('get_riwayat_sep/{nomorkartu}/{tglawal}/{tglakhir}', [SimrsController::class, 'cari_riwayat_sep'])->name('cari_riwayat_sep'); //formpasien_bpjs
 Route::get('/cetaklabel/{kodekunjungan}', [SimrsController::class, 'Cetaklabel']); //formpasien_bpjs
-
-
 Route::post('ambilformfarmasi2', [newFarmasiController::class, 'ambilformfarmasi2'])->name('ambilformfarmasi2'); //formpasien_bpjs
 Route::post('riwayatresepdibuat', [newFarmasiController::class, 'riwayatresepdibuat'])->name('riwayatresepdibuat');
 Route::post('ambiltabelhasilcariobat', [newFarmasiController::class, 'ambiltabelhasilcariobat'])->name('ambiltabelhasilcariobat');
-
+Route::post('ambiltabelhasilcariobat_depo', [newFarmasiController::class, 'ambiltabelhasilcariobat_depo'])->name('ambiltabelhasilcariobat_depo');
+Route::post('ambiltabelhasilcarikomponenobat_depo', [newFarmasiController::class, 'ambiltabelhasilcarikomponenobat_depo'])->name('ambiltabelhasilcarikomponenobat_depo');
 Route::post('riwayattemplateresep', [newFarmasiController::class, 'riwayattemplateresep'])->name('riwayattemplateresep');
 Route::post('riwayatreseppasien', [newFarmasiController::class, 'riwayatreseppasien'])->name('riwayatreseppasien');
 Route::post('riwayatresepdokter', [newFarmasiController::class, 'riwayatresepdokter'])->name('riwayatresepdokter');
@@ -725,11 +720,8 @@ Route::post('dataorderfarmasi', [newFarmasiController::class, 'dataorderfarmasi'
 Route::post('cariorderfarmasi', [newFarmasiController::class, 'cariorderfarmasi'])->name('cariorderfarmasi');
 Route::post('detailorderan', [newFarmasiController::class, 'detailorderan'])->name('detailorderan');
 Route::post('simpandatapelayanan', [newFarmasiController::class, 'simpandatapelayanan'])->name('simpandatapelayanan');
-
-
+Route::post('riwayatresepdilayani', [newFarmasiController::class, 'riwayatresepdilayani'])->name('riwayatresepdilayani');
 Route::get('indexdataorderfarmasi', [newFarmasiController::class, 'indexdataorderfarmasi'])->middleware('auth')->name('indexdataorderfarmasi');
-
-
 Route::get('indexmastertarif', [newMasterController::class, 'indexmastertarif'])->middleware('auth')->name('indexmastertarif');
 Route::post('carinamatarif', [newMasterController::class, 'carinamatarif'])->middleware('auth')->name('carinamatarif');
 Route::post('detailmastertarif', [newMasterController::class, 'detailmastertarif'])->middleware('auth')->name('detailmastertarif');
