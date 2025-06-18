@@ -44,13 +44,13 @@
             namabarang +
             '"><input hidden readonly type="" class="form-control form-control-sm" id="kodebarang" name="kodebarang" value="' +
             kodebarang +
-            '"><input hidden readonly type="" class="form-control form-control-sm" id="idantrianheader" name="idantrianheader" value="0"><input  hidden readonly type="" class="form-control form-control-sm" id="idheaderorder" name="idheaderorder" value="0"><input hidden  readonly type="" class="form-control form-control-sm" id="iddetailorder" name="iddetailorder" value="0"><input hidden  readonly type="" class="form-control form-control-sm" id="jenisresep" name="jenisresep" value="NON RACIK"></div><div class="form-group col-md-1"><label for="">Stok</label><input readonly type="" class="form-control form-control-sm text-xs edit_field" id="dosis" name="dosis" value="' +
+            '"><input hidden readonly type="" class="form-control form-control-sm" id="idantrianheader" name="idantrianheader" value="0"><input  hidden readonly type="" class="form-control form-control-sm" id="idheaderorder" name="idheaderorder" value="0"><input hidden  readonly type="" class="form-control form-control-sm" id="iddetailorder" name="iddetailorder" value="0"><input hidden  readonly type="" class="form-control form-control-sm" id="jenisresep" name="jenisresep" value="NON RACIK"></div><div class="form-group col-md-1"><label for="">Stok</label><input readonly type="" class="form-control form-control-sm text-xs edit_field" id="dosis" name="stok" value="' +
             stok +
-            '"></div><div class="form-group col-md-1"><label for="">Sediaan</label><input readonly type="" class="form-control form-control-sm text-xs edit_field" id="dosis" name="dosis" value="' +
+            '"></div><div class="form-group col-md-1"><label for="">Sediaan</label><input readonly type="" class="form-control form-control-sm text-xs edit_field" id="dosis" name="sediaan" value="' +
             sediaan +
-            '"></div><div class="form-group col-md-1"><label for="">Dosis awal</label><input readonly type="" class="form-control form-control-sm text-xs edit_field" id="stok" name="stok" value="' +
+            '"></div><div class="form-group col-md-1"><label for="">Dosis awal</label><input readonly type="" class="form-control form-control-sm text-xs edit_field" id="stok" name="dosis" value="' +
             dosis +
-            '"></div><div class="form-group col-md-1"><label for="">Dosis Racik</label><input type="" class="form-control form-control-sm text-xs edit_field" id="sediaan" name="sediaan" value=""></div><i class="bi bi-x-square remove_field form-group col-md-1 text-danger" kode2=""></i></div>'
+            '"></div><div class="form-group col-md-1"><label for="">Dosis Racik</label><input type="" class="form-control form-control-sm text-xs edit_field" id="sediaan" name="dosisracik" value=""></div><i class="bi bi-x-square remove_field form-group col-md-1 text-danger" kode2=""></i></div>'
         );
         $(wrapper).on("click", ".remove_field", function(e) { //user click on remove
             e.preventDefault();

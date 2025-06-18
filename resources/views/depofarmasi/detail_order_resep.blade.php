@@ -57,7 +57,8 @@
                         <div class="btn-group mr-2 mt-3" role="group" aria-label="First group">
                             <button type="button" class="btn btn-secondary"><i class="bi bi-card-text mr-2"></i>
                                 Template Resep</button>
-                            <button type="button" class="btn btn-secondary"><i class="bi bi-card-text mr-2"></i>
+                            <button type="button" class="btn btn-secondary showtemplateracikan" data-toggle="modal"
+                                data-target="#modaltemplateobatracik"><i class="bi bi-card-text mr-2"></i>
                                 Template Obat Racik</button>
                             <button type="button" class="btn btn-secondary" data-toggle="modal"
                                 data-target="#modalbuatobatracik"><i class="bi bi-file-earmark-plus-fill mr-2"></i> Buat
@@ -101,19 +102,18 @@
                                                     name="namabarang" value="{{ $d['namabarang'] }}">
                                                 <input hidden readonly type="" class="form-control "
                                                     id="kodebarang" name="kodebarang" value="{{ $d['kodebarang'] }}">
-                                                    <input hidden readonly type="" class="form-control "
-                                                        id="kodebarang" name="idantrianheader"
-                                                        value="{{ $d['id_antrian'] }}">
-                                                        <input hidden readonly type="" class="form-control "
-                                                            id="kodebarang" name="idheaderorder"
-                                                            value="{{ $d['id_header_order'] }}">
-                                                            <input hidden readonly type=""
-                                                                class="form-control " id="kodebarang"
-                                                                name="iddetailorder"
-                                                                value="{{ $d['id_detail_order'] }}">
-                                                            <input hidden readonly type=""
-                                                                class="form-control " id="jenisresep"
-                                                                name="jenisresep" value="{{ $d['jenisresep'] }}">
+                                                <input readonly type="" class="form-control "
+                                                    id="idantrianheader" name="idantrianheader"
+                                                    value="{{ $d['id_antrian'] }}">
+                                                <input hidden readonly type="" class="form-control "
+                                                    id="idheaderorder" name="idheaderorder"
+                                                    value="{{ $d['id_header_order'] }}">
+                                                <input hidden readonly type="" class="form-control "
+                                                    id="iddetailorder" name="iddetailorder"
+                                                    value="{{ $d['id_detail_order'] }}">
+                                                <input hidden readonly type="" class="form-control "
+                                                    id="jenisresep" name="jenisresep"
+                                                    value="{{ $d['jenisresep'] }}">
                                             </div>
                                             <div class="form-group col-md-1"><label for="">Dosis</label>
                                                 <input readonly type=""
@@ -176,26 +176,26 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Nama Racikan</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1"
-                                aria-describedby="emailHelp" placeholder="Masukan nama racikan ...">
+                            <input type="email" class="form-control" id="namaracikan" aria-describedby="emailHelp"
+                                placeholder="Masukan nama racikan ...">
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Tipe Racikan</label>
-                            <select multiple class="form-control" id="exampleFormControlSelect2">
-                                <option>Powder</option>
-                                <option>Non Powder</option>
+                            <select class="form-control" id="tiperacikan">
+                                <option value="powder">Powder</option>
+                                <option value="nonpowder">Non Powder</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Kemasan Racik</label>
-                            <select multiple class="form-control" id="exampleFormControlSelect2">
-                                <option>Kapsul</option>
-                                <option>Kerta Perkamen</option>
-                                <option>Pot Salep</option>
+                            <select class="form-control" id="kemasanracikan">
+                                <option value="kapsul">Kapsul</option>
+                                <option value="kertasperkamen">Kerta Perkamen</option>
+                                <option value="potsalep">Pot Salep</option>
                             </select>
                         </div>
                     </div>
@@ -204,13 +204,15 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="exampleInputPassword1">Jumlah Racikan</label>
-                            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Masukan jumlah racikan ...">
+                            <input type="text" class="form-control" id="jumlahracikan"
+                                placeholder="Masukan jumlah racikan ...">
                         </div>
                     </div>
                     <div class="col-md-8">
                         <div class="form-group">
                             <label for="exampleInputPassword1">Aturan Pakai</label>
-                            <textarea rows="5" type="text" class="form-control" id="exampleInputPassword1" placeholder="Ketik aturan pakai ..."></textarea>
+                            <textarea rows="5" type="text" class="form-control" id="aturanpakairacik"
+                                placeholder="Ketik aturan pakai ..."></textarea>
                         </div>
                     </div>
                 </div>
@@ -229,8 +231,8 @@
                         <div class="v_tb_komponen_obat">
 
                         </div>
-                         <form action="" method="post" class="formkomponenobat">
-                            <div class="draft_komponen_obat">
+                        <form action="" method="post" class="formkomponenobat" id="F1">
+                            <div class="draft_komponen_obat" id="F2">
                                 <div>
 
                                 </div>
@@ -241,7 +243,31 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Simpan</button>
+                <button type="button" class="btn btn-primary" onclick="simpantemplateracikan()">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modaltemplateobatracik" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Template Racikan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_t_R">
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="simpantemplateracikan()">Simpan</button>
             </div>
         </div>
     </div>
@@ -252,9 +278,11 @@
         riwayatresepdilayani()
     });
 
+
     function kembali() {
         $('.v_1').removeAttr('hidden', true)
         $('.v_2').attr('hidden', true)
+        cariorder()
     }
     $('.draft_obat2').on("click", ".remove_field", function(e) { //user click on remove
         e.preventDefault();
@@ -387,6 +415,7 @@
             }
         });
     }
+
     function carikomponenobat() {
         keyword = $('#keypencariankomponenobat').val()
         status = $('#tampilstok:checked').val()
@@ -410,7 +439,6 @@
             }
         });
     }
-    // Get the input field
     var input = document.getElementById("keypencarianobat");
     // Execute a function when the user presses a key on the keyboard
     input.addEventListener("keypress", function(event) {
@@ -434,4 +462,93 @@
             document.getElementById("btncariii2").click();
         }
     });
+
+    function simpantemplateracikan() {
+        Swal.fire({
+            title: "Data racikan akan disimpan ?",
+            text: "Klik OK untuk simpan",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "OK"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                SIMPANRACIKAN()
+            }
+        });
+    }
+
+    function SIMPANRACIKAN() {
+        namaracikan = $('#namaracikan').val()
+        tipperacikan = $('#tiperacikan').val()
+        kemasanracikan = $('#kemasanracikan').val()
+        jumlahracikan = $('#jumlahracikan').val()
+        aturanpakai = $('#aturanpakairacik').val()
+        var data = $('.formkomponenobat').serializeArray();
+        kodekunjungan = $('#kodekunjungan').val()
+        $.ajax({
+            async: true,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                _token: "{{ csrf_token() }}",
+                data: JSON.stringify(data),
+                namaracikan,
+                tipperacikan,
+                kemasanracikan,
+                jumlahracikan,
+                aturanpakai,
+                kodekunjungan
+            },
+            url: '<?= route('simpanracikan') ?>',
+            error: function(data) {
+                spinnerof()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ooops....',
+                    text: 'Sepertinya ada masalah......',
+                    footer: ''
+                })
+            },
+            success: function(data) {
+                spinnerof()
+                if (data.kode == 500) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oopss...',
+                        text: data.message,
+                        footer: ''
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'OK',
+                        text: data.message,
+                        footer: ''
+                    })
+                    $("#F2").empty()
+                    $('#modalbuatobatracik').modal('hide');
+                }
+            }
+        });
+    }
+    $(".showtemplateracikan").on('click', function(event) {
+        spinneron()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                idorder
+            },
+            url: '<?= route('ambiltemplateracikan') ?>',
+            error: function(response) {
+                spinnerof()
+            },
+            success: function(response) {
+                spinnerof()
+                $('.v_t_R').html(response);
+            }
+        });
+    })
 </script>

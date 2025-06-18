@@ -715,19 +715,27 @@ Route::post('kirimorderkefarmasi', [newFarmasiController::class, 'kirimorderkefa
 Route::post('batalkirimorder_action', [newFarmasiController::class, 'batalkirimorder_action'])->name('batalkirimorder_action');
 Route::post('ambil_detail_template', [newFarmasiController::class, 'ambil_detail_template'])->name('ambil_detail_template');
 Route::post('ambil_detail_resep', [newFarmasiController::class, 'ambil_detail_resep_pasien'])->name('ambil_detail_resep');
+Route::post('riwayatracikandokter', [newFarmasiController::class, 'riwayatracikandokter'])->name('riwayatracikandokter');
+Route::post('simpanracikan', [newFarmasiController::class, 'simpanracikan'])->name('simpanracikan');
 //perawat
+Route::post('hapustemplateracik', [newFarmasiController::class, 'hapustemplateracik'])->name('hapustemplateracik');
+Route::post('ambiltemplateracikan', [newFarmasiController::class, 'ambiltemplateracikan'])->name('ambiltemplateracikan');
+Route::post('ambil_detail_template_racikan', [newFarmasiController::class, 'ambil_detail_template_racikan'])->name('ambil_detail_template_racikan');
 Route::post('dataorderfarmasi', [newFarmasiController::class, 'dataorderfarmasi'])->name('dataorderfarmasi');
 Route::post('cariorderfarmasi', [newFarmasiController::class, 'cariorderfarmasi'])->name('cariorderfarmasi');
 Route::post('detailorderan', [newFarmasiController::class, 'detailorderan'])->name('detailorderan');
 Route::post('simpandatapelayanan', [newFarmasiController::class, 'simpandatapelayanan'])->name('simpandatapelayanan');
 Route::post('riwayatresepdilayani', [newFarmasiController::class, 'riwayatresepdilayani'])->name('riwayatresepdilayani');
 Route::get('indexdataorderfarmasi', [newFarmasiController::class, 'indexdataorderfarmasi'])->middleware('auth')->name('indexdataorderfarmasi');
+Route::get('indexriwayatpelayananfarmasi', [newFarmasiController::class, 'indexriwayatpelayananfarmasi'])->middleware('auth')->name('indexriwayatpelayananfarmasi');
 Route::get('indexmastertarif', [newMasterController::class, 'indexmastertarif'])->middleware('auth')->name('indexmastertarif');
 Route::post('carinamatarif', [newMasterController::class, 'carinamatarif'])->middleware('auth')->name('carinamatarif');
 Route::post('detailmastertarif', [newMasterController::class, 'detailmastertarif'])->middleware('auth')->name('detailmastertarif');
 Route::post('ambilforminsertbhp', [newMasterController::class, 'ambilforminsertbhp'])->middleware('auth')->name('ambilforminsertbhp');
 Route::post('caribarangbhp', [newMasterController::class, 'caribarangbhp'])->middleware('auth')->name('caribarangbhp');
 Route::post('simpandatabhp', [newMasterController::class, 'simpandatabhp'])->middleware('auth')->name('simpandatabhp');
+Route::post('getriwayatpelayanan_farmasi', [newFarmasiController::class, 'getriwayatpelayanan_farmasi'])->middleware('auth')->name('getriwayatpelayanan_farmasi');
+Route::post('detaillayananfarmasi', [newFarmasiController::class, 'detaillayananfarmasi'])->middleware('auth')->name('detaillayananfarmasi');
 
 
 

@@ -544,22 +544,25 @@
                           </li>
                       @endif
                   @endif
-                   <li class="nav-header"> FARMASI</li>
-                     <li class="nav-item ">
-                          <a href="{{ route('indexdataorderfarmasi') }}"
-                              class="nav-link @if ($sidebar == 'indexdataorder') active @endif">
-                              <i class="nav-icon fasbi bi-back"></i>
-                              <p>Data Order Resep</p>
-                          </a>
-                      </li>
-                     <li class="nav-item ">
-                          <a href="{{ route('indexmastertarif') }}"
-                              class="nav-link @if ($sidebar == 'indexriwayatpelayananresep') active @endif">
-                              <i class="nav-icon fasbi bi-back"></i>
-                              <p>Riwayat Pelayanan</p>
-                          </a>
-                      </li>
-                   <li class="nav-header"> MASTER TARIF</li>
+                @if (auth()->user()->nama == 'agyl' || auth()->user()->hak_akses == 6)
+                  <li class="nav-header"> FARMASI</li>
+                  <li class="nav-item ">
+                      <a href="{{ route('indexdataorderfarmasi') }}"
+                          class="nav-link @if ($sidebar == 'indexdataorder') active @endif">
+                          <i class="nav-icon fasbi bi-back"></i>
+                          <p>Data Order Resep</p>
+                      </a>
+                  </li>
+                  <li class="nav-item ">
+                      <a href="{{ route('indexriwayatpelayananfarmasi') }}"
+                          class="nav-link @if ($sidebar == 'indexriwayatpelayananresep') active @endif">
+                          <i class="nav-icon fasbi bi-back"></i>
+                          <p>Riwayat Pelayanan</p>
+                      </a>
+                  </li>
+                  @endif
+                  @if (auth()->user()->nama == 'agyl')
+                      <li class="nav-header"> MASTER TARIF</li>
                       <li class="nav-item ">
                           <a href="{{ route('indexmastertarif') }}"
                               class="nav-link @if ($sidebar == 'indexmastertarif') active @endif">
@@ -567,7 +570,6 @@
                               <p>Data Master Tarif</p>
                           </a>
                       </li>
-                  @if (auth()->user()->nama == 'agyl')
                       <li class="nav-header"> <i class="nav-icon bi bi-person-circle mr-2"></i> ADMIN IT</li>
                       <li class="nav-item ">
                           <a href="{{ route('datauser') }}"
@@ -578,7 +580,7 @@
                       </li>
                   @endif
                   @if (auth()->user()->hak_akses == 6)
-                      <li class="nav-header">FARMASI</li>
+                      {{-- <li class="nav-header">FARMASI</li>
                       <li class="nav-item">
                           <a href="{{ route('index_layanan_resep') }}"
                               class="nav-link @if ($sidebar == 'farmasi_1') active @endif">
@@ -587,7 +589,7 @@
                                   Layanan Resep
                               </p>
                           </a>
-                      </li>
+                      </li> --}}
                       {{-- <li class="nav-item">
                           <a href="" class="nav-link @if ($sidebar == '2') active @endif">
                               <i class="nav-icon fas fa-th"></i>
@@ -596,7 +598,7 @@
                               </p>
                           </a>
                       </li> --}}
-                      <li class="nav-item">
+                      {{-- <li class="nav-item">
                           <a href="{{ route('cari_resep') }}"
                               class="nav-link @if ($sidebar == 'farmasi_3') active @endif">
                               <i class="nav-icon fas fa-th"></i>
@@ -613,7 +615,7 @@
                                   Kartu Stok
                               </p>
                           </a>
-                      </li>
+                      </li> --}}
                   @endif
                   @if (auth()->user()->nama == 'agyl' ||
                           auth()->user()->hak_akses == '1' ||
