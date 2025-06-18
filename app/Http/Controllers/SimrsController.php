@@ -1055,12 +1055,12 @@ class SimrsController extends Controller
                         'keterangan' =>$antrian->metadata->message.'|'. $tujuan .'|'.$nomorreferensi,
                     ];
                     ts_antrian_online::create($dataket);
-                    $data = [
-                        'kode' => 201,
-                        'message' => $antrian->metadata->message
-                    ];
-                    echo json_encode($data);
-                    die;
+                    // $data = [
+                    //     'kode' => 201,
+                    //     'message' => $antrian->metadata->message
+                    // ];
+                    // echo json_encode($data);
+                    // die;
                 }
             } catch (\Exception $e) {
                 $err = $e->getMessage();
