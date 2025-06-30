@@ -23,8 +23,8 @@
                     @foreach ($datalayanan as $dl)
                         @if($dl->idheader == $d->id)
                             <tr>
-                                <td>{{ $dl->nama_barang }} {{ $dl->NAMA_TARIF }}  </td>
-                                <td>@if($dl->kode_barang != '') @if($dl->tipe_anestesi == 80) REGULER @elseif($dl->tipe_anestesi == 81) KRONIS @endif @endif</td>
+                                <td>{{ $dl->nama_barang }} {{ $dl->NAMA_TARIF }} {{ $dl->nama_racik }} </td>
+                                <td>@if($dl->kdbrg != '') @if($dl->tipe_anestesi == 80) REGULER @elseif($dl->tipe_anestesi == 81) KRONIS @endif @endif</td>
                                 <td>{{ $dl->satuan }}</td>
                                 <td>{{ $dl->aturan_pakai }}</td>
                                 <td>{{ $dl->jumlah_layanan }}</td>

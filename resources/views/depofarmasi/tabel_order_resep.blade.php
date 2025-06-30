@@ -13,7 +13,7 @@
              <tbody>
                  @foreach ($dataorder as $d)
                      <tr>
-                         <td>{{ $d->nomor_urut }}</td>
+                         <td>{{ $d->kode_antrian }} - {{ $d->nomor_urut }}</td>
                          <td>{{ $d->no_rm }}</td>
                          <td>{{ $d->nama_pasien }}</td>
                          <td>{{ $d->nama_unit_asal }}</td>

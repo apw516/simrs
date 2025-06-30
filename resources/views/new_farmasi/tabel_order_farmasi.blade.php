@@ -58,7 +58,8 @@
                     @endif
                     @foreach ($antrian as $ad )
                         @if($d->id == $ad->id_header_order)
-                           <br> Nomor antrian : {{ $ad->nomor_urut }}
+                           <br> Nomor antrian : {{ $ad->kode_antrian}} - {{ $ad->nomor_urut }}
+                           <br> Unit : {{ $ad->nama_unit }} @if($ad->kode_unit == 4002) 1 @endif
                         @endif
                     @endforeach
                 </div>

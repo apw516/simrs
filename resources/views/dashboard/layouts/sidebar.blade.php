@@ -560,8 +560,23 @@
                           <p>Riwayat Pelayanan</p>
                       </a>
                   </li>
+                  <li class="nav-item ">
+                      <a href="{{ route('riwayatkartustok') }}"
+                          class="nav-link @if ($sidebar == 'riwayatkartustok') active @endif">
+                          <i class="nav-icon fasbi bi-back"></i>
+                          <p>Riwayat Kartu Stok</p>
+                      </a>
+                  </li>
                   @endif
                   @if (auth()->user()->nama == 'agyl')
+                      <li class="nav-header"> JASA MEDIS</li>
+                         <li class="nav-item ">
+                          <a href="{{ route('indexjasamedis') }}"
+                              class="nav-link @if ($sidebar == 'indexjasamedis') active @endif">
+                              <i class="nav-icon fasbi bi-back"></i>
+                              <p>Data Jasa Medis</p>
+                          </a>
+                      </li>
                       <li class="nav-header"> MASTER TARIF</li>
                       <li class="nav-item ">
                           <a href="{{ route('indexmastertarif') }}"

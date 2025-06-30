@@ -33,9 +33,12 @@
             @else
                 <br>{{ $kunjungan[0]->diagx }}</p>
                 @endif
-                <a href="#" onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})"
+                <a hidden href="#" onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})"
                     class="btn btn-primary btn-block"><b>Catatan
                         Medis</b></a>
+                <a hidden href="#" onclick="formcatatanmedis2({{ $kunjungan[0]->no_rm }})"
+                    class="btn btn-primary btn-block"><b>Catatan
+                        Medis V2</b></a>
                 <input hidden type="text" id="kodekunjungan" value="{{ $kunjungan[0]->kode_kunjungan }}">
                 <input hidden type="text" id="nomorrm" value="{{ $kunjungan[0]->no_rm }}">
             </div>
@@ -97,6 +100,11 @@
                             <i class="fas fa-filter mr-2"></i> Resume
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="resume2()">
+                            <i class="fas fa-filter mr-2"></i> Resume v2
+                        </a>
+                    </li>
                 </ul>
             </div>
             <!-- /.card-body -->
@@ -105,12 +113,13 @@
     <!-- /.col -->
     <div class="col-md-10">
         @if ($selisih > 70)
-        <div class="alert alert-warning" role="alert">
-            @if (count($kunjunganKronis) > 0)
-                Pasien Kronis ,
-                @endif Pasien Berpotensi PRB, dan melanjutkan pengobatan kembali ke faskes 1... <b>( Abaikan pesan ini jika diagnosa pasien tidak termasuk 9 diagnosa PRB ...)</b>
-          </div>
-          @endif
+            <div class="alert alert-warning" role="alert">
+                @if (count($kunjunganKronis) > 0)
+                    Pasien Kronis ,
+                @endif Pasien Berpotensi PRB, dan melanjutkan pengobatan kembali ke faskes 1...
+                <b>( Abaikan pesan ini jika diagnosa pasien tidak termasuk 9 diagnosa PRB ...)</b>
+            </div>
+        @endif
         {{-- @elseif($selisih == 3)
         <div class="alert alert-warning" role="alert">
             @if (count($kunjunganKronis) > 0)
@@ -118,16 +127,54 @@
             @endif Pasien PRB, dan melanjutkan pengobatan kembali ke faskes 1...
           </div>
         @endif --}}
+        <button class="btn btn-warning mb-3 ambilberkaserm" data-toggle="modal" data-target="#modalberkaserm"> <i class="bi bi-book mr-1 ml-1"></i> Catatan Medis Pasien</button>
         <div class="slide3">
         </div>
     </div>
     <!-- /.col -->
 </div>
+<!-- Modal -->
+<style>
+    .modal-lgg {
+        max-width: 90%;
+    }
+</style>
+<input hidden type="text" value="0" id="statusambilberkas">
+<div class="modal fade" id="modalberkaserm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lgg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Catatan Medis Pasien</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_berkas_erm">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function() {
         rm = $('#nomorrm').val()
-        formcatatanmedis(rm)
+        formpemeriksaandokter()
     })
+    $(".ambilberkaserm").on('click', function(event) {
+        rm = $('#nomorrm').val()
+        cek = $('#statusambilberkas').val()
+        if(cek == '0'){
+            formcatatanmedis3(rm)
+        }else{
+        }
+    });
 
     function formcatatanmedis(rm) {
         spinner = $('#loader')
@@ -141,6 +188,40 @@
             url: '<?= route('ambilcatatanmedis_pasien') ?>',
             success: function(response) {
                 $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+
+    function formcatatanmedis2(rm) {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm
+            },
+            url: '<?= route('ambilcatatanmedis_pasien2') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    function formcatatanmedis3(rm) {
+        spinner = $('#loader')
+        $('#statusambilberkas').val('1')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm
+            },
+            url: '<?= route('ambilcatatanmedis_pasien2') ?>',
+            success: function(response) {
+                $('.v_berkas_erm').html(response);
                 spinner.hide()
             }
         });
@@ -299,6 +380,26 @@
                 kodekunjungan
             },
             url: '<?= route('resumepasien_dokter') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+
+    function resume2() {
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('resumepasien_dokter2') ?>',
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()

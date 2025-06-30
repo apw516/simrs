@@ -8,7 +8,7 @@
     <tbody>
         @foreach ($datalayanan as $d)
             <tr>
-                <td>{{ $d->nama_barang }} {{ $d->NAMA_TARIF }}</td>
+                <td>{{ $d->nama_barang }} {{ $d->NAMA_TARIF }} {{ $d->nama_racik}}</td>
                 <td>{{ $d->jumlah_layanan }}</td>
                 <td>Rp. {{ number_format($d->total_tarif, 2) }}
                 </td>
