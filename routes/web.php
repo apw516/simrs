@@ -733,7 +733,9 @@ Route::post('ambiltemplateracikan', [newFarmasiController::class, 'ambiltemplate
 Route::post('ambil_detail_template_racikan', [newFarmasiController::class, 'ambil_detail_template_racikan'])->name('ambil_detail_template_racikan');
 Route::post('dataorderfarmasi', [newFarmasiController::class, 'dataorderfarmasi'])->name('dataorderfarmasi');
 Route::post('cariorderfarmasi', [newFarmasiController::class, 'cariorderfarmasi'])->name('cariorderfarmasi');
+Route::post('cariorderfarmasidilayani', [newFarmasiController::class, 'cariorderfarmasidilayani'])->name('cariorderfarmasidilayani');
 Route::post('detailorderan', [newFarmasiController::class, 'detailorderan'])->name('detailorderan');
+Route::post('detailorderanditerima', [newFarmasiController::class, 'detailorderanditerima'])->name('detailorderanditerima');
 Route::post('simpandatapelayanan', [newFarmasiController::class, 'simpandatapelayanan'])->name('simpandatapelayanan');
 Route::post('riwayatresepdilayani', [newFarmasiController::class, 'riwayatresepdilayani'])->name('riwayatresepdilayani');
 Route::get('indexdataorderfarmasi', [newFarmasiController::class, 'indexdataorderfarmasi'])->middleware('auth')->name('indexdataorderfarmasi');

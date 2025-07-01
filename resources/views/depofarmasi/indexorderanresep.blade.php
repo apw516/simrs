@@ -38,6 +38,16 @@
                     <div class="v_tabel_order mt-2">
 
                     </div>
+                    <div class="">
+                        <div class="card">
+                            <div class="card-header">Data Order yang dilayani</div>
+                            <div class="card-body">
+                                <div class="v_tabel_order_dilayano">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div hidden class="v_2">
 
@@ -47,6 +57,7 @@
         <script>
             $(document).ready(function() {
                 cariorder()
+                cariorder2()
             });
             function spinneron() {
                 spinner = $('#loader')
@@ -74,6 +85,25 @@
                     success: function(response) {
                         spinner.hide();
                         $('.v_tabel_order').html(response);
+                    }
+                });
+            }
+            function cariorder2() {
+                unit = $('#unit').val()
+                tanggal = $('#tanggalorder').val()
+                spinner = $('#loader')
+                spinner.show();
+                $.ajax({
+                    type: 'post',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        tanggal,
+                        unit
+                    },
+                    url: '<?= route('cariorderfarmasidilayani') ?>',
+                    success: function(response) {
+                        spinner.hide();
+                        $('.v_tabel_order_dilayano').html(response);
                     }
                 });
             }

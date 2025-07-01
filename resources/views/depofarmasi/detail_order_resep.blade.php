@@ -283,6 +283,8 @@
         $('.v_1').removeAttr('hidden', true)
         $('.v_2').attr('hidden', true)
         cariorder()
+        cariorder2()
+
     }
     $('.draft_obat2').on("click", ".remove_field", function(e) { //user click on remove
         e.preventDefault();

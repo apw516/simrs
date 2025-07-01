@@ -529,6 +529,15 @@ class newFarmasiController extends Controller
             'dataorder'
         ]));
     }
+    public function cariorderfarmasidilayani(Request $request)
+    {
+        $unit = $request->unit;
+        $tanggal = $request->tanggal;
+        $dataorder = db::connection('mysql5')->select('SELECT * FROM erm_antrian_farmasi a WHERE status_antrian = 1 and kode_unit = ? and date(tanggal_kirim) = ?', [$unit, $tanggal]);
+        return view('depofarmasi.tabel_order_resep_dilayani', compact([
+            'dataorder'
+        ]));
+    }
     public function detailorderan(Request $request)
     {
         $idorder = $request->idorder;
@@ -1032,6 +1041,7 @@ class newFarmasiController extends Controller
                 $cek_order_detail = db::connection('mysql5')->select('select * from order_farmasi_detail where id = ? and status_detail = ?', [$iddetailorder, 1]);
                 if (count($cek_antrian) > 0) {
                     DB::connection('mysql5')->table('erm_antrian_farmasi')->where('id', $id_antrian)->update(['status_antrian' => 1]);
+                    DB::connection('mysql5')->table('erm_antrian_farmasi_detail')->where('idheader_antrian', $id_antrian)->update(['id_layanan_header' => $layanan_header->id]);
                 }
                 if (count($cek_order_header) > 0) {
                     DB::connection('mysql5')->table('order_farmasi_header')->where('id', $id_header_order)->update(['status_antrian' => 2]);
@@ -1062,6 +1072,25 @@ class newFarmasiController extends Controller
         return view('depofarmasi.tabel_riwayat_resepdilayani', compact([
             'datalayanan',
             'dataheader'
+        ]));
+    }
+    public function detailorderanditerima(Request $request)
+    {
+        $idorder = $request->idorder;
+        $detail =  DB::connection('mysql5')->select('select * from erm_antrian_farmasi_detail where idheader_antrian = ?', [$idorder]);
+        foreach ($detail as $d) {
+            $detail =  DB::connection('mysql5')->select('select * from order_farmasi_detail where idheader = ?', [$d->id_header_order]);
+            $detail2 =  DB::connection('mysql4')->select("SELECT b.`kode_barang`,b.`nama_barang`,b.`sediaan`,b.`dosis`,a.`aturan_pakai`,a.jumlah_layanan FROM ts_layanan_detail a
+            LEFT OUTER JOIN mt_barang b ON a.`kode_barang` = b.`kode_barang`
+            LEFT OUTER JOIN mt_racikan c ON a.`kode_barang` = c.`kode_racik`
+            WHERE a.row_id_header = ? AND a.`kode_barang` != ''", [$d->id_layanan_header]);
+            $arrayobatorder[] = $detail;
+            $arrayobatfix[] = $detail2;
+        }
+        return view('depofarmasi.detail_resep_sudah_dilayani', compact([
+            'arrayobatorder',
+            'arrayobatfix',
+            'idorder'
         ]));
     }
     public function createLayanandetail()
