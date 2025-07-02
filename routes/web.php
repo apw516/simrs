@@ -611,6 +611,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('simpanttddokter'); //sidebar
     Route::post('/formtindakan', [ErmController::class, 'formtindakan'])
         ->name('formtindakan'); //sidebar
+    Route::post('/riwayatsumarilis', [ErmController::class, 'riwayatsumarilis'])
+        ->name('riwayatsumarilis'); //sidebar
     Route::post('/gambartht1', [ErmController::class, 'gambartht1'])
         ->name('gambartht1'); //sidebar
     Route::post('/gambartht2', [ErmController::class, 'gambartht2'])
