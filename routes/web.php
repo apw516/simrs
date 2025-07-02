@@ -547,8 +547,7 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('formsurkon'); //sidebar
     Route::post('simpankonsul', [ErmController::class, 'simpankonsul'])
         ->name('simpankonsul'); //sidebar
-    Route::post('ambilhasillab_by_limit', [ErmController::class, 'ambilhasillab_by_limit'])
-        ->name('ambilhasillab_by_limit'); //sidebar
+
     Route::post('simpansumarilis', [ErmController::class, 'simpansumarilis'])
         ->name('simpansumarilis'); //sidebar
     Route::post('simpandarah', [ErmController::class, 'simpandarah'])
@@ -755,6 +754,7 @@ Route::post('detaillayananfarmasi', [newFarmasiController::class, 'detaillayanan
 Route::get('caribarangfarmasi', [newFarmasiController::class, 'caribarangfarmasi'])->middleware('auth')->name('caribarangfarmasi');
 Route::post('caribarangfarmasi', [newFarmasiController::class, 'caririwayatstok'])->middleware('auth')->name('caririwayatstok');
 
-
+ Route::post('ambilhasillab_by_limit', [ErmController::class, 'ambilhasillab_by_limit'])
+        ->name('ambilhasillab_by_limit'); //sidebar
 
 
