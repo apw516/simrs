@@ -14,7 +14,10 @@ use App\Http\Controllers\PenunjangController;
 use App\Http\Controllers\AntrianIgd;
 use App\Http\Controllers\ErmIgdController;
 use App\Http\Controllers\FarmasiController;
+use App\Http\Controllers\newFarmasiController;
 use App\Http\Controllers\ReportingController;
+use App\Http\Controllers\newMasterController;
+use App\Http\Controllers\JasaMedisController;
 
 Route::get('/berkas_ersep', [ReportingController::class, 'index'])->middleware('auth')->name('berkas_ersep');
 Route::post('/ambildataeresep', [ReportingController::class, 'ambilDataEresep'])->middleware('auth')->name('ambildataeresep');
@@ -30,6 +33,8 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('bedmonitoring', [BedmonitoringController::class, 'index'])->name('bedmonitoring');
 Route::post('/ambilcatatanmedis_pasien', [ErmController::class, 'ambilcatatanmedis_pasien'])
     ->name('ambilcatatanmedis_pasien'); //sidebar
+Route::post('/ambilcatatanmedis_pasien2', [ErmController::class, 'ambilcatatanmedis_pasien2'])
+    ->name('ambilcatatanmedis_pasien2'); //sidebar
 Route::get('cetakresume/{kodekunjungan}', [ErmController::class, 'cetakresume']); //formpasien_bpjs
 Route::get('cetakresumeperawat/{rm}/{counter}', [ErmController::class, 'cetakresumeperawat']); //formpasien_bpjs
 Route::get('cetakresumedokter/{rm}/{counter}', [ErmController::class, 'cetakresumedokter']); //formpasien_bpjs
@@ -69,8 +74,6 @@ Route::post('ambilsaran', [ErmController::class, 'ambilsaran'])
     ->name('ambilsaran'); //sidebar
 Route::post('showfile', [ErmController::class, 'showfile'])
     ->name('showfile'); //sidebar
-Route::post('riwayatsumarilis', [ErmController::class, 'riwayatsumarilis'])
-    ->name('riwayatsumarilis'); //sidebar
 
 Route::get('kunjungan_pasien', [ErmController::class, 'kunjungan_pasien'])
     ->name('kunjungan_pasien'); //sidebar
@@ -544,6 +547,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('formsurkon'); //sidebar
     Route::post('simpankonsul', [ErmController::class, 'simpankonsul'])
         ->name('simpankonsul'); //sidebar
+    Route::post('ambilhasillab_by_limit', [ErmController::class, 'ambilhasillab_by_limit'])
+        ->name('ambilhasillab_by_limit'); //sidebar
     Route::post('simpansumarilis', [ErmController::class, 'simpansumarilis'])
         ->name('simpansumarilis'); //sidebar
     Route::post('simpandarah', [ErmController::class, 'simpandarah'])
@@ -600,6 +605,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('simpanpemeriksaandokter_anesetesi'); //sidebar
     Route::post('/resumepasien_dokter', [ErmController::class, 'resumepasien_dokter'])
         ->name('resumepasien_dokter'); //sidebar
+    Route::post('/resumepasien_dokter2', [ErmController::class, 'resumepasien_dokter2'])
+        ->name('resumepasien_dokter2'); //sidebar
     Route::post('/simpanttddokter', [ErmController::class, 'simpanttddokter'])
         ->name('simpanttddokter'); //sidebar
     Route::post('/formtindakan', [ErmController::class, 'formtindakan'])
@@ -664,10 +671,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('ambilgambarpemeriksaan'); //sidebar
     Route::post('ambilgambarmatakiri', [ErmController::class, 'ambilgambarpemeriksaan_matakiri'])
         ->name('ambilgambarmatakiri'); //sidebar
-
     Route::post('ambilgambarmatakanan', [ErmController::class, 'ambilgambarpemeriksaan_matakanan'])
         ->name('ambilgambarmatakanan'); //sidebar
-
     Route::post('ambilgambarpemeriksaan_reset', [ErmController::class, 'ambilgambarpemeriksaan_reset'])
         ->name('ambilgambarpemeriksaan_reset'); //sidebar
     Route::post('matakiri_reset', [ErmController::class, 'matakiri_reset'])
@@ -679,7 +684,6 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
     Route::post('hasilsumarilis', [ErmController::class, 'hasilsumarilis'])
         ->name('hasilsumarilis'); //sidebar
 });
-
 
 //farmasi
 Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
@@ -702,7 +706,53 @@ Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
     Route::get('/cetaketiket/{kodekunjungan}', [FarmasiController::class, 'CetakEtiket'])->middleware('auth')->name('CetakEtiket');
     Route::get('/cetaknotafarmasi/{kodekunjungan}', [FarmasiController::class, 'cetaknotafarmasi'])->middleware('auth')->name('CetakNotaFarmasi');
 });
+Route::get('indexjasamedis', [JasaMedisController::class, 'indexjasamedis'])->name('indexjasamedis'); //formpasien_bpjs
+Route::post('ambildatatotalklaim', [JasaMedisController::class, 'ambildatatotalklaim'])->name('ambildatatotalklaim'); //formpasien_bpjs
+Route::post('ambildetailsep', [JasaMedisController::class, 'ambildetailsep'])->name('ambildetailsep'); //formpasien_bpjs
+
 
 Route::get('get_riwayat_sep/{nomorkartu}/{tglawal}/{tglakhir}', [SimrsController::class, 'cari_riwayat_sep'])->name('cari_riwayat_sep'); //formpasien_bpjs
-Route::get('carisep_2/{nosep}', [SimrsController::class, 'carisep_2'])->name('carisep_2'); //formpasien_bpjs
 Route::get('/cetaklabel/{kodekunjungan}', [SimrsController::class, 'Cetaklabel']); //formpasien_bpjs
+Route::post('ambilformfarmasi2', [newFarmasiController::class, 'ambilformfarmasi2'])->name('ambilformfarmasi2'); //formpasien_bpjs
+Route::post('riwayatresepdibuat', [newFarmasiController::class, 'riwayatresepdibuat'])->name('riwayatresepdibuat');
+Route::post('ambiltabelhasilcariobat', [newFarmasiController::class, 'ambiltabelhasilcariobat'])->name('ambiltabelhasilcariobat');
+Route::post('ambiltabelhasilcariobat_depo', [newFarmasiController::class, 'ambiltabelhasilcariobat_depo'])->name('ambiltabelhasilcariobat_depo');
+Route::post('ambiltabelhasilcarikomponenobat_depo', [newFarmasiController::class, 'ambiltabelhasilcarikomponenobat_depo'])->name('ambiltabelhasilcarikomponenobat_depo');
+Route::post('riwayattemplateresep', [newFarmasiController::class, 'riwayattemplateresep'])->name('riwayattemplateresep');
+Route::post('riwayatreseppasien', [newFarmasiController::class, 'riwayatreseppasien'])->name('riwayatreseppasien');
+Route::post('riwayatresepdokter', [newFarmasiController::class, 'riwayatresepdokter'])->name('riwayatresepdokter');
+Route::post('simpanorderobat', [newFarmasiController::class, 'simpanorderobat'])->name('simpanorderobat');
+Route::post('batalorderobat', [newFarmasiController::class, 'batalorderobat'])->name('batalorderobat');
+Route::post('kirimorderkefarmasi', [newFarmasiController::class, 'kirimorderkefarmasi'])->name('kirimorderkefarmasi');
+Route::post('batalkirimorder_action', [newFarmasiController::class, 'batalkirimorder_action'])->name('batalkirimorder_action');
+Route::post('ambil_detail_template', [newFarmasiController::class, 'ambil_detail_template'])->name('ambil_detail_template');
+Route::post('ambil_detail_resep', [newFarmasiController::class, 'ambil_detail_resep_pasien'])->name('ambil_detail_resep');
+Route::post('riwayatracikandokter', [newFarmasiController::class, 'riwayatracikandokter'])->name('riwayatracikandokter');
+Route::post('simpanracikan', [newFarmasiController::class, 'simpanracikan'])->name('simpanracikan');
+//perawat
+Route::post('hapustemplateracik', [newFarmasiController::class, 'hapustemplateracik'])->name('hapustemplateracik');
+Route::post('ambiltemplateracikan', [newFarmasiController::class, 'ambiltemplateracikan'])->name('ambiltemplateracikan');
+Route::post('ambil_detail_template_racikan', [newFarmasiController::class, 'ambil_detail_template_racikan'])->name('ambil_detail_template_racikan');
+Route::post('dataorderfarmasi', [newFarmasiController::class, 'dataorderfarmasi'])->name('dataorderfarmasi');
+Route::post('cariorderfarmasi', [newFarmasiController::class, 'cariorderfarmasi'])->name('cariorderfarmasi');
+Route::post('cariorderfarmasidilayani', [newFarmasiController::class, 'cariorderfarmasidilayani'])->name('cariorderfarmasidilayani');
+Route::post('detailorderan', [newFarmasiController::class, 'detailorderan'])->name('detailorderan');
+Route::post('simpandatapelayanan', [newFarmasiController::class, 'simpandatapelayanan'])->name('simpandatapelayanan');
+Route::post('riwayatresepdilayani', [newFarmasiController::class, 'riwayatresepdilayani'])->name('riwayatresepdilayani');
+Route::get('indexdataorderfarmasi', [newFarmasiController::class, 'indexdataorderfarmasi'])->middleware('auth')->name('indexdataorderfarmasi');
+Route::get('indexriwayatpelayananfarmasi', [newFarmasiController::class, 'indexriwayatpelayananfarmasi'])->middleware('auth')->name('indexriwayatpelayananfarmasi');
+Route::get('riwayatkartustok', [newFarmasiController::class, 'riwayatkartustok'])->middleware('auth')->name('riwayatkartustok');
+Route::get('indexmastertarif', [newMasterController::class, 'indexmastertarif'])->middleware('auth')->name('indexmastertarif');
+Route::post('carinamatarif', [newMasterController::class, 'carinamatarif'])->middleware('auth')->name('carinamatarif');
+Route::post('detailmastertarif', [newMasterController::class, 'detailmastertarif'])->middleware('auth')->name('detailmastertarif');
+Route::post('ambilforminsertbhp', [newMasterController::class, 'ambilforminsertbhp'])->middleware('auth')->name('ambilforminsertbhp');
+Route::post('caribarangbhp', [newMasterController::class, 'caribarangbhp'])->middleware('auth')->name('caribarangbhp');
+Route::post('simpandatabhp', [newMasterController::class, 'simpandatabhp'])->middleware('auth')->name('simpandatabhp');
+Route::post('getriwayatpelayanan_farmasi', [newFarmasiController::class, 'getriwayatpelayanan_farmasi'])->middleware('auth')->name('getriwayatpelayanan_farmasi');
+Route::post('detaillayananfarmasi', [newFarmasiController::class, 'detaillayananfarmasi'])->middleware('auth')->name('detaillayananfarmasi');
+Route::get('caribarangfarmasi', [newFarmasiController::class, 'caribarangfarmasi'])->middleware('auth')->name('caribarangfarmasi');
+Route::post('caribarangfarmasi', [newFarmasiController::class, 'caririwayatstok'])->middleware('auth')->name('caririwayatstok');
+
+
+
+

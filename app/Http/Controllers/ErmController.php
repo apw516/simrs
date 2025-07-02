@@ -7527,6 +7527,15 @@ class ErmController extends Controller
             'mt_unit'
         ]));
     }
+    public function ambilhasillab_by_limit(Request $request)
+    {
+        $jlh = $request->jlh;
+        $rm = $request->rm;
+        $hasil_lab = DB::select('SELECT * FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` WHERE a.`no_rm` = ? AND b.`kode_unit` = ? ORDER BY a.`kode_kunjungan`DESC LIMIT ?', [$rm, '3002',$jlh]);
+        return view('erm_form_khusus.hasil_labbb',compact([
+            'hasil_lab'
+        ]));
+    }
     public function monitoring_erm()
     {
         $title = 'SIMRS - ERM';
@@ -7545,9 +7554,9 @@ class ErmController extends Controller
     public function lihathasilpenunjang_lab(Request $request)
     {
         $rm = $request->nomorrm;
-        $hasil_lab = DB::select('SELECT * FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` WHERE a.`no_rm` = ? AND b.`kode_unit` = ? ORDER BY a.`kode_kunjungan`DESC ', [$rm, '3002']);
+        $hasil_lab = DB::select('SELECT * FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` WHERE a.`no_rm` = ? AND b.`kode_unit` = ? ORDER BY a.`kode_kunjungan`DESC LIMIT 1', [$rm, '3002']);
         return view('ermtemplate.view_hasil_penunjang_lab', compact([
-            'hasil_lab'
+            'hasil_lab','rm'
         ]));
     }
     public function lihathasilpenunjang_rad(Request $request)
