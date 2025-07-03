@@ -1050,9 +1050,9 @@ class SimrsController extends Controller
                 $antrian = $mw->ambilantrean2($data_antrian);
                 if ($antrian->metadata->code != 200) {
                     $dataket = [
-                        'no_rm' =>$request->norm,
+                        'no_rm' => $request->norm,
                         'tgl_entry' => $this->get_now(),
-                        'keterangan' =>$antrian->metadata->message.'|'. $tujuan .'|'.$nomorreferensi,
+                        'keterangan' => $antrian->metadata->message . '|' . $tujuan . '|' . $nomorreferensi,
                     ];
                     ts_antrian_online::create($dataket);
                     // $data = [
@@ -3789,18 +3789,19 @@ class SimrsController extends Controller
     }
     public function updatenpasien(Request $request)
     {
-        if ($request->sesuaiktp == 1) {
+
+        if (empty($request->sesuaiktp)) {
             $desa = $request->desa;
             $kecamatan = $request->kecamatan;
             $kab = $request->kabupaten;
             $prop = $request->provinsi;
             $alamat = $request->alamat;
         } else {
-            $desa = $request->desadom;
-            $kecamatan = $request->kecamatandom;
-            $kab = $request->kabupatendom;
-            $prop = $request->provinsidom;
-            $alamat = $request->alamatdom;
+            $desa = $request->desa;
+            $kecamatan = $request->kecamatan;
+            $kab = $request->kabupaten;
+            $prop = $request->provinsi;
+            $alamat = $request->alamat;
         }
         $nobpjs = $request->nomorbpjs;
         if ($request->nomorbpjs == '') {
