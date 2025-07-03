@@ -758,3 +758,4 @@ Route::post('caribarangfarmasi', [newFarmasiController::class, 'caririwayatstok'
         ->name('ambilhasillab_by_limit'); //sidebar
 
 
+Route::get('/carisep_2/{sep}', [SimrsController::class, 'carisep_2'])->name('carisep_2'); //formpasien_bpjs
