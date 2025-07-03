@@ -36,6 +36,7 @@
                 <a href="#" onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})"
                     class="btn btn-primary btn-block"><b>Catatan
                         Medis</b></a>
+                <a href="#" onclick="lihaticare()" class="btn btn-success btn-block"><b>Icare BPJS</b></a>
                 <input hidden type="text" id="kodekunjungan" value="{{ $kunjungan[0]->kode_kunjungan }}">
                 <input hidden type="text" id="nomorrm" value="{{ $kunjungan[0]->no_rm }}">
             </div>
@@ -54,12 +55,12 @@
             <div class="card-body p-0">
                 <ul class="nav nav-pills flex-column">
                     @if ($pic == auth()->user()->id || $pic == '')
-                        @if(auth()->user()->unit == '1029' || auth()->user()->unit == '1045')
-                        <li class="nav-item" id="pemeriksaan">
-                            <a href="#" class="nav-link" onclick="riwayatsumarilis()">
-                                <i class="fas fa-inbox mr-2"></i>Riwayat Sumarilis
-                            </a>
-                        </li>
+                        @if (auth()->user()->unit == '1029' || auth()->user()->unit == '1045')
+                            <li class="nav-item" id="pemeriksaan">
+                                <a href="#" class="nav-link" onclick="riwayatsumarilis()">
+                                    <i class="fas fa-inbox mr-2"></i>Riwayat Sumarilis
+                                </a>
+                            </li>
                         @endif
                         <li class="nav-item" id="pemeriksaan">
                             <a href="#" class="nav-link" onclick="formpemeriksaandokter()">
@@ -112,12 +113,13 @@
     <!-- /.col -->
     <div class="col-md-10">
         @if ($selisih > 70)
-        <div class="alert alert-warning" role="alert">
-            @if (count($kunjunganKronis) > 0)
-                Pasien Kronis ,
-                @endif Pasien Berpotensi PRB, dan melanjutkan pengobatan kembali ke faskes 1... <b>( Abaikan pesan ini jika diagnosa pasien tidak termasuk 9 diagnosa PRB ...)</b>
-          </div>
-          @endif
+            <div class="alert alert-warning" role="alert">
+                @if (count($kunjunganKronis) > 0)
+                    Pasien Kronis ,
+                @endif Pasien Berpotensi PRB, dan melanjutkan pengobatan kembali ke faskes 1...
+                <b>( Abaikan pesan ini jika diagnosa pasien tidak termasuk 9 diagnosa PRB ...)</b>
+            </div>
+        @endif
         {{-- @elseif($selisih == 3)
         <div class="alert alert-warning" role="alert">
             @if (count($kunjunganKronis) > 0)
@@ -125,7 +127,17 @@
             @endif Pasien PRB, dan melanjutkan pengobatan kembali ke faskes 1...
           </div>
         @endif --}}
-        <div class="slide3">
+        <div class="card" id="icareshow">
+            <div class="card-header">Icare BPJS <button class="btn btn-danger float-right" onclick="tutupicare()"><i class="bi bi-x mr-1 ml-1"></i> Tutup</button>
+            </div>
+            <div class="card-body">
+                <iframe src="{{ $urlicare }}" frameborder="0" width="100%" height="1000px%"></iframe>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-danger" onclick="tutupicare()"><i class="bi bi-x mr-1 ml-1"></i>  Tutup</button>
+            </div>
+        </div>
+        <div hidden class="slide3">
         </div>
     </div>
     <!-- /.col -->
@@ -135,6 +147,16 @@
         rm = $('#nomorrm').val()
         formcatatanmedis(rm)
     })
+
+    function tutupicare() {
+        $('#icareshow').attr('Hidden', true)
+        $('.slide3').removeAttr('Hidden', true)
+    }
+
+    function lihaticare() {
+        $('#icareshow').removeAttr('Hidden', true)
+        $('.slide3').attr('Hidden', true)
+    }
 
     function formcatatanmedis(rm) {
         spinner = $('#loader')
@@ -312,6 +334,7 @@
             }
         });
     }
+
     function riwayatsumarilis() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()

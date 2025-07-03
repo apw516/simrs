@@ -21,6 +21,16 @@ class antrianmarwan extends Model
         );
         return $response;
     }
+    public function icare($noka,$kddpjp)
+    {
+        $client = new Client();
+        // $url = $this->baseUrl . "referensi/kabupaten/propinsi/".$kodepropinsi;
+        $url = "http://192.168.2.30/siramah/icares?nomorkartu=".$noka."&kodedokter=".$kddpjp;
+        // $signature = $this->signature();
+        $response = $client->request('GET', $url);
+        $response = json_decode($response->getBody());
+        return $response;
+    }
     public function ambilantrean($data_antrian)
     {
         $client = new Client();

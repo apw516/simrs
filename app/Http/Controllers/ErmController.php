@@ -26,6 +26,7 @@ use App\Models\Barang;
 use App\Models\erm_order_penunjang;
 use App\Models\ts_kunjungan;
 use App\Models\ts_kunjungan2;
+use App\Models\antrianmarwan;
 use App\Models\ts_antrian_igd;
 use App\Models\ts_sumarilis;
 use App\Models\ts_erm_transfusi_darah_reaksi;
@@ -233,7 +234,7 @@ class ErmController extends Controller
     }
     public function ambildetailpasien_dokter(Request $request)
     {
-        $mt_pasien = DB::select('Select no_rm,jenis_kelamin,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$request->rm]);
+        $mt_pasien = DB::select('Select no_rm,no_Bpjs,jenis_kelamin,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$request->rm]);
         $kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$request->kode]);
         $unitk = $kunjungan[0]->kode_unit;
         $kunjunganKronis = DB::select('select * from ts_kunjungan where no_rm = ? and kode_unit = ? and catatan = ?', [$request->rm, $unitk, 'KRONIS']);
@@ -283,12 +284,24 @@ class ErmController extends Controller
         $unit = auth()->user()->unit;
         $last_assdok = DB::select('SELECT * FROM assesmen_dokters
         WHERE id = (SELECT MAX(id) FROM assesmen_dokters WHERE id_pasien = ? AND kode_unit = ? ) AND id_pasien = ? AND kode_unit = ?', [$request->rm, $unit, $request->rm, $unit]);
+        $mw = new antrianmarwan();
+        $noka = $mt_pasien[0]->no_Bpjs;
+        $dpjp = $kunjungan[0]->kode_paramedis;
+        $mt_paramedis = db::select('select * from mt_paramedis where kode_paramedis = ?',[$dpjp]);
+        $dpjp2 = $mt_paramedis[0]->kode_dokter_jkn;
+        $icare = $mw->icare($noka,$dpjp2);
+        if($icare->metadata->code == 200){
+            $urlicare = $icare->response->url;
+        }else{
+            $urlicare = '';
+        }
         if (auth()->user()->hak_akses == 7) {
             return view('ermperawat.form_ro_mata', compact([
                 'mt_pasien',
                 'kunjungan',
                 'pic',
-                'last_assdok'
+                'last_assdok',
+                'urlicare'
             ]));
         } else {
             return view('ermdokter.formdokter', compact([
@@ -298,7 +311,8 @@ class ErmController extends Controller
                 'last_assdok',
                 'selisih',
                 'daterujukan',
-                'kunjunganKronis'
+                'kunjunganKronis',
+                'urlicare'
             ]));
         }
     }
