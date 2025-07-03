@@ -3803,6 +3803,7 @@ class SimrsController extends Controller
             $prop = $request->provinsi;
             $alamat = $request->alamat;
         }
+
         $nobpjs = $request->nomorbpjs;
         if ($request->nomorbpjs == '') {
             $nobpjs = '0';
