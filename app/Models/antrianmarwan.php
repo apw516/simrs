@@ -37,6 +37,14 @@ class antrianmarwan extends Model
             return 'RTO';
         }
     }
+     public function icare($no_bpjs,$dpjp)
+    {
+        $client = new Client();
+        $url = "http://192.168.2.30/siramah/icares?nomorkartu=".$no_bpjs."&kodedokter=".$dpjp;
+        $response = $client->request('GET', $url);
+        $response = json_decode($response->getBody());
+        return $response;
+    }
     public function ambilantrean2($data_antrian)
     {
         $client = new Client();

@@ -37,6 +37,7 @@ use simitsdk\phpjasperxml\PHPJasperXML;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Dokter;
 use App\Models\mt_unit;
+use App\Models\antrianmarwan;
 use File;
 
 
@@ -304,16 +305,47 @@ class ErmController extends Controller
     }
     public function ambildetailpasien(Request $request)
     {
-        $mt_pasien = DB::select('Select no_rm,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$request->rm]);
+        $mt_pasien = DB::select('Select no_rm,no_Bpjs,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$request->rm]);
         $kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$request->kode]);
         $unit = auth()->user()->unit;
         $last_assdok = DB::select('SELECT * FROM assesmen_dokters
         WHERE id = (SELECT MAX(id) FROM assesmen_dokters WHERE id_pasien = ? AND kode_unit = ? ) AND id_pasien = ? AND kode_unit = ?', [$request->rm, $unit, $request->rm, $unit]);
+        $mt_paramedis = db::select('select * from mt_paramedis where kode_paramedis = ?',[$kunjungan[0]->kode_paramedis]);
+        $kode_dpjp = $mt_paramedis[0]->kode_dokter_jkn;
+        $no_bpjs = $mt_pasien[0]->no_Bpjs;
+        try{
+            $mw = new antrianmarwan;
+            $icare = $mw->icare($no_bpjs,$kode_dpjp);
+            if($icare->metadata->code == 200){
+                $url_icare = $icare->response->url;
+            }else{
+                $url_icare = '';
+            }
+        }catch (\Exception $e) {
+                $url_icare = '';
+        }
         return view('ermperawat.formperawat', compact([
             'mt_pasien',
             'kunjungan',
-            'last_assdok'
+            'last_assdok',
+            'url_icare'
         ]));
+    }
+    public function icare_view(Request $request)
+    {
+        $no_bpjs = $request->bpjs;
+        $kode_dpjp = $request->dpjp;
+        try{
+            $mw = new antrianmarwan;
+            $icare = $mw->icare($no_bpjs,$kode_dpjp);
+            if($icare->metadata->code == 200){
+                $url_icare = $icare->response->url;
+            }else{
+                $url_icare = '';
+            }
+        }catch (\Exception $e) {
+                $url_icare = '';
+        }
     }
     public function ambilcatatanmedis_pasien(Request $request)
     {
