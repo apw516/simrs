@@ -382,19 +382,19 @@
                                             value="">
                                         @if (count($k1) > 0)
                                             @php
-                                            $a = explode('|',$k1[0]->catatanpemeriksaanlain );
-                                            $b = explode('|',$k1[0]->palpebra );
-                                            $c = explode('|',$k1[0]->konjungtiva );
-                                            $d = explode('|',$k1[0]->kornea);
-                                            $e = explode('|',$k1[0]->bilikmatadepan );
-                                            $f = explode('|',$k1[0]->pupil );
-                                            $g = explode('|',$k1[0]->iris );
-                                            $h = explode('|',$k1[0]->lensa );
-                                            $i = explode('|',$k1[0]->funduskopi );
-                                            $j = explode('|',$k1[0]->status_oftamologis_khusus );
-                                            $k = explode('|',$k1[0]->masalahmedis );
-                                            $l = explode('|',$k1[0]->prognosis );
-                                            $m = explode('|',$k1[0]->tekananintraokular );
+                                                $a = explode('|', $k1[0]->catatanpemeriksaanlain);
+                                                $b = explode('|', $k1[0]->palpebra);
+                                                $c = explode('|', $k1[0]->konjungtiva);
+                                                $d = explode('|', $k1[0]->kornea);
+                                                $e = explode('|', $k1[0]->bilikmatadepan);
+                                                $f = explode('|', $k1[0]->pupil);
+                                                $g = explode('|', $k1[0]->iris);
+                                                $h = explode('|', $k1[0]->lensa);
+                                                $i = explode('|', $k1[0]->funduskopi);
+                                                $j = explode('|', $k1[0]->status_oftamologis_khusus);
+                                                $k = explode('|', $k1[0]->masalahmedis);
+                                                $l = explode('|', $k1[0]->prognosis);
+                                                $m = explode('|', $k1[0]->tekananintraokular);
                                             @endphp
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -424,73 +424,109 @@
                                                                 <tr>
                                                                     <td>Tekanan Intra Okular</td>
                                                                     <td colspan="3">
-                                                                        <textarea class="form-control" id="kiri_tekanan_intra_okular" name="kiri_tekanan_intra_okular">@if(count($m) > 1){{ $m[1]}} @endif </textarea>
+                                                                        <textarea class="form-control" id="kiri_tekanan_intra_okular" name="kiri_tekanan_intra_okular">
+@if (count($m) > 1)
+{{ $m[1] }}
+@endif
+</textarea>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Catatan Pemeriksaan Lainnya</td>
                                                                     <td colspan="3">
-                                                                        <textarea class="form-control" name="kiri_catatan_pemeriksaan_lainnya" id="kiri_catatan_pemerikssaan_lainnya">@if(count($a) > 1){{ $a[1]}}@endif</textarea>
+                                                                        <textarea class="form-control" name="kiri_catatan_pemeriksaan_lainnya" id="kiri_catatan_pemerikssaan_lainnya">
+@if (count($a) > 1)
+{{ $a[1] }}
+@endif
+</textarea>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Palpebra</td>
-                                                                    <td colspan="3"><input class="form-control" value="@if(count($b) > 1){{ $b[1]}}@endif"
-                                                                            id="kiri_palpebra" name="kiri_palpebra"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="@if (count($b) > 1) {{ $b[1] }} @endif"
+                                                                            id="kiri_palpebra"
+                                                                            name="kiri_palpebra"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Konjungtiva</td>
-                                                                    <td colspan="3"><input class="form-control" value="@if(count($c) > 1){{ $c[1]}}@endif"
-                                                                            id="kiri_konjungtiva" name="kiri_konjungtiva"></input>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="@if (count($c) > 1) {{ $c[1] }} @endif"
+                                                                            id="kiri_konjungtiva"
+                                                                            name="kiri_konjungtiva"></input>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Kornea</td>
-                                                                    <td colspan="3"><input class="form-control" value="@if(count($d) > 1){{ $d[1]}}@endif"
-                                                                            name="kiri_kornea" id="kiri_kornea"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="@if (count($d) > 1) {{ $d[1] }} @endif"
+                                                                            name="kiri_kornea"
+                                                                            id="kiri_kornea"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Bilik Mata Depan</td>
-                                                                    <td colspan="3"><input class="form-control" value="@if(count($e) > 1){{ $e[1]}}@endif"
-                                                                            name="kiri_bilik_mata_depan" id="kiri_bilik_mata_depan"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="@if (count($e) > 1) {{ $e[1] }} @endif"
+                                                                            name="kiri_bilik_mata_depan"
+                                                                            id="kiri_bilik_mata_depan"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Pupil</td>
-                                                                    <td colspan="3"><input class="form-control" value="@if(count($f) > 1){{ $f[1]}}@endif"
-                                                                            id="kiri_pupil" name="kiri_pupil"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="@if (count($f) > 1) {{ $f[1] }} @endif"
+                                                                            id="kiri_pupil" name="kiri_pupil"></input>
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Iris</td>
-                                                                    <td colspan="3"><input class="form-control" value="@if(count($g) > 1){{ $g[1]}}@endif"
-                                                                            name="kiri_iris" id="kiri_iris"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="@if (count($g) > 1) {{ $g[1] }} @endif"
+                                                                            name="kiri_iris" id="kiri_iris"></input>
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Lensa</td>
-                                                                    <td colspan="3"><input class="form-control" value="@if(count($h) > 1){{ $h[1]}}@endif"
-                                                                            name="kiri_lensa" id="kiri_lensa"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="@if (count($h) > 1) {{ $h[1] }} @endif"
+                                                                            name="kiri_lensa" id="kiri_lensa"></input>
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Funduskopi</td>
-                                                                    <td colspan="3"><input class="form-control" value="@if(count($i) > 1){{ $i[1]}}@endif"
-                                                                            name="kiri_funduskopi" id="kiri_funduskopi"></input>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="@if (count($i) > 1) {{ $i[1] }} @endif"
+                                                                            name="kiri_funduskopi"
+                                                                            id="kiri_funduskopi"></input>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Status Oftalmologis Khusus</td>
                                                                     <td colspan="3">
-                                                                        <textarea class="form-control" value="" name="kiri_oftamologis" id="kiri_oftamologis">@if(count($j) > 1){{ $j[1]}}@endif</textarea>
+                                                                        <textarea class="form-control" value="" name="kiri_oftamologis" id="kiri_oftamologis">
+@if (count($j) > 1)
+{{ $j[1] }}
+@endif
+</textarea>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Masalah Medis</td>
                                                                     <td colspan="3">
-                                                                        <textarea class="form-control" value="" name="kiri_masalahmedis" id="kiri_masalahmedis">@if(count($k) > 1){{ $k[1]}}@endif</textarea>
+                                                                        <textarea class="form-control" value="" name="kiri_masalahmedis" id="kiri_masalahmedis">
+@if (count($k) > 1)
+{{ $k[1] }}
+@endif
+</textarea>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Prognosis</td>
                                                                     <td colspan="3">
-                                                                        <textarea class="form-control" value="" name="kiri_prognosis" id="kiri_prognosis">@if(count($l) > 1){{ $l[1]}}@endif</textarea>
+                                                                        <textarea class="form-control" value="" name="kiri_prognosis" id="kiri_prognosis">
+@if (count($l) > 1)
+{{ $l[1] }}
+@endif
+</textarea>
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -516,73 +552,88 @@
                                                                 <tr>
                                                                     <td>Tekanan Intra Okular</td>
                                                                     <td colspan="3">
-                                                                        <textarea class="form-control" id="tekanan_intra_okular" name="tekanan_intra_okular">{{ $m[0]}}</textarea>
+                                                                        <textarea class="form-control" id="tekanan_intra_okular" name="tekanan_intra_okular">{{ $m[0] }}</textarea>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Catatan Pemeriksaan Lainnya</td>
                                                                     <td colspan="3">
-                                                                        <textarea class="form-control" name="catatan_pemeriksaan_lainnya" id="catatan_pemerikssaan_lainnya">{{ $a[0]}}</textarea>
+                                                                        <textarea class="form-control" name="catatan_pemeriksaan_lainnya" id="catatan_pemerikssaan_lainnya">{{ $a[0] }}</textarea>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Palpebra</td>
-                                                                    <td colspan="3"><input class="form-control" value="{{ $b[0]}}"
-                                                                            id="palpebra" name="palpebra"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="{{ $b[0] }}"
+                                                                            id="palpebra" name="palpebra"></input>
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Konjungtiva</td>
-                                                                    <td colspan="3"><input class="form-control" value="{{ $c[0]}}"
-                                                                            id="konjungtiva" name="konjungtiva"></input>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="{{ $c[0] }}"
+                                                                            id="konjungtiva"
+                                                                            name="konjungtiva"></input>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Kornea</td>
-                                                                    <td colspan="3"><input class="form-control" value="{{ $d[0]}}"
-                                                                            name="kornea" id="kornea"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="{{ $d[0] }}"
+                                                                            name="kornea" id="kornea"></input>
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Bilik Mata Depan</td>
-                                                                    <td colspan="3"><input class="form-control" value="{{ $e[0]}}"
-                                                                            name="bilik_mata_depan" id="bilik_mata_depan"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="{{ $e[0] }}"
+                                                                            name="bilik_mata_depan"
+                                                                            id="bilik_mata_depan"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Pupil</td>
-                                                                    <td colspan="3"><input class="form-control" value="{{ $f[0]}}"
-                                                                            id="pupil" name="pupil"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="{{ $f[0] }}"
+                                                                            id="pupil" name="pupil"></input>
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Iris</td>
-                                                                    <td colspan="3"><input class="form-control" value="{{ $g[0]}}"
-                                                                            name="iris" id="iris"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="{{ $g[0] }}"
+                                                                            name="iris" id="iris"></input>
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Lensa</td>
-                                                                    <td colspan="3"><input class="form-control" value="{{ $h[0]}}"
-                                                                            name="lensa" id="lensa"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="{{ $h[0] }}"
+                                                                            name="lensa" id="lensa"></input>
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Funduskopi</td>
-                                                                    <td colspan="3"><input class="form-control" value="{{ $i[0]}}"
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="{{ $i[0] }}"
                                                                             name="funduskopi" id="funduskopi"></input>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Status Oftalmologis Khusus</td>
                                                                     <td colspan="3">
-                                                                        <textarea class="form-control" value="" name="oftamologis" id="oftamologis">{{ $j[0]}}</textarea>
+                                                                        <textarea class="form-control" value="" name="oftamologis" id="oftamologis">{{ $j[0] }}</textarea>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Masalah Medis</td>
                                                                     <td colspan="3">
-                                                                        <textarea class="form-control" value="" name="masalahmedis" id="masalahmedis">{{ $k[0]}}</textarea>
+                                                                        <textarea class="form-control" value="" name="masalahmedis" id="masalahmedis">{{ $k[0] }}</textarea>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Prognosis</td>
                                                                     <td colspan="3">
-                                                                        <textarea class="form-control" value="" name="prognosis" id="prognosis">{{ $l[0]}}</textarea>
+                                                                        <textarea class="form-control" value="" name="prognosis" id="prognosis">{{ $l[0] }}</textarea>
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -630,44 +681,53 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Palpebra</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            id="kiri_palpebra" name="kiri_palpebra"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" id="kiri_palpebra"
+                                                                            name="kiri_palpebra"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Konjungtiva</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            id="kiri_konjungtiva" name="kiri_konjungtiva"></input>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" id="kiri_konjungtiva"
+                                                                            name="kiri_konjungtiva"></input>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Kornea</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            name="kiri_kornea" id="kiri_kornea"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" name="kiri_kornea"
+                                                                            id="kiri_kornea"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Bilik Mata Depan</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            name="kiri_bilik_mata_depan" id="kiri_bilik_mata_depan"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value=""
+                                                                            name="kiri_bilik_mata_depan"
+                                                                            id="kiri_bilik_mata_depan"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Pupil</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            id="kiri_pupil" name="kiri_pupil"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" id="kiri_pupil"
+                                                                            name="kiri_pupil"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Iris</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            name="kiri_iris" id="kiri_iris"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" name="kiri_iris"
+                                                                            id="kiri_iris"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Lensa</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            name="kiri_lensa" id="kiri_lensa"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" name="kiri_lensa"
+                                                                            id="kiri_lensa"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Funduskopi</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            name="kiri_funduskopi" id="kiri_funduskopi"></input>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" name="kiri_funduskopi"
+                                                                            id="kiri_funduskopi"></input>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -722,44 +782,52 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Palpebra</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            id="palpebra" name="palpebra"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" id="palpebra"
+                                                                            name="palpebra"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Konjungtiva</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            id="konjungtiva" name="konjungtiva"></input>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" id="konjungtiva"
+                                                                            name="konjungtiva"></input>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Kornea</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            name="kornea" id="kornea"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" name="kornea"
+                                                                            id="kornea"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Bilik Mata Depan</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            name="bilik_mata_depan" id="bilik_mata_depan"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" name="bilik_mata_depan"
+                                                                            id="bilik_mata_depan"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Pupil</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            id="pupil" name="pupil"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" id="pupil"
+                                                                            name="pupil"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Iris</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            name="iris" id="iris"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" name="iris"
+                                                                            id="iris"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Lensa</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            name="lensa" id="lensa"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" name="lensa"
+                                                                            id="lensa"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Funduskopi</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            name="funduskopi" id="funduskopi"></input>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" name="funduskopi"
+                                                                            id="funduskopi"></input>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -840,8 +908,8 @@
                 <button class="btn btn-danger ml-2 lihathasilpenunjang_pa" nomorrm="{{ $kunjungan[0]->no_rm }}"
                     data-toggle="modal" data-target="#modalhasilpenunjang_pa"><i class="bi bi-eye mr-1"></i>
                     Hasil LAB PA</button>
-                <button class="btn btn-warning ml-2 scanrm_liat" rm="{{ $kunjungan[0]->no_rm }}"
-                    data-toggle="modal" data-target="#modalscan_rm"><i class="bi bi-journal-text"></i> BERKAS RM
+                <button class="btn btn-warning ml-2 scanrm_liat" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
+                    data-target="#modalscan_rm"><i class="bi bi-journal-text"></i> BERKAS RM
                     SCAN</button>
                 <button class="btn btn-warning ml-2 liatsumarilis" rm="{{ $kunjungan[0]->no_rm }}"
                     data-toggle="modal" data-target="#modalsumarilis"><i class="bi bi-journal-text"></i>
@@ -885,11 +953,13 @@
                             onclick="ambilresep()">Template resep</button></div>
                     <div class="card-body">
                         @if ($selisih > 70)
-                        <div class="alert alert-danger" role="alert">
-                            @if (count($kunjunganKronis) > 0)
-                                Pasien Kronis ,
-                            @endif Pasien Berpotensi PRB, dan melanjutkan pengobatan kembali ke faskes 1... <b>( Abaikan pesan ini jika diagnosa pasien tidak termasuk 9 diagnosa PRB ...)</b>
-                          </div>
+                            <div class="alert alert-danger" role="alert">
+                                @if (count($kunjunganKronis) > 0)
+                                    Pasien Kronis ,
+                                @endif Pasien Berpotensi PRB, dan melanjutkan pengobatan kembali ke
+                                faskes 1... <b>( Abaikan pesan ini jika diagnosa pasien tidak termasuk 9 diagnosa PRB
+                                    ...)</b>
+                            </div>
                         @endif
                         <div class="orderobathari_ini">
 
@@ -968,6 +1038,232 @@
                     </div>
                 </form>
 
+                <div class="accordion" id="accordionExample">
+                    <div class="card">
+                        <div class="card-header bg-warning" id="headingOnelaporanoperasi">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link text-dark btn-block text-left" type="button"
+                                    data-toggle="collapse" data-target="#collapseOne_1laporanoperasi"
+                                    aria-expanded="true" aria-controls="collapseOne">
+                                    <i class="bi bi-ticket-detailed mr-1 ml-1"></i> LAPORAN OPERASI
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseOne_1laporanoperasi" class="collapse"
+                            aria-labelledby="headingOnelaporanoperasi" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <div class="V_laporan_operasi">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Ruang Operasi</label>
+                                                <input type="email" class="form-control" id="exampleInputEmail1"
+                                                    aria-describedby="emailHelp">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Kamar</label>
+                                                <input type="email" class="form-control" id="exampleInputEmail1"
+                                                    aria-describedby="emailHelp">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Cito Terencana</label>
+                                                <textarea type="email" class="form-control" id="exampleInputEmail1" rows="5px" aria-describedby="emailHelp"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Tanggal Operasi</label>
+                                                <input type="date" class="form-control" id="exampleInputEmail1"
+                                                    aria-describedby="emailHelp">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Jam Operasi</label>
+                                                <input type="time" class="form-control" id="exampleInputEmail1"
+                                                    aria-describedby="emailHelp">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="exampleInputEmail1">Pembedah</label>
+                                                        <textarea type="email" class="form-control" id="exampleInputEmail1" rows="3px" aria-describedby="emailHelp"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="exampleInputEmail1">Ahli Anestesi</label>
+                                                        <textarea type="email" class="form-control" id="exampleInputEmail1" rows="3px" aria-describedby="emailHelp"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="exampleInputEmail1">Asisten 1</label>
+                                                        <textarea type="email" class="form-control" id="exampleInputEmail1" rows="3px" aria-describedby="emailHelp"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="exampleInputEmail1">Asisten 2</label>
+                                                        <textarea type="email" class="form-control" id="exampleInputEmail1" rows="3px" aria-describedby="emailHelp"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="exampleInputEmail1">Perawat Instrumen</label>
+                                                        <textarea type="email" class="form-control" id="exampleInputEmail1" rows="3px" aria-describedby="emailHelp"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="exampleInputEmail1">Jenis Anestesi</label>
+                                                        <textarea type="email" class="form-control" id="exampleInputEmail1" rows="3px" aria-describedby="emailHelp"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Diagnosa pra bedah</label>
+                                                <textarea type="email" class="form-control" id="exampleInputEmail1" rows="5px" aria-describedby="emailHelp"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Indikasi operasi</label>
+                                                <textarea type="email" class="form-control" id="exampleInputEmail1" rows="5px" aria-describedby="emailHelp"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Diagnosa pasca bedah</label>
+                                                <textarea type="email" class="form-control" id="exampleInputEmail1" rows="5px" aria-describedby="emailHelp"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">jenis operasi</label>
+                                                <textarea type="email" class="form-control" id="exampleInputEmail1" rows="5px"
+                                                    aria-describedby="emailHelp"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Desinfeksi kulit dengan :</label>
+                                                <textarea type="email" class="form-control" id="exampleInputEmail1" rows="5px"
+                                                    aria-describedby="emailHelp"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Jaringan yang dieksisi :</label>
+                                                <textarea type="email" class="form-control" id="exampleInputEmail1" rows="5px"
+                                                    aria-describedby="emailHelp"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Dikirim ke bagian patologi anatomi
+                                                    :</label><br>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio"
+                                                        name="inlineRadioOptions" id="inlineRadio1"
+                                                        value="option1">
+                                                    <label class="form-check-label" for="inlineRadio1">Ya</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio"
+                                                        name="inlineRadioOptions" id="inlineRadio2"
+                                                        value="option2">
+                                                    <label class="form-check-label" for="inlineRadio2">Tidak</label>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="exampleFormControlTextarea1">Jam Operasi dimulai</label>
+                                                <input class="form-control" id="exampleFormControlTextarea1"
+                                                    rows="3">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="exampleFormControlTextarea1">Jam Operasi selesai</label>
+                                                <input class="form-control" id="exampleFormControlTextarea1"
+                                                    rows="3">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="exampleFormControlTextarea1">Lama Operasi
+                                                    berlangsung</label>
+                                                <input class="form-control" id="exampleFormControlTextarea1"
+                                                    rows="3">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="exampleFormControlTextarea1">Jenis bahan yang dikirim ke
+                                                    laboratorium</label>
+                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="exampleFormControlTextarea1">Untuk pemeriksaan :</label>
+                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="exampleFormControlTextarea1">Macam sayatan ( bila perlu
+                                                    dengan gambar )</label>
+                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="exampleFormControlTextarea1">Posisi penderita ( bila perlu
+                                                    dengan gambar )</label>
+                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="accordion" id="accordionExample">
                     <div class="card">
                         <div class="card-header bg-danger" id="headingOne">
@@ -1794,27 +2090,28 @@
         tindakanhariini_rad()
         ambilformfarmasi2()
     });
-      function ambilformfarmasi2() {
-            kodekunjungan =  $('#kodekunjungan').val()
-            spinner = $('#loader')
-            spinner.show();
-            $.ajax({
-                type: 'post',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    kodekunjungan
-                },
-                url: '<?= route('ambilformfarmasi2') ?>',
-                error: function(data) {
-                    spinner.hide();
-                    alert('error')
-                },
-                success: function(response) {
-                    spinner.hide();
-                    $('.v_form_farmasi_2').html(response);
-                }
-            });
-        }
+
+    function ambilformfarmasi2() {
+        kodekunjungan = $('#kodekunjungan').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('ambilformfarmasi2') ?>',
+            error: function(data) {
+                spinner.hide();
+                alert('error')
+            },
+            success: function(response) {
+                spinner.hide();
+                $('.v_form_farmasi_2').html(response);
+            }
+        });
+    }
     $(".riwayatkonsul").click(function() {
         $.ajax({
             type: 'post',
@@ -2115,8 +2412,8 @@
         gambarmatakiri()
         gambarmatakanan()
     });
-    function gambarmatakiri()
-    {
+
+    function gambarmatakiri() {
         $.ajax({
             type: 'post',
             data: {
@@ -2132,8 +2429,8 @@
             }
         });
     }
-    function gambarmatakanan()
-    {
+
+    function gambarmatakanan() {
         $.ajax({
             type: 'post',
             data: {
@@ -2149,6 +2446,7 @@
             }
         });
     }
+
     function orderobathariini() {
         spinner = $('#loader')
         spinner.show();
@@ -2192,6 +2490,7 @@
             }
         });
     }
+
     function resetgambar_2() {
         $.ajax({
             type: 'post',
