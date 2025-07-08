@@ -217,7 +217,28 @@
         rm = $('#nomorrm').val()
         formpemeriksaan()
     })
+  $(".lihaticare").on('click', function(event) {
+        rm = $('#nomorrm').val()
+        kodekunjungan = $('#kodekunjungan').val()
+        lihaticare(rm,kodekunjungan)
+    });
 
+    function lihaticare(rm,kodekunjungan) {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm,kodekunjungan
+            },
+            url: '<?= route('lihaticare') ?>',
+            success: function(response) {
+                $('.V_IC').html(response);
+                spinner.hide()
+            }
+        });
+    }
     function formcatatanmedis(rm) {
         spinner = $('#loader')
         spinner.show();

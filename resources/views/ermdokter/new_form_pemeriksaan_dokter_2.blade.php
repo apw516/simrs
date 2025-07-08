@@ -1983,7 +1983,6 @@
             }
         });
     })
-
     $(".lihathasilpenunjang_lab").click(function() {
         spinner = $('#loader')
         spinner.show();

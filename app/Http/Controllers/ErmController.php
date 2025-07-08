@@ -234,7 +234,7 @@ class ErmController extends Controller
     }
     public function ambildetailpasien_dokter(Request $request)
     {
-        $mt_pasien = DB::select('Select no_rm,jenis_kelamin,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$request->rm]);
+        $mt_pasien = DB::select('Select no_rm,no_Bpjs,jenis_kelamin,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$request->rm]);
         $kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$request->kode]);
         $unitk = $kunjungan[0]->kode_unit;
         $kunjunganKronis = DB::select('select * from ts_kunjungan where no_rm = ? and kode_unit = ? and catatan = ?', [$request->rm, $unitk, 'KRONIS']);
@@ -284,6 +284,20 @@ class ErmController extends Controller
         $unit = auth()->user()->unit;
         $last_assdok = DB::select('SELECT * FROM assesmen_dokters
         WHERE id = (SELECT MAX(id) FROM assesmen_dokters WHERE id_pasien = ? AND kode_unit = ? ) AND id_pasien = ? AND kode_unit = ?', [$request->rm, $unit, $request->rm, $unit]);
+        $mt_paramedis = db::select('select * from mt_paramedis where kode_paramedis = ?',[$kunjungan[0]->kode_paramedis]);
+        $kode_dpjp = $mt_paramedis[0]->kode_dokter_jkn;
+        $no_bpjs = $mt_pasien[0]->no_Bpjs;
+         try{
+            $mw = new antrianmarwan;
+            $icare = $mw->icare($no_bpjs,$kode_dpjp);
+            if($icare->metadata->code == 200){
+                $url_icare = $icare->response->url;
+            }else{
+                $url_icare = '';
+            }
+        }catch (\Exception $e) {
+                $url_icare = '';
+        }
         if (auth()->user()->hak_akses == 7) {
             return view('ermperawat.form_ro_mata', compact([
                 'mt_pasien',
@@ -299,9 +313,33 @@ class ErmController extends Controller
                 'last_assdok',
                 'selisih',
                 'daterujukan',
-                'kunjunganKronis'
+                'kunjunganKronis',
+                'url_icare'
             ]));
         }
+    }
+    public function lihaticare(Request $request)
+    {
+        $mt_pasien = DB::select('Select no_rm,no_Bpjs,jenis_kelamin,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$request->rm]);
+        $kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$request->kodekunjungan]);
+
+        $mt_paramedis = db::select('select * from mt_paramedis where kode_paramedis = ?',[$kunjungan[0]->kode_paramedis]);
+        $kode_dpjp = $mt_paramedis[0]->kode_dokter_jkn;
+        $no_bpjs = $mt_pasien[0]->no_Bpjs;
+         try{
+            $mw = new antrianmarwan;
+            $icare = $mw->icare($no_bpjs,$kode_dpjp);
+            if($icare->metadata->code == 200){
+                $url_icare = $icare->response->url;
+            }else{
+                $url_icare = '';
+            }
+        }catch (\Exception $e) {
+                $url_icare = '';
+        }
+        return view('ermtemplate.v_icare',compact([
+            'url_icare'
+        ]));
     }
     public function ambildetailpasien(Request $request)
     {

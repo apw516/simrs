@@ -753,5 +753,8 @@ Route::get('caribarangfarmasi', [newFarmasiController::class, 'caribarangfarmasi
 Route::post('caribarangfarmasi', [newFarmasiController::class, 'caririwayatstok'])->middleware('auth')->name('caririwayatstok');
 
 
+Route::post('lihaticare', [ErmController::class, 'lihaticare'])->middleware('auth')->name('lihaticare');
+
+
 
 

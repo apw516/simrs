@@ -876,7 +876,10 @@
                     </table>
                 </form>
                 {{-- formfarmasi --}}
-                <div class="card">
+                <div class="v_form_farmasi_2">
+
+                </div>
+                <div hidden class="card">
                     <div class="card-header bg-light">Order Farmasi <button type="button"
                             class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
                             onclick="ambilresep()">Template resep</button></div>
@@ -1789,7 +1792,29 @@
         tindakanhariini()
         tindakanhariini_lab()
         tindakanhariini_rad()
+        ambilformfarmasi2()
     });
+      function ambilformfarmasi2() {
+            kodekunjungan =  $('#kodekunjungan').val()
+            spinner = $('#loader')
+            spinner.show();
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    kodekunjungan
+                },
+                url: '<?= route('ambilformfarmasi2') ?>',
+                error: function(data) {
+                    spinner.hide();
+                    alert('error')
+                },
+                success: function(response) {
+                    spinner.hide();
+                    $('.v_form_farmasi_2').html(response);
+                }
+            });
+        }
     $(".riwayatkonsul").click(function() {
         $.ajax({
             type: 'post',

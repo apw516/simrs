@@ -1,4 +1,18 @@
 <button class="btn btn-danger" onclick="ambildatapasien()">Kembali</button>
+<div class="v_icare mt-2">
+    <div class="card">
+        <div class="card-header">I-Care BPJS KESEHATAN <button class="btn btn-danger float-right" onclick="tutupicare()"><i
+                    class="bi bi-x mr-1 ml-1"></i> Tutup</button>
+        </div>
+        <div class="card-body">
+            <iframe src="{{ $url_icare }}" frameborder="0" width="100%" height="500px"></iframe>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-danger" onclick="tutupicare()"><i class="bi bi-x mr-1 ml-1"></i> Tutup icare</button>
+        </div>
+    </div>
+</div>
+<div hidden class="v_utama">
 <div class="row mt-3">
     <div class="col-md-2">
         <!-- Profile Image -->
@@ -128,10 +142,12 @@
           </div>
         @endif --}}
         <button class="btn btn-warning mb-3 ambilberkaserm" data-toggle="modal" data-target="#modalberkaserm"> <i class="bi bi-book mr-1 ml-1"></i> Catatan Medis Pasien</button>
+        <button class="btn btn-info mb-3 lihaticare" data-toggle="modal" data-target="#modalicare"> <i class="bi bi-book mr-1 ml-1"></i> Lihat Icare</button>
         <div class="slide3">
         </div>
     </div>
     <!-- /.col -->
+</div>
 </div>
 <!-- Modal -->
 <style>
@@ -161,8 +177,31 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modalicare" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lgg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Icare BPJS</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="V_IC">
 
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
+    function tutupicare() {
+        $('.v_icare').attr('hidden', true)
+        $('.v_utama').removeAttr('hidden', true)
+    }
     $(document).ready(function() {
         rm = $('#nomorrm').val()
         formpemeriksaandokter()
@@ -175,7 +214,28 @@
         }else{
         }
     });
+    $(".lihaticare").on('click', function(event) {
+        rm = $('#nomorrm').val()
+        kodekunjungan = $('#kodekunjungan').val()
+        lihaticare(rm,kodekunjungan)
+    });
 
+    function lihaticare(rm,kodekunjungan) {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm,kodekunjungan
+            },
+            url: '<?= route('lihaticare') ?>',
+            success: function(response) {
+                $('.V_IC').html(response);
+                spinner.hide()
+            }
+        });
+    }
     function formcatatanmedis(rm) {
         spinner = $('#loader')
         spinner.show();
@@ -226,7 +286,6 @@
             }
         });
     }
-
     function formpemeriksaandokter() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -246,7 +305,6 @@
             }
         });
     }
-
     function formpemeriksaankhusus() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -266,7 +324,6 @@
             }
         });
     }
-
     function formupload() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -286,7 +343,6 @@
             }
         });
     }
-
     function orderfarmasi() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -306,7 +362,6 @@
             }
         });
     }
-
     function orderpenunjang() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -326,7 +381,6 @@
             }
         });
     }
-
     function forminputtindakan() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
