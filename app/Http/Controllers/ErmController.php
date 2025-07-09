@@ -5806,7 +5806,8 @@ class ErmController extends Controller
         RIGHT OUTER JOIN mt_tarif_detail d ON c.kode_tarif_detail = d.`KODE_TARIF_DETAIL`
         RIGHT OUTER JOIN mt_tarif_header e ON d.`KODE_TARIF_HEADER` = e.`KODE_TARIF_HEADER`
         WHERE a.`kode_kunjungan` = ?
-        AND substr(b.kode_unit,1,1) = 1", [$request->kodekunjungan]);
+        AND substr(b.kode_unit,1,1) = 1 AND c.kode_tarif_detail NOT IN('TX50683,TX50153,TX45113,TX50263')", [$request->kodekunjungan]);
+
         return view('ermdokter.riwayattindakan2', compact([
             'riwayat_tindakan'
         ]));
