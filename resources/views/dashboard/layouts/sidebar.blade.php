@@ -592,11 +592,17 @@
                           </a>
                       </li>
                   @endif
-                  @if (auth()->user()->nama == 'agyl' ||
-                          auth()->user()->hak_akses == '1' ||
-                          auth()->user()->hak_akses == '101' ||
-                          auth()->user()->hak_akses == '68')
+                  @if (auth()->user()->nama == 'agyl' || auth()->user()->hak_akses == '1' || auth()->user()->hak_akses == '101' || auth()->user()->hak_akses == '68')
                       <li class="nav-header">REKAMEDIS</li>
+                       <li hidden class="nav-item">
+                          <a href="{{ route('dataermrajal') }}"
+                              class="nav-link @if ($title == 'SIMRS - BERKAS ERM RAWAT JALAN') active @endif">
+                              <i class="nav-icon fas fa-th"></i>
+                              <p style="font-size:12px">
+                                  ERM Rawat Jalan
+                              </p>
+                          </a>
+                      </li>
                       <li class="nav-item @if ($sidebar == 'berkas_erm') menu-open @endif">
                           <a href="#" class="nav-link">
                               <i class="nav-icon fas fa-table"></i>

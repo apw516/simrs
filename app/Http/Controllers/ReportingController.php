@@ -56,11 +56,29 @@ class ReportingController extends Controller
         LEFT OUTER JOIN ts_layanan_detail d ON c.`id` = d.`row_id_header`
         LEFT OUTER JOIN mt_barang e ON d.`kode_barang` = e.`kode_barang`
         WHERE MONTH(a.tgl_entry) = ? AND YEAR(a.tgl_entry) AND a.`kode_unit` IN (?,?)
-        AND d.`kode_barang` != ?', [$bulan, $tahun, 4002, 4008,'']);
+        AND d.`kode_barang` != ?', [$bulan, $tahun, 4002, 4008, '']);
         dd($resep);
 
-        return view('Reporting.view_reporing_resep',compact([
-            'header','Layani','Order'
+        return view('Reporting.view_reporing_resep', compact([
+            'header',
+            'Layani',
+            'Order'
         ]));
+    }
+    public function dataermrajal()
+    {
+        $title = 'SIMRS - BERKAS ERM RAWAT JALAN';
+        $sidebar = 'berkas_erm';
+        $sidebar_m = 'berkas erm rajal';
+        return view('Reporting.index_berkas_erm_rajal', compact([
+            'title',
+            'sidebar',
+            'sidebar_m',
+        ]));
+    }
+    public function ambilberkasermrajal(request $request)
+    {
+        $rm =  $request->rm;
+
     }
 }
