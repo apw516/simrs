@@ -6,7 +6,7 @@ use App\Models\assesmenawalperawat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class ReportingController extends Controller
+class ReportingController extends ErmController
 {
     public function index()
     {
@@ -101,13 +101,44 @@ class ReportingController extends Controller
             }
             $header = DB::connection('mysql')->select('SELECT *,a.id as idasskep,date(a.tanggalkunjungan) as tglk,fc_nama_unit1(a.kode_unit) as nama_unit FROM erm_hasil_assesmen_keperawatan_rajal a left outer join assesmen_dokters b on a.kode_kunjungan = b.id_kunjungan WHERE a.no_rm = ? and a.jenis_berkas = ? order  by a.id desc', [$rm, 1]);
             $cppt = DB::connection('mysql')->select('SELECT *,b.versi as versidk,date(a.tanggalkunjungan) as tglk,a.kode_unit as unitpoli ,fc_nama_unit1(a.kode_unit) as nama_unit FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b on a.kode_kunjungan = b.id_kunjungan WHERE a.no_rm = ? and a.jenis_berkas = ? order  by a.id asc', [$rm, 2]);
-             $cek = DB::select('select * from erm_upload_gambar where no_rm = ?', [$rm]);
+            $cek = DB::select('select * from erm_upload_gambar where no_rm = ?', [$rm]);
             $url = url('../../files/');
+            $tindakan = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+            ,c.`kode_tarif_detail`,d.`NAMA_TARIF`
+            FROM ts_kunjungan a
+            INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+            INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+            INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER`
+            WHERE SUBSTR(b.`kode_unit`,1,1) = 1
+            AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
+            AND a.no_rm = ?", [$rm]);
 
+            $farmasi = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+            ,c.`kode_tarif_detail`,d.`nama_barang`,C.`jumlah_layanan`,C.`aturan_pakai`
+            FROM ts_kunjungan a
+            INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+            INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+            INNER JOIN mt_barang d ON c.`kode_barang` = d.`kode_barang`
+            WHERE SUBSTR(b.`kode_unit`,1,1) = 4
+            AND a.no_rm = ?", [$rm]);
 
+            $penunjang = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+            ,c.`kode_tarif_detail`,d.`NAMA_TARIF`
+            FROM ts_kunjungan a
+            INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+            INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+            INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER`
+            WHERE SUBSTR(b.`kode_unit`,1,1) = 3
+            AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
+            AND a.no_rm = ?", [$rm]);
             return view('ermtemplate.detail_berkas_erm_rajal', compact([
                 'header',
-                'cppt','cek','url'
+                'cppt',
+                'cek',
+                'url',
+                'tindakan',
+                'farmasi',
+                'penunjang'
             ]));
         }
     }
@@ -138,11 +169,75 @@ class ReportingController extends Controller
 
             $cek = DB::select('select * from erm_upload_gambar where no_rm = ?', [$rm]);
             $url = url('../../files/');
+            $tindakan = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+            ,c.`kode_tarif_detail`,d.`NAMA_TARIF`
+            FROM ts_kunjungan a
+            INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+            INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+            INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER`
+            WHERE SUBSTR(b.`kode_unit`,1,1) = 1
+            AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
+            AND a.no_rm = ?", [$rm]);
 
+            $farmasi = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+            ,c.`kode_tarif_detail`,d.`nama_barang`,C.`jumlah_layanan`,C.`aturan_pakai`
+            FROM ts_kunjungan a
+            INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+            INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+            INNER JOIN mt_barang d ON c.`kode_barang` = d.`kode_barang`
+            WHERE SUBSTR(b.`kode_unit`,1,1) = 4
+            AND a.no_rm = ?", [$rm]);
+
+            $penunjang = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+            ,c.`kode_tarif_detail`,d.`NAMA_TARIF`
+            FROM ts_kunjungan a
+            INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+            INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+            INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER`
+            WHERE SUBSTR(b.`kode_unit`,1,1) = 3
+            AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
+            AND a.no_rm = ?", [$rm]);
             return view('ermtemplate.detail_berkas_erm_rajal', compact([
                 'header',
-                'cppt','cek','url'
+                'cppt',
+                'cek',
+                'url',
+                'tindakan',
+                'farmasi',
+                'penunjang'
             ]));
         }
+    }
+    public function hasillab(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        $jlh = $request->jlh;
+        $rm = $request->rm;
+        $hasil_lab = DB::select('SELECT * FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` WHERE a.`kode_kunjungan` = ? AND b.`kode_unit` = ? ORDER BY a.`kode_kunjungan` DESC', [$kodekunjungan, '3002']);
+        return view('erm_form_khusus.hasil_labbb', compact([
+            'hasil_lab'
+        ]));
+    }
+    public function hasilrad(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        $hasil_rad = DB::select('SELECT * FROM ts_hasil_expertisi WHERE kode_kunjungan = ? ORDER BY id DESC', [$kodekunjungan]);
+        $kunjungan = db::Select('select * from ts_kunjungan where kode_kunjungan = ?',[$kodekunjungan]);
+        $date = $this->get_date();
+        $rm = $kunjungan[0]->no_rm;
+        return view('ermtemplate.view_hasil_penunjang_rad', compact([
+            'hasil_rad',
+            'date','rm'
+        ]));
+    }
+    public function hasilpa(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $kodekunjungan = $request->kodekunjungan;
+        $hasil_pa = DB::select('SELECT * FROM ts_hasil_expertisi_pa  WHERE kode_kunjungan = ? ', [$rm]);
+        return view('ermtemplate.view_hasil_penunjang_pa', compact([
+            'hasil_pa',
+            'rm'
+        ]));
     }
 }
