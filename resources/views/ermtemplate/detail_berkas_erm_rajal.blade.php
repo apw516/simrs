@@ -3316,7 +3316,7 @@
                                     </tr>
                                     <tr>
                                         <td>Jawaban Konsul Ke Poli lain</td>
-                                        <td>{{ $h->keterangan_tindak_lanjut_2}} </td>
+                                        <td>{{ $h->keterangan_tindak_lanjut_2 }} </td>
                                     </tr>
                                     <tr>
                                         <td>Billing Tindakan</td>
@@ -3389,7 +3389,8 @@
                                                         </td>
                                                         <td>
                                                             <div class="card">
-                                                                <table class="table table-sm table-bordered table-striped">
+                                                                <table
+                                                                    class="table table-sm table-bordered table-striped">
                                                                     <tr>
                                                                         <td>Sumber Data</td>
                                                                         <td>{{ $cp->sumber_data }}
@@ -3568,7 +3569,19 @@
                     @endforeach
                 </div>
                 <div class="tab-pane" id="settings">
-                    BERKAS LAIN
+                    @if(count($cek) == 0)
+                        Tidak ada berkas lain / berkas dari luar yang diupload ...
+                    @endif
+                    @foreach ($cek as $c)
+                        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+                        <div class="card">
+                            <div class="card-header">{{ $c->nama }}</div>
+                            <div class="card-body">
+                                <iframe src ="{{ $url }}/{{ $c->gambar }}" width="1000px"
+                                    height="600px"></iframe>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
                 <!-- /.tab-pane -->
             </div>

@@ -763,4 +763,5 @@ Route::get('/carisep_2/{sep}', [SimrsController::class, 'carisep_2'])->name('car
 
 Route::get('/dataermrajal', [ReportingController::class, 'dataermrajal'])->name('dataermrajal'); //formpasien_bpjs
 Route::post('/ambilberkasermrajal', [ReportingController::class, 'ambilberkasermrajal'])->name('ambilberkasermrajal'); //formpasien_bpjs
+Route::post('/ambilcatatanmedis_pasien2', [ReportingController::class, 'ambilcatatanmedis_pasien2'])->name('ambilcatatanmedis_pasien2'); //formpasien_bpjs
 

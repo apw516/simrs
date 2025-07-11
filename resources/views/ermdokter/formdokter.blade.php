@@ -33,7 +33,7 @@
             @else
                 <br>{{ $kunjungan[0]->diagx }}</p>
                 @endif
-                <a href="#" onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})"
+                <a href="#" onclick="formcatatanmedis2({{ $kunjungan[0]->no_rm }})"
                     class="btn btn-primary btn-block"><b>Catatan
                         Medis</b></a>
                 <a href="#" onclick="lihaticare()" class="btn btn-success btn-block"><b>Icare BPJS</b></a>
@@ -145,7 +145,7 @@
 <script>
     $(document).ready(function() {
         rm = $('#nomorrm').val()
-        formcatatanmedis(rm)
+        formcatatanmedis2(rm)
     })
 
     function tutupicare() {
@@ -168,6 +168,22 @@
                 rm
             },
             url: '<?= route('ambilcatatanmedis_pasien') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    function formcatatanmedis2(rm) {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm
+            },
+            url: '<?= route('ambilcatatanmedis_pasien2') ?>',
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()
