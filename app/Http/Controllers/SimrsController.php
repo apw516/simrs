@@ -3835,7 +3835,7 @@ class SimrsController extends Controller
             'kode_propinsi' => $request->provinsi,
             'kode_kabupaten' => $request->kabupaten,
             'kode_kecamatan' => $request->kecamatan,
-            'kode_desa' => $desa
+            'kode_desa' => $request->desa
         ];
         $data_keluarga = [
             'nama_keluarga' => $request->namakeluarga,
