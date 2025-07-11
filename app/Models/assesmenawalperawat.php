@@ -10,7 +10,7 @@ class assesmenawalperawat extends Model
     use HasFactory;
     const UPDATED_AT = null;
     const CREATED_AT = null;
-    protected $connection = 'mysql4';
+    protected $connection = 'mysql';
     protected $table = 'erm_hasil_assesmen_keperawatan_rajal';
     protected $guarded = ['id'];
 }
