@@ -232,9 +232,10 @@ class ReportingController extends ErmController
     }
     public function hasilpa(Request $request)
     {
-        $rm = $request->nomorrm;
         $kodekunjungan = $request->kodekunjungan;
-        $hasil_pa = DB::select('SELECT * FROM ts_hasil_expertisi_pa  WHERE kode_kunjungan = ? ', [$rm]);
+        $hasil_pa = DB::select('SELECT * FROM ts_hasil_expertisi_pa  WHERE kode_kunjungan = ? ', [$kodekunjungan]);
+        $kunjungan = db::Select('select * from ts_kunjungan where kode_kunjungan = ?',[$kodekunjungan]);
+        $rm = $kunjungan[0]->no_rm;
         return view('ermtemplate.view_hasil_penunjang_pa', compact([
             'hasil_pa',
             'rm'

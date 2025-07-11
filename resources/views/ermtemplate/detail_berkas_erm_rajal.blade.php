@@ -6668,4 +6668,21 @@
                 }
             });
     });
+    $(".lihathasilpa").on('click', function(event){
+    kodekunjungan = $(this).attr('kodekunjungan');
+                $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    kodekunjungan
+                },
+                url: '<?= route('hasilpa') ?>',
+                error: function(data) {
+                    alert('ok')
+                },
+                success: function(response) {
+                    $('.v_hasil_pa').html(response)
+                }
+            });
+    });
 </script>

@@ -766,4 +766,5 @@ Route::post('/ambilberkasermrajal', [ReportingController::class, 'ambilberkaserm
 Route::post('/ambilcatatanmedis_pasien2', [ReportingController::class, 'ambilcatatanmedis_pasien2'])->name('ambilcatatanmedis_pasien2'); //formpasien_bpjs
 Route::post('/hasillab', [ReportingController::class, 'hasillab'])->name('hasillab'); //formpasien_bpjs
 Route::post('/hasilrad', [ReportingController::class, 'hasilrad'])->name('hasilrad'); //formpasien_bpjs
+Route::post('/hasilpa', [ReportingController::class, 'hasilpa'])->name('hasilpa'); //formpasien_bpjs
 

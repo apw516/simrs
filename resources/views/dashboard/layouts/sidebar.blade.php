@@ -603,7 +603,7 @@
                               </p>
                           </a>
                       </li>
-                      <li hidden class="nav-item @if ($sidebar == 'berkas_erm') menu-open @endif">
+                      <li class="nav-item @if ($sidebar == 'berkas_erm') menu-open @endif">
                           <a href="#" class="nav-link">
                               <i class="nav-icon fas fa-table"></i>
                               <p>
