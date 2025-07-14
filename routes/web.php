@@ -756,6 +756,16 @@ Route::post('caribarangfarmasi', [newFarmasiController::class, 'caririwayatstok'
 
  Route::post('ambilhasillab_by_limit', [ErmController::class, 'ambilhasillab_by_limit'])
         ->name('ambilhasillab_by_limit'); //sidebar
+ Route::post('ambil_view_form_konsul', [ErmController::class, 'ambil_view_form_konsul'])
+        ->name('ambil_view_form_konsul'); //sidebar
+ Route::post('simpankonsul_baru', [ErmController::class, 'simpankonsul_baru'])
+        ->name('simpankonsul_baru'); //sidebar
+ Route::post('simpanrujin_baru', [ErmController::class, 'simpanrujin_baru'])
+        ->name('simpanrujin_baru'); //sidebar
+ Route::post('batalkonsull', [ErmController::class, 'batalkonsull'])
+        ->name('batalkonsull'); //sidebar
+ Route::post('simpanjawabankonsul', [ErmController::class, 'simpanjawabankonsul'])
+        ->name('simpanjawabankonsul'); //sidebar
 
 
 Route::get('/carisep_2/{sep}', [SimrsController::class, 'carisep_2'])->name('carisep_2'); //formpasien_bpjs

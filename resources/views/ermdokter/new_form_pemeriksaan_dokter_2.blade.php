@@ -27,6 +27,26 @@
                 <hr class="my-4">
             </div>
         @endif
+        @if(count($konsul) > 0)
+            <div class="card">
+                <div class="card-header">Konsul dari : <br> {{ $konsul[0]->dokter_konsul}} | {{ $konsul[0]->unit_kirim }} <br>
+                Tanggal Konsul : {{ date('d-M-Y', strtotime($konsul[0]->tgl_konsul)) }}
+                </div>
+                <div class="card-body">
+                    <input hidden type="text" value="{{ $konsul[0]->id }}" id="idkonsul">
+                    <p> Catatan : {{ $konsul[0]->catatan }} </p>
+                    <div class="card mt-2">
+                        <div class="card-header">Jawaban Konsul</div>
+                        <div class="card-body">
+                            <textarea cols="30" rows="10" class="form-control" id="jawabankonsul"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-warning" onclick="simpanjawabankonsul()">Simpan Jawaban Konsul</button>
+                </div>
+            </div>
+        @endif
         <div class="card">
             <div class="card-header text-bold bg-success">+ SUBJECT ( S )</div>
             <div class="card-body">
@@ -1186,7 +1206,7 @@
                     <div class="card">
                         <div class="card-header bg-light">Tindak Lanjut <button type="button"
                                 class="btn btn-success float-right riwayatkonsul" data-toggle="modal"
-                                data-target="#modalriwayatkonsul">Riwayat Konsul</button></div>
+                                data-target="#modalriwayatkonsul">Riwayat Konsul & Rujuk Internal </button></div>
                         <div class="card-body">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="pilihtindaklanjut"
@@ -1228,6 +1248,10 @@
                                 <textarea type="text" class="form-control" id="keterangantindaklanjut" name="keterangantindaklanjut"
                                     aria-describedby="emailHelp"></textarea>
                             </div>
+                            <div class="v_form_konsul">
+
+                            </div>
+
                         </div>
                     </div>
                 </form>
@@ -1450,16 +1474,10 @@
                 </div>
             </div>
         </div>
-        {{-- <form action="" class="formpemeriksaandokter">
-
-        </form> --}}
-
-
         <button type="button" class="btn btn-danger float-right ml-2" onclick="batalisi()">Batal</button>
         <button type="button" class="btn btn-success float-right" onclick="simpanhasil()">Simpan</button>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="modalsumarilis" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -1700,7 +1718,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="modaltemplate" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -1724,7 +1741,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="modalcatatankonsul" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -1757,11 +1773,10 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="modalriwayatkonsul" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Riwayat Konsul</h5>
@@ -1781,7 +1796,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="modalscan_rm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -1928,10 +1942,11 @@
         });
     }
     $(".riwayatkonsul").click(function() {
+        var kodekunjungan = $('#kodekunjungan').val()
         $.ajax({
             type: 'post',
             data: {
-                _token: "{{ csrf_token() }}"
+                _token: "{{ csrf_token() }}",kodekunjungan
             },
             url: '<?= route('riwayatkonsul') ?>',
             success: function(response) {
@@ -1940,7 +1955,54 @@
             }
         });
     })
+    function simpanjawabankonsul()
+    {
+        id = $('#idkonsul').val()
+        jawabankonsul = $('#jawabankonsul').val()
+        kodekunjungan = $('#kodekunjungan').val()
+        spinner = $('#loader')
+           spinner.show();
+           $.ajax({
+               async: true,
+               type: 'post',
+               dataType: 'json',
+               data: {
+                   _token: "{{ csrf_token() }}",
+                   id,
+                   jawabankonsul,
+                   kodekunjungan
+               },
+               url: '<?= route('simpanjawabankonsul') ?>',
+               error: function(data) {
+                   spinner.hide()
+                   Swal.fire({
+                       icon: 'error',
+                       title: 'Ooops....',
+                       text: 'Sepertinya ada masalah......',
+                       footer: ''
+                   })
+               },
+               success: function(data) {
+                   spinner.hide()
+                   if (data.kode == 500) {
+                       Swal.fire({
+                           icon: 'error',
+                           title: 'Oopss...',
+                           text: data.message,
+                           footer: ''
+                       })
+                   } else {
+                       Swal.fire({
+                           icon: 'success',
+                           title: 'OK',
+                           text: data.message,
+                           footer: ''
+                       })
+                   }
+               }
+           });
 
+    }
     $(".lihathasilpenunjang_lab").click(function() {
         spinner = $('#loader')
         spinner.show();
@@ -2158,7 +2220,6 @@
             }
         }
     });
-
     function showname() {
         a = $('#simpantemplate:checked').val()
         if (a == 'on') {
@@ -2214,8 +2275,28 @@
     $(document).ready(function() {
         ambilgambar()
         ambilriwayatobat()
+        ambilformkonsul()
     })
 
+    function ambilformkonsul() {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan: $('#kodekunjungan').val()
+            },
+            url: '<?= route('ambil_view_form_konsul') ?>',
+            error: function(data) {
+                alert('ok')
+            },
+            success: function(response) {
+                $('.v_form_konsul').html(response)
+                spinner.hide()
+            }
+        });
+    }
     function ambilriwayatobat() {
         spinner = $('#loader')
         spinner.show();
