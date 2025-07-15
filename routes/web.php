@@ -766,6 +766,8 @@ Route::post('caribarangfarmasi', [newFarmasiController::class, 'caririwayatstok'
         ->name('batalkonsull'); //sidebar
  Route::post('simpanjawabankonsul', [ErmController::class, 'simpanjawabankonsul'])
         ->name('simpanjawabankonsul'); //sidebar
+ Route::post('ambildatakonsul', [ErmController::class, 'ambildatakonsul'])
+        ->name('ambildatakonsul'); //sidebar
 
 
 Route::get('/carisep_2/{sep}', [SimrsController::class, 'carisep_2'])->name('carisep_2'); //formpasien_bpjs

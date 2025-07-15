@@ -617,9 +617,9 @@ class ErmController extends Controller
     public function formpemeriksaan_dokter(Request $request)
     {
         $kunjungan = DB::select('select *,fc_nama_px(no_rm) as nama_pasien,fc_nama_paramedis(ref_paramedis) AS dokter_kirim,fc_nama_unit1(ref_unit) AS poli_asal from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
-        $konsul = DB::select('select *,fc_nama_paramedis1(dokter_pengirim) as dokter_konsul, fc_nama_unit1(unit_pengirim) as unit_kirim from ts_konsul_antar_poli where unit_tujuan = ? and status = 0',[auth()->user()->unit]);
-        $unitk = $kunjungan[0]->kode_unit;
         $rm = $kunjungan[0]->no_rm;
+        $konsul = DB::select('select *,fc_nama_paramedis1(dokter_pengirim) as dokter_konsul, fc_nama_unit1(unit_pengirim) as unit_kirim from ts_konsul_antar_poli where unit_tujuan = ? and no_rm = ? and status = 0',[auth()->user()->unit,$rm]);
+        $unitk = $kunjungan[0]->kode_unit;
         $kunjunganKronis = DB::select('select * from ts_kunjungan where no_rm = ? and kode_unit = ? and catatan = ?', [$rm, $unitk, 'KRONIS']);
         // $rujukan = $kunjungan[0]->no_rujukan;
         $rujukan = 'AB';
@@ -830,6 +830,19 @@ class ErmController extends Controller
                 ]));
             }
         }
+    }
+    public function ambildatakonsul(Request $request)
+    {
+        $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
+        $rm = $kunjungan[0]->no_rm;
+        $konsul = DB::select('select *,fc_nama_paramedis1(dokter_pengirim) as dokter_konsul, fc_nama_unit1(unit_pengirim) as unit_kirim from ts_konsul_antar_poli where unit_tujuan = ? and no_rm = ? and status = 0',[auth()->user()->unit,$rm]);
+
+        $konsul2 = DB::select('select *,fc_nama_paramedis1(dokter_pengirim) as dokter_konsul, fc_nama_unit1(unit_pengirim) as unit_kirim from ts_konsul_antar_poli where unit_tujuan = ? and no_rm = ? and status = 1 and kode_kunjungan_2 = ?',[auth()->user()->unit,$rm,$request->kodekunjungan]);
+
+        return view('ermtemplate.tampilandatakonsul',compact([
+            'kunjungan','rm','konsul','konsul2'
+        ]));
+
     }
     public function formpemeriksaan_khusus(Request $request)
     {
@@ -8509,7 +8522,8 @@ class ErmController extends Controller
             'jawaban_konsul' => $jawaban,
             'dokter_penerima' => auth()->user()->kode_paramedis,
             'status' => 1,
-            'tgl_jawab' => $this->get_now()
+            'tgl_jawab' => $this->get_now(),
+            'kode_kunjungan_2'=> $kodekunjungan
         ];
         ts_konsul_antar_poli::where('id',$id)->update($data);
         $dat2a = [

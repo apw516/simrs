@@ -2,6 +2,8 @@
     <div class="card-header bg-info">CPPT
         <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
             data-target="#modalresumeperawat"><i class="bi bi-eye mr-1"></i> Hasil Assesmen Keperawatan</button>
+        <button class="btn btn-warning ml-2" rm="" data-toggle="modal"
+            data-target="#modalriwayatkonsulantarpoli"><i class="bi bi-eye mr-1"></i> Riwayat Konsul Antar Poli</button>
         {{-- <button class="btn btn-danger ml-2 lihathasilpenunjang_lab" nomorrm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
             data-target="#modalhasilpenunjang_lab"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan Laboratorium</button>
         <button class="btn btn-danger ml-2 lihathasilpenunjang_rad" nomorrm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
@@ -27,26 +29,9 @@
                 <hr class="my-4">
             </div>
         @endif
-        @if(count($konsul) > 0)
-            <div class="card">
-                <div class="card-header">Konsul dari : <br> {{ $konsul[0]->dokter_konsul}} | {{ $konsul[0]->unit_kirim }} <br>
-                Tanggal Konsul : {{ date('d-M-Y', strtotime($konsul[0]->tgl_konsul)) }}
-                </div>
-                <div class="card-body">
-                    <input hidden type="text" value="{{ $konsul[0]->id }}" id="idkonsul">
-                    <p> Catatan : {{ $konsul[0]->catatan }} </p>
-                    <div class="card mt-2">
-                        <div class="card-header">Jawaban Konsul</div>
-                        <div class="card-body">
-                            <textarea cols="30" rows="10" class="form-control" id="jawabankonsul"></textarea>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <button class="btn btn-warning" onclick="simpanjawabankonsul()">Simpan Jawaban Konsul</button>
-                </div>
-            </div>
-        @endif
+        <div class="v_tampilan_konsul">
+
+        </div>
         <div class="card">
             <div class="card-header text-bold bg-success">+ SUBJECT ( S )</div>
             <div class="card-body">
@@ -1479,6 +1464,28 @@
     </div>
 </div>
 <!-- Modal -->
+<div class="modal fade" id="modalriwayatkonsulantarpoli" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">RIWAYAT KONSUL ANTAR POLI</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_sumarilis">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
 <div class="modal fade" id="modalsumarilis" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -1955,54 +1962,7 @@
             }
         });
     })
-    function simpanjawabankonsul()
-    {
-        id = $('#idkonsul').val()
-        jawabankonsul = $('#jawabankonsul').val()
-        kodekunjungan = $('#kodekunjungan').val()
-        spinner = $('#loader')
-           spinner.show();
-           $.ajax({
-               async: true,
-               type: 'post',
-               dataType: 'json',
-               data: {
-                   _token: "{{ csrf_token() }}",
-                   id,
-                   jawabankonsul,
-                   kodekunjungan
-               },
-               url: '<?= route('simpanjawabankonsul') ?>',
-               error: function(data) {
-                   spinner.hide()
-                   Swal.fire({
-                       icon: 'error',
-                       title: 'Ooops....',
-                       text: 'Sepertinya ada masalah......',
-                       footer: ''
-                   })
-               },
-               success: function(data) {
-                   spinner.hide()
-                   if (data.kode == 500) {
-                       Swal.fire({
-                           icon: 'error',
-                           title: 'Oopss...',
-                           text: data.message,
-                           footer: ''
-                       })
-                   } else {
-                       Swal.fire({
-                           icon: 'success',
-                           title: 'OK',
-                           text: data.message,
-                           footer: ''
-                       })
-                   }
-               }
-           });
 
-    }
     $(".lihathasilpenunjang_lab").click(function() {
         spinner = $('#loader')
         spinner.show();
@@ -2276,8 +2236,28 @@
         ambilgambar()
         ambilriwayatobat()
         ambilformkonsul()
+        ambildatakonsul()
     })
 
+    function ambildatakonsul() {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan: $('#kodekunjungan').val()
+            },
+            url: '<?= route('ambildatakonsul') ?>',
+            error: function(data) {
+                alert('ok')
+            },
+            success: function(response) {
+                $('.v_tampilan_konsul').html(response)
+                spinner.hide()
+            }
+        });
+    }
     function ambilformkonsul() {
         spinner = $('#loader')
         spinner.show();

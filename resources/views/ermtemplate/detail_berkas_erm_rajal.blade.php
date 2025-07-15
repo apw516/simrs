@@ -6219,6 +6219,21 @@
                                         <td>Tindak Lanjut</td>
                                         <td>{{ $h->tindak_lanjut }}<br>
                                             {{ $h->keterangan_tindak_lanjut }}
+
+                                            @foreach($datakonsul as $dk)
+                                                @if($dk->kode_kunjungan == $h->kode_kunjungan)
+                                                 {{ $dk->kode_kunjungan}}
+                                                    @if($dk->jenis == 'KONSUL')
+                                                        KONSUL KE POLI {{ $dk->poli_konsul }} <br>
+                                                        {{ $dk->catatan }} <br><br><br>
+                                                        JAWABAN KONSUL <br>
+                                                        {{ $dk->dokter_penerima_2 }} <br><br>
+                                                        {{ $dk->jawaban_konsul }}
+                                                    @elseif($dk->jenis == 'RUJIN')
+                                                        RUJUK POLI LAIN ( {{ $dk->poli_konsul }})
+                                                    @endif
+                                                @endif
+                                            @endforeach
                                         </td>
                                     </tr>
                                     <tr>
@@ -6227,7 +6242,19 @@
                                     </tr>
                                     <tr>
                                         <td>Jawaban Konsul Ke Poli lain</td>
-                                        <td>{{ $h->keterangan_tindak_lanjut_2 }} </td>
+                                        <td>{{ $h->keterangan_tindak_lanjut_2 }}<br><br>
+
+                                            @foreach($datakonsul as $dk)
+                                                @if($dk->kode_kunjungan_2 == $h->kode_kunjungan)
+                                                    @if($dk->jenis == 'KONSUL')
+                                                        KONSUL DARI POLI {{ $dk->poli_pengirim }} <br>
+                                                        {{ $dk->catatan }} <br><br><br>
+                                                        JAWABAN KONSUL <br>
+                                                        {{ $dk->jawaban_konsul }}
+                                                    @endif
+                                                @endif
+                                            @endforeach
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Billing Tindakan</td>
@@ -6403,6 +6430,21 @@
                                                                         <td>Tindak Lanjut</td>
                                                                         <td>{{ $cp->tindak_lanjut }}<br>
                                                                             {{ $cp->keterangan_tindak_lanjut }}
+
+                                                                                @foreach($datakonsul as $dk)
+                                                                                    @if($dk->kode_kunjungan == $cp->kode_kunjungan)
+                                                                                    ada
+                                                                                        @if($dk->jenis == 'KONSUL')
+                                                                                            KONSUL KE POLI {{ $dk->poli_konsul }} <br>
+                                                                                            {{ $dk->catatan }} <br><br><br>
+                                                                                            JAWABAN KONSUL <br>
+                                                                                            {{ $dk->dokter_penerima_2 }} <br><br>
+                                                                                            {{ $dk->jawaban_konsul }}
+                                                                                        @else
+                                                                                            RUJUK POLI LAIN ( {{ $dk->poli_konsul }})
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @endforeach
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
@@ -6471,8 +6513,17 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td>Jawaban Konsul Ke poli lain</td>
-                                                                        <td>{{ $cp->keterangan_tindak_lanjut_2 }}
-                                                                        </td>
+                                                                        <td>{{ $cp->keterangan_tindak_lanjut_2 }} <br><br>
+                                                                             @foreach($datakonsul as $dk)
+                                                                                    @if($dk->kode_kunjungan_2 == $cp->kode_kunjungan)
+                                                                                        @if($dk->jenis == 'KONSUL')
+                                                                                            KONSUL DARI POLI {{ $dk->poli_pengirim }} <br>
+                                                                                            {{ $dk->catatan }} <br><br><br>
+                                                                                            JAWABAN KONSUL <br>
+                                                                                            {{ $dk->jawaban_konsul }}
+                                                                                        @endif
+                                                                                    @endif
+                                                                            @endforeach                                                                        </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>Tanggal Periksa</td>

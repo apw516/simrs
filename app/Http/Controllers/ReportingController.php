@@ -80,8 +80,9 @@ class ReportingController extends ErmController
     public function ambilberkasermrajal(request $request)
     {
         $rm = $request->rm;
-        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?',[$rm]);
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$rm]);
         $first = DB::connection('mysql')->select('SELECT *,fc_nama_unit1(kode_unit) as nama_unit,date(tanggalkunjungan) as tgl FROM `erm_hasil_assesmen_keperawatan_rajal` WHERE no_rm = ? AND id = (select min(id) from erm_hasil_assesmen_keperawatan_rajal where no_rm = ?) limit 1', [$rm, $rm]);
+        $datakonsul = db::select('select *,fc_nama_unit1(unit_pengirim) as poli_pengirim,fc_nama_unit1(unit_tujuan) as poli_konsul,fc_nama_paramedis1(dokter_penerima) as dokter_penerima_2 from ts_konsul_antar_poli where no_rm = ?', [$rm]);
         if (count($first) > 0) {
             $assesmen_perawat = DB::connection('mysql')->select('select *,date(tanggalkunjungan) as tgl_k from erm_hasil_assesmen_keperawatan_rajal where kode_kunjungan > ? and no_rm = ?', [$first[0]->kode_kunjungan, $rm]);
             $tanggal = date_create($first[0]->tgl);
@@ -143,15 +144,18 @@ class ReportingController extends ErmController
                 'url',
                 'tindakan',
                 'farmasi',
-                'penunjang','mt_pasien'
+                'penunjang',
+                'mt_pasien',
+                'datakonsul'
             ]));
         }
     }
     public function ambilcatatanmedis_pasien2(request $request)
     {
         $rm = $request->rm;
-        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?',[$rm]);
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$rm]);
         $first = DB::connection('mysql')->select('SELECT *,fc_nama_unit1(kode_unit) as nama_unit,date(tanggalkunjungan) as tgl FROM `erm_hasil_assesmen_keperawatan_rajal` WHERE no_rm = ? AND id = (select min(id) from erm_hasil_assesmen_keperawatan_rajal where no_rm = ?) limit 1', [$rm, $rm]);
+        $datakonsul = db::select('select *,fc_nama_unit1(unit_pengirim) as poli_pengirim,fc_nama_unit1(unit_tujuan) as poli_konsul,fc_nama_paramedis1(dokter_penerima) as dokter_penerima_2 from ts_konsul_antar_poli where no_rm = ?', [$rm]);
         if (count($first) > 0) {
             $assesmen_perawat = DB::connection('mysql')->select('select *,date(tanggalkunjungan) as tgl_k from erm_hasil_assesmen_keperawatan_rajal where kode_kunjungan > ? and no_rm = ?', [$first[0]->kode_kunjungan, $rm]);
             $tanggal = date_create($first[0]->tgl);
@@ -173,7 +177,7 @@ class ReportingController extends ErmController
             $header = DB::connection('mysql')->select('SELECT *,a.id as idasskep,date(a.tanggalkunjungan) as tglk,fc_nama_unit1(a.kode_unit) as nama_unit FROM erm_hasil_assesmen_keperawatan_rajal a left outer join assesmen_dokters b on a.kode_kunjungan = b.id_kunjungan WHERE a.no_rm = ? and a.jenis_berkas = ? order  by a.id desc', [$rm, 1]);
             // $cppt = DB::connection('mysql')->select('SELECT *,b.versi as versidk,date(a.tanggalkunjungan) as tglk,a.kode_unit as unitpoli ,fc_nama_unit1(a.kode_unit) as nama_unit FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b on a.kode_kunjungan = b.id_kunjungan WHERE a.no_rm = ? and a.jenis_berkas = ? order  by a.id asc', [$rm, 2]);
 
-             $cppt = DB::connection('mysql')->select('SELECT *,a.id as idasskep,b.versi as versidk,date(a.tanggalkunjungan) as tglk,a.kode_unit as unitpoli ,fc_nama_unit1(a.kode_unit) as nama_unit FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b on a.kode_kunjungan = b.id_kunjungan
+            $cppt = DB::connection('mysql')->select('SELECT *,a.id as idasskep,b.versi as versidk,date(a.tanggalkunjungan) as tglk,a.kode_unit as unitpoli ,fc_nama_unit1(a.kode_unit) as nama_unit FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b on a.kode_kunjungan = b.id_kunjungan
             LEFT OUTER JOIN ts_kunjungan c on a.kode_kunjungan = c.kode_kunjungan
              WHERE a.no_rm = ? and c.status_kunjungan != 8 and a.jenis_berkas = ? order  by a.id asc', [$rm, 2]);
 
@@ -214,7 +218,9 @@ class ReportingController extends ErmController
                 'url',
                 'tindakan',
                 'farmasi',
-                'penunjang','mt_pasien'
+                'penunjang',
+                'mt_pasien',
+                'datakonsul'
             ]));
         }
     }
@@ -232,19 +238,20 @@ class ReportingController extends ErmController
     {
         $kodekunjungan = $request->kodekunjungan;
         $hasil_rad = DB::select('SELECT * FROM ts_hasil_expertisi WHERE kode_kunjungan = ? ORDER BY id DESC', [$kodekunjungan]);
-        $kunjungan = db::Select('select * from ts_kunjungan where kode_kunjungan = ?',[$kodekunjungan]);
+        $kunjungan = db::Select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
         $date = $this->get_date();
         $rm = $kunjungan[0]->no_rm;
         return view('ermtemplate.view_hasil_penunjang_rad', compact([
             'hasil_rad',
-            'date','rm'
+            'date',
+            'rm'
         ]));
     }
     public function hasilpa(Request $request)
     {
         $kodekunjungan = $request->kodekunjungan;
         $hasil_pa = DB::select('SELECT * FROM ts_hasil_expertisi_pa  WHERE kode_kunjungan = ? ', [$kodekunjungan]);
-        $kunjungan = db::Select('select * from ts_kunjungan where kode_kunjungan = ?',[$kodekunjungan]);
+        $kunjungan = db::Select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
         $rm = $kunjungan[0]->no_rm;
         return view('ermtemplate.view_hasil_penunjang_pa', compact([
             'hasil_pa',
