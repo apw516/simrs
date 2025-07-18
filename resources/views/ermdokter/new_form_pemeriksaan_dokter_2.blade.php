@@ -2,7 +2,7 @@
     <div class="card-header bg-info">CPPT
         <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
             data-target="#modalresumeperawat"><i class="bi bi-eye mr-1"></i> Hasil Assesmen Keperawatan</button>
-        <button class="btn btn-warning ml-2" rm="" data-toggle="modal"
+        <button class="btn btn-warning ml-2 riwayatkonsulantarpoli" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
             data-target="#modalriwayatkonsulantarpoli"><i class="bi bi-eye mr-1"></i> Riwayat Konsul Antar Poli</button>
         {{-- <button class="btn btn-danger ml-2 lihathasilpenunjang_lab" nomorrm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
             data-target="#modalhasilpenunjang_lab"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan Laboratorium</button>
@@ -1236,7 +1236,6 @@
                             <div class="v_form_konsul">
 
                             </div>
-
                         </div>
                     </div>
                 </form>
@@ -1475,7 +1474,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="v_sumarilis">
+                <div class="v_riwayat_konsul_antar_poli">
 
                 </div>
             </div>
@@ -2369,6 +2368,27 @@
             // });
         }
     }
+    $(".riwayatkonsulantarpoli").on('click', function(event) {
+        rm = $(this).attr('rm')
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm
+            },
+            url: '<?= route('ambil_riwayat_konsul_antar_poli') ?>',
+            error: function(data) {
+                spinner.hide();
+                alert('error')
+            },
+            success: function(response) {
+                spinner.hide();
+                $('.v_riwayat_konsul_antar_poli').html(response);
+            }
+        });
+    })
     $(".scanrm_liat").on('click', function(event) {
         rm = $(this).attr('rm')
         spinner = $('#loader')

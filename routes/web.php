@@ -121,8 +121,10 @@ Route::get('/indexpelayanandokter', [ErmController::class, 'indexpelayanandokter
     ->name('indexpelayanandokter'); //sidebar
 Route::get('/riwayatpemeriksaan_byrm', [ErmController::class, 'riwayatpemeriksaan_byrm'])
     ->name('riwayatpemeriksaan_byrm'); //sidebar
-Route::post('/ambilriwayat_pasien_byrm', [ErmController::class, 'ambilriwayat_pasien_byrm'])
-    ->name('ambilriwayat_pasien_byrm'); //sidebar
+// Route::post('/ambilriwayat_pasien_byrm', [ErmController::class, 'ambilriwayat_pasien_byrm'])
+//     ->name('ambilriwayat_pasien_byrm'); //sidebar
+Route::post('/ambilriwayat_pasien_byrm', [ReportingController::class, 'ambilcatatanmedis_pasien2'])->name('ambilriwayat_pasien_byrm'); //formpasien_bpjs
+
 Route::post('/simpangambar_igd', [ErmController::class, 'simpangambarbebas'])
     ->name('simpangambar_igd'); //sidebar
 Route::post('/gambarcatatan', [ErmController::class, 'gambarcatatan'])
@@ -768,6 +770,8 @@ Route::post('caribarangfarmasi', [newFarmasiController::class, 'caririwayatstok'
         ->name('simpanjawabankonsul'); //sidebar
  Route::post('ambildatakonsul', [ErmController::class, 'ambildatakonsul'])
         ->name('ambildatakonsul'); //sidebar
+ Route::post('ambil_riwayat_konsul_antar_poli', [ErmController::class, 'ambil_riwayat_konsul_antar_poli'])
+        ->name('ambil_riwayat_konsul_antar_poli'); //sidebar
 
 
 Route::get('/carisep_2/{sep}', [SimrsController::class, 'carisep_2'])->name('carisep_2'); //formpasien_bpjs

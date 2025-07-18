@@ -1,9 +1,13 @@
 <div class="card">
     <div class="card-header bg-info">Catatan Perkembangan Pasien Terintegrasi
-        <button class="btn btn-danger ml-2 lihathasilpenunjang_lab" nomorrm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
-            data-target="#modalhasilpenunjang_lab"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan Laboratorium</button>
-        <button class="btn btn-danger ml-2 lihathasilpenunjang_rad" nomorrm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
-            data-target="#modalhasilpenunjang_rad"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan Radiologi</button>
+        <button class="btn btn-danger ml-2 lihathasilpenunjang_lab" nomorrm="{{ $kunjungan[0]->no_rm }}"
+            data-toggle="modal" data-target="#modalhasilpenunjang_lab"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan
+            Laboratorium</button>
+        <button class="btn btn-danger ml-2 lihathasilpenunjang_rad" nomorrm="{{ $kunjungan[0]->no_rm }}"
+            data-toggle="modal" data-target="#modalhasilpenunjang_rad"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan
+            Radiologi</button>
+        <button class="btn btn-warning ml-2 riwayatkonsulantarpoli" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
+            data-target="#modalriwayatkonsulantarpoli"><i class="bi bi-eye mr-1"></i> Riwayat Konsul Antar Poli</button>
         @if ($kunjungan[0]->ref_kunjungan != '0')
             <button class="btn btn-warning ml-2" data-toggle="modal" data-target="#modalcatatankonsul"><i
                     class="bi bi-eye mr-1"></i> Catatan Konsul</button>
@@ -193,8 +197,8 @@
                 </div>
             </div>
         </form>
-          {{-- formtindaklanjut --}}
-          <form action="" class="formtindaklanjut">
+        {{-- formtindaklanjut --}}
+        <form action="" class="formtindaklanjut">
             <div class="card">
                 <div class="card-header bg-light">Tindak Lanjut <button type="button"
                         class="btn btn-success float-right riwayatkonsul" data-toggle="modal"
@@ -208,8 +212,7 @@
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                            id="pilihtindaklanjut" value="KONTROL"
-                            @if ($last_assdok[0]->tindak_lanjut == 'KONTROL') checked @endif>
+                            id="pilihtindaklanjut" value="KONTROL" @if ($last_assdok[0]->tindak_lanjut == 'KONTROL') checked @endif>
                         <label class="form-check-label" for="inlineRadio2">KONTROL</label>
                     </div>
                     <div class="form-check form-check-inline">
@@ -240,6 +243,9 @@
                         <label for="exampleInputEmail1">Keterangan</label>
                         <textarea type="text" class="form-control" id="keterangantindaklanjut" name="keterangantindaklanjut"
                             aria-describedby="emailHelp">{{ $last_assdok[0]->keterangan_tindak_lanjut }}</textarea>
+                    </div>
+                    <div class="v_form_konsul">
+
                     </div>
                 </div>
             </div>
@@ -356,6 +362,51 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalriwayatkonsulantarpoli" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">RIWAYAT KONSUL ANTAR POLI</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_riwayat_konsul_antar_poli">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalriwayatkonsul" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Riwayat Konsul</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="view_riwayat_konsul">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -489,7 +540,7 @@
             $('#namaresep').attr('Hidden', true)
         }
     }
-    $(".lihathasilpenunjang_lab").click(function(){
+    $(".lihathasilpenunjang_lab").click(function() {
         spinner = $('#loader')
         spinner.show();
         nomorrm = $(this).attr('nomorrm')
@@ -506,7 +557,7 @@
             }
         });
     })
-    $(".lihathasilpenunjang_rad").click(function(){
+    $(".lihathasilpenunjang_rad").click(function() {
         spinner = $('#loader')
         spinner.show();
         nomorrm = $(this).attr('nomorrm')
@@ -523,4 +574,63 @@
             }
         });
     })
+    $(".riwayatkonsul").click(function() {
+        var kodekunjungan = $('#kodekunjungan').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('riwayatkonsul') ?>',
+            success: function(response) {
+                $('.view_riwayat_konsul').html(response);
+                spinner.hide()
+            }
+        });
+    })
+    $(".riwayatkonsulantarpoli").on('click', function(event) {
+        rm = $(this).attr('rm')
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm
+            },
+            url: '<?= route('ambil_riwayat_konsul_antar_poli') ?>',
+            error: function(data) {
+                spinner.hide();
+                alert('error')
+            },
+            success: function(response) {
+                spinner.hide();
+                $('.v_riwayat_konsul_antar_poli').html(response);
+            }
+        });
+    })
+    $(document).ready(function() {
+        ambilformkonsul()
+    })
+
+    function ambilformkonsul() {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan: $('#kodekunjungan').val()
+            },
+            url: '<?= route('ambil_view_form_konsul') ?>',
+            error: function(data) {
+                alert('ok')
+            },
+            success: function(response) {
+                $('.v_form_konsul').html(response)
+                spinner.hide()
+            }
+        });
+    }
 </script>

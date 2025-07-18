@@ -2,6 +2,9 @@
     <div class="card-header bg-info">CPPT
         <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
             data-target="#modalresumeperawat"><i class="bi bi-eye mr-1"></i> Hasil Assesmen Keperawatan</button>
+        <button class="btn btn-warning ml-2 riwayatkonsulantarpoli" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
+            data-target="#modalriwayatkonsulantarpoli"><i class="bi bi-eye mr-1"></i> Riwayat Konsul Antar Poli</button>
+
         @if ($kunjungan[0]->ref_kunjungan != '0')
             <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
                 data-target="#modalcatatankonsul"><i class="bi bi-eye mr-1"></i> Catatan Konsul</button>
@@ -24,6 +27,9 @@
                 <hr class="my-4">
             </div>
         @endif
+         <div class="v_tampilan_konsul">
+
+        </div>
         <div class="card">
             <div class="card-header text-bold bg-success">+ SUBJECT ( S )</div>
             <div class="card-body">
@@ -2502,6 +2508,9 @@
                                 <textarea type="text" class="form-control" id="keterangantindaklanjut" name="keterangantindaklanjut"
                                     aria-describedby="emailHelp">{{ $resume[0]->keterangan_tindak_lanjut }}</textarea>
                             </div>
+                             <div class="v_form_konsul">
+
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -3095,6 +3104,28 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalriwayatkonsulantarpoli" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">RIWAYAT KONSUL ANTAR POLI</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_riwayat_konsul_antar_poli">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <link rel="stylesheet" href="{{ asset('public/dist/css/datepicker.css') }}" rel="stylesheet">
 <script src="{{ asset('public/dist/js/bootstrap-datepicker.js') }}"></script>
 <script>
@@ -3104,7 +3135,27 @@
             todayHighlight: true,
         }).datepicker('update', new Date());
     });
-
+    $(".riwayatkonsulantarpoli").on('click', function(event) {
+            rm = $(this).attr('rm')
+            spinner = $('#loader')
+            spinner.show();
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    rm
+                },
+                url: '<?= route('ambil_riwayat_konsul_antar_poli') ?>',
+                error: function(data) {
+                    spinner.hide();
+                    alert('error')
+                },
+                success: function(response) {
+                    spinner.hide();
+                    $('.v_riwayat_konsul_antar_poli').html(response);
+                }
+            });
+        })
     function simpanhasil() {
         var canvas1 = document.getElementById("myCanvas1");
         var ctx1 = canvas1.getContext("2d");
@@ -3330,7 +3381,47 @@
         tindakanhariini()
         tindakanhariini_lab()
         tindakanhariini_rad()
+        ambildatakonsul()
+        ambilformkonsul()
     });
+      function ambildatakonsul() {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan: $('#kodekunjungan').val()
+            },
+            url: '<?= route('ambildatakonsul') ?>',
+            error: function(data) {
+                alert('ok')
+            },
+            success: function(response) {
+                $('.v_tampilan_konsul').html(response)
+                spinner.hide()
+            }
+        });
+    }
+    function ambilformkonsul() {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan: $('#kodekunjungan').val()
+            },
+            url: '<?= route('ambil_view_form_konsul') ?>',
+            error: function(data) {
+                alert('ok')
+            },
+            success: function(response) {
+                $('.v_form_konsul').html(response)
+                spinner.hide()
+            }
+        });
+    }
     $(".riwayatkonsul").click(function() {
         $.ajax({
             type: 'post',
@@ -3344,7 +3435,20 @@
             }
         });
     })
-
+    $(".riwayatkonsul").click(function() {
+        var kodekunjungan = $('#kodekunjungan').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",kodekunjungan
+            },
+            url: '<?= route('riwayatkonsul') ?>',
+            success: function(response) {
+                $('.view_riwayat_konsul').html(response);
+                spinner.hide()
+            }
+        });
+    })
     function tindakanhariini() {
         $.ajax({
             type: 'post',

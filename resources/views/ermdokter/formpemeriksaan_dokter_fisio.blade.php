@@ -1,28 +1,38 @@
 <div class="card">
     <div class="card-header bg-info">CPPT
-        <button class="btn btn-danger ml-2 lihathasilpenunjang_lab" nomorrm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
-            data-target="#modalhasilpenunjang_lab"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan Laboratorium</button>
-        <button class="btn btn-danger ml-2 lihathasilpenunjang_rad" nomorrm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
-            data-target="#modalhasilpenunjang_rad"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan Radiologi</button>
+        <button class="btn btn-danger ml-2 lihathasilpenunjang_lab" nomorrm="{{ $kunjungan[0]->no_rm }}"
+            data-toggle="modal" data-target="#modalhasilpenunjang_lab"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan
+            Laboratorium</button>
+        <button class="btn btn-danger ml-2 lihathasilpenunjang_rad" nomorrm="{{ $kunjungan[0]->no_rm }}"
+            data-toggle="modal" data-target="#modalhasilpenunjang_rad"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan
+            Radiologi</button>
+        <button class="btn btn-warning ml-2 riwayatkonsulantarpoli" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
+            data-target="#modalriwayatkonsulantarpoli"><i class="bi bi-eye mr-1"></i> Riwayat Konsul Antar Poli</button>
         @if ($kunjungan[0]->ref_kunjungan != '0')
-        <button class="btn btn-warning ml-2" data-toggle="modal"
-            data-target="#modalcatatankonsul"><i class="bi bi-eye mr-1"></i> Catatan Konsul</button>
-    @endif</div>
+            <button class="btn btn-warning ml-2" data-toggle="modal" data-target="#modalcatatankonsul"><i
+                    class="bi bi-eye mr-1"></i> Catatan Konsul</button>
+        @endif
+    </div>
     <div class="card-body">
         @if ($kunjungan[0]->ref_kunjungan != '0')
-        <div class="jumbotron">
-            <h1 class="display-4">Hello {{ auth()->user()->nama }} </h1><br>
-            <p class="lead">Dokter Pengirim : {{ $kunjungan[0]->dokter_kirim }}</p>
-            <p class="lead">Poliklinik Pengirim : {{ $kunjungan[0]->poli_asal }}</p>
-            <p class="lead">Mohon Konsul</p>
-            <p class="lead">Pasien dengan : <br>RM {{ $kunjungan[0]->no_rm }} |
-                {{ $kunjungan[0]->nama_pasien }} | {{ $kunjungan[0]->diagx }} <br><br>
-                Keterangan <br>
-                @if(count($ref_resume) > 0 ) {{ $ref_resume[0]->keterangan_tindak_lanjut }}@endif
-            </p>
-            <hr class="my-4">
-        </div>
+            <div class="jumbotron">
+                <h1 class="display-4">Hello {{ auth()->user()->nama }} </h1><br>
+                <p class="lead">Dokter Pengirim : {{ $kunjungan[0]->dokter_kirim }}</p>
+                <p class="lead">Poliklinik Pengirim : {{ $kunjungan[0]->poli_asal }}</p>
+                <p class="lead">Mohon Konsul</p>
+                <p class="lead">Pasien dengan : <br>RM {{ $kunjungan[0]->no_rm }} |
+                    {{ $kunjungan[0]->nama_pasien }} | {{ $kunjungan[0]->diagx }} <br><br>
+                    Keterangan <br>
+                    @if (count($ref_resume) > 0)
+                        {{ $ref_resume[0]->keterangan_tindak_lanjut }}
+                    @endif
+                </p>
+                <hr class="my-4">
+            </div>
         @endif
+          <div class="v_tampilan_konsul">
+
+        </div>
         <form class="formpemeriksaan_fisio">
             <input hidden type="text" name="kodekunjungan" id="kodekunjungan" class="form-control"
                 value="{{ $kunjungan[0]->kode_kunjungan }}">
@@ -297,120 +307,124 @@
                 <div class="card-header text-bold bg-dark">LAYANAN FISIK DAN REHABILITASI</div>
                 <div class="card-body">
                     @if (count($last_assdok) > 0)
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Anamnesa</label>
-                        <textarea type="text" class="form-control" id="anamnesa" name="anamnesa" rows="5"
-                            aria-describedby="emailHelp">{{ $last_assdok[0]->anamnesa }}</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Pemeriksaan Fisik dan Uji Fungsi</label>
-                        <textarea type="text" class="form-control" id="pemeriksaanfisik" name="pemeriksaanfisik" rows="4">{{ $last_assdok[0]->pemeriksaan_fisik }}</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Diagnosis Medis ( ICD 10)</label>
-                        <input type="text" class="form-control" id="diagnosismedis" name="diagnosismedis"
-                            rows="4" value="{{ $last_assdok[0]->diagnosakerja }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Diagnosis fungsi ( ICD 10)</label>
-                        <input type="text" class="form-control" id="diagnosisfungsi" name="diagnosisfungsi"
-                            rows="4" value="{{ $last_assdok[0]->diagnosabanding }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Pemeriksaan Penunjang</label>
-                        <textarea type="text" class="form-control" id="pemeriksaanpenunjang" name="pemeriksaanpenunjang" rows="4">{{ $last_assdok[0]->rencanakerja }}</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Tata Laksana KFR ( ICD 9CM )</label>
-                        <textarea type="text" class="form-control" id="tatalaksankfr" name="tatalaksankfr" rows="4">{{ $last_assdok[0]->tatalaksana_kfr }}</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Anjuran</label>
-                        <textarea type="text" class="form-control" id="anjuran" name="anjuran" rows="2">{{ $last_assdok[0]->anjuran }}</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Evaluasi</label>
-                        <textarea type="text" class="form-control" id="evaluasi" name="evaluasi" rows="2">{{ $last_assdok[0]->evaluasi }}</textarea>
-                    </div>
-                    <fieldset class="form-group row">
-                        <legend class="col-form-label col-sm-4 float-sm-left pt-0">Suspek Penyakit Akibat Kerja</legend>
-                        <div class="col-sm-8">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="supekpenyakit" id="supekpenyakit"
-                                    value="Ya" @if($last_assdok[0]->riwayatlain == 'Ya') checked @endif>
-                                <label class="form-check-label" for="gridRadios1">
-                                    Ya
-                                </label>
-                                <input type="text" class="form-control form-control-sm" id="keterangansuspek"
-                                    name="keterangansuspek" value="{{ $last_assdok[0]->ket_riwayatlain }}">
-                            </div>
-                            <div class="form-check mt-2">
-                                <input class="form-check-input" type="radio" name="supekpenyakit" id="supekpenyakit"
-                                    value="Tidak" @if($last_assdok[0]->riwayatlain == 'Tidak') checked @endif>
-                                <label class="form-check-label" for="gridRadios2">
-                                    Tidak
-                                </label>
-                            </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Anamnesa</label>
+                            <textarea type="text" class="form-control" id="anamnesa" name="anamnesa" rows="5"
+                                aria-describedby="emailHelp">{{ $last_assdok[0]->anamnesa }}</textarea>
                         </div>
-                    </fieldset>
-                @else
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Anamnesa</label>
-                        <textarea type="text" class="form-control" id="anamnesa" name="anamnesa" rows="5"
-                            aria-describedby="emailHelp"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Pemeriksaan Fisik dan Uji Fungsi</label>
-                        <textarea type="text" class="form-control" id="pemeriksaanfisik" name="pemeriksaanfisik" rows="4"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Diagnosis Medis ( ICD 10)</label>
-                        <input type="text" class="form-control" id="diagnosismedis" name="diagnosismedis"
-                            rows="4">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Diagnosis fungsi ( ICD 10)</label>
-                        <input type="text" class="form-control" id="diagnosisfungsi" name="diagnosisfungsi"
-                            rows="4">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Pemeriksaan Penunjang</label>
-                        <textarea type="text" class="form-control" id="pemeriksaanpenunjang" name="pemeriksaanpenunjang" rows="4"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Tata Laksana KFR ( ICD 9CM )</label>
-                        <textarea type="text" class="form-control" id="tatalaksankfr" name="tatalaksankfr" rows="4"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Anjuran</label>
-                        <textarea type="text" class="form-control" id="anjuran" name="anjuran" rows="2"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Evaluasi</label>
-                        <textarea type="text" class="form-control" id="evaluasi" name="evaluasi" rows="2"></textarea>
-                    </div>
-                    <fieldset class="form-group row">
-                        <legend class="col-form-label col-sm-4 float-sm-left pt-0">Suspek Penyakit Akibat Kerja</legend>
-                        <div class="col-sm-8">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="supekpenyakit" id="supekpenyakit"
-                                    value="Ya" checked>
-                                <label class="form-check-label" for="gridRadios1">
-                                    Ya
-                                </label>
-                                <input type="text" class="form-control form-control-sm" id="keterangansuspek"
-                                    name="keterangansuspek">
-                            </div>
-                            <div class="form-check mt-2">
-                                <input class="form-check-input" type="radio" name="supekpenyakit" id="supekpenyakit"
-                                    value="Tidak">
-                                <label class="form-check-label" for="gridRadios2">
-                                    Tidak
-                                </label>
-                            </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Pemeriksaan Fisik dan Uji Fungsi</label>
+                            <textarea type="text" class="form-control" id="pemeriksaanfisik" name="pemeriksaanfisik" rows="4">{{ $last_assdok[0]->pemeriksaan_fisik }}</textarea>
                         </div>
-                    </fieldset>
-                @endif
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Diagnosis Medis ( ICD 10)</label>
+                            <input type="text" class="form-control" id="diagnosismedis" name="diagnosismedis"
+                                rows="4" value="{{ $last_assdok[0]->diagnosakerja }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Diagnosis fungsi ( ICD 10)</label>
+                            <input type="text" class="form-control" id="diagnosisfungsi" name="diagnosisfungsi"
+                                rows="4" value="{{ $last_assdok[0]->diagnosabanding }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Pemeriksaan Penunjang</label>
+                            <textarea type="text" class="form-control" id="pemeriksaanpenunjang" name="pemeriksaanpenunjang" rows="4">{{ $last_assdok[0]->rencanakerja }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Tata Laksana KFR ( ICD 9CM )</label>
+                            <textarea type="text" class="form-control" id="tatalaksankfr" name="tatalaksankfr" rows="4">{{ $last_assdok[0]->tatalaksana_kfr }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Anjuran</label>
+                            <textarea type="text" class="form-control" id="anjuran" name="anjuran" rows="2">{{ $last_assdok[0]->anjuran }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Evaluasi</label>
+                            <textarea type="text" class="form-control" id="evaluasi" name="evaluasi" rows="2">{{ $last_assdok[0]->evaluasi }}</textarea>
+                        </div>
+                        <fieldset class="form-group row">
+                            <legend class="col-form-label col-sm-4 float-sm-left pt-0">Suspek Penyakit Akibat Kerja
+                            </legend>
+                            <div class="col-sm-8">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="supekpenyakit"
+                                        id="supekpenyakit" value="Ya"
+                                        @if ($last_assdok[0]->riwayatlain == 'Ya') checked @endif>
+                                    <label class="form-check-label" for="gridRadios1">
+                                        Ya
+                                    </label>
+                                    <input type="text" class="form-control form-control-sm" id="keterangansuspek"
+                                        name="keterangansuspek" value="{{ $last_assdok[0]->ket_riwayatlain }}">
+                                </div>
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="radio" name="supekpenyakit"
+                                        id="supekpenyakit" value="Tidak"
+                                        @if ($last_assdok[0]->riwayatlain == 'Tidak') checked @endif>
+                                    <label class="form-check-label" for="gridRadios2">
+                                        Tidak
+                                    </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    @else
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Anamnesa</label>
+                            <textarea type="text" class="form-control" id="anamnesa" name="anamnesa" rows="5"
+                                aria-describedby="emailHelp"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Pemeriksaan Fisik dan Uji Fungsi</label>
+                            <textarea type="text" class="form-control" id="pemeriksaanfisik" name="pemeriksaanfisik" rows="4"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Diagnosis Medis ( ICD 10)</label>
+                            <input type="text" class="form-control" id="diagnosismedis" name="diagnosismedis"
+                                rows="4">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Diagnosis fungsi ( ICD 10)</label>
+                            <input type="text" class="form-control" id="diagnosisfungsi" name="diagnosisfungsi"
+                                rows="4">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Pemeriksaan Penunjang</label>
+                            <textarea type="text" class="form-control" id="pemeriksaanpenunjang" name="pemeriksaanpenunjang" rows="4"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Tata Laksana KFR ( ICD 9CM )</label>
+                            <textarea type="text" class="form-control" id="tatalaksankfr" name="tatalaksankfr" rows="4"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Anjuran</label>
+                            <textarea type="text" class="form-control" id="anjuran" name="anjuran" rows="2"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Evaluasi</label>
+                            <textarea type="text" class="form-control" id="evaluasi" name="evaluasi" rows="2"></textarea>
+                        </div>
+                        <fieldset class="form-group row">
+                            <legend class="col-form-label col-sm-4 float-sm-left pt-0">Suspek Penyakit Akibat Kerja
+                            </legend>
+                            <div class="col-sm-8">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="supekpenyakit"
+                                        id="supekpenyakit" value="Ya" checked>
+                                    <label class="form-check-label" for="gridRadios1">
+                                        Ya
+                                    </label>
+                                    <input type="text" class="form-control form-control-sm" id="keterangansuspek"
+                                        name="keterangansuspek">
+                                </div>
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="radio" name="supekpenyakit"
+                                        id="supekpenyakit" value="Tidak">
+                                    <label class="form-check-label" for="gridRadios2">
+                                        Tidak
+                                    </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    @endif
                 </div>
             </div>
             <div @if ($kunjungan[0]->ref_kunjungan == '0') hidden @endif class="card">
@@ -420,80 +434,84 @@
                 </div>
             </div>
         </form>
-         {{-- formtindaknlanjut --}}
-         <form action="" class="formtindaklanjut">
+        {{-- formtindaknlanjut --}}
+        <form action="" class="formtindaklanjut">
             <div class="card">
-                <div class="card-header bg-light">Tindak Lanjut <button type="button"
-                        class="btn btn-success float-right riwayatkonsul" data-toggle="modal"
-                        data-target="#modalriwayatkonsul">Riwayat Konsul</button></div>
-                <div class="card-body">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                            id="pilihtindaklanjut" value="KONSUL KE POLI LAIN">
-                        <label class="form-check-label" for="inlineRadio1">KONSUL KE POLI LAIN</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                            id="pilihtindaklanjut" value="KONTROL" checked>
-                        <label class="form-check-label" for="inlineRadio2">KONTROL</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                            id="pilihtindaklanjut" value="PASIEN DIPULANGKAN">
-                        <label class="form-check-label" for="inlineRadio2">PULANG</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                            id="pilihtindaklanjut" value="RUJUK KELUAR">
-                        <label class="form-check-label" for="inlineRadio2">RUJUK KELUAR</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                            id="pilihtindaklanjut" value="RUJUK RAWAT INAP">
-                        <label class="form-check-label" for="inlineRadio2">RAWAT INAP</label>
-                    </div>
-                    <div class="form-check form-check-inline mb-2">
-                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                            id="pilihtindaklanjut" value="PASIEN MENINGGAL">
-                        <label class="form-check-label" for="inlineRadio2">PASIEN MENINGGAL</label>
-                    </div>
-                    <div class="form-group mt-2">
-                        <label for="exampleInputEmail1">Keterangan</label>
-                        <textarea type="text" class="form-control" id="keterangantindaklanjut" name="keterangantindaklanjut"
-                            aria-describedby="emailHelp"></textarea>
-                    </div>
+                <div class="card-header bg-light">Tindak Lanjut
+                    <button type="button" class="btn btn-success float-right riwayatkonsul" data-toggle="modal"
+                        data-target="#modalriwayatkonsul">Riwayat Konsul & Rujuk Internal </button>
                 </div>
             </div>
-        </form>
-        {{-- formtindakan --}}
-        <div class="card">
-            <div class="card-header bg-light">Order Farmasi <button type="button"
-                    class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
-                    onclick="ambilresep()">Template resep</button></div>
             <div class="card-body">
-                <div class="form-group mt-2">
-                    <button type="button" class="btn btn-success tambahobat" onclick="addform()">+ Tambah
-                        Obat</button>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="pilihtindaklanjut" id="pilihtindaklanjut"
+                        value="KONSUL KE POLI LAIN">
+                    <label class="form-check-label" for="inlineRadio1">KONSUL KE POLI LAIN</label>
                 </div>
-                <input hidden type="text" value="" id="jumlahform">
-                <form action="" method="post" class="arrayobat">
-                    <div class="formobatfarmasi2">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="pilihtindaklanjut" id="pilihtindaklanjut"
+                        value="KONTROL" checked>
+                    <label class="form-check-label" for="inlineRadio2">KONTROL</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="pilihtindaklanjut" id="pilihtindaklanjut"
+                        value="PASIEN DIPULANGKAN">
+                    <label class="form-check-label" for="inlineRadio2">PULANG</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="pilihtindaklanjut" id="pilihtindaklanjut"
+                        value="RUJUK KELUAR">
+                    <label class="form-check-label" for="inlineRadio2">RUJUK KELUAR</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="pilihtindaklanjut" id="pilihtindaklanjut"
+                        value="RUJUK RAWAT INAP">
+                    <label class="form-check-label" for="inlineRadio2">RAWAT INAP</label>
+                </div>
+                <div class="form-check form-check-inline mb-2">
+                    <input class="form-check-input" type="radio" name="pilihtindaklanjut" id="pilihtindaklanjut"
+                        value="PASIEN MENINGGAL">
+                    <label class="form-check-label" for="inlineRadio2">PASIEN MENINGGAL</label>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="exampleInputEmail1">Keterangan</label>
+                    <textarea type="text" class="form-control" id="keterangantindaklanjut" name="keterangantindaklanjut"
+                        aria-describedby="emailHelp"></textarea>
+                </div>
+                <div class="v_form_konsul">
 
-                    </div>
-                    <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="simpantemplate" onclick="showname()">
-                        <label class="form-check-label" for="exampleCheck1">ceklis, untuk
-                            simpan
-                            resep sebagai template</label>
-                    </div>
-                    <input hidden type="text" class="form-control col-md-3 mb-3" id="namaresep" name="namaresep"
-                        placeholder="isi nama resep ...">
-                </form>
+                </div>
             </div>
-        </div>
-        <button type="button" class="btn btn-danger float-right ml-1" onclick="simpanhasil()">Batal</button>
-        <button type="button" class="btn btn-success float-right" onclick="simpanhasil()">Simpan</button>
     </div>
+    </form>
+    {{-- formtindakan --}}
+    <div class="card">
+        <div class="card-header bg-light">Order Farmasi <button type="button" class="btn btn-success float-right"
+                data-toggle="modal" data-target="#modaltemplate" onclick="ambilresep()">Template resep</button></div>
+        <div class="card-body">
+            <div class="form-group mt-2">
+                <button type="button" class="btn btn-success tambahobat" onclick="addform()">+ Tambah
+                    Obat</button>
+            </div>
+            <input hidden type="text" value="" id="jumlahform">
+            <form action="" method="post" class="arrayobat">
+                <div class="formobatfarmasi2">
+
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="simpantemplate" onclick="showname()">
+                    <label class="form-check-label" for="exampleCheck1">ceklis, untuk
+                        simpan
+                        resep sebagai template</label>
+                </div>
+                <input hidden type="text" class="form-control col-md-3 mb-3" id="namaresep" name="namaresep"
+                    placeholder="isi nama resep ...">
+            </form>
+        </div>
+    </div>
+    <button type="button" class="btn btn-danger float-right ml-1" onclick="simpanhasil()">Batal</button>
+    <button type="button" class="btn btn-success float-right" onclick="simpanhasil()">Simpan</button>
+</div>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="modalcatatankonsul" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -515,7 +533,9 @@
                     <p class="lead">Pasien dengan : <br>RM {{ $kunjungan[0]->no_rm }} |
                         {{ $kunjungan[0]->nama_pasien }} | {{ $kunjungan[0]->diagx }} <br><br>
                         Keterangan <br>
-                        @if(count($ref_resume) > 0 ) {{ $ref_resume[0]->keterangan_tindak_lanjut }}@endif
+                        @if (count($ref_resume) > 0)
+                            {{ $ref_resume[0]->keterangan_tindak_lanjut }}
+                        @endif
                     </p>
                     <hr class="my-4">
                 </div>
@@ -571,9 +591,31 @@
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="modalriwayatkonsul" tabindex="-1" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="modalriwayatkonsulantarpoli" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">RIWAYAT KONSUL ANTAR POLI</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_riwayat_konsul_antar_poli">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalriwayatkonsul" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Riwayat Konsul</h5>
@@ -593,7 +635,6 @@
         </div>
     </div>
 </div>
-
 <script>
     function simpanhasil() {
         var data = $('.formpemeriksaan_fisio').serializeArray();
@@ -652,6 +693,7 @@
             }
         });
     }
+
     function addform() {
         var max_fields = 10;
         var wrapper = $(".formobatfarmasi2"); //Fields wrapper
@@ -666,10 +708,14 @@
         }
         nomor = parseInt(document.getElementById('jumlahform').value)
         if (x < max_fields) { //max input box allowed
-            nama = 'namaobat'+nomor
-            aturan = 'aturanpakai'+nomor
+            nama = 'namaobat' + nomor
+            aturan = 'aturanpakai' + nomor
             $(wrapper).append(
-                '<div class="form-row text-xs"><div class="form-group col-md-2"><label for="">Nama Obat</label><input type="" class="form-control form-control-sm text-xs" id="'+nama+'" name="namaobat" value=""><input hidden readonly type="" class="form-control form-control-sm" id="" name="kodebarang" value="""></div><div class="form-group col-md-2"><label for="inputPassword4">Aturan Pakai</label><input type="" class="form-control form-control-sm" id="'+ aturan +'" name="aturanpakai" value=""></div><div class="form-group col-md-1"><label for="inputPassword4">Jumlah</label><input type="" class="form-control form-control-sm" id="" name="jumlah" value="0"></div><div class="form-group col-md-1"><label for="inputPassword4">Signa</label><input type="" class="form-control form-control-sm" id="" name="signa" value="0"></div><div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type="" class="form-control form-control-sm" id="" name="keterangan" value=""></div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i></div>'
+                '<div class="form-row text-xs"><div class="form-group col-md-2"><label for="">Nama Obat</label><input type="" class="form-control form-control-sm text-xs" id="' +
+                nama +
+                '" name="namaobat" value=""><input hidden readonly type="" class="form-control form-control-sm" id="" name="kodebarang" value="""></div><div class="form-group col-md-2"><label for="inputPassword4">Aturan Pakai</label><input type="" class="form-control form-control-sm" id="' +
+                aturan +
+                '" name="aturanpakai" value=""></div><div class="form-group col-md-1"><label for="inputPassword4">Jumlah</label><input type="" class="form-control form-control-sm" id="" name="jumlah" value="0"></div><div class="form-group col-md-1"><label for="inputPassword4">Signa</label><input type="" class="form-control form-control-sm" id="" name="signa" value="0"></div><div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type="" class="form-control form-control-sm" id="" name="keterangan" value=""></div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i></div>'
             );
             $(wrapper).on("click", ".remove_field", function(e) { //user click on remove
                 kode = $(this).attr('kode2')
@@ -686,6 +732,42 @@
             // });
         }
     }
+    $(".riwayatkonsul").click(function() {
+        var kodekunjungan = $('#kodekunjungan').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('riwayatkonsul') ?>',
+            success: function(response) {
+                $('.view_riwayat_konsul').html(response);
+                spinner.hide()
+            }
+        });
+    })
+    $(".riwayatkonsulantarpoli").on('click', function(event) {
+        rm = $(this).attr('rm')
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm
+            },
+            url: '<?= route('ambil_riwayat_konsul_antar_poli') ?>',
+            error: function(data) {
+                spinner.hide();
+                alert('error')
+            },
+            success: function(response) {
+                spinner.hide();
+                $('.v_riwayat_konsul_antar_poli').html(response);
+            }
+        });
+    })
     function showname() {
         a = $('#simpantemplate:checked').val()
         if (a == 'on') {
@@ -694,7 +776,7 @@
             $('#namaresep').attr('Hidden', true)
         }
     }
-    $(".lihathasilpenunjang_lab").click(function(){
+    $(".lihathasilpenunjang_lab").click(function() {
         spinner = $('#loader')
         spinner.show();
         nomorrm = $(this).attr('nomorrm')
@@ -711,7 +793,7 @@
             }
         });
     })
-    $(".lihathasilpenunjang_rad").click(function(){
+    $(".lihathasilpenunjang_rad").click(function() {
         spinner = $('#loader')
         spinner.show();
         nomorrm = $(this).attr('nomorrm')
@@ -741,4 +823,47 @@
             }
         });
     })
+    $(document).ready(function() {
+        ambilformkonsul()
+        ambildatakonsul()
+    })
+
+    function ambilformkonsul() {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan: $('#kodekunjungan').val()
+            },
+            url: '<?= route('ambil_view_form_konsul') ?>',
+            error: function(data) {
+                alert('ok')
+            },
+            success: function(response) {
+                $('.v_form_konsul').html(response)
+                spinner.hide()
+            }
+        });
+    }
+     function ambildatakonsul() {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan: $('#kodekunjungan').val()
+            },
+            url: '<?= route('ambildatakonsul') ?>',
+            error: function(data) {
+                alert('ok')
+            },
+            success: function(response) {
+                $('.v_tampilan_konsul').html(response)
+                spinner.hide()
+            }
+        });
+    }
 </script>

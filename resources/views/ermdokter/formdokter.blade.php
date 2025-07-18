@@ -33,8 +33,11 @@
             @else
                 <br>{{ $kunjungan[0]->diagx }}</p>
                 @endif
-                <a href="#" onclick="formcatatanmedis2({{ $kunjungan[0]->no_rm }})"
+                {{-- <a href="#" onclick="formcatatanmedis2({{ $kunjungan[0]->no_rm }})"
                     class="btn btn-primary btn-block"><b>Catatan
+                        Medis</b></a> --}}
+                <a href="#" onclick="formcatatanmedis3({{ $kunjungan[0]->no_rm }})"
+                    class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalcatatanmedis"><b>Catatan
                         Medis</b></a>
                 <a href="#" onclick="lihaticare()" class="btn btn-success btn-block"><b>Icare BPJS</b></a>
                 <input hidden type="text" id="kodekunjungan" value="{{ $kunjungan[0]->kode_kunjungan }}">
@@ -52,6 +55,8 @@
                     </button>
                 </div>
             </div>
+            <input hidden type="text" id="pic" value="{{ $pic}}">
+            <input hidden type="text" id="userlogin" value="{{ auth()->user()->id }}">
             <div class="card-body p-0">
                 <ul class="nav nav-pills flex-column">
                     @if ($pic == auth()->user()->id || $pic == '')
@@ -142,10 +147,39 @@
     </div>
     <!-- /.col -->
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalcatatanmedis" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Catatan Medis</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="v_catatan_medis_baru">
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
     $(document).ready(function() {
         rm = $('#nomorrm').val()
-        formcatatanmedis2(rm)
+        pic = $('#pic').val()
+        user = $('#userlogin').val()
+        if(pic == user || pic == ''){
+            formpemeriksaandokter()
+        }else{
+            resume()
+        }
     })
 
     function tutupicare() {
@@ -190,7 +224,22 @@
             }
         });
     }
-
+    function formcatatanmedis3(rm) {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm
+            },
+            url: '<?= route('ambilcatatanmedis_pasien2') ?>',
+            success: function(response) {
+                $('.v_catatan_medis_baru').html(response);
+                spinner.hide()
+            }
+        });
+    }
     function formpemeriksaandokter() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -210,7 +259,6 @@
             }
         });
     }
-
     function formpemeriksaankhusus() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()

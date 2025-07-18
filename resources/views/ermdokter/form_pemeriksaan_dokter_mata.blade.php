@@ -10,6 +10,8 @@
             <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
                 data-target="#modalcatatankonsul"><i class="bi bi-eye mr-1"></i> Catatan Konsul</button>
         @endif --}}
+        <button class="btn btn-warning ml-2 riwayatkonsulantarpoli" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
+            data-target="#modalriwayatkonsulantarpoli"><i class="bi bi-eye mr-1"></i> Riwayat Konsul Antar Poli</button>
     </div>
     <div class="card-body table-responsive p-5" style="height: 757Px">
         @if ($kunjungan[0]->ref_kunjungan != '0')
@@ -27,6 +29,9 @@
                 <hr class="my-4">
             </div>
         @endif
+        <div class="v_tampilan_konsul">
+
+        </div>
         <div class="card">
             <div class="card-header text-bold bg-success">+ SUBJECT ( S )</div>
             <div class="card-body">
@@ -705,7 +710,7 @@
                     <div class="card">
                         <div class="card-header bg-light">Tindak Lanjut <button type="button"
                                 class="btn btn-success float-right riwayatkonsul" data-toggle="modal"
-                                data-target="#modalriwayatkonsul">Riwayat Konsul</button></div>
+                                data-target="#modalriwayatkonsul">Riwayat Konsul & Rujuk Internal</button></div>
                         <div class="card-body">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="pilihtindaklanjut"
@@ -741,6 +746,9 @@
                                 <label for="exampleInputEmail1">Keterangan</label>
                                 <textarea type="text" class="form-control" id="keterangantindaklanjut" name="keterangantindaklanjut"
                                     aria-describedby="emailHelp"></textarea>
+                            </div>
+                            <div class="v_form_konsul">
+
                             </div>
                         </div>
                     </div>
@@ -1214,7 +1222,28 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalriwayatkonsulantarpoli" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">RIWAYAT KONSUL ANTAR POLI</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_riwayat_konsul_antar_poli">
 
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Modal -->
 <div class="modal fade" id="modaltemplate" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -1440,11 +1469,13 @@
             }
         });
     }
-    $(".riwayatkonsul").click(function() {
+     $(".riwayatkonsul").click(function() {
+        var kodekunjungan = $('#kodekunjungan').val()
         $.ajax({
             type: 'post',
             data: {
-                _token: "{{ csrf_token() }}"
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
             },
             url: '<?= route('riwayatkonsul') ?>',
             success: function(response) {
@@ -1898,5 +1929,49 @@
             }
         });
     })
+       $(document).ready(function() {
+        ambilformkonsul()
+        ambildatakonsul()
+    })
+
+    function ambilformkonsul() {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan: $('#kodekunjungan').val()
+            },
+            url: '<?= route('ambil_view_form_konsul') ?>',
+            error: function(data) {
+                alert('ok')
+            },
+            success: function(response) {
+                $('.v_form_konsul').html(response)
+                spinner.hide()
+            }
+        });
+    }
+
+    function ambildatakonsul() {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan: $('#kodekunjungan').val()
+            },
+            url: '<?= route('ambildatakonsul') ?>',
+            error: function(data) {
+                alert('ok')
+            },
+            success: function(response) {
+                $('.v_tampilan_konsul').html(response)
+                spinner.hide()
+            }
+        });
+    }
 </script>
 <script src="{{ asset('public/marker/markerjs2.js') }}"></script>

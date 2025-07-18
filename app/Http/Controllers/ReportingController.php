@@ -104,7 +104,7 @@ class ReportingController extends ErmController
             $header = DB::connection('mysql')->select('SELECT *,a.id as idasskep,date(a.tanggalkunjungan) as tglk,fc_nama_unit1(a.kode_unit) as nama_unit FROM erm_hasil_assesmen_keperawatan_rajal a left outer join assesmen_dokters b on a.kode_kunjungan = b.id_kunjungan WHERE a.no_rm = ? and a.jenis_berkas = ? order  by a.id desc', [$rm, 1]);
             $cppt = DB::connection('mysql')->select('SELECT *,a.id as idasskep,b.versi as versidk,date(a.tanggalkunjungan) as tglk,a.kode_unit as unitpoli ,fc_nama_unit1(a.kode_unit) as nama_unit FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b on a.kode_kunjungan = b.id_kunjungan
             LEFT OUTER JOIN ts_kunjungan c on a.kode_kunjungan = c.kode_kunjungan
-            WHERE a.no_rm = ? and c.status_kunjungan != 8 and a.jenis_berkas = ? order  by a.id asc', [$rm, 2]);
+            WHERE a.no_rm = ? and c.status_kunjungan != 8 and a.jenis_berkas = ? order  by a.id desc', [$rm, 2]);
 
 
             $cek = DB::select('select * from erm_upload_gambar where no_rm = ?', [$rm]);
@@ -179,7 +179,7 @@ class ReportingController extends ErmController
 
             $cppt = DB::connection('mysql')->select('SELECT *,a.id as idasskep,b.versi as versidk,date(a.tanggalkunjungan) as tglk,a.kode_unit as unitpoli ,fc_nama_unit1(a.kode_unit) as nama_unit FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b on a.kode_kunjungan = b.id_kunjungan
             LEFT OUTER JOIN ts_kunjungan c on a.kode_kunjungan = c.kode_kunjungan
-             WHERE a.no_rm = ? and c.status_kunjungan != 8 and a.jenis_berkas = ? order  by a.id asc', [$rm, 2]);
+             WHERE a.no_rm = ? and c.status_kunjungan != 8 and a.jenis_berkas = ? order  by a.id desc', [$rm, 2]);
 
             $cek = DB::select('select * from erm_upload_gambar where no_rm = ?', [$rm]);
             $url = url('../../files/');

@@ -8476,7 +8476,8 @@ class ErmController extends Controller
                 'dokter_pengirim' => auth()->user()->kode_paramedis,
                 'tgl_konsul' => $this->get_now(),
                 'jenis' => 'KONSUL',
-                'status' => 0
+                'status' => 0,
+                'kode_kunjungan_2' => 0
             ];
             ts_konsul_antar_poli::create($datakonsul);
        }
@@ -8502,6 +8503,7 @@ class ErmController extends Controller
                 'dokter_pengirim' => auth()->user()->kode_paramedis,
                 'tgl_konsul' => $this->get_now(),
                 'jenis' => 'RUJIN',
+                'kode_kunjungan_2' => 0,
                 'status' => 0
             ];
             ts_konsul_antar_poli::create($datakonsul);
@@ -8532,6 +8534,13 @@ class ErmController extends Controller
         ];
         echo json_encode($dat2a);
         die;
+    }
+    public function ambil_riwayat_konsul_antar_poli(Request $request){
+        $rm = $request->rm;
+        $data = db::select('select *,fc_nama_paramedis1(dokter_pengirim) as dok_kirim,fc_nama_paramedis1(dokter_penerima) as dok_terima,fc_nama_unit1(unit_pengirim) as poli_kirim, fc_nama_unit1(unit_tujuan) as poli_terima from ts_konsul_antar_poli where no_rm = ? ORDER BY id desc',[$rm]);
+        return view('ermtemplate.tabel_riwayat_konsul_2',compact([
+            'data'
+        ]));
     }
 }
 

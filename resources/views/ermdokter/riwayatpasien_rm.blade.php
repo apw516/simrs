@@ -29,14 +29,14 @@
         <script>
              function caripasien_resume()
             {
-                nomorm = $('#nomorm').val()
+                rm = $('#nomorm').val()
                 spinner = $('#loader')
                 spinner.show();
                 $.ajax({
                     type: 'post',
                     data: {
                         _token: "{{ csrf_token() }}",
-                        nomorm,
+                        rm,
                     },
                     url: '<?= route('ambilriwayat_pasien_byrm') ?>',
                     success: function(response) {
