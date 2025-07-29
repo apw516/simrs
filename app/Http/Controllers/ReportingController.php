@@ -137,7 +137,11 @@ class ReportingController extends ErmController
             WHERE SUBSTR(b.`kode_unit`,1,1) = 3
             AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
             AND a.no_rm = ?", [$rm]);
+
+            $orderfarmasi = db::select('SELECT kode_kunjungan,kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.no_rm = ? and  kode_unit > ?',[$rm,'4000']);
+
             return view('ermtemplate.detail_berkas_erm_rajal', compact([
+                'orderfarmasi',
                 'header',
                 'cppt',
                 'cek',
@@ -152,7 +156,7 @@ class ReportingController extends ErmController
     }
     public function ambilcatatanmedis_pasien2(request $request)
     {
-        $rm = $request->rm;
+        $rm = trim($request->rm);
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$rm]);
         $first = DB::connection('mysql')->select('SELECT *,fc_nama_unit1(kode_unit) as nama_unit,date(tanggalkunjungan) as tgl FROM `erm_hasil_assesmen_keperawatan_rajal` WHERE no_rm = ? AND id = (select min(id) from erm_hasil_assesmen_keperawatan_rajal where no_rm = ?) limit 1', [$rm, $rm]);
         $datakonsul = db::select('select *,fc_nama_unit1(unit_pengirim) as poli_pengirim,fc_nama_unit1(unit_tujuan) as poli_konsul,fc_nama_paramedis1(dokter_penerima) as dokter_penerima_2 from ts_konsul_antar_poli where no_rm = ?', [$rm]);
@@ -211,7 +215,12 @@ class ReportingController extends ErmController
             WHERE SUBSTR(b.`kode_unit`,1,1) = 3
             AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
             AND a.no_rm = ?", [$rm]);
+
+
+            $orderfarmasi = db::select('SELECT kode_kunjungan,kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.no_rm = ? and  kode_unit > ?',[$rm,'4000']);
+
             return view('ermtemplate.detail_berkas_erm_rajal', compact([
+                'orderfarmasi',
                 'header',
                 'cppt',
                 'cek',

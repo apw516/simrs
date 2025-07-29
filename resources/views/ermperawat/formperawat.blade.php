@@ -22,8 +22,10 @@
                     @else
                     <br>{{ $kunjungan[0]->diagx }}</p>
                     @endif
-                <a href="#" onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})" class="btn btn-primary btn-block"><b>Catatan
+                <a href="#" onclick="formcatatanmedis3({{ $kunjungan[0]->no_rm }})" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalcatatanmedis"><b>Catatan
                         Medis</b></a>
+                {{-- <a href="#" onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})" class="btn btn-primary btn-block"><b>Catatan
+                        Medis</b></a> --}}
                 <input hidden type="text" id="kodekunjungan" value="{{ $kunjungan[0]->kode_kunjungan }}">
                 <input hidden type="text" id="nomorrm" value="{{ $kunjungan[0]->no_rm }}">
             </div>
@@ -42,6 +44,11 @@
                     <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formbillingtindakan()">
                             <i class="fas fa-inbox mr-2"></i>Billing Tindakan PoliKlinik
+                        </a>
+                    </li>
+                     <li class="nav-item" id="pemeriksaan">
+                        <a href="#" class="nav-link" onclick="formupload()">
+                            <i class="fas fa-inbox mr-2"></i>Upload Berkas
                         </a>
                     </li>
                     @if(auth()->user()->unit != '1028')
@@ -63,11 +70,16 @@
                     </li>
                     @endif
                     <li class="nav-item" id="pemeriksaan">
-                        <a href="#" class="nav-link" onclick="formtindaklanjut()">
-                            <i class="fas fa-inbox mr-2"></i>Form Tindak Lanjut / Rujuk internal / Konsul
+                        <a href="#" class="nav-link" onclick="hasilpemeriksaanmedis()">
+                            <i class="fas fa-inbox mr-2"></i>Hasil Pemeriksaan Medis
                         </a>
                     </li>
                     <li class="nav-item" id="pemeriksaan">
+                        <a href="#" class="nav-link" onclick="formtindaklanjut()">
+                            <i class="fas fa-inbox mr-2"></i>Form Rujuk internal / Konsul Antar Poli
+                        </a>
+                    </li>
+                    <li hidden class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formtindaklanjut2()">
                             <i class="fas fa-inbox mr-2"></i>Form Rujuk internal
                         </a>
@@ -96,17 +108,13 @@
                         </a>
                     </li>
                     @endif --}}
-                     <li class="nav-item" id="pemeriksaan">
-                        <a href="#" class="nav-link" onclick="formupload()">
-                            <i class="fas fa-inbox mr-2"></i>Upload Berkas
-                        </a>
-                    </li>
-                     <li class="nav-item" id="pemeriksaan">
+
+                     <li hidden class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="goto_suratkontrol()">
                             <i class="fas fa-inbox mr-2"></i>Buat Surat Kontrol
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li hidden class="nav-item">
                         <a href="#" class="nav-link" onclick="resume()">
                             <i class="fas fa-filter mr-2"></i> Resume
                         </a>
@@ -123,10 +131,36 @@
     </div>
     <!-- /.col -->
 </div>
+<style>
+    .modal-xxl {
+    max-width: 80%;
+}
+</style>
+<div class="modal fade" id="modalcatatanmedis" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xxl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Catatan Medis</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="v_catatan_medis_baru">
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
     $(document).ready(function() {
         rm = $('#nomorrm').val()
-        formcatatanmedis(rm)
+        formbillingtindakan()
     })
     function formcatatanmedis(rm) {
         spinner = $('#loader')
@@ -140,6 +174,23 @@
             url: '<?= route('ambilcatatanmedis_pasien') ?>',
             success: function(response) {
                 $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    function formcatatanmedis3() {
+        rm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm
+            },
+            url: '<?= route('ambilcatatanmedis_pasien2') ?>',
+            success: function(response) {
+                $('.v_catatan_medis_baru').html(response);
                 spinner.hide()
             }
         });
@@ -195,6 +246,25 @@
                 kodekunjungan
             },
             url: '<?= route('formtindaklanjut2') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    function hasilpemeriksaanmedis() {
+        spinner = $('#loader')
+        spinner.show();
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('hasilpemeriksaanmedis') ?>',
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()

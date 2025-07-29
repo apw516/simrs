@@ -2454,6 +2454,15 @@
                         </form>
                     </div>
                 </div>
+                  <div @if (auth()->user()->unit != '1012' && auth()->user()->unit != '1027') hidden @endif class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-header text-bold bg-dark">Hasil Expertisi</div>
+                                            <div class="card-body">
+                                                <textarea class="form-control" id="hasilexpertisi" name="hasilexpertisi" cols="30" rows="10"
+                                                    placeholder="Silahkan isi hasil expertisi ...">{{ $resume[0]->evaluasi }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
                 {{-- formtindaklanjut --}}
                 <form action="" class="formtindaklanjut">
                     <div class="card">
@@ -2572,15 +2581,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div @if (auth()->user()->unit != '1012' && auth()->user()->unit != '1027') hidden @endif class="col-md-12">
-                                        <div class="card">
-                                            <div class="card-header text-bold bg-dark">Hasil Expertisi</div>
-                                            <div class="card-body">
-                                                <textarea class="form-control" id="hasilexpertisi" name="hasilexpertisi" cols="30" rows="10"
-                                                    placeholder="Silahkan isi hasil expertisi ...">{{ $resume[0]->evaluasi }}</textarea>
-                                            </div>
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>

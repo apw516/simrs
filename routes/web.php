@@ -33,8 +33,8 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('bedmonitoring', [BedmonitoringController::class, 'index'])->name('bedmonitoring');
 Route::post('/ambilcatatanmedis_pasien', [ErmController::class, 'ambilcatatanmedis_pasien'])
     ->name('ambilcatatanmedis_pasien'); //sidebar
-Route::post('/ambilcatatanmedis_pasien2', [ErmController::class, 'ambilcatatanmedis_pasien2'])
-    ->name('ambilcatatanmedis_pasien2'); //sidebar
+// Route::post('/ambilcatatanmedis_pasien2', [ErmController::class, 'ambilcatatanmedis_pasien2'])
+//     ->name('ambilcatatanmedis_pasien2'); //sidebar
 Route::get('cetakresume/{kodekunjungan}', [ErmController::class, 'cetakresume']); //formpasien_bpjs
 Route::get('cetakresumeperawat/{rm}/{counter}', [ErmController::class, 'cetakresumeperawat']); //formpasien_bpjs
 Route::get('cetakresumedokter/{rm}/{counter}', [ErmController::class, 'cetakresumedokter']); //formpasien_bpjs
@@ -770,8 +770,16 @@ Route::post('caribarangfarmasi', [newFarmasiController::class, 'caririwayatstok'
         ->name('simpanjawabankonsul'); //sidebar
  Route::post('ambildatakonsul', [ErmController::class, 'ambildatakonsul'])
         ->name('ambildatakonsul'); //sidebar
+ Route::post('hasilpemeriksaanmedis', [ErmController::class, 'hasilpemeriksaanmedis'])
+        ->name('hasilpemeriksaanmedis'); //sidebar
  Route::post('ambil_riwayat_konsul_antar_poli', [ErmController::class, 'ambil_riwayat_konsul_antar_poli'])
         ->name('ambil_riwayat_konsul_antar_poli'); //sidebar
+ Route::post('simpankonsulantarpoli', [ErmController::class, 'simpankonsulantarpoli'])
+        ->name('simpankonsulantarpoli'); //sidebar
+ Route::post('simpanrujukinternal', [ErmController::class, 'simpanrujukinternal'])
+        ->name('simpanrujukinternal'); //sidebar
+ Route::post('ambilriwayatsuratrujin', [ErmController::class, 'ambilriwayatsuratrujin'])
+        ->name('ambilriwayatsuratrujin'); //sidebar
 
 
 Route::get('/carisep_2/{sep}', [SimrsController::class, 'carisep_2'])->name('carisep_2'); //formpasien_bpjs

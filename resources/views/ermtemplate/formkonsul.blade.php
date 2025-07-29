@@ -3,6 +3,7 @@
     <div class="card-header bg-dark">FORM RUJUKAN INTERNAL / KONSUL POLI LAIN</div>
     <div class="card-body">
         <input hidden type="" id="jenis" name="jenis" value="{{ $jenis }}">
+        <h3 class="text-danger mb-4 text-bold">*Note : Hanya untuk konsul / rujuk internal dihari yang sama ...</h3>
         <form method="post" class="formkonsulan">
             <div class="form-group">
                 <label for="exampleInputEmail1">Dokter Pengirim</label>

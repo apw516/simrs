@@ -65,7 +65,6 @@
         }
     </style>
 </head>
-
 <body id="my"
     class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed sidebar-collapse">
     <div class="preloader" id="loader">

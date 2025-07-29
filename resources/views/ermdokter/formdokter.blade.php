@@ -105,8 +105,13 @@
                         </a>
                     </li> --}}
                     @endif
-                    <li class="nav-item">
+                    <li hidden class="nav-item">
                         <a href="#" class="nav-link" onclick="resume()">
+                            <i class="fas fa-filter mr-2"></i> Resume
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="resume2()">
                             <i class="fas fa-filter mr-2"></i> Resume
                         </a>
                     </li>
@@ -148,8 +153,13 @@
     <!-- /.col -->
 </div>
 <!-- Modal -->
+<style>
+    .modal-xxl {
+    max-width: 80%;
+}
+</style>
 <div class="modal fade" id="modalcatatanmedis" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
+  <div class="modal-dialog modal-xxl">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Catatan Medis</h5>
@@ -178,7 +188,7 @@
         if(pic == user || pic == ''){
             formpemeriksaandokter()
         }else{
-            resume()
+            resume2()
         }
     })
 
@@ -225,6 +235,7 @@
         });
     }
     function formcatatanmedis3(rm) {
+        rm = $('#nomorrm').val()
         spinner = $('#loader')
         spinner.show();
         $.ajax({
@@ -392,6 +403,25 @@
                 kodekunjungan
             },
             url: '<?= route('resumepasien_dokter') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    function resume2() {
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('hasilpemeriksaanmedis') ?>',
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()

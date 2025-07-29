@@ -1186,6 +1186,14 @@
                         </form>
                     </div>
                 </div>
+                  <div @if(auth()->user()->unit != '1012' && auth()->user()->unit != '1027' && auth()->user()->id != '220' ) hidden @endif class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-header text-bold bg-dark">Hasil Expertisi</div>
+                                            <div class="card-body">
+                                                <textarea class="form-control" id="hasilexpertisi" name="hasilexpertisi" cols="30" rows="10" placeholder="Silahkan isi hasil expertisi ...">@if (count($last_assdok) > 0){{ $last_assdok[0]->evaluasi }}@endif</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
                 {{-- formtindaknlanjut --}}
                 <form action="" class="formtindaklanjut">
                     <div class="card">
@@ -1285,14 +1293,6 @@
                                             </div>
                                             <div class="card-footer">
                                                 <p>pilih layanan untuk pasien</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div @if(auth()->user()->unit != '1012' && auth()->user()->unit != '1027' && auth()->user()->id != '220' ) hidden @endif class="col-md-12">
-                                        <div class="card">
-                                            <div class="card-header text-bold bg-dark">Hasil Expertisi</div>
-                                            <div class="card-body">
-                                                <textarea class="form-control" id="hasilexpertisi" name="hasilexpertisi" cols="30" rows="10" placeholder="Silahkan isi hasil expertisi ...">@if (count($last_assdok) > 0){{ $last_assdok[0]->evaluasi }}@endif</textarea>
                                             </div>
                                         </div>
                                     </div>
