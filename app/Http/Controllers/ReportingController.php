@@ -80,6 +80,22 @@ class ReportingController extends ErmController
     public function ambilberkasermrajal(request $request)
     {
         $rm = $request->rm;
+        // $cek_assdok = DB::select('SELECT * FROM assesmen_dokters WHERE id_pasien = ?', [$rm]);
+        // foreach ($cek_assdok as $d) {
+        //     $count1 = db::select('select id from erm_hasil_assesmen_keperawatan_rajal where kode_kunjungan = ?', [$d->id_kunjungan]);
+        //     if (count($count1) == 0) {
+        //         $asskep = [
+        //             'no_rm' => $rm,
+        //             'kode_unit' => $d->kode_unit,
+        //             'kode_kunjungan' => $d->id_kunjungan,
+        //             'tanggal_kunjungan' => $d->tgl_kunjungan,
+        //         ];
+        //         if($d->kode_unit != '1015'){
+        //             $erm_assesmen = assesmenawalperawat::create($asskep);
+        //         }
+        //     }
+        //     // $count2 = db::select('select id from assesmen_dokters where id_kunjungan = ?',[$d->kode_kunjungan]);
+        // }
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$rm]);
         $first = DB::connection('mysql')->select('SELECT *,fc_nama_unit1(kode_unit) as nama_unit,date(tanggalkunjungan) as tgl FROM `erm_hasil_assesmen_keperawatan_rajal` WHERE no_rm = ? AND id = (select min(id) from erm_hasil_assesmen_keperawatan_rajal where no_rm = ?) limit 1', [$rm, $rm]);
         $datakonsul = db::select('select *,fc_nama_unit1(unit_pengirim) as poli_pengirim,fc_nama_unit1(unit_tujuan) as poli_konsul,fc_nama_paramedis1(dokter_penerima) as dokter_penerima_2 from ts_konsul_antar_poli where no_rm = ?', [$rm]);
@@ -129,7 +145,7 @@ class ReportingController extends ErmController
             AND a.no_rm = ?", [$rm]);
 
             $penunjang = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
-            ,c.`kode_tarif_detail`,d.`NAMA_TARIF`
+            ,c.`kode_tarif_detail`,d.`NAMA_TARIF`,b.kode_unit
             FROM ts_kunjungan a
             INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
             INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
@@ -138,7 +154,12 @@ class ReportingController extends ErmController
             AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
             AND a.no_rm = ?", [$rm]);
 
-            $orderfarmasi = db::select('SELECT kode_kunjungan,kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.no_rm = ? and  kode_unit > ?',[$rm,'4000']);
+            $orderfarmasi = db::select('SELECT kode_kunjungan,kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.no_rm = ? and  kode_unit > ?', [$rm, '4000']);
+
+            $order_penunjang = db::select('SELECT fc_nama_unit1(a.`kode_unit`)AS nama_unit,a.kode_unit,SUBSTR(kode_tarif_detail,1,6) AS kode_tarif_header,c.`NAMA_TARIF` FROM ts_layanan_header_order a
+            INNER JOIN ts_layanan_detail_order b ON a.id = b.`row_id_header`
+            INNER JOIN mt_tarif_header c ON SUBSTR(b.kode_tarif_detail,1,6) = c.`KODE_TARIF_HEADER`
+            WHERE a.`no_rm` = ? AND a.`kode_unit` < ?', [$rm, '4000']);
 
             return view('ermtemplate.detail_berkas_erm_rajal', compact([
                 'orderfarmasi',
@@ -150,13 +171,30 @@ class ReportingController extends ErmController
                 'farmasi',
                 'penunjang',
                 'mt_pasien',
-                'datakonsul'
+                'datakonsul',
+                'order_penunjang'
             ]));
         }
     }
     public function ambilcatatanmedis_pasien2(request $request)
     {
         $rm = trim($request->rm);
+        // $cek_assdok = DB::select('SELECT * FROM assesmen_dokters WHERE id_pasien = ?', [$rm]);
+        // foreach ($cek_assdok as $d) {
+        //     $count1 = db::select('select id from erm_hasil_assesmen_keperawatan_rajal where kode_kunjungan = ?', [$d->id_kunjungan]);
+        //     if (count($count1) == 0) {
+        //         $asskep = [
+        //             'no_rm' => $rm,
+        //             'kode_unit' => $d->kode_unit,
+        //             'kode_kunjungan' => $d->id_kunjungan,
+        //             'tanggal_kunjungan' => $d->tgl_kunjungan,
+        //         ];
+        //         if($d->kode_unit != '1015'){
+        //             $erm_assesmen = assesmenawalperawat::create($asskep);
+        //         }
+        //     }
+        //     // $count2 = db::select('select id from assesmen_dokters where id_kunjungan = ?',[$d->kode_kunjungan]);
+        // }
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$rm]);
         $first = DB::connection('mysql')->select('SELECT *,fc_nama_unit1(kode_unit) as nama_unit,date(tanggalkunjungan) as tgl FROM `erm_hasil_assesmen_keperawatan_rajal` WHERE no_rm = ? AND id = (select min(id) from erm_hasil_assesmen_keperawatan_rajal where no_rm = ?) limit 1', [$rm, $rm]);
         $datakonsul = db::select('select *,fc_nama_unit1(unit_pengirim) as poli_pengirim,fc_nama_unit1(unit_tujuan) as poli_konsul,fc_nama_paramedis1(dokter_penerima) as dokter_penerima_2 from ts_konsul_antar_poli where no_rm = ?', [$rm]);
@@ -207,7 +245,7 @@ class ReportingController extends ErmController
             AND a.no_rm = ?", [$rm]);
 
             $penunjang = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
-            ,c.`kode_tarif_detail`,d.`NAMA_TARIF`
+            ,c.`kode_tarif_detail`,d.`NAMA_TARIF`,b.kode_unit
             FROM ts_kunjungan a
             INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
             INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
@@ -216,8 +254,12 @@ class ReportingController extends ErmController
             AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
             AND a.no_rm = ?", [$rm]);
 
+            $order_penunjang = db::select('SELECT fc_nama_unit1(a.`kode_unit`)AS nama_unit,a.kode_unit,SUBSTR(kode_tarif_detail,1,6) AS kode_tarif_header,c.`NAMA_TARIF` FROM ts_layanan_header_order a
+            INNER JOIN ts_layanan_detail_order b ON a.id = b.`row_id_header`
+            INNER JOIN mt_tarif_header c ON SUBSTR(b.kode_tarif_detail,1,6) = c.`KODE_TARIF_HEADER`
+            WHERE a.`no_rm` = ? AND a.`kode_unit` < ?', [$rm, '4000']);
 
-            $orderfarmasi = db::select('SELECT kode_kunjungan,kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.no_rm = ? and  kode_unit > ?',[$rm,'4000']);
+            $orderfarmasi = db::select('SELECT kode_kunjungan,kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.no_rm = ? and  kode_unit > ?', [$rm, '4000']);
 
             return view('ermtemplate.detail_berkas_erm_rajal', compact([
                 'orderfarmasi',
@@ -229,7 +271,8 @@ class ReportingController extends ErmController
                 'farmasi',
                 'penunjang',
                 'mt_pasien',
-                'datakonsul'
+                'datakonsul',
+                'order_penunjang'
             ]));
         }
     }

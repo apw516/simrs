@@ -3063,7 +3063,7 @@
                                             </div><br>
                                             @if ($h->kode_unit == '1012' || $h->kode_unit == '1027')
                                                 Hasil Expertisi : <br>
-                                                {{ $cp->evaluasi }}
+                                                {{ $h->evaluasi }}
                                                 <br>
                                             @endif
                                             <table class="table table-sm">
@@ -3451,7 +3451,95 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td>Pemeriksaan Penunjang</td>
-                                                                        <td>: {{ $cp->rencanakerja }}</td>
+                                                                        <td>: {{ $cp->rencanakerja }}
+                                                                            <br>
+                                                                            @if ($cp->kode_unit == '1012' || $cp->kode_unit == '1027')
+                                                                                Hasil Expertisi : <br>
+                                                                                {{ $cp->evaluasi }}
+                                                                                <br>
+                                                                            @endif
+                                                                            <div class="card">
+                                                                                <div
+                                                                                    class="card-header text-bold bg-secondary">
+                                                                                    Terapi yang dilakukan
+                                                                                </div>
+                                                                                <div class="card-body">
+                                                                                    <table class="table table-sm">
+                                                                                        <thead>
+                                                                                            <th>Unit</th>
+                                                                                            <th>Nama Pemeriksaan</th>
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                                            @foreach ($penunjang as $p)
+                                                                                                @if ($p->kode_kunjungan == $cp->id_kunjungan)
+                                                                                                    {{-- @if ($p->kode_unit == '3009' && $p->kode_unit == '3010') --}}
+                                                                                                    <tr>
+                                                                                                        <td>{{ $p->nama_unit }}
+                                                                                                        </td>
+                                                                                                        <td>{{ $p->NAMA_TARIF }}
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                    {{-- @endif --}}
+                                                                                                @endif
+                                                                                            @endforeach
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="card">
+                                                                                <div
+                                                                                    class="card-header  text-bold bg-secondary">
+                                                                                    Order yang dikirim
+                                                                                </div>
+                                                                                <div class="card-body">
+                                                                                    <table
+                                                                                        class="table table-sm table-bordered">
+                                                                                        <thead>
+                                                                                            <th>Nama Unit</th>
+                                                                                            <th>Nama Layanan</th>
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                                            @foreach ($order_penunjang as $d)
+                                                                                                <tr>
+                                                                                                    <td>{{ $d->nama_unit }}
+                                                                                                    </td>
+                                                                                                    <td>{{ $d->NAMA_TARIF }}
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            @endforeach
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="card">
+                                                                                <div
+                                                                                    class="card-header text-bold bg-secondary">
+                                                                                    Order yang dilayani
+                                                                                </div>
+                                                                                <div class="card-body">
+                                                                                    <table class="table table-sm">
+                                                                                        <thead>
+                                                                                            <th>Unit</th>
+                                                                                            <th>Nama Pemeriksaan</th>
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                                            @foreach ($penunjang as $p)
+                                                                                                @if ($p->kode_kunjungan == $cp->id_kunjungan)
+                                                                                                    @if ($p->kode_unit != '3009' && $p->kode_unit != '3010')
+                                                                                                        <tr>
+                                                                                                            <td>{{ $p->nama_unit }}
+                                                                                                            </td>
+                                                                                                            <td>{{ $p->NAMA_TARIF }}
+                                                                                                            </td>
+                                                                                                        </tr>
+                                                                                                    @endif
+                                                                                                @endif
+                                                                                            @endforeach
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>Tata laksana KFR </td>

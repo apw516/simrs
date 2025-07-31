@@ -85,6 +85,11 @@
                         </a>
                     </li>
                     @else
+                      <li class="nav-item" id="pemeriksaan">
+                        <a href="#" class="nav-link" onclick="hasilpemeriksaanmedis()">
+                            <i class="fas fa-inbox mr-2"></i>Hasil Pemeriksaan Medis
+                        </a>
+                    </li>
                     <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formpemeriksaan_fisio()">
                             <i class="fas fa-inbox mr-2"></i>CPPT Fisioterapi
