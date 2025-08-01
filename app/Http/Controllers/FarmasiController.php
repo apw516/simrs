@@ -20,6 +20,7 @@ use Codedge\Fpdf\Fpdf\PDF;
 use Codedge\Fpdf\code128\PDF_Code128;
 use Codedge\Fpdf\Fpdf128;
 use \Milon\Barcode\DNS1D;
+use simitsdk\phpjasperxml\PHPJasperXML;
 
 class FarmasiController extends Controller
 {
@@ -1793,6 +1794,26 @@ class FarmasiController extends Controller
             'idheader',
             'iddetail'
         ]));
+    }
+     public function cetaknota_new($kodekunjungan, $kodeheader,$idheader)
+    {
+        // dd($kodeheader);
+        // SP_Karcis_Pendaftaran3(kodelayananheader,norm)
+        // $DH = DB::select('select * from ts_layanan_header where id = ?', [$id]);
+        $DK = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+        $rm = $DK[0]->no_rm;
+        // $KODE_HEADER = $DH[0]->kode_layanan_header;
+        // $ID_HEADER = $DK[0]->counter;
+        $PDO = DB::connection()->getPdo();
+        $QUERY = $PDO->prepare("CALL SP_CETAK_NOTA_WEB('$kodeheader','$idheader')");
+        $QUERY->execute();
+        $data = $QUERY->fetchAll();
+        $filename = 'C:\cetakanresep\cetakannotaresep.jrxml';
+        $config = ['driver' => 'array', 'data' => $data];
+        $report = new PHPJasperXML();
+        $report->load_xml_file($filename)
+            ->setDataSource($config)
+            ->export('Pdf');
     }
     public function simpanretur(Request $request)
     {

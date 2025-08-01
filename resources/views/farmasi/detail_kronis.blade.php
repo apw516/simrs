@@ -13,9 +13,13 @@
                     {{ \Carbon\Carbon::parse($mt_pasien[0]->tgl_lahir)->format('Y-m-d') }}
                     (Usia {{ \Carbon\Carbon::parse($mt_pasien[0]->tgl_lahir)->age }})</p>
                 <p class="text-bold text-center text-xs">Alamat : {{ $mt_pasien[0]->alamatpasien }} </p>
-                <p class="text-bold text-center text-md">Diagnosa : @if(count($assesmen_dokter) > 0){{ $assesmen_dokter[0]->diagnosakerja }} @else - @endif
-                    <p class="text-bold text-center text-md">Nomor SEP : {{ $sep }} </p>
-                    {{-- @if (count($last_assdok) > 0)
+                <p class="text-bold text-center text-md">Diagnosa : @if (count($assesmen_dokter) > 0)
+                        {{ $assesmen_dokter[0]->diagnosakerja }}
+                    @else
+                        -
+                    @endif
+                <p class="text-bold text-center text-md">Nomor SEP : {{ $sep }} </p>
+                {{-- @if (count($last_assdok) > 0)
                         <br>{{ $last_assdok[0]->diagnosakerja }} --}}
                 </p>
             </div>
@@ -33,7 +37,7 @@
             <tbody>
                 @foreach ($farmasi as $f)
                     <tr>
-                        <td>{{ $f->kode_layanan_header }} | {{ $f->keterangan }}</td>
+                        <td>{{ $f->kode_layanan_header }} | {{ $f->keterangan }} |</td>
                         <td>
                             <table class="table">
                                 <thead>
@@ -56,6 +60,9 @@
                                 </tbody>
                             </table>
                         </td>
+                        <td><button class="btn btn-info cetaknotaall" kodekunjungan="{{ $f->kode_kunjungan }}"
+                                kodelayananheader="{{ $f->kode_layanan_header }}" idheader="{{ $f->id }}"><i
+                                    class="bi bi-printer-fill"></i> Cetak</button></td>
                     </tr>
                 @endforeach
             </tbody>
@@ -81,3 +88,17 @@
         @endforeach
     </div>
 </div>
+<script>
+    function cetaknota() {
+        kodekunjungan = $(this).attr('kodekunjungan')
+        kodelayananheader = $(this).attr('kodeheader')
+        idheader = $(this).attr('idheader')
+        window.open('cetaknotafarmasi_2/' + kodekunjungan + '/' + kodelayananheader + '/' + idheader);
+    }
+    $(".cetaknotaall").on('click', function(event) {
+        kodekunjungan = $(this).attr('kodekunjungan')
+        kodeheader = $(this).attr('kodelayananheader')
+        idheader = $(this).attr('idheader')
+        window.open('cetaknotafarmasi_2/' + kodekunjungan + '/' + kodeheader + '/' + idheader);
+    })
+</script>

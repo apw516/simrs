@@ -731,6 +731,7 @@ Route::post('ambil_detail_resep', [newFarmasiController::class, 'ambil_detail_re
 Route::post('riwayatracikandokter', [newFarmasiController::class, 'riwayatracikandokter'])->name('riwayatracikandokter');
 Route::post('simpanracikan', [newFarmasiController::class, 'simpanracikan'])->name('simpanracikan');
 //perawat
+Route::get('cetaknotafarmasi_2/{id}/{kodeheader}/{idheader}', [FarmasiController::class, 'cetaknota_new']); //formpasien_bpjs
 Route::post('hapustemplateracik', [newFarmasiController::class, 'hapustemplateracik'])->name('hapustemplateracik');
 Route::post('ambiltemplateracikan', [newFarmasiController::class, 'ambiltemplateracikan'])->name('ambiltemplateracikan');
 Route::post('ambil_detail_template_racikan', [newFarmasiController::class, 'ambil_detail_template_racikan'])->name('ambil_detail_template_racikan');
