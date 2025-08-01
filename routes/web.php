@@ -740,6 +740,9 @@ Route::post('cariorderfarmasidilayani', [newFarmasiController::class, 'cariorder
 Route::post('detailorderan', [newFarmasiController::class, 'detailorderan'])->name('detailorderan');
 Route::post('simpandatapelayanan', [newFarmasiController::class, 'simpandatapelayanan'])->name('simpandatapelayanan');
 Route::post('riwayatresepdilayani', [newFarmasiController::class, 'riwayatresepdilayani'])->name('riwayatresepdilayani');
+Route::get('index_cek_pasien_kronis', [FarmasiController::class, 'index_cek_pasien_kronis'])->middleware('auth')->name('index_cek_pasien_kronis');
+Route::post('index_cek_pasien_kronis', [FarmasiController::class, 'cari_pasien_kronis'])->middleware('auth')->name('cari_pasien_kronis');
+Route::post('cari_detail_pasien_kronis', [FarmasiController::class, 'cari_detail_pasien_kronis'])->middleware('auth')->name('cari_detail_pasien_kronis');
 Route::get('indexdataorderfarmasi', [newFarmasiController::class, 'indexdataorderfarmasi'])->middleware('auth')->name('indexdataorderfarmasi');
 Route::get('indexriwayatpelayananfarmasi', [newFarmasiController::class, 'indexriwayatpelayananfarmasi'])->middleware('auth')->name('indexriwayatpelayananfarmasi');
 Route::get('riwayatkartustok', [newFarmasiController::class, 'riwayatkartustok'])->middleware('auth')->name('riwayatkartustok');

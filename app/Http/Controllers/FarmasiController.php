@@ -38,6 +38,53 @@ class FarmasiController extends Controller
             'mt_unit'
         ]));
     }
+    public function index_cek_pasien_kronis()
+    {
+        $title = 'SIMRS - ERM';
+        $sidebar = 'index_cek_pasien_kronis';
+        $sidebar_m = 'farmasi_1';
+        $now = $this->get_date();
+        return view('farmasi.index_cek_pasien_kronis', compact([
+            'title',
+            'sidebar',
+            'sidebar_m',
+            'now',
+        ]));
+    }
+    public function cari_pasien_kronis(request $request){
+        $tglawal = $request->tanggalawal;
+        $tglakhir = $request->tanggalakhir;
+        $sk = db::select('SELECT kode_kunjungan,no_rm,fc_nama_px(no_rm) AS nama_pasien,fc_alamat(no_rm) AS alamat,DATE(tgl_masuk) AS tgl_masuk
+        ,no_sep,catatan,fc_nama_unit1(kode_unit) AS nama_unit
+        FROM ts_kunjungan WHERE DATE(tgl_masuk) BETWEEN ?  AND ? AND catatan = ?',[$tglawal,$tglakhir,'KRONIS']);
+        return view('farmasi.tabel_pasien_kronis',compact([
+            'sk'
+        ]));
+    }
+    public function cari_detail_pasien_kronis(request $request){
+        $kodekunjungan = $request->kodekunjungan;
+        $rm = $request->rm;
+        $sep = $request->sep;
+
+        $farmasi = db::select('select * from ts_layanan_header where kode_kunjungan = ? and kode_unit > ? and status_layanan != ?',[$kodekunjungan,4000,3]);
+        $farmasi2 = db::select('select row_id_header,b.kode_barang as kode_barang,nama_barang,d.NAMA_TARIF,jumlah_layanan
+        ,b.aturan_pakai,b.total_layanan from ts_layanan_header a
+        left outer join ts_layanan_detail b on a.id = b.row_id_header
+        left outer join mt_barang c on b.kode_barang = c.kode_barang
+        left outer join mt_tarif_header d on substr(b.kode_tarif_detail,1,6) = d.KODE_TARIF_HEADER
+        where a.kode_kunjungan = ? and a.kode_unit > ? and a.status_layanan != ? ',[$kodekunjungan,4000,3]);
+
+        $hasil_lab = DB::select('SELECT * FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` WHERE a.`kode_kunjungan` = ? AND b.`kode_unit` = ? ORDER BY a.`kode_kunjungan` DESC LIMIT 1', [$kodekunjungan, '3002']);
+
+        $hasil_rad = DB::select('SELECT * FROM ts_hasil_expertisi WHERE kode_kunjungan = ? ORDER BY id DESC', [$kodekunjungan]);
+        $date = $this->get_date();
+
+        $mt_pasien = db::SELECT('select *,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?',[$rm]);
+        $assesmen_dokter = db::select('select * from assesmen_dokters where id_kunjungan = ?',[$kodekunjungan]);
+        return view('farmasi.detail_kronis',compact([
+            'farmasi','farmasi2','assesmen_dokter','hasil_lab','hasil_rad','date','sep','mt_pasien'
+        ]));
+    }
     public function index_cari_resep()
     {
         $title = 'SIMRS - ERM';

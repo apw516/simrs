@@ -565,14 +565,14 @@
                               </p>
                           </a>
                       </li>
-                      {{-- <li class="nav-item">
-                          <a href="" class="nav-link @if ($sidebar == '2') active @endif">
+                      <li class="nav-item">
+                          <a href="{{ route('index_cek_pasien_kronis') }}" class="nav-link @if ($sidebar == 'index_cek_pasien_kronis') active @endif">
                               <i class="nav-icon fas fa-th"></i>
                               <p>
-                                  Retur Resep
+                                  Cek Pasien Kronis
                               </p>
                           </a>
-                      </li> --}}
+                      </li>
                       <li class="nav-item">
                           <a href="{{ route('cari_resep') }}"
                               class="nav-link @if ($sidebar == 'farmasi_3') active @endif">
