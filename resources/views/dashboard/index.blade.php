@@ -265,8 +265,6 @@
                     }
                 }
             });
-
-
             function tampilperbulan() {
                 awal = $('#tanggal_awal').val()
                 akhir = $('#tanggal_akhir').val()
@@ -290,7 +288,6 @@
                     }
                 });
             }
-
             function tampilperbulan_bypoli() {
                 awal = $('#tanggal_awal_poli').val()
                 akhir = $('#tanggal_akhir_poli').val()
