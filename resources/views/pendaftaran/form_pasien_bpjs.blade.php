@@ -4,14 +4,14 @@
             <div class="card">
                 <div class="card-header bg-info">Riwayat Kunjungan</div>
                 <div class="card-body">
-                    <button class="btn btn-success ml-1" data-toggle="modal"
-                    data-target="#modalrujukan" onclick="carirujukan()"><i class="bi bi-search"></i>
-                    Pilih Rujukan</button>
+                    <button class="btn btn-success ml-1" data-toggle="modal" data-target="#modalrujukan"
+                        onclick="carirujukan()"><i class="bi bi-search"></i>
+                        Pilih Rujukan</button>
                     <button class="btn btn-danger" data-toggle="modal" data-target="#modalriwayatsep"><i
                             class="bi bi-search"></i> Riwayat SEP Terakhir</button>
-                    <button class="btn btn-warning ml-1" data-toggle="modal"
-                            data-target="#staticBackdrop"><i class="bi bi-plus-lg"></i> Buat Surat
-                            Kontrol</button>
+                    <button class="btn btn-warning ml-1" data-toggle="modal" data-target="#staticBackdrop"><i
+                            class="bi bi-plus-lg"></i> Buat Surat
+                        Kontrol</button>
                     <table id="tabelriwayatkunjungan"
                         class="table table-bordered table-sm text-sm table-hover table-striped">
                         <thead>
@@ -35,10 +35,15 @@
                                     <td>{{ $r->CATATAN }}</td>
                                     <td>{{ $r->dokter }}</td>
                                     <td>{{ $r->no_sep }}</td>
-                                    <td><p class="font-weight-bold">{{ $r->no_rujukan }} </p></td>
                                     <td>
-                                        <?php $jns = substr($r->kode_unit,0,1) ;?>
-                                        @if($jns == 1 ) <button nosep="{{ $r->no_sep }}" kodedokter="{{ $r->kode_dokter }}" polikontrol="{{ $r->kode_unit }}" tglkontrol="" class="badge badge-info buatsuratkontrol2">+ tujuan kontrol</button>
+                                        <p class="font-weight-bold">{{ $r->no_rujukan }} </p>
+                                    </td>
+                                    <td>
+                                        <?php $jns = substr($r->kode_unit, 0, 1); ?>
+                                        @if ($jns == 1)
+                                            <button nosep="{{ $r->no_sep }}" kodedokter="{{ $r->kode_dokter }}"
+                                                polikontrol="{{ $r->kode_unit }}" tglkontrol=""
+                                                class="badge badge-info buatsuratkontrol2">+ tujuan kontrol</button>
                                         @endif
                                     </td>
                                 </tr>
@@ -69,14 +74,15 @@
                             <div class="row">
                                 <div class="col-sm-3">Nomor KTP</div>
                                 <div class="col-sm-5">: {{ $data_peserta->response->peserta->nik }}
-                                <input hidden type="text" class="form-control" id="nomorktp_pendaftaran" value="{{ $data_peserta->response->peserta->nik }}">
+                                    <input hidden type="text" class="form-control" id="nomorktp_pendaftaran"
+                                        value="{{ $data_peserta->response->peserta->nik }}">
                                 </div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-sm-3">Nama</div>
                                 <div class="col-sm-8">: {{ $data_peserta->response->peserta->nama }}</div>
                                 <input hidden type="text" value="{{ $data_peserta->response->peserta->nama }}"
-                                id="namapasien">
+                                    id="namapasien">
                             </div>
                             <div class="row">
                                 <div class="col-sm-3">Nomor Telp</div>
@@ -130,10 +136,45 @@
                 </div>
             </div>
             <div class="col-md-7 mb-3">
-                <h4 class="text-danger mb-2">*Wajib Diisi</h4>
-                @if ($cek_kunjungan  > 0 )
+                @if (count($cek_iter) > 0)
+                    <h5 class="text-danger">informasi <i class="bi bi-volume-up"></i> : Pasien termasuk kedalam layanan
+                        Iterasi obat BPJS ( layanan peresepan obat kronis yang memungkinkan peserta JKN (Jaminan
+                        Kesehatan Nasional) untuk mendapatkan obat-obatan tanpa harus berkonsultasi dengan dokter setiap
+                        bulan. )</h5> <br>
+                    <table class="table table-sm mb-4 text-xs" id="table_pasien_iterasi">
+                        <thead>
+                            <th>Tanggal iterasi</th>
+                            <th>Dokter</th>
+                            <th>Unit</th>
+                            <th>Jumlah</th>
+                            <th>-</th>
+                        </thead>
+                        <tbody>
+                            @foreach ($cek_iter as $c)
+                                <tr>
+                                    <td>{{ \Carbon\Carbon::parse($c->tgl_iter2)->format('d - M - Y') }}</td>
+                                    <td>{{ $c->namadokter }}</td>
+                                    <td>{{ $c->nama_unit }}</td>
+                                    <td>{{ $c->jumlah }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info detailiterasi"
+                                            iditer = "{{ $c->id }}" data-toggle="modal"
+                                            data-target="#modaldetailiterasi">info</button>
+                                        <button class="btn btn-sm btn-success daftariterasi"
+                                            iditer ="{{ $c->id }}" rm = "{{ $c->no_rm }}"
+                                            kodekunjunganlama = "{{ $c->kode_kunjungan }}" data-toggle="modal"
+                                            data-target="#modaldaftariterasi">daftar</button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endif
+                <h4 class="text-danger mb-2">*Wajib Diisi</h4><br>
+                @if ($cek_kunjungan > 0)
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <strong><i class="bi bi-megaphone"></i> </strong>  ada kunjungan pasien yang belum selesai / belum ditutup ! tanggal {{ $kunjungan_aktif }} 
+                        <strong><i class="bi bi-megaphone"></i> </strong> ada kunjungan pasien yang belum selesai /
+                        belum ditutup ! tanggal {{ $kunjungan_aktif }}
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -149,14 +190,15 @@
                     </div>
                 @endif
                 <div id="kunjunganrujukan_count"></div>
-                <div class="container mt-3">                    
+                <div class="container mt-3">
                     <div class="row justify-content-center mt-2">
                         {{-- <div class="col-sm-2 text-right text-bold">
                         </div> --}}
-                        <div class="col-sm-10">                           
+                        <div class="col-sm-10">
                             <button class="btn btn-info btn-sm mb-3 float-right ml-1" data-toggle="modal"
-                                data-target="#modalcarispri" onclick="carisuratkontrol()"><i class="bi bi-search"></i>
-                                Cari Surat Kontrol</button>                          
+                                data-target="#modalcarispri" onclick="carisuratkontrol()"><i
+                                    class="bi bi-search"></i>
+                                Cari Surat Kontrol</button>
                         </div>
                     </div>
                     <div class="row">
@@ -179,8 +221,8 @@
                                     </div>
                                 </div>
                                 <input type="text" class="form-control" value=""
-                                    placeholder="ketik dan pilih poli tujuan ..." aria-label="Text input with checkbox"
-                                    id="politujuan">
+                                    placeholder="ketik dan pilih poli tujuan ..."
+                                    aria-label="Text input with checkbox" id="politujuan">
                             </div>
                             <input hidden type="text" class="form-control" value=""
                                 aria-label="Text input with checkbox" id="kodepolitujuan">
@@ -208,8 +250,8 @@
                         <div class="col-sm-7">
                             <input type="text" class="form-control" name="namappkrujukan" id="namappkrujukan"
                                 value="RSUD WALED">
-                            <input hidden type="text" class="form-control" name="kodeppkrujukan" id="kodeppkrujukan"
-                                value="1018R001">
+                            <input hidden type="text" class="form-control" name="kodeppkrujukan"
+                                id="kodeppkrujukan" value="1018R001">
                         </div>
                     </div>
                     <div hidden id="non-igd">
@@ -256,7 +298,8 @@
                                         <input type="checkbox" class="mr-1" id="cob" value="1">COB
                                     </div>
                                 </div>
-                                <input type="text" class="form-control" id="norm" value="{{ $nomorrm }}">
+                                <input type="text" class="form-control" id="norm"
+                                    value="{{ $nomorrm }}">
                             </div>
                         </div>
                     </div>
@@ -332,7 +375,8 @@
                                     <input disabled readonly type="text" class="form-control"
                                         value="ceklis jika ruangan sesuai hak kelas penuh">
                                 </div> --}}
-                                <button class="btn btn-primary" data-toggle="modal" data-target="#modalpilihruangan">Pilih ruangan</button>
+                                <button class="btn btn-primary" data-toggle="modal"
+                                    data-target="#modalpilihruangan">Pilih ruangan</button>
                             </div>
                         </div>
                         <div class="row mt-2">
@@ -501,6 +545,52 @@
 </div>
 
 <!-- Modal -->
+<div class="modal fade" id="modaldetailiterasi" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Detail iterasi obat</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_detail_iterasi">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modaldaftariterasi" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Daftar iterasi obat</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_form_iterasi">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="simpanpendaftaraniter()">Simpan</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
 <div class="modal fade" id="modalasessment" data-backdrop="static" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog " role="document">
@@ -552,7 +642,8 @@
                         <option value=""> - </option>
                         <option value="1">Poli spesialis tidak tersedia pada hari sebelumnya</option>
                         <option value="2">Jam Poli telah berakhir pada hari sebelumnya</option>
-                        <option value="3">Dokter Spesialis yang dimaksud tidak praktek pada hari sebelumnya</option>
+                        <option value="3">Dokter Spesialis yang dimaksud tidak praktek pada hari sebelumnya
+                        </option>
                         <option value="4">Atas Instruksi RS</option>
                         <option value="5">Tujuan Kontrol</option>
                     </select>
@@ -722,7 +813,8 @@
                                 id="tanggalakhir_riwayat" placeholder="Tanggal akhir ..">
                         </div>
                         <div class="col-sm-3">
-                            <button type="submit" class="btn btn-dark mb-2 mt-4" onclick="caririwayatseppeserta()">Cari
+                            <button type="submit" class="btn btn-dark mb-2 mt-4"
+                                onclick="caririwayatseppeserta()">Cari
                                 Riwayat</button>
                         </div>
                     </div>
@@ -777,6 +869,56 @@
     </div>
 </div>
 <script>
+    $(".daftariterasi").on('click', function(event) {
+        iditer = $(this).attr('iditer')
+        rm = $(this).attr('rm')
+        kodekunjunganlama = $(this).attr('kodekunjunganlama')
+        spinner = $('#loader');
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                iditer,
+                rm,
+                kodekunjunganlama
+            },
+            url: '<?= route('ambil_form_iterasi') ?>',
+            error: function(data) {
+                spinner.hide();
+                alert('error!')
+            },
+            success: function(response) {
+                spinner.hide();
+                $('.v_form_iterasi').html(response);
+                // $('#daftarpxumum').attr('disabled', true);
+            }
+        });
+    });
+
+    $(".detailiterasi").on('click', function(event) {
+        iditer = $(this).attr('iditer')
+        spinner = $('#loader');
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                iditer
+            },
+            url: '<?= route('cari_detail_iter') ?>',
+            error: function(data) {
+                spinner.hide();
+                alert('error!')
+            },
+            success: function(response) {
+                spinner.hide();
+                $('.v_detail_iterasi').html(response);
+                // $('#daftarpxumum').attr('disabled', true);
+            }
+        });
+    });
+
     function caririwayatseppeserta() {
         tglawal = $('#tanggalawal_riwayat').val()
         tglakhir = $('#tanggalakhir_riwayat').val()
@@ -800,6 +942,49 @@
                 spinner.hide();
                 $('.vkunjunganpasien').html(response);
                 // $('#daftarpxumum').attr('disabled', true);
+            }
+        });
+    }
+
+    function simpanpendaftaraniter() {
+        var formiter = $('.formdaftariter').serializeArray();
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            async: true,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                _token: "{{ csrf_token() }}",
+                data: JSON.stringify(formiter),
+            },
+            url: '<?= route('simpanpendaftaraniter') ?>',
+            error: function(data) {
+                spinner.hide()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ooops....',
+                    text: 'Sepertinya ada masalah......',
+                    footer: ''
+                })
+            },
+            success: function(data) {
+                spinner.hide()
+                if (data.kode == 500) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oopss...',
+                        text: data.message,
+                        footer: ''
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'OK',
+                        text: data.message,
+                        footer: ''
+                    })
+                }
             }
         });
     }
@@ -940,14 +1125,16 @@
                         if (result.isConfirmed) {
                             window.open('cetaksep/' + data.kode_kunjungan);
                             location.reload();
-                        }else if (result.isDenied) {
+                        } else if (result.isDenied) {
                             // window.open('cetakstruk/' + data.kode_kunjungan);
                             // window.open('http://localhost/printlabel/cetaklabel.php?rm=19882642&nama=BADRIYAH');
                             var url = 'cetaksep/' + data.kode_kunjungan
-                            var url2 = `http://192.168.2.45/printlabel/cetaklabel.php?rm=`+norm+`&nama=`+data.nama;
-                            var locs = [url,url2] 
+                            var url2 = `http://192.168.2.45/printlabel/cetaklabel.php?rm=` + norm +
+                                `&nama=` + data.nama;
+                            var locs = [url, url2]
                             for (let i = 0; i < locs.length; i++) {
-				                window.open(locs[i])}
+                                window.open(locs[i])
+                            }
                             location.reload();
                         } else {
                             location.reload();
@@ -1190,6 +1377,20 @@
             // ]
         })
     });
+    $(function() {
+        $("#table_pasien_iterasi").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": true,
+            "pageLength": 6,
+            "searching": true,
+            "ordering": true,
+            "columnDefs": [{
+                "targets": 0,
+                "type": "date"
+            }],
+        })
+    });
     $('#tabelriwayatkunjungan').on('click', '.buatsuratkontrol2', function() {
         spinner = $('#loader');
         spinner.show();
@@ -1250,6 +1451,7 @@
             $('.pn').attr('hidden', true)
         }
     }
+
     function gantijenispelayanan() {
         jnsPelayanan = $('#jenispelayanan').val();
         if (jnsPelayanan == 1) {

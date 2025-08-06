@@ -760,6 +760,8 @@ Route::post('caribarangfarmasi', [newFarmasiController::class, 'caririwayatstok'
 
  Route::post('ambilhasillab_by_limit', [ErmController::class, 'ambilhasillab_by_limit'])
         ->name('ambilhasillab_by_limit'); //sidebar
+ Route::post('ambil_formiterasiobat', [ErmController::class, 'ambil_formiterasiobat'])
+        ->name('ambil_formiterasiobat'); //sidebar
 
 
 Route::get('/carisep_2/{sep}', [SimrsController::class, 'carisep_2'])->name('carisep_2'); //formpasien_bpjs
@@ -767,4 +769,7 @@ Route::get('/carisep_2/{sep}', [SimrsController::class, 'carisep_2'])->name('car
 
 Route::get('/dataermrajal', [ReportingController::class, 'dataermrajal'])->name('dataermrajal'); //formpasien_bpjs
 Route::post('/ambilberkasermrajal', [ReportingController::class, 'ambilberkasermrajal'])->name('ambilberkasermrajal'); //formpasien_bpjs
+Route::post('/cari_detail_iter', [SimrsController::class, 'cari_detail_iter'])->name('cari_detail_iter'); //formpasien_bpjs
+Route::post('/ambil_form_iterasi', [SimrsController::class, 'ambil_form_iterasi'])->name('ambil_form_iterasi'); //formpasien_bpjs
+Route::post('/simpanpendaftaraniter', [SimrsController::class, 'simpanpendaftaraniter'])->name('simpanpendaftaraniter'); //formpasien_bpjs
 

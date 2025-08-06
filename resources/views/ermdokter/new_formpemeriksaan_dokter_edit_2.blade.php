@@ -2413,11 +2413,13 @@
                 {{-- formfarmasi --}}
                 <div class="card">
                     @if ($selisih > 70)
-                    <div class="alert alert-warning" role="alert">
-                        @if (count($kunjunganKronis) > 0)
-                            Pasien Kronis ,
-                            @endif Pasien Berpotensi PRB, dan melanjutkan pengobatan kembali ke faskes 1... <b>( Abaikan pesan ini jika diagnosa pasien tidak termasuk 9 diagnosa PRB ...)</b>
-                      </div>
+                        <div class="alert alert-warning" role="alert">
+                            @if (count($kunjunganKronis) > 0)
+                                Pasien Kronis ,
+                            @endif Pasien Berpotensi PRB, dan melanjutkan pengobatan kembali ke
+                            faskes 1... <b>( Abaikan pesan ini jika diagnosa pasien tidak termasuk 9 diagnosa PRB
+                                ...)</b>
+                        </div>
                     @endif
                     <div class="card-header bg-light">Order Farmasi <button type="button"
                             class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
@@ -2446,6 +2448,10 @@
                             <input hidden type="text" class="form-control col-md-3 mb-3" id="namaresep"
                                 name="namaresep" placeholder="isi nama resep ...">
                         </form>
+                        <div class="v_itterasi_obat">
+
+                        </div>
+
                     </div>
                 </div>
                 {{-- formtindaklanjut --}}
@@ -2505,7 +2511,6 @@
                         </div>
                     </div>
                 </form>
-
                 <div class="accordion" id="accordionExample">
                     <div class="card">
                         <div class="card-header bg-danger" id="headingOne">
@@ -3134,6 +3139,8 @@
         var namaresep = $('#namaresep').val()
         var kodekunjungan = $('#kodekunjungan').val()
         var hasilexpertisi = $('#hasilexpertisi').val()
+        var pasieniter = $('#iterasipilih:checked').val()
+        var jumlahiter = $('#jumlahiterasi').val()
         var selisih = $('#selisih').val()
         spinner = $('#loader')
         spinner.show();
@@ -3165,7 +3172,9 @@
                 formkesimpulanhidung: JSON.stringify(formkesimpulanhidung),
                 formorder_lab: JSON.stringify(formorder_lab),
                 formtindakan_rad: JSON.stringify(formtindakan_rad),
-                hasilexpertisi
+                hasilexpertisi,
+                pasieniter,
+                jumlahiter
             },
             url: '<?= route('simpanpemeriksaandokter_2') ?>',
             error: function(data) {
@@ -3195,6 +3204,21 @@
                     })
                     resume()
                 }
+            }
+        });
+    }
+    function ambilformiterasiobat()
+    {
+        var kodekunjungan = $('#kodekunjungan').val()
+         $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",kodekunjungan
+            },
+            url: '<?= route('ambil_formiterasiobat') ?>',
+            success: function(response) {
+                $('.v_itterasi_obat').html(response);
+                spinner.hide()
             }
         });
     }
@@ -3330,6 +3354,7 @@
         tindakanhariini()
         tindakanhariini_lab()
         tindakanhariini_rad()
+        ambilformiterasiobat()
     });
     $(".riwayatkonsul").click(function() {
         $.ajax({

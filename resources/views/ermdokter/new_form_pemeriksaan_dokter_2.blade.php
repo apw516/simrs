@@ -1179,6 +1179,9 @@
                             <input hidden type="text" class="form-control col-md-3 mb-3" id="namaresep"
                                 name="namaresep" placeholder="isi nama resep ...">
                         </form>
+                        <div class="v_itterasi_obat">
+
+                        </div>
                     </div>
                 </div>
                 {{-- formtindaknlanjut --}}
@@ -1700,7 +1703,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="modaltemplate" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -1724,7 +1726,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="modalcatatankonsul" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -1757,7 +1758,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="modalriwayatkonsul" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -1781,7 +1781,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="modalscan_rm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -1862,6 +1861,8 @@
         var simpantemplate = $('#simpantemplate:checked').val()
         var namaresep = $('#namaresep').val()
         var kodekunjungan = $('#kodekunjungan').val()
+        var pasieniter = $('#iterasipilih:checked').val()
+        var jumlahiter = $('#jumlahiterasi').val()
         var selisih = $('#selisih').val()
         var hasilexpertisi = $('#hasilexpertisi').val()
         spinner = $('#loader')
@@ -1894,7 +1895,9 @@
                 formkesimpulanhidung: JSON.stringify(formkesimpulanhidung),
                 formorder_lab: JSON.stringify(formorder_lab),
                 formtindakan_rad: JSON.stringify(formtindakan_rad),
-                hasilexpertisi
+                hasilexpertisi,
+                pasieniter,
+                jumlahiter
             },
             url: '<?= route('simpanpemeriksaandokter_2') ?>',
             error: function(data) {
@@ -1940,7 +1943,21 @@
             }
         });
     })
-
+    function ambilformiterasiobat()
+        {
+            var kodekunjungan = $('#kodekunjungan').val()
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",kodekunjungan
+                },
+                url: '<?= route('ambil_formiterasiobat') ?>',
+                success: function(response) {
+                    $('.v_itterasi_obat').html(response);
+                    spinner.hide()
+                }
+            });
+        }
     $(".lihathasilpenunjang_lab").click(function() {
         spinner = $('#loader')
         spinner.show();
@@ -2214,6 +2231,7 @@
     $(document).ready(function() {
         ambilgambar()
         ambilriwayatobat()
+        ambilformiterasiobat()
     })
 
     function ambilriwayatobat() {
