@@ -507,6 +507,7 @@ class SimrsController extends Controller
             'diagnosa' => $ambil_order[0]->diagnosa,
             'dok_kirim' => $ambil_order[0]->dok_kirim,
             'status_layanan' => '3',
+            'keterangan' => 'RESEP ITER',
             'status_retur' => 'OPN',
             'status_pembayaran' => 'OPN',
             'status_order' => '1',
