@@ -483,6 +483,9 @@ class SimrsController extends Controller
             'pic' => auth()->user()->id_simrs,
             'id_alasan_masuk' => 27,
             'kelas' => 3,
+            'cok' => 1,
+            'ref_unit' => $kunjunganlama[0]->kode_unit,
+            'ref_paramedis' => $kunjunganlama[0]->kode_paramedis,
             'keterangan2' => 'WEB'
         ];
         //create_ts_kunjungan
@@ -533,7 +536,7 @@ class SimrsController extends Controller
         $ts_iter_detail = [
             'id_header' => $dataSet['iditer'],
             'kode_kunjungan' => $ts_kunjungan->id,
-            'kode_unit' => $ambil_order[0]->kode_unit ,
+            'kode_unit' => $ambil_order[0]->kode_unit,
             'tgl_kunjungan' => $this->get_now()
         ];
         ts_detail_iter::create($ts_iter_detail);

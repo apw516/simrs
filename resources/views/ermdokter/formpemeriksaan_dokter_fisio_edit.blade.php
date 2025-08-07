@@ -1,9 +1,11 @@
 <div class="card">
     <div class="card-header bg-info">Catatan Perkembangan Pasien Terintegrasi
-        <button class="btn btn-danger ml-2 lihathasilpenunjang_lab" nomorrm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
-            data-target="#modalhasilpenunjang_lab"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan Laboratorium</button>
-        <button class="btn btn-danger ml-2 lihathasilpenunjang_rad" nomorrm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
-            data-target="#modalhasilpenunjang_rad"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan Radiologi</button>
+        <button class="btn btn-danger ml-2 lihathasilpenunjang_lab" nomorrm="{{ $kunjungan[0]->no_rm }}"
+            data-toggle="modal" data-target="#modalhasilpenunjang_lab"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan
+            Laboratorium</button>
+        <button class="btn btn-danger ml-2 lihathasilpenunjang_rad" nomorrm="{{ $kunjungan[0]->no_rm }}"
+            data-toggle="modal" data-target="#modalhasilpenunjang_rad"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan
+            Radiologi</button>
         @if ($kunjungan[0]->ref_kunjungan != '0')
             <button class="btn btn-warning ml-2" data-toggle="modal" data-target="#modalcatatankonsul"><i
                     class="bi bi-eye mr-1"></i> Catatan Konsul</button>
@@ -193,8 +195,8 @@
                 </div>
             </div>
         </form>
-          {{-- formtindaklanjut --}}
-          <form action="" class="formtindaklanjut">
+        {{-- formtindaklanjut --}}
+        <form action="" class="formtindaklanjut">
             <div class="card">
                 <div class="card-header bg-light">Tindak Lanjut <button type="button"
                         class="btn btn-success float-right riwayatkonsul" data-toggle="modal"
@@ -208,8 +210,7 @@
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                            id="pilihtindaklanjut" value="KONTROL"
-                            @if ($last_assdok[0]->tindak_lanjut == 'KONTROL') checked @endif>
+                            id="pilihtindaklanjut" value="KONTROL" @if ($last_assdok[0]->tindak_lanjut == 'KONTROL') checked @endif>
                         <label class="form-check-label" for="inlineRadio2">KONTROL</label>
                     </div>
                     <div class="form-check form-check-inline">
@@ -275,6 +276,9 @@
                     <input hidden type="text" class="form-control col-md-3 mb-3" id="namaresep" name="namaresep"
                         placeholder="isi nama resep ...">
                 </form>
+                <div class="v_itterasi_obat">
+
+                </div>
             </div>
         </div>
 
@@ -361,6 +365,22 @@
     </div>
 </div>
 <script>
+    function ambilformiterasiobat() {
+        var kodekunjungan = $('#kodekunjungan').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('ambil_formiterasiobat') ?>',
+            success: function(response) {
+                $('.v_itterasi_obat').html(response);
+                spinner.hide()
+            }
+        });
+    }
+
     function simpanhasil() {
         var data = $('.formpemeriksaan_fisio').serializeArray();
         var data2 = $('.arrayobat').serializeArray();
@@ -370,6 +390,8 @@
         var unit = $('#unit').val()
         var nomorrm = $('#nomorrm').val()
         var simpantemplate = $('#simpantemplate:checked').val()
+        var pasieniter = $('#iterasipilih:checked').val()
+        var jumlahiter = $('#jumlahiterasi').val()
         spinner = $('#loader')
         spinner.show();
         $.ajax({
@@ -385,7 +407,9 @@
                 counter,
                 unit,
                 nomorrm,
-                simpantemplate
+                simpantemplate,
+                pasieniter,
+                jumlahiter
             },
             url: '<?= route('simpanpemeriksaandokter_fisio') ?>',
             error: function(data) {
@@ -440,6 +464,7 @@
     }
     $(document).ready(function() {
         orderobathariini()
+        ambilformiterasiobat()
     });
 
     function addform() {
@@ -489,7 +514,7 @@
             $('#namaresep').attr('Hidden', true)
         }
     }
-    $(".lihathasilpenunjang_lab").click(function(){
+    $(".lihathasilpenunjang_lab").click(function() {
         spinner = $('#loader')
         spinner.show();
         nomorrm = $(this).attr('nomorrm')
@@ -506,7 +531,7 @@
             }
         });
     })
-    $(".lihathasilpenunjang_rad").click(function(){
+    $(".lihathasilpenunjang_rad").click(function() {
         spinner = $('#loader')
         spinner.show();
         nomorrm = $(this).attr('nomorrm')

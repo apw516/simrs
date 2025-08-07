@@ -2575,7 +2575,6 @@ class ErmController extends Controller
                         echo json_encode($back);
                         die;
                     }
-
                     $dataresep = [
                         'nama_resep' => $request->namaresep,
                         'keterangan' => $obatnya,
@@ -2597,6 +2596,11 @@ class ErmController extends Controller
                     }
                 }
                 try {
+                    if ($pasieniter == 1) {
+                        $itt = 'RESEP ITER';
+                    } else {
+                        $itt = '';
+                    }
                     $kode_unit = $unit;
                     $kode_layanan_header = $this->createOrderHeader('F');
                     $data_layanan_header = [
@@ -2613,6 +2617,7 @@ class ErmController extends Controller
                         'diagnosa' => $diagnosakerja,
                         'dok_kirim' => auth()->user()->kode_paramedis,
                         'status_layanan' => '3',
+                        'keterangan' => $itt,
                         'status_retur' => 'OPN',
                         'status_pembayaran' => 'OPN',
                         'status_order' => '0',
@@ -3324,6 +3329,9 @@ class ErmController extends Controller
 
         // gambar = matakanan
         // gambar2 = matakiri
+        $pasieniter = $request->pasieniter;
+        $jumlahiter = $request->jumlahiter;
+
         $data1 = json_decode($_POST['data1'], true);
         $data2 = json_decode($_POST['data2'], true);
         $data3 = json_decode($_POST['data3'], true);
@@ -3366,6 +3374,35 @@ class ErmController extends Controller
             $index =  $nama['name'];
             $value =  $nama['value'];
             $dataSet_4[$index] = $value;
+        }
+        if ($pasieniter == 1) {
+            if ($jumlahiter == '') {
+                $data = [
+                    'kode' => 500,
+                    'message' => 'Jumlah iter harus diisi ...'
+                ];
+                echo json_encode($data);
+                die;
+            }
+            $ts_header_iter = [
+                'kode_kunjungan' => $request->kodekunjungan,
+                'no_rm' => $dataSet_1['nomorrm'],
+                'jumlah' => $jumlahiter,
+                'kode_unit' => auth()->user()->unit,
+                'kode_paramedis' => auth()->user()->kode_paramedis,
+                'tgl_iter' => $this->get_now()
+            ];
+            $cek = db::select('select * from ts_header_iter_bpjs where kode_kunjungan = ?', [$request->kodekunjungan]);
+            if (count($cek) == 0) {
+                ts_header_iter::create($ts_header_iter);
+            } else {
+                ts_header_iter::whereRaw('id = ?', array($cek['0']->id))->update($ts_header_iter);
+            }
+        } else {
+            $cek = db::select('select * from ts_header_iter_bpjs where kode_kunjungan = ?', [$request->kodekunjungan]);
+            if (count($cek) > 0) {
+                ts_header_iter::whereRaw('id = ?', array($cek['0']->id))->delete();
+            }
         }
         $id_asskep = $dataSet_1['idasskep'];
         $diagnosakerja = preg_replace("/[^A-Za-z]/", "", $dataSet_3['diagnosakerja']);
@@ -3729,6 +3766,11 @@ class ErmController extends Controller
                     }
                 }
                 try {
+                    if ($pasieniter == 1) {
+                        $itt = 'RESEP ITER';
+                    } else {
+                        $itt = '';
+                    }
                     $kode_unit = $unit;
                     $kode_layanan_header = $this->createOrderHeader('F');
                     $data_layanan_header = [
@@ -3745,6 +3787,7 @@ class ErmController extends Controller
                         'diagnosa' => $diagnosakerja,
                         'dok_kirim' => auth()->user()->kode_paramedis,
                         'status_layanan' => '3',
+                        'keterangan' => $itt,
                         'status_retur' => 'OPN',
                         'status_pembayaran' => 'OPN',
                         'status_order' => '0',
@@ -4038,6 +4081,9 @@ class ErmController extends Controller
     }
     public function simpanpemeriksaandokter_fisio(Request $request)
     {
+        $pasieniter = $request->pasieniter;
+        $jumlahiter = $request->jumlahiter;
+
         $data = json_decode($_POST['data'], true);
         $dataobat = json_decode($_POST['dataobat'], true);
         $datatindaklanjut = json_decode($_POST['datatindaklanjut'], true);
@@ -4051,6 +4097,7 @@ class ErmController extends Controller
             $value =  $nama_1['value'];
             $dataSet_tindaklanjut[$index] = $value;
         }
+
         $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
         $cek = DB::select('SELECT * from assesmen_dokters WHERE tgl_kunjungan = ? AND id_pasien = ? AND kode_unit = ?', [$kunjungan[0]->tgl_masuk, $request->nomorrm, $request->unit]);
         $assdok = [
@@ -4084,6 +4131,35 @@ class ErmController extends Controller
             'keterangan_tindak_lanjut_2' => trim($dataSet['jawabankonsul']),
             'status' => '0'
         ];
+        if ($pasieniter == 1) {
+            if ($jumlahiter == '') {
+                $data = [
+                    'kode' => 500,
+                    'message' => 'Jumlah iter harus diisi ...'
+                ];
+                echo json_encode($data);
+                die;
+            }
+            $ts_header_iter = [
+                'kode_kunjungan' => $request->kodekunjungan,
+                'no_rm' => $request->nomorrm,
+                'jumlah' => $jumlahiter,
+                'kode_unit' => auth()->user()->unit,
+                'kode_paramedis' => auth()->user()->kode_paramedis,
+                'tgl_iter' => $this->get_now()
+            ];
+            $cek = db::select('select * from ts_header_iter_bpjs where kode_kunjungan = ?', [$request->kodekunjungan]);
+            if (count($cek) == 0) {
+                ts_header_iter::create($ts_header_iter);
+            } else {
+                ts_header_iter::whereRaw('id = ?', array($cek['0']->id))->update($ts_header_iter);
+            }
+        } else {
+            $cek = db::select('select * from ts_header_iter_bpjs where kode_kunjungan = ?', [$request->kodekunjungan]);
+            if (count($cek) > 0) {
+                ts_header_iter::whereRaw('id = ?', array($cek['0']->id))->delete();
+            }
+        }
         if (count($cek) > 0) {
             assesmenawaldokter::whereRaw('id_pasien = ? and kode_unit = ? and id_kunjungan = ?', array($dataSet['nomorrm'],  $dataSet['unit'], $dataSet['kodekunjungan']))->update($assdok);
             $id_assesmen = $cek[0]->id;
@@ -4160,6 +4236,11 @@ class ErmController extends Controller
                 }
             }
             try {
+                if ($pasieniter == 1) {
+                    $itt = 'RESEP ITER';
+                } else {
+                    $itt = '';
+                }
                 $kode_unit = $unit;
                 $kode_layanan_header = $this->createOrderHeader('F');
                 $data_layanan_header = [
@@ -4174,6 +4255,7 @@ class ErmController extends Controller
                     'unit_pengirim' => auth()->user()->unit,
                     'tgl_periksa' => $this->get_now(),
                     'diagnosa' => $diagnosakerja,
+                    'keterangan' => $itt,
                     'dok_kirim' => auth()->user()->kode_paramedis,
                     'status_layanan' => '3',
                     'status_retur' => 'OPN',
@@ -6995,12 +7077,13 @@ class ErmController extends Controller
         }
         $cek_konsul  = DB::select('select *,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where ref_kunjungan = ? and status_kunjungan != ?', [$kodekunjungan, '8']);
         // if (count($assdok) > 0) {
-        $cek_iter = db::select('select *,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_nama_unit1(kode_unit) as nama_unit from ts_header_iter_bpjs where kode_kunjungan = ?',[$kodekunjungan]);
+        $cek_iter = db::select('select *,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_nama_unit1(kode_unit) as nama_unit from ts_header_iter_bpjs where kode_kunjungan = ?', [$kodekunjungan]);
         return view('ermtemplate.formtindaklanjut', compact([
             'assdok',
             'cek_konsul',
             'kunjunganKronis',
-            'selisih','cek_iter'
+            'selisih',
+            'cek_iter'
         ]));
         // } else {
         //     return view('ermtemplate.dokterbelummengisi');
@@ -8472,6 +8555,15 @@ class ErmController extends Controller
         ]));
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 
