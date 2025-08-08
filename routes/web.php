@@ -774,3 +774,6 @@ Route::post('/cari_detail_iter', [SimrsController::class, 'cari_detail_iter'])->
 Route::post('/ambil_form_iterasi', [SimrsController::class, 'ambil_form_iterasi'])->name('ambil_form_iterasi'); //formpasien_bpjs
 Route::post('/simpanpendaftaraniter', [SimrsController::class, 'simpanpendaftaraniter'])->name('simpanpendaftaraniter'); //formpasien_bpjs
 
+Route::post('/hasillab', [ReportingController::class, 'hasillab'])->name('hasillab'); //formpasien_bpjs
+Route::post('/hasilrad', [ReportingController::class, 'hasilrad'])->name('hasilrad'); //formpasien_bpjs
+Route::post('/hasilpa', [ReportingController::class, 'hasilpa'])->name('hasilpa'); //formpasien_bpjs
