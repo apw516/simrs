@@ -768,6 +768,7 @@ Route::get('/carisep_2/{sep}', [SimrsController::class, 'carisep_2'])->name('car
 
 
 Route::post('/lihatcppt_pasien', [ReportingController::class, 'ambilcatatanmedis_pasien2'])->name('lihatcppt_pasien'); //formpasien_bpjs
+Route::post('/lihatcppt_pasien2', [ReportingController::class, 'ambilcatatanmedis_pasien23'])->name('lihatcppt_pasien2'); //formpasien_bpjs
 Route::get('/dataermrajal', [ReportingController::class, 'dataermrajal'])->name('dataermrajal'); //formpasien_bpjs
 Route::post('/ambilberkasermrajal', [ReportingController::class, 'ambilberkasermrajal'])->name('ambilberkasermrajal'); //formpasien_bpjs
 Route::post('/cari_detail_iter', [SimrsController::class, 'cari_detail_iter'])->name('cari_detail_iter'); //formpasien_bpjs

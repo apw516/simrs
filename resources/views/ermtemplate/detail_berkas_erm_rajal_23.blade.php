@@ -1,48 +1,4 @@
-<div class="card">
-    <div class="card-header">Data Pasien</div>
-    <div class="card-body">
-        <div class="card card-primary card-outline">
-            <div class="card-body box-profile">
-                <div class="text-center">
-                    <img class="profile-user-img img-fluid img-circle" src="{{ asset('public/img/user.jpg') }}"
-                        alt="User profile picture">
-                </div>
-                <h3 class="text-bold profile-username text-center text-md">{{ $mt_pasien[0]->nama_px }} |
-                    {{ $mt_pasien[0]->no_rm }}</h3>
-                <p class="text-bold text-center text-xs">
-                    {{ \Carbon\Carbon::parse($mt_pasien[0]->tgl_lahir)->format('Y-m-d') }}
-                    (Usia {{ \Carbon\Carbon::parse($mt_pasien[0]->tgl_lahir)->age }})</p>
 
-                <p class="text-bold text-center text-md mt-2">NO BPJS : {{ $mt_pasien[0]->no_Bpjs }}</p>
-                <p class="text-bold text-center text-md mt-2">NIK : {{ $mt_pasien[0]->nik_bpjs }}</p>
-                <p class="text-bold text-center text-xs">Alamat : {{ $mt_pasien[0]->alamatpasien }} </p>
-                <p class="text-bold text-center text-xs">Jenis Kelamin :
-                    @if ($mt_pasien[0]->jenis_kelamin == 'P' || $mt_pasien[0]->jenis_kelamin == 'p')
-                        Perempuan
-                    @elseif ($mt_pasien[0]->jenis_kelamin == 'L' || $mt_pasien[0]->jenis_kelamin == 'l')
-                        Laki - Laki
-                    @else
-                        {{ $mt_pasien[0]->jenis_kelamin }}
-                    @endif
-                </p>
-                {{-- <p class="text-bold text-center text-md">Diagnosa :
-                    @if (count($last_assdok) > 0)
-                        <br>{{ $last_assdok[0]->diagnosakerja }}
-                </p>
-            @else
-                <br>{{ $kunjungan[0]->diagx }}</p>
-                @endif
-                <a href="#" onclick="formcatatanmedis2({{ $kunjungan[0]->no_rm }})"
-                    class="btn btn-primary btn-block"><b>Catatan
-                        Medis</b></a>
-                <a href="#" onclick="lihaticare()" class="btn btn-success btn-block"><b>Icare BPJS</b></a>
-                <input hidden type="text" id="kodekunjungan" value="{{ $kunjungan[0]->kode_kunjungan }}">
-                <input hidden type="text" id="nomorrm" value="{{ $kunjungan[0]->no_rm }}"> --}}
-            </div>
-            <!-- /.card-body -->
-        </div>
-    </div>
-</div>
 <div class="col-md-12">
     <div class="card">
         <div class="card-header p-2">

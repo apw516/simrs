@@ -33,9 +33,10 @@
             @else
                 <br>{{ $kunjungan[0]->diagx }}</p>
                 @endif
-                <a href="#" onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})"
+                {{-- <a href="#" onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})"
                     class="btn btn-primary btn-block"><b>Catatan
-                        Medis</b></a>
+                        Medis</b></a> --}}
+                <a href="#" class="btn btn-primary btn-block lihatcppt2" rm="{{ $kunjungan[0]->no_rm }}"><b>Catatan Medis</b></a>
                 <a href="#" onclick="lihaticare()" class="btn btn-success btn-block"><b>Icare BPJS</b></a>
                 <input hidden type="text" id="kodekunjungan" value="{{ $kunjungan[0]->kode_kunjungan }}">
                 <input hidden type="text" id="nomorrm" value="{{ $kunjungan[0]->no_rm }}">
@@ -128,13 +129,14 @@
           </div>
         @endif --}}
         <div class="card" id="icareshow">
-            <div class="card-header">Icare BPJS <button class="btn btn-danger float-right" onclick="tutupicare()"><i class="bi bi-x mr-1 ml-1"></i> Tutup</button>
+            <div class="card-header">Icare BPJS <button class="btn btn-danger float-right" onclick="tutupicare()"><i
+                        class="bi bi-x mr-1 ml-1"></i> Tutup</button>
             </div>
             <div class="card-body">
                 <iframe src="{{ $urlicare }}" frameborder="0" width="100%" height="1000px%"></iframe>
             </div>
             <div class="card-footer">
-                <button class="btn btn-danger" onclick="tutupicare()"><i class="bi bi-x mr-1 ml-1"></i>  Tutup</button>
+                <button class="btn btn-danger" onclick="tutupicare()"><i class="bi bi-x mr-1 ml-1"></i> Tutup</button>
             </div>
         </div>
         <div hidden class="slide3">
@@ -142,10 +144,53 @@
     </div>
     <!-- /.col -->
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalcppt2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Catatan Perkembangan Pasien Terintegrasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_cppt_2">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<input hidden type="text" id="statuslihatcppt2" value="0">
 <script>
     $(document).ready(function() {
         rm = $('#nomorrm').val()
-        formcatatanmedis(rm)
+        formcatatanmedis2(rm)
+    })
+    $(".lihatcppt2").click(function() {
+        status = $('#statuslihatcppt2').val()
+        // if (status == 0) {
+            status = $('#statuslihatcppt2').val(1)
+            rm = $(this).attr('rm')
+            spinner = $('#loader')
+            spinner.show();
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    rm
+                },
+                url: '<?= route('lihatcppt_pasien2') ?>',
+                success: function(response) {
+                    $('.slide3').html(response);
+                    spinner.hide()
+                }
+            });
+        // }
     })
 
     function tutupicare() {
@@ -158,7 +203,25 @@
         $('.slide3').attr('Hidden', true)
     }
 
+    function formcatatanmedis2(rm) {
+        rm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm
+            },
+            url: '<?= route('lihatcppt_pasien2') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
     function formcatatanmedis(rm) {
+        rm = $('#nomorrm').val()
         spinner = $('#loader')
         spinner.show();
         $.ajax({
