@@ -102,7 +102,7 @@
                     </li> --}}
                     @endif
                     <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="resume()">
+                        <a href="#" class="nav-link" onclick="resume2()">
                             <i class="fas fa-filter mr-2"></i> Resume
                         </a>
                     </li>
@@ -397,7 +397,25 @@
             }
         });
     }
-
+    function resume2() {
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('resumepasien_dokter2') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
     function riwayatsumarilis() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()

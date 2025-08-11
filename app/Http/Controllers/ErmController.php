@@ -4738,6 +4738,10 @@ class ErmController extends Controller
             return view('ermtemplate.data1tidakditemukan');
         }
     }
+    public function resumepasien_dokter2(Request $request)
+    {
+        echo 'ok';
+    }
     public function simpanttdperawat(Request $request)
     {
         $data = [
