@@ -152,7 +152,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9,102,101']], function ()
     Route::post('/cariberkasnya_pasien', [RanapController::class, 'cariberkasnya_pasien'])
         ->name('cariberkasnya_pasien'); //sidebar
     Route::post('/carisuratkontrol_ranap', [RanapController::class, 'carisuratkontrol_ranap'])
-        ->name('carisuratkontrol_ranap');     Route::get('/datapasienranap', [SimrsController::class, 'datapasienranap'])
+        ->name('carisuratkontrol_ranap');
+    Route::get('/datapasienranap', [SimrsController::class, 'datapasienranap'])
         ->name('datapasienranap'); //sidebar
     Route::post('/lihatcatatanpasien', [SimrsController::class, 'lihatcatatanpasien'])
         ->name('lihatcatatanpasien'); //sidebar
@@ -604,8 +605,7 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('simpanpemeriksaandokter_anesetesi'); //sidebar
     Route::post('/resumepasien_dokter', [ErmController::class, 'resumepasien_dokter'])
         ->name('resumepasien_dokter'); //sidebar
-    Route::post('/resumepasien_dokter2', [ErmController::class, 'resumepasien_dokter2'])
-        ->name('resumepasien_dokter2'); //sidebar
+
     Route::post('/simpanttddokter', [ErmController::class, 'simpanttddokter'])
         ->name('simpanttddokter'); //sidebar
     Route::post('/formtindakan', [ErmController::class, 'formtindakan'])
@@ -758,10 +758,10 @@ Route::post('detaillayananfarmasi', [newFarmasiController::class, 'detaillayanan
 Route::get('caribarangfarmasi', [newFarmasiController::class, 'caribarangfarmasi'])->middleware('auth')->name('caribarangfarmasi');
 Route::post('caribarangfarmasi', [newFarmasiController::class, 'caririwayatstok'])->middleware('auth')->name('caririwayatstok');
 
- Route::post('ambilhasillab_by_limit', [ErmController::class, 'ambilhasillab_by_limit'])
-        ->name('ambilhasillab_by_limit'); //sidebar
- Route::post('ambil_formiterasiobat', [ErmController::class, 'ambil_formiterasiobat'])
-        ->name('ambil_formiterasiobat'); //sidebar
+Route::post('ambilhasillab_by_limit', [ErmController::class, 'ambilhasillab_by_limit'])
+    ->name('ambilhasillab_by_limit'); //sidebar
+Route::post('ambil_formiterasiobat', [ErmController::class, 'ambil_formiterasiobat'])
+    ->name('ambil_formiterasiobat'); //sidebar
 
 
 Route::get('/carisep_2/{sep}', [SimrsController::class, 'carisep_2'])->name('carisep_2'); //formpasien_bpjs
@@ -778,3 +778,5 @@ Route::post('/simpanpendaftaraniter', [SimrsController::class, 'simpanpendaftara
 Route::post('/hasillab', [ReportingController::class, 'hasillab'])->name('hasillab'); //formpasien_bpjs
 Route::post('/hasilrad', [ReportingController::class, 'hasilrad'])->name('hasilrad'); //formpasien_bpjs
 Route::post('/hasilpa', [ReportingController::class, 'hasilpa'])->name('hasilpa'); //formpasien_bpjs
+Route::post('/resumepasien_dokter2', [ErmController::class, 'resumepasien_dokter2'])
+    ->name('resumepasien_dokter2'); //sidebar

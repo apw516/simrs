@@ -4738,9 +4738,61 @@ class ErmController extends Controller
             return view('ermtemplate.data1tidakditemukan');
         }
     }
-    public function resumepasien_dokter2(Request $request)
+     public function resumepasien_dokter2(Request $request)
     {
-        echo 'ok';
+        $kodekunjungan = $request->kodekunjungan;
+        // $assesmen_dokter = db::select('select *,tgl_kunjungan as tglk from assesmen_dokters where id_kunjungan = ?',[$kodekunjungan]);
+        $datakonsul = db::select('select *,fc_nama_unit1(unit_pengirim) as poli_pengirim,fc_nama_unit1(unit_tujuan) as poli_konsul,fc_nama_paramedis1(dokter_penerima) as dokter_penerima_2 from ts_konsul_antar_poli where kode_kunjungan = ?', [$kodekunjungan]);
+
+        $tindakan = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+            ,c.`kode_tarif_detail`,d.`NAMA_TARIF`
+            FROM ts_kunjungan a
+            INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+            INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+            INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER`
+            WHERE SUBSTR(b.`kode_unit`,1,1) = 1
+            AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
+            AND a.kode_kunjungan = ?", [$kodekunjungan]);
+
+        $farmasi = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+            ,c.`kode_tarif_detail`,d.`nama_barang`,C.`jumlah_layanan`,C.`aturan_pakai`
+            FROM ts_kunjungan a
+            INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+            INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+            INNER JOIN mt_barang d ON c.`kode_barang` = d.`kode_barang`
+            WHERE SUBSTR(b.`kode_unit`,1,1) = 4
+            AND a.kode_kunjungan = ?", [$kodekunjungan]);
+
+        $penunjang = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+            ,c.`kode_tarif_detail`,d.`NAMA_TARIF`,b.kode_unit
+            FROM ts_kunjungan a
+            INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+            INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+            INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER`
+            WHERE SUBSTR(b.`kode_unit`,1,1) = 3
+            AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
+            AND a.kode_kunjungan = ?", [$kodekunjungan]);
+
+        $mt_unit = db::select('select * from mt_unit where kelas_unit = 1');
+        $now = $this->get_date();
+
+        $ts_kunjungan = db::select('select * from ts_kunjungan where kode_kunjungan = ?',[$kodekunjungan]);
+        $kode_paramedis = $ts_kunjungan[0]->kode_paramedis;
+        $mt_paramedis = db::select('select * from mt_paramedis where kode_paramedis = ?',[$kode_paramedis]);
+
+        $orderfarmasi = db::select('SELECT kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.kode_kunjungan = ? and  kode_unit > ?',[$kodekunjungan,'4000']);
+
+        $order_penunjang = db::select('SELECT fc_nama_unit1(a.`kode_unit`)AS nama_unit,a.kode_unit,SUBSTR(kode_tarif_detail,1,6) AS kode_tarif_header,c.`NAMA_TARIF` FROM ts_layanan_header_order a
+        INNER JOIN ts_layanan_detail_order b ON a.id = b.`row_id_header`
+        INNER JOIN mt_tarif_header c ON SUBSTR(b.kode_tarif_detail,1,6) = c.`KODE_TARIF_HEADER`
+        WHERE a.`kode_kunjungan` = ? AND a.`kode_unit` < ?',[$kodekunjungan,'4000']);
+
+         $assesmen_dokter = DB::connection('mysql')->select('SELECT *,a.id as idasskep,b.versi as versidk,date(a.tanggalkunjungan) as tglk,a.kode_unit as unitpoli ,fc_nama_unit1(a.kode_unit) as nama_unit,b.pic as iddokter FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b on a.kode_kunjungan = b.id_kunjungan LEFT OUTER JOIN ts_kunjungan c on a.kode_kunjungan = c.kode_kunjungan
+             WHERE a.kode_kunjungan = ? and c.status_kunjungan != 8 order  by a.id desc limit 1', [$kodekunjungan]);
+
+        return view('ermtemplate.hasil_pemeriksaan_medis',compact([
+            'assesmen_dokter','datakonsul','tindakan','farmasi','penunjang','mt_unit','now','mt_paramedis','ts_kunjungan','kodekunjungan','orderfarmasi','order_penunjang'
+        ]));
     }
     public function simpanttdperawat(Request $request)
     {

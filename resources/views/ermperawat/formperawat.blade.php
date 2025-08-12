@@ -9,7 +9,8 @@
                         alt="User profile picture">
                 </div>
 
-                <h3 class="text-bold profile-username text-center text-md">{{ $mt_pasien[0]->nama_px }} | {{  $mt_pasien[0]->no_rm }}</h3>
+                <h3 class="text-bold profile-username text-center text-md">{{ $mt_pasien[0]->nama_px }} |
+                    {{ $mt_pasien[0]->no_rm }}</h3>
 
                 <p class="text-bold text-center text-xs"></p>
                 <p class="text-bold text-center text-xs">,
@@ -17,12 +18,14 @@
                     (Usia {{ \Carbon\Carbon::parse($mt_pasien[0]->tgl_lahir)->age }})</p>
                 <p class="text-bold text-center text-xs">Alamat : {{ $mt_pasien[0]->alamatpasien }} </p>
                 <p class="text-bold text-center text-md">Diagnosa :
-                    @if(count($last_assdok) > 0)
-                    <br>{{ $last_assdok[0]->diagnosakerja }}</p>
-                    @else
-                    <br>{{ $kunjungan[0]->diagx }}</p>
-                    @endif
-                <a href="#" onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})" class="btn btn-primary btn-block"><b>Catatan
+                    @if (count($last_assdok) > 0)
+                        <br>{{ $last_assdok[0]->diagnosakerja }}
+                </p>
+            @else
+                <br>{{ $kunjungan[0]->diagx }}</p>
+                @endif
+                <a href="#" onclick="formcatatanmedis2({{ $kunjungan[0]->no_rm }})"
+                    class="btn btn-primary btn-block"><b>Catatan
                         Medis</b></a>
                 <input hidden type="text" id="kodekunjungan" value="{{ $kunjungan[0]->kode_kunjungan }}">
                 <input hidden type="text" id="nomorrm" value="{{ $kunjungan[0]->no_rm }}">
@@ -44,64 +47,64 @@
                             <i class="fas fa-inbox mr-2"></i>Billing Tindakan PoliKlinik
                         </a>
                     </li>
-                    @if(auth()->user()->unit != '1028')
-                    <li class="nav-item" id="pemeriksaan">
-                        <a href="#" class="nav-link" onclick="formpemeriksaan()">
-                            <i class="fas fa-inbox mr-2"></i>Catatan Perkembangan Pasien Terintegrasi ( CPPT )
-                        </a>
-                    </li>
-                    @if(auth()->user()->unit == '1029' || auth()->user()->unit == '1045')
-                    <li class="nav-item" id="pemeriksaan">
-                        <a href="#" class="nav-link" onclick="formsumarilis()">
-                            <i class="fas fa-inbox mr-2"></i>SUMARILIS
-                        </a>
-                    </li>
-                    <li class="nav-item" id="pemeriksaan">
-                        <a href="#" class="nav-link" onclick="formmonitoringdarah()">
-                            <i class="fas fa-inbox mr-2"></i>MONITORING TRANSFUSI DARAH
-                        </a>
-                    </li>
-                    @endif
-                    <li class="nav-item" id="pemeriksaan">
-                        <a href="#" class="nav-link" onclick="formtindaklanjut()">
-                            <i class="fas fa-inbox mr-2"></i>Form Tindak Lanjut / Rujuk internal / Konsul
-                        </a>
-                    </li>
-                    <li class="nav-item" id="pemeriksaan">
-                        <a href="#" class="nav-link" onclick="formtindaklanjut2()">
-                            <i class="fas fa-inbox mr-2"></i>Form Rujuk internal
-                        </a>
-                    </li>
+                    @if (auth()->user()->unit != '1028')
+                        <li class="nav-item" id="pemeriksaan">
+                            <a href="#" class="nav-link" onclick="formpemeriksaan()">
+                                <i class="fas fa-inbox mr-2"></i>Catatan Perkembangan Pasien Terintegrasi ( CPPT )
+                            </a>
+                        </li>
+                        @if (auth()->user()->unit == '1029' || auth()->user()->unit == '1045')
+                            <li class="nav-item" id="pemeriksaan">
+                                <a href="#" class="nav-link" onclick="formsumarilis()">
+                                    <i class="fas fa-inbox mr-2"></i>SUMARILIS
+                                </a>
+                            </li>
+                            <li class="nav-item" id="pemeriksaan">
+                                <a href="#" class="nav-link" onclick="formmonitoringdarah()">
+                                    <i class="fas fa-inbox mr-2"></i>MONITORING TRANSFUSI DARAH
+                                </a>
+                            </li>
+                        @endif
+                        <li class="nav-item" id="pemeriksaan">
+                            <a href="#" class="nav-link" onclick="formtindaklanjut()">
+                                <i class="fas fa-inbox mr-2"></i>Form Tindak Lanjut / Rujuk internal / Konsul
+                            </a>
+                        </li>
+                        <li class="nav-item" id="pemeriksaan">
+                            <a href="#" class="nav-link" onclick="formtindaklanjut2()">
+                                <i class="fas fa-inbox mr-2"></i>Form Rujuk internal
+                            </a>
+                        </li>
                     @else
-                    <li class="nav-item" id="pemeriksaan">
-                        <a href="#" class="nav-link" onclick="formpemeriksaan_fisio()">
-                            <i class="fas fa-inbox mr-2"></i>CPPT Fisioterapi
-                        </a>
-                    </li>
-                    <li class="nav-item" id="pemeriksaan">
-                        <a href="#" class="nav-link" onclick="formtindaklanjut()">
-                            <i class="fas fa-inbox mr-2"></i>Form Tindak Lanjut
-                        </a>
-                    </li>
-                    <li class="nav-item" id="pemeriksaan">
-                        <a href="#" class="nav-link" onclick="formpemeriksaan_wicara()">
-                            <i class="fas fa-inbox mr-2"></i>CPPT Terapiwicara
-                        </a>
-                    </li>
+                        <li class="nav-item" id="pemeriksaan">
+                            <a href="#" class="nav-link" onclick="formpemeriksaan_fisio()">
+                                <i class="fas fa-inbox mr-2"></i>CPPT Fisioterapi
+                            </a>
+                        </li>
+                        <li class="nav-item" id="pemeriksaan">
+                            <a href="#" class="nav-link" onclick="formtindaklanjut()">
+                                <i class="fas fa-inbox mr-2"></i>Form Tindak Lanjut
+                            </a>
+                        </li>
+                        <li class="nav-item" id="pemeriksaan">
+                            <a href="#" class="nav-link" onclick="formpemeriksaan_wicara()">
+                                <i class="fas fa-inbox mr-2"></i>CPPT Terapiwicara
+                            </a>
+                        </li>
                     @endif
-                    {{-- @if(auth()->user()->unit == '1002')
+                    {{-- @if (auth()->user()->unit == '1002')
                     <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formpemeriksaankhusus()">
                             <i class="fas fa-inbox mr-2"></i>Penandaan Gambar
                         </a>
                     </li>
                     @endif --}}
-                     <li class="nav-item" id="pemeriksaan">
+                    <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formupload()">
                             <i class="fas fa-inbox mr-2"></i>Upload Berkas
                         </a>
                     </li>
-                     <li class="nav-item" id="pemeriksaan">
+                    <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="goto_suratkontrol()">
                             <i class="fas fa-inbox mr-2"></i>Buat Surat Kontrol
                         </a>
@@ -109,6 +112,11 @@
                     <li class="nav-item">
                         <a href="#" class="nav-link" onclick="resume()">
                             <i class="fas fa-filter mr-2"></i> Resume
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="resume2()">
+                            <i class="fas fa-filter mr-2"></i> Hasil Pemerikssaan Dokter
                         </a>
                     </li>
                 </ul>
@@ -126,8 +134,45 @@
 <script>
     $(document).ready(function() {
         rm = $('#nomorrm').val()
-        formcatatanmedis(rm)
+        formcatatanmedis2(rm)
     })
+  function resume2() {
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('resumepasien_dokter2') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    function formcatatanmedis2(rm) {
+        rm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm
+            },
+            url: '<?= route('lihatcppt_pasien2') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+
     function formcatatanmedis(rm) {
         spinner = $('#loader')
         spinner.show();
@@ -144,6 +189,7 @@
             }
         });
     }
+
     function formbillingtindakan() {
         spinner = $('#loader')
         spinner.show();
@@ -163,6 +209,7 @@
             }
         });
     }
+
     function formtindaklanjut() {
         spinner = $('#loader')
         spinner.show();
@@ -182,6 +229,7 @@
             }
         });
     }
+
     function formtindaklanjut2() {
         spinner = $('#loader')
         spinner.show();
@@ -201,6 +249,7 @@
             }
         });
     }
+
     function formpemeriksaan() {
         spinner = $('#loader')
         spinner.show();
@@ -220,6 +269,7 @@
             }
         });
     }
+
     function formpemeriksaan_fisio() {
         spinner = $('#loader')
         spinner.show();
@@ -239,6 +289,7 @@
             }
         });
     }
+
     function formpemeriksaan_wicara() {
         spinner = $('#loader')
         spinner.show();
@@ -258,6 +309,7 @@
             }
         });
     }
+
     function formpemeriksaankhusus() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -277,6 +329,7 @@
             }
         });
     }
+
     function formupload() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -296,8 +349,8 @@
             }
         });
     }
-    function formsumarilis()
-    {
+
+    function formsumarilis() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
         spinner = $('#loader')
@@ -316,8 +369,8 @@
             }
         });
     }
-    function formmonitoringdarah()
-    {
+
+    function formmonitoringdarah() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
         spinner = $('#loader')
@@ -336,8 +389,8 @@
             }
         });
     }
-    function resume()
-    {
+
+    function resume() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
         spinner = $('#loader')
@@ -356,8 +409,8 @@
             }
         });
     }
-    function goto_suratkontrol()
-    {
+
+    function goto_suratkontrol() {
         window.open("http://192.168.2.30/siramah/kunjunganPoliklinik");
     }
 </script>
