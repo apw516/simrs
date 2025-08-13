@@ -153,7 +153,16 @@ class ReportingController extends Controller
             LEFT OUTER JOIN ts_kunjungan c on a.kode_kunjungan = c.kode_kunjungan
              WHERE a.no_rm = ? and c.status_kunjungan != 8 and a.jenis_berkas = ? order  by c.kode_kunjungan desc', [$rm, 2]);
 
-            $cek = DB::select('select * from erm_upload_gambar where no_rm = ?', [$rm]);
+            // $cek = DB::select('select * from erm_upload_gambar where no_rm = ?', [$rm]);
+            $rm2= $rm;
+            $rm = $request->rm;
+            if (strlen($rm) == 8) {
+                $rm = (substr($rm, 2));
+            }
+            $rm = '%' . $rm;
+            // dd($rm);
+            $cek = DB::select('select * from jkn_scan_file_rm where norm like ?', [$rm]);
+            $cek2 = DB::select('select * from erm_upload_gambar where no_rm = ?', [$rm2]);
             $url = url('../../files/');
             $tindakan = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
             ,c.`kode_tarif_detail`,d.`NAMA_TARIF`
@@ -163,7 +172,7 @@ class ReportingController extends Controller
             INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER`
             WHERE SUBSTR(b.`kode_unit`,1,1) = 1
             AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
-            AND a.no_rm = ?", [$rm]);
+            AND a.no_rm = ?", [$rm2]);
 
             $farmasi = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
             ,c.`kode_tarif_detail`,d.`nama_barang`,C.`jumlah_layanan`,C.`aturan_pakai`
@@ -172,7 +181,7 @@ class ReportingController extends Controller
             INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
             INNER JOIN mt_barang d ON c.`kode_barang` = d.`kode_barang`
             WHERE SUBSTR(b.`kode_unit`,1,1) = 4
-            AND a.no_rm = ?", [$rm]);
+            AND a.no_rm = ?", [$rm2]);
 
             $penunjang = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
             ,c.`kode_tarif_detail`,d.`NAMA_TARIF`,b.kode_unit
@@ -182,20 +191,21 @@ class ReportingController extends Controller
             INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER`
             WHERE SUBSTR(b.`kode_unit`,1,1) = 3
             AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
-            AND a.no_rm = ?", [$rm]);
+            AND a.no_rm = ?", [$rm2]);
 
             $order_penunjang = db::select('SELECT fc_nama_unit1(a.`kode_unit`)AS nama_unit,a.kode_unit,SUBSTR(kode_tarif_detail,1,6) AS kode_tarif_header,c.`NAMA_TARIF` FROM ts_layanan_header_order a
             INNER JOIN ts_layanan_detail_order b ON a.id = b.`row_id_header`
             INNER JOIN mt_tarif_header c ON SUBSTR(b.kode_tarif_detail,1,6) = c.`KODE_TARIF_HEADER`
-            WHERE a.`no_rm` = ? AND a.`kode_unit` < ?', [$rm, '4000']);
+            WHERE a.`no_rm` = ? AND a.`kode_unit` < ?', [$rm2, '4000']);
 
-            $orderfarmasi = db::select('SELECT kode_kunjungan,a.keterangan as keteranganresep,kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.no_rm = ? and  kode_unit > ?', [$rm, '4000']);
+            $orderfarmasi = db::select('SELECT kode_kunjungan,a.keterangan as keteranganresep,kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.no_rm = ? and  kode_unit > ?', [$rm2, '4000']);
 
             return view('ermtemplate.detail_berkas_erm_rajal_2', compact([
                 'orderfarmasi',
                 'header',
                 'cppt',
                 'cek',
+                'cek2',
                 'url',
                 'tindakan',
                 'farmasi',
@@ -252,8 +262,18 @@ class ReportingController extends Controller
             LEFT OUTER JOIN ts_kunjungan c on a.kode_kunjungan = c.kode_kunjungan
              WHERE a.no_rm = ? and c.status_kunjungan != 8 and a.jenis_berkas = ? order  by c.kode_kunjungan desc', [$rm, 2]);
 
-            $cek = DB::select('select * from erm_upload_gambar where no_rm = ?', [$rm]);
+            // $cek = DB::select('select * from erm_upload_gambar where no_rm = ?', [$rm]);
+            $rm = $request->rm;
+            $rm2= $rm;
+            if (strlen($rm) == 8) {
+                $rm = (substr($rm, 2));
+            }
+            $rm = '%' . $rm;
+            // dd($rm);
+            $cek = DB::select('select * from jkn_scan_file_rm where norm like ?', [$rm]);
+            $cek2 = DB::select('select * from erm_upload_gambar where no_rm = ?', [$rm2]);
             $url = url('../../files/');
+
             $tindakan = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
             ,c.`kode_tarif_detail`,d.`NAMA_TARIF`
             FROM ts_kunjungan a
@@ -262,7 +282,7 @@ class ReportingController extends Controller
             INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER`
             WHERE SUBSTR(b.`kode_unit`,1,1) = 1
             AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
-            AND a.no_rm = ?", [$rm]);
+            AND a.no_rm = ?", [$rm2]);
 
             $farmasi = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
             ,c.`kode_tarif_detail`,d.`nama_barang`,C.`jumlah_layanan`,C.`aturan_pakai`
@@ -271,7 +291,7 @@ class ReportingController extends Controller
             INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
             INNER JOIN mt_barang d ON c.`kode_barang` = d.`kode_barang`
             WHERE SUBSTR(b.`kode_unit`,1,1) = 4
-            AND a.no_rm = ?", [$rm]);
+            AND a.no_rm = ?", [$rm2]);
 
             $penunjang = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
             ,c.`kode_tarif_detail`,d.`NAMA_TARIF`,b.kode_unit
@@ -281,20 +301,21 @@ class ReportingController extends Controller
             INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER`
             WHERE SUBSTR(b.`kode_unit`,1,1) = 3
             AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
-            AND a.no_rm = ?", [$rm]);
+            AND a.no_rm = ?", [$rm2]);
 
             $order_penunjang = db::select('SELECT fc_nama_unit1(a.`kode_unit`)AS nama_unit,a.kode_unit,SUBSTR(kode_tarif_detail,1,6) AS kode_tarif_header,c.`NAMA_TARIF` FROM ts_layanan_header_order a
             INNER JOIN ts_layanan_detail_order b ON a.id = b.`row_id_header`
             INNER JOIN mt_tarif_header c ON SUBSTR(b.kode_tarif_detail,1,6) = c.`KODE_TARIF_HEADER`
-            WHERE a.`no_rm` = ? AND a.`kode_unit` < ?', [$rm, '4000']);
+            WHERE a.`no_rm` = ? AND a.`kode_unit` < ?', [$rm2, '4000']);
 
-            $orderfarmasi = db::select('SELECT kode_kunjungan,a.keterangan as keteranganresep,kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.no_rm = ? and  kode_unit > ?', [$rm, '4000']);
+            $orderfarmasi = db::select('SELECT kode_kunjungan,a.keterangan as keteranganresep,kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.no_rm = ? and  kode_unit > ?', [$rm2, '4000']);
 
             return view('ermtemplate.detail_berkas_erm_rajal_23', compact([
                 'orderfarmasi',
                 'header',
                 'cppt',
                 'cek',
+                'cek2',
                 'url',
                 'tindakan',
                 'farmasi',

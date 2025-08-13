@@ -36,7 +36,8 @@
                 {{-- <a href="#" onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})"
                     class="btn btn-primary btn-block"><b>Catatan
                         Medis</b></a> --}}
-                <a href="#" class="btn btn-primary btn-block lihatcppt2" rm="{{ $kunjungan[0]->no_rm }}"><b>Catatan Medis</b></a>
+                <a href="#" class="btn btn-primary btn-block lihatcppt2" rm="{{ $kunjungan[0]->no_rm }}"><b>CPPT</b></a>
+                <a href="#" class="btn btn-primary btn-block" onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})" rm="{{ $kunjungan[0]->no_rm }}"><b>Riwayat Kunjungan</b></a>
                 <a href="#" onclick="lihaticare()" class="btn btn-success btn-block"><b>Icare BPJS</b></a>
                 <input hidden type="text" id="kodekunjungan" value="{{ $kunjungan[0]->kode_kunjungan }}">
                 <input hidden type="text" id="nomorrm" value="{{ $kunjungan[0]->no_rm }}">
@@ -169,7 +170,7 @@
 <script>
     $(document).ready(function() {
         rm = $('#nomorrm').val()
-        formcatatanmedis2(rm)
+        formcatatanmedis(rm)
     })
     $(".lihatcppt2").click(function() {
         status = $('#statuslihatcppt2').val()

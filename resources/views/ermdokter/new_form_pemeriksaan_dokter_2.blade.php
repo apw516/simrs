@@ -3,8 +3,7 @@
         <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
             data-target="#modalresumeperawat"><i class="bi bi-eye mr-1"></i> Hasil Assesmen Keperawatan</button>
         <button class="btn btn-warning lihatcppt" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
-            data-target="#modalcppt"><i class="bi bi-info-circle ml-1 ml-1"></i> Catatan Perkembangan Pasien
-            Terintegrasi</button>
+            data-target="#modalcppt"><i class="bi bi-info-circle ml-1 ml-1"></i> CPPT</button>
 
         {{-- <button class="btn btn-danger ml-2 lihathasilpenunjang_lab" nomorrm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
             data-target="#modalhasilpenunjang_lab"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan Laboratorium</button>

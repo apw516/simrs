@@ -611,7 +611,7 @@
                                   <i class="fas fa-angle-left right"></i>
                               </p>
                           </a>
-                          <ul class="nav nav-treeview">
+                          {{-- <ul class="nav nav-treeview">
                               <li class="nav-item">
                                   <a href="{{ route('monitoring_erm') }}"
                                       class="nav-link @if ($sidebar_m == 'Monitoring ERM') active @endif">
@@ -619,8 +619,8 @@
                                       <p>Monitoring ERM</p>
                                   </a>
                               </li>
-                          </ul>
-                          <ul class="nav nav-treeview">
+                          </ul> --}}
+                          {{-- <ul class="nav nav-treeview">
                               <li class="nav-item">
                                   <a href="{{ route('kunjungan_pasien') }}"
                                       class="nav-link @if ($sidebar_m == 'kunjungan_pasien') active @endif">
@@ -628,7 +628,7 @@
                                       <p>Cek Berkas Scan</p>
                                   </a>
                               </li>
-                          </ul>
+                          </ul> --}}
                           <ul class="nav nav-treeview">
                               <li class="nav-item">
                                   <a href="{{ route('berkaserm') }}"
@@ -638,7 +638,7 @@
                                   </a>
                               </li>
                           </ul>
-                          <ul class="nav nav-treeview">
+                          {{-- <ul class="nav nav-treeview">
                               <li class="nav-item">
                                   <a href="{{ route('berkas_erm') }}"
                                       class="nav-link @if ($sidebar_m == 'berkas_erm') active @endif">
@@ -646,8 +646,8 @@
                                       <p>Berkas ERM</p>
                                   </a>
                               </li>
-                          </ul>
-                          <ul class="nav nav-treeview">
+                          </ul> --}}
+                          {{-- <ul class="nav nav-treeview">
                               <li class="nav-item">
                                   <a href="{{ route('berkas_ersep') }}"
                                       class="nav-link @if ($sidebar_m == 'berkas_eresep') active @endif">
@@ -655,7 +655,7 @@
                                       <p>Berkas E - Resep</p>
                                   </a>
                               </li>
-                          </ul>
+                          </ul> --}}
                       </li>
                   @endif
                   <li class="nav-header"> <i class="nav-icon bi bi-person-circle mr-2"></i> INFO AKUN</li>

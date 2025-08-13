@@ -25,8 +25,9 @@
                 <br>{{ $kunjungan[0]->diagx }}</p>
                 @endif
                 <a href="#" onclick="formcatatanmedis2({{ $kunjungan[0]->no_rm }})"
-                    class="btn btn-primary btn-block"><b>Catatan
-                        Medis</b></a>
+                    class="btn btn-primary btn-block"><b>CPPT</b></a>
+                <a href="#" onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})"
+                    class="btn btn-primary btn-block"><b>Riwayat Kunjungan</b></a>
                 <input hidden type="text" id="kodekunjungan" value="{{ $kunjungan[0]->kode_kunjungan }}">
                 <input hidden type="text" id="nomorrm" value="{{ $kunjungan[0]->no_rm }}">
             </div>
@@ -130,13 +131,20 @@
         </div>
     </div>
     <!-- /.col -->
+    <input hidden type="text" id="unitlogin" value="{{ auth()->user()->unit }}">
 </div>
 <script>
     $(document).ready(function() {
         rm = $('#nomorrm').val()
-        formcatatanmedis2(rm)
+        unit = $('#unitlogin').val()
+        if (unit == '1028') {
+            formpemeriksaan_fisio()
+        } else {
+            formpemeriksaan()
+        }
     })
-  function resume2() {
+
+    function resume2() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
         spinner = $('#loader')
@@ -155,6 +163,7 @@
             }
         });
     }
+
     function formcatatanmedis2(rm) {
         rm = $('#nomorrm').val()
         spinner = $('#loader')
@@ -174,6 +183,7 @@
     }
 
     function formcatatanmedis(rm) {
+        rm = $('#nomorrm').val()
         spinner = $('#loader')
         spinner.show();
         $.ajax({

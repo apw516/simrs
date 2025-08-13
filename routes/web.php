@@ -149,7 +149,7 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9,102,101']], function ()
         ->name('menusepvalidasi'); //sidebar
     Route::get('/berkaserm', [RanapController::class, 'indexberkaserm'])
         ->name('berkaserm'); //sidebar
-    Route::post('/cariberkasnya_pasien', [RanapController::class, 'cariberkasnya_pasien'])
+    Route::post('/cariberkasnya_pasien', [RanapController::class, 'cariberkasnya_pasien2'])
         ->name('cariberkasnya_pasien'); //sidebar
     Route::post('/carisuratkontrol_ranap', [RanapController::class, 'carisuratkontrol_ranap'])
         ->name('carisuratkontrol_ranap');

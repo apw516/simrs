@@ -48,17 +48,16 @@
                                         Laboratorium</button>
                                     <button type="button" class="btn btn-secondary cetakresumesus"
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"><i
-                                            class="bi bi-printer mr-2"></i>Assesmen
-                                        Awal Keperawatan</button>
+                                            class="bi bi-printer mr-2"></i>Assesmen Keperawatan</button>
                                     <button type="button" class="btn btn-secondary cetakresumedok"
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}" unit="{{ $k->kode_unit }}"><i
-                                            class="bi bi-printer mr-2"></i>Assesmen Awal Medis</button>
+                                            class="bi bi-printer mr-2"></i>Assesmen Medis</button>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="card">
-                                        <div class="card-header bg-warning text-bold">Assesmen awal Keperawatan</div>
+                                        <div class="card-header bg-warning text-bold">Assesmen Keperawatan</div>
                                         @if ($k->id_1 != null)
                                             <div class="container">
                                                 @if ($k->kode_unit != '1028')
@@ -246,7 +245,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="card">
-                                        <div class="card-header bg-danger text-bold">Assesmen awal Medis</div>
+                                        <div class="card-header bg-danger text-bold">Assesmen Medis</div>
                                         @if ($k->id_2 != null)
                                             <div class="card-body">
                                                 @if($k->kode_unit == '1028' || $k->kode_unit_dokter == '1028')

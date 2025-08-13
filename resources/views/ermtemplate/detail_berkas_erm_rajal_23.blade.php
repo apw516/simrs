@@ -1,4 +1,3 @@
-
 <div class="col-md-12">
     <div class="card">
         <div class="card-header p-2">
@@ -2964,7 +2963,8 @@
                                                             @foreach ($orderfarmasi as $of)
                                                                 @if ($of->kode_kunjungan == $h->kode_kunjungan)
                                                                     <tr>
-                                                                        <td>{{ $of->kode_barang }} | {{ $of->keteranganresep }} </td>
+                                                                        <td>{{ $of->kode_barang }} |
+                                                                            {{ $of->keteranganresep }} </td>
                                                                         <td>{{ $of->jumlah_layanan }}</td>
                                                                         <td>{{ $of->aturan_pakai }}</td>
                                                                     </tr>
@@ -3264,7 +3264,9 @@
                                                                                             @foreach ($orderfarmasi as $of)
                                                                                                 @if ($of->kode_kunjungan == $cp->kode_kunjungan)
                                                                                                     <tr>
-                                                                                                        <td>{{ $of->kode_barang }} | {{ $of->keteranganresep }}
+                                                                                                        <td>{{ $of->kode_barang }}
+                                                                                                            |
+                                                                                                            {{ $of->keteranganresep }}
                                                                                                         </td>
                                                                                                         <td>{{ $of->jumlah_layanan }}
                                                                                                         </td>
@@ -3309,10 +3311,34 @@
                                                                     <tr>
                                                                         <td>Pemeriksaan Penunjang</td>
                                                                         <td>
-                                                                            <div class="btn-group mb-4" role="group" aria-label="Basic example">
-                                                                                <button kodekunjungan="{{ $cp->kode_kunjungan }}" type="button" class="btn btn-info btn-sm lihathasillab" data-toggle="modal" data-target="#modalhasillab"><i class="bi bi-eye mr-1 ml-1"></i> Hasil Laboratorium</button>
-                                                                                <button kodekunjungan="{{ $cp->kode_kunjungan }}" type="button" class="btn btn-info btn-sm lihathasilrad" data-toggle="modal" data-target="#modalhasilrad"><i class="bi bi-eye mr-1 ml-1"></i> Hasil Radiologi</button>
-                                                                                <button kodekunjungan="{{ $cp->kode_kunjungan }}" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalhasilpa"><i class="bi bi-eye mr-1 ml-1"></i> Hasil Laboratorium Patologi Anatomi</button>
+                                                                            <div class="btn-group mb-4"
+                                                                                role="group"
+                                                                                aria-label="Basic example">
+                                                                                <button
+                                                                                    kodekunjungan="{{ $cp->kode_kunjungan }}"
+                                                                                    type="button"
+                                                                                    class="btn btn-info btn-sm lihathasillab"
+                                                                                    data-toggle="modal"
+                                                                                    data-target="#modalhasillab"><i
+                                                                                        class="bi bi-eye mr-1 ml-1"></i>
+                                                                                    Hasil Laboratorium</button>
+                                                                                <button
+                                                                                    kodekunjungan="{{ $cp->kode_kunjungan }}"
+                                                                                    type="button"
+                                                                                    class="btn btn-info btn-sm lihathasilrad"
+                                                                                    data-toggle="modal"
+                                                                                    data-target="#modalhasilrad"><i
+                                                                                        class="bi bi-eye mr-1 ml-1"></i>
+                                                                                    Hasil Radiologi</button>
+                                                                                <button
+                                                                                    kodekunjungan="{{ $cp->kode_kunjungan }}"
+                                                                                    type="button"
+                                                                                    class="btn btn-info btn-sm"
+                                                                                    data-toggle="modal"
+                                                                                    data-target="#modalhasilpa"><i
+                                                                                        class="bi bi-eye mr-1 ml-1"></i>
+                                                                                    Hasil Laboratorium Patologi
+                                                                                    Anatomi</button>
                                                                             </div><br>
                                                                             {{-- {{ $cp->kode_unit }} --}}
                                                                             @if ($cp->kode_unit == '1012' || $cp->kode_unit == '1027')
@@ -3566,16 +3592,25 @@
                     @endforeach
                 </div>
                 <div class="tab-pane" id="settings">
+                    @foreach ($cek2 as $cx)
+                        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+                        <div class="card">
+                            <div class="card-header">{{ $cx->nama }}</div>
+                            <div class="card-body">
+                                <iframe src ="{{ $url }}/{{ $cx->gambar }}" width="1000px"
+                                    height="600px"></iframe>
+                            </div>
+                        </div>
+                    @endforeach
                     @if (count($cek) == 0)
                         Tidak ada berkas lain / berkas dari luar yang diupload ...
                     @endif
                     @foreach ($cek as $c)
                         <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
                         <div class="card">
-                            <div class="card-header">{{ $c->nama }}</div>
+                            <div class="card-header">{{ $c->namafile }}</div>
                             <div class="card-body">
-                                <iframe src ="{{ $url }}/{{ $c->gambar }}" width="1000px"
-                                    height="600px"></iframe>
+                                <iframe src ="{{ $c->fileurl }}" width="1200px" height="600px"></iframe>
                             </div>
                         </div>
                     @endforeach

@@ -7,8 +7,7 @@
             data-toggle="modal" data-target="#modalhasilpenunjang_rad"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan
             Radiologi</button>
         <button class="btn btn-warning lihatcppt" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
-            data-target="#modalcppt"><i class="bi bi-info-circle ml-1 ml-1"></i> Catatan Perkembangan Pasien
-            Terintegrasi</button>
+            data-target="#modalcppt"><i class="bi bi-info-circle ml-1 ml-1"></i> CPPT</button>
         @if ($kunjungan[0]->ref_kunjungan != '0')
             <button class="btn btn-warning ml-2" data-toggle="modal" data-target="#modalcatatankonsul"><i
                     class="bi bi-eye mr-1"></i> Catatan Konsul</button>
