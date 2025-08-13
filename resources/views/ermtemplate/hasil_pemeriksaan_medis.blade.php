@@ -596,26 +596,11 @@
                     </tr>
                 </table>
             @endif
-            @if ($cp->signature == '')
-                @if ($cp->iddokter == auth()->user()->id || $cp->iddokter == '')
-                    {{-- <button class="btn btn-success float-right" onclick="simpantandatangan()">Simpan</button> --}}
-                    <div class="jumbotron">
-                        <h1 class="display-2 mb-3">Terima Kasih !</h1>
-                        <p class="lead">Anda telah mengisi form assesmen medis rawat jalan ... </p>
-                        {{-- <p class="lead">Tindak lanjut pasien <br>
-                            {{ $resume[0]->tindak_lanjut }} | keterangan : {{ $resume[0]->keterangan_tindak_lanjut }}
-                        </p> --}}
-                        <hr class="my-4">
-                        <p>Pastikan data sudah terisi dengan benar.</p>
-                        <a class="btn btn-success btn-lg" href="#" role="button"
-                            onclick="simpantandatangan()">Simpan</a>
-                    </div>
-                @endif
-            @else
-                <button class="btn btn-danger float-right" onclick="ambildatapasien()">Kembali</button>
-            @endif
         @endforeach
-        @if (count($assesmen_dokter) == 0)
+        @if (count($assesmendd) == 0)
+                <br>
+                <br>
+                <br>
             Dokter Belum mengisi hasil pemeriksaan ... <br><br>
             {{-- @if (count($datakonsul) > 0)
                 @if ($datakonsul[0]->jenis == 'RUJIN')
@@ -646,6 +631,25 @@
             <div class="v_riwayat_surat_rujin">
 
             </div>
+        @else
+            @if ($cp->signature == '')
+                @if ($cp->iddokter == auth()->user()->id || $cp->iddokter == '')
+                    {{-- <button class="btn btn-success float-right" onclick="simpantandatangan()">Simpan</button> --}}
+                    <div class="jumbotron">
+                        <h1 class="display-2 mb-3">Terima Kasih !</h1>
+                        <p class="lead">Anda telah mengisi form assesmen medis rawat jalan ... </p>
+                        {{-- <p class="lead">Tindak lanjut pasien <br>
+                            {{ $resume[0]->tindak_lanjut }} | keterangan : {{ $resume[0]->keterangan_tindak_lanjut }}
+                        </p> --}}
+                        <hr class="my-4">
+                        <p>Pastikan data sudah terisi dengan benar.</p>
+                        <a class="btn btn-success btn-lg" href="#" role="button"
+                            onclick="simpantandatangan()">Simpan</a>
+                    </div>
+                @endif
+            @else
+                <button class="btn btn-danger float-right" onclick="ambildatapasien()">Kembali</button>
+            @endif
         @endif
     </div>
 </div>

@@ -4794,11 +4794,12 @@ class ErmController extends Controller
         INNER JOIN mt_tarif_header c ON SUBSTR(b.kode_tarif_detail,1,6) = c.`KODE_TARIF_HEADER`
         WHERE a.`kode_kunjungan` = ? AND a.`kode_unit` < ?',[$kodekunjungan,'4000']);
 
-         $assesmen_dokter = DB::connection('mysql')->select('SELECT *,a.id as idasskep,b.versi as versidk,date(a.tanggalkunjungan) as tglk,a.kode_unit as unitpoli ,fc_nama_unit1(a.kode_unit) as nama_unit,b.pic as iddokter FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b on a.kode_kunjungan = b.id_kunjungan LEFT OUTER JOIN ts_kunjungan c on a.kode_kunjungan = c.kode_kunjungan
+        $assesmen_dokter = DB::connection('mysql')->select('SELECT *,a.id as idasskep,b.versi as versidk,date(a.tanggalkunjungan) as tglk,a.kode_unit as unitpoli ,fc_nama_unit1(a.kode_unit) as nama_unit,b.pic as iddokter FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b on a.kode_kunjungan = b.id_kunjungan LEFT OUTER JOIN ts_kunjungan c on a.kode_kunjungan = c.kode_kunjungan
              WHERE a.kode_kunjungan = ? and c.status_kunjungan != 8 order  by a.id desc limit 1', [$kodekunjungan]);
 
+        $assesmendd = db::connection('mysql')->select('select * from assesmen_dokters where id_kunjungan = ?',[$kodekunjungan]);
         return view('ermtemplate.hasil_pemeriksaan_medis',compact([
-            'assesmen_dokter','datakonsul','tindakan','farmasi','penunjang','mt_unit','now','mt_paramedis','ts_kunjungan','kodekunjungan','orderfarmasi','order_penunjang'
+            'assesmen_dokter','datakonsul','tindakan','farmasi','penunjang','mt_unit','now','mt_paramedis','ts_kunjungan','kodekunjungan','orderfarmasi','order_penunjang','assesmendd'
         ]));
     }
     public function simpanttdperawat(Request $request)
