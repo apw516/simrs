@@ -137,11 +137,7 @@
     $(document).ready(function() {
         rm = $('#nomorrm').val()
         unit = $('#unitlogin').val()
-        if (unit == '1028') {
-            formpemeriksaan_fisio()
-        } else {
-            formpemeriksaan()
-        }
+        formcatatanmedis(rm)
     })
 
     function resume2() {
