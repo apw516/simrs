@@ -992,6 +992,22 @@
                                                                 @endforeach --}}
                                                             </td>
                                                         </tr>
+                                                         <tr>
+                                                            <td>Hasil Pemeriksaan Khusus</td>
+                                                            <td>
+                                                                 {{-- <div class="card">
+                                                                    <div class="card-header bg-danger">Hasil Pemeriksaan khusus
+                                                                    </div>
+                                                                    <div class="card-body"> --}}
+                                                                        {{ $k->pemeriksaan_khusus }} <br><br>
+                                                                        {{ $k->pemeriksaan_khusus_2 }}<br><br>
+                                                                        <img width="80%"src="{{ $k->gambar_1 }}"
+                                                                            alt=""><br><br>
+                                                                        {{-- <img src="{{ $k->gambar_2 }}" alt=""><br><br> --}}
+                                                                    {{-- </div>
+                                                                </div> --}}
+                                                            </td>
+                                                        </tr>
                                                         <tr>
                                                             <td>Tanggal Periksa</td>
                                                             <td>{{ $k->tgl_pemeriksaan }}</td>

@@ -246,6 +246,21 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>Hasil Pemeriksaan Khusus</td>
+                        <td>
+                            {{-- <div class="card">
+                                                                    <div class="card-header bg-danger">Hasil Pemeriksaan khusus
+                                                                    </div>
+                                                                    <div class="card-body"> --}}
+                            {{ $cp->pemeriksaan_khusus }} <br><br>
+                            {{ $cp->pemeriksaan_khusus_2 }}<br><br>
+                            <img width="80%"src="{{ $cp->gambar_1 }}" alt=""><br><br>
+                            {{-- <img src="{{ $k->gambar_2 }}" alt=""><br><br> --}}
+                            {{-- </div>
+                                                                </div> --}}
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Tanggal Periksa</td>
                         <td>{{ $cp->tgl_pemeriksaan }}</td>
                     </tr>
@@ -598,9 +613,9 @@
             @endif
         @endforeach
         @if (count($assesmendd) == 0)
-                <br>
-                <br>
-                <br>
+            <br>
+            <br>
+            <br>
             Dokter Belum mengisi hasil pemeriksaan ... <br><br>
             {{-- @if (count($datakonsul) > 0)
                 @if ($datakonsul[0]->jenis == 'RUJIN')

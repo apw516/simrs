@@ -26,6 +26,10 @@
                 @endif
                 {{-- <a href="#" onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})" class="btn btn-primary btn-block"><b>Catatan
                         Medis</b></a> --}}
+                <a href="#" onclick="formcatatanmedis2({{ $kunjungan[0]->no_rm }})"
+                    class="btn btn-primary btn-block"><b>CPPT</b></a>
+                <a href="#" onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})"
+                    class="btn btn-primary btn-block"><b>Riwayat Kunjungan</b></a>
                 <input hidden type="text" id="kodekunjungan" value="{{ $kunjungan[0]->kode_kunjungan }}">
                 <input hidden type="text" id="nomorrm" value="{{ $kunjungan[0]->no_rm }}">
             </div>
@@ -69,7 +73,7 @@
                             <i class="fas fa-inbox mr-2"></i>Order Farmasi
                         </a>
                     </li> --}}
-                    <li class="nav-item" id="pemeriksaan">
+                    <li hidden class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formcatatanmedis()">
                             <i class="fas fa-inbox mr-2"></i>Catatan Medis
                         </a>
@@ -99,8 +103,26 @@
 </div>
 <script>
     $(document).ready(function() {
-        formpemeriksaan_ro()
+        formcatatanmedis()
     })
+
+    function formcatatanmedis2(rm) {
+        rm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm
+            },
+            url: '<?= route('lihatcppt_pasien2') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
 
     function formpemeriksaan_ro() {
         kodekunjungan = $('#kodekunjungan').val()

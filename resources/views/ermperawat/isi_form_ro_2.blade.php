@@ -16,73 +16,73 @@
                                 <textarea class="form-control" name="hasilperiksalain" id="hasilperiksalain" cols="30" rows="10"></textarea>
                             </td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Tekanan Intra Okular</td>
                             <td colspan="3">
                                 <textarea class="form-control" id="tekanan_intra_okular" name="tekanan_intra_okular"></textarea>
                             </td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Catatan Pemeriksaan Lainnya</td>
                             <td colspan="3">
                                 <textarea class="form-control" name="catatan_pemeriksaan_lainnya" id="catatan_pemerikssaan_lainnya"></textarea>
                             </td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Palpebra</td>
                             <td colspan="3"><input class="form-control" value="" id="palpebra"
                                     name="palpebra"></input></td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Konjungtiva</td>
                             <td colspan="3"><input class="form-control" value="" id="konjungtiva"
                                     name="konjungtiva"></input>
                             </td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Kornea</td>
                             <td colspan="3"><input class="form-control" value="" name="kornea"
                                     id="kornea"></input></td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Bilik Mata Depan</td>
                             <td colspan="3"><input class="form-control" value="" name="bilik_mata_depan"
                                     id="bilik_mata_depan"></input></td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Pupil</td>
                             <td colspan="3"><input class="form-control" value="" id="pupil"
                                     name="pupil"></input></td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Iris</td>
                             <td colspan="3"><input class="form-control" value="" name="iris"
                                     id="iris"></input></td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Lensa</td>
                             <td colspan="3"><input class="form-control" value="" name="lensa"
                                     id="lensa"></input></td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Funduskopi</td>
                             <td colspan="3"><input class="form-control" value="" name="funduskopi"
                                     id="funduskopi"></input>
                             </td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Status Oftalmologis Khusus</td>
                             <td colspan="3">
                                 <textarea class="form-control" value="" name="oftamologis" id="oftamologis"></textarea>
                             </td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Masalah Medis</td>
                             <td colspan="3">
                                 <textarea class="form-control" value="" name="masalahmedis" id="masalahmedis"></textarea>
                             </td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Prognosis</td>
                             <td colspan="3">
                                 <textarea class="form-control" value="" name="prognosis" id="prognosis"></textarea>
@@ -103,72 +103,72 @@
                                 <textarea class="form-control" name="hasilperiksalain" id="hasilperiksalain" cols="30" rows="10">{{ $hasil_ro[0]->tajampenglihatandekat }}</textarea>
                             </td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Tekanan Intra Okular</td>
                             <td colspan="3">
                                 <textarea class="form-control" id="tekanan_intra_okular" name="tekanan_intra_okular">{{ $hasil_ro[0]->tekananintraokular }}</textarea>
                             </td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Catatan Pemeriksaan Lainnya</td>
                             <td colspan="3">
                                 <textarea class="form-control" name="catatan_pemeriksaan_lainnya" id="catatan_pemerikssaan_lainnya">{{ $hasil_ro[0]->catatanpemeriksaanlain }}</textarea>
                             </td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Palpebra</td>
                             <td colspan="3"><input class="form-control" value="{{ $hasil_ro[0]->palpebra }}"
                                     id="palpebra" name="palpebra"></input></td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Konjungtiva</td>
                             <td colspan="3"><input class="form-control" value="{{ $hasil_ro[0]->konjungtiva }}"
                                     id="konjungtiva" name="konjungtiva"></input></td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Kornea</td>
                             <td colspan="3"><input class="form-control" value="{{ $hasil_ro[0]->kornea }}"
                                     name="kornea" id="kornea"></input></td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Bilik Mata Depan</td>
                             <td colspan="3"><input class="form-control"
                                     value="{{ $hasil_ro[0]->bilikmatadepan }}" name="bilik_mata_depan"
                                     id="bilik_mata_depan"></input></td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Pupil</td>
                             <td colspan="3"><input class="form-control" value="{{ $hasil_ro[0]->pupil }}"
                                     id="pupil" name="pupil"></input></td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Iris</td>
                             <td colspan="3"><input class="form-control" value="{{ $hasil_ro[0]->iris }}"
                                     name="iris" id="iris"></input></td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Lensa</td>
                             <td colspan="3"><input class="form-control" value="{{ $hasil_ro[0]->lensa }}"
                                     name="lensa" id="lensa"></input></td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Funduskopi</td>
                             <td colspan="3"><input class="form-control" value="{{ $hasil_ro[0]->funduskopi }}"
                                     name="funduskopi" id="funduskopi"></input></td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Status Oftalmologis Khusus</td>
                             <td colspan="3">
                                 <textarea class="form-control" name="oftamologis" id="oftamologis">{{ $hasil_ro[0]->status_oftamologis_khusus }}</textarea>
                             </td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Masalah Medis</td>
                             <td colspan="3">
                                 <textarea class="form-control" name="masalahmedis" id="masalahmedis">{{ $hasil_ro[0]->masalahmedis }}</textarea>
                             </td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <td>Prognosis</td>
                             <td colspan="3">
                                 <textarea class="form-control" name="prognosis" id="prognosis">{{ $hasil_ro[0]->prognosis }}</textarea>
@@ -204,13 +204,19 @@
                                     name="konjungtiva"></input></td>
                         </tr>
                         <tr>
+                            <td>Hasil Pemeriksaan RO</td>
+                            <td>
+                                {{ $hasil_ro_lama[0]->tajampenglihatandekat}}<br><br>
+                            </td>
+                        </tr>
+                        <tr>
                             <td rowspan="2">Visus Dasar</td>
                             <td>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">OD</span>
                                     </div>
-                                    <input type="text" class="form-control"
+                                    <input type="text" class="form-control" readonly
                                         aria-label="Amount (to the nearest dollar)" id="od_visus_dasar"
                                         name="od_visus_dasar" value="{{ $hasil_ro_lama[0]->vd_od }}">
                                 </div>
@@ -220,7 +226,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">PINHOLE</span>
                                     </div>
-                                    <input type="text" class="form-control"
+                                    <input type="text" class="form-control" readonly
                                         aria-label="Amount (to the nearest dollar)" name="od_pinhole_visus_dasar"
                                         id="od_pinhole_visus_dasar" value="{{ $hasil_ro_lama[0]->vd_od_pinhole }}">
                                 </div>
@@ -232,7 +238,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">OS</span>
                                     </div>
-                                    <input name="os_visus_dasar" id="os_visus_dasar"
+                                    <input readonly name="os_visus_dasar" id="os_visus_dasar"
                                         value="{{ $hasil_ro_lama[0]->vd_os }}" type="text" class="form-control"
                                         aria-label="Amount (to the nearest dollar)">
                                 </div>
@@ -242,7 +248,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">PINHOLE</span>
                                     </div>
-                                    <input name="os_pinhole_visus_dasar" id="os_pinhole_visus_dasar" type="text"
+                                    <input readonly name="os_pinhole_visus_dasar" id="os_pinhole_visus_dasar" type="text"
                                         class="form-control" value="{{ $hasil_ro_lama[0]->vd_os_pinhole }}"
                                         aria-label="Amount (to the nearest dollar)">
                                 </div>
@@ -255,7 +261,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">OD : Sph</span>
                                     </div>
-                                    <input name="od_sph_refraktometer"
+                                    <input readonly name="od_sph_refraktometer"
                                         value="{{ $hasil_ro_lama[0]->refraktometer_od_sph }}" id="od_sph_refraktometer"
                                         type="text" class="form-control"
                                         aria-label="Amount (to the nearest dollar)">
@@ -266,7 +272,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Cyl</span>
                                     </div>
-                                    <input type="text" value="{{ $hasil_ro_lama[0]->refraktometer_od_cyl }}"
+                                    <input readonly type="text" value="{{ $hasil_ro_lama[0]->refraktometer_od_cyl }}"
                                         id="od_cyl_refraktometer" name="od_cyl_refraktometer" class="form-control"
                                         aria-label="Amount (to the nearest dollar)">
                                 </div>
@@ -276,7 +282,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">X</span>
                                     </div>
-                                    <input id="od_x_refraktometer" value="{{ $hasil_ro_lama[0]->refraktometer_od_x }}"
+                                    <input readonly id="od_x_refraktometer" value="{{ $hasil_ro_lama[0]->refraktometer_od_x }}"
                                         name="od_x_refraktometer" type="text" class="form-control"
                                         aria-label="Amount (to the nearest dollar)">
                                 </div>
@@ -288,7 +294,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">OS : Sph</span>
                                     </div>
-                                    <input id="os_sph_refraktometer" value="{{ $hasil_ro_lama[0]->refraktometer_os_sph }}"
+                                    <input readonly id="os_sph_refraktometer" value="{{ $hasil_ro_lama[0]->refraktometer_os_sph }}"
                                         name="os_sph_refraktometer" type="text" class="form-control"
                                         aria-label="Amount (to the nearest dollar)">
                                 </div>
@@ -298,7 +304,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Cyl</span>
                                     </div>
-                                    <input id="os_cyl_refraktometer" value="{{ $hasil_ro_lama[0]->refraktometer_os_cyl }}"
+                                    <input readonly id="os_cyl_refraktometer" value="{{ $hasil_ro_lama[0]->refraktometer_os_cyl }}"
                                         name="os_cyl_refraktometer" type="text" class="form-control"
                                         aria-label="Amount (to the nearest dollar)">
                                 </div>
@@ -308,7 +314,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">X</span>
                                     </div>
-                                    <input id="os_x_refraktometer" value="{{ $hasil_ro_lama[0]->refraktometer_os_x }}"
+                                    <input readonly id="os_x_refraktometer" value="{{ $hasil_ro_lama[0]->refraktometer_os_x }}"
                                         name="os_x_refraktometer" type="text" class="form-control"
                                         aria-label="Amount (to the nearest dollar)">
                                 </div>
@@ -321,7 +327,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">OD : Sph</span>
                                     </div>
-                                    <input id="od_sph_Lensometer" value="{{ $hasil_ro_lama[0]->Lensometer_od_sph }}"
+                                    <input readonly id="od_sph_Lensometer" value="{{ $hasil_ro_lama[0]->Lensometer_od_sph }}"
                                         name="od_sph_Lensometer" type="text" class="form-control"
                                         aria-label="Amount (to the nearest dollar)">
                                 </div>
@@ -331,7 +337,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Cyl</span>
                                     </div>
-                                    <input id="od_cyl_Lensometer" value="{{ $hasil_ro_lama[0]->Lensometer_od_cyl }}"
+                                    <input readonly id="od_cyl_Lensometer" value="{{ $hasil_ro_lama[0]->Lensometer_od_cyl }}"
                                         name="od_cyl_Lensometer" type="text" class="form-control"
                                         aria-label="Amount (to the nearest dollar)">
                                 </div>
@@ -341,7 +347,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">X</span>
                                     </div>
-                                    <input id="od_x_Lensometer" value="{{ $hasil_ro_lama[0]->Lensometer_od_x }}"
+                                    <input readonly id="od_x_Lensometer" value="{{ $hasil_ro_lama[0]->Lensometer_od_x }}"
                                         name="od_x_Lensometer" type="text" class="form-control"
                                         aria-label="Amount (to the nearest dollar)">
                                 </div>
@@ -353,7 +359,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">OS : Sph</span>
                                     </div>
-                                    <input id="os_sph_Lensometer" value="{{ $hasil_ro_lama[0]->Lensometer_os_sph }}"
+                                    <input readonly id="os_sph_Lensometer" value="{{ $hasil_ro_lama[0]->Lensometer_os_sph }}"
                                         name="os_sph_Lensometer" type="text" class="form-control"
                                         aria-label="Amount (to the nearest dollar)">
                                 </div>
@@ -363,7 +369,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Cyl</span>
                                     </div>
-                                    <input id="os_cyl_Lensometer" value="{{ $hasil_ro_lama[0]->Lensometer_os_cyl }}"
+                                    <input readonly id="os_cyl_Lensometer" value="{{ $hasil_ro_lama[0]->Lensometer_os_cyl }}"
                                         name="os_cyl_Lensometer" type="text" class="form-control"
                                         aria-label="Amount (to the nearest dollar)">
                                 </div>
@@ -373,7 +379,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">X</span>
                                     </div>
-                                    <input id="os_x_Lensometer" value="{{ $hasil_ro_lama[0]->Lensometer_os_x }}"
+                                    <input readonly id="os_x_Lensometer" value="{{ $hasil_ro_lama[0]->Lensometer_os_x }}"
                                         name="os_x_Lensometer" type="text" class="form-control"
                                         aria-label="Amount (to the nearest dollar)">
                                 </div>
@@ -386,7 +392,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">VOD : Sph</span>
                                     </div>
-                                    <input id="vod_sph_kpj" value="{{ $hasil_ro_lama[0]->koreksipenglihatan_vod_sph }}"
+                                    <input readonly id="vod_sph_kpj" value="{{ $hasil_ro_lama[0]->koreksipenglihatan_vod_sph }}"
                                         name="vod_sph_kpj" type="text" class="form-control"
                                         aria-label="Amount (to the nearest dollar)">
                                 </div>
@@ -396,7 +402,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Cyl</span>
                                     </div>
-                                    <input id="vod_cyl_kpj" value="{{ $hasil_ro_lama[0]->koreksipenglihatan_vod_cyl }}"
+                                    <input readonly id="vod_cyl_kpj" value="{{ $hasil_ro_lama[0]->koreksipenglihatan_vod_cyl }}"
                                         name="vod_cyl_kpj" type="text" class="form-control"
                                         aria-label="Amount (to the nearest dollar)">
                                 </div>
@@ -406,7 +412,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">X</span>
                                     </div>
-                                    <input id="vod_x_kpj" value="{{ $hasil_ro_lama[0]->koreksipenglihatan_vod_x }}"
+                                    <input readonly id="vod_x_kpj" value="{{ $hasil_ro_lama[0]->koreksipenglihatan_vod_x }}"
                                         name="vod_x_kpj" type="text" class="form-control"
                                         aria-label="Amount (to the nearest dollar)">
                                 </div>
@@ -418,7 +424,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">VOS : Sph</span>
                                     </div>
-                                    <input type="text" id="vos_sph_kpj"
+                                    <input readonly type="text" id="vos_sph_kpj"
                                         value="{{ $hasil_ro_lama[0]->koreksipenglihatan_vos_sph }}" name="vos_sph_kpj"
                                         class="form-control" aria-label="Amount (to the nearest dollar)">
                                 </div>
@@ -428,7 +434,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Cyl</span>
                                     </div>
-                                    <input id="vos_cyl_kpj" value="{{ $hasil_ro_lama[0]->koreksipenglihatan_vos_cyl }}"
+                                    <input readonly id="vos_cyl_kpj" value="{{ $hasil_ro_lama[0]->koreksipenglihatan_vos_cyl }}"
                                         name="vos_cyl_kpj" type="text" class="form-control"
                                         aria-label="Amount (to the nearest dollar)">
                                 </div>
@@ -438,89 +444,89 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">X</span>
                                     </div>
-                                    <input id="vos_x_kpj" value="{{ $hasil_ro_lama[0]->koreksipenglihatan_vos_x }}"
+                                    <input readonly id="vos_x_kpj" value="{{ $hasil_ro_lama[0]->koreksipenglihatan_vos_x }}"
                                         name="vos_x_kpj" type="text" class="form-control"
                                         aria-label="Amount (to the nearest dollar)">
                                 </div>
                             </td>
                         </tr>
-                        <tr>
+                        {{-- <tr>
                             <td>Tajam penglihatan dekat</td>
                             <td colspan="3">
                                 <textarea class="form-control" id="penglihatan_dekat" name="penglihatan_dekat">{{ $hasil_ro_lama[0]->tajampenglihatandekat }}</textarea>
                             </td>
-                        </tr>
+                        </tr> --}}
                         <tr>
                             <td>Tekanan Intra Okular</td>
                             <td colspan="3">
-                                <textarea class="form-control" id="tekanan_intra_okular" name="tekanan_intra_okular">{{ $hasil_ro_lama[0]->tekananintraokular }}</textarea>
+                                <textarea readonly class="form-control" id="tekanan_intra_okular" name="tekanan_intra_okular">{{ $hasil_ro_lama[0]->tekananintraokular }}</textarea>
                             </td>
                         </tr>
                         <tr>
                             <td>Catatan Pemeriksaan Lainnya</td>
                             <td colspan="3">
-                                <textarea class="form-control" name="catatan_pemeriksaan_lainnya" id="catatan_pemerikssaan_lainnya">{{ $hasil_ro_lama[0]->catatanpemeriksaanlain }}</textarea>
+                                <textarea readonly class="form-control" name="catatan_pemeriksaan_lainnya" id="catatan_pemerikssaan_lainnya">{{ $hasil_ro_lama[0]->catatanpemeriksaanlain }}</textarea>
                             </td>
                         </tr>
                         <tr>
                             <td>Palpebra</td>
-                            <td colspan="3"><input class="form-control" value="{{ $hasil_ro_lama[0]->palpebra }}"
+                            <td colspan="3"><input readonly class="form-control" value="{{ $hasil_ro_lama[0]->palpebra }}"
                                     id="palpebra" name="palpebra"></input></td>
                         </tr>
                         <tr>
                             <td>Konjungtiva</td>
-                            <td colspan="3"><input class="form-control"
+                            <td colspan="3"><input readonly class="form-control"
                                     value="{{ $hasil_ro_lama[0]->konjungtiva }}" id="konjungtiva"
                                     name="konjungtiva"></input></td>
                         </tr>
                         <tr>
                             <td>Kornea</td>
-                            <td colspan="3"><input class="form-control" value="{{ $hasil_ro_lama[0]->kornea }}"
+                            <td colspan="3"><input readonly class="form-control" value="{{ $hasil_ro_lama[0]->kornea }}"
                                     name="kornea" id="kornea"></input></td>
                         </tr>
                         <tr>
                             <td>Bilik Mata Depan</td>
-                            <td colspan="3"><input class="form-control"
+                            <td colspan="3"><input readonly class="form-control"
                                     value="{{ $hasil_ro_lama[0]->bilikmatadepan }}" name="bilik_mata_depan"
                                     id="bilik_mata_depan"></input></td>
                         </tr>
                         <tr>
                             <td>Pupil</td>
-                            <td colspan="3"><input class="form-control" value="{{ $hasil_ro_lama[0]->pupil }}"
+                            <td colspan="3"><input readonly class="form-control" value="{{ $hasil_ro_lama[0]->pupil }}"
                                     id="pupil" name="pupil"></input></td>
                         </tr>
                         <tr>
                             <td>Iris</td>
-                            <td colspan="3"><input class="form-control" value="{{ $hasil_ro_lama[0]->iris }}"
+                            <td colspan="3"><input readonly class="form-control" value="{{ $hasil_ro_lama[0]->iris }}"
                                     name="iris" id="iris"></input></td>
                         </tr>
                         <tr>
                             <td>Lensa</td>
-                            <td colspan="3"><input class="form-control" value="{{ $hasil_ro_lama[0]->lensa }}"
+                            <td colspan="3"><input readonly class="form-control" value="{{ $hasil_ro_lama[0]->lensa }}"
                                     name="lensa" id="lensa"></input></td>
                         </tr>
                         <tr>
                             <td>Funduskopi</td>
-                            <td colspan="3"><input class="form-control"
+                            <td colspan="3"><input readonly class="form-control"
                                     value="{{ $hasil_ro_lama[0]->funduskopi }}" name="funduskopi"
                                     id="funduskopi"></input></td>
                         </tr>
                         <tr>
                             <td>Status Oftalmologis Khusus</td>
                             <td colspan="3">
-                                <textarea class="form-control" name="oftamologis" id="oftamologis">{{ $hasil_ro_lama[0]->status_oftamologis_khusus }}</textarea>
+                                <textarea readonly class="form-control" name="oftamologis" id="oftamologis">{{ $hasil_ro_lama[0]->status_oftamologis_khusus }}</textarea>
                             </td>
                         </tr>
                         <tr>
                             <td>Masalah Medis</td>
                             <td colspan="3">
-                                <textarea class="form-control" name="masalahmedis" id="masalahmedis">{{ $hasil_ro_lama[0]->masalahmedis }}</textarea>
+                                <textarea readonly class="form-control" name="masalahmedis" id="masalahmedis">{{ $hasil_ro_lama[0]->masalahmedis }}</textarea>
                             </td>
                         </tr>
                         <tr>
                             <td>Prognosis</td>
                             <td colspan="3">
-                                <textarea class="form-control" name="prognosis" id="prognosis">{{ $hasil_ro_lama[0]->prognosis }}</textarea>
+                                <textarea readonly class="form-control" name="prognosis" id="prognosis">{{ $hasil_ro_lama[0]->prognosis }}</textarea>
                             </td>
                         </tr>
                     </table>
