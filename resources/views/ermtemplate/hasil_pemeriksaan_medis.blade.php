@@ -205,7 +205,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="card">
+                            {{-- <div class="card">
                                 <div class="card-header text-bold bg-secondary">Order yang dilayani</div>
                                 <div class="card-body">
                                     <table class="table table-sm">
@@ -227,7 +227,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
+                            </div> --}}
                         </td>
                     </tr>
                     <tr>
@@ -334,7 +334,7 @@
                                                     </table>
                                                 </div>
                                             </div>
-                                            <div class="card">
+                                            {{-- <div class="card">
                                                 <div class="card-header text-bold bg-secondary">Order yang dilayani
                                                 </div>
                                                 <div class="card-body">
@@ -359,7 +359,7 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                         </td>
                                     </tr>
                                     <tr>
