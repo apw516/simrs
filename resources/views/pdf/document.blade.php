@@ -25,7 +25,19 @@
         }
 
         .instansi {
+            font-size: 16px;
+            font-weight: bold;
+            margin-left: 120px;
+            /* Sesuaikan dengan lebar logo */
+        }
+        .instansi2 {
             font-size: 20px;
+            font-weight: bold;
+            margin-left: 120px;
+            /* Sesuaikan dengan lebar logo */
+        }
+        .instansi3 {
+            font-size: 12px;
             font-weight: bold;
             margin-left: 120px;
             /* Sesuaikan dengan lebar logo */
@@ -42,10 +54,15 @@
     {{-- <h1>{{ $title }}</h1>
     <p>{{ $content }}</p> --}}
     <div class="kop-surat">
-        <img src="logo.png" class="logo" alt="Logo">
+        <img src="{{ asset('public/img/logouser.png')}}" class="logo">
         <div class="instansi">
-            Nama Instansi<br>
-            Alamat Instansi
+            PEMERINTAH KABUPATEN CIREBON
+        </div>
+        <div class="instansi2">
+            RUMAH SAKIT UMUM DAERAH WALED
+        </div>
+        <div class="instansi3">
+           Jl. Prabu Kian Santang No. 4 Waled Telp.(0231)661126 Email: brsud.waled@gmail.com
         </div>
     </div>
 
