@@ -199,7 +199,7 @@
                     <table class="table table-sm">
                         <tr>
                             <td>Tgl Kunjungan</td>
-                            <td colspan="3"><input class="form-control"
+                            <td colspan="3"><input readonly class="form-control"
                                     value="{{ $hasil_ro_lama[0]->tgl_entry }}" id="konjungtiva"
                                     name="konjungtiva"></input></td>
                         </tr>
@@ -209,7 +209,7 @@
                                 {{ $hasil_ro_lama[0]->tajampenglihatandekat}}<br><br>
                             </td>
                         </tr>
-                        <tr>
+                        {{-- <tr>
                             <td rowspan="2">Visus Dasar</td>
                             <td>
                                 <div class="input-group">
@@ -449,14 +449,14 @@
                                         aria-label="Amount (to the nearest dollar)">
                                 </div>
                             </td>
-                        </tr>
+                        </tr> --}}
                         {{-- <tr>
                             <td>Tajam penglihatan dekat</td>
                             <td colspan="3">
                                 <textarea class="form-control" id="penglihatan_dekat" name="penglihatan_dekat">{{ $hasil_ro_lama[0]->tajampenglihatandekat }}</textarea>
                             </td>
                         </tr> --}}
-                        <tr>
+                        {{-- <tr>
                             <td>Tekanan Intra Okular</td>
                             <td colspan="3">
                                 <textarea readonly class="form-control" id="tekanan_intra_okular" name="tekanan_intra_okular">{{ $hasil_ro_lama[0]->tekananintraokular }}</textarea>
@@ -528,7 +528,7 @@
                             <td colspan="3">
                                 <textarea readonly class="form-control" name="prognosis" id="prognosis">{{ $hasil_ro_lama[0]->prognosis }}</textarea>
                             </td>
-                        </tr>
+                        </tr> --}}
                     </table>
                 @else
                     Data tidak ditemukan !
