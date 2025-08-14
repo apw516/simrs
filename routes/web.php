@@ -17,6 +17,7 @@ use App\Http\Controllers\FarmasiController;
 use App\Http\Controllers\newFarmasiController;
 use App\Http\Controllers\ReportingController;
 use App\Http\Controllers\newMasterController;
+use App\Http\Controllers\PdfController;
 use App\Http\Controllers\JasaMedisController;
 
 Route::get('/berkas_ersep', [ReportingController::class, 'index'])->middleware('auth')->name('berkas_ersep');
@@ -780,3 +781,5 @@ Route::post('/hasilrad', [ReportingController::class, 'hasilrad'])->name('hasilr
 Route::post('/hasilpa', [ReportingController::class, 'hasilpa'])->name('hasilpa'); //formpasien_bpjs
 Route::post('/resumepasien_dokter2', [ErmController::class, 'resumepasien_dokter2'])
     ->name('resumepasien_dokter2'); //sidebar
+
+Route::get('/generate-pdf', [PdfController::class, 'generatePDF']);
