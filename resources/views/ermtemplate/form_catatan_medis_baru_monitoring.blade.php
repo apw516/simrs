@@ -1,6 +1,33 @@
 <div class="card">
     <div class="card-header bg-info">Catatan Medis Pasien</div>
     <div class="card-body">
+   <div class="card card-primary card-outline">
+            <div class="card-body box-profile">
+                <div class="text-center">
+                    <img class="profile-user-img img-fluid img-circle" src="{{ asset('public/img/user.jpg') }}"
+                        alt="User profile picture">
+                </div>
+
+                <h3 class="text-bold profile-username text-center text-md">{{ $mt_pasien[0]->nama_px }} |
+                    {{ $mt_pasien[0]->no_rm }}</h3>
+
+                <p class="text-bold text-center text-xs"></p>
+                <p class="text-bold text-center text-xs">,
+                    {{ \Carbon\Carbon::parse($mt_pasien[0]->tgl_lahir)->format('Y-m-d') }}
+                    (Usia {{ \Carbon\Carbon::parse($mt_pasien[0]->tgl_lahir)->age }})</p>
+                <p class="text-bold text-center text-xs">Alamat : {{ $mt_pasien[0]->alamatpasien }} </p>
+                <p class="text-bold text-center text-xs">Jenis Kelamin :
+                    @if ($mt_pasien[0]->jenis_kelamin == 'P' || $mt_pasien[0]->jenis_kelamin == 'p')
+                        Perempuan
+                    @elseif ($mt_pasien[0]->jenis_kelamin == 'L' || $mt_pasien[0]->jenis_kelamin == 'l')
+                        Laki - Laki
+                    @else
+                        {{ $mt_pasien[0]->jenis_kelamin }}
+                    @endif
+                </p>
+            </div>
+            <!-- /.card-body -->
+        </div>
         <button class="btn btn-warning mb-2 scanrm_liat" rm="{{ $rm }}" data-toggle="modal"
             data-target="#modalscan_rm"><i class="bi bi-journal-text"></i> BERKAS RM SCAN</button>
         <button class="btn btn-danger mb-2 liatberkasluar" rm="{{ $rm }}" data-toggle="modal"
