@@ -663,7 +663,7 @@
                     </div>
                 @endif
             @else
-                <button class="btn btn-danger float-right" onclick="ambildatapasien()">Kembali</button>
+                <button class="btn btn-danger float-right mt-4" onclick="ambildatapasien()">Kembali</button>
             @endif
         @endif
     </div>

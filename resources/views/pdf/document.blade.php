@@ -20,6 +20,14 @@
         body {
             font-family: sans-serif;
         }
+
+        footer {
+            position: fixed;
+            bottom: -30px;
+            left: 0px;
+            right: 0px;
+            height: 50px;
+        }
     </style>
     <style>
         .kop-surat {
@@ -267,14 +275,18 @@
                         <td>Tanggal Periksa</td>
                         <td>{{ $cp->tgl_pemeriksaan }}</td>
                     </tr>
+                    {{-- <tr>
+                        <td>Tanggal Periksa</td>
+                        <td>{{ $cp->tgl_pemeriksaan }}</td>
+                    </tr>
                     <tr>
                         <td>Tanda Tangan</td>
-                        <td>#</td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>Dokter pemeriksa</td>
                         <td>{{ $cp->nama_dokter }}</td>
-                    </tr>
+                    </tr> --}}
                 </table>
             @else
                 <table class="table table-sm">
@@ -311,40 +323,40 @@
                                                 <br>
                                             @endif
 
-                                                    <table class="table table-sm">
-                                                        <thead>
-                                                            <th>Unit</th>
-                                                            <th>Nama Pemeriksaan</th>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach ($penunjang as $p)
-                                                                @if ($p->kode_kunjungan == $cp->id_kunjungan)
-                                                                    {{-- @if ($p->kode_unit == '3009' && $p->kode_unit == '3010') --}}
-                                                                    <tr>
-                                                                        <td>{{ $p->nama_unit }}
-                                                                        </td>
-                                                                        <td>{{ $p->NAMA_TARIF }}
-                                                                        </td>
-                                                                    </tr>
-                                                                    {{-- @endif --}}
-                                                                @endif
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                    <table class="table table-sm table-bordered">
-                                                        <thead>
-                                                            <th>Nama Unit</th>
-                                                            <th>Nama Layanan</th>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach ($order_penunjang as $d)
-                                                                <tr>
-                                                                    <td>{{ $d->nama_unit }}</td>
-                                                                    <td>{{ $d->NAMA_TARIF }}</td>
-                                                                </tr>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <th>Unit</th>
+                                                    <th>Nama Pemeriksaan</th>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($penunjang as $p)
+                                                        @if ($p->kode_kunjungan == $cp->id_kunjungan)
+                                                            {{-- @if ($p->kode_unit == '3009' && $p->kode_unit == '3010') --}}
+                                                            <tr>
+                                                                <td>{{ $p->nama_unit }}
+                                                                </td>
+                                                                <td>{{ $p->NAMA_TARIF }}
+                                                                </td>
+                                                            </tr>
+                                                            {{-- @endif --}}
+                                                        @endif
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                            <table class="table table-sm table-bordered">
+                                                <thead>
+                                                    <th>Nama Unit</th>
+                                                    <th>Nama Layanan</th>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($order_penunjang as $d)
+                                                        <tr>
+                                                            <td>{{ $d->nama_unit }}</td>
+                                                            <td>{{ $d->NAMA_TARIF }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
                                         </td>
                                     </tr>
                                     <tr>
@@ -403,25 +415,25 @@
                                         <td>Obat obatan</td>
                                         <td>
 
-                                                    <table class="table table-sm">
-                                                        <thead>
-                                                            <th>Nama Obat</th>
-                                                            <th>qty</th>
-                                                            <th>Aturan Pakai</th>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach ($orderfarmasi as $t)
-                                                                <tr>
-                                                                    <td>{{ $t->kode_barang }}
-                                                                    </td>
-                                                                    <td>{{ $t->jumlah_layanan }}
-                                                                    </td>
-                                                                    <td>{{ $t->aturan_pakai }}
-                                                                    </td>
-                                                                </tr>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <th>Nama Obat</th>
+                                                    <th>qty</th>
+                                                    <th>Aturan Pakai</th>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($orderfarmasi as $t)
+                                                        <tr>
+                                                            <td>{{ $t->kode_barang }}
+                                                            </td>
+                                                            <td>{{ $t->jumlah_layanan }}
+                                                            </td>
+                                                            <td>{{ $t->aturan_pakai }}
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
                                         </td>
                                     </tr>
                                     <tr>
@@ -433,10 +445,14 @@
                                         <td>Tanggal Periksa</td>
                                         <td>{{ $cp->tgl_pemeriksaan }}</td>
                                     </tr>
+                                    {{-- <tr>
+                                        <td>Tanggal Periksa</td>
+                                        <td>{{ $cp->tgl_pemeriksaan }}</td>
+                                    </tr>
                                     <tr>
                                         <td>Dokter Pemeriksa</td>
                                         <td>{{ $cp->nama_dokter }}</td>
-                                    </tr>
+                                    </tr> --}}
                                 </table>
                             </div>
                         </td>
@@ -445,7 +461,13 @@
             @endif
         @endforeach
     </div>
-                   <h1>#</h1>
-
+    <p class="text-xs float-right">Dokter Pemeriksa</p><br><br>
+    <h4></h4>
+    <p class="float-right">#</p><br>
+    <h4></h4><br>
+    <p class="text-xs float-right mt-2">{{ $assesmen[0]->nama_dokter }} <br> NIP 12312321312312312312</p>
+      <footer class="text-xxs font-italic"><img class="mr-3 ml-3 mt-2" width="8%" src="{{ public_path("../public/img/logobsre.png")}}" alt="">
+        *Dokumen ini telah ditanda tangani secara elektronik menggunakan sertifikat elektronik yang telah diterbitkan oleh Balai Besar Sertifikasi ( BSrE ), Badan Siber dan Sandi Negara</footer>
 </body>
+
 </html>
