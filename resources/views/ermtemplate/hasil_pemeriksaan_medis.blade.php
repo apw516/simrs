@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="card-header bg-info">Hasil Pemeriksaan Medis</div>
+    <div class="card-header bg-info">Resume Medis Rawat Jalan</div>
     <div class="card-body">
         @foreach ($assesmen_dokter as $cp)
             @if ($cp->kode_unit != '1028')
@@ -28,13 +28,24 @@
                         <td>{{ $cp->riwayat_alergi }} |
                             {{ $cp->keterangan_alergi }} </td>
                     </tr>
-                    <tr>
+                    <tr hidden>
                         <td>Riwayat Obat yang diminum</td>
                         <td></td>
                     </tr>
                     <tr>
                         <td>Kesadaran</td>
                         <td colspan="3">{{ $cp->kesadaran }}</td>
+                    </tr>
+                    <tr>
+                        <td>Pemeriksaan Tanda Tanda Vital</td>
+                        <td>
+                            Tekanan Darah : {{ $cp->tekanan_darah }}<br>
+                            Frekuensi Nadi : {{ $cp->frekuensi_nadi }} <br>
+                            Frekuensi Nafas : {{ $cp->frekuensi_nafas }} <br>
+                            Suhu Tubuh : {{ $cp->suhu_tubuh }} <br>
+                            Bb / TB / IMT : {{ $cp->beratbadan }} <br>
+                            Umur : {{ $cp->umur }} <br>
+                        </td>
                     </tr>
                     <tr>
                         <td>Pemeriksaan Fisik ( O )</td>
@@ -280,6 +291,17 @@
                                         <td>: {{ $cp->anamnesa }}</td>
                                         <input hidden id="diagnosa" type="text" value="{{ $cp->diagnosakerja }}">
                                     </tr>
+                                    {{-- <tr>
+                                        <td>Pemeriksaan Tanda Tanda Vital</td>
+                                        <td>
+                                            Tekanan Darah : {{ $cp->tekanan_darah }}<br>
+                                            Frekuensi Nadi : {{ $cp->frekuensi_nadi }} <br>
+                                            Frekuensi Nafas : {{ $cp->frekuensi_nafas }} <br>
+                                            Suhu Tubuh : {{ $cp->suhu_tubuh }} <br>
+                                            Bb / TB / IMT : {{ $cp->beratbadan }} <br>
+                                            Umur : {{ $cp->umur }} <br>
+                                        </td>
+                                    </tr> --}}
                                     <tr>
                                         <td>Pemeriksaan Fisik dan Uji Fungsi</td>
                                         <td>: {{ $cp->pemeriksaan_fisik }}</td>
@@ -304,7 +326,8 @@
                                                 <br>
                                             @endif
                                             <div class="card">
-                                                <div class="card-header text-bold bg-secondary">Terapi yang dilakukan
+                                                <div class="card-header text-bold bg-secondary">Terapi yang
+                                                    dilakukan
                                                 </div>
                                                 <div class="card-body">
                                                     <table class="table table-sm">
@@ -612,39 +635,15 @@
                 </table>
             @endif
         @endforeach
+
         @if (count($assesmendd) == 0)
             <br>
             <br>
             <br>
             Dokter Belum mengisi hasil pemeriksaan ... <br><br>
-            {{-- @if (count($datakonsul) > 0)
-                @if ($datakonsul[0]->jenis == 'RUJIN')
-                    RUJUK INTERNAL KE :
-                @else
-                    KONSUL KE :
-                @endif {{ $datakonsul[0]->poli_konsul }} <br>
-                Catatan : {{ $datakonsul[0]->catatan }}
-            @endif --}}
             <br>
             <br>
-            {{-- <div class="btn-group mb-3" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-secondary" onclick="goto_suratkontrol()"><i
-                        class="bi bi-plus mr-1 ml-1"></i> Buat Surat Kontrol</button>
-                <button type="button" class="btn btn-secondary" data-toggle="modal"
-                    data-target="#modalkonsulantarpoli"><i class="bi bi-plus mr-1 ml-1"></i> Konsul
-                    antar poli</button>
-                <button type="button" class="btn btn-secondary" data-toggle="modal"
-                    data-target="#modalrujukinternal"><i class="bi bi-plus mr-1 ml-1"></i> Rujuk
-                    Internal </button>
-                <button type="button" class="btn btn-secondary" data-toggle="modal"
-                    data-target="#modalrujukkeluar"><i class="bi bi-plus mr-1 ml-1"></i> Rujuk Keluar
-                </button>
-                <button type="button" class="btn btn-secondary" data-toggle="modal"
-                    data-target="#modalrujukrawatinap"><i class="bi bi-plus mr-1 ml-1"></i> Rawat Inap
-                </button>
-            </div> --}}
             <div class="v_riwayat_surat_rujin">
-
             </div>
         @else
             @if ($cp->signature == '')
@@ -663,9 +662,30 @@
                     </div>
                 @endif
             @else
+                @if (count($resume_ttd) > 0)
+                    <div class="alert alert-warning font-italic mt-5" role="alert">
+                        Resume medis sudah ditanda tangan menggunakan tanda tangan elektronik !
+                        <button class="badge btn-info btn-sm lihatberkas" idberkas="{{ $resume_ttd[0]->response }}"><i
+                                class="bi bi-printer mr-1 ml-1"></i> lihat
+                            berkas</button>
+                        @if ($cp->iddokter == auth()->user()->id)
+                            <button class="badge btn-info mr-1 ml-2 simpantandatangan" data-toggle="modal"
+                                data-target="#modallogintte">Tanda Tangan Ulang</button>
+                        @endif
+                    </div>
+                @else
+                    <div class="alert alert-danger font-italic mt-5" role="alert">
+                        Resume medis belum ditanda tangan menggunakan tanda tangan elektronik !
+                        @if ($cp->iddokter == auth()->user()->id)
+                            <button class="badge btn-info mr-1 ml-2 simpantandatangan" data-toggle="modal"
+                                data-target="#modallogintte">Tanda Tangan</button>
+                        @endif
+                    </div>
+                @endif
                 <button class="btn btn-danger float-right mt-4" onclick="ambildatapasien()">Kembali</button>
             @endif
         @endif
+
     </div>
 </div>
 <!-- Modal -->
@@ -813,6 +833,31 @@ Diagnosa sekunder: {{ $assesmen_dokter[0]->diagnosabanding }}
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modallogintte" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Masukan password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_login_tte">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="simpantandatangan_bsre()">Simpan Tanda
+                    Tangan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <input hidden name="kodekunjungan" id="kodekunjungan" type="text" value="{{ $kodekunjungan }}">
 {{-- <script>
     function simpandatakonsul() {
@@ -932,15 +977,6 @@ Diagnosa sekunder: {{ $assesmen_dokter[0]->diagnosabanding }}
 <script>
     function simpantandatangan() {
         kodekunjungan = $('#kodekunjungan').val()
-        // var canvas = document.getElementById("the_canvas");
-        // var dataUrl = canvas.toDataURL();
-        // if (dataUrl ==
-        //     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV4AAABkCAYAAADOvVhlAAADOklEQVR4Xu3UwQkAAAgDMbv/0m5xr7hAIcjtHAECBAikAkvXjBEgQIDACa8nIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECDweoABlt2MJjgAAAABJRU5ErkJggg=='
-        // ) {
-        //     dataUrl = ''
-        // }
-        // document.getElementById("signature").value = dataUrl;
-        // signature = $('#signature').val()
         Swal.fire({
             icon: 'warning',
             title: 'Anda yakin data sudah benar ?',
@@ -986,14 +1022,122 @@ Diagnosa sekunder: {{ $assesmen_dokter[0]->diagnosabanding }}
                                 text: data.message,
                                 footer: 'ermwaled2023'
                             })
-                            ambildatapasien()
+                            resume2()
                         }
                     }
                 });
-            } else if (result.isDenied) {
-                resume()
             }
         })
 
+    }
+
+    function simpantandatangan_bsre() {
+        kodekunjungan = $('#kodekunjungan').val()
+        nik = $('#nik').val()
+        password = $('#password').val()
+        Swal.fire({
+            icon: 'warning',
+            title: 'Anda yakin data sudah benar ?',
+            showDenyButton: true,
+            confirmButtonText: 'Ya',
+            denyButtonText: `Cek lagi ...`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                spinner = $('#loader')
+                spinner.show();
+                $.ajax({
+                    async: true,
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        kodekunjungan,
+                        nik,
+                        password
+                    },
+                    url: '<?= route('simpantandatanganbsre') ?>',
+                    error: function(data) {
+                        spinner.hide()
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Ooops....',
+                            text: 'Sepertinya ada masalah......',
+                            footer: ''
+                        })
+                    },
+                    success: function(data) {
+                        spinner.hide()
+                        if (data.kode == 500) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oopss...',
+                                text: data.message,
+                                footer: ''
+                            })
+                        } else {
+                            $('#modallogintte').modal('toggle');
+                            resume2()
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'OK',
+                                text: data.message,
+                                footer: ''
+                            })
+                            Swal.fire({
+                                title: "Hasil pemeriksaan berhasil ditanda tangan ...",
+                                text: "Klik cetak jika anda ingin mencetak berkas yang ditanda tangan ...",
+                                icon: "success",
+                                showCancelButton: true,
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "Ya, cetak"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.open('cetak_dokumen_tte/' + data.id);
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        })
+
+    }
+
+    $(".lihatberkas").on('click', function(event) {
+        id = $(this).attr('idberkas')
+        window.open('cetak_dokumen_tte/' + id)
+    })
+    $(".simpantandatangan").on('click', function(event) {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+            },
+            url: '<?= route('ambil_form_login_tte') ?>',
+            success: function(response) {
+                spinner.hide()
+                $('.v_login_tte').html(response);
+            }
+        });
+    });
+
+    function showmodalttd() {
+        $('#modallogintte').modal('show');
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+            },
+            url: '<?= route('ambil_form_login_tte') ?>',
+            success: function(response) {
+                spinner.hide()
+                $('.v_login_tte').html(response);
+            }
+        });
     }
 </script>

@@ -29,17 +29,26 @@ return [
     */
 
     'disks' => [
-
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),
             'throw' => false,
         ],
-
+        'shared' => [
+            'driver' => 'local',
+            'root' => '\\\\193.193.193.203\\erm\\resume_medis_rawat_jalan',
+        ],
+        // 'shared' => [
+        //     'driver' => 'local',
+        //     'root' => '\\192.168.2.45/resume_medis_rawat_jalan',
+        //     'throw' => true,
+        //     'username' => 'vexpertise',
+        //     'password' => 'cushman',
+        // ],
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
             'throw' => false,
         ],
@@ -56,6 +65,32 @@ return [
             'throw' => false,
         ],
 
+        'sftp_server' => [
+            'driver' => 'local',
+            'host' => '193.193.193.203',
+            'username' => 'agil',
+            'password' => '@Cushman_12345',
+            'port' => 80, // or your custom SFTP port
+            'root' => 'erm', // The base directory on the remote server
+            'visibility' => 'public', // or 'private'
+        ],
+
+        // 'ftp' => [
+        //     'driver' => 'ftp',
+        //     'host' => '193.193.193.203',
+        //     'port' => 80,
+        //     'username' => 'agil',
+        //     'password' => '@Cushman_12345',
+        //     'root' => '/erm',
+        // ],
+        'ftp' => [
+            'driver' => 'ftp',
+            'host' => '192.168.2.45',
+            'port' => 22,
+            'username' => 'vexpertise',
+            'password' => 'cushman',
+            'root' => '/resume_medis_rawat_jalan',
+        ],
     ],
 
     /*

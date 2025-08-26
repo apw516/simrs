@@ -1996,7 +1996,7 @@
                         text: data.message,
                         footer: ''
                     })
-                    resume()
+                    resume2()
                 }
             }
         });

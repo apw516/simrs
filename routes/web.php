@@ -783,3 +783,10 @@ Route::post('/resumepasien_dokter2', [ErmController::class, 'resumepasien_dokter
     ->name('resumepasien_dokter2'); //sidebar
 
 Route::get('/generate-pdf', [PdfController::class, 'generatePDF']);
+Route::get('/generate-pdf2/{kodekunjungan}', [PdfController::class, 'generatePDF2']);
+Route::get('/cetak_dokumen_tte/{kodekunjungan}', [PdfController::class, 'cetak_dokumen_tte']);
+Route::get('/cetak_dokumen_tte_v2/{kodekunjungan}', [PdfController::class, 'cetak_dokumen_tte_v2']);
+Route::post('/simpanttddokter_bsre', [PdfController::class, 'simpanttddokter_bsre'])->name('simpanttddokter_bsre');
+Route::post('/simpantandatanganbsre', [PdfController::class, 'simpantandatanganbsre'])->name('simpantandatanganbsre');
+Route::post('/ambil_form_login_tte', [PdfController::class, 'form_login_tte'])->name('ambil_form_login_tte');;
+Route::post('/uploadgambar_ttd', [PdfController::class, 'uploadgambar_ttd'])->name('uploadgambar_ttd');;

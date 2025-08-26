@@ -4810,8 +4810,10 @@ class ErmController extends Controller
              WHERE a.kode_kunjungan = ? and c.status_kunjungan != 8 order  by a.id desc limit 1', [$kodekunjungan]);
 
         $assesmendd = db::connection('mysql')->select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
+        $resume_ttd = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and status_file = ? and status_code = ?',[$kodekunjungan,1,200]);
         return view('ermtemplate.hasil_pemeriksaan_medis', compact([
             'assesmen_dokter',
+            'resume_ttd',
             'datakonsul',
             'tindakan',
             'farmasi',

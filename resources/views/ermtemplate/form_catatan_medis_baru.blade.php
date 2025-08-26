@@ -49,13 +49,12 @@
                                         kodekunjungan="{{ $k->kodek }}" data-toggle="modal"
                                         data-target="#modalhasil_lab"><i class="bi bi-eye mr-2"></i>Hasil
                                         Laboratorium</button>
-                                    <button type="button" class="btn btn-secondary cetakresumesus"
+                                    {{-- <button type="button" class="btn btn-secondary cetakresumesus"
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"><i
-                                            class="bi bi-printer mr-2"></i>Assesmen Keperawatan</button>
-                                    <button type="button" class="btn btn-secondary cetakresumedok"
-                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
-                                        unit="{{ $k->kode_unit }}"><i class="bi bi-printer mr-2"></i>Assesmen
-                                        Medis</button>
+                                            class="bi bi-printer mr-2"></i>Assesmen Keperawatan</button> --}}
+                                    <button type="button" class="btn btn-info cetakresumedok2"
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}" kodekunjungan = {{ $k->kodek }}
+                                        unit="{{ $k->kode_unit }}"><i class="bi bi-printer mr-2"></i>Resume Medis Rawat Jalan</button>
                                 </div>
                             </div>
                             <div class="row">
@@ -767,7 +766,7 @@
                                                             <td>Keluhan Utama</td>
                                                             <td>{{ $k->keluhan_pasien }}</td>
                                                         </tr>
-                                                        <tr>
+                                                        {{-- <tr>
                                                             <td>Riwayat Penyakit Dahulu</td>
                                                             <td>{{ $k->riwayat_kehamilan_pasien_wanita }}
                                                                 <br>
@@ -776,26 +775,37 @@
                                                                 {{ $k->riwyat_penyakit_sekarang }}
                                                                 <br>
                                                             </td>
-                                                        </tr>
+                                                        </tr> --}}
                                                         <tr>
                                                             <td>Riwayat Alergi</td>
                                                             <td>{{ $k->riwayat_alergi }} |
                                                                 {{ $k->keterangan_alergi }} </td>
                                                         </tr>
-                                                        <tr>
+                                                        {{-- <tr>
                                                             <td>Riwayat Obat yang diminum</td>
                                                             <td></td>
-                                                        </tr>
+                                                        </tr> --}}
                                                         <tr>
                                                             <td>Kesadaran</td>
                                                             <td colspan="3">{{ $k->kesadaran }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Pemeriksaan Tanda Tanda Vital</td>
+                                                            <td>
+                                                                Tekanan Darah : {{ $k->tekanan_darah }}<br>
+                                                                Frekuensi Nadi : {{ $k->frekuensi_nadi }} <br>
+                                                                Frekuensi Nafas : {{ $k->frekuensi_nafas }} <br>
+                                                                Suhu Tubuh : {{ $k->suhu_tubuh }} <br>
+                                                                Bb / TB / IMT : {{ $k->beratbadan }} <br>
+                                                                Umur : {{ $k->umur }} <br>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <td>Pemeriksaan Fisik ( O )</td>
                                                             <td>{{ $k->pemeriksaan_fisik }}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Diagnosis ( A ) <br></td>
+                                                            <td colspan="2" class="text-center">Diagnosis ( A ) <br></td>
                                                         </tr>
                                                         <tr>
                                                             <td>Diagnosa Utama</td>
@@ -996,16 +1006,16 @@
                                                         <tr>
                                                             <td>Hasil Pemeriksaan Khusus</td>
                                                             <td>
-                                                                 {{-- <div class="card">
+                                                                {{-- <div class="card">
                                                                     <div class="card-header bg-danger">Hasil Pemeriksaan khusus
                                                                     </div>
                                                                     <div class="card-body"> --}}
-                                                                        {{ $k->pemeriksaan_khusus }} <br><br>
-                                                                        {{ $k->pemeriksaan_khusus_2 }}<br><br>
-                                                                        <img width="80%"src="{{ $k->gambar_1 }}"
-                                                                            alt=""><br><br>
-                                                                        {{-- <img src="{{ $k->gambar_2 }}" alt=""><br><br> --}}
-                                                                    {{-- </div>
+                                                                {{ $k->pemeriksaan_khusus }} <br><br>
+                                                                {{ $k->pemeriksaan_khusus_2 }}<br><br>
+                                                                <img width="80%"src="{{ $k->gambar_1 }}"
+                                                                    alt=""><br><br>
+                                                                {{-- <img src="{{ $k->gambar_2 }}" alt=""><br><br> --}}
+                                                                {{-- </div>
                                                                 </div> --}}
                                                             </td>
                                                         </tr>
@@ -1395,6 +1405,13 @@
         unit = $(this).attr('unit')
         window.open('http://192.168.2.30/siramah/cppt_print?rm=' + rm + '&counter=' + counter + '&kode_unit=' +
             unit);
+    })
+    $(".cetakresumedok2").on('click', function(event) {
+        rm = $(this).attr('rm')
+        counter = $(this).attr('counter')
+        kodekunjungan = $(this).attr('kodekunjungan')
+        window.open('cetak_dokumen_tte_v2/' + kodekunjungan);
+
     })
     $(".lihathasil_lab").on('click', function(event) {
         kodekunjungan = $(this).attr('kodekunjungan')

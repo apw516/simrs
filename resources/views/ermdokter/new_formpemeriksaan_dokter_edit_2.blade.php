@@ -3125,7 +3125,7 @@
         </div>
     </div>
 </div>
-<input type="text" id="statuslihatcppt" value="0">
+<input hidden type="text" id="statuslihatcppt" value="0">
 <link rel="stylesheet" href="{{ asset('public/dist/css/datepicker.css') }}" rel="stylesheet">
 <script src="{{ asset('public/dist/js/bootstrap-datepicker.js') }}"></script>
 <script>
@@ -3249,7 +3249,7 @@
                         text: data.message,
                         footer: ''
                     })
-                    resume()
+                    resume2()
                 }
             }
         });
