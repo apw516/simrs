@@ -361,6 +361,7 @@ class PdfController extends Controller
                 'tgl_kirim' => $this->get_now(),
                 'file' => $urlfile . $name2,
                 'cetakan_ke' => $cetakanke,
+                'status_file' => 1,
                 'status' => 1
             ];
             Model_log_tte::whereRaw('id = ?', array($idreport->id))->update($save_report);

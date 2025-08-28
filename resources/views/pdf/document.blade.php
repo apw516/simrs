@@ -202,19 +202,43 @@
                         <td colspan="3">{{ $cp->pemeriksaan_fisik }}</td>
                     </tr>
                     <tr>
+                        <td>Hasil Laboratorium</td>
+                        <td colspan="3"></td>
+                    </tr>
+                    <tr>
+                        <td>Hasil Radiologi</td>
+                        <td colspan="3"></td>
+                    </tr>
+                      @if ($cp->kode_unit == '1012')
+                        <td>Hasil USG Kebidanan</td>
+                        <td colspan="3">
+                             Hasil Expertisi : <br>
+                                {{ $cp->evaluasi }}
+                        </td>
+                    </tr>
+                    @endif
+                    <tr>
+                    @if($cp->kode_unit == '1027')
+                    <tr>
+                        <td>Hasil USG Urologi</td>
+                        <td colspan="3">
+                             Hasil Expertisi : <br>
+                                {{ $cp->evaluasi }}
+                        </td>
+                    </tr>
+                    @endif
+                    <tr>
                         <td class="text-center" colspan="4">Diagnosis ( A ) <br></td>
                     </tr>
                     <tr>
                         <td>Diagnosa Utama</td>
                         <td>{{ $cp->diagnosakerja }}<br></td>
-                        <td class="text-right">ICD X</td>
-                        <td></td>
+                        <td class="text-left" colspan="2">ICD X</td>
                     </tr>
                     <tr>
                         <td>Diagnosa Sekunder</td>
                         <td>{{ $cp->diagnosabanding }}<br></td>
-                        <td class="text-right">ICD X</td>
-                        <td></td>
+                        <td class="text-left" colspan="2">ICD X</td>
                     </tr>
                     <tr>
                         <td>Tindakan / Prosedur</td>
@@ -226,7 +250,12 @@
                                 @endif
                             @endforeach
                         </td>
-                        <td colspan="2">ICD 9 :</td>
+                        <td class="text-left" colspan="2">ICD 9 CM</td>
+                    </tr>
+                    <tr>
+                        <td>Tindakan Operasi</td>
+                        <td></td>
+                        <td class="text-left" colspan="2">ICD 9 CM</td>
                     </tr>
                     <tr>
                         <td>Rencana Terapi ( P )</td>
@@ -267,13 +296,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Pemeriksaan Penunjang</td>
+                        <td>Pemeriksaan Penunjang termasuk lab, rad, dll</td>
                         <td>
-                            @if ($cp->kode_unit == '1012' || $cp->kode_unit == '1027')
-                                Hasil Expertisi : <br>
-                                {{ $cp->evaluasi }}
-                                <br>
-                            @endif
                             Order Pemeriksasan Penunjang <br>
                             <table class="table table-sm table-bordered">
                                 <thead>
@@ -290,7 +314,7 @@
                                 </tbody>
                             </table>
                         </td>
-                        <td colspan="2">ICD 9 :</td>
+                        <td colspan="2">ICD 9 CM</td>
                     </tr>
                     <tr>
                         <td>Jawaban Konsul Ke poli lain</td>
