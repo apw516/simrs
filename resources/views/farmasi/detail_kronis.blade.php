@@ -14,7 +14,8 @@
                     (Usia {{ \Carbon\Carbon::parse($mt_pasien[0]->tgl_lahir)->age }})</p>
                 <p class="text-bold text-center text-xs">Alamat : {{ $mt_pasien[0]->alamatpasien }} </p>
                 <p class="text-bold text-center text-md">Diagnosa : @if (count($assesmen_dokter) > 0)
-                        {{ $assesmen_dokter[0]->diagnosakerja }}
+                        {{ $assesmen_dokter[0]->diagnosakerja }} <br>
+                    Diagnosa Sekundeer : {{ $assesmen_dokter[0]->diagnosabanding }}
                     @else
                         -
                     @endif
