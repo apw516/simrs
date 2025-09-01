@@ -553,6 +553,27 @@
                               <p>Data User</p>
                           </a>
                       </li>
+                      <li class="nav-item ">
+                          <a href="{{ route('indexveriftte') }}"
+                              class="nav-link @if ($sidebar == 'verifikasitte') active @endif">
+                              <i class="bi bi-person-lines-fill nav-icon"></i>
+                              <p>Verifikasi Dokumen TTE</p>
+                          </a>
+                      </li>
+                      <li class="nav-item ">
+                          <a href="{{ route('indexcekstatususertte') }}"
+                              class="nav-link @if ($sidebar == 'cekstatususertte') active @endif">
+                              <i class="bi bi-person-lines-fill nav-icon"></i>
+                              <p>Cek Status User TTE</p>
+                          </a>
+                      </li>
+                      <li class="nav-item ">
+                          <a href="{{ route('indexveriftte') }}"
+                              class="nav-link @if ($sidebar == 'regisusertte') active @endif">
+                              <i class="bi bi-person-lines-fill nav-icon"></i>
+                              <p>Registrasi User TTE</p>
+                          </a>
+                      </li>
                   @endif
                   @if (auth()->user()->hak_akses == 6)
                       <li class="nav-header">FARMASI</li>

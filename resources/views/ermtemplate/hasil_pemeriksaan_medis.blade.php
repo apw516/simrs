@@ -50,7 +50,7 @@
                     </tr>
                     <tr>
                         <td>Hasil Laboratorium</td>
-                        <td>{{ $cp->pemeriksaan_fisik }}</td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>Hasil Radiologi</td>

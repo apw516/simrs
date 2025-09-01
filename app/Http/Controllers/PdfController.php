@@ -365,13 +365,14 @@ class PdfController extends Controller
                 'status' => 1
             ];
             Model_log_tte::whereRaw('id = ?', array($idreport->id))->update($save_report);
-            // Model_log_tte::create($save_report);
-            $data = [
+            $kinan = $this->verifikasi_berkas2($idreport->id);
+            // $kinan2 = Model_log_tte::create($save_report);
+            $data1 = [
                 'kode' => 200,
                 'message' => 'Berkas berhasil ditanda tangan !',
                 'id' => $id_dokumen
             ];
-            echo json_encode($data);
+            echo json_encode($data1);
             die;
         } else {
             $save_report = [
@@ -456,5 +457,92 @@ class PdfController extends Controller
             $data['message'] = 'File not uploaded.';
         }
         return response()->json($data);
+    }
+    public function index_verif_tte()
+    {
+        $title = 'SIMRS - VERIFIKASI TTE';
+        $sidebar = 'verifikasitte';
+        $sidebar_m = 'verifikasitte';
+        return view('pdf.index_verifikasi_berkas_tte', compact([
+            'title',
+            'sidebar',
+            'sidebar_m'
+        ]));
+    }
+    public function ambildataberkastte()
+    {
+        $data = db::select('select *,fc_nama_px(b.no_rm) as nama_pasien,fc_NAMA_UNIT1(b.kode_unit) as nama_unit,fc_NAMA_PARAMEDIS1(b.kode_paramedis) as nama_dokter from log_ttd_elektronik a inner join ts_kunjungan b on a.kode_kunjungan = b.kode_kunjungan where status_code = ? and status_file = ?', [200, 1]);
+        return view('pdf.tabel_data_berkas', compact([
+            'data'
+        ]));
+    }
+    public function verifikasi_berkas2($id)
+    {
+        $data = db::select('select * from log_ttd_elektronik where id = ?', [$id]);
+        $file = $data[0]->file;
+        $id = $data[0]->id;
+        $v = new ModelBSRE();
+        $DD = $v->send_verifikasi($file, $id);
+        if ($DD['code'] == 200) {
+            $notes = $DD['messagee']->notes;
+        } else {
+            $notes = 'GAGAL VERIFIKASI';
+        }
+        Model_log_tte::whereRaw('id = ?', array($id))->update(['status_verif' => $notes]);
+        $data = [
+            'kode' => $DD['code'],
+            'message' => $notes
+        ];
+        // echo json_encode($data);
+        // die;
+    }
+    public function verifikasi_berkas(Request $request)
+    {
+        $data = db::select('select * from log_ttd_elektronik where id = ?', [$request->id_table]);
+        $file = $data[0]->file;
+        $id = $data[0]->id;
+        $v = new ModelBSRE();
+        $DD = $v->send_verifikasi($file, $id);
+        if ($DD['code'] == 200) {
+            $notes = $DD['messagee']->notes;
+        } else {
+            $notes = 'GAGAL VERIFIKASI';
+        }
+        Model_log_tte::whereRaw('id = ?', array($id))->update(['status_verif' => $notes]);
+        $data = [
+            'kode' => $DD['code'],
+            'message' => $notes
+        ];
+        echo json_encode($data);
+        die;
+    }
+    public function indexcekstatususertte()
+    {
+        $title = 'SIMRS - VERIFIKASI TTE';
+        $sidebar = 'cekstatususertte';
+        $sidebar_m = 'cekstatususertte';
+        return view('pdf.index_cek_status_user_tte', compact([
+            'title',
+            'sidebar',
+            'sidebar_m'
+        ]));
+    }
+    public function ambildatauser()
+    {
+        $data = db::select('select * from mt_paramedis');
+        return view('pdf.tabel_user_tte', compact([
+            'data'
+        ]));
+    }
+    public function cekstatususer(Request $request)
+    {
+        $nik = $request->nik;
+        $v = new ModelBSRE();
+        $DD = $v->cek_status_user($nik);
+        if($DD['code'] == 200){
+            return '<h5>'.$DD['messagee']->message .'</h5>';
+        }else{
+            return 'ERROR';
+        }
     }
 }

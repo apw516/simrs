@@ -93,7 +93,7 @@
 </head>
 
 <body>
-       <div class="isi-surat">
+    <div class="isi-surat">
         <table class="mb-4" style="width: 100%">
             <tr>
                 <td>
@@ -101,7 +101,7 @@
                 </td>
             </tr>
         </table>
-        <table class="table table-sm mt-2 table-bordered text-xxxs text-bold font-italic">
+        <table class="table table-sm mt-2 table-bordered text-xs text-bold font-italic">
             <tr>
                 <td class="text-center">
                     <img src="{{ public_path('../public/img/logo_rs.png') }}" class="logo">
@@ -159,7 +159,7 @@
         </table>
         @foreach ($assesmen as $cp)
             @if ($cp->kode_unit != '1028')
-                <table class="table table-sm table-bordered text-xxxs font-italic text-bold">
+                <table class="table table-sm table-bordered text-xxs font-italic text-bold">
                     <tr hidden>
                         <td>Sumber Data</td>
                         <td colspan="3">{{ $cp->sumber_data }}
@@ -195,7 +195,9 @@
                     <tr>
                         <td>Pemeriksaan Tanda Tanda Vital</td>
                         <td colspan="3">
-                            Tekanan Darah : {{ $cp->tekanan_darah }} / Frekuensi Nadi : {{ $cp->frekuensi_nadi }} / Frekuensi Nafas : {{ $cp->frekuensi_nafas }} / Suhu Tubuh : {{ $cp->suhu_tubuh }} <br> Bb / TB / IMT : {{ $cp->beratbadan }} | Umur : {{ $cp->umur }} </td>
+                            Tekanan Darah : {{ $cp->tekanan_darah }} / Frekuensi Nadi : {{ $cp->frekuensi_nadi }} /
+                            Frekuensi Nafas : {{ $cp->frekuensi_nafas }} / Suhu Tubuh : {{ $cp->suhu_tubuh }} <br> Bb
+                            / TB / IMT : {{ $cp->beratbadan }} | Umur : {{ $cp->umur }} </td>
                     </tr>
                     <tr>
                         <td>Pemeriksaan Fisik ( O )</td>
@@ -209,23 +211,23 @@
                         <td>Hasil Radiologi</td>
                         <td colspan="3"></td>
                     </tr>
-                      @if ($cp->kode_unit == '1012')
-                        <td>Hasil USG Kebidanan</td>
-                        <td colspan="3">
-                             Hasil Expertisi : <br>
+                    @if ($cp->kode_unit == '1012')
+                        <tr>
+                            <td>Hasil USG Kebidanan</td>
+                            <td colspan="3">
+                                Hasil Expertisi : <br>
                                 {{ $cp->evaluasi }}
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
                     @endif
-                    <tr>
-                    @if($cp->kode_unit == '1027')
-                    <tr>
-                        <td>Hasil USG Urologi</td>
-                        <td colspan="3">
-                             Hasil Expertisi : <br>
+                    @if ($cp->kode_unit == '1027')
+                        <tr>
+                            <td>Hasil USG Urologi</td>
+                            <td colspan="3">
+                                Hasil Expertisi : <br>
                                 {{ $cp->evaluasi }}
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
                     @endif
                     <tr>
                         <td class="text-center" colspan="4">Diagnosis ( A ) <br></td>
@@ -274,45 +276,39 @@
                     <tr>
                         <td>Obat obatan</td>
                         <td colspan="3">
-                            <table class="table table-sm">
+                            {{-- <table class="table table-sm">
                                 <thead>
                                     <th>Nama Obat</th>
                                     <th>qty</th>
                                     <th>Aturan Pakai</th>
                                 </thead>
-                                <tbody>
-                                    @foreach ($orderfarmasi as $t)
-                                        <tr>
-                                            <td>{{ $t->kode_barang }}
-                                            </td>
-                                            <td>{{ $t->jumlah_layanan }}
-                                            </td>
-                                            <td>{{ $t->aturan_pakai }}
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                <tbody> --}}
+                            @foreach ($orderfarmasi as $t)
+                                {{ $t->kode_barang }}(qty : {{ $t->jumlah_layanan }}) , aturan pakai :
+                                {{ $t->aturan_pakai }}
+                                /
+                            @endforeach
+                            {{-- </tbody>
+                            </table> --}}
                         </td>
                     </tr>
                     <tr>
                         <td>Pemeriksaan Penunjang termasuk lab, rad, dll</td>
                         <td>
                             Order Pemeriksasan Penunjang <br>
-                            <table class="table table-sm table-bordered">
+                            {{-- <table class="table table-sm table-bordered">
                                 <thead>
                                     <th>Nama Unit</th>
                                     <th>Nama Layanan</th>
                                 </thead>
-                                <tbody>
-                                    @foreach ($order_penunjang as $d)
-                                        <tr>
-                                            <td>{{ $d->nama_unit }}</td>
-                                            <td>{{ $d->NAMA_TARIF }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                <tbody> --}}
+                            @foreach ($order_penunjang as $d)
+                                {{-- <tr>
+                                            <td> --}}
+                                {{ $d->nama_unit }} ({{ $d->NAMA_TARIF }}) ,
+                            @endforeach
+                            {{-- </tbody>
+                            </table> --}}
                         </td>
                         <td colspan="2">ICD 9 CM</td>
                     </tr>
@@ -408,40 +404,23 @@
                                                 <br>
                                             @endif
                                             Order Pemeriksaan Penunjang <br>
-                                            <table class="table table-sm">
-                                                <thead>
-                                                    <th>Unit</th>
-                                                    <th>Nama Pemeriksaan</th>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($penunjang as $p)
-                                                        @if ($p->kode_kunjungan == $cp->id_kunjungan)
-                                                            {{-- @if ($p->kode_unit == '3009' && $p->kode_unit == '3010') --}}
-                                                            <tr>
-                                                                <td>{{ $p->nama_unit }}
-                                                                </td>
-                                                                <td>{{ $p->NAMA_TARIF }}
-                                                                </td>
-                                                            </tr>
-                                                            {{-- @endif --}}
-                                                        @endif
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                            <table class="table table-sm table-bordered">
-                                                <thead>
-                                                    <th>Nama Unit</th>
-                                                    <th>Nama Layanan</th>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($order_penunjang as $d)
-                                                        <tr>
-                                                            <td>{{ $d->nama_unit }}</td>
-                                                            <td>{{ $d->NAMA_TARIF }}</td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
+                                            @foreach ($order_penunjang as $d)
+                                                {{ $d->nama_unit }} ({{ $d->NAMA_TARIF }}) ,
+                                            @endforeach
+                                            {{-- <table class="table table-sm table-bordered">
+                                            <thead>
+                                                <th>Nama Unit</th>
+                                                <th>Nama Layanan</th>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($order_penunjang as $d)
+                                                    <tr>
+                                                        <td>{{ $d->nama_unit }}</td>
+                                                        <td>{{ $d->NAMA_TARIF }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table> --}}
                                         </td>
                                     </tr>
                                     <tr>
@@ -499,26 +478,30 @@
                                     <tr>
                                         <td>Obat obatan</td>
                                         <td>
-
-                                            <table class="table table-sm">
-                                                <thead>
-                                                    <th>Nama Obat</th>
-                                                    <th>qty</th>
-                                                    <th>Aturan Pakai</th>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($orderfarmasi as $t)
-                                                        <tr>
-                                                            <td>{{ $t->kode_barang }}
-                                                            </td>
-                                                            <td>{{ $t->jumlah_layanan }}
-                                                            </td>
-                                                            <td>{{ $t->aturan_pakai }}
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
+                                            @foreach ($orderfarmasi as $t)
+                                                {{ $t->kode_barang }}(qty : {{ $t->jumlah_layanan }}) , aturan pakai :
+                                                {{ $t->aturan_pakai }}
+                                                /
+                                            @endforeach
+                                            {{-- <table class="table table-sm">
+                                            <thead>
+                                                <th>Nama Obat</th>
+                                                <th>qty</th>
+                                                <th>Aturan Pakai</th>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($orderfarmasi as $t)
+                                                    <tr>
+                                                        <td>{{ $t->kode_barang }}
+                                                        </td>
+                                                        <td>{{ $t->jumlah_layanan }}
+                                                        </td>
+                                                        <td>{{ $t->aturan_pakai }}
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table> --}}
                                         </td>
                                     </tr>
                                     <tr>

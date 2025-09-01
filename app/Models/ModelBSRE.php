@@ -23,21 +23,47 @@ class ModelBSRE extends Model
         );
         return $response;
     }
-    public  function cek_status_user()
+    public  function cek_status_user($nik)
     {
-        $url = 'https://dev.esign-service.cirebonkab.go.id/api/user/status/1234567890123452';
+        $url = 'https://dev.esign-service.cirebonkab.go.id/api/user/status/'.$nik;
         $username = 'rsudwaled';
         $client = new Client();
         $password = 'uwP*aHN2';
-        $response = $client->get($url, [
-            'auth' => [$username, $password],
-            'headers' => [
-                'Accept' => 'application/json',
-                'X-Custom-Header' => 'MyValue',
-            ]
-        ]);
-        $response = json_decode($response->getBody());
-        dd($response);
+
+        try {
+            $response = $client->get($url, [
+                'auth' => [$username, $password],
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'X-Custom-Header' => 'MyValue',
+                ]
+            ]);
+            // $response = json_decode($response->getBody());
+            $code = $response->getStatusCode();
+            if ($code == 200) {
+                $message =json_decode($response->getBody());
+            } else {
+                $message = json_decode($response->getBody());
+            }
+            $data =
+                [
+                    'code' => $code,
+                    'messagee' => $message
+                ];
+            return $data;
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            if ($e->hasResponse()) {
+                $errorBody = $e->getResponse()->getBody()->getContents();
+                $code = $e->getCode();
+                $message = $errorBody;
+                $data =
+                    [
+                        'code' => $code,
+                        'messagee' => $message
+                    ];
+                return $data;
+            }
+        }
     }
     public function send_pdf_kosong($data2, $kodekunjungan)
     {
@@ -152,6 +178,72 @@ class ModelBSRE extends Model
                 'message' => $message
             ];
             return $data;
+        }
+    }
+    public function send_verifikasi($file, $id)
+    {
+        $url = 'https://dev.esign-service.cirebonkab.go.id/api/sign/verify';
+        $client = new Client();
+        // $file1 = fopen(storage_path('app/downloaded_pdfs/' . $kodekunjungan . '.pdf'), 'r');
+        $urlfile = '\\\\193.193.193.203\\erm\\resume_medis_rawat_jalan/';
+        $file1 = fopen(($file), 'r');
+        // dd($file1);
+        $multipart = [
+            [
+                'name'     => 'signed_file', // Name of the form field for the first file
+                // 'contents' => fopen(storage_path('app/downloaded_pdfs/' . $kodekunjungan . '.pdf'), 'r'),
+                'contents' => fopen(($file), 'r'),
+                'filename' => 'TST.pdf', // Optional: original filename
+            ]
+        ];
+        // dd($multipart);
+        // $data = db::select('select * from log_ttd_elektronik where id = ?',[$request->id_table]);
+        // foreach ($data2 as $key => $value) {
+        //     $multipart[] = [
+        //         'name'     => $key,
+        //         'contents' => $value,
+        //     ];
+        // }
+        $username = 'rsudwaled';
+        $password = 'uwP*aHN2';
+        try {
+            $response = $client->post($url, [
+                'multipart' => $multipart,
+                'auth'      => [$username, $password], // Basic Auth
+                'headers'   => [
+                    'Authorization' => 'Basic cnN1ZHdhbGVkOnV3UCphSE4y',
+                    'Cache-Control' => 'no-cache',
+                    'Postman-Token' => '<calculated when request is sent>',
+                ],
+            ]);
+
+            $code = $response->getStatusCode();
+            $body = json_decode($response->getBody());
+            if ($code == 200) {
+                $code = 200;
+                $message = json_decode($response->getBody());
+            } else {
+                $code = 550;
+                $message = $response->getBody();
+            }
+            $data =
+                [
+                    'code' => $code,
+                    'messagee' => $message
+                ];
+            return $data;
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            if ($e->hasResponse()) {
+                $errorBody = $e->getResponse()->getBody()->getContents();
+                $code = $e->getCode();
+                $message = $errorBody;
+                $data =
+                    [
+                        'code' => $code,
+                        'messagee' => $message
+                    ];
+                return $data;
+            }
         }
     }
 }
