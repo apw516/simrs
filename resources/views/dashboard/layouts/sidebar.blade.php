@@ -666,7 +666,6 @@
                               </li>
                           </ul>
                           <ul class="nav nav-treeview">
-
                               <li class="nav-item ">
                                   <a href="{{ route('indexresumemedisrajal') }}"
                                       class="nav-link @if ($sidebar == 'indexresumemedisrajal') active @endif">
