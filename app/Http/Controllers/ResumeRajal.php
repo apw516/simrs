@@ -118,6 +118,8 @@ class ResumeRajal extends Controller
             $resume = $cek_resume[0]->file;
             $pdf->addPDF($resume, 'all');
         }
+
+
         if (count($ts_kunjungan) > 0) {
             foreach ($ts_kunjungan as $tk) {
                 if (strlen($tk->no_sep) > 3) {
