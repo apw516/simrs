@@ -130,7 +130,6 @@ class ResumeRajal extends Controller
         }
         // dd($cek_lab);
         if (count($cek_lab) > 0) {
-
             foreach ($cek_lab as $cl) {
                 $kode_layanan_header = $cl->layanan;
                 $contents_lab = file_get_contents($cl->link);
@@ -139,7 +138,6 @@ class ResumeRajal extends Controller
                 $contents[] = $contents_lab;
             }
         }
-
         if (count($cek_rad) > 0) {
             $context = stream_context_create($opts);
             foreach ($cek_rad as $cr) {
@@ -149,18 +147,19 @@ class ResumeRajal extends Controller
                 $contents[] = $contents_rad;
             }
         }
-
         if (count($cek_far) > 0) {
             $context = stream_context_create($opts);
             foreach ($cek_far as $cf) {
                 $contents_resep  = file_get_contents('http://192.168.2.45/simrs/cetaknotafarmasi_2/' . $cf->kode_kunjungan . '/' . $cf->kode_layanan_header . '/' . $cf->id, FALSE, $context);
-                Storage::disk('FAR')->put('FAR' . $cf->kode_layanan_header . '.pdf', $contents_resep);
-                // $pdf->addPDF('\\\193.193.193.203\erm\resepfarmasi/'. $cf->kode_layanan_header . '.pdf', 'all');
-                $pdf->addPDF('\\\193.193.193.203\erm\resepfarmasi/FAR' . $cf->kode_layanan_header . '.pdf', 'all');
-                $contents[] = $contents_resep;
+                Storage::disk('FAR')->put($cf->kode_layanan_header . '.pdf', $contents_resep);
+                if($contents_resep == 'No data found, and noData band undefined'){
+
+                }else{
+                    $pdf->addPDF('\\\193.193.193.203\erm\resepfarmasi/' . $cf->kode_layanan_header . '.pdf', 'all');
+                    $contents[] = $contents_resep;
+                }
             }
         }
-
         if (count($contents) > 0) {
             $pdf->merge();
             $output = $pdf->Output();
