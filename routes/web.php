@@ -19,6 +19,7 @@ use App\Http\Controllers\ReportingController;
 use App\Http\Controllers\newMasterController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\JasaMedisController;
+use App\Http\Controllers\ResumeRajal;
 
 Route::get('/berkas_ersep', [ReportingController::class, 'index'])->middleware('auth')->name('berkas_ersep');
 Route::post('/ambildataeresep', [ReportingController::class, 'ambilDataEresep'])->middleware('auth')->name('ambildataeresep');
@@ -783,3 +784,23 @@ Route::post('/resumepasien_dokter2', [ErmController::class, 'resumepasien_dokter
     ->name('resumepasien_dokter2'); //sidebar
 
 Route::get('/generate-pdf', [PdfController::class, 'generatePDF']);
+Route::get('/generate-pdf2/{kodekunjungan}', [PdfController::class, 'generatePDF2']);
+Route::get('/cetak_dokumen_tte/{kodekunjungan}', [PdfController::class, 'cetak_dokumen_tte']);
+Route::get('/cetak_dokumen_tte_v2/{kodekunjungan}', [PdfController::class, 'cetak_dokumen_tte_v2']);
+Route::post('/simpanttddokter_bsre', [PdfController::class, 'simpanttddokter_bsre'])->name('simpanttddokter_bsre');
+Route::post('/simpantandatanganbsre', [PdfController::class, 'simpantandatanganbsre'])->name('simpantandatanganbsre');
+Route::post('/ambil_form_login_tte', [PdfController::class, 'form_login_tte'])->name('ambil_form_login_tte');
+Route::post('/uploadgambar_ttd', [PdfController::class, 'uploadgambar_ttd'])->name('uploadgambar_ttd');
+
+Route::get('indexveriftte', [PdfController::class, 'index_verif_tte'])->name('indexveriftte');
+Route::get('indexcekstatususertte', [PdfController::class, 'indexcekstatususertte'])->name('indexcekstatususertte');
+Route::post('ambildataberkastte', [PdfController::class, 'ambildataberkastte'])->name('ambildataberkastte');
+Route::post('ambildatauser', [PdfController::class, 'ambildatauser'])->name('ambildatauser');
+Route::post('verifikasi_berkas', [PdfController::class, 'verifikasi_berkas'])->name('verifikasi_berkas');
+Route::post('cekstatususer', [PdfController::class, 'cekstatususer'])->name('cekstatususer');
+Route::get('indexresumemedisrajal', [ResumeRajal::class, 'indexresumemedisrajal'])->name('indexresumemedisrajal');
+Route::get('indexresumemedisranap', [ResumeRajal::class, 'indexresumemedisranap'])->name('indexresumemedisranap');
+Route::post('cariresume_bykunjungan', [ResumeRajal::class, 'cariresume_bykunjungan'])->name('cariresume_bykunjungan');
+Route::post('cariresume_bykunjungan_ranap', [ResumeRajal::class, 'cariresume_bykunjungan_ranap'])->name('cariresume_bykunjungan_ranap');
+Route::get('cetakresumerajalbykunjungan/{kodekunjungan}', [ResumeRajal::class, 'mergerpdf'])->name('cetakresumerajalbykunjungan');
+Route::get('/cetaksep_v2/{sep}', [SimrsController::class, 'Cetaksep_v']); //formpasien_bpjs
