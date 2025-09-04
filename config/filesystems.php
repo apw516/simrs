@@ -38,13 +38,34 @@ return [
             'driver' => 'local',
             'root' => '\\\\193.193.193.203\\erm\\resume_medis_rawat_jalan',
         ],
-        // 'shared' => [
-        //     'driver' => 'local',
-        //     'root' => '\\192.168.2.45/resume_medis_rawat_jalan',
-        //     'throw' => true,
-        //     'username' => 'vexpertise',
-        //     'password' => 'cushman',
-        // ],
+        'SEP' => [
+            'driver' => 'local',
+            'root' => '\\\\193.193.193.203\\erm\\sep',
+        ],
+        'LAB_1' => [
+            'driver' => 'local',
+            'root' => '\\\\193.193.193.203\\erm\\hasil_lab_1',
+        ],
+        'LAB_2' => [
+            'driver' => 'local',
+            'root' => '\\\\193.193.193.203\\erm\\hasil_lab_2',
+        ],
+        'LAB_3' => [
+            'driver' => 'local',
+            'root' => '\\\\193.193.193.203\\erm\\hasil_lab_3',
+        ],
+        'RAD' => [
+            'driver' => 'local',
+            'root' => '\\\\193.193.193.203\\erm\\expertisi_radiologi',
+        ],
+        'FAR' => [
+            'driver' => 'local',
+            'root' => '\\\\193.193.193.203\\erm\\resepfarmasi',
+        ],
+        'MER' => [
+            'driver' => 'local',
+            'root' => '\\\\193.193.193.203\\erm\\merger_resume_rajal',
+        ],
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

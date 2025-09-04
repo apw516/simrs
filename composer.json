@@ -16,8 +16,10 @@
         "league/flysystem-sftp": "^3.28",
         "milon/barcode": "^12.0",
         "nullpunkt/lz-string-php": "^1.3",
+        "oriceon/laravel-pdf-merger": "^2.0",
         "phpseclib/phpseclib3_rector": "^1.0",
-        "simitgroup/phpjasperxml": "^2.1"
+        "simitgroup/phpjasperxml": "^2.1",
+        "webklex/laravel-pdfmerger": "^1.3"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

@@ -415,7 +415,7 @@ class PdfController extends Controller
             return Response::make(file_get_contents($d[0]->file), 200, [
                 'Content-Type' => 'application/pdf',
                 'Content-Disposition' => 'inline; filename="' . $d[0]->response . '"'
-            ]);
+            ],);
         } else {
             return 'berkas tidak ditemukan!';
         }
