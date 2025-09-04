@@ -121,7 +121,7 @@ class ResumeRajal extends Controller
         if (count($ts_kunjungan) > 0) {
             foreach ($ts_kunjungan as $tk) {
                 if (strlen($tk->no_sep) > 3) {
-                    $contents_sep = file_get_contents('http://localhost/simrs/cetaksep_v2/' . $tk->no_sep);
+                    $contents_sep = file_get_contents('http://192.168.2.45/simrs/cetaksep_v2/' . $tk->no_sep);
                     Storage::disk('SEP')->put($tk->no_sep . '.pdf', $contents_sep);
                     $pdf->addPDF('\\\193.193.193.203\erm\sep/' . $tk->no_sep . '.pdf', 'all');
                     $contents[] = $contents_sep;
