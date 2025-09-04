@@ -553,20 +553,6 @@
                               <p>Data User</p>
                           </a>
                       </li>
-                       <li class="nav-item ">
-                          <a href="{{ route('indexresumemedisrajal') }}"
-                              class="nav-link @if ($sidebar == 'indexresumemedisrajal') active @endif">
-                              <i class="bi bi-filetype-doc nav-icon"></i>
-                              <p>Resume Medis Rajal</p>
-                          </a>
-                      </li>
-                      <li class="nav-item ">
-                          <a href="{{ route('indexresumemedisranap') }}"
-                              class="nav-link @if ($sidebar == 'indexresumemedisranap') active @endif">
-                              <i class="bi bi-filetype-doc nav-icon"></i>
-                              <p>Resume Medis Rawat Inap</p>
-                          </a>
-                      </li>
                   @endif
                   @if (auth()->user()->hak_akses == 6)
                       <li class="nav-header">FARMASI</li>
