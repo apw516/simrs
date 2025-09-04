@@ -54,6 +54,14 @@ return [
             'driver' => 'local',
             'root' => '\\\\193.193.193.203\\erm\\hasil_lab_3',
         ],
+        'LAB_4' => [
+            'driver' => 'local',
+            'root' => '\\\\193.193.193.203\\erm\\hasil_lab_4',
+        ],
+        'LAB_5' => [
+            'driver' => 'local',
+            'root' => '\\\\193.193.193.203\\erm\\hasil_lab_5',
+        ],
         'RAD' => [
             'driver' => 'local',
             'root' => '\\\\193.193.193.203\\erm\\expertisi_radiologi',
