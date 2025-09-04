@@ -726,22 +726,6 @@ class ErmController extends Controller
                             'ref_resume'
                         ]));
                     } else {
-                        if ($unit == '1014') {
-                            return view('ermdokter.form_pemeriksaan_dokter_mata_edit', compact([
-                                'kunjungan',
-                                'resume',
-                                'resume_perawat',
-                                'layanan',
-                                'layanan_rad',
-                                'layanan_lab',
-                                'penyakit',
-                                'k1',
-                                'k2',
-                                'ref_resume',
-                                'kunjunganKronis',
-                                'selisih'
-                            ]));
-                        } else {
                             return view('ermdokter.new_formpemeriksaan_dokter_edit_2', compact([
                                 'kunjungan',
                                 'resume',
@@ -756,7 +740,7 @@ class ErmController extends Controller
                                 'kunjunganKronis',
                                 'selisih'
                             ]));
-                        }
+                        // }
                     }
                 } else if ($resume_perawat[0]->status == 0) {
                     return view('ermtemplate.datatidakditemukan');
@@ -790,22 +774,6 @@ class ErmController extends Controller
                         //     'hasil_ro',
                         //     'ref_resume'
                         // ]));
-                        if ($unit == '1014') {
-                            return view('ermdokter.form_pemeriksaan_dokter_mata', compact([
-                                'kunjungan',
-                                'resume_perawat',
-                                'layanan',
-                                'layanan_rad',
-                                'layanan_lab',
-                                'last_assdok',
-                                'first_assdok',
-                                'penyakit',
-                                'hasil_ro',
-                                'ref_resume',
-                                'kunjunganKronis',
-                                'selisih'
-                            ]));
-                        } else {
                             return view('ermdokter.new_form_pemeriksaan_dokter_2', compact([
                                 'kunjungan',
                                 'resume_perawat',
@@ -820,7 +788,7 @@ class ErmController extends Controller
                                 'kunjunganKronis',
                                 'selisih'
                             ]));
-                        }
+                        // }
                     }
                 }
             } else {
