@@ -612,6 +612,20 @@
                           auth()->user()->hak_akses == '101' ||
                           auth()->user()->hak_akses == '68')
                       <li class="nav-header">REKAMEDIS</li>
+                      <li class="nav-item ">
+                          <a href="{{ route('indexresumemedisrajal') }}"
+                              class="nav-link @if ($sidebar == 'indexresumemedisrajal') active @endif">
+                              <i class="bi bi-filetype-doc nav-icon"></i>
+                              <p>Resume Medis Rajal</p>
+                          </a>
+                      </li>
+                      <li class="nav-item ">
+                          <a href="{{ route('indexresumemedisranap') }}"
+                              class="nav-link @if ($sidebar == 'indexresumemedisranap') active @endif">
+                              <i class="bi bi-filetype-doc nav-icon"></i>
+                              <p>Resume Medis Rawat Inap</p>
+                          </a>
+                      </li>
                       <li hidden class="nav-item">
                           <a href="{{ route('dataermrajal') }}"
                               class="nav-link @if ($title == 'SIMRS - BERKAS ERM RAWAT JALAN') active @endif">
@@ -662,24 +676,6 @@
                                       class="nav-link @if ($sidebar_m == 'berkas_erm') active @endif">
                                       <i class="far fa-circle nav-icon"></i>
                                       <p>Berkas ERM</p>
-                                  </a>
-                              </li>
-                          </ul>
-                          <ul class="nav nav-treeview">
-                              <li class="nav-item ">
-                                  <a href="{{ route('indexresumemedisrajal') }}"
-                                      class="nav-link @if ($sidebar == 'indexresumemedisrajal') active @endif">
-                                      <i class="bi bi-filetype-doc nav-icon"></i>
-                                      <p>Resume Medis Rajal</p>
-                                  </a>
-                              </li>
-                          </ul>
-                          <ul class="nav nav-treeview">
-                              <li class="nav-item ">
-                                  <a href="{{ route('indexresumemedisranap') }}"
-                                      class="nav-link @if ($sidebar == 'indexresumemedisranap') active @endif">
-                                      <i class="bi bi-filetype-doc nav-icon"></i>
-                                      <p>Resume Medis Rawat Inap</p>
                                   </a>
                               </li>
                           </ul>
