@@ -22,6 +22,27 @@
 <div class="card">
     <div class="card-header bg-warning">Tindak Lanjut</div>
     <div class="card-body table-responsive p-5" style="height: 757Px">
+        @if(count($cek_iter) > 0)
+            <h5 class="text-danger">*Pasien termasuk kedalam layanan Iterasi obat BPJS ( layanan peresepan obat kronis yang memungkinkan peserta JKN (Jaminan Kesehatan Nasional) untuk mendapatkan obat-obatan tanpa harus berkonsultasi dengan dokter setiap bulan.  )</h5> <br>
+            <table class="table table-sm mb-4">
+                <thead>
+                    <th>Tanggal iterasi</th>
+                    <th>Dokter</th>
+                    <th>Unit</th>
+                    <th>Jumlah iterasi obat</th>
+                </thead>
+                <tbody>
+                    @foreach ($cek_iter as $c )
+                        <tr>
+                            <td>{{ $c->tgl_iter}}</td>
+                            <td>{{ $c->nama_dokter}}</td>
+                            <td>{{ $c->nama_unit}}</td>
+                            <td>{{ $c->jumlah}}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
         <div class="jumbotron">
             {{-- <h1 class="display-4">Tindak Lanjut</h1> --}}
             @if ($selisih > 70)

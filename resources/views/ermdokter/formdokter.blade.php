@@ -47,12 +47,13 @@
             @else
                 <br>{{ $kunjungan[0]->diagx }}</p>
                 @endif
-                <a hidden href="#" onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})"
+
+                {{-- <a href="#" onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})"
                     class="btn btn-primary btn-block"><b>Catatan
-                        Medis</b></a>
-                <a hidden href="#" onclick="formcatatanmedis2({{ $kunjungan[0]->no_rm }})"
-                    class="btn btn-primary btn-block"><b>Catatan
-                        Medis V2</b></a>
+                        Medis</b></a> --}}
+                <a href="#" class="btn btn-primary btn-block lihatcppt2" rm="{{ $kunjungan[0]->no_rm }}"><b>CPPT</b></a>
+                <a href="#" class="btn btn-primary btn-block" onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})" rm="{{ $kunjungan[0]->no_rm }}"><b>Riwayat Kunjungan</b></a>
+                <a href="#" onclick="lihaticare()" class="btn btn-success btn-block"><b>Icare BPJS</b></a>
                 <input hidden type="text" id="kodekunjungan" value="{{ $kunjungan[0]->kode_kunjungan }}">
                 <input hidden type="text" id="nomorrm" value="{{ $kunjungan[0]->no_rm }}">
             </div>
@@ -71,6 +72,13 @@
             <div class="card-body p-0">
                 <ul class="nav nav-pills flex-column">
                     @if ($pic == auth()->user()->id || $pic == '')
+                        @if (auth()->user()->unit == '1029' || auth()->user()->unit == '1045')
+                            <li class="nav-item" id="pemeriksaan">
+                                <a href="#" class="nav-link" onclick="riwayatsumarilis()">
+                                    <i class="fas fa-inbox mr-2"></i>Riwayat Sumarilis
+                                </a>
+                            </li>
+                        @endif
                         <li class="nav-item" id="pemeriksaan">
                             <a href="#" class="nav-link" onclick="formpemeriksaandokter()">
                                 <i class="fas fa-inbox mr-2"></i>Catatan Perkembangan Pasien Terintegrasi ( CPPT )
@@ -110,7 +118,7 @@
                     </li> --}}
                     @endif
                     <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="resume()">
+                        <a href="#" class="nav-link" onclick="resume2()">
                             <i class="fas fa-filter mr-2"></i> Resume
                         </a>
                     </li>
@@ -141,53 +149,36 @@
             @endif Pasien PRB, dan melanjutkan pengobatan kembali ke faskes 1...
           </div>
         @endif --}}
-        <button class="btn btn-warning mb-3 ambilberkaserm" data-toggle="modal" data-target="#modalberkaserm"> <i class="bi bi-book mr-1 ml-1"></i> Catatan Medis Pasien</button>
-        <button class="btn btn-info mb-3 lihaticare" data-toggle="modal" data-target="#modalicare"> <i class="bi bi-book mr-1 ml-1"></i> Lihat Icare</button>
-        <div class="slide3">
+        <div class="card" id="icareshow">
+            <div class="card-header">Icare BPJS <button class="btn btn-danger float-right" onclick="tutupicare()"><i
+                        class="bi bi-x mr-1 ml-1"></i> Tutup</button>
+            </div>
+            <div class="card-body">
+                <iframe src="{{ $urlicare }}" frameborder="0" width="100%" height="1000px%"></iframe>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-danger" onclick="tutupicare()"><i class="bi bi-x mr-1 ml-1"></i> Tutup</button>
+            </div>
+        </div>
+        <div hidden class="slide3">
         </div>
     </div>
     <!-- /.col -->
 </div>
-</div>
+
 <!-- Modal -->
-<style>
-    .modal-lgg {
-        max-width: 90%;
-    }
-</style>
-<input hidden type="text" value="0" id="statusambilberkas">
-<div class="modal fade" id="modalberkaserm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lgg">
+<div class="modal fade" id="modalcppt2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Catatan Medis Pasien</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Catatan Perkembangan Pasien Terintegrasi</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="v_berkas_erm">
 
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="modalicare" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lgg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Icare BPJS</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="V_IC">
+                <div class="v_cppt_2">
 
                 </div>
             </div>
@@ -197,6 +188,8 @@
         </div>
     </div>
 </div>
+
+<input hidden type="text" id="statuslihatcppt2" value="0">
 <script>
     function tutupicare() {
         $('.v_icare').attr('hidden', true)
@@ -206,37 +199,58 @@
         rm = $('#nomorrm').val()
         formpemeriksaandokter()
     })
-    $(".ambilberkaserm").on('click', function(event) {
-        rm = $('#nomorrm').val()
-        cek = $('#statusambilberkas').val()
-        if(cek == '0'){
-            formcatatanmedis3(rm)
-        }else{
-        }
-    });
-    $(".lihaticare").on('click', function(event) {
-        rm = $('#nomorrm').val()
-        kodekunjungan = $('#kodekunjungan').val()
-        lihaticare(rm,kodekunjungan)
-    });
 
-    function lihaticare(rm,kodekunjungan) {
+    $(".lihatcppt2").click(function() {
+        status = $('#statuslihatcppt2').val()
+        // if (status == 0) {
+            status = $('#statuslihatcppt2').val(1)
+            rm = $(this).attr('rm')
+            spinner = $('#loader')
+            spinner.show();
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    rm
+                },
+                url: '<?= route('lihatcppt_pasien2') ?>',
+                success: function(response) {
+                    $('.slide3').html(response);
+                    spinner.hide()
+                }
+            });
+        // }
+    })
+
+    function tutupicare() {
+        $('#icareshow').attr('Hidden', true)
+        $('.slide3').removeAttr('Hidden', true)
+    }
+
+    function lihaticare() {
+        $('#icareshow').removeAttr('Hidden', true)
+        $('.slide3').attr('Hidden', true)
+    }
+
+    function formcatatanmedis2(rm) {
+        rm = $('#nomorrm').val()
         spinner = $('#loader')
         spinner.show();
         $.ajax({
             type: 'post',
             data: {
                 _token: "{{ csrf_token() }}",
-                rm,kodekunjungan
+                rm
             },
-            url: '<?= route('lihaticare') ?>',
+            url: '<?= route('lihatcppt_pasien2') ?>',
             success: function(response) {
-                $('.V_IC').html(response);
+                $('.slide3').html(response);
                 spinner.hide()
             }
         });
     }
     function formcatatanmedis(rm) {
+        rm = $('#nomorrm').val()
         spinner = $('#loader')
         spinner.show();
         $.ajax({
@@ -440,7 +454,6 @@
             }
         });
     }
-
     function resume2() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -454,6 +467,26 @@
                 kodekunjungan
             },
             url: '<?= route('resumepasien_dokter2') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+
+    function riwayatsumarilis() {
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('riwayatsumarilis') ?>',
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()

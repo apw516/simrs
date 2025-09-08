@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ts_kunjungan extends Model
 {
     use HasFactory;
-    protected $connection = 'mysql2';
+    protected $connection = 'mysql4';
     protected $table = 'ts_kunjungan';
     protected $guarded = ['kode_kunjungan'];
 }

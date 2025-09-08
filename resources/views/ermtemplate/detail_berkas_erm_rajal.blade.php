@@ -1,4 +1,5 @@
-<div class="accordion" id="accordionExample">
+
+{{-- <div  class="accordion" id="accordionExample">
     @foreach ($header as $h)
         <div class="card">
             <div class="card-header" id="headingOne{{ $h->id }}">
@@ -62,13 +63,15 @@
                                                                 <tr>
                                                                     <td class="text-bold">Sumber Data</td>
                                                                     <td>
-                                                                       {{ $h->sumberdataperiksa}}
+
+                                                                        {{ $h->sumberdataperiksa }}
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="text-bold">Keluhan Utama</td>
                                                                     <td>
-                                                                        {{ $h->keluhanutama}}
+
+                                                                        {{ $h->keluhanutama }}
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -77,8 +80,12 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="text-bold">Pasien Mengeluh Nyeri</td>
-                                                                    <td>
-                                                                        @if($h->Keluhannyeri == 1)Ada @else Tidak Ada @endif
+
+                                                                        @if ($h->Keluhannyeri == 1)
+                                                                            Ada
+                                                                        @else
+                                                                            Tidak Ada
+                                                                        @endif
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -107,161 +114,172 @@
                                                                                         </button>
                                                                                     </h2>
                                                                                 </div>
-                                                                                <div id="keluhannyeri1"
-                                                                                    class="collapse"
+
+                                                                                <div id="keluhannyeri1" class="collapse"
                                                                                     aria-labelledby="headingOne"
                                                                                     data-parent="#accordionExample1">
-                                                                                            <div class="card-body">
-                                                                                                <table>
-                                                                                                    <tr>
-                                                                                                        <td class="text-bold"
-                                                                                                            rowspan="2">
-                                                                                                            Skala
-                                                                                                            Nyeri</td>
-                                                                                                        <td>
-                                                                                                            <div
-                                                                                                                class="form-check form-check-inline">
-                                                                                                                <input
-                                                                                                                    class="form-check-input"
-                                                                                                                    type="radio"
-                                                                                                                    name="a"
-                                                                                                                    @if($h->skalenyeripasien == '0') checked @endif id="a"
-                                                                                                                    value="0">
-                                                                                                                <label
-                                                                                                                    class="form-check-label"
-                                                                                                                    for="inlineRadio1">0</label>
-                                                                                                            </div>
-                                                                                                            <div
-                                                                                                                class="form-check form-check-inline">
-                                                                                                                <input
-                                                                                                                    class="form-check-input"
-                                                                                                                    type="radio"
-                                                                                                                    name="a"
-                                                                                                                    @if($h->skalenyeripasien == '1') checked @endif id="a"
-                                                                                                                    value="1">
-                                                                                                                <label
-                                                                                                                    class="form-check-label"
-                                                                                                                    for="inlineRadio2">1</label>
-                                                                                                            </div>
-                                                                                                            <div
-                                                                                                                class="form-check form-check-inline">
-                                                                                                                <input
-                                                                                                                    class="form-check-input"
-                                                                                                                    type="radio"
-                                                                                                                    name="a"
-                                                                                                                    @if($h->skalenyeripasien == '2') checked @endif id="a"
-                                                                                                                    value="2">
-                                                                                                                <label
-                                                                                                                    class="form-check-label"
-                                                                                                                    for="inlineRadio2">2</label>
-                                                                                                            </div>
-                                                                                                            <div
-                                                                                                                class="form-check form-check-inline">
-                                                                                                                <input
-                                                                                                                    class="form-check-input"
-                                                                                                                    type="radio"
-                                                                                                                    name="a"
-                                                                                                                    @if($h->skalenyeripasien == '3') checked @endif id="a"
-                                                                                                                    value="3">
-                                                                                                                <label
-                                                                                                                    class="form-check-label"
-                                                                                                                    for="inlineRadio2">3</label>
-                                                                                                            </div>
-                                                                                                            <div
-                                                                                                                class="form-check form-check-inline">
-                                                                                                                <input
-                                                                                                                    class="form-check-input"
-                                                                                                                    type="radio"
-                                                                                                                    name="a"
-                                                                                                                    @if($h->skalenyeripasien == '4') checked @endif id="a"
-                                                                                                                    value="4">
-                                                                                                                <label
-                                                                                                                    class="form-check-label"
-                                                                                                                    for="inlineRadio2">4</label>
-                                                                                                            </div>
-                                                                                                            <div
-                                                                                                                class="form-check form-check-inline">
-                                                                                                                <input
-                                                                                                                    class="form-check-input"
-                                                                                                                    type="radio"
-                                                                                                                    name="a"
-                                                                                                                    @if($h->skalenyeripasien == '5') checked @endif id="a"
-                                                                                                                    value="5">
-                                                                                                                <label
-                                                                                                                    class="form-check-label"
-                                                                                                                    for="inlineRadio2">5</label>
-                                                                                                            </div>
-                                                                                                            <div
-                                                                                                                class="form-check form-check-inline">
-                                                                                                                <input
-                                                                                                                    class="form-check-input"
-                                                                                                                    type="radio"
-                                                                                                                    name="a"
-                                                                                                                    @if($h->skalenyeripasien == '6') checked @endif id="a"
-                                                                                                                    value="6">
-                                                                                                                <label
-                                                                                                                    class="form-check-label"
-                                                                                                                    for="inlineRadio2">6</label>
-                                                                                                            </div>
-                                                                                                            <div
-                                                                                                                class="form-check form-check-inline">
-                                                                                                                <input
-                                                                                                                    class="form-check-input"
-                                                                                                                    type="radio"
-                                                                                                                    name="a"
-                                                                                                                    @if($h->skalenyeripasien == '7') checked @endif id="a"
-                                                                                                                    value="7"f>
-                                                                                                                <label
-                                                                                                                    class="form-check-label"
-                                                                                                                    for="inlineRadio2">7</label>
-                                                                                                            </div>
-                                                                                                            <div
-                                                                                                                class="form-check form-check-inline">
-                                                                                                                <input
-                                                                                                                    class="form-check-input"
-                                                                                                                    type="radio"
-                                                                                                                    name="a"
-                                                                                                                    @if($h->skalenyeripasien == '8') checked @endif id="a"
-                                                                                                                    value="8">
-                                                                                                                <label
-                                                                                                                    class="form-check-label"
-                                                                                                                    for="inlineRadio2">8</label>
-                                                                                                            </div>
-                                                                                                            <div
-                                                                                                                class="form-check form-check-inline">
-                                                                                                                <input
-                                                                                                                    class="form-check-input"
-                                                                                                                    type="radio"
-                                                                                                                    name="a"
-                                                                                                                    @if($h->skalenyeripasien == '9') checked @endif id="a"
-                                                                                                                    value="9">
-                                                                                                                <label
-                                                                                                                    class="form-check-label"
-                                                                                                                    for="inlineRadio2">9</label>
-                                                                                                            </div>
-                                                                                                            <div
-                                                                                                                class="form-check form-check-inline">
-                                                                                                                <input
-                                                                                                                    class="form-check-input"
-                                                                                                                    type="radio"
-                                                                                                                    name="a"
-                                                                                                                    @if($h->skalenyeripasien == '10') checked @endif id="a"
-                                                                                                                    value="10">
-                                                                                                                <label
-                                                                                                                    class="form-check-label"
-                                                                                                                    for="inlineRadio2">10</label>
-                                                                                                            </div>
-                                                                                                        </td>
-                                                                                                    </tr>
-                                                                                                    <tr>
-                                                                                                        <td>
-                                                                                                            <img width="50%"
-                                                                                                                src="{{ asset('public/newfolder/skalanyeri.jpg') }}"
-                                                                                                                alt="">
-                                                                                                        </td>
-                                                                                                    </tr>
-                                                                                                </table>
-                                                                                            </div>
+                                                                                    <div class="card-body">
+                                                                                        <table>
+                                                                                            <tr>
+                                                                                                <td class="text-bold"
+                                                                                                    rowspan="2">
+                                                                                                    Skala
+                                                                                                    Nyeri</td>
+                                                                                                <td>
+                                                                                                    <div
+                                                                                                        class="form-check form-check-inline">
+                                                                                                        <input
+                                                                                                            class="form-check-input"
+                                                                                                            type="radio"
+                                                                                                            name="a"
+                                                                                                            @if ($h->skalenyeripasien == '0') checked @endif
+                                                                                                            id="a"
+                                                                                                            value="0">
+                                                                                                        <label
+                                                                                                            class="form-check-label"
+                                                                                                            for="inlineRadio1">0</label>
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="form-check form-check-inline">
+                                                                                                        <input
+                                                                                                            class="form-check-input"
+                                                                                                            type="radio"
+                                                                                                            name="a"
+                                                                                                            @if ($h->skalenyeripasien == '1') checked @endif
+                                                                                                            id="a"
+                                                                                                            value="1">
+                                                                                                        <label
+                                                                                                            class="form-check-label"
+                                                                                                            for="inlineRadio2">1</label>
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="form-check form-check-inline">
+                                                                                                        <input
+                                                                                                            class="form-check-input"
+                                                                                                            type="radio"
+                                                                                                            name="a"
+                                                                                                            @if ($h->skalenyeripasien == '2') checked @endif
+                                                                                                            id="a"
+                                                                                                            value="2">
+                                                                                                        <label
+                                                                                                            class="form-check-label"
+                                                                                                            for="inlineRadio2">2</label>
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="form-check form-check-inline">
+                                                                                                        <input
+                                                                                                            class="form-check-input"
+                                                                                                            type="radio"
+                                                                                                            name="a"
+                                                                                                            @if ($h->skalenyeripasien == '3') checked @endif
+                                                                                                            id="a"
+                                                                                                            value="3">
+                                                                                                        <label
+                                                                                                            class="form-check-label"
+                                                                                                            for="inlineRadio2">3</label>
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="form-check form-check-inline">
+                                                                                                        <input
+                                                                                                            class="form-check-input"
+                                                                                                            type="radio"
+                                                                                                            name="a"
+                                                                                                            @if ($h->skalenyeripasien == '4') checked @endif
+                                                                                                            id="a"
+                                                                                                            value="4">
+                                                                                                        <label
+                                                                                                            class="form-check-label"
+                                                                                                            for="inlineRadio2">4</label>
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="form-check form-check-inline">
+                                                                                                        <input
+                                                                                                            class="form-check-input"
+                                                                                                            type="radio"
+                                                                                                            name="a"
+                                                                                                            @if ($h->skalenyeripasien == '5') checked @endif
+                                                                                                            id="a"
+                                                                                                            value="5">
+                                                                                                        <label
+                                                                                                            class="form-check-label"
+                                                                                                            for="inlineRadio2">5</label>
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="form-check form-check-inline">
+                                                                                                        <input
+                                                                                                            class="form-check-input"
+                                                                                                            type="radio"
+                                                                                                            name="a"
+                                                                                                            @if ($h->skalenyeripasien == '6') checked @endif
+                                                                                                            id="a"
+                                                                                                            value="6">
+                                                                                                        <label
+                                                                                                            class="form-check-label"
+                                                                                                            for="inlineRadio2">6</label>
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="form-check form-check-inline">
+                                                                                                        <input
+                                                                                                            class="form-check-input"
+                                                                                                            type="radio"
+                                                                                                            name="a"
+                                                                                                            @if ($h->skalenyeripasien == '7') checked @endif
+                                                                                                            id="a"
+                                                                                                            value="7"f>
+                                                                                                        <label
+                                                                                                            class="form-check-label"
+                                                                                                            for="inlineRadio2">7</label>
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="form-check form-check-inline">
+                                                                                                        <input
+                                                                                                            class="form-check-input"
+                                                                                                            type="radio"
+                                                                                                            name="a"
+                                                                                                            @if ($h->skalenyeripasien == '8') checked @endif
+                                                                                                            id="a"
+                                                                                                            value="8">
+                                                                                                        <label
+                                                                                                            class="form-check-label"
+                                                                                                            for="inlineRadio2">8</label>
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="form-check form-check-inline">
+                                                                                                        <input
+                                                                                                            class="form-check-input"
+                                                                                                            type="radio"
+                                                                                                            name="a"
+                                                                                                            @if ($h->skalenyeripasien == '9') checked @endif
+                                                                                                            id="a"
+                                                                                                            value="9">
+                                                                                                        <label
+                                                                                                            class="form-check-label"
+                                                                                                            for="inlineRadio2">9</label>
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="form-check form-check-inline">
+                                                                                                        <input
+                                                                                                            class="form-check-input"
+                                                                                                            type="radio"
+                                                                                                            name="a"
+                                                                                                            @if ($h->skalenyeripasien == '10') checked @endif
+                                                                                                            id="a"
+                                                                                                            value="10">
+                                                                                                        <label
+                                                                                                            class="form-check-label"
+                                                                                                            for="inlineRadio2">10</label>
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td>
+                                                                                                    <img width="50%"
+                                                                                                        src="{{ asset('public/newfolder/skalanyeri.jpg') }}"
+                                                                                                        alt="">
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </table>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="card">
@@ -989,7 +1007,9 @@
                                                                                     aria-label="Recipient's username"
                                                                                     aria-describedby="basic-addon2"
                                                                                     name="tekanandarah"
-                                                                                    id="tekanandarah" value="{{ $h->tekanandarah}}">
+
+                                                                                    id="tekanandarah"
+                                                                                    value="{{ $h->tekanandarah }}">
                                                                                 <div class="input-group-append">
                                                                                     <span class="input-group-text"
                                                                                         id="basic-addon2">mmHg</span>
@@ -1008,7 +1028,9 @@
                                                                                     aria-label="Recipient's username"
                                                                                     aria-describedby="basic-addon2"
                                                                                     name="frekuensinadi"
-                                                                                    id="frekuensinadi" value="{{ $h->frekuensinadi}}">
+
+                                                                                    id="frekuensinadi"
+                                                                                    value="{{ $h->frekuensinadi }}">
                                                                                 <div class="input-group-append">
                                                                                     <span class="input-group-text"
                                                                                         id="basic-addon2">x/menit</span>
@@ -1029,7 +1051,9 @@
                                                                                     aria-label="Recipient's username"
                                                                                     aria-describedby="basic-addon2"
                                                                                     name="frekuensinafas"
-                                                                                    id="frekuensinafas" value="{{ $h->frekuensinapas}}">
+
+                                                                                    id="frekuensinafas"
+                                                                                    value="{{ $h->frekuensinapas }}">
                                                                                 <div class="input-group-append">
                                                                                     <span class="input-group-text"
                                                                                         id="basic-addon2">x/menit</span>
@@ -1047,7 +1071,9 @@
                                                                                     placeholder="masukan suhu tubuh pasien ..."
                                                                                     aria-label="Recipient's username"
                                                                                     aria-describedby="basic-addon2"
-                                                                                    name="suhu" id="suhu" value="{{ $h->suhutubuh}}">
+
+                                                                                    name="suhu" id="suhu"
+                                                                                    value="{{ $h->suhutubuh }}">
                                                                                 <div class="input-group-append">
                                                                                     <span class="input-group-text"
                                                                                         id="basic-addon2">°C</span>
@@ -1068,7 +1094,9 @@
                                                                                     aria-label="Recipient's username"
                                                                                     aria-describedby="basic-addon2"
                                                                                     name="beratbadanpasien"
-                                                                                    id="beratbadanpasien" value="{{ $h->beratbadan}}">
+
+                                                                                    id="beratbadanpasien"
+                                                                                    value="{{ $h->beratbadan }}">
                                                                                 <div class="input-group-append">
                                                                                     <span class="input-group-text"
                                                                                         id="basic-addon2"></span>
@@ -1088,7 +1116,9 @@
                                                                                     aria-label="Recipient's username"
                                                                                     aria-describedby="basic-addon2"
                                                                                     name="tinggibadan"
-                                                                                    id="tinggibadan" value="{{ $h->tinggibadan}}">
+
+                                                                                    id="tinggibadan"
+                                                                                    value="{{ $h->tinggibadan }}">
                                                                                 <div class="input-group-append">
                                                                                     <span class="input-group-text"
                                                                                         id="basic-addon2"></span>
@@ -1107,7 +1137,9 @@
                                                                                     placeholder="masukan IMT pasien ..."
                                                                                     aria-label="Recipient's username"
                                                                                     aria-describedby="basic-addon2"
-                                                                                    name="imt" id="imt" value="{{ $h->imt}}">
+
+                                                                                    name="imt" id="imt"
+                                                                                    value="{{ $h->imt }}">
                                                                                 <div class="input-group-append">
                                                                                     <span class="input-group-text"
                                                                                         id="basic-addon2"></span>
@@ -1126,7 +1158,9 @@
                                                                                     placeholder="masukan Umur pasien ..."
                                                                                     aria-label="Recipient's username"
                                                                                     aria-describedby="basic-addon2"
-                                                                                    name="umurpasien" id="umurpasien" value="{{ $h->usia}}">
+
+                                                                                    name="umurpasien" id="umurpasien"
+                                                                                    value="{{ $h->usia }}">
                                                                                 <div class="input-group-append">
                                                                                     <span class="input-group-text"
                                                                                         id="basic-addon2"></span>
@@ -2876,7 +2910,8 @@
                                                             <div class="card">
                                                                 <div class="card-header">Diagnosa Keperawatan</div>
                                                                 <div class="card-body">
-                                                                    {{ $h->diagnosakeperawatan}}
+
+                                                                    {{ $h->diagnosakeperawatan }}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -2904,21 +2939,24 @@
                                                                 <div class="card-header">Rencana Keperawatan /
                                                                     Kebidanan</div>
                                                                 <div class="card-body">
-                                                                    {{ $h->rencanakeperawatan}}
+
+                                                                    {{ $h->rencanakeperawatan }}
                                                                 </div>
                                                             </div>
                                                             <div class="card">
                                                                 <div class="card-header">Tindakan Keperawatan /
                                                                     Kebidanan</div>
                                                                 <div class="card-body">
-                                                                    {{ $h->tindakankeperawatan}}
+
+                                                                    {{ $h->tindakankeperawatan }}
                                                                 </div>
                                                             </div>
                                                             <div class="card">
                                                                 <div class="card-header">Evaluasi Keperawatan /
                                                                     Kebidanan</div>
                                                                 <div class="card-body">
-                                                                    {{ $h->evaluasikeperawatan}}
+
+                                                                    {{ $h->evaluasikeperawatan }}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -2932,22 +2970,24 @@
                                     <table class="table table-sm table-bordered">
                                         <tr>
                                             <td>Sumber Data</td>
-                                            <td>{{ $h->sumber_data}}</td>
+
+                                            <td>{{ $h->sumber_data }}</td>
                                         </tr>
                                         <tr>
                                             <td>Keluhan Utama</td>
-                                            <td>{{ $h->keluhan_pasien}}</td>
+                                            <td>{{ $h->keluhan_pasien }}</td>
                                         </tr>
                                         <tr>
                                             <td>Riwayat Penyakit Dahulu</td>
-                                            <td>{{ $h->riwayat_kehamilan_pasien_wanita}} <br>
-                                                {{ $h->riwyat_kelahiran_pasien_anak}} <br>
-                                                {{ $h->riwyat_penyakit_sekarang}} <br>
+                                            <td>{{ $h->riwayat_kehamilan_pasien_wanita }} <br>
+                                                {{ $h->riwyat_kelahiran_pasien_anak }} <br>
+                                                {{ $h->riwyat_penyakit_sekarang }} <br>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Riwayat Alergi</td>
-                                            <td>{{ $h->riwayat_alergi}} | {{ $h->keterangan_alergi}} </td>
+
+                                            <td>{{ $h->riwayat_alergi }} | {{ $h->keterangan_alergi }} </td>
                                         </tr>
                                         <tr>
                                             <td>Riwayat Obat yang diminum</td>
@@ -2955,36 +2995,39 @@
                                         </tr>
                                         <tr>
                                             <td>Pemeriksaan Fisik ( O )</td>
-                                            <td>{{ $h->pemeriksaan_fisik}}</td>
+
+                                            <td>{{ $h->pemeriksaan_fisik }}</td>
                                         </tr>
                                         <tr>
                                             <td>Diagnosis ( A )</td>
-                                            <td>{{ $h->diagnosakerja}}<br>
+                                            <td>{{ $h->diagnosakerja }}<br>
 
                                                 Diagnosa sekunder : {{ $h->diagnosabanding }}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Rencana Terapi ( P )</td>
-                                            <td>{{ $h->rencanakerja}}</td>
+
+                                            <td>{{ $h->rencanakerja }}</td>
                                         </tr>
                                         <tr>
                                             <td>Rencana Permeriksaan Penunjang</td>
-                                            <td>{{ $h->rencanakerja}}</td>
+                                            <td>{{ $h->rencanakerja }}</td>
                                         </tr>
                                         <tr>
                                             <td>Tindak Lanjut</td>
-                                            <td>{{ $h->tindak_lanjut}}<br>
-                                            {{ $h->keterangan_tindak_lanjut}}
+                                            <td>{{ $h->tindak_lanjut }}<br>
+                                                {{ $h->keterangan_tindak_lanjut }}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Tanggal Periksa</td>
-                                            <td>{{ $h->tgl_pemeriksaan}}</td>
+
+                                            <td>{{ $h->tgl_pemeriksaan }}</td>
                                         </tr>
                                         <tr>
                                             <td>Nama DPJP</td>
-                                            <td>{{ $h->nama_dokter}}</td>
+                                            <td>{{ $h->nama_dokter }}</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -3005,188 +3048,205 @@
                                         <tbody>
                                             @foreach ($cppt as $cp)
                                                 @if ($h->idasskep == $cp->id_header)
-                                            @if($cp->unitpoli != '1028')
-                                                    <tr>
-                                                        <td>
-                                                            {{ $cp->tgl_pemeriksaan}}
-                                                        </td>
-                                                        <td>
-                                                            Sumber Data : {{ $cp->sumberdataperiksa}}<br>
-                                                            Keluhan : {{ $cp->keluhanutama }}<br><br>
 
-                                                            Tekanan Darah : {{ $cp->tekanandarah }} mmHg <br>
-                                                            Frekuensi Nadi : {{ $cp->frekuensinadi }} x/menit<br>
-                                                            Frekuensi Nafas : {{ $cp->frekuensinapas }} x/menit<br>
-                                                            Suhu tubuh: {{ $cp->suhutubuh }} °C<br>
-                                                            Berat badan: {{ $cp->beratbadan }} kg<br>
-                                                            Tinggi badan: {{ $cp->tinggibadan }} cm<br>
-                                                            IMT: {{ $cp->imt }}<br>
-                                                            Umur: {{ $cp->usia }}<br>
-                                                            <br>
-                                                            <br>
-                                                            Diagnosa Keperawatan : {{ $cp->diagnosakeperawatan}}<br>
-                                                            Rencana Keperawatan : {{ $cp->rencanakeperawatan}}<br>
-                                                            Tindakan Keperawatan : {{ $cp->tindakankeperawatan}}<br>
-                                                            Evaluasi Keperawatan : {{ $cp->evaluasikeperawatan}}<br>
+                                                    @if ($cp->unitpoli != '1028')
+                                                        <tr>
+                                                            <td>
+                                                                {{ $cp->tgl_pemeriksaan }}
+                                                            </td>
+                                                            <td>
+                                                                Sumber Data : {{ $cp->sumberdataperiksa }}<br>
+                                                                Keluhan : {{ $cp->keluhanutama }}<br><br>
 
-                                                            <br>
-                                                            Pemeriksa : {{ $cp->namapemeriksa}}
-                                                        </td>
-                                                        <td>
-                                                            <div class="card">
-                                                                <table class="table table-sm table-bordered">
-                                                                    <tr>
-                                                                        <td>Sumber Data</td>
-                                                                        <td>{{ $cp->sumber_data}}
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Keluhan Utama</td>
-                                                                        <td>{{ $cp->keluhan_pasien}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Riwayat Penyakit Dahulu</td>
-                                                                        <td>{{ $cp->riwayat_kehamilan_pasien_wanita}} <br>
-                                                                            {{ $cp->riwyat_kelahiran_pasien_anak}} <br>
-                                                                            {{ $cp->riwyat_penyakit_sekarang}} <br>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Riwayat Alergi</td>
-                                                                        <td>{{ $cp->riwayat_alergi}} | {{ $cp->keterangan_alergi}} </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Riwayat Obat yang diminum</td>
-                                                                        <td></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Pemeriksaan Fisik ( O )</td>
-                                                                        <td>{{ $cp->pemeriksaan_fisik}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Diagnosis ( A )</td>
-                                                                        <td>{{ $cp->diagnosakerja}}<br>
+                                                                Tekanan Darah : {{ $cp->tekanandarah }} mmHg <br>
+                                                                Frekuensi Nadi : {{ $cp->frekuensinadi }} x/menit<br>
+                                                                Frekuensi Nafas : {{ $cp->frekuensinapas }} x/menit<br>
+                                                                Suhu tubuh: {{ $cp->suhutubuh }} °C<br>
+                                                                Berat badan: {{ $cp->beratbadan }} kg<br>
+                                                                Tinggi badan: {{ $cp->tinggibadan }} cm<br>
+                                                                IMT: {{ $cp->imt }}<br>
+                                                                Umur: {{ $cp->usia }}<br>
+                                                                <br>
+                                                                <br>
+                                                                Diagnosa Keperawatan :
+                                                                {{ $cp->diagnosakeperawatan }}<br>
+                                                                Rencana Keperawatan : {{ $cp->rencanakeperawatan }}<br>
+                                                                Tindakan Keperawatan :
+                                                                {{ $cp->tindakankeperawatan }}<br>
+                                                                Evaluasi Keperawatan :
+                                                                {{ $cp->evaluasikeperawatan }}<br>
 
-                                                                            Diagnosa sekunder : {{ $cp->diagnosabanding }}
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Rencana Terapi ( P )</td>
-                                                                        <td>{{ $cp->rencanakerja}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Rencana Permeriksaan Penunjang</td>
-                                                                        <td>{{ $cp->rencanakerja}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Tindak Lanjut</td>
-                                                                        <td>{{ $cp->tindak_lanjut}}<br>
-                                                                        {{ $cp->keterangan_tindak_lanjut}}
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Tanggal Periksa</td>
-                                                                        <td>{{ $cp->tgl_pemeriksaan}}</td>
-                                                                    </tr>
-                                                                </table>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            {{ $cp->nama_dokter}} | {{ $cp->nama_unit }}
-                                                        </td>
-                                                    </tr>
+                                                                <br>
+                                                                Pemeriksa : {{ $cp->namapemeriksa }}
+                                                            </td>
+                                                            <td>
+                                                                <div class="card">
+                                                                    <table class="table table-sm table-bordered">
+                                                                        <tr>
+                                                                            <td>Sumber Data</td>
+                                                                            <td>{{ $cp->sumber_data }}
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Keluhan Utama</td>
+                                                                            <td>{{ $cp->keluhan_pasien }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Riwayat Penyakit Dahulu</td>
+                                                                            <td>{{ $cp->riwayat_kehamilan_pasien_wanita }}
+                                                                                <br>
+                                                                                {{ $cp->riwyat_kelahiran_pasien_anak }}
+                                                                                <br>
+                                                                                {{ $cp->riwyat_penyakit_sekarang }}
+                                                                                <br>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Riwayat Alergi</td>
+                                                                            <td>{{ $cp->riwayat_alergi }} |
+                                                                                {{ $cp->keterangan_alergi }} </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Riwayat Obat yang diminum</td>
+                                                                            <td></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Pemeriksaan Fisik ( O )</td>
+                                                                            <td>{{ $cp->pemeriksaan_fisik }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Diagnosis ( A )</td>
+                                                                            <td>{{ $cp->diagnosakerja }}<br>
+
+                                                                                Diagnosa sekunder :
+                                                                                {{ $cp->diagnosabanding }}
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Rencana Terapi ( P )</td>
+                                                                            <td>{{ $cp->rencanakerja }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Rencana Permeriksaan Penunjang</td>
+                                                                            <td>{{ $cp->rencanakerja }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Tindak Lanjut</td>
+                                                                            <td>{{ $cp->tindak_lanjut }}<br>
+                                                                                {{ $cp->keterangan_tindak_lanjut }}
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Tanggal Periksa</td>
+                                                                            <td>{{ $cp->tgl_pemeriksaan }}</td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                {{ $cp->nama_dokter }} | {{ $cp->nama_unit }}
+                                                            </td>
+                                                        </tr>
                                                     @else
-                                                    <tr>
-                                                        <td>
-                                                            {{ $cp->tgl_pemeriksaan}}
-                                                        </td>
-                                                        <td>
-                                                            Hasil Pemeriksaan : {{ $cp->tindakankeperawatan}}<br>
+                                                        <tr>
+                                                            <td>
+                                                                {{ $cp->tgl_pemeriksaan }}
+                                                            </td>
+                                                            <td>
+                                                                Hasil Pemeriksaan : {{ $cp->tindakankeperawatan }}<br>
 
-                                                            <br>
-                                                            Pemeriksa : {{ $cp->namapemeriksa}}
-                                                        </td>
-                                                        <td>
-                                                            <div class="card">
-                                                                <table class="table table-bordered table-striped font-italic">
-                                                                <tr>
-                                                                    <td>Anamnesa</td>
-                                                                    <td>: {{ $cp->anamnesa }}</td>
-                                                                    <input hidden id="diagnosa" type="text" value="{{ $cp->diagnosakerja }}">
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Pemeriksaan Fisik dan Uji Fungsi</td>
-                                                                    <td>: {{ $cp->pemeriksaan_fisik }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Diagnosis Medis ( ICD 10 )</td>
-                                                                    <td>: {{ $cp->diagnosakerja }}</td>
-                                                                    <input hidden id="diagnosa" type="text" value="{{ $cp->diagnosakerja }}">
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Diagnosis Fungsi ( ICD 10 )</td>
-                                                                    <td>: {{ $cp->diagnosabanding }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Pemeriksaan Penunjang</td>
-                                                                    <td>: {{ $cp->rencanakerja }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Tata laksana KFR </td>
-                                                                    <td>: {{ $cp->tatalaksana_kfr }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Anjuran </td>
-                                                                    <td>: {{ $cp->anjuran }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Evaluasi</td>
-                                                                    <td>: {{ $cp->evaluasi }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Suspek Penyakit akibat kerja</td>
-                                                                    <td>: {{ $cp->riwayatlain }}
-                                                                        <br>
-                                                                        ketereangan : {{ $cp->ket_riwayatlain }}
+                                                                <br>
+                                                                Pemeriksa : {{ $cp->namapemeriksa }}
+                                                            </td>
+                                                            <td>
+                                                                <div class="card">
+                                                                    <table
+                                                                        class="table table-bordered table-striped font-italic">
+                                                                        <tr>
+                                                                            <td>Anamnesa</td>
+                                                                            <td>: {{ $cp->anamnesa }}</td>
+                                                                            <input hidden id="diagnosa"
+                                                                                type="text"
+                                                                                value="{{ $cp->diagnosakerja }}">
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Pemeriksaan Fisik dan Uji Fungsi</td>
+                                                                            <td>: {{ $cp->pemeriksaan_fisik }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Diagnosis Medis ( ICD 10 )</td>
+                                                                            <td>: {{ $cp->diagnosakerja }}</td>
+                                                                            <input hidden id="diagnosa"
+                                                                                type="text"
+                                                                                value="{{ $cp->diagnosakerja }}">
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Diagnosis Fungsi ( ICD 10 )</td>
+                                                                            <td>: {{ $cp->diagnosabanding }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Pemeriksaan Penunjang</td>
+                                                                            <td>: {{ $cp->rencanakerja }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Tata laksana KFR </td>
+                                                                            <td>: {{ $cp->tatalaksana_kfr }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Anjuran </td>
+                                                                            <td>: {{ $cp->anjuran }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Evaluasi</td>
+                                                                            <td>: {{ $cp->evaluasi }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Suspek Penyakit akibat kerja</td>
+                                                                            <td>: {{ $cp->riwayatlain }}
+                                                                                <br>
+                                                                                ketereangan :
+                                                                                {{ $cp->ket_riwayatlain }}
 
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Tindak Lanjut</td>
-                                                                    <td>
-                                                                        @if ($cp->versidk != 2)
-                                                                            : {{ $cp->tindak_lanjut }} | {{ $cp->keterangan_tindak_lanjut }}
-                                                                        @else
-                                                                            @php $tinjut = explode('|',$cp->tindak_lanjut ) @endphp
-                                                                            @if ($tinjut[0] == 1)
-                                                                                Kontrol <br>
-                                                                            @endif
-                                                                            @if ($tinjut[1] == 1)
-                                                                                Konsul <br>
-                                                                            @endif
-                                                                            @if ($tinjut[2] == 1)
-                                                                                Rujuk Internal <br>
-                                                                            @endif
-                                                                            @if ($tinjut[3] == 1)
-                                                                                Rujuak Keluar <br>
-                                                                            @endif
-                                                                            @if ($tinjut[4] == 1)
-                                                                                Rawat Inap <br>
-                                                                            @endif
-                                                                            @if ($tinjut[5] == 1)
-                                                                                Dipulangkan <br>
-                                                                            @endif
-                                                                        @endif
-                                                                        Keterangan : {{ $cp->keterangan_tindak_lanjut }}
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            {{ $cp->nama_dokter}} | {{ $cp->nama_unit }}
-                                                        </td>
-                                                    </tr>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Tindak Lanjut</td>
+                                                                            <td>
+                                                                                @if ($cp->versidk != 2)
+                                                                                    : {{ $cp->tindak_lanjut }} |
+                                                                                    {{ $cp->keterangan_tindak_lanjut }}
+                                                                                @else
+                                                                                    @php $tinjut = explode('|',$cp->tindak_lanjut ) @endphp
+                                                                                    @if ($tinjut[0] == 1)
+                                                                                        Kontrol <br>
+                                                                                    @endif
+                                                                                    @if ($tinjut[1] == 1)
+                                                                                        Konsul <br>
+                                                                                    @endif
+                                                                                    @if ($tinjut[2] == 1)
+                                                                                        Rujuk Internal <br>
+                                                                                    @endif
+                                                                                    @if ($tinjut[3] == 1)
+                                                                                        Rujuak Keluar <br>
+                                                                                    @endif
+                                                                                    @if ($tinjut[4] == 1)
+                                                                                        Rawat Inap <br>
+                                                                                    @endif
+                                                                                    @if ($tinjut[5] == 1)
+                                                                                        Dipulangkan <br>
+                                                                                    @endif
+                                                                                @endif
+                                                                                Keterangan :
+                                                                                {{ $cp->keterangan_tindak_lanjut }}
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                {{ $cp->nama_dokter }} | {{ $cp->nama_unit }}
+                                                            </td>
+                                                        </tr>
                                                     @endif
                                                 @endif
                                             @endforeach
@@ -3200,4 +3260,349 @@
             </div>
         </div>
     @endforeach
+</div> --}}
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header p-2">
+            <ul class="nav nav-pills">
+                <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">ASSESMEN
+                        KEPERAWATAN</a></li>
+                <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">ASSESMEN MEDIS</a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">BERKAS LAIN</a></li>
+            </ul>
+        </div><!-- /.card-header -->
+        <div class="card-body">
+            <div class="tab-content">
+                <div class="active tab-pane" id="activity">
+
+                </div>
+                <div class="tab-pane" id="timeline">
+                    @foreach ($header as $h)
+                        <div class="card">
+                            <div class="card-header bg-info">Assesmen Awal Medis <br>
+                                {{ \Carbon\Carbon::parse($h->tglk)->format('d / M / Y') }} {{ $h->nama_unit }}</div>
+                            <div class="card-body">
+                                <table class="table table-sm table-bordered table-striped">
+                                    <tr>
+                                        <td>Sumber Data</td>
+                                        <td>{{ $h->sumber_data }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Keluhan Utama</td>
+                                        <td>{{ $h->keluhan_pasien }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Riwayat Penyakit Dahulu</td>
+                                        <td>{{ $h->riwayat_kehamilan_pasien_wanita }} <br>
+                                            {{ $h->riwyat_kelahiran_pasien_anak }} <br>
+                                            {{ $h->riwyat_penyakit_sekarang }} <br>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Riwayat Alergi</td>
+                                        <td>{{ $h->riwayat_alergi }} | {{ $h->keterangan_alergi }} </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Riwayat Obat yang diminum</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pemeriksaan Fisik ( O )</td>
+                                        <td>{{ $h->pemeriksaan_fisik }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Diagnosis ( A )</td>
+                                        <td>{{ $h->diagnosakerja }}<br>
+
+                                            Diagnosa sekunder : {{ $h->diagnosabanding }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Rencana Terapi ( P )</td>
+                                        <td>{{ $h->rencanakerja }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Rencana Permeriksaan Penunjang</td>
+                                        <td>{{ $h->rencanakerja }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tindak Lanjut</td>
+                                        <td>{{ $h->tindak_lanjut }}<br>
+                                            {{ $h->keterangan_tindak_lanjut }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tanggal Periksa</td>
+                                        <td> {{ \Carbon\Carbon::parse($h->tglk)->format('d / M / Y') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jawaban Konsul Ke Poli lain</td>
+                                        <td>{{ $h->keterangan_tindak_lanjut_2}} </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Billing Tindakan</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Farmasi</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Billing Pemeriksaan Penunjang</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nama DPJP</td>
+                                        <td>{{ $h->nama_dokter }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header bg-warning">CPPT</div>
+                            <div class="card-body">
+                                <table class="table table-sm table-bordered">
+                                    <thead>
+                                        <th width="8%">Tanggal & Jam</th>
+                                        <th>Hasil Pemeriksaan, Analisa, Rencana Penatalaksanaan pasien( ditulis
+                                            dengan format SOAP, disertai target yang terukur, evaluasi hasil, tata
+                                            laksana dituliskan dalam assesmen )</th>
+                                        <th>
+                                            Instruksi tenaga kesehatan termasuk pasca bedah / prosedur
+                                        </th>
+                                        <th>
+                                            nama Dpjp
+                                        </th>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($cppt as $cp)
+                                            @if ($h->idasskep == $cp->id_header)
+                                                @if ($cp->unitpoli != '1028')
+                                                    <tr>
+                                                        <td>
+                                                            {{-- {{ $cp->tgl_pemeriksaan }} --}}
+                                                            {{ \Carbon\Carbon::parse($cp->tgl_pemeriksaan)->format('d / M / Y') }}
+                                                        </td>
+                                                        <td>
+                                                            Sumber Data : {{ $cp->sumberdataperiksa }}<br>
+                                                            Keluhan : {{ $cp->keluhanutama }}<br><br>
+
+                                                            Tekanan Darah : {{ $cp->tekanandarah }} mmHg <br>
+                                                            Frekuensi Nadi : {{ $cp->frekuensinadi }} x/menit<br>
+                                                            Frekuensi Nafas : {{ $cp->frekuensinapas }} x/menit<br>
+                                                            Suhu tubuh: {{ $cp->suhutubuh }} °C<br>
+                                                            Berat badan: {{ $cp->beratbadan }} kg<br>
+                                                            Tinggi badan: {{ $cp->tinggibadan }} cm<br>
+                                                            IMT: {{ $cp->imt }}<br>
+                                                            Umur: {{ $cp->usia }}<br>
+                                                            <br>
+                                                            <br>
+
+                                                            Diagnosa Keperawatan :
+                                                            {{ $cp->diagnosakeperawatan }}<br>
+                                                            Rencana Keperawatan : {{ $cp->rencanakeperawatan }}<br>
+                                                            Tindakan Keperawatan :
+                                                            {{ $cp->tindakankeperawatan }}<br>
+                                                            Evaluasi Keperawatan :
+                                                            {{ $cp->evaluasikeperawatan }}<br>
+
+                                                            <br>
+                                                            Pemeriksa : {{ $cp->namapemeriksa }}
+                                                        </td>
+                                                        <td>
+                                                            <div class="card">
+                                                                <table class="table table-sm table-bordered table-striped">
+                                                                    <tr>
+                                                                        <td>Sumber Data</td>
+                                                                        <td>{{ $cp->sumber_data }}
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Keluhan Utama</td>
+
+                                                                        <td>{{ $cp->keluhan_pasien }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Riwayat Penyakit Dahulu</td>
+                                                                        <td>{{ $cp->riwayat_kehamilan_pasien_wanita }}
+                                                                            <br>
+                                                                            {{ $cp->riwyat_kelahiran_pasien_anak }}
+                                                                            <br>
+                                                                            {{ $cp->riwyat_penyakit_sekarang }}
+                                                                            <br>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Riwayat Alergi</td>
+
+                                                                        <td>{{ $cp->riwayat_alergi }} |
+                                                                            {{ $cp->keterangan_alergi }} </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Riwayat Obat yang diminum</td>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Pemeriksaan Fisik ( O )</td>
+
+                                                                        <td>{{ $cp->pemeriksaan_fisik }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Diagnosis ( A )</td>
+                                                                        <td>{{ $cp->diagnosakerja }}<br>
+
+                                                                            Diagnosa sekunder :
+                                                                            {{ $cp->diagnosabanding }}
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Rencana Terapi ( P )</td>
+
+                                                                        <td>{{ $cp->rencanakerja }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Rencana Permeriksaan Penunjang</td>
+                                                                        <td>{{ $cp->rencanakerja }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Tindak Lanjut</td>
+                                                                        <td>{{ $cp->tindak_lanjut }}<br>
+                                                                            {{ $cp->keterangan_tindak_lanjut }}
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Jawaban Konsul Ke poli lain</td>
+                                                                        <td>{{ $cp->keterangan_tindak_lanjut_2 }}
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Tanggal Periksa</td>
+
+                                                                        <td>{{ $cp->tgl_pemeriksaan }}</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+
+                                                            {{ $cp->nama_dokter }} | {{ $cp->nama_unit }}
+                                                        </td>
+                                                    </tr>
+                                                @else
+                                                    <tr>
+                                                        <td>
+                                                            {{-- {{ $cp->tgl_pemeriksaan }} --}}
+                                                            {{ \Carbon\Carbon::parse($cp->tgl_pemeriksaan)->format('d / M / Y') }}
+                                                        </td>
+                                                        <td>
+                                                            Hasil Pemeriksaan : {{ $cp->tindakankeperawatan }}<br>
+                                                            <br>
+                                                            Pemeriksa : {{ $cp->namapemeriksa }}
+                                                        </td>
+                                                        <td>
+                                                            <div class="card">
+                                                                <table
+                                                                    class="table table-bordered table-striped font-italic">
+                                                                    <tr>
+                                                                        <td>Anamnesa</td>
+                                                                        <td>: {{ $cp->anamnesa }}</td>
+                                                                        <input hidden id="diagnosa" type="text"
+                                                                            value="{{ $cp->diagnosakerja }}">
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Pemeriksaan Fisik dan Uji Fungsi</td>
+                                                                        <td>: {{ $cp->pemeriksaan_fisik }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Diagnosis Medis ( ICD 10 )</td>
+                                                                        <td>: {{ $cp->diagnosakerja }}</td>
+                                                                        <input hidden id="diagnosa" type="text"
+                                                                            value="{{ $cp->diagnosakerja }}">
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Diagnosis Fungsi ( ICD 10 )</td>
+                                                                        <td>: {{ $cp->diagnosabanding }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Pemeriksaan Penunjang</td>
+                                                                        <td>: {{ $cp->rencanakerja }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Tata laksana KFR </td>
+                                                                        <td>: {{ $cp->tatalaksana_kfr }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Anjuran </td>
+                                                                        <td>: {{ $cp->anjuran }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Evaluasi</td>
+                                                                        <td>: {{ $cp->evaluasi }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Suspek Penyakit akibat kerja</td>
+                                                                        <td>: {{ $cp->riwayatlain }}
+                                                                            <br>
+                                                                            ketereangan :
+                                                                            {{ $cp->ket_riwayatlain }}
+
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Tindak Lanjut</td>
+                                                                        <td>
+                                                                            @if ($cp->versidk != 2)
+                                                                                : {{ $cp->tindak_lanjut }} |
+                                                                                {{ $cp->keterangan_tindak_lanjut }}
+                                                                            @else
+                                                                                @php $tinjut = explode('|',$cp->tindak_lanjut ) @endphp
+                                                                                @if ($tinjut[0] == 1)
+                                                                                    Kontrol <br>
+                                                                                @endif
+                                                                                @if ($tinjut[1] == 1)
+                                                                                    Konsul <br>
+                                                                                @endif
+                                                                                @if ($tinjut[2] == 1)
+                                                                                    Rujuk Internal <br>
+                                                                                @endif
+                                                                                @if ($tinjut[3] == 1)
+                                                                                    Rujuak Keluar <br>
+                                                                                @endif
+                                                                                @if ($tinjut[4] == 1)
+                                                                                    Rawat Inap <br>
+                                                                                @endif
+                                                                                @if ($tinjut[5] == 1)
+                                                                                    Dipulangkan <br>
+                                                                                @endif
+                                                                            @endif
+                                                                            Keterangan :
+                                                                            {{ $cp->keterangan_tindak_lanjut }}
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            {{ $cp->nama_dokter }} | {{ $cp->nama_unit }}
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            @endif
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="tab-pane" id="settings">
+                    BERKAS LAIN
+                </div>
+                <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+        </div><!-- /.card-body -->
+    </div>
+    <!-- /.card -->
 </div>

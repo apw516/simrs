@@ -23,8 +23,6 @@
           <nav class="mt-2">
               <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                   data-accordion="false">
-                  <!-- Add icons to the links using the .nav-icon class
-       with font-awesome or any other icon font library -->
                   <li class="nav-item @if ($sidebar == 1) menu-open @endif">
                       <a href="#" class="nav-link">
                           <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -86,15 +84,6 @@
                               </p>
                           </a>
                       </li>
-                      {{-- <li class="nav-item">
-                          <a href="{{ route('datapasienranap') }}"
-                              class="nav-link @if ($title == 'SIMRS - Data Pasien') active @endif">
-                              <i class="nav-icon fas fa-th"></i>
-                              <p style="font-size:12px">
-                                  Data Pasien
-                              </p>
-                          </a>
-                      </li> --}}
                       <li class="nav-item">
                           <a href="{{ route('datasepranap') }}"
                               class="nav-link @if ($title == 'SIMRS -SEP RAWAT INAP') active @endif">
@@ -113,23 +102,6 @@
                               </p>
                           </a>
                       </li>
-                      {{-- <li class="nav-item">
-                          <a href="{{ route('menucaripasien') }}"
-                              class="nav-link @if ($title == 'SIMRS - PENCARIAN PASIEN') active @endif">
-                              <i class="nav-icon fas fa-th"></i>
-                              <p style="font-size:12px">
-                                  Buka Kunjungan
-                              </p>
-                          </a>
-                      </li> --}}
-                      {{-- <li class="nav-item">
-                    <a href="{{ route('Billing') }}" class="nav-link @if ($sidebar == '2') active @endif">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p style="font-size:12px">
-                            Surat Kontrol Pasca Rawat
-                        </p>
-                    </a>
-                </li> --}}
                   @endif
                   @if (auth()->user()->hak_akses == 1 || auth()->user()->hak_akses == 2)
                       <li class="nav-item @if ($sidebar == '3') menu-open @endif">
@@ -593,6 +565,48 @@
                               <p>Data User</p>
                           </a>
                       </li>
+                      <li class="nav-item ">
+                          <a href="{{ route('indexveriftte') }}"
+                              class="nav-link @if ($sidebar == 'verifikasitte') active @endif">
+                              <i class="bi bi-person-lines-fill nav-icon"></i>
+                              <p>Verifikasi Dokumen TTE</p>
+                          </a>
+                      </li>
+                      <li class="nav-item ">
+                          <a href="{{ route('indexcekstatususertte') }}"
+                              class="nav-link @if ($sidebar == 'cekstatususertte') active @endif">
+                              <i class="bi bi-person-lines-fill nav-icon"></i>
+                              <p>Cek Status User TTE</p>
+                          </a>
+                      </li>
+                      <li hidden class="nav-item ">
+                          <a href="{{ route('indexveriftte') }}"
+                              class="nav-link @if ($sidebar == 'regisusertte') active @endif">
+                              <i class="bi bi-person-lines-fill nav-icon"></i>
+                              <p>Registrasi User TTE</p>
+                          </a>
+                      </li>
+                      <li class="nav-item ">
+                          <a href="{{ route('indexresumemedisrajal') }}"
+                              class="nav-link @if ($sidebar == 'indexresumemedisrajal') active @endif">
+                              <i class="bi bi-filetype-doc nav-icon"></i>
+                              <p>Resume Medis Rajal</p>
+                          </a>
+                      </li>
+                      <li class="nav-item ">
+                          <a href="{{ route('indexresumemedisranap') }}"
+                              class="nav-link @if ($sidebar == 'indexresumemedisranap') active @endif">
+                              <i class="bi bi-filetype-doc nav-icon"></i>
+                              <p>Resume Medis Rawat Inap</p>
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a href="{{ route('berkaserm') }}"
+                              class="nav-link @if ($title == 'SIMRS - Berkas ERM') active @endif">
+                              <i class="bi far fa-circle nav-icon"></i>
+                              <p>Berkas ERM</p>
+                          </a>
+                      </li>
                   @endif
                   @if (auth()->user()->hak_akses == 6)
                       {{-- <li class="nav-header">FARMASI</li>
@@ -604,16 +618,19 @@
                                   Layanan Resep
                               </p>
                           </a>
-                      </li> --}}
-                      {{-- <li class="nav-item">
-                          <a href="" class="nav-link @if ($sidebar == '2') active @endif">
+
+                      </li>
+                      <li class="nav-item">
+                          <a href="{{ route('index_cek_pasien_kronis') }}"
+                              class="nav-link @if ($sidebar == 'index_cek_pasien_kronis') active @endif">
                               <i class="nav-icon fas fa-th"></i>
                               <p>
-                                  Retur Resep
+                                  Cek Pasien Kronis
                               </p>
                           </a>
-                      </li> --}}
-                      {{-- <li class="nav-item">
+
+                      </li>
+                      <li class="nav-item">
                           <a href="{{ route('cari_resep') }}"
                               class="nav-link @if ($sidebar == 'farmasi_3') active @endif">
                               <i class="nav-icon fas fa-th"></i>
@@ -637,6 +654,15 @@
                           auth()->user()->hak_akses == '101' ||
                           auth()->user()->hak_akses == '68')
                       <li class="nav-header">REKAMEDIS</li>
+                      <li hidden class="nav-item">
+                          <a href="{{ route('dataermrajal') }}"
+                              class="nav-link @if ($title == 'SIMRS - BERKAS ERM RAWAT JALAN') active @endif">
+                              <i class="nav-icon fas fa-th"></i>
+                              <p style="font-size:12px">
+                                  ERM Rawat Jalan
+                              </p>
+                          </a>
+                      </li>
                       <li class="nav-item @if ($sidebar == 'berkas_erm') menu-open @endif">
                           <a href="#" class="nav-link">
                               <i class="nav-icon fas fa-table"></i>
@@ -681,7 +707,7 @@
                                   </a>
                               </li>
                           </ul>
-                          <ul class="nav nav-treeview">
+                          {{-- <ul class="nav nav-treeview">
                               <li class="nav-item">
                                   <a href="{{ route('berkas_ersep') }}"
                                       class="nav-link @if ($sidebar_m == 'berkas_eresep') active @endif">
@@ -689,7 +715,17 @@
                                       <p>Berkas E - Resep</p>
                                   </a>
                               </li>
-                          </ul>
+                          </ul> --}}
+                      </li>
+                  @endif
+                  @if(auth()->user()->hak_akses == '41')
+                      <li class="nav-header">FARMASI</li>
+                       <li class="nav-item ">
+                          <a href="{{ route('datakunjungan_farmasi') }}"
+                              class="nav-link @if ($sidebar == 'datakunjungan_farmasi') active @endif">
+                              <i class="bi bi-clipboard2-data nav-icon"></i>
+                              <p>Data Kunjungan</p>
+                          </a>
                       </li>
                   @endif
                   <li class="nav-header"> <i class="nav-icon bi bi-person-circle mr-2"></i> INFO AKUN</li>

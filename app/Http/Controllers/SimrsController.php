@@ -24,11 +24,14 @@ use App\Models\Dokter;
 use App\Models\ts_kunjungan;
 use App\Models\mt_unit;
 use App\Models\ts_layanan_detail;
+use App\Models\ts_detail_iter;
 use App\Models\ts_layanan_header;
 use App\Models\ts_sep;
 use App\Models\Agama;
 use App\Models\Pekerjaan;
 use App\Models\Pendidikan;
+use App\Models\ts_layanan_header_order;
+use App\Models\ts_layanan_detail_order;
 use App\Models\Hubkeluarga;
 use App\Models\Negara;
 use App\Models\Provinsi;
@@ -42,6 +45,7 @@ use App\Models\ts_rujukan;
 use App\Models\jkn_antrian;
 use App\Models\Status;
 use App\Models\tracer;
+use App\Models\ts_antrian_online;
 use simitsdk\phpjasperxml\PHPJasperXML;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use BaconQrCode\Renderer\GDLibRenderer;
@@ -402,7 +406,7 @@ class SimrsController extends Controller
         } else {
             $tanggal_k = 0;
         }
-
+        $cek_iter = db::select('select *,date(tgl_iter) as tgl_iter2,fc_nama_paramedis1(kode_paramedis) as namadokter,fc_nama_unit1(kode_unit) as nama_unit from ts_header_iter_bpjs where no_rm = ? order by id desc', [$request->nomorrm]);
         return view('pendaftaran.form_pasien_bpjs', [
             'data_peserta' => $noka,
             'riwayat_kunjungan' => DB::select("CALL SP_RIWAYAT_KUNJUNGAN_PX('$request->nomorrm')"),
@@ -412,8 +416,175 @@ class SimrsController extends Controller
             'mt_unit' => mt_unit::where('kelas_unit', 2)->get(),
             'provinsi' => $v->referensi_propinsi(),
             'cek_kunjungan' => $total,
-            'kunjungan_aktif' => $tanggal_k
+            'kunjungan_aktif' => $tanggal_k,
+            'cek_iter' => $cek_iter
         ]);
+    }
+    public function cari_detail_iter(Request $request)
+    {
+        $iditer = $request->iditer;
+        $get_detail = db::select('select *,fc_nama_unit1(kode_unit) as nama_unit,date(tgl_kunjungan) as tglk from ts_detail_iter_bpjs where id_header = ?', [$iditer]);
+        return view('pendaftaran.detailiterasi', compact([
+            'get_detail'
+        ]));
+    }
+    public function ambil_form_iterasi(Request $request)
+    {
+        $iditer = $request->iditer;
+        $rm = $request->rm;
+        $kodekunjunganlama = $request->kodekunjunganlama;
+        $cek_iter_header = db::select('select *,date(tgl_iter) as tgl_iter2,fc_nama_paramedis1(kode_paramedis) as namadokter,fc_nama_unit1(kode_unit) as nama_unit from ts_header_iter_bpjs where id = ? order by id desc', [$iditer]);
+        $get_detail = db::select('select *,fc_nama_unit1(kode_unit) as nama_unit,date(tgl_kunjungan) as tglk from ts_detail_iter_bpjs where id_header = ?', [$iditer]);
+        $jumlahiter = trim($cek_iter_header[0]->jumlah);
+        $iterygsudah = count($get_detail);
+        $mt_unit = db::select('select * from mt_unit where kode_unit > ? and kode_unit < ?', ['4000', '4014']);
+        if ($iterygsudah >= $jumlahiter) {
+            echo 'jumlah iterasi obat sudah habis terpakai';
+        } else {
+            return view('pendaftaran.form_iterasi_obat', compact([
+                'iditer',
+                'kodekunjunganlama',
+                'mt_unit',
+                'rm'
+            ]));
+        }
+    }
+    public function simpanpendaftaraniter(Request $request)
+    {
+        $data = json_decode($_POST['data'], true);
+        foreach ($data as $nama) {
+            $index = $nama['name'];
+            $value = $nama['value'];
+            $dataSet[$index] = $value;
+        }
+        $mt_unit = db::select('select * from mt_unit where kode_unit = ?', [$dataSet['unit']]);
+        $kunjunganlama = db::select('select * from ts_kunjungan where kode_kunjungan = ?', [$dataSet['kodekunjunganlama']]);
+        $rm = $dataSet['rm'];
+        $cek_rm = DB::select('select * from ts_kunjungan where no_rm = ?', [$rm]);
+        if (count($cek_rm) == 0) {
+            $counter = 1;
+        } else {
+            foreach ($cek_rm as $c)
+                $arr_counter[] = array(
+                    'counter' => $c->counter
+                );
+            $last_count = max($arr_counter);
+            $counter = $last_count['counter'] + 1;
+        }
+        $ts_kunjungan = [
+            'counter' => $counter,
+            'no_rm' => $dataSet['rm'],
+            'kode_unit' => $dataSet['unit'],
+            'tgl_masuk' => $this->get_now(),
+            'status_kunjungan' => 1,
+            'ref_kunjungan' => 0,
+            'prefix_kunjungan' => $mt_unit[0]->prefix_unit,
+            'kode_penjamin' => $kunjunganlama[0]->kode_penjamin,
+            'pic' => auth()->user()->id_simrs,
+            'id_alasan_masuk' => 27,
+            'kelas' => 3,
+            'cok' => 1,
+            'ref_unit' => $kunjunganlama[0]->kode_unit,
+            'ref_paramedis' => $kunjunganlama[0]->kode_paramedis,
+            'keterangan2' => 'WEB'
+        ];
+        //create_ts_kunjungan
+        $ts_kunjungan = ts_kunjungan::create($ts_kunjungan);
+        $kodekunjunganlama = $dataSet['kodekunjunganlama'];
+        $ambil_order = db::select('select * from ts_layanan_header_order a inner join ts_layanan_detail_order b on a.id = b.row_id_header where a.kode_kunjungan = ? and a.kode_unit in (4002,4008)', [$kodekunjunganlama]);
+        $kode_layanan_header = $this->createOrderHeader('F');
+        $data_layanan_header = [
+            'no_rm' => $dataSet['rm'],
+            'kode_layanan_header' => $kode_layanan_header,
+            'tgl_entry' =>   $this->get_now(),
+            'kode_kunjungan' => $ts_kunjungan->id,
+            'kode_penjaminx' => $kunjunganlama[0]->kode_penjamin,
+            'kode_unit' => $ambil_order[0]->kode_unit,
+            'kode_tipe_transaksi' => 2,
+            'pic' => auth()->user()->id,
+            'unit_pengirim' => $ambil_order[0]->unit_pengirim,
+            'tgl_periksa' => $this->get_now(),
+            'diagnosa' => $ambil_order[0]->diagnosa,
+            'dok_kirim' => $ambil_order[0]->dok_kirim,
+            'status_layanan' => '3',
+            'keterangan' => 'RESEP ITER',
+            'status_retur' => 'OPN',
+            'status_pembayaran' => 'OPN',
+            'status_order' => '1',
+            'id_assdok' => '0'
+        ];
+        $ts_layanan_header = ts_layanan_header_order::create($data_layanan_header);
+
+        foreach ($ambil_order as $d) {
+            $id_detail = $this->createLayanandetailOrder();
+            $save_detail = [
+                'id_layanan_detail' => $id_detail,
+                'kode_layanan_header' => $kode_layanan_header,
+                'kode_dokter1' => auth()->user()->kode_paramedis,
+                'jumlah_layanan' => $d->jumlah_layanan,
+                'kode_barang' => $d->kode_barang,
+                'aturan_pakai' => $d->aturan_pakai,
+                'kategori_resep' => $d->kategori_resep,
+                'satuan_barang' => $d->satuan_barang,
+                'status_layanan_detail' => 'OPN',
+                'tgl_layanan_detail' => $this->get_now(),
+                'tgl_layanan_detail_2' => $this->get_now(),
+                'row_id_header' => $ts_layanan_header->id
+            ];
+            $ts_layanan_detail = ts_layanan_detail_order::create($save_detail);
+        }
+
+        $ts_iter_detail = [
+            'id_header' => $dataSet['iditer'],
+            'kode_kunjungan' => $ts_kunjungan->id,
+            'kode_unit' => $ambil_order[0]->kode_unit,
+            'tgl_kunjungan' => $this->get_now()
+        ];
+        ts_detail_iter::create($ts_iter_detail);
+        $data = [
+            'kode' => 200,
+            'message' => 'Data berhasil disimpan !'
+        ];
+        echo json_encode($data);
+        die;
+    }
+    public function createOrderHeader($kode)
+    {
+        //dummy
+        $q = DB::select('SELECT id,kode_layanan_header,RIGHT(kode_layanan_header,6) AS kd_max  FROM ts_layanan_header_order
+        WHERE DATE(tgl_entry) = CURDATE()
+        ORDER BY id DESC
+        LIMIT 1');
+        $kd = "";
+        if (count($q) > 0) {
+            foreach ($q as $k) {
+                $tmp = ((int) $k->kd_max) + 1;
+                $kd = sprintf("%06s", $tmp);
+            }
+        } else {
+            $kd = "000001";
+        }
+        date_default_timezone_set('Asia/Jakarta');
+        return 'OR' . $kode . date('ymd') . $kd;
+    }
+    public function createLayanandetailOrder()
+    {
+        //dummy
+        $q = DB::connection('mysql4')->select('SELECT id,id_layanan_detail,RIGHT(id_layanan_detail,6) AS kd_max  FROM ts_layanan_detail_order
+        WHERE DATE(tgl_layanan_detail) = CURDATE()
+        ORDER BY id DESC
+        LIMIT 1');
+        $kd = "";
+        if (count($q) > 0) {
+            foreach ($q as $k) {
+                $tmp = ((int) $k->kd_max) + 1;
+                $kd = sprintf("%06s", $tmp);
+            }
+        } else {
+            $kd = "000001";
+        }
+        date_default_timezone_set('Asia/Jakarta');
+        return 'DET' . date('ymd') . $kd;
     }
     public function Formumum(Request $request)
     {
@@ -803,9 +974,9 @@ class SimrsController extends Controller
         if (strlen($surkon) > 5) {
             try {
                 $ceksurkon1 = $v->carisuratkontrol($surkon);
-                if($ceksurkon1->metaData == '200'){
+                if ($ceksurkon1->metaData == '200') {
                     $tglterbit = $ceksurkon1->response->tglTerbit;
-                    if($tglterbit == $request->tglsep){
+                    if ($tglterbit == $request->tglsep) {
                         $data = [
                             'kode' => 500,
                             'message' => 'Tanggal terbit surat kontrol tidak boleh sama dengan tanggal sep !'
@@ -821,7 +992,7 @@ class SimrsController extends Controller
         // $unit = mt_unit::where('KDPOLI', '=', "$request->kodepolitujuan")->get();
         // dd($unit);
         $ipclient = $this->get_client_ip();
-        // $mw = new antrianmarwan();
+        $mw = new antrianmarwan();
         $day = $request->tglsep;
         $today = strtoupper(Carbon::parse($day)->dayName);
         $jampraktek = DB::select('select * from jkn_jadwal_dokter where kodedokter = ? and namahari = ?', [$request->kodedokterlayan, $today]);
@@ -1046,7 +1217,21 @@ class SimrsController extends Controller
         ];
         if ($request->kodepolitujuan != 'HDL') {
             try {
-                // $antrian = $mw->ambilantrean2($data_antrian);
+                $antrian = $mw->ambilantrean2($data_antrian);
+                if ($antrian->metadata->code != 200) {
+                    $dataket = [
+                        'no_rm' => $request->norm,
+                        'tgl_entry' => $this->get_now(),
+                        'keterangan' => $antrian->metadata->message . '|' . $tujuan . '|' . $nomorreferensi,
+                    ];
+                    ts_antrian_online::create($dataket);
+                    // $data = [
+                    //     'kode' => 201,
+                    //     'message' => $antrian->metadata->message
+                    // ];
+                    // echo json_encode($data);
+                    // die;
+                }
             } catch (\Exception $e) {
                 $err = $e->getMessage();
                 $data = [
@@ -1145,7 +1330,6 @@ class SimrsController extends Controller
                 $grand_total_tarif = $tarif1 + $tarif2;
             }
         }
-
         //create sep  bridging bpjs
         $keterangansuplesi = 1;
         $katarak = 1;
@@ -1237,6 +1421,7 @@ class SimrsController extends Controller
             ]
         ];
         $v = new VclaimModel();
+        // sleep(150);
         $datasep = $v->insertsep2($get_sep);
         if ($datasep == 'RTO') {
             DB::table('ts_kunjungan')->where('kode_kunjungan', $ts_kunjungan->id)->delete();
@@ -1747,8 +1932,8 @@ class SimrsController extends Controller
                 //         $tarif2 = $unit[0]->mt_tarif_detail2->tarif_rajal;
                 //     }
                 // } else {
-                    $tarif1 = $unit[0]->mt_tarif_detail->tarif_rajal;
-                    $tarif2 = $unit[0]->mt_tarif_detail2->tarif_rajal;
+                $tarif1 = $unit[0]->mt_tarif_detail->tarif_rajal;
+                $tarif2 = $unit[0]->mt_tarif_detail2->tarif_rajal;
                 // }
 
                 $tagihanpribadi1 = $tarif1;
@@ -3774,19 +3959,21 @@ class SimrsController extends Controller
     }
     public function updatenpasien(Request $request)
     {
-        if ($request->sesuaiktp == 1) {
+
+        if (empty($request->sesuaiktp)) {
             $desa = $request->desa;
             $kecamatan = $request->kecamatan;
             $kab = $request->kabupaten;
             $prop = $request->provinsi;
             $alamat = $request->alamat;
         } else {
-            $desa = $request->desadom;
-            $kecamatan = $request->kecamatandom;
-            $kab = $request->kabupatendom;
-            $prop = $request->provinsidom;
-            $alamat = $request->alamatdom;
+            $desa = $request->desa;
+            $kecamatan = $request->kecamatan;
+            $kab = $request->kabupaten;
+            $prop = $request->provinsi;
+            $alamat = $request->alamat;
         }
+
         $nobpjs = $request->nomorbpjs;
         if ($request->nomorbpjs == '') {
             $nobpjs = '0';
@@ -3818,7 +4005,7 @@ class SimrsController extends Controller
             'kode_propinsi' => $request->provinsi,
             'kode_kabupaten' => $request->kabupaten,
             'kode_kecamatan' => $request->kecamatan,
-            'kode_desa' => $desa
+            'kode_desa' => $request->desa
         ];
         $data_keluarga = [
             'nama_keluarga' => $request->namakeluarga,
@@ -4306,5 +4493,11 @@ class SimrsController extends Controller
         $v = new VclaimModel();
         $riwayat = $v->get_data_kunjungan_peserta($noka, $tgl_awal, $tglakhir);
         return $riwayat;
+    }
+    public function carisep_2($nosep)
+    {
+        $v = new VclaimModel();
+        $sep = $v->carisep($nosep);
+        return $sep;
     }
 }

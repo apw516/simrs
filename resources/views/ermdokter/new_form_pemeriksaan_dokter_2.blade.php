@@ -2,6 +2,9 @@
     <div class="card-header bg-info">CPPT
         <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
             data-target="#modalresumeperawat"><i class="bi bi-eye mr-1"></i> Hasil Assesmen Keperawatan</button>
+        <button class="btn btn-warning lihatcppt" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
+            data-target="#modalcppt"><i class="bi bi-info-circle ml-1 ml-1"></i> CPPT</button>
+
         {{-- <button class="btn btn-danger ml-2 lihathasilpenunjang_lab" nomorrm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
             data-target="#modalhasilpenunjang_lab"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan Laboratorium</button>
         <button class="btn btn-danger ml-2 lihathasilpenunjang_rad" nomorrm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
@@ -1171,10 +1174,22 @@
                         </tbody>
                     </table>
                 </form>
+                  <div @if (auth()->user()->unit != '1012' && auth()->user()->unit != '1027' && auth()->user()->id != '220') hidden @endif class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-header text-bold bg-dark">Hasil Expertisi</div>
+                                            <div class="card-body">
+                                                <textarea class="form-control" id="hasilexpertisi" name="hasilexpertisi" cols="30" rows="10"
+                                                    placeholder="Silahkan isi hasil expertisi ...">
+@if (count($last_assdok) > 0){{ $last_assdok[0]->evaluasi }}@endif
+</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
                 {{-- formfarmasi --}}
                 <div class="v_form_farmasi_2">
 
                 </div>
+
                 <div hidden class="card">
                     <div class="card-header bg-light">Order Farmasi <button type="button"
                             class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
@@ -1209,7 +1224,13 @@
                             <input hidden type="text" class="form-control col-md-3 mb-3" id="namaresep"
                                 name="namaresep" placeholder="isi nama resep ...">
                         </form>
+                        <div class="v_itterasi_obat">
+
+                        </div>
                     </div>
+                </div>
+                <div class="v_form_farmasi_versi_2">
+
                 </div>
                 {{-- formtindaknlanjut --}}
                 <form action="" class="formtindaklanjut">
@@ -1307,17 +1328,6 @@
                                             </div>
                                             <div class="card-footer">
                                                 <p>pilih layanan untuk pasien</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div @if (auth()->user()->unit != '1012' && auth()->user()->unit != '1027' && auth()->user()->id != '220') hidden @endif class="col-md-12">
-                                        <div class="card">
-                                            <div class="card-header text-bold bg-dark">Hasil Expertisi</div>
-                                            <div class="card-body">
-                                                <textarea class="form-control" id="hasilexpertisi" name="hasilexpertisi" cols="30" rows="10"
-                                                    placeholder="Silahkan isi hasil expertisi ...">
-@if (count($last_assdok) > 0){{ $last_assdok[0]->evaluasi }}@endif
-</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -1491,11 +1501,6 @@
                 </div>
             </div>
         </div>
-        {{-- <form action="" class="formpemeriksaandokter">
-
-        </form> --}}
-
-
         <button type="button" class="btn btn-danger float-right ml-2" onclick="batalisi()">Batal</button>
         <button type="button" class="btn btn-success float-right" onclick="simpanhasil()">Simpan</button>
     </div>
@@ -1741,7 +1746,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="modaltemplate" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -1765,7 +1769,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="modalcatatankonsul" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -1798,7 +1801,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="modalriwayatkonsul" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -1822,7 +1824,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="modalscan_rm" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -1867,6 +1868,34 @@
         </div>
     </div>
 </div>
+<style>
+    .modal-xl {
+        max-width: 80%;
+    }
+</style>
+<!-- Modal -->
+<div class="modal fade" id="modalcppt" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Catatan Perkembangan Pasien Terintegrasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_cppt">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<input hidden type="text" id="statuslihatcppt" value="0">
 <link rel="stylesheet" href="{{ asset('public/dist/css/datepicker.css') }}" rel="stylesheet">
 <script src="{{ asset('public/dist/js/bootstrap-datepicker.js') }}"></script>
 <script>
@@ -1905,6 +1934,8 @@
         var simpantemplate = $('#simpantemplate:checked').val()
         var namaresep = $('#namaresep').val()
         var kodekunjungan = $('#kodekunjungan').val()
+        var pasieniter = $('#iterasipilih:checked').val()
+        var jumlahiter = $('#jumlahiterasi').val()
         var selisih = $('#selisih').val()
         var hasilexpertisi = $('#hasilexpertisi').val()
         spinner = $('#loader')
@@ -1937,7 +1968,9 @@
                 formkesimpulanhidung: JSON.stringify(formkesimpulanhidung),
                 formorder_lab: JSON.stringify(formorder_lab),
                 formtindakan_rad: JSON.stringify(formtindakan_rad),
-                hasilexpertisi
+                hasilexpertisi,
+                pasieniter,
+                jumlahiter
             },
             url: '<?= route('simpanpemeriksaandokter_2') ?>',
             error: function(data) {
@@ -1965,11 +1998,32 @@
                         text: data.message,
                         footer: ''
                     })
-                    resume()
+                    resume2()
                 }
             }
         });
     }
+    $(".lihatcppt").click(function() {
+        status = $('#statuslihatcppt').val()
+        if (status == 0) {
+            status = $('#statuslihatcppt').val(1)
+            rm = $(this).attr('rm')
+            spinner = $('#loader')
+            spinner.show();
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    rm
+                },
+                url: '<?= route('lihatcppt_pasien') ?>',
+                success: function(response) {
+                    $('.v_cppt').html(response);
+                    spinner.hide()
+                }
+            });
+        }
+    })
     $(".riwayatkonsul").click(function() {
         $.ajax({
             type: 'post',
@@ -1983,6 +2037,22 @@
             }
         });
     })
+
+    function ambilformiterasiobat() {
+        var kodekunjungan = $('#kodekunjungan').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('ambil_formiterasiobat') ?>',
+            success: function(response) {
+                $('.v_itterasi_obat').html(response);
+                spinner.hide()
+            }
+        });
+    }
     $(".lihathasilpenunjang_lab").click(function() {
         spinner = $('#loader')
         spinner.show();
@@ -2051,7 +2121,6 @@
             }
         });
     })
-
     function batalisi() {
         rm = $('#nomorrm').val()
         formcatatanmedis(rm)
@@ -2200,7 +2269,6 @@
             }
         }
     });
-
     function showname() {
         a = $('#simpantemplate:checked').val()
         if (a == 'on') {
@@ -2209,7 +2277,6 @@
             $('#namaresep').attr('Hidden', true)
         }
     }
-
     function ambilresep() {
         spinner = $('#loader')
         spinner.show();
@@ -2247,7 +2314,6 @@
             }
         });
     });
-
     function showMarkerArea(target) {
         const markerArea = new markerjs2.MarkerArea(target);
         markerArea.addEventListener("render", (event) => (target.src = event.dataUrl));
@@ -2257,8 +2323,9 @@
         ambilgambar()
         ambilformfarmasi2()
         ambilriwayatobat()
+        ambilformiterasiobat()
+        ambilformfarmasi2()
     })
-
     function ambilriwayatobat() {
         spinner = $('#loader')
         spinner.show();
@@ -2278,7 +2345,6 @@
             }
         });
     }
-
     function resetgambar() {
         $.ajax({
             type: 'post',
@@ -2295,7 +2361,6 @@
             }
         });
     }
-
     function ambilgambar() {
         $.ajax({
             type: 'post',
@@ -2312,7 +2377,6 @@
             }
         });
     }
-
     function addform() {
         var max_fields = 10;
         var wrapper = $(".formobatfarmasi2"); //Fields wrapper
@@ -2342,13 +2406,6 @@
                 $(this).parent('div').remove();
                 x--;
             })
-            // $('#'+nama).autocomplete({
-            //     source: "<?= route('cariobat') ?>",
-            //     select: function(event, ui) {
-            //         $('[id="namaobat"]').val(ui.item.label);
-            //         $('[id="'+aturan+'"]').val(ui.item.aturan);
-            //     }
-            // });
         }
     }
     $(".scanrm_liat").on('click', function(event) {
@@ -2414,6 +2471,7 @@
             success: function(response) {
                 spinner.hide();
                 $('.v_form_farmasi_2').html(response);
+
             }
         });
     }

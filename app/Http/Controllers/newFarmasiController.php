@@ -250,7 +250,8 @@ class newFarmasiController extends Controller
         INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
         INNER JOIN ts_layanan_detail c ON b.id = c.row_id_header
         INNER JOIN mt_barang d ON c.kode_barang = d.kode_barang
-        WHERE b.dok_kirim = ? AND b.`kode_unit` IN (4001,4002,4008)', ([$dokter]));
+
+        WHERE b.dok_kirim = ? AND b.`kode_unit` IN (4001,4002,4008) ORDER BY a.kode_kunjungan limit 50', ([$dokter]));
         return view('new_farmasi.tabel_riwaat_resep_dokter', compact([
             'header',
             'detail'
