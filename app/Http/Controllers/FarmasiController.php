@@ -1989,3 +1989,5 @@ class FarmasiController extends Controller
         }
         date_default_timezone_set('Asia/Jakarta');
         return 'RETDET' . date('ymd') . $kd;
+    }
+}
