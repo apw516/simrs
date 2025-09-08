@@ -1186,7 +1186,7 @@
                                         </div>
                                     </div>
                 {{-- formfarmasi --}}
-                <div class="card">
+                <div hidden class="card">
                     <div class="card-header bg-light">Order Farmasi <button type="button"
                             class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
                             onclick="ambilresep()">Template resep</button></div>
@@ -1224,6 +1224,9 @@
 
                         </div>
                     </div>
+                </div>
+                <div class="v_form_farmasi_versi_2">
+
                 </div>
                 {{-- formtindaknlanjut --}}
                 <form action="" class="formtindaklanjut">
@@ -1494,11 +1497,6 @@
                 </div>
             </div>
         </div>
-        {{-- <form action="" class="formpemeriksaandokter">
-
-        </form> --}}
-
-
         <button type="button" class="btn btn-danger float-right ml-2" onclick="batalisi()">Batal</button>
         <button type="button" class="btn btn-success float-right" onclick="simpanhasil()">Simpan</button>
     </div>
