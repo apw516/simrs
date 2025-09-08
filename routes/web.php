@@ -20,7 +20,7 @@ use App\Http\Controllers\newMasterController;
 use App\Http\Controllers\JasaMedisController;
 
 use App\Http\Controllers\PdfController;
-use App\Http\Controllers\JasaMedisController;
+// use App\Http\Controllers\JasaMedisController;
 use App\Http\Controllers\ResumeRajal;
 
 Route::get('/berkas_ersep', [ReportingController::class, 'index'])->middleware('auth')->name('berkas_ersep');
