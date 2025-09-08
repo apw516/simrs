@@ -159,7 +159,7 @@
         </table>
         @foreach ($assesmen as $cp)
             @if ($cp->kode_unit != '1028')
-                <table class="table table-sm table-bordered text-xxs font-italic text-bold">
+                <table class="table table-sm table-bordered text-xxxs font-italic text-bold">
                     <tr hidden>
                         <td>Sumber Data</td>
                         <td colspan="3">{{ $cp->sumber_data }}
@@ -363,7 +363,7 @@
                     <tr>
                         <td>
                             <div class="card">
-                                <table class="table table-sm text-xxs table-bordered table-striped font-italic">
+                                <table class="table table-sm text-xxxs table-bordered table-striped font-italic">
                                     <tr>
                                         <td>Anamnesa</td>
                                         <td>: {{ $cp->anamnesa }}</td>
