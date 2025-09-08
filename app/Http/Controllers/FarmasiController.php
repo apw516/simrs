@@ -20,7 +20,7 @@ use Codedge\Fpdf\Fpdf\PDF;
 use Codedge\Fpdf\code128\PDF_Code128;
 use Codedge\Fpdf\Fpdf128;
 use \Milon\Barcode\DNS1D;
-
+use simitsdk\phpjasper;
 class FarmasiController extends Controller
 {
     public function index_layanan_resep()
@@ -1774,7 +1774,7 @@ class FarmasiController extends Controller
         $get_header = db::connection('mysql4')->select('select * from ts_layanan_header where id = ?', [$dataSet['idheader']]);
         $get_detail = db::connection('mysql4')->select('select * from ts_layanan_detail where id = ?', [$dataSet['iddetail']]);
         $data_kunjungan = db::select('select kode_penjamin,no_rm,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat_pasien from ts_kunjungan where kode_kunjungan = ?', [$get_header[0]->kode_kunjungan]);
-        $penjamin = $data_kunjungan[0]->kode_penjamin;
+        $penjamin = $data_kunjunn[0]->kode_penjamin;
 
         //proses hitung retur dits layanan detail
         $tarif_layanan = $get_detail[0]->total_tarif;
@@ -1989,5 +1989,3 @@ class FarmasiController extends Controller
         }
         date_default_timezone_set('Asia/Jakarta');
         return 'RETDET' . date('ymd') . $kd;
-    }
-}
