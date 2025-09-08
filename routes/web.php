@@ -803,4 +803,11 @@ Route::get('indexresumemedisranap', [ResumeRajal::class, 'indexresumemedisranap'
 Route::post('cariresume_bykunjungan', [ResumeRajal::class, 'cariresume_bykunjungan'])->name('cariresume_bykunjungan');
 Route::post('cariresume_bykunjungan_ranap', [ResumeRajal::class, 'cariresume_bykunjungan_ranap'])->name('cariresume_bykunjungan_ranap');
 Route::get('cetakresumerajalbykunjungan/{kodekunjungan}', [ResumeRajal::class, 'mergerpdf'])->name('cetakresumerajalbykunjungan');
+Route::get('cetakresumerajalbykunjungan2/{kodekunjungan}', [ResumeRajal::class, 'mergerpdf_2'])->name('cetakresumerajalbykunjungan2');
 Route::get('/cetaksep_v2/{sep}', [SimrsController::class, 'Cetaksep_v']); //formpasien_bpjs
+
+
+
+// datakunjungan_farmasi
+Route::get('datakunjungan_farmasi', [FarmasiController::class, 'datakunjungan_farmasi'])->name('datakunjungan_farmasi');
+Route::post('cari_data_kunjungan_farmasi', [FarmasiController::class, 'cari_data_kunjungan_farmasi'])->name('cari_data_kunjungan_farmasi');

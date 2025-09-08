@@ -34,6 +34,10 @@ return [
             'root' => storage_path('app'),
             'throw' => false,
         ],
+        'shared2' => [
+            'driver' => 'local',
+            'root' => '\\\\193.193.193.203\\erm\\resume_medis_rawat_jalan_no_ttd',
+        ],
         'shared' => [
             'driver' => 'local',
             'root' => '\\\\193.193.193.203\\erm\\resume_medis_rawat_jalan',

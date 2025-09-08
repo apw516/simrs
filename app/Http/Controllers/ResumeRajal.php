@@ -93,6 +93,155 @@ class ResumeRajal extends Controller
             'cek'
         ]));
     }
+    public function mergerpdf_2($kodekunjungan)
+    {
+        $date = $this->get_date();
+        // ... inside a controller method or similar
+        $pdf = PdfMerger::init();
+        $resume = db::select('select * from log_ttd_elektronik where status_file = 1');
+        // file_get_contents($d[0]->file)
+        $opts = array(
+            'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+            )
+        );
+        $ts_kunjungan = db::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+        $mt_pasien = db::select('select * from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
+        $cek_resume = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and status_file = 1', [$kodekunjungan]);
+        $cek_lab = $this->get_lab($kodekunjungan);
+        $cek_rad = db::select('select * from ts_hasil_expertisi where kode_kunjungan = ?', [$kodekunjungan]);
+        $cek_far = db::select('select * from ts_layanan_header where kode_kunjungan = ? and kode_unit IN (4002,4008)', [$kodekunjungan]);
+        // dd($cek_lab);
+        $contents = [];
+        if (count($cek_resume) > 0) {
+            $resume = $cek_resume[0]->file;
+            $pdf->addPDF($resume, 'all');
+        } else {
+            $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+            $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
+            $data = ['title' => 'My PDF Document', 'content' => 'This is some content for the PDF.', $mt_pasien];
+            $assesmen = db::select('select *,date(tgl_pemeriksaan) as tglk2 ,versi as versidk from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
+            $tindakan = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+            ,c.`kode_tarif_detail`,d.`NAMA_TARIF`
+            FROM ts_kunjungan a
+            INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+            INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+            INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER`
+            WHERE SUBSTR(b.`kode_unit`,1,1) = 1
+            AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
+            AND a.kode_kunjungan = ?", [$kodekunjungan]);
+
+            $farmasi = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+            ,c.`kode_tarif_detail`,d.`nama_barang`,C.`jumlah_layanan`,C.`aturan_pakai`
+            FROM ts_kunjungan a
+            INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+            INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+            INNER JOIN mt_barang d ON c.`kode_barang` = d.`kode_barang`
+            WHERE SUBSTR(b.`kode_unit`,1,1) = 4
+            AND a.kode_kunjungan = ?", [$kodekunjungan]);
+
+            $penunjang = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+            ,c.`kode_tarif_detail`,d.`NAMA_TARIF`,b.kode_unit
+            FROM ts_kunjungan a
+            INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+            INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+            INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER`
+            WHERE SUBSTR(b.`kode_unit`,1,1) = 3
+            AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
+            AND a.kode_kunjungan = ?", [$kodekunjungan]);
+            $orderfarmasi = db::select('SELECT kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.kode_kunjungan = ? and  kode_unit > ?', [$kodekunjungan, '4000']);
+
+            $order_penunjang = db::select('SELECT fc_nama_unit1(a.`kode_unit`)AS nama_unit,a.kode_unit,SUBSTR(kode_tarif_detail,1,6) AS kode_tarif_header,c.`NAMA_TARIF` FROM ts_layanan_header_order a
+            INNER JOIN ts_layanan_detail_order b ON a.id = b.`row_id_header`
+            INNER JOIN mt_tarif_header c ON SUBSTR(b.kode_tarif_detail,1,6) = c.`KODE_TARIF_HEADER`
+            WHERE a.`kode_kunjungan` = ? AND a.`kode_unit` < ?', [$kodekunjungan, '4000']);
+            $today = Carbon::now()->isoFormat('D MMMM Y');
+            if (count($assesmen) > 0) {
+                $tglll =  $assesmen[0]->tglk2;
+                $carbonDate = Carbon::parse($tglll);
+                $tglperiksa = $carbonDate->isoFormat('dddd, D MMMM Y');
+            } else {
+                $tglperiksa = Carbon::now()->isoFormat('dddd, D MMMM Y');
+            }
+            $mt_paramedis = db::select('select * from mt_paramedis where kode_paramedis = ?', [$ts_kunjungan[0]->kode_paramedis]);
+            $cetakanke = 0;
+            $pdf2 = Pdf::loadView('pdf.document_no_ttd', compact([
+                'data',
+                'tglperiksa',
+                'mt_pasien',
+                'ts_kunjungan',
+                'assesmen',
+                'tindakan',
+                'farmasi',
+                'penunjang',
+                'orderfarmasi',
+                'order_penunjang',
+                'mt_paramedis',
+                'today',
+                'cetakanke'
+            ]));
+            $pdf2->set_option("isPhpEnabled", true);
+            $pdf2->setPaper('Letter', 'portrait');
+            $d = $pdf2->output();
+            // $contents_ = file_get_contents($d);
+            Storage::disk('shared2')->put($kodekunjungan . '.pdf', $d);
+            $pdf->addPDF('\\\193.193.193.203\erm\resume_medis_rawat_jalan_no_ttd/' . $kodekunjungan . '.pdf', 'all');
+            $contents[] = $d;
+        }
+        if (count($ts_kunjungan) > 0) {
+            foreach ($ts_kunjungan as $tk) {
+                if (strlen($tk->no_sep) > 3) {
+                    $contents_sep = file_get_contents('http://localhost/simrs/cetaksep_v2/' . $tk->no_sep);
+                    Storage::disk('SEP')->put($tk->no_sep . '.pdf', $contents_sep);
+                    $pdf->addPDF('\\\193.193.193.203\erm\sep/' . $tk->no_sep . '.pdf', 'all');
+                    $contents[] = $contents_sep;
+                }
+            }
+        }
+        // dd($cek_lab);
+        if (count($cek_lab) > 0) {
+            foreach ($cek_lab as $cl) {
+                $kode_layanan_header = $cl->layanan;
+                $contents_lab = file_get_contents($cl->link);
+                Storage::disk('LAB_1')->put($kode_layanan_header . '.pdf', $contents_lab);
+                $pdf->addPDF('\\\193.193.193.203\erm\hasil_lab_1/' . $kode_layanan_header . '.pdf', 'all');
+                $contents[] = $contents_lab;
+            }
+        }
+
+        if (count($cek_rad) > 0) {
+            $context = stream_context_create($opts);
+            foreach ($cek_rad as $cr) {
+                $contents_rad  = file_get_contents('https://192.168.2.233/expertise/cetak.php?IDs=' . $cr->id_header . '&IDd=' . $cr->id_detail . '&tgl_cetak=' . $date, FALSE, $context);
+                Storage::disk('RAD')->put('RAD' . $cr->id_header . '.pdf', $contents_rad);
+                $pdf->addPDF('\\\193.193.193.203\erm\expertisi_radiologi/RAD' . $cr->id_header . '.pdf', 'all');
+                $contents[] = $contents_rad;
+            }
+        }
+
+        if (count($cek_far) > 0) {
+            $context = stream_context_create($opts);
+            foreach ($cek_far as $cf) {
+                $contents_resep  = file_get_contents('http://192.168.2.45/simrs/cetaknotafarmasi_2/' . $cf->kode_kunjungan . '/' . $cf->kode_layanan_header . '/' . $cf->id, FALSE, $context);
+                Storage::disk('FAR')->put('FAR' . $cf->kode_layanan_header . '.pdf', $contents_resep);
+                // $pdf->addPDF('\\\193.193.193.203\erm\resepfarmasi/'. $cf->kode_layanan_header . '.pdf', 'all');
+                $pdf->addPDF('\\\193.193.193.203\erm\resepfarmasi/FAR' . $cf->kode_layanan_header . '.pdf', 'all');
+                $contents[] = $contents_resep;
+            }
+        }
+
+        if (count($contents) > 0) {
+            $pdf->merge();
+            $output = $pdf->Output();
+            $name = $kodekunjungan . '.pdf';
+            $pdf->save(Storage::disk('MER', $name)->put($name, $output));
+            return Response::make(file_get_contents('\\\193.193.193.203\erm\merger_resume_rajal/' . $kodekunjungan . '.pdf'), 200, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="' . $mt_pasien[0]->nama_px . ' | ' . $name . '"'
+            ],);
+        }
+    }
     public function mergerpdf($kodekunjungan)
     {
         $date = $this->get_date();
@@ -117,6 +266,7 @@ class ResumeRajal extends Controller
         if (count($cek_resume) > 0) {
             $resume = $cek_resume[0]->file;
             $pdf->addPDF($resume, 'all');
+        } else {
         }
         if (count($ts_kunjungan) > 0) {
             foreach ($ts_kunjungan as $tk) {
@@ -218,8 +368,6 @@ CASE WHEN dd.NAMA_TARIF LIKE '%Morfologi darah tepi%' THEN bb.kode_layanan_heade
                                                             ,'Urine Culture'
                                                             ) THEN bb.kode_layanan_header #CONCAT(aa.no_sep,'-',bb.kode_layanan_header,'-KULTR')
 WHEN dd.NAMA_TARIF LIKE '%kultur%' THEN bb.kode_layanan_header #CONCAT(aa.no_sep,'-',bb.kode_layanan_header,'-KULTR')
-
-
             WHEN dd.nama_tarif IN ('Apus Vagina'
                                                             ,'BTA CUPING KANAN'
                                                             ,'BTA CUPING KIRI'
@@ -388,6 +536,6 @@ AND bb.keterangan = 'Terkirim'
 )Q
 WHERE layanan <> ''");
 
-return $hasil;
+        return $hasil;
     }
 }

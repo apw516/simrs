@@ -23,8 +23,6 @@
           <nav class="mt-2">
               <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                   data-accordion="false">
-                  <!-- Add icons to the links using the .nav-icon class
-       with font-awesome or any other icon font library -->
                   <li class="nav-item @if ($sidebar == 1) menu-open @endif">
                       <a href="#" class="nav-link">
                           <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -86,15 +84,6 @@
                               </p>
                           </a>
                       </li>
-                      {{-- <li class="nav-item">
-                          <a href="{{ route('datapasienranap') }}"
-                              class="nav-link @if ($title == 'SIMRS - Data Pasien') active @endif">
-                              <i class="nav-icon fas fa-th"></i>
-                              <p style="font-size:12px">
-                                  Data Pasien
-                              </p>
-                          </a>
-                      </li> --}}
                       <li class="nav-item">
                           <a href="{{ route('datasepranap') }}"
                               class="nav-link @if ($title == 'SIMRS -SEP RAWAT INAP') active @endif">
@@ -113,23 +102,6 @@
                               </p>
                           </a>
                       </li>
-                      {{-- <li class="nav-item">
-                          <a href="{{ route('menucaripasien') }}"
-                              class="nav-link @if ($title == 'SIMRS - PENCARIAN PASIEN') active @endif">
-                              <i class="nav-icon fas fa-th"></i>
-                              <p style="font-size:12px">
-                                  Buka Kunjungan
-                              </p>
-                          </a>
-                      </li> --}}
-                      {{-- <li class="nav-item">
-                    <a href="{{ route('Billing') }}" class="nav-link @if ($sidebar == '2') active @endif">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p style="font-size:12px">
-                            Surat Kontrol Pasca Rawat
-                        </p>
-                    </a>
-                </li> --}}
                   @endif
                   @if (auth()->user()->hak_akses == 1 || auth()->user()->hak_akses == 2)
                       <li class="nav-item @if ($sidebar == '3') menu-open @endif">
@@ -702,6 +674,16 @@
                                   </a>
                               </li>
                           </ul> --}}
+                      </li>
+                  @endif
+                  @if(auth()->user()->hak_akses == '41')
+                      <li class="nav-header">FARMASI</li>
+                       <li class="nav-item ">
+                          <a href="{{ route('datakunjungan_farmasi') }}"
+                              class="nav-link @if ($sidebar == 'datakunjungan_farmasi') active @endif">
+                              <i class="bi bi-clipboard2-data nav-icon"></i>
+                              <p>Data Kunjungan</p>
+                          </a>
                       </li>
                   @endif
                   <li class="nav-header"> <i class="nav-icon bi bi-person-circle mr-2"></i> INFO AKUN</li>

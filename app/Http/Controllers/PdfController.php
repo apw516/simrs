@@ -314,7 +314,6 @@ class PdfController extends Controller
         $pdf->setPaper('Letter', 'portrait');
         $d = $pdf->output();
         $name = $kodekunjungan . '.pdf';
-        // Storage::disk('shared')->put('uploads/'.$fileName, file_get_contents($file));
         $pdf->save(Storage::disk('shared', $name)->put($name, $d));
         // $pdf->save(storage_path('app/downloaded_pdfs/' . $name));
         $nik = '1234567890123452';
@@ -324,7 +323,6 @@ class PdfController extends Controller
             'status' => 0
         ];
         $idreport = Model_log_tte::create($save_report);
-
         $data2 = [
             'nik' => $nik,
             'passphrase' => $password,
@@ -340,9 +338,6 @@ class PdfController extends Controller
             'text' => '',
             'tag_koordinat' => '#',
         ];
-
-
-
         $v = new ModelBSRE();
         $DD = $v->send_pdf_kosong($data2, $kodekunjungan);
         if ($DD['code'] == 200) {
