@@ -1,5 +1,5 @@
 <button class="btn btn-danger" onclick="ambildatapasien()">Kembali</button>
-<div class="v_icare mt-2">
+<div hidden class="v_icare mt-2">
     <div class="card">
         <div class="card-header">I-Care BPJS KESEHATAN <button class="btn btn-danger float-right" onclick="tutupicare()"><i
                     class="bi bi-x mr-1 ml-1"></i> Tutup</button>
@@ -12,7 +12,7 @@
         </div>
     </div>
 </div>
-<div hidden class="v_utama">
+<div class="v_utama">
 <div class="row mt-3">
     <div class="col-md-2">
         <!-- Profile Image -->

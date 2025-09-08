@@ -294,8 +294,10 @@ class ErmController extends Controller
         $dpjp2 = $mt_paramedis[0]->kode_dokter_jkn;
         $icare = $mw->icare($noka, $dpjp2);
         if ($icare->metadata->code == 200) {
+            $url_icare = $icare->response->url;
             $urlicare = $icare->response->url;
         } else {
+            $url_icare = '';
             $urlicare = '';
         }
         if (auth()->user()->hak_akses == 7) {
@@ -304,7 +306,8 @@ class ErmController extends Controller
                 'kunjungan',
                 'pic',
                 'last_assdok',
-                'urlicare'
+                'urlicare',
+                'url_icare'
             ]));
         } else {
             return view('ermdokter.formdokter', compact([
@@ -315,8 +318,8 @@ class ErmController extends Controller
                 'selisih',
                 'daterujukan',
                 'kunjunganKronis',
-
-                'urlicare'
+                'urlicare',
+                'url_icare'
             ]));
         }
     }
