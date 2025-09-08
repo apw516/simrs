@@ -2318,6 +2318,7 @@
         ambilgambar()
         ambilriwayatobat()
         ambilformiterasiobat()
+        ambilformfarmasi2()
     })
     function ambilriwayatobat() {
         spinner = $('#loader')
@@ -2399,13 +2400,6 @@
                 $(this).parent('div').remove();
                 x--;
             })
-            // $('#'+nama).autocomplete({
-            //     source: "<?= route('cariobat') ?>",
-            //     select: function(event, ui) {
-            //         $('[id="namaobat"]').val(ui.item.label);
-            //         $('[id="'+aturan+'"]').val(ui.item.aturan);
-            //     }
-            // });
         }
     }
     $(".scanrm_liat").on('click', function(event) {
@@ -2452,3 +2446,26 @@
     })
 </script>
 <script src="{{ asset('public/marker/markerjs2.js') }}"></script>
+<script>
+    function ambilformfarmasi2() {
+        kodekunjungan =  $('#kodekunjungan').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('ambilformfarmasi2') ?>',
+            error: function(data) {
+                spinner.hide();
+                alert('error')
+            },
+            success: function(response) {
+                spinner.hide();
+                $('.v_form_farmasi_versi_2').html(response);
+            }
+        });
+    }
+</script>
