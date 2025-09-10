@@ -815,5 +815,7 @@ Route::get('/cetaksep_v2/{sep}', [SimrsController::class, 'Cetaksep_v']); //form
 
 
 // datakunjungan_farmasi
+Route::post('dataorderpenunjang', [FarmasiController::class, 'dataorderpenunjang'])->name('dataorderpenunjang');
 Route::get('datakunjungan_farmasi', [FarmasiController::class, 'datakunjungan_farmasi'])->name('datakunjungan_farmasi');
 Route::post('cari_data_kunjungan_farmasi', [FarmasiController::class, 'cari_data_kunjungan_farmasi'])->name('cari_data_kunjungan_farmasi');
+Route::post('kirimorderfarmasi', [FarmasiController::class, 'kirimorderfarmasi'])->name('kirimorderfarmasi');

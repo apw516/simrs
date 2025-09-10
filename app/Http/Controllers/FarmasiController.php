@@ -7,6 +7,9 @@ use App\Models\ts_layanan_header_dummy;
 use App\Models\ti_kartu_stok;
 use App\Models\ts_retur_detail;
 use App\Models\ts_retur_header;
+use App\Models\mt_antrian_farmasi_header;
+use App\Models\mt_antrian_farmasi_detail;
+use App\Models\model_order_resep_header;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Codedge\code128\PDF_Code128 as Code128PDF_Code128;
@@ -2096,10 +2099,95 @@ class FarmasiController extends Controller
         } else if ($jeniskunjungan == 2) {
             $data = db::select('select no_rm,no_sep,kode_kunjungan,fc_nama_unit1(kode_unit) as nama_unit,date(tgl_masuk) as tgl_masuk,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_px(no_rm) as nama_pasien,catatan from ts_kunjungan where date(tgl_masuk) between ? and ? and status_kunjungan != 8 and kode_unit > 2000 and kode_unit < 3000 order by kode_kunjungan desc', [$tglawal, $tglakhir]);
         } else {
-              $data = db::select('select no_rm,no_sep,kode_kunjungan,fc_nama_unit1(kode_unit) as nama_unit,date(tgl_masuk) as tgl_masuk,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_px(no_rm) as nama_pasien,catatan from ts_kunjungan where date(tgl_masuk) between ? and ? and status_kunjungan != 8 order by kode_kunjungan desc', [$tglawal, $tglakhir]);
+            $data = db::select('select no_rm,no_sep,kode_kunjungan,fc_nama_unit1(kode_unit) as nama_unit,date(tgl_masuk) as tgl_masuk,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_px(no_rm) as nama_pasien,catatan from ts_kunjungan where date(tgl_masuk) between ? and ? and status_kunjungan != 8 order by kode_kunjungan desc', [$tglawal, $tglakhir]);
         }
-        return view('farmasi.tabel_data_kunjungan_farmasi',compact([
+        return view('farmasi.tabel_data_kunjungan_farmasi', compact([
             'data'
         ]));
+    }
+    public function dataorderpenunjang(Request $request)
+    {
+        $kode_kunjungan = $request->kodekunjungan;
+        $data_order = db::connection('mysql5')->select('select * from order_farmasi_header a inner join order_farmasi_detail b on a.id = b.idheader where a.kode_kunjungan = ?', [$kode_kunjungan]);
+        return view('farmasi.data_order_penunjang', compact([
+            'kode_kunjungan',
+            'data_order'
+        ]));
+    }
+    public function kirimorderfarmasi(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        $ts_kunjungan = db::select('select *,fc_nama_px(no_rm) as nama_pasien,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+        $headerorder = db::connection('mysql5')->select('select * from order_farmasi_header where kode_kunjungan = ? and status_antrian = 0', [$kodekunjungan]);
+        if (count($headerorder) > 0) {
+            $CEKRACIKAN = db::connection('mysql5')->select('select kode_kunjungan from order_farmasi_header a inner join order_farmasi_detail b on a.id = b.idheader where a.status_antrian = 0 AND b.jenisresep = ? AND a.kode_kunjungan = ?',['RACIKAN',$kodekunjungan]);
+            if(count($CEKRACIKAN) == 0){
+                $JENIS = 'NONRACIK';
+            }else{
+                $JENIS = 'RACIKAN';
+            }
+
+            $nomor = $this->get_antrian($headerorder[0]->unit_tujuan,$JENIS);
+            $headerantrian = [
+                'nomor_urut' => $nomor,
+                'kode_unit' => $headerorder[0]->unit_tujuan,
+                'status_panggil' => 0,
+                'no_rm' => $headerorder[0]->no_rm,
+                'nama_pasien' => $ts_kunjungan[0]->nama_pasien,
+                'kode_unit_asal' => $ts_kunjungan[0]->kode_unit,
+                'nama_unit_asal' => $ts_kunjungan[0]->nama_unit,
+                'kode_kunjungan' => $kodekunjungan,
+                'tanggal_kirim' => $this->get_date(),
+                'status_antrian' => 0,
+                'kode_antrian' => 'DP2',
+                'jenis_antrian' => $JENIS
+            ];
+            $cekheader = db::connection('mysql5')->select('select id,nomor_urut from erm_antrian_farmasi where kode_kunjungan = ? and status_antrian = 0', [$kodekunjungan]);
+            if (count($cekheader) > 0) {
+                foreach ($headerorder as $h) {
+                    $datadetail = [
+                        'id_header_order' => $h->id,
+                        'idheader_antrian' => $cekheader[0]->id
+                    ];
+                    mt_antrian_farmasi_detail::create($datadetail);
+                    model_order_resep_header::where('id', $h->id)
+                        ->update(['status_antrian' => 1, 'nomor_antrian' => $cekheader[0]->nomor_urut]);
+                }
+            } else {
+                $header = mt_antrian_farmasi_header::create($headerantrian);
+                foreach ($headerorder as $h) {
+                    $datadetail = [
+                        'id_header_order' => $h->id,
+                        'idheader_antrian' => $header->id
+                    ];
+                    mt_antrian_farmasi_detail::create($datadetail);
+                    model_order_resep_header::where('id', $h->id)
+                        ->update(['status_antrian' => 1, 'nomor_antrian' => $nomor]);
+                }
+            }
+            $data = [
+                'kode' => 200,
+                'message' => 'Order berhasil dikirim',
+            ];
+            echo json_encode($data);
+            die;
+        } else {
+            $data = [
+                'kode' => 500,
+                'message' => 'Tidak ada order yang belum dikirim',
+            ];
+            echo json_encode($data);
+            die;
+        }
+    }
+    public function get_antrian($kode_unit,$jenis)
+    {
+        $antrian = db::connection('mysql5')->select('SELECT nomor_urut FROM erm_antrian_farmasi WHERE tanggal_kirim = DATE(NOW()) AND kode_unit = ? AND jenis_antrian = ? AND id = (SELECT MAX(id) FROM erm_antrian_farmasi WHERE tanggal_kirim = DATE(NOW()) AND kode_unit = ? AND jenis_antrian = ?)', [$kode_unit,$jenis,$kode_unit,$jenis]);
+        if (count($antrian) > 0) {
+            $nomor = $antrian[0]->nomor_urut + 1;
+        } else {
+            $nomor = 1;
+        }
+        return $nomor;
     }
 }

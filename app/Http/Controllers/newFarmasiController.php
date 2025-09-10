@@ -241,17 +241,18 @@ class newFarmasiController extends Controller
     {
         $rm = $request->rm;
         $dokter = auth()->user()->kode_paramedis;
+
         $header = db::connection('mysql')->select('SELECT b.`kode_kunjungan`,b.`kode_layanan_header`,fc_nama_paramedis1(b.dok_kirim) AS nama_dokter,b.`dok_kirim`,b.`tgl_entry`,b.`unit_pengirim`,b.id as id_header FROM ts_kunjungan a
         INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
         WHERE b.dok_kirim = ? AND b.`kode_unit` IN (4001,4002,4008) AND LEFT(a.kode_unit,1) = 1
-        ORDER BY a.`kode_kunjungan` DESC LIMIT 50', ([$dokter]));
+        ORDER BY a.`kode_kunjungan`', ([$dokter]));
 
         $detail = db::connection('mysql')->select('SELECT d.nama_barang,c.jumlah_layanan,c.aturan_pakai,c.row_id_header FROM ts_kunjungan a
         INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
         INNER JOIN ts_layanan_detail c ON b.id = c.row_id_header
         INNER JOIN mt_barang d ON c.kode_barang = d.kode_barang
+        WHERE b.dok_kirim = ? AND b.`kode_unit` IN (4001,4002,4008) ORDER BY a.kode_kunjungan', ([$dokter]));
 
-        WHERE b.dok_kirim = ? AND b.`kode_unit` IN (4001,4002,4008) ORDER BY a.kode_kunjungan limit 50', ([$dokter]));
         return view('new_farmasi.tabel_riwaat_resep_dokter', compact([
             'header',
             'detail'

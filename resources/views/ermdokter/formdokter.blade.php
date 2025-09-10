@@ -197,7 +197,7 @@
     }
     $(document).ready(function() {
         rm = $('#nomorrm').val()
-        formpemeriksaandokter()
+        formcatatanmedis()
     })
 
     $(".lihatcppt2").click(function() {

@@ -8735,6 +8735,10 @@ class ErmController extends Controller
             'kodekunjungan','cek'
         ]));
     }
+    public function dataorderpenunjang(Request $request)
+    {
+        echo 'ok';
+    }
 }
 
 
