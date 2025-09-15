@@ -129,8 +129,20 @@ class PdfController extends Controller
         $cek2 = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and status_code = ?', [$kodekunjungan, 200]);
         $hitung = count($cek2);
         $cetakanke = $hitung + 1;
-        $mt_paramedis = db::select('select * from mt_paramedis where kode_paramedis = ?', [auth()->user()->kode_paramedis]);
-        $pdf = Pdf::loadView('pdf.document', compact([
+        if(strlen($ts_kunjungan[0]->kode_paramedis) < 2){
+            $kode_par = $ts_kunjungan[0]->ref_paramedis;
+            if(count($assesmen) > 0){
+                $pic = $assesmen[0]->pic;
+                $user = db::select('select * from user a where a.id = ?',[$pic]);
+                $kode_par = $user[0]->kode_paramedis;
+            }else{
+                $kode_par= '';
+            }
+        }else{
+            $kode_par = $ts_kunjungan[0]->kode_paramedis;
+        }
+        $mt_paramedis = db::select('select * from mt_paramedis where kode_paramedis = ?', [$kode_par]);
+        $pdf = Pdf::loadView('pdf.document_blank', compact([
             'data',
             'tglperiksa',
             'mt_pasien',
