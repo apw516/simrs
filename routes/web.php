@@ -756,23 +756,27 @@ Route::post('ambil_formiterasiobat', [ErmController::class, 'ambil_formiterasiob
     ->name('ambil_formiterasiobat'); //sidebar
 
 
-Route::get('/carisep_2/{sep}', [SimrsController::class, 'carisep_2'])->name('carisep_2'); //formpasien_bpjs
+    Route::get('/carisep_2/{sep}', [SimrsController::class, 'carisep_2'])->name('carisep_2'); //formpasien_bpjs
 
 
-Route::post('/lihatcppt_pasien', [ReportingController::class, 'ambilcatatanmedis_pasien2'])->name('lihatcppt_pasien'); //formpasien_bpjs
-Route::post('/lihatcppt_pasien2', [ReportingController::class, 'ambilcatatanmedis_pasien23'])->name('lihatcppt_pasien2'); //formpasien_bpjs
-Route::get('/dataermrajal', [ReportingController::class, 'dataermrajal'])->name('dataermrajal'); //formpasien_bpjs
-Route::post('/ambilberkasermrajal', [ReportingController::class, 'ambilberkasermrajal'])->name('ambilberkasermrajal'); //formpasien_bpjs
-Route::post('/cari_detail_iter', [SimrsController::class, 'cari_detail_iter'])->name('cari_detail_iter'); //formpasien_bpjs
-Route::post('/ambil_form_iterasi', [SimrsController::class, 'ambil_form_iterasi'])->name('ambil_form_iterasi'); //formpasien_bpjs
-Route::post('/simpanpendaftaraniter', [SimrsController::class, 'simpanpendaftaraniter'])->name('simpanpendaftaraniter'); //formpasien_bpjs
+    Route::post('/lihatcppt_pasien', [ReportingController::class, 'ambilcatatanmedis_pasien2'])->name('lihatcppt_pasien'); //formpasien_bpjs
+    Route::post('/lihatcppt_pasien2', [ReportingController::class, 'ambilcatatanmedis_pasien23'])->name('lihatcppt_pasien2'); //formpasien_bpjs
+    Route::get('/dataermrajal', [ReportingController::class, 'dataermrajal'])->name('dataermrajal'); //formpasien_bpjs
+    Route::post('/ambilberkasermrajal', [ReportingController::class, 'ambilberkasermrajal'])->name('ambilberkasermrajal'); //formpasien_bpjs
+    Route::post('/cari_detail_iter', [SimrsController::class, 'cari_detail_iter'])->name('cari_detail_iter'); //formpasien_bpjs
+    Route::post('/ambil_form_iterasi', [SimrsController::class, 'ambil_form_iterasi'])->name('ambil_form_iterasi'); //formpasien_bpjs
+    Route::post('/simpanpendaftaraniter', [SimrsController::class, 'simpanpendaftaraniter'])->name('simpanpendaftaraniter'); //formpasien_bpjs
 
-Route::post('/hasillab', [ReportingController::class, 'hasillab'])->name('hasillab'); //formpasien_bpjs
+    Route::post('/hasillab', [ReportingController::class, 'hasillab'])->name('hasillab'); //formpasien_bpjs
 Route::post('/hasilrad', [ReportingController::class, 'hasilrad'])->name('hasilrad'); //formpasien_bpjs
 Route::post('/hasilpa', [ReportingController::class, 'hasilpa'])->name('hasilpa'); //formpasien_bpjs
 Route::post('/resumepasien_dokter2', [ErmController::class, 'resumepasien_dokter2'])
-    ->name('resumepasien_dokter2'); //sidebar
+->name('resumepasien_dokter2'); //sidebar
 
 Route::get('/cetakresumeblank_perawat/{kodekunjungan}', [PdfController::class, 'cetakresumeblank_perawat']);
 Route::get('/cetakresumeblank/{kodekunjungan}', [PdfController::class, 'cetakresumedokterblank']);
 Route::get('/generate-pdf', [PdfController::class, 'generatePDF']);
+
+
+Route::get('datakunjunganpasienfarmasi', [FarmasiController::class, 'datakunjunganpasienfarmasi'])->name('datakunjunganpasienfarmasi'); //formpasien_bpjs
+Route::post('cari_data_kunjungan', [FarmasiController::class, 'cari_data_kunjungan'])->name('cari_data_kunjungan'); //formpasien_bpjs

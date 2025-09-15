@@ -566,7 +566,8 @@
                           </a>
                       </li>
                       <li class="nav-item">
-                          <a href="{{ route('index_cek_pasien_kronis') }}" class="nav-link @if ($sidebar == 'index_cek_pasien_kronis') active @endif">
+                          <a href="{{ route('index_cek_pasien_kronis') }}"
+                              class="nav-link @if ($sidebar == 'index_cek_pasien_kronis') active @endif">
                               <i class="nav-icon fas fa-th"></i>
                               <p>
                                   Cek Pasien Kronis
@@ -592,9 +593,12 @@
                           </a>
                       </li>
                   @endif
-                  @if (auth()->user()->nama == 'agyl' || auth()->user()->hak_akses == '1' || auth()->user()->hak_akses == '101' || auth()->user()->hak_akses == '68')
+                  @if (auth()->user()->nama == 'agyl' ||
+                          auth()->user()->hak_akses == '1' ||
+                          auth()->user()->hak_akses == '101' ||
+                          auth()->user()->hak_akses == '68')
                       <li class="nav-header">REKAMEDIS</li>
-                       <li hidden class="nav-item">
+                      <li hidden class="nav-item">
                           <a href="{{ route('dataermrajal') }}"
                               class="nav-link @if ($title == 'SIMRS - BERKAS ERM RAWAT JALAN') active @endif">
                               <i class="nav-icon fas fa-th"></i>
@@ -603,7 +607,7 @@
                               </p>
                           </a>
                       </li>
-                      <li  class="nav-item @if ($sidebar == 'berkas_erm') menu-open @endif">
+                      <li class="nav-item @if ($sidebar == 'berkas_erm') menu-open @endif">
                           <a href="#" class="nav-link">
                               <i class="nav-icon fas fa-table"></i>
                               <p>
@@ -656,6 +660,18 @@
                                   </a>
                               </li>
                           </ul> --}}
+                      </li>
+                  @endif
+                  @if (auth()->user()->hak_akses == 41)
+                      <li class="nav-header">FARMASI</li>
+                      <li class="nav-item">
+                          <a href="{{ route('datakunjunganpasienfarmasi') }}"
+                              class="nav-link @if ($title == 'SIMRS - Data Kunjungan Pasien') active @endif">
+                              <i class="nav-icon fas fa-th"></i>
+                              <p style="font-size:12px">
+                                  Data Kunjungan Pasien
+                              </p>
+                          </a>
                       </li>
                   @endif
                   <li class="nav-header"> <i class="nav-icon bi bi-person-circle mr-2"></i> INFO AKUN</li>

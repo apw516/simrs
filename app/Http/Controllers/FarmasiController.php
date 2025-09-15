@@ -52,6 +52,29 @@ class FarmasiController extends Controller
             'now',
         ]));
     }
+    public function datakunjunganpasienfarmasi()
+    {
+        $title = 'SIMRS - Data Kunjungan Pasien';
+        $sidebar = 'datakunjunganpasienfarmasi';
+        $sidebar_m = 'farmasi_1';
+        $now = $this->get_date();
+        return view('farmasi.index_data_kunjungan_pasien', compact([
+            'title',
+            'sidebar',
+            'sidebar_m',
+            'now',
+        ]));
+    }
+    public function cari_data_kunjungan(request $request){
+        $tglawal = $request->tanggalawal;
+        $tglakhir = $request->tanggalakhir;
+        $sk = db::select('SELECT kode_kunjungan,no_rm,fc_nama_px(no_rm) AS nama_pasien,fc_alamat(no_rm) AS alamat,DATE(tgl_masuk) AS tgl_masuk
+        ,no_sep,catatan,fc_nama_unit1(kode_unit) AS nama_unit
+        FROM ts_kunjungan WHERE DATE(tgl_masuk) BETWEEN ?  AND ? AND status_kunjungan != 8',[$tglawal,$tglakhir]);
+        return view('farmasi.tabel_pasien_kronis',compact([
+            'sk'
+        ]));
+    }
     public function cari_pasien_kronis(request $request){
         $tglawal = $request->tanggalawal;
         $tglakhir = $request->tanggalakhir;

@@ -23,8 +23,7 @@
                         <td>{{ $d->nama_unit }}</td>
                         <td>{{ $d->catatan }}</td>
                         <td>
-                            <button class="btn btn-info btn-sm pilihh" rm="{{ $d->no_rm }}" sep="{{ $d->no_sep}}" kodekunjungan="{{ $d->kode_kunjungan }}"
-                                data-toggle="modal" data-target="#modaldetail"><i
+                            <button class="btn btn-info btn-sm pilihpasien1" rm="{{ $d->no_rm }}" sep="{{ $d->no_sep}}" kodekunjungan="{{ $d->kode_kunjungan }}"><i
                                     class="bi bi-info-circle-fill"></i></button>
                         </td>
                     </tr>
@@ -59,7 +58,6 @@
         </div>
     </div>
 </div>
-
 <script>
     $(function() {
         $("#tabelpasienkronis").DataTable({
@@ -88,6 +86,9 @@
                 spinner.hide()
             }
         });
-
+    });
+    $('#tabelpasienkronis').on('click', '.pilihpasien1', function() {
+        kodekunjungan = $(this).attr('kodekunjungan')
+        window.open('cetakresumeblank/' + kodekunjungan);
     });
 </script>
