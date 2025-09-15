@@ -782,4 +782,5 @@ Route::post('/hasilpa', [ReportingController::class, 'hasilpa'])->name('hasilpa'
 Route::post('/resumepasien_dokter2', [ErmController::class, 'resumepasien_dokter2'])
     ->name('resumepasien_dokter2'); //sidebar
 
+Route::get('/cetakresumeblank/{kodekunjungan}', [PdfController::class, 'cetakresumedokterblank']);
 Route::get('/generate-pdf', [PdfController::class, 'generatePDF']);

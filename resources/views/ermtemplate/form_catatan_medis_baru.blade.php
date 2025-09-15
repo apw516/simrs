@@ -56,6 +56,10 @@
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
                                         unit="{{ $k->kode_unit }}"><i class="bi bi-printer mr-2"></i>Assesmen
                                         Medis</button>
+                                    <button type="button" class="btn btn-secondary cetakresumetanpattd"
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kode_kunjungan }}"><i class="bi bi-printer mr-2"></i>Assesmen
+                                        Medis Tanpa TTD</button>
                                 </div>
                             </div>
                             <div class="row">
@@ -1395,6 +1399,10 @@
         unit = $(this).attr('unit')
         window.open('http://192.168.2.30/siramah/cppt_print?rm=' + rm + '&counter=' + counter + '&kode_unit=' +
             unit);
+    })
+    $(".cetakresumetanpattd").on('click', function(event) {
+        kode_kunjungan = $(this).attr('kodekunjungan')
+        window.open('cetakresumeblank/' + kode_kunjungan);
     })
     $(".lihathasil_lab").on('click', function(event) {
         kodekunjungan = $(this).attr('kodekunjungan')
