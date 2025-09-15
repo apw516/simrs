@@ -2111,12 +2111,18 @@ class FarmasiController extends Controller
             $resume = $cek_resume[0]->file;
             $pdf->addPDF($resume, 'all');
         } else {
+            $context = stream_context_create($opts);
+            $contents_resume = file_get_contents('http://localhost/simrs/cetakresumeblank/' . $kodekunjungan,FALSE,$context);
+            Storage::disk('SEP')->put('resume'.$kodekunjungan.'.pdf', $contents_resume);
+            $pdf->addPDF('\\\193.193.193.203\erm\sep/' .'resume'.$kodekunjungan . '.pdf', 'all');
+            $contents[] = $contents_resume;
+
         }
         if (count($ts_kunjungan) > 0) {
             $context = stream_context_create($opts);
             foreach ($ts_kunjungan as $tk) {
                 if (strlen($tk->no_sep) > 3) {
-                    $contents_sep = file_get_contents('http://localhost/simrs/cetaksep_v/' . $kodekunjungan,FALSE,$context);
+                    $contents_sep = file_get_contents('http://localhost/simrs/cetaksep_v_2/' . $tk->no_sep,FALSE,$context);
                     // $contents_rad  = file_get_contents('https://192.168.2.233/expertise/cetak.php?IDs=' . $cr->id_header . '&IDd=' . $cr->id_detail . '&tgl_cetak=' . $date, FALSE, $context);
                     Storage::disk('SEP')->put($tk->no_sep . '.pdf', $contents_sep);
                     $pdf->addPDF('\\\193.193.193.203\erm\sep/' . $tk->no_sep . '.pdf', 'all');
