@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="card-header">DATA PASIEN KRONIS</div>
+    <div class="card-header">DATA PASIEN</div>
     <div class="card-body">
         <table id="tabelpasienkronis" class="table table-sm table-hover text-xs">
             <thead>
