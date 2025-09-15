@@ -157,73 +157,73 @@
                 </td>
             </tr>
         </table>
-        @foreach ($assesmen as $cp)
-            @if ($cp->kode_unit != '1028')
+        @foreach ($assesmen as $k)
+            @if ($k->kode_unit != '1028')
                 <table class="table table-sm table-bordered text-xxxs font-italic text-bold">
                     <tr>
                         <td width="30%">Sumber Data</td>
-                        <td colspan="3"></td>
+                        <td colspan="3">{{ $k->sumberdataperiksa }}</td>
                     </tr>
                     <tr>
                         <td>Keluhan Utama</td>
-                        <td  colspan="3"></td>
+                        <td  colspan="3">{{ $k->keluhanutama }}</td>
                     </tr>
                     <tr>
                         <td>Umur</td>
-                        <td  colspan="3"></td>
+                        <td  colspan="3">{{ $k->usia }}</td>
                     </tr>
                     <tr>
                         <td>Tekanan Darah</td>
-                        <td></td>
+                        <td>{{ $k->tekanandarah }} mmHg</td>
                         <td width="15%">Frekuensi Nadi</td>
-                        <td></td>
+                        <td>{{ $k->frekuensinadi }} x/menit</td>
                     </tr>
                     <tr>
                         <td>BB / TB / IMT</td>
-                        <td  colspan="3"></td>
+                        <td  colspan="3">{{ $k->beratbadan }} </td>
                     </tr>
                     <tr>
                         <td>Frekuensi Nafas</td>
-                        <td></td>
+                        <td>{{ $k->frekuensinapas }} x/menit</td>
                         <td>Suhu</td>
-                        <td></td>
+                        <td>{{ $k->suhutubuh }} °C</td>
                     </tr>
                     <tr>
                         <td>Riwayat Psikologis</td>
-                        <td></td>
+                        <td>{{ $k->Riwayatpsikologi }}</td>
                         <td>Keterangan</td>
-                        <td></td>
+                        <td>{{ $k->keterangan_riwayat_psikolog }}</td>
                     </tr>
                     <tr>
                         <td  colspan="4" class="text-center">Status Fungsional</td>
                     </tr>
                     <tr>
                         <td>Penggunaan Alat Bantu</td>
-                        <td></td>
+                        <td>{{ $k->penggunaanalatbantu }}</td>
                         <td width="15%">Keterangan</td>
-                        <td></td>
+                        <td>{{ $k->keterangan_alat_bantu }}</td>
                     </tr>
                     <tr>
                         <td>Cacat Tubuh</td>
-                        <td></td>
+                        <td>{{ $k->cacattubuh }}</td>
                         <td width="15%">Keterangan</td>
-                        <td></td>
+                        <td>{{ $k->keterangancacattubuh }}</td>
                     </tr>
                     <tr>
                         <td  colspan="4" class="text-center">Assesmen Nyeri</td>
                     </tr>
                     <tr>
                         <td>Keluhan Nyeri</td>
-                        <td></td>
+                        <td>{{ $k->Keluhannyeri }}</td>
                         <td width="15%">Keterangan</td>
-                        <td></td>
+                        <td>{{ $k->skalenyeripasien }}</td>
                     </tr>
                     <tr>
                         <td  colspan="4" class="text-center">Assesmen Resiko Jatuh</td>
                     </tr>
                     <tr>
                         <td>Resiko Jatuh</td>
-                        <td></td>
+                        <td>{{ $k->resikojatuh }}</td>
                         <td width="15%">Keterangan</td>
                         <td></td>
                     </tr>
@@ -232,47 +232,51 @@
                     </tr>
                     <tr>
                         <td>1. Apakah pasien mengalami penurunan berat badan yang tidak diinginkan dalam 6 bulan terakhir ? </td>
-                        <td colspan="3"></td>
+                        <td colspan="3">{{ $k->Skrininggizi }}</td>
                     </tr>
                     <tr>
                         <td>Keterangan</td>
-                        <td colspan="3"></td>
+                        <td colspan="3">{{ $k->beratskrininggizi }}</td>
                     </tr>
                     <tr>
                         <td>2. Apakah asupan makanan berkurang karena berkurangnya nafsu makan</td>
-                        <td colspan="3"></td>
+                        <td colspan="3">{{ $k->status_asupanmkanan }}</td>
                     </tr>
                     <tr>
                         <td>3. Pasien dengan diagnosa khusus : Penyakit DM / Ginjal / Hati / Paru / Stroke / Kanker / Penurunan imunitas geriatri, lain lain...</td>
-                        <td colspan="3"></td>
+                        <td colspan="3">{{ $k->diagnosakhusus }}</td>
                     </tr>
                     <tr>
                         <td>Keterangan</td>
-                        <td colspan="3"></td>
+                        <td colspan="3">{{ $k->penyakitlainpasien }}</td>
                     </tr>
                     <tr>
                         <td>4. Bila skor >= 2, pasien beresiko malnutrisi dilakukan pengkajian lanjut oleh ahli gizi</td>
-                        <td colspan="3"></td>
+                        <td colspan="3">{{ $k->resikomalnutrisi }}</td>
                     </tr>
                     <tr>
                         <td>Keterangan</td>
-                        <td colspan="3"></td>
+                        <td colspan="3">{{ $k->tglpengkajianlanjutgizi }}</td>
                     </tr>
                     <tr>
                         <td>Diagnosa Keperawatan</td>
-                        <td colspan="3"></td>
+                        <td colspan="3">{{ $k->diagnosakeperawatan }}</td>
                     </tr>
                     <tr>
                         <td>Rencana Keperawatan/Kebidanan/Terapis</td>
-                        <td colspan="3"></td>
+                        <td colspan="3">{{ $k->rencanakeperawatan }}</td>
                     </tr>
                     <tr>
                         <td>Tindakan Keperawatan/Kebidanan/Terapis</td>
-                        <td colspan="3"></td>
+                        <td colspan="3">{{ $k->tindakankeperawatan }}</td>
                     </tr>
                     <tr>
                         <td>Evaluasi Keperawatan/Kebidanan/Terapis</td>
-                        <td colspan="3"></td>
+                        <td colspan="3">{{ $k->evaluasikeperawatan }}</td>
+                    </tr>
+                    <tr>
+                        <td>Nama Pemeriksa</td>
+                        <td colspan="3">{{ $k->namapemeriksa }}</td>
                     </tr>
                 </table>
             @else
