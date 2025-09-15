@@ -122,7 +122,7 @@
                             <i class="fas fa-filter mr-2"></i> Resume
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li hidden class="nav-item">
                         <a href="#" class="nav-link" onclick="resume2()">
                             <i class="fas fa-filter mr-2"></i> Resume v2
                         </a>
