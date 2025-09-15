@@ -2113,9 +2113,11 @@ class FarmasiController extends Controller
         } else {
         }
         if (count($ts_kunjungan) > 0) {
+            $context = stream_context_create($opts);
             foreach ($ts_kunjungan as $tk) {
                 if (strlen($tk->no_sep) > 3) {
-                    $contents_sep = file_get_contents('http://localhost/simrs/cetaksep_v2/' . $tk->no_sep);
+                    $contents_sep = file_get_contents('http://localhost/simrs/cetaksep_v/' . $kodekunjungan,FALSE,$context);
+                    // $contents_rad  = file_get_contents('https://192.168.2.233/expertise/cetak.php?IDs=' . $cr->id_header . '&IDd=' . $cr->id_detail . '&tgl_cetak=' . $date, FALSE, $context);
                     Storage::disk('SEP')->put($tk->no_sep . '.pdf', $contents_sep);
                     $pdf->addPDF('\\\193.193.193.203\erm\sep/' . $tk->no_sep . '.pdf', 'all');
                     $contents[] = $contents_sep;
@@ -2124,7 +2126,6 @@ class FarmasiController extends Controller
         }
         // dd($cek_lab);
         if (count($cek_lab) > 0) {
-
             foreach ($cek_lab as $cl) {
                 $kode_layanan_header = $cl->layanan;
                 $contents_lab = file_get_contents($cl->link);
@@ -2154,7 +2155,6 @@ class FarmasiController extends Controller
                 $contents[] = $contents_resep;
             }
         }
-
         if (count($contents) > 0) {
             $pdf->merge();
             $output = $pdf->Output();

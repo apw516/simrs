@@ -35,11 +35,54 @@ return [
             'root' => storage_path('app'),
             'throw' => false,
         ],
-
+        'shared2' => [
+            'driver' => 'local',
+            'root' => '\\\\193.193.193.203\\erm\\resume_medis_rawat_jalan_no_ttd',
+        ],
+        'shared' => [
+            'driver' => 'local',
+            'root' => '\\\\193.193.193.203\\erm\\resume_medis_rawat_jalan',
+        ],
+        'SEP' => [
+            'driver' => 'local',
+            'root' => '\\\\193.193.193.203\\erm\\sep',
+        ],
+        'LAB_1' => [
+            'driver' => 'local',
+            'root' => '\\\\193.193.193.203\\erm\\hasil_lab_1',
+        ],
+        'LAB_2' => [
+            'driver' => 'local',
+            'root' => '\\\\193.193.193.203\\erm\\hasil_lab_2',
+        ],
+        'LAB_3' => [
+            'driver' => 'local',
+            'root' => '\\\\193.193.193.203\\erm\\hasil_lab_3',
+        ],
+        'LAB_4' => [
+            'driver' => 'local',
+            'root' => '\\\\193.193.193.203\\erm\\hasil_lab_4',
+        ],
+        'LAB_5' => [
+            'driver' => 'local',
+            'root' => '\\\\193.193.193.203\\erm\\hasil_lab_5',
+        ],
+        'RAD' => [
+            'driver' => 'local',
+            'root' => '\\\\193.193.193.203\\erm\\expertisi_radiologi',
+        ],
+        'FAR' => [
+            'driver' => 'local',
+            'root' => '\\\\193.193.193.203\\erm\\resepfarmasi',
+        ],
+        'MER' => [
+            'driver' => 'local',
+            'root' => '\\\\193.193.193.203\\erm\\merger_resume_rajal',
+        ],
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
             'throw' => false,
         ],
