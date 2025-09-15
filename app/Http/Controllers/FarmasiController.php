@@ -21,6 +21,11 @@ use Codedge\Fpdf\code128\PDF_Code128;
 use Codedge\Fpdf\Fpdf128;
 use \Milon\Barcode\DNS1D;
 use simitsdk\phpjasperxml\PHPJasperXML;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
+use phpseclib3\Net\SFTP;
+// use Oriceon\PdfMerger\Facades\PdfMerger;
+use Webklex\PDFMerger\Facades\PDFMergerFacade as PDFMerger;
 
 class FarmasiController extends Controller
 {
