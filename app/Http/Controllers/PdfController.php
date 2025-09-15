@@ -168,8 +168,8 @@ class PdfController extends Controller
     }
     public function cetakresumeblank_perawat($kodekunjungan)
     {
-        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', ['14746881']);
-        $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', ['22606292']);
+        $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
         $data = ['title' => 'My PDF Document', 'content' => 'This is some content for the PDF.', $mt_pasien];
         $assesmen = db::select('select *,date(tanggalperiksa) as tglk2  from erm_hasil_assesmen_keperawatan_rajal where kode_kunjungan = ?', [$kodekunjungan]);
         $today = Carbon::now()->isoFormat('D MMMM Y');
