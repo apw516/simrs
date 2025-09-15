@@ -129,16 +129,16 @@ class PdfController extends Controller
         $cek2 = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and status_code = ?', [$kodekunjungan, 200]);
         $hitung = count($cek2);
         $cetakanke = $hitung + 1;
-        if(strlen($ts_kunjungan[0]->kode_paramedis) < 2){
+        if (strlen($ts_kunjungan[0]->kode_paramedis) < 2) {
             $kode_par = $ts_kunjungan[0]->ref_paramedis;
-            if(count($assesmen) > 0){
+            if (count($assesmen) > 0) {
                 $pic = $assesmen[0]->pic;
-                $user = db::select('select * from user a where a.id = ?',[$pic]);
+                $user = db::select('select * from user a where a.id = ?', [$pic]);
                 $kode_par = $user[0]->kode_paramedis;
-            }else{
-                $kode_par= '';
+            } else {
+                $kode_par = '';
             }
-        }else{
+        } else {
             $kode_par = $ts_kunjungan[0]->kode_paramedis;
         }
         $mt_paramedis = db::select('select * from mt_paramedis where kode_paramedis = ?', [$kode_par]);
@@ -157,7 +157,7 @@ class PdfController extends Controller
             'today',
             'cetakanke'
         ]));
-         return $pdf->download('document.pdf');
+        return $pdf->download('document.pdf');
         return $pdf->stream('document.pdf');
 
         // $pdf->set_option("isPhpEnabled", true);
@@ -165,5 +165,28 @@ class PdfController extends Controller
         // $d = $pdf->output();
         // $name = $kodekunjungan . '.pdf';
         // $pdf->save(Storage::disk('shared', $name)->put($name, $d));
+    }
+    public function cetakresumeblank_perawat($kodekunjungan)
+    {
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', ['14746881']);
+        $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', ['22606292']);
+        $data = ['title' => 'My PDF Document', 'content' => 'This is some content for the PDF.', $mt_pasien];
+        $assesmen = db::select('select *,date(tanggalperiksa) as tglk2  from erm_hasil_assesmen_keperawatan_rajal where kode_kunjungan = ?', [$kodekunjungan]);
+        $today = Carbon::now()->isoFormat('D MMMM Y');
+        if (count($assesmen) > 0) {
+            $tglll =  $assesmen[0]->tglk2;
+            $carbonDate = Carbon::parse($tglll);
+            $tglperiksa = $carbonDate->isoFormat('dddd, D MMMM Y');
+        } else {
+            $tglperiksa = Carbon::now()->isoFormat('dddd, D MMMM Y');
+        }
+        $pdf = Pdf::loadView('pdf.document_blank_perawat', compact([
+            'mt_pasien',
+            'ts_kunjungan',
+            'tglperiksa',
+            'assesmen'
+        ]));
+        return $pdf->download('document.pdf');
+        return $pdf->stream('document.pdf');
     }
 }

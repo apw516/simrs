@@ -49,8 +49,12 @@
                                         kodekunjungan="{{ $k->kodek }}" data-toggle="modal"
                                         data-target="#modalhasil_lab"><i class="bi bi-eye mr-2"></i>Hasil
                                         Laboratorium</button>
-                                    <button type="button" class="btn btn-secondary cetakresumesus"
+                                    {{-- <button type="button" class="btn btn-secondary cetakresumesus"
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"><i
+                                            class="bi bi-printer mr-2"></i>Assesmen Keperawatan</button> --}}
+
+                                    <button type="button" class="btn btn-secondary cetakresumeperawatbaru"
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}" kodekunjungan="{{ $k->kodek }}"><i
                                             class="bi bi-printer mr-2"></i>Assesmen Keperawatan</button>
                                     <button hidden type="button" class="btn btn-secondary cetakresumedok"
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
@@ -1403,6 +1407,10 @@
     $(".cetakresumetanpattd").on('click', function(event) {
         kode_kunjungan = $(this).attr('kodekunjungan')
         window.open('cetakresumeblank/' + kode_kunjungan);
+    })
+    $(".cetakresumeperawatbaru").on('click', function(event) {
+        kode_kunjungan = $(this).attr('kodekunjungan')
+        window.open('cetakresumeblank_perawat/' + kode_kunjungan);
     })
     $(".lihathasil_lab").on('click', function(event) {
         kodekunjungan = $(this).attr('kodekunjungan')

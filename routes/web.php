@@ -22,8 +22,6 @@ use App\Http\Controllers\JasaMedisController;
 
 Route::get('/berkas_ersep', [ReportingController::class, 'index'])->middleware('auth')->name('berkas_ersep');
 Route::post('/ambildataeresep', [ReportingController::class, 'ambilDataEresep'])->middleware('auth')->name('ambildataeresep');
-
-
 Route::get('/', [LoginController::class, 'index']);
 Route::get('datauser', [LoginController::class, 'datauser'])->middleware('auth')->name('datauser');
 // Route::get('/register', [LoginController::class, 'register'])->name('/register');
@@ -75,7 +73,6 @@ Route::post('ambilsaran', [ErmController::class, 'ambilsaran'])
     ->name('ambilsaran'); //sidebar
 Route::post('showfile', [ErmController::class, 'showfile'])
     ->name('showfile'); //sidebar
-
 Route::get('kunjungan_pasien', [ErmController::class, 'kunjungan_pasien'])
     ->name('kunjungan_pasien'); //sidebar
 Route::get('berkas_erm', [ErmController::class, 'berkas_erm'])
@@ -104,14 +101,12 @@ Route::post('lihathasilpenunjang_uro', [ErmController::class, 'lihathasilpenunja
     ->name('lihathasilpenunjang_uro'); //sidebar
 Route::post('lihathasilpenunjang_obg', [ErmController::class, 'lihathasilpenunjang_obg'])
     ->name('lihathasilpenunjang_obg'); //sidebar
-
 Route::get('/register', [RegisterController::class, 'index'])->middleware('guest')->name('register');
 Route::get('/profil', [RegisterController::class, 'profil'])->name('profil');
 Route::post('/ambiltabeldatauser', [LoginController::class, 'ambiltabeldatauser'])->name('ambiltabeldatauser');
 Route::post('/ambildatauser_edit', [LoginController::class, 'ambildatauser_edit'])->name('ambildatauser_edit');
 Route::post('/simpanedit_user', [LoginController::class, 'simpanedit_user'])->name('simpanedit_user');
 Route::post('/register', [RegisterController::class, 'Store']);
-
 Route::post('/formpemeriksaan_khusus', [ErmController::class, 'formpemeriksaan_khusus'])
     ->name('formpemeriksaan_khusus'); //sidebar
 Route::post('/ambilriwayat_pasien', [ErmController::class, 'ambilriwayat_pasien'])
@@ -130,17 +125,13 @@ Route::post('/gambarcatatan', [ErmController::class, 'gambarcatatan'])
     ->name('gambarcatatan'); //sidebar
 Route::get('/kontakkami', [SimrsController::class, 'kontakkami'])
     ->name('kontakkami'); //sidebar
-
-
 //reloadorder
 Route::post('/reloadorder', [PenunjangController::class, 'reloadorder'])
     ->name('reloadorder'); //sidebar
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 Route::post('/ambil_grafik_all_poli', [DashboardController::class, 'ambil_grafik_all_poli'])->middleware('auth')->name('ambil_grafik_all_poli');
 Route::post('/ambil_grafik_by_poli', [DashboardController::class, 'ambil_grafik_by_poli'])->middleware('auth')->name('ambil_grafik_by_poli');
-
 Route::get('/berkas_ersep', [ReportingController::class, 'index'])->middleware('auth')->name('berkas_ersep');
-
 Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9,102,101']], function () {
     Route::get('/pendaftaran', [SimrsController::class, 'Pendaftaran'])
         ->name('pendaftaran'); //sidebar
@@ -782,5 +773,6 @@ Route::post('/hasilpa', [ReportingController::class, 'hasilpa'])->name('hasilpa'
 Route::post('/resumepasien_dokter2', [ErmController::class, 'resumepasien_dokter2'])
     ->name('resumepasien_dokter2'); //sidebar
 
+Route::get('/cetakresumeblank_perawat/{kodekunjungan}', [PdfController::class, 'cetakresumeblank_perawat']);
 Route::get('/cetakresumeblank/{kodekunjungan}', [PdfController::class, 'cetakresumedokterblank']);
 Route::get('/generate-pdf', [PdfController::class, 'generatePDF']);
