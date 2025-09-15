@@ -89,6 +89,6 @@
     });
     $('#tabelpasienkronis').on('click', '.pilihpasien1', function() {
         kodekunjungan = $(this).attr('kodekunjungan')
-        window.open('cetakresumeblank/' + kodekunjungan);
+        window.open('mergerpdf/' + kodekunjungan);
     });
 </script>
