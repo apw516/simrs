@@ -238,7 +238,7 @@ class ErmController extends Controller
         $kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$request->kode]);
         $unitk = $kunjungan[0]->kode_unit;
         $kunjunganKronis = DB::select('select * from ts_kunjungan where no_rm = ? and kode_unit = ? and catatan = ?', [$request->rm, $unitk, 'KRONIS']);
-        sleep(150);
+
         $rujukan = $kunjungan[0]->no_rujukan;
         $rujukan = 'AB';
         $cekrujukan1 = strlen($rujukan);
@@ -291,6 +291,11 @@ class ErmController extends Controller
         $mt_paramedis = db::select('select * from mt_paramedis where kode_paramedis = ?', [$dpjp]);
         $dpjp2 = $mt_paramedis[0]->kode_dokter_jkn;
         $icare = $mw->icare($noka, $dpjp2);
+           if (auth()->user()->unit  != '1028') {
+            sleep(150);
+        } else {
+
+        }
         if ($icare->metadata->code == 200) {
             $urlicare = $icare->response->url;
         } else {
@@ -8642,5 +8647,8 @@ class ErmController extends Controller
         ]));
     }
 }
+
+
+
 
 
