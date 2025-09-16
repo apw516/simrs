@@ -291,8 +291,8 @@ class ErmController extends Controller
         $mt_paramedis = db::select('select * from mt_paramedis where kode_paramedis = ?', [$dpjp]);
         $dpjp2 = $mt_paramedis[0]->kode_dokter_jkn;
         $icare = $mw->icare($noka, $dpjp2);
-           if (auth()->user()->unit  != '1028') {
-            sleep(150);
+        if (auth()->user()->unit  != '1028') {
+            sleep(2);
         } else {
 
         }
