@@ -238,6 +238,7 @@ class ErmController extends Controller
         $kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$request->kode]);
         $unitk = $kunjungan[0]->kode_unit;
         $kunjunganKronis = DB::select('select * from ts_kunjungan where no_rm = ? and kode_unit = ? and catatan = ?', [$request->rm, $unitk, 'KRONIS']);
+        sleep(250);
         $rujukan = $kunjungan[0]->no_rujukan;
         $rujukan = 'AB';
         $cekrujukan1 = strlen($rujukan);
@@ -2165,7 +2166,6 @@ class ErmController extends Controller
 
         $pasieniter = $request->pasieniter;
         $jumlahiter = $request->jumlahiter;
-
         $data1 = json_decode($_POST['data1'], true);
         $data2 = json_decode($_POST['data2'], true);
         $data3 = json_decode($_POST['data3'], true);

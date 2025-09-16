@@ -2113,6 +2113,7 @@ class FarmasiController extends Controller
         $mt_pasien = db::select('select * from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
         $cek_resume = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and status_file = 1', [$kodekunjungan]);
         $cek_lab = $this->get_lab($kodekunjungan);
+        dd($cek_lab);
         $cek_rad = db::select('select * from ts_hasil_expertisi where kode_kunjungan = ?', [$kodekunjungan]);
         $cek_far = db::select('select * from ts_layanan_header where kode_kunjungan = ? and kode_unit IN (4002,4008)', [$kodekunjungan]);
         // dd($cek_lab);
@@ -2195,7 +2196,6 @@ class FarmasiController extends Controller
 (
 SELECT DISTINCT
 CASE WHEN dd.NAMA_TARIF LIKE '%Morfologi darah tepi%' THEN bb.kode_layanan_header
-
             WHEN dd.nama_tarif IN ('Gall Kultur Darah (Resin)'
                                                             ,'Gall Kultur Urine(Urotube)'
                                                             ,'Identifikasi Parasit'
@@ -2265,7 +2265,6 @@ WHEN dd.NAMA_TARIF LIKE '%kultur%' THEN bb.kode_layanan_header #CONCAT(aa.no_sep
                                                             ,'Sediaan Jamur'
                                                             ) THEN bb.kode_layanan_header #CONCAT(aa.no_sep,'-',bb.kode_layanan_header,'-PGCT')
 WHEN dd.NAMA_TARIF LIKE '%bta%' THEN bb.kode_layanan_header #CONCAT(aa.no_sep,'-',bb.kode_layanan_header,'-PGCT')
-
             WHEN dd.nama_tarif IN ('[PRD] - CMV PCR Kualitatif'
                                                             ,'[PRD] -Toxoplasma PCR'
                                                             ,'[PRM] - HBV DNA KUANTITATIF PCR'
@@ -2290,7 +2289,6 @@ WHEN dd.NAMA_TARIF LIKE '%bta%' THEN bb.kode_layanan_header #CONCAT(aa.no_sep,'-
 
             ELSE '' END AS layanan
   ,CASE WHEN dd.NAMA_TARIF LIKE '%Morfologi darah tepi%' THEN CONCAT('http://192.168.2.74/smartlab_waled/his/his_report?hisno=',bb.kode_layanan_header,'&type=MDT')
-
                WHEN dd.nama_tarif IN ('Gall Kultur Darah (Resin)'
                                                             ,'Gall Kultur Urine(Urotube)'
                                                             ,'Identifikasi Parasit'
@@ -2330,8 +2328,6 @@ WHEN dd.NAMA_TARIF LIKE '%bta%' THEN bb.kode_layanan_header #CONCAT(aa.no_sep,'-
                                                             ,'Urine Culture'
                                                             ) THEN CONCAT('http://192.168.2.74/smartlab_waled/his/his_report?hisno=',bb.kode_layanan_header,'&type=KULTR')
                WHEN dd.NAMA_TARIF LIKE '%kultur%'  THEN CONCAT('http://192.168.2.74/smartlab_waled/his/his_report?hisno=',bb.kode_layanan_header,'&type=KULTR')
-
-
                WHEN dd.nama_tarif IN ('Apus Vagina'
                                                             ,'BTA CUPING KANAN'
                                                             ,'BTA CUPING KIRI'
@@ -2402,7 +2398,6 @@ AND cc.status_layanan_detail = 'opn'
 AND bb.keterangan = 'Terkirim'
 )Q
 WHERE layanan <> ''");
-
         return $hasil;
     }
 }
