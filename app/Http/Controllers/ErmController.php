@@ -238,7 +238,7 @@ class ErmController extends Controller
         $kunjungan = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$request->kode]);
         $unitk = $kunjungan[0]->kode_unit;
         $kunjunganKronis = DB::select('select * from ts_kunjungan where no_rm = ? and kode_unit = ? and catatan = ?', [$request->rm, $unitk, 'KRONIS']);
-        sleep(250);
+        sleep(150);
         $rujukan = $kunjungan[0]->no_rujukan;
         $rujukan = 'AB';
         $cekrujukan1 = strlen($rujukan);

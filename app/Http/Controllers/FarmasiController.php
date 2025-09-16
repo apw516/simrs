@@ -2113,7 +2113,6 @@ class FarmasiController extends Controller
         $mt_pasien = db::select('select * from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
         $cek_resume = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and status_file = 1', [$kodekunjungan]);
         $cek_lab = $this->get_lab($kodekunjungan);
-        dd($cek_lab);
         $cek_rad = db::select('select * from ts_hasil_expertisi where kode_kunjungan = ?', [$kodekunjungan]);
         $cek_far = db::select('select * from ts_layanan_header where kode_kunjungan = ? and kode_unit IN (4002,4008)', [$kodekunjungan]);
         // dd($cek_lab);
@@ -2381,7 +2380,6 @@ WHEN dd.NAMA_TARIF LIKE '%bta%' THEN bb.kode_layanan_header #CONCAT(aa.no_sep,'-
                                                       ) THEN CONCAT('http://192.168.2.74/smartlab_waled/his/his_report?hisno=',bb.kode_layanan_header,'&type=BM')
                WHEN dd.NAMA_TARIF LIKE '%BM%' THEN CONCAT('http://192.168.2.74/smartlab_waled/his/his_report?hisno=',bb.kode_layanan_header,'&type=BM')
                WHEN dd.NAMA_TARIF LIKE '%Bone%' THEN CONCAT('http://192.168.2.74/smartlab_waled/his/his_report?hisno=',bb.kode_layanan_header,'&type=BM')
-
             ELSE '' END AS link
 
 FROM
@@ -2389,7 +2387,6 @@ FROM
 SELECT DISTINCT b.kode_kunjungan FROM simrs_waled.ts_kunjungan b
 WHERE b.kode_kunjungan = $kodekunjungan
 )aa
-
 INNER JOIN simrs_waled.ts_layanan_header bb ON bb.kode_kunjungan = aa.kode_kunjungan
 INNER JOIN simrs_waled.ts_layanan_detail cc ON cc.row_id_header = bb.id
 INNER JOIN simrs_waled.mt_tarif_header dd ON dd.KODE_TARIF_HEADER = LEFT(cc.kode_tarif_detail,6)
