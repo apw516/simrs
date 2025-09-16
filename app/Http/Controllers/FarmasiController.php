@@ -70,48 +70,58 @@ class FarmasiController extends Controller
             'now',
         ]));
     }
-    public function cari_data_kunjungan(request $request){
+    public function cari_data_kunjungan(request $request)
+    {
         $tglawal = $request->tanggalawal;
         $tglakhir = $request->tanggalakhir;
         $sk = db::select('SELECT kode_kunjungan,no_rm,fc_nama_px(no_rm) AS nama_pasien,fc_alamat(no_rm) AS alamat,DATE(tgl_masuk) AS tgl_masuk
         ,no_sep,catatan,fc_nama_unit1(kode_unit) AS nama_unit
-        FROM ts_kunjungan WHERE DATE(tgl_masuk) BETWEEN ?  AND ? AND status_kunjungan != 8',[$tglawal,$tglakhir]);
-        return view('farmasi.tabel_pasien_kronis',compact([
+        FROM ts_kunjungan WHERE DATE(tgl_masuk) BETWEEN ?  AND ? AND status_kunjungan != 8', [$tglawal, $tglakhir]);
+        return view('farmasi.tabel_pasien_kronis', compact([
             'sk'
         ]));
     }
-    public function cari_pasien_kronis(request $request){
+    public function cari_pasien_kronis(request $request)
+    {
         $tglawal = $request->tanggalawal;
         $tglakhir = $request->tanggalakhir;
         $sk = db::select('SELECT kode_kunjungan,no_rm,fc_nama_px(no_rm) AS nama_pasien,fc_alamat(no_rm) AS alamat,DATE(tgl_masuk) AS tgl_masuk
         ,no_sep,catatan,fc_nama_unit1(kode_unit) AS nama_unit
-        FROM ts_kunjungan WHERE DATE(tgl_masuk) BETWEEN ?  AND ? AND catatan = ?',[$tglawal,$tglakhir,'KRONIS']);
-        return view('farmasi.tabel_pasien_kronis',compact([
+        FROM ts_kunjungan WHERE DATE(tgl_masuk) BETWEEN ?  AND ? AND catatan = ?', [$tglawal, $tglakhir, 'KRONIS']);
+        return view('farmasi.tabel_pasien_kronis', compact([
             'sk'
         ]));
     }
-    public function cari_detail_pasien_kronis(request $request){
+    public function cari_detail_pasien_kronis(request $request)
+    {
         $kodekunjungan = $request->kodekunjungan;
         $rm = $request->rm;
         $sep = $request->sep;
 
-        $farmasi = db::select('select * from ts_layanan_header where kode_kunjungan = ? and kode_unit > ? and status_layanan != ?',[$kodekunjungan,4000,3]);
+        $farmasi = db::select('select * from ts_layanan_header where kode_kunjungan = ? and kode_unit > ? and status_layanan != ?', [$kodekunjungan, 4000, 3]);
         $farmasi2 = db::select('select row_id_header,b.kode_barang as kode_barang,nama_barang,d.NAMA_TARIF,jumlah_layanan
         ,b.aturan_pakai,b.total_layanan from ts_layanan_header a
         left outer join ts_layanan_detail b on a.id = b.row_id_header
         left outer join mt_barang c on b.kode_barang = c.kode_barang
         left outer join mt_tarif_header d on substr(b.kode_tarif_detail,1,6) = d.KODE_TARIF_HEADER
-        where a.kode_kunjungan = ? and a.kode_unit > ? and a.status_layanan != ? ',[$kodekunjungan,4000,3]);
+        where a.kode_kunjungan = ? and a.kode_unit > ? and a.status_layanan != ? ', [$kodekunjungan, 4000, 3]);
 
         $hasil_lab = DB::select('SELECT * FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` WHERE a.`kode_kunjungan` = ? AND b.`kode_unit` = ? ORDER BY a.`kode_kunjungan` DESC LIMIT 1', [$kodekunjungan, '3002']);
 
         $hasil_rad = DB::select('SELECT * FROM ts_hasil_expertisi WHERE kode_kunjungan = ? ORDER BY id DESC', [$kodekunjungan]);
         $date = $this->get_date();
 
-        $mt_pasien = db::SELECT('select *,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?',[$rm]);
-        $assesmen_dokter = db::select('select * from assesmen_dokters where id_kunjungan = ?',[$kodekunjungan]);
-        return view('farmasi.detail_kronis',compact([
-            'farmasi','farmasi2','assesmen_dokter','hasil_lab','hasil_rad','date','sep','mt_pasien'
+        $mt_pasien = db::SELECT('select *,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$rm]);
+        $assesmen_dokter = db::select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
+        return view('farmasi.detail_kronis', compact([
+            'farmasi',
+            'farmasi2',
+            'assesmen_dokter',
+            'hasil_lab',
+            'hasil_rad',
+            'date',
+            'sep',
+            'mt_pasien'
         ]));
     }
     public function index_cari_resep()
@@ -167,12 +177,12 @@ class FarmasiController extends Controller
         $poliklinik = $request->poliklinik;
         $tanggalcari = $request->tanggalcari;
         $now = $this->get_date();
-        if($tanggalcari == $now){
-            $kunjungan = DB::select('SELECT date(tgl_masuk) as tgl_masuk,no_rm,kode_kunjungan,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat,fc_nama_unit1(kode_unit) AS nama_unit,kode_unit, fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin FROM ts_kunjungan WHERE kode_unit = ? AND status_kunjungan = ? AND date(tgl_masuk) = ?', [$poliklinik, '1',$tanggalcari]);
-        }else{
-            $kunjungan = DB::select('SELECT date(tgl_masuk) as tgl_masuk,no_rm,kode_kunjungan,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat,fc_nama_unit1(kode_unit) AS nama_unit,kode_unit, fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin FROM ts_kunjungan WHERE kode_unit = ? AND status_kunjungan <> ? AND date(tgl_masuk) = ?', [$poliklinik, '8',$tanggalcari]);
+        if ($tanggalcari == $now) {
+            $kunjungan = DB::select('SELECT date(tgl_masuk) as tgl_masuk,no_rm,kode_kunjungan,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat,fc_nama_unit1(kode_unit) AS nama_unit,kode_unit, fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin FROM ts_kunjungan WHERE kode_unit = ? AND status_kunjungan = ? AND date(tgl_masuk) = ?', [$poliklinik, '1', $tanggalcari]);
+        } else {
+            $kunjungan = DB::select('SELECT date(tgl_masuk) as tgl_masuk,no_rm,kode_kunjungan,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat,fc_nama_unit1(kode_unit) AS nama_unit,kode_unit, fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin FROM ts_kunjungan WHERE kode_unit = ? AND status_kunjungan <> ? AND date(tgl_masuk) = ?', [$poliklinik, '8', $tanggalcari]);
         }
-            return view('farmasi.tabel_pasien_poli', compact([
+        return view('farmasi.tabel_pasien_poli', compact([
             'kunjungan'
         ]));
         // $mt_pasien = DB::select('Select no_rm,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$rm]);
@@ -186,11 +196,11 @@ class FarmasiController extends Controller
         $rm = $request->rm;
         $kodeunit = $request->kodeunit;
         $kodekunjungan = $request->kodekunjungan;
-        $kunjungan = DB::select('SELECT date(tgl_masuk) as tgl_masuk,no_rm,kode_kunjungan,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat,fc_nama_unit1(kode_unit) AS nama_unit,kode_unit, fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin FROM ts_kunjungan WHERE no_rm = ? AND kode_unit = ? AND status_kunjungan <> ? AND kode_kunjungan = ?', [$rm, $kodeunit, '8',$kodekunjungan]);
+        $kunjungan = DB::select('SELECT date(tgl_masuk) as tgl_masuk,no_rm,kode_kunjungan,fc_nama_px(no_rm) as nama_pasien,fc_alamat(no_rm) as alamat,fc_nama_unit1(kode_unit) AS nama_unit,kode_unit, fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin FROM ts_kunjungan WHERE no_rm = ? AND kode_unit = ? AND status_kunjungan <> ? AND kode_kunjungan = ?', [$rm, $kodeunit, '8', $kodekunjungan]);
         $mt_pasien = DB::select('Select no_rm,nama_px,tgl_lahir,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?', [$rm]);
         $orderan = db::select('SELECT * ,fc_nama_unit1(unit_pengirim) AS nama_unit,fc_nama_paramedis1(dok_kirim) AS nama_dokter FROM ts_layanan_detail_order a
         LEFT OUTER JOIN ts_layanan_header_order b ON a.`row_id_header` = b.`id`
-        WHERE DATE(a.`tgl_layanan_detail`) = ? AND b.`kode_kunjungan` = ?', ([$kunjungan[0]->tgl_masuk,$kunjungan[0]->kode_kunjungan]));
+        WHERE DATE(a.`tgl_layanan_detail`) = ? AND b.`kode_kunjungan` = ?', ([$kunjungan[0]->tgl_masuk, $kunjungan[0]->kode_kunjungan]));
         return view('farmasi.detail_pasien_pencarian', compact([
             'mt_pasien',
             'kunjungan',
@@ -1823,7 +1833,7 @@ class FarmasiController extends Controller
             'iddetail'
         ]));
     }
-     public function cetaknota_new($kodekunjungan, $kodeheader,$idheader)
+    public function cetaknota_new($kodekunjungan, $kodeheader, $idheader)
     {
         // dd($kodeheader);
         // SP_Karcis_Pendaftaran3(kodelayananheader,norm)
@@ -1851,7 +1861,7 @@ class FarmasiController extends Controller
             $value =  $nama['value'];
             $dataSet[$index] = $value;
         }
-        if(trim($dataSet['jumlahretur']) == ''){
+        if (trim($dataSet['jumlahretur']) == '') {
             $data = [
                 'kode' => 500,
                 'message' => 'Jumlah retur tidak boleh kosong !',
@@ -1859,7 +1869,7 @@ class FarmasiController extends Controller
             echo json_encode($data);
             die;
         }
-        if($dataSet['jumlah'] <= 0){
+        if ($dataSet['jumlah'] <= 0) {
             $data = [
                 'kode' => 500,
                 'message' => 'Gagal , semua obat sudah diretur !',
@@ -1875,7 +1885,7 @@ class FarmasiController extends Controller
         //proses hitung retur dits layanan detail
         $tarif_layanan = $get_detail[0]->total_tarif;
         $jumlah_layanan = $get_detail[0]->jumlah_layanan;
-        if($jumlah_layanan - $dataSet['jumlahretur'] < 0){
+        if ($jumlah_layanan - $dataSet['jumlahretur'] < 0) {
             $data = [
                 'kode' => 500,
                 'message' => 'Gagal , Jumlah retur lebih banyak dari qty awal !',
@@ -2086,7 +2096,7 @@ class FarmasiController extends Controller
         date_default_timezone_set('Asia/Jakarta');
         return 'RETDET' . date('ymd') . $kd;
     }
-   public function mergerpdf($kodekunjungan)
+    public function mergerpdf($kodekunjungan)
     {
         $date = $this->get_date();
         // ... inside a controller method or similar
@@ -2112,17 +2122,16 @@ class FarmasiController extends Controller
             $pdf->addPDF($resume, 'all');
         } else {
             $context = stream_context_create($opts);
-            $contents_resume = file_get_contents('http://192.168.2.45/simrs/cetakresumeblank/' . $kodekunjungan,FALSE,$context);
-            Storage::disk('SEP')->put('resume'.$kodekunjungan.'.pdf', $contents_resume);
-            $pdf->addPDF('\\\193.193.193.203\erm\sep/' .'resume'.$kodekunjungan . '.pdf', 'all');
+            $contents_resume = file_get_contents('http://192.168.2.45/simrs/cetakresumeblank/' . $kodekunjungan, FALSE, $context);
+            Storage::disk('SEP')->put('resume' . $kodekunjungan . '.pdf', $contents_resume);
+            $pdf->addPDF('\\\193.193.193.203\erm\sep/' . 'resume' . $kodekunjungan . '.pdf', 'all');
             $contents[] = $contents_resume;
-
         }
         if (count($ts_kunjungan) > 0) {
             $context = stream_context_create($opts);
             foreach ($ts_kunjungan as $tk) {
                 if (strlen($tk->no_sep) > 3) {
-                    $contents_sep = file_get_contents('http://192.168.2.45/simrs/cetaksep_v_2/' . $tk->no_sep,FALSE,$context);
+                    $contents_sep = file_get_contents('http://192.168.2.45/simrs/cetaksep_v_2/' . $tk->no_sep, FALSE, $context);
                     // $contents_rad  = file_get_contents('https://192.168.2.233/expertise/cetak.php?IDs=' . $cr->id_header . '&IDd=' . $cr->id_detail . '&tgl_cetak=' . $date, FALSE, $context);
                     Storage::disk('SEP')->put($tk->no_sep . '.pdf', $contents_sep);
                     $pdf->addPDF('\\\193.193.193.203\erm\sep/' . $tk->no_sep . '.pdf', 'all');
@@ -2131,6 +2140,15 @@ class FarmasiController extends Controller
             }
         }
         // dd($cek_lab);
+        // if (count($cek_lab) > 0) {
+        //     foreach ($cek_lab as $cl) {
+        //         $kode_layanan_header = $cl->layanan;
+        //         $contents_lab = file_get_contents($cl->link);
+        //         Storage::disk('LAB_1')->put($kode_layanan_header . '.pdf', $contents_lab);
+        //         $pdf->addPDF('\\\193.193.193.203\erm\hasil_lab_1/' . $kode_layanan_header . '.pdf', 'all');
+        //         $contents[] = $contents_lab;
+        //     }
+        // }
         if (count($cek_lab) > 0) {
             foreach ($cek_lab as $cl) {
                 $kode_layanan_header = $cl->layanan;
@@ -2140,7 +2158,6 @@ class FarmasiController extends Controller
                 $contents[] = $contents_lab;
             }
         }
-
         if (count($cek_rad) > 0) {
             $context = stream_context_create($opts);
             foreach ($cek_rad as $cr) {
