@@ -2114,7 +2114,7 @@ class FarmasiController extends Controller
         $cek_resume = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and status_file = 1', [$kodekunjungan]);
         $cek_lab = $this->get_lab($kodekunjungan);
         $cek_rad = db::select('select * from ts_hasil_expertisi where kode_kunjungan = ?', [$kodekunjungan]);
-        $cek_far = db::select('select * from ts_layanan_header where kode_kunjungan = ? and kode_unit IN (4002,4008)', [$kodekunjungan]);
+        $cek_far = db::select('select * from ts_layanan_header where kode_kunjungan = ? and status_retur != ? and kode_unit IN (4002,4008) ', [$kodekunjungan,'CLS']);
         // dd($cek_lab);
         $contents = [];
         if (count($cek_resume) > 0) {
@@ -2171,7 +2171,7 @@ class FarmasiController extends Controller
         if (count($cek_far) > 0) {
             $context = stream_context_create($opts);
             foreach ($cek_far as $cf) {
-                $contents_resep  = file_get_contents('http://192.168.2.45/simrs/cetaknotafarmasi_2/' . $cf->kode_kunjungan . '/' . $cf->kode_layanan_header . '/' . $cf->id, FALSE, $context);
+                $contents_resep  = file_get_contents('http://192.168.2.45/simrs/cetaknotafarmasi_2/' .$cf->kode_kunjungan. '/' .$cf->kode_layanan_header.'/'.$cf->id, FALSE, $context);
                 Storage::disk('FAR')->put('FAR' . $cf->kode_layanan_header . '.pdf', $contents_resep);
                 // $pdf->addPDF('\\\193.193.193.203\erm\resepfarmasi/'. $cf->kode_layanan_header . '.pdf', 'all');
                 $pdf->addPDF('\\\193.193.193.203\erm\resepfarmasi/FAR' . $cf->kode_layanan_header . '.pdf', 'all');
