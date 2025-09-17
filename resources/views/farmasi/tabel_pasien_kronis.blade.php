@@ -7,7 +7,7 @@
                 <th>Nomor RM</th>
                 <th>Nomor SEP</th>
                 <th>Nama Pasien</th>
-                <th>Alamat</th>
+                <th width="20%">Alamat</th>
                 <th>Unit</th>
                 <th>Status</th>
                 <th></th>
@@ -19,12 +19,12 @@
                         <td>{{ $d->no_rm }}</td>
                         <td>{{ $d->no_sep }}</td>
                         <td>{{ $d->nama_pasien }}</td>
-                        <td>{{ $d->alamat }}</td>
+                        <td class="text-xs">{{ $d->alamat }}</td>
                         <td>{{ $d->nama_unit }}</td>
                         <td>{{ $d->catatan }}</td>
                         <td>
-                            <button class="btn btn-info btn-sm pilihpasien1" rm="{{ $d->no_rm }}" sep="{{ $d->no_sep}}" kodekunjungan="{{ $d->kode_kunjungan }}"><i
-                                    class="bi bi-info-circle-fill"></i></button>
+                            <button class="btn btn-info btn-sm pilihpasien1" rm="{{ $d->no_rm }}" sep="{{ $d->no_sep}}" kodekunjungan="{{ $d->kode_kunjungan }}" data-toggle="tooltip" data-placement="top" title="Berkas"><i class="bi bi-journal-check"></i></button>
+                            <button class="btn btn-danger btn-sm pilihpasien2 mr-1 ml-1" rm="{{ $d->no_rm }}" sep="{{ $d->no_sep}}" kodekunjungan="{{ $d->kode_kunjungan }}" data-toggle="tooltip" data-placement="top" title="Berkas scan"><i class="bi bi-upc-scan"></i></button>
                         </td>
                     </tr>
                 @endforeach
@@ -90,5 +90,9 @@
     $('#tabelpasienkronis').on('click', '.pilihpasien1', function() {
         kodekunjungan = $(this).attr('kodekunjungan')
         window.open('mergerpdf/' + kodekunjungan);
+    });
+    $('#tabelpasienkronis').on('click', '.pilihpasien2', function() {
+        rm = $(this).attr('rm')
+        window.open('berkasscan/' + rm);
     });
 </script>

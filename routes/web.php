@@ -781,4 +781,5 @@ Route::get('/generate-pdf', [PdfController::class, 'generatePDF']);
 Route::get('datakunjunganpasienfarmasi', [FarmasiController::class, 'datakunjunganpasienfarmasi'])->name('datakunjunganpasienfarmasi'); //formpasien_bpjs
 Route::post('cari_data_kunjungan', [FarmasiController::class, 'cari_data_kunjungan'])->name('cari_data_kunjungan'); //formpasien_bpjs
 Route::get('mergerpdf/{kodekunjungan}', [FarmasiController::class, 'mergerpdf']); //formpasien_bpjs
-    Route::get('/cetaksep_v_2/{sep}', [SimrsController::class, 'Cetaksep_v']); //formpasien_bpjs
+Route::get('berkasscan/{rm}', [FarmasiController::class, 'berkasscan']); //formpasien_bpjs
+Route::get('/cetaksep_v_2/{sep}', [SimrsController::class, 'Cetaksep_v']); //formpasien_bpjs
