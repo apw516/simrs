@@ -54,6 +54,11 @@
                                 <i class="fas fa-inbox mr-2"></i>Catatan Perkembangan Pasien Terintegrasi ( CPPT )
                             </a>
                         </li>
+                        <li hidden class="nav-item" id="pemeriksaan">
+                            <a href="#" class="nav-link" onclick="formasuhankeperawatanbedahsentral()">
+                                <i class="fas fa-inbox mr-2"></i>Asuhan Keperawatan Instalasi Bedah Sentral
+                            </a>
+                        </li>
                         @if (auth()->user()->unit == '1029' || auth()->user()->unit == '1045')
                             <li class="nav-item" id="pemeriksaan">
                                 <a href="#" class="nav-link" onclick="formsumarilis()">
@@ -409,6 +414,25 @@
                 kodekunjungan
             },
             url: '<?= route('resumepasien') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    function formasuhankeperawatanbedahsentral() {
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('formasuhankeperawatanbedahsentral') ?>',
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()

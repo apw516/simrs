@@ -10,6 +10,10 @@ use Codedge\Fpdf\Fpdf\printresume;
 use App\Models\assesmenawalperawat;
 use App\Models\assesmenawalperawat_igd;
 use App\Models\assesmenawaldokter;
+use App\Models\modelLaporanoperasi1;
+use App\Models\modelLaporanoperasi2;
+use App\Models\modelLaporanoperasi7;
+use App\Models\modelLaporanoperasi_pemantauan;
 use App\Models\ermtht_telinga;
 use App\Models\erm_tht_hidung;
 use App\Models\erm_gambar_gigi;
@@ -8646,7 +8650,427 @@ class ErmController extends Controller
             'kodekunjungan','cek'
         ]));
     }
+    public function formlaporanoperasi(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $kode_kunjungan = $request->kodekunjungan;
+        return view('Laporanoperasi.index_laporan_operasi',compact([
+            'rm',
+            'kode_kunjungan'
+        ]));
+    }
+    public function form_laporan_operasi_1(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $kode_kunjungan = $request->kode_kunjungan;
+        $cek = db::select('select * from erm_laporan_operasi_rajal_1 where kode_kunjungan = ?',[$kode_kunjungan]);
+        return view('Laporanoperasi.form_laporan_1',compact([
+            'rm',
+            'kode_kunjungan',
+            'cek'
+        ]));
+    }
+    public function form_laporan_operasi_2(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $kode_kunjungan = $request->kode_kunjungan;
+        $cek = db::select('select * from erm_laporan_operasi_rajal_2 where kode_kunjungan = ?',[$kode_kunjungan]);
+        return view('Laporanoperasi.form_laporan_2',compact([
+            'rm',
+            'kode_kunjungan',
+            'cek'
+        ]));
+    }
+    public function form_laporan_operasi_3(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $kode_kunjungan = $request->kode_kunjungan;
+        // $cek = db::select('select * from erm_laporan_operasi_rajal_2 where kode_kunjungan = ?',[$kode_kunjungan]);
+        return view('Laporanoperasi.form_laporan_3',compact([
+            'rm',
+            'kode_kunjungan',
+            // 'cek'
+        ]));
+    }
+    public function form_laporan_operasi_4(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $kode_kunjungan = $request->kode_kunjungan;
+        // $cek = db::select('select * from erm_laporan_operasi_rajal_2 where kode_kunjungan = ?',[$kode_kunjungan]);
+        return view('Laporanoperasi.form_laporan_4',compact([
+            'rm',
+            'kode_kunjungan',
+            // 'cek'
+        ]));
+    }
+    public function form_laporan_operasi_5(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $kode_kunjungan = $request->kode_kunjungan;
+        // $cek = db::select('select * from erm_laporan_operasi_rajal_2 where kode_kunjungan = ?',[$kode_kunjungan]);
+        return view('Laporanoperasi.form_laporan_5',compact([
+            'rm',
+            'kode_kunjungan',
+            // 'cek'
+        ]));
+    }
+    public function form_laporan_operasi_6(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $kode_kunjungan = $request->kode_kunjungan;
+        // $cek = db::select('select * from erm_laporan_operasi_rajal_2 where kode_kunjungan = ?',[$kode_kunjungan]);
+        return view('Laporanoperasi.form_laporan_6',compact([
+            'rm',
+            'kode_kunjungan',
+            // 'cek'
+        ]));
+    }
+    public function form_laporan_operasi_7(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $kode_kunjungan = $request->kode_kunjungan;
+        // $cek = db::select('select * from erm_laporan_operasi_rajal_2 where kode_kunjungan = ?',[$kode_kunjungan]);
+        return view('Laporanoperasi.form_laporan_7',compact([
+            'rm',
+            'kode_kunjungan',
+            // 'cek'
+        ]));
+    }
+    public function ambil_hasil_pemantauan(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $kode_kunjungan = $request->kode_kunjungan;
+        $header = db::select('select * from erm_laporan_operasi_rajal_7 where kode_kunjungan = ?',[$kode_kunjungan]);
+        $detail = db::select('select * from erm_laporan_operasi_rajal_7 a inner join pemantauan_erm_laporan_operasi_rajal_7 b on a.id = b.id_header where a.kode_kunjungan = ?',[$kode_kunjungan]);
+        return view('Laporanoperasi.v_hasil_pemantauan',compact([
+            'rm',
+            'kode_kunjungan',
+            'header',
+            'detail'
+        ]));
+    }
+    public function ambil_form_hasil_pemantauan(Request $request)
+    {
+       $idheader = $request->idheader;
+       return view('Laporanoperasi.form_hasil_pemantauan',compact([
+        'idheader'
+       ]));
+    }
+    public function simpanheader_pemantauan(Request $request)
+    {
+        $data = json_decode($_POST['data'], true);
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+        $dataSet['kode_kunjungan'] = $request->kodekunjungan;
+        $dataSet['no_rm'] = $request->rm;
+        $dataSet['pic'] = auth()->user()->id;
+        $dataSet['tgl_entry'] = $this->get_now();
+        $cek = db::select('select * from erm_laporan_operasi_rajal_7 where kode_kunjungan = ?',[$dataSet['kode_kunjungan']]);
+         if(count($cek) > 0)
+        {
+            modelLaporanoperasi7::whereRaw('ID = ?', array($cek[0]->id))->update($dataSet);
+        }else{
+            modelLaporanoperasi7::create($dataSet);
+        }
+            $data = [
+                'kode' => 200,
+                'message' => 'Laporan berhasil disimpan !'
+            ];
+            echo json_encode($data);
+            die;
+    }
+    public function simpanhasil_pantauan(Request $request)
+    {
+        $data = json_decode($_POST['data'], true);
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+            modelLaporanoperasi_pemantauan::create($dataSet);
+            $data = [
+                'kode' => 200,
+                'message' => 'Laporan berhasil disimpan !'
+            ];
+            echo json_encode($data);
+            die;
+    }
+    public function simpanlaporanoperasi1(Request $request)
+    {
+        $data = json_decode($_POST['data'], true);
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+        $dataSet['kode_kunjungan'] = $request->kodekunjungan;
+        $dataSet['no_rm'] = $request->rm;
+        $dataSet['pic'] = auth()->user()->id;
+        $dataSet['tgl_entry'] = $this->get_now();
+        $cek = db::select('select * from erm_laporan_operasi_rajal_1 where kode_kunjungan = ?',[$dataSet['kode_kunjungan']]);
+        if(count($cek) > 0)
+        {
+            modelLaporanoperasi1::whereRaw('ID = ?', array($cek[0]->id))->update($dataSet);
+        }else{
+            modelLaporanoperasi1::create($dataSet);
+        }
+          $data = [
+                'kode' => 200,
+                'message' => 'Laporan berhasil disimpan !'
+            ];
+            echo json_encode($data);
+            die;
+    }
+    public function simpanlaporanoperasi2(Request $request)
+    {
+        $injeksiantibiotik = $request->has('injeksiantibiotik');
+        if($injeksiantibiotik == true){
+            $injeksiantibiotik = 1;
+        }else{
+            $injeksiantibiotik = 0;
+        }
+        $injeksiantivegp = $request->has('injeksiantivegp');
+        if($injeksiantivegp == true){
+            $injeksiantivegp = 1;
+        }else{
+            $injeksiantivegp = 0;
+        }
+        $avastine = $request->has('avastine');
+         if($avastine == true){
+            $avastine = 1;
+        }else{
+            $avastine = 0;
+        }
+        $patizra = $request->has('patizra');
+         if($patizra == true){
+            $patizra = 1;
+        }else{
+            $patizra = 0;
+        }
+        $eylea = $request->has('eylea');
+         if($eylea == true){
+            $eylea = 1;
+        }else{
+            $eylea = 0;
+        }
+        $tindakanaseptikdanantiseptik = $request->has('tindakanaseptikdanantiseptik');
+        if($tindakanaseptikdanantiseptik == true){
+            $tindakanaseptikdanantiseptik = 1;
+        }else{
+            $tindakanaseptikdanantiseptik = 0;
+        }
+        $lokasiinjek4mm = $request->has('lokasiinjek4mm');
+        if($lokasiinjek4mm == true){
+            $lokasiinjek4mm = 1;
+        }else{
+            $lokasiinjek4mm = 0;
+        }
+        $lokasiinjek3mm = $request->has('lokasiinjek3mm');
+        if($lokasiinjek3mm == true){
+            $lokasiinjek3mm = 1;
+        }else{
+            $lokasiinjek3mm = 0;
+        }
+        $injeksivegf = $request->has('injeksivegf');
+        if($injeksivegf == true){
+            $injeksivegf = 1;
+        }else{
+            $injeksivegf = 0;
+        }
+        $injeksiantibiotik2 = $request->has('injeksiantibiotik2');
+        if($injeksiantibiotik2 == true){
+            $injeksiantibiotik2 = 1;
+        }else{
+            $injeksiantibiotik2 = 0;
+        }
+        $tetesmataantibiotik = $request->has('tetesmataantibiotik');
+        if($tetesmataantibiotik == true){
+            $tetesmataantibiotik = 1;
+        }else{
+            $tetesmataantibiotik = 0;
+        }
+
+        $balut = $request->has('balut');
+        if($balut == true){
+            $balut = 1;
+        }else{
+            $balut = 0;
+        }
+
+
+        $data = json_decode($_POST['data'], true);
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+
+        $dataSet['injeksiantibiotik'] = $injeksiantibiotik;
+        $dataSet['injeksiantivegp'] = $injeksiantivegp;
+        $dataSet['avastine'] = $avastine;
+        $dataSet['patizra'] = $patizra;
+        $dataSet['eylea'] = $eylea;
+        $dataSet['tindakanaseptikdanantiseptik'] = $tindakanaseptikdanantiseptik;
+        $dataSet['lokasiinjek4mm'] = $lokasiinjek4mm;
+        $dataSet['lokasiinjek3mm'] = $lokasiinjek3mm;
+        $dataSet['injeksivegf'] = $injeksivegf;
+        $dataSet['injeksiantibiotik2'] = $injeksiantibiotik2;
+        $dataSet['tetesmataantibiotik'] = $tetesmataantibiotik;
+        $dataSet['balut'] = $balut;
+        $dataSet['kode_kunjungan'] = $request->kodekunjungan;
+        $dataSet['no_rm'] = $request->rm;
+        $dataSet['pic'] = auth()->user()->id;
+        $dataSet['tgl_entry'] = $this->get_now();
+        $cek = db::select('select * from erm_laporan_operasi_rajal_2 where kode_kunjungan = ?',[$dataSet['kode_kunjungan']]);
+        if(count($cek) > 0)
+        {
+            modelLaporanoperasi2::whereRaw('id = ?', array($cek[0]->id))->update($dataSet);
+        }else{
+            modelLaporanoperasi2::create($dataSet);
+        }
+          $data = [
+                'kode' => 200,
+                'message' => 'Laporan berhasil disimpan !'
+            ];
+            echo json_encode($data);
+            die;
+    }
+    public function simpanlaporanoperasi3(Request $request)
+    {
+        $nu = $request->has('nu');
+        if($nu == true){
+            $nu = 1;
+        }else{
+            $nu = 0;
+        }
+        $Retrobular = $request->has('Retrobular');
+        if($Retrobular == true){
+            $Retrobular = 1;
+        }else{
+            $Retrobular = 0;
+        }
+        $Peribular = $request->has('Peribular');
+         if($Peribular == true){
+            $Peribular = 1;
+        }else{
+            $Peribular = 0;
+        }
+        $Topikal = $request->has('Topikal');
+         if($Topikal == true){
+            $Topikal = 1;
+        }else{
+            $Topikal = 0;
+        }
+        $Subtenon = $request->has('Subtenon');
+         if($Subtenon == true){
+            $Subtenon = 1;
+        }else{
+            $Subtenon = 0;
+        }
+        $Subkonjungtiva = $request->has('Subkonjungtiva');
+        if($Subkonjungtiva == true){
+            $Subkonjungtiva = 1;
+        }else{
+            $Subkonjungtiva = 0;
+        }
+        $tindakanaseptik = $request->has('tindakanaseptik');
+        if($tindakanaseptik == true){
+            $tindakanaseptik = 1;
+        }else{
+            $tindakanaseptik = 0;
+        }
+        $injeksilidocain = $request->has('injeksilidocain');
+        if($injeksilidocain == true){
+            $injeksilidocain = 1;
+        }else{
+            $injeksilidocain = 0;
+        }
+        $guntingjaringanpterygium = $request->has('guntingjaringanpterygium');
+        if($guntingjaringanpterygium == true){
+            $injeksivegf = 1;
+        }else{
+            $guntingjaringanpterygium = 0;
+        }
+        $perdarahan = $request->has('perdarahan');
+        if($perdarahan == true){
+            $perdarahan = 1;
+        }else{
+            $perdarahan = 0;
+        }
+        $injeksilidocaine = $request->has('injeksilidocaine');
+        if($injeksilidocaine == true){
+            $injeksilidocaine = 1;
+        }else{
+            $injeksilidocaine = 0;
+        }
+        $pengambilangraft = $request->has('pengambilangraft');
+        if($pengambilangraft == true){
+            $pengambilangraft = 1;
+        }else{
+            $pengambilangraft = 0;
+        }
+        $pemberiansalep = $request->has('pemberiansalep');
+        if($pemberiansalep == true){
+            $pemberiansalep = 1;
+        }else{
+            $pemberiansalep = 0;
+        }
+        $operasiselesai = $request->has('operasiselesai');
+        if($operasiselesai == true){
+            $operasiselesai = 1;
+        }else{
+            $operasiselesai = 0;
+        }
+        $data = json_decode($_POST['data'], true);
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+        $dataSet['nu'] = $nu;
+        $dataSet['Retrobular'] = $Retrobular;
+        $dataSet['Peribular'] = $Peribular;
+        $dataSet['Topikal'] = $Topikal;
+        $dataSet['Subtenon'] = $Subtenon;
+        $dataSet['Subkonjungtiva'] = $Subkonjungtiva;
+        $dataSet['tindakanaseptik'] = $tindakanaseptik;
+        $dataSet['injeksilidocain'] = $injeksilidocain;
+        $dataSet['guntingjaringanpterygium'] = $guntingjaringanpterygium;
+        $dataSet['perdarahan'] = $perdarahan;
+        $dataSet['injeksilidocaine'] = $injeksilidocaine;
+        $dataSet['pengambilangraft'] = $pengambilangraft;
+        $dataSet['pemberiansalep'] = $pemberiansalep;
+        $dataSet['operasiselesai'] = $operasiselesai;
+        $dataSet['kode_kunjungan'] = $request->kodekunjungan;
+        $dataSet['no_rm'] = $request->rm;
+        $dataSet['pic'] = auth()->user()->id;
+        $dataSet['tgl_entry'] = $this->get_now();
+        dd($dataSet);
+        $cek = db::select('select * from erm_laporan_operasi_rajal_2 where kode_kunjungan = ?',[$dataSet['kode_kunjungan']]);
+        if(count($cek) > 0)
+        {
+            modelLaporanoperasi2::whereRaw('id = ?', array($cek[0]->id))->update($dataSet);
+        }else{
+            modelLaporanoperasi2::create($dataSet);
+        }
+          $data = [
+                'kode' => 200,
+                'message' => 'Laporan berhasil disimpan !'
+            ];
+            echo json_encode($data);
+            die;
+    }
+    public function formasuhankeperawatanbedahsentral(Request $request)
+    {
+        return view('ermperawat.form_askep_bedah_sentral');
+    }
 }
+
+
+
 
 
 

@@ -557,8 +557,12 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('batalkonsul'); //sidebar
     Route::get('caripoli_konsul', [SimrsController::class, 'Caripoli_rs'])
         ->name('caripoli_konsul'); //formpasien_bpjs
+
+
+    Route::post('formasuhankeperawatanbedahsentral', [ErmController::class, 'formasuhankeperawatanbedahsentral'])
+        ->name('formasuhankeperawatanbedahsentral'); //formpasien_bpjs
 });
-Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
+    Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
     Route::get('/cariobat', [ErmController::class, 'cariobat_form'])
         ->name('cariobat'); //formpasien_bpjs
     Route::get('/indexdokter', [ErmController::class, 'indexdokter'])
@@ -597,6 +601,39 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('simpanpemeriksaandokter_anesetesi'); //sidebar
     Route::post('/resumepasien_dokter', [ErmController::class, 'resumepasien_dokter'])
         ->name('resumepasien_dokter'); //sidebar
+
+    Route::post('/formlaporanoperasi', [ErmController::class, 'formlaporanoperasi'])
+        ->name('formlaporanoperasi'); //sidebar
+    Route::post('/form_laporan_operasi_1', [ErmController::class, 'form_laporan_operasi_1'])
+        ->name('form_laporan_operasi_1'); //sidebar
+    Route::post('/form_laporan_operasi_2', [ErmController::class, 'form_laporan_operasi_2'])
+        ->name('form_laporan_operasi_2'); //sidebar
+    Route::post('/form_laporan_operasi_3', [ErmController::class, 'form_laporan_operasi_3'])
+        ->name('form_laporan_operasi_3'); //sidebar
+    Route::post('/form_laporan_operasi_4', [ErmController::class, 'form_laporan_operasi_4'])
+        ->name('form_laporan_operasi_4'); //sidebar
+    Route::post('/form_laporan_operasi_5', [ErmController::class, 'form_laporan_operasi_5'])
+        ->name('form_laporan_operasi_5'); //sidebar
+    Route::post('/form_laporan_operasi_6', [ErmController::class, 'form_laporan_operasi_6'])
+        ->name('form_laporan_operasi_6'); //sidebar
+    Route::post('/form_laporan_operasi_7', [ErmController::class, 'form_laporan_operasi_7'])
+        ->name('form_laporan_operasi_7'); //sidebar
+    Route::post('/ambil_hasil_pemantauan', [ErmController::class, 'ambil_hasil_pemantauan'])
+        ->name('ambil_hasil_pemantauan'); //sidebar
+    Route::post('/ambil_form_hasil_pemantauan', [ErmController::class, 'ambil_form_hasil_pemantauan'])
+        ->name('ambil_form_hasil_pemantauan'); //sidebar
+
+
+    Route::post('/simpanlaporanoperasi1', [ErmController::class, 'simpanlaporanoperasi1'])
+        ->name('simpanlaporanoperasi1'); //sidebar
+    Route::post('/simpanlaporanoperasi2', [ErmController::class, 'simpanlaporanoperasi2'])
+        ->name('simpanlaporanoperasi2'); //sidebar
+    Route::post('/simpanlaporanoperasi3', [ErmController::class, 'simpanlaporanoperasi3'])
+        ->name('simpanlaporanoperasi3'); //sidebar
+    Route::post('/simpanheader_pemantauan', [ErmController::class, 'simpanheader_pemantauan'])
+        ->name('simpanheader_pemantauan'); //sidebar
+    Route::post('/simpanhasil_pantauan', [ErmController::class, 'simpanhasil_pantauan'])
+        ->name('simpanhasil_pantauan'); //sidebar
 
     Route::post('/simpanttddokter', [ErmController::class, 'simpanttddokter'])
         ->name('simpanttddokter'); //sidebar
