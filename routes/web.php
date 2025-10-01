@@ -783,3 +783,4 @@ Route::post('cari_data_kunjungan', [FarmasiController::class, 'cari_data_kunjung
 Route::get('mergerpdf/{kodekunjungan}', [FarmasiController::class, 'mergerpdf']); //formpasien_bpjs
 Route::get('berkasscan/{rm}', [FarmasiController::class, 'berkasscan']); //formpasien_bpjs
 Route::get('/cetaksep_v_2/{sep}', [SimrsController::class, 'Cetaksep_v']); //formpasien_bpjs
+ Route::get('/ermrajal/{rm}', [RanapController::class, 'cariberkasnya_pasien3']); //sidebar
