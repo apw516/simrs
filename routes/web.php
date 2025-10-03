@@ -776,6 +776,7 @@ Route::post('/resumepasien_dokter2', [ErmController::class, 'resumepasien_dokter
 Route::get('/cetakresumeblank_perawat/{kodekunjungan}', [PdfController::class, 'cetakresumeblank_perawat']);
 Route::get('/cetakresumeblank/{kodekunjungan}', [PdfController::class, 'cetakresumedokterblank']);
 Route::get('/generate-pdf', [PdfController::class, 'generatePDF']);
+Route::get('/cetaksep', [PdfController::class, 'cetaksep']);
 
 
 Route::get('datakunjunganpasienfarmasi', [FarmasiController::class, 'datakunjunganpasienfarmasi'])->name('datakunjunganpasienfarmasi'); //formpasien_bpjs
