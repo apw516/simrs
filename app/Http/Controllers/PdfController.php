@@ -2,30 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ts_kunjungan;
+use App\Models\ts_sep;
 use App\Models\VclaimModel;
 use Barryvdh\DomPDF\Facade\Pdf; // If you added the facade alias
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PdfController extends Controller
 {
-    public function cetaksep()
+    public function cetaksep($sep)
     {
-        $sep = '1018R0011025V001052';
         $v = new VclaimModel();
         $sep = $v->carisep($sep);
+        $peserta = $v->get_peserta_noka($sep->response->peserta->noKartu, date('Y-m-d'));
         // $qr = QrCode::format('png')->generate('2312');
         // $qrImageName = $sep . '.png';
         // Storage::put('public/qr/' . $qrImageName, $qr);
         $now = $this->get_now();
         $qrcode = base64_encode(QrCode::format('svg')->size(200)->errorCorrection('H')->generate('string'));
         $pdf = Pdf::loadView('pdf.cetakansep', compact([
-            'sep','qrcode','now'
+            'sep',
+            'qrcode',
+            'now','peserta'
         ]));
 
         // Stream the PDF to the browser
-        return $pdf->download('document.pdf');
+        // return $pdf->download('document.pdf');
+        return $pdf->stream('document.pdf');
+    }
+    public function cetaksep2($kodekunjungan)
+    {
+        $kj = db::select('select * from ts_kunjungan where kode_kunjungan = ?',[$kodekunjungan]);
+        $sep = $kj['0']->no_sep;
+        $v = new VclaimModel();
+        $sep = $v->carisep($sep);
+        $peserta = $v->get_peserta_noka($sep->response->peserta->noKartu, date('Y-m-d'));
+        // $qr = QrCode::format('png')->generate('2312');
+        // $qrImageName = $sep . '.png';
+        // Storage::put('public/qr/' . $qrImageName, $qr);
+        $now = $this->get_now();
+        $qrcode = base64_encode(QrCode::format('svg')->size(200)->errorCorrection('H')->generate('string'));
+        $pdf = Pdf::loadView('pdf.cetakansep', compact([
+            'sep',
+            'qrcode',
+            'now','peserta'
+        ]));
+
+        // Stream the PDF to the browser
         return $pdf->stream('document.pdf');
     }
     public function generatePDF()
@@ -208,7 +234,7 @@ class PdfController extends Controller
         return $pdf->download('document.pdf');
         return $pdf->stream('document.pdf');
     }
-      public function get_now()
+    public function get_now()
     {
         $dt = Carbon::now()->timezone('Asia/Jakarta');
         $date = $dt->toDateString();

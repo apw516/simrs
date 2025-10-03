@@ -210,11 +210,11 @@ Route::group(['middleware' => ['auth', 'hak_akses1:1,2,9,102,101']], function ()
         ->name('simpanrujukan'); //formpasien_bpjs
     Route::post('Pendaftaran/simpansepranap', [SimrsController::class, 'Simpansepranap'])
         ->name('simpansepranap'); //formpasien_bpjs
-    Route::get('/cetaksep/{kodekunjungan}', [SimrsController::class, 'Cetaksep']); //formpasien_bpjs
+    // Route::get('/cetaksep/{kodekunjungan}', [SimrsController::class, 'Cetaksep']); //formpasien_bpjs
     Route::get('/cetaksurkon/{nomorsurat}', [VclaimController::class, 'Cetaksurkon']); //formpasien_bpjs
     Route::get('/cetakrujukan/{nomorrujukan}', [SimrsController::class, 'cetakrujukan']); //formpasien_bpjs
     Route::get('datakunjungan/cetaksep/{kodekunjungan}', [SimrsController::class, 'Cetaksep']); //formpasien_bpjs
-    Route::get('/cetaksep_v/{sep}', [SimrsController::class, 'Cetaksep_v']); //formpasien_bpjs
+    // Route::get('/cetaksep_v/{sep}', [SimrsController::class, 'Cetaksep_v']); //formpasien_bpjs
     Route::get('cetakstruk/{kodekunjungan}', [SimrsController::class, 'Cetakstruk']); //formpasien_bpjs
     Route::get('datakunjungan/cetakstruk/{kodekunjungan}', [SimrsController::class, 'Cetakstruk']); //formpasien_bpjs
     Route::post('Pendaftaran/buatsuratkontrol', [SimrsController::class, 'Buatsuratkontrol'])
@@ -776,12 +776,17 @@ Route::post('/resumepasien_dokter2', [ErmController::class, 'resumepasien_dokter
 Route::get('/cetakresumeblank_perawat/{kodekunjungan}', [PdfController::class, 'cetakresumeblank_perawat']);
 Route::get('/cetakresumeblank/{kodekunjungan}', [PdfController::class, 'cetakresumedokterblank']);
 Route::get('/generate-pdf', [PdfController::class, 'generatePDF']);
-Route::get('/cetaksep', [PdfController::class, 'cetaksep']);
 
 
 Route::get('datakunjunganpasienfarmasi', [FarmasiController::class, 'datakunjunganpasienfarmasi'])->name('datakunjunganpasienfarmasi'); //formpasien_bpjs
 Route::post('cari_data_kunjungan', [FarmasiController::class, 'cari_data_kunjungan'])->name('cari_data_kunjungan'); //formpasien_bpjs
+Route::get('/cetaksep_v/{nosep}', [PdfController::class, 'cetaksep']);
+Route::get('/cetaksep/{kodekunjungan}', [PdfController::class, 'Cetaksep2']); //formpasien_bpjs
 Route::get('mergerpdf/{kodekunjungan}', [FarmasiController::class, 'mergerpdf']); //formpasien_bpjs
 Route::get('berkasscan/{rm}', [FarmasiController::class, 'berkasscan']); //formpasien_bpjs
-Route::get('/cetaksep_v_2/{sep}', [SimrsController::class, 'Cetaksep_v']); //formpasien_bpjs
+// Route::get('/cetaksep_v/{sep}', [SimrsController::class, 'Cetaksep_v']); //formpasien_bpjs
  Route::get('/ermrajal/{rm}', [RanapController::class, 'cariberkasnya_pasien3']); //sidebar
+
+
+     // Route::get('/cetaksep/{kodekunjungan}', [SimrsController::class, 'Cetaksep']); //formpasien_bpjs
+    // Route::get('/cetaksep_v/{sep}', [SimrsController::class, 'Cetaksep_v']); //formpasien_bpjs

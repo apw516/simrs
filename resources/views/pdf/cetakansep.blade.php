@@ -147,12 +147,11 @@
                             <td>Tgl. Lahir</td>
                             <td>: {{ strtoupper($sep->response->peserta->tglLahir)}}</td>
                             <td style="font-size:15px">
-                                jns kelamin : @if($sep->response->peserta->kelamin == 'L') Laki - Laki @else Perempuan @endif
-                            </td>
+                                jns kelamin : {{ $sep->response->peserta->kelamin }}</td>
                         </tr>
                         <tr style="font-size:15px">
                             <td>No. Telepon</td>
-                            <td>:</td>
+                            <td>:{{ $peserta->response->peserta->mr->noTelepon}}</td>
                             <td></td>
                         </tr>
                         <tr style="font-size:15px">
@@ -173,10 +172,18 @@
                             <td>Diagnosa Awal</td>
                             <td colspan="2">: {{ strtoupper($sep->response->diagnosa)}}</td>
                         </tr>
+                        <tr>
+                            <td>Catatan</td>
+                            <td>: {{$sep->response->catatan}}</td>
+                        </tr>
                     </table>
                 </td>
                 <td style="width:40%;">
                     <table cellspacing="0" cellpadding="5" style="width:60%">
+                        <tr style="font-size:15px">
+                            <td>Nomor RM</td>
+                            <td colspan="2">: {{ strtoupper($sep->response->peserta->noMr)}}</td>
+                        </tr>
                         <tr style="font-size:15px">
                             <td>Peserta</td>
                             <td colspan="2">: {{ strtoupper($sep->response->peserta->jnsPeserta)}}</td>
