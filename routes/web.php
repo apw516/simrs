@@ -780,13 +780,13 @@ Route::get('/generate-pdf', [PdfController::class, 'generatePDF']);
 
 Route::get('datakunjunganpasienfarmasi', [FarmasiController::class, 'datakunjunganpasienfarmasi'])->name('datakunjunganpasienfarmasi'); //formpasien_bpjs
 Route::post('cari_data_kunjungan', [FarmasiController::class, 'cari_data_kunjungan'])->name('cari_data_kunjungan'); //formpasien_bpjs
-Route::get('/cetaksep_v/{nosep}', [PdfController::class, 'cetaksep']);
-Route::get('/cetaksep/{kodekunjungan}', [PdfController::class, 'Cetaksep2']); //formpasien_bpjs
 Route::get('mergerpdf/{kodekunjungan}', [FarmasiController::class, 'mergerpdf']); //formpasien_bpjs
 Route::get('berkasscan/{rm}', [FarmasiController::class, 'berkasscan']); //formpasien_bpjs
 // Route::get('/cetaksep_v/{sep}', [SimrsController::class, 'Cetaksep_v']); //formpasien_bpjs
- Route::get('/ermrajal/{rm}', [RanapController::class, 'cariberkasnya_pasien3']); //sidebar
+Route::get('/ermrajal/{rm}', [RanapController::class, 'cariberkasnya_pasien3']); //sidebar
 
 
-     // Route::get('/cetaksep/{kodekunjungan}', [SimrsController::class, 'Cetaksep']); //formpasien_bpjs
-    // Route::get('/cetaksep_v/{sep}', [SimrsController::class, 'Cetaksep_v']); //formpasien_bpjs
+// Route::get('/cetaksep/{kodekunjungan}', [PdfController::class, 'Cetaksep2']); //formpasien_bpjs
+Route::get('/cetaksep/{kodekunjungan}', [SimrsController::class, 'Cetaksep']); //formpasien_bpjs
+// Route::get('/cetaksep_v/{nosep}', [PdfController::class, 'cetaksep']);
+    Route::get('/cetaksep_v/{sep}', [SimrsController::class, 'Cetaksep_v']); //formpasien_bpjs
