@@ -789,4 +789,6 @@ Route::get('/ermrajal/{rm}', [RanapController::class, 'cariberkasnya_pasien3']);
 Route::get('/cetaksep/{kodekunjungan}', [PdfController::class, 'Cetaksep2']); //formpasien_bpjs
 // Route::get('/cetaksep/{kodekunjungan}', [SimrsController::class, 'Cetaksep']); //formpasien_bpjs
 Route::get('/cetaksep_v/{nosep}', [PdfController::class, 'cetaksep']);
+
+
     // Route::get('/cetaksep_v/{sep}', [SimrsController::class, 'Cetaksep_v']); //formpasien_bpjs
