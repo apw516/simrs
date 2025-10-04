@@ -17,9 +17,9 @@
     <link rel="stylesheet" href="{{ public_path('../public/dist/css/datepicker.css') }}" rel="stylesheet">
     <style>
         @page {
-            margin: 5px;
-            margin-top: 10px;
-            margin-bottom: 30px;
+            margin: 0px;
+            margin-top: 0px;
+            margin-bottom: 10px;
             /* Adjust this value as needed */
         }
 
@@ -101,7 +101,7 @@
 
 <body>
     <div class="scaled-content">
-        <table style="font-size: 12px; margin-top:0px; width:100%;">
+        <table style="font-size: 12px; margin-top:0px; width:100%;" class="table-sm">
             <tr>
                 <td colspan="2" style="padding-left:50px;">
                     <table>
@@ -126,49 +126,49 @@
                             <td>: {{ strtoupper($sep->response->noSep)}}</td>
                             <td></td>
                         </tr>
-                        <tr style="font-size:15px">
+                        <tr style="font-size:13px">
                             <td>Tgl. SEP</td>
                             <td>: {{ strtoupper($sep->response->tglSep)}}</td>
                             <td>
 
                             </td>
                         </tr>
-                        <tr style="font-size:15px">
+                        <tr style="font-size:13px">
                             <td>No. Kartu</td>
                             <td>: {{ strtoupper($sep->response->peserta->noKartu)}}</td>
                             <td></td>
                         </tr>
-                        <tr style="font-size:15px">
+                        <tr style="font-size:13px">
                             <td>Nama Peserta</td>
                             <td>: {{ strtoupper($sep->response->peserta->nama)}}</td>
                             <td></td>
                         </tr>
-                        <tr style="font-size:15px">
+                        <tr style="font-size:13px">
                             <td>Tgl. Lahir</td>
                             <td>: {{ strtoupper($sep->response->peserta->tglLahir)}}</td>
-                            <td style="font-size:15px">
+                            <td style="font-size:13px">
                                 jns kelamin : {{ $sep->response->peserta->kelamin }}</td>
                         </tr>
-                        <tr style="font-size:15px">
+                        <tr style="font-size:13px">
                             <td>No. Telepon</td>
                             <td>:{{ $peserta->response->peserta->mr->noTelepon}}</td>
                             <td></td>
                         </tr>
-                        <tr style="font-size:15px">
+                        <tr style="font-size:13px">
                             <td>Dokter</td>
                             <td colspan="2">: {{ strtoupper($sep->response->dpjp->nmDPJP)}}</td>
                         </tr>
-                        <tr style="font-size:15px">
+                        <tr style="font-size:13px">
                             <td>Poli Tujuan</td>
                             <td>: {{ strtoupper($sep->response->poli)}}</td>
                             <td></td>
                         </tr>
-                        <tr style="font-size:15px">
+                        <tr style="font-size:13px">
                             <td>Faskes Perujuk</td>
                             <td>: </td>
                             <td></td>
                         </tr>
-                        <tr style="font-size:15px">
+                        <tr style="font-size:13px">
                             <td>Diagnosa Awal</td>
                             <td colspan="2">: {{ strtoupper($sep->response->diagnosa)}}</td>
                         </tr>
@@ -180,23 +180,23 @@
                 </td>
                 <td style="width:40%;">
                     <table cellspacing="0" cellpadding="5" style="width:60%">
-                        <tr style="font-size:15px">
+                        <tr style="font-size:13px">
                             <td>Nomor RM</td>
                             <td colspan="2">: {{ strtoupper($sep->response->peserta->noMr)}}</td>
                         </tr>
-                        <tr style="font-size:15px">
+                        <tr style="font-size:13px">
                             <td>Peserta</td>
                             <td colspan="2">: {{ strtoupper($sep->response->peserta->jnsPeserta)}}</td>
                         </tr>
-                        <tr style="font-size:15px">
+                        <tr style="font-size:13px">
                             <td>Jns. Rawat</td>
                             <td colspan="2">:{{ strtoupper($sep->response->jnsPelayanan)}}</td>
                         </tr>
-                        <tr style="font-size:15px">
+                        <tr style="font-size:13px">
                             <td>Kls. Rawat</td>
                             <td colspan="2">: {{ strtoupper($sep->response->kelasRawat)}}</td>
                         </tr>
-                        <tr style="font-size:15px">
+                        <tr style="font-size:13px">
                             <td>Penjamin</td>
                             <td colspan="2">: {{ strtoupper($sep->response->penjamin)}}</td>
                         </tr>
