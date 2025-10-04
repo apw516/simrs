@@ -164,17 +164,12 @@
                             <td></td>
                         </tr>
                         <tr style="font-size:13px">
-                            <td>Faskes Perujuk</td>
-                            <td>: </td>
-                            <td></td>
-                        </tr>
-                        <tr style="font-size:13px">
                             <td>Diagnosa Awal</td>
                             <td colspan="2">: {{ strtoupper($sep->response->diagnosa)}}</td>
                         </tr>
                         <tr>
                             <td>Catatan</td>
-                            <td>: {{$sep->response->catatan}}</td>
+                            <td colspan="2">: {{$sep->response->catatan}}</td>
                         </tr>
                     </table>
                 </td>
