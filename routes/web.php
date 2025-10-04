@@ -786,9 +786,9 @@ Route::get('berkasscan/{rm}', [FarmasiController::class, 'berkasscan']); //formp
 Route::get('/ermrajal/{rm}', [RanapController::class, 'cariberkasnya_pasien3']); //sidebar
 
 
-Route::get('/cetaksep/{kodekunjungan}', [PdfController::class, 'Cetaksep2']); //formpasien_bpjs
-// Route::get('/cetaksep/{kodekunjungan}', [SimrsController::class, 'Cetaksep']); //formpasien_bpjs
-Route::get('/cetaksep_v/{nosep}', [PdfController::class, 'cetaksep']);
+// Route::get('/cetaksep/{kodekunjungan}', [PdfController::class, 'Cetaksep2']); //formpasien_bpjs
+Route::get('/cetaksep/{kodekunjungan}', [SimrsController::class, 'Cetaksep']); //formpasien_bpjs
+Route::get('/cetaksep_v2/{nosep}', [PdfController::class, 'cetaksep']);
 
 
-    // Route::get('/cetaksep_v/{sep}', [SimrsController::class, 'Cetaksep_v']); //formpasien_bpjs
+    Route::get('/cetaksep_v/{sep}', [SimrsController::class, 'Cetaksep_v']); //formpasien_bpjs

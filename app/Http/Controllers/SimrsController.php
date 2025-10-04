@@ -47,10 +47,10 @@ use App\Models\Status;
 use App\Models\tracer;
 use App\Models\ts_antrian_online;
 use simitsdk\phpjasperxml\PHPJasperXML;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use BaconQrCode\Renderer\GDLibRenderer;
 use BaconQrCode\Writer;
 use PDF;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class SimrsController extends Controller
 {
@@ -3662,8 +3662,8 @@ class SimrsController extends Controller
         $peserta = $v->get_peserta_noka($sep->response->peserta->noKartu, date('Y-m-d'));
         // $cetakan = $sep['0']['cetakan'] + 1;
         // ts_sep::where('kode_kunjungan', $sep)->update(['no_SEP' => $cetakan]);
-        $qrcode = base64_encode(QrCode::format('svg')->size(200)->errorCorrection('H')->generate('string'));
-
+        $qrcode = base64_encode(QrCode::format('svg')->size(200)->errorCorrection('H')->generate($sep->response->peserta->noKartu));
+        $imageData = file_get_contents('path/to/your/image.jpg');
         $pdf = new Fpdf('L', 'mm', 'A4');
         $pdf->AddPage();
         $pdf->SetTitle('Cetak SEP');
