@@ -3642,6 +3642,7 @@ class SimrsController extends Controller
     }
     public function Cetaksep_v(Request $request)
     {
+
         //ambil data sep
         // phpinfo();
         // $url = url();
@@ -3661,6 +3662,8 @@ class SimrsController extends Controller
         $peserta = $v->get_peserta_noka($sep->response->peserta->noKartu, date('Y-m-d'));
         // $cetakan = $sep['0']['cetakan'] + 1;
         // ts_sep::where('kode_kunjungan', $sep)->update(['no_SEP' => $cetakan]);
+        $qrcode = base64_encode(QrCode::format('svg')->size(200)->errorCorrection('H')->generate('string'));
+
         $pdf = new Fpdf('L', 'mm', 'A4');
         $pdf->AddPage();
         $pdf->SetTitle('Cetak SEP');
