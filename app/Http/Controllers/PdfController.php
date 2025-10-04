@@ -23,7 +23,7 @@ class PdfController extends Controller
         // Storage::put('public/qr/' . $qrImageName, $qr);
         $now = $this->get_now();
         $qrcode = base64_encode(QrCode::format('svg')->size(200)->errorCorrection('H')->generate('string'));
-        $customPaper = array(0,0,660,520);
+        $customPaper = array(0,0,660,520,'landscape');
         $pdf = Pdf::loadView('pdf.cetakansep', compact([
             'sep',
             'qrcode',
