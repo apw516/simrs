@@ -260,13 +260,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
         }
 
-        .scaled-content {
-            transform: scale(0.85);
-            transform-origin: 0 0;
-            /* Ensure scaling starts from the top-left */
-            width: 130.65%;
-            /* Adjust width to compensate for scaling */
-        }
+
     </style>
     <script type="text/php">
         if ( isset($pdf) ) {

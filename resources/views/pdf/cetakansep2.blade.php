@@ -45,7 +45,7 @@
 
 <body>
     {{-- <div class="scaled-content"> --}}
-        <table style="font-size: 12px; margin-top:0px; width:100%;" class="table-sm">
+        {{-- <table style="font-size: 12px; margin-top:0px; width:100%;" class="table-sm">
             <tr>
                 <td colspan="2" style="padding-left:50px;">
                     <table>
@@ -68,24 +68,18 @@
                         <tr style="font-weight: bold;font-size: 18px">
                             <td width="120px">No. SEP</td>
                             <td>: {{ strtoupper($sep->response->noSep)}}</td>
-                            <td></td>
                         </tr>
                         <tr style="font-size:13px">
                             <td>Tgl. SEP</td>
                             <td>: {{ strtoupper($sep->response->tglSep)}}</td>
-                            <td>
-
-                            </td>
                         </tr>
                         <tr style="font-size:13px">
                             <td>No. Kartu</td>
                             <td>: {{ strtoupper($sep->response->peserta->noKartu)}}</td>
-                            <td></td>
                         </tr>
                         <tr style="font-size:13px">
                             <td>Nama Peserta</td>
                             <td>: {{ strtoupper($sep->response->peserta->nama)}}</td>
-                            <td></td>
                         </tr>
                         <tr style="font-size:13px">
                             <td>Tgl. Lahir</td>
@@ -96,7 +90,6 @@
                         <tr style="font-size:13px">
                             <td>No. Telepon</td>
                             <td>:{{ $peserta->response->peserta->mr->noTelepon}}</td>
-                            <td></td>
                         </tr>
                         <tr style="font-size:13px">
                             <td>Dokter</td>
@@ -105,12 +98,10 @@
                         <tr style="font-size:13px">
                             <td>Poli Tujuan</td>
                             <td>: {{ strtoupper($sep->response->poli)}}</td>
-                            <td></td>
                         </tr>
                         <tr style="font-size:13px">
                             <td>Faskes Perujuk</td>
                             <td>: </td>
-                            <td></td>
                         </tr>
                         <tr style="font-size:13px">
                             <td>Diagnosa Awal</td>
@@ -197,7 +188,7 @@
                     </table>
                 </td>
             </tr>
-        </table>
+        </table> --}}
     {{-- </div> --}}
     <style>
         body {
