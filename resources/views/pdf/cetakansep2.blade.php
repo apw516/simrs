@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html>
 
 <head>
@@ -29,7 +29,7 @@
     </style>
 </head>
 
-<body style="font-weight: bold">
+<body style="font-weight: bold"> --}}
     <div class="scaled-content">
         <table>
             <tr>
@@ -122,7 +122,7 @@
 
         </table>
     </div>
-</body>
+{{-- </body> --}}
 <style>
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
