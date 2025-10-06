@@ -29,10 +29,15 @@ class PdfController extends Controller
             'now',
             'peserta'
         ]));
-        $customPaper = array(0, 0, 560, 350);
-        $pdf->setPaper('A4', 'landscape');
-        // Stream the PDF to the browser
-        // return $pdf->download('document.pdf');
+
+        $width_cm = 21; // 10 cm width
+        $height_cm = 14; // 15 cm height
+
+        $width_points = $width_cm * (72 / 2.54);
+        $height_points = $height_cm * (72 / 2.54);
+
+        $customPaper = [0, 0, $width_points, $height_points];
+        $pdf->setPaper($customPaper, 'portrait'); // Or 'landscape'
         return $pdf->stream('document.pdf');
     }
     public function cetaksep22($sep)
@@ -51,10 +56,16 @@ class PdfController extends Controller
             'now',
             'peserta'
         ]));
-        $customPaper = array(0, 0, 560, 350);
-        $pdf->setPaper('A4', 'landscape');
-        // Stream the PDF to the browser
-        // return $pdf->download('document.pdf');
+
+
+        $width_cm = 21; // 10 cm width
+        $height_cm = 14; // 15 cm height
+
+        $width_points = $width_cm * (72 / 2.54);
+        $height_points = $height_cm * (72 / 2.54);
+
+        $customPaper = [0, 0, $width_points, $height_points];
+        $pdf->setPaper($customPaper, 'portrait'); // Or 'landscape'
         return $pdf->stream('document.pdf');
     }
     public function cetaksep2($kodekunjungan)
@@ -75,9 +86,15 @@ class PdfController extends Controller
             'now',
             'peserta'
         ]));
-        $customPaper = array(0, 0, 560, 350);
-        $pdf->setPaper('A4', 'landscape');
-        // Stream the PDF to the browser
+
+        $width_cm = 21; // 10 cm width
+        $height_cm = 14; // 15 cm height
+
+        $width_points = $width_cm * (72 / 2.54);
+        $height_points = $height_cm * (72 / 2.54);
+
+        $customPaper = [0, 0, $width_points, $height_points];
+        $pdf->setPaper($customPaper, 'portrait'); // Or 'landscape'
         return $pdf->stream('document.pdf');
     }
     public function generatePDF()
