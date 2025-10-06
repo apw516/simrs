@@ -33,6 +33,26 @@ class PdfController extends Controller
         // return $pdf->download('document.pdf');
         return $pdf->stream('document.pdf');
     }
+    public function cetaksep22($sep)
+    {
+        $v = new VclaimModel();
+        $sep = $v->carisep($sep);
+        $peserta = $v->get_peserta_noka($sep->response->peserta->noKartu, date('Y-m-d'));
+        // $qr = QrCode::format('png')->generate('2312');
+        // $qrImageName = $sep . '.png';
+        // Storage::put('public/qr/' . $qrImageName, $qr);
+        $now = $this->get_now();
+        $qrcode = base64_encode(QrCode::format('svg')->size(200)->errorCorrection('H')->generate('string'));
+        $pdf = Pdf::loadView('pdf.cetakansep2', compact([
+            'sep',
+            'qrcode',
+            'now','peserta'
+        ]));
+
+        // Stream the PDF to the browser
+        // return $pdf->download('document.pdf');
+        return $pdf->stream('document.pdf');
+    }
     public function cetaksep2($kodekunjungan)
     {
         $kj = db::select('select * from ts_kunjungan where kode_kunjungan = ?',[$kodekunjungan]);
