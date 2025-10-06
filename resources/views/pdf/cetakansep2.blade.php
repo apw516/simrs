@@ -96,7 +96,7 @@
         <table>
 
             <tr>
-                <td width="400px">
+                <td width="600px">
                     <p style="font-size:8px">*Saya menyetujui BPJS Kesehatan untuk :
                         <br>
                         a.membuka dan atau menggunakan informasi medis Pasien untuk keperluan administrasi,
@@ -128,7 +128,7 @@
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
     }
     .scaled-content {
-        transform: scale(0.85);
+        transform: scale(1);
         transform-origin: 0 0;
         /* Ensure scaling starts from the top-left */
         width: 100%;
