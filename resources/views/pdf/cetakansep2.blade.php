@@ -20,16 +20,16 @@
             margin: 10px;
             margin-top: -0px;
             margin-bottom: 0px;
+
             /* Adjust this value as needed */
         }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
     </style>
 </head>
 
-<body>
+<body style="font-weight: bold">
     <div class="scaled-content">
         <table>
             <tr>

@@ -26,9 +26,11 @@ class PdfController extends Controller
         $pdf = Pdf::loadView('pdf.cetakansep2', compact([
             'sep',
             'qrcode',
-            'now','peserta'
+            'now',
+            'peserta'
         ]));
-
+        $customPaper = array(0, 0, 560, 350);
+        $pdf->setPaper($customPaper);
         // Stream the PDF to the browser
         // return $pdf->download('document.pdf');
         return $pdf->stream('document.pdf');
@@ -46,16 +48,18 @@ class PdfController extends Controller
         $pdf = Pdf::loadView('pdf.cetakansep2', compact([
             'sep',
             'qrcode',
-            'now','peserta'
+            'now',
+            'peserta'
         ]));
-
+        $customPaper = array(0, 0, 560, 350);
+        $pdf->setPaper($customPaper);
         // Stream the PDF to the browser
         // return $pdf->download('document.pdf');
         return $pdf->stream('document.pdf');
     }
     public function cetaksep2($kodekunjungan)
     {
-        $kj = db::select('select * from ts_kunjungan where kode_kunjungan = ?',[$kodekunjungan]);
+        $kj = db::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
         $sep = $kj['0']->no_sep;
         $v = new VclaimModel();
         $sep = $v->carisep($sep);
@@ -68,9 +72,11 @@ class PdfController extends Controller
         $pdf = Pdf::loadView('pdf.cetakansep2', compact([
             'sep',
             'qrcode',
-            'now','peserta'
+            'now',
+            'peserta'
         ]));
-
+        $customPaper = array(0, 0, 560, 350);
+        $pdf->setPaper($customPaper);
         // Stream the PDF to the browser
         return $pdf->stream('document.pdf');
     }
