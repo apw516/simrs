@@ -125,7 +125,8 @@
 {{-- </body> --}}
 <style>
     body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        size:"A4"
     }
     .scaled-content {
         transform: scale(1);

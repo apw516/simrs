@@ -30,14 +30,14 @@ class PdfController extends Controller
             'peserta'
         ]));
 
-        $width_cm = 21; // 10 cm width
-        $height_cm = 14; // 15 cm height
+        // $width_cm = 21; // 10 cm width
+        // $height_cm = 14; // 15 cm height
 
-        $width_points = $width_cm * (72 / 2.54);
-        $height_points = $height_cm * (72 / 2.54);
+        // $width_points = $width_cm * (72 / 2.54);
+        // $height_points = $height_cm * (72 / 2.54);
 
-        $customPaper = [0, 0, $width_points, $height_points];
-        $pdf->setPaper($customPaper, 'landscape'); // Or 'landscape'
+        // $customPaper = [0, 0, $width_points, $height_points];
+        // $pdf->setPaper($customPaper, 'portrait'); // Or 'landscape'
         return $pdf->stream('document.pdf');
     }
     public function cetaksep22($sep)
@@ -58,14 +58,14 @@ class PdfController extends Controller
         ]));
 
 
-        $width_cm = 21; // 10 cm width
-        $height_cm = 14; // 15 cm height
+        // $width_cm = 21; // 10 cm width
+        // $height_cm = 14; // 15 cm height
 
-        $width_points = $width_cm * (72 / 2.54);
-        $height_points = $height_cm * (72 / 2.54);
+        // $width_points = $width_cm * (72 / 2.54);
+        // $height_points = $height_cm * (72 / 2.54);
 
-        $customPaper = [0, 0, $width_points, $height_points];
-        $pdf->setPaper($customPaper, 'landscape'); // Or 'landscape'
+        // $customPaper = [0, 0, $width_points, $height_points];
+        // $pdf->setPaper($customPaper, 'portrait'); // Or 'landscape'
         return $pdf->stream('document.pdf');
     }
     public function cetaksep2($kodekunjungan)
@@ -87,14 +87,14 @@ class PdfController extends Controller
             'peserta'
         ]));
 
-        $width_cm = 21; // 10 cm width
-        $height_cm = 14; // 15 cm height
+        // $width_cm = 21; // 10 cm width
+        // $height_cm = 14; // 15 cm height
 
-        $width_points = $width_cm * (72 / 2.54);
-        $height_points = $height_cm * (72 / 2.54);
+        // $width_points = $width_cm * (72 / 2.54);
+        // $height_points = $height_cm * (72 / 2.54);
 
-        $customPaper = [0, 0, $width_points, $height_points];
-        $pdf->setPaper($customPaper, 'landscape'); // Or 'landscape'
+        // $customPaper = [0, 0, $width_points, $height_points];
+        // $pdf->setPaper($customPaper, 'portrait'); // Or 'landscape'
         return $pdf->stream('document.pdf');
     }
     public function generatePDF()
