@@ -30,7 +30,7 @@ class PdfController extends Controller
             'peserta'
         ]));
         $customPaper = array(0, 0, 560, 350);
-        $pdf->setPaper('A4', 'portrait');
+        $pdf->setPaper('A4', 'landscape');
         // Stream the PDF to the browser
         // return $pdf->download('document.pdf');
         return $pdf->stream('document.pdf');
@@ -52,7 +52,7 @@ class PdfController extends Controller
             'peserta'
         ]));
         $customPaper = array(0, 0, 560, 350);
-        $pdf->setPaper('A4', 'portrait');
+        $pdf->setPaper('A4', 'landscape');
         // Stream the PDF to the browser
         // return $pdf->download('document.pdf');
         return $pdf->stream('document.pdf');
@@ -76,7 +76,7 @@ class PdfController extends Controller
             'peserta'
         ]));
         $customPaper = array(0, 0, 560, 350);
-        $pdf->setPaper('A4', 'portrait');
+        $pdf->setPaper('A4', 'landscape');
         // Stream the PDF to the browser
         return $pdf->stream('document.pdf');
     }
