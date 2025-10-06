@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="{{ public_path('../public/dist/css/datepicker.css') }}" rel="stylesheet">
     <style>
         @page {
-            margin: 0px;
+            margin: 10px;
             margin-top: -0px;
             margin-bottom: 0px;
             /* Adjust this value as needed */

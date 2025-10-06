@@ -677,7 +677,6 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
     Route::post('hasilsumarilis', [ErmController::class, 'hasilsumarilis'])
         ->name('hasilsumarilis'); //sidebar
 });
-
 //farmasi
 Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
     // index_layanan_resep
@@ -702,7 +701,6 @@ Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
 Route::get('indexjasamedis', [JasaMedisController::class, 'indexjasamedis'])->name('indexjasamedis'); //formpasien_bpjs
 Route::post('ambildatatotalklaim', [JasaMedisController::class, 'ambildatatotalklaim'])->name('ambildatatotalklaim'); //formpasien_bpjs
 Route::post('ambildetailsep', [JasaMedisController::class, 'ambildetailsep'])->name('ambildetailsep'); //formpasien_bpjs
-
 
 Route::get('get_riwayat_sep/{nomorkartu}/{tglawal}/{tglakhir}', [SimrsController::class, 'cari_riwayat_sep'])->name('cari_riwayat_sep'); //formpasien_bpjs
 Route::get('/cetaklabel/{kodekunjungan}', [SimrsController::class, 'Cetaklabel']); //formpasien_bpjs
