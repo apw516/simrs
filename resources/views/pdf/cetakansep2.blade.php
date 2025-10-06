@@ -30,7 +30,7 @@
 </head>
 
 <body style="font-weight: bold"> --}}
-    <div class="scaled-content">
+    {{-- <div class="scaled-content"> --}}
         <table>
             <tr>
                 <td><img src="{{ public_path('img/logobpjs.png') }}" style="height:100px; padding-right:0px;"></td>
@@ -121,7 +121,7 @@
             </tr>
 
         </table>
-    </div>
+    {{-- </div> --}}
 {{-- </body> --}}
 <style>
     body {
