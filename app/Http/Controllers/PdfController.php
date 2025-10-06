@@ -37,7 +37,7 @@ class PdfController extends Controller
         $height_points = $height_cm * (72 / 2.54);
 
         $customPaper = [0, 0, $width_points, $height_points];
-        $pdf->setPaper($customPaper, 'portrait'); // Or 'landscape'
+        $pdf->setPaper($customPaper, 'landscape'); // Or 'landscape'
         return $pdf->stream('document.pdf');
     }
     public function cetaksep22($sep)
@@ -65,7 +65,7 @@ class PdfController extends Controller
         $height_points = $height_cm * (72 / 2.54);
 
         $customPaper = [0, 0, $width_points, $height_points];
-        $pdf->setPaper($customPaper, 'portrait'); // Or 'landscape'
+        $pdf->setPaper($customPaper, 'landscape'); // Or 'landscape'
         return $pdf->stream('document.pdf');
     }
     public function cetaksep2($kodekunjungan)
@@ -94,7 +94,7 @@ class PdfController extends Controller
         $height_points = $height_cm * (72 / 2.54);
 
         $customPaper = [0, 0, $width_points, $height_points];
-        $pdf->setPaper($customPaper, 'portrait'); // Or 'landscape'
+        $pdf->setPaper($customPaper, 'landscape'); // Or 'landscape'
         return $pdf->stream('document.pdf');
     }
     public function generatePDF()
