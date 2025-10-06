@@ -23,7 +23,7 @@ class PdfController extends Controller
         // Storage::put('public/qr/' . $qrImageName, $qr);
         $now = $this->get_now();
         $qrcode = base64_encode(QrCode::format('svg')->size(200)->errorCorrection('H')->generate('string'));
-        $pdf = Pdf::loadView('pdf.cetakansep', compact([
+        $pdf = Pdf::loadView('pdf.cetakansep2', compact([
             'sep',
             'qrcode',
             'now','peserta'
@@ -65,7 +65,7 @@ class PdfController extends Controller
         // Storage::put('public/qr/' . $qrImageName, $qr);
         $now = $this->get_now();
         $qrcode = base64_encode(QrCode::format('svg')->size(200)->errorCorrection('H')->generate('string'));
-        $pdf = Pdf::loadView('pdf.cetakansep', compact([
+        $pdf = Pdf::loadView('pdf.cetakansep2', compact([
             'sep',
             'qrcode',
             'now','peserta'
