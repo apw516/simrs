@@ -15,7 +15,6 @@ class PdfController extends Controller
 {
     public function cetaksep($sep)
     {
-        //ad
         $v = new VclaimModel();
         $sep = $v->carisep($sep);
         $peserta = $v->get_peserta_noka($sep->response->peserta->noKartu, date('Y-m-d'));
