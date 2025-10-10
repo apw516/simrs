@@ -1547,6 +1547,7 @@ class SimrsController extends Controller
                 'kode' => 200,
                 'message' => 'sukses',
                 'kode_kunjungan' => $ts_kunjungan->id,
+                'sep' =>  $sep->noSep,
                 'nama' => $pasien[0]['nama_px']
             ];
             echo json_encode($data);

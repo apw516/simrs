@@ -26,6 +26,7 @@ class PdfController extends Controller
             'now',
             'peserta'
         ]));
+        $pdf->set_paper(array(0, 0, 600, 300), 'portrait');
         return $pdf->stream('document.pdf');
     }
     public function cetaksep22($sep)
@@ -45,6 +46,7 @@ class PdfController extends Controller
             'peserta'
         ]));
 
+        $pdf->set_paper(array(0, 0,420, 300), 'portrait');
 
         // $width_cm = 21; // 10 cm width
         // $height_cm = 14; // 15 cm height

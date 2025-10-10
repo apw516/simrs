@@ -326,7 +326,7 @@
                             class="bi bi-pencil-square"></i> Batal Edit</button>
                     <button hidden class="float-right btn btn-success mr-2 batledit" onclick="simapanedit()"><i
                             class="bi bi-pencil-square"></i> Simpan Edit</button>
-                    <a href="cetaksep_v/{{ $sep->response->noSep }}" target="_blank"
+                    <a href="http://192.168.2.30/siramah/cetakSEPAntrian?noSep={{ $sep->response->noSep }}" target="_blank"
                         class="btn btn-primary float-right btn btn-info mr-2"><i class="bi bi-printer"></i> Cetak
                         SEP</a>
                 </li>

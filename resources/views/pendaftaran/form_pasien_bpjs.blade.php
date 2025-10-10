@@ -1123,7 +1123,8 @@
                         cancelButtonText: 'Tidak'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.open('cetaksep/' + data.kode_kunjungan);
+                            // window.open('cetaksep/' + data.kode_kunjungan);
+                            window.open('http://192.168.2.30/siramah/cetakSEPAntrian?noSep='+data.sep)
                             location.reload();
                         } else if (result.isDenied) {
                             // window.open('cetakstruk/' + data.kode_kunjungan);
