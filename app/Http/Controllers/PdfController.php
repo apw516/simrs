@@ -18,9 +18,6 @@ class PdfController extends Controller
         $v = new VclaimModel();
         $sep = $v->carisep($sep);
         $peserta = $v->get_peserta_noka($sep->response->peserta->noKartu, date('Y-m-d'));
-        // $qr = QrCode::format('png')->generate('2312');
-        // $qrImageName = $sep . '.png';
-        // Storage::put('public/qr/' . $qrImageName, $qr);
         $now = $this->get_now();
         $qrcode = base64_encode(QrCode::format('svg')->size(200)->errorCorrection('H')->generate('string'));
         $pdf = Pdf::loadView('pdf.cetakansep2', compact([
@@ -29,15 +26,6 @@ class PdfController extends Controller
             'now',
             'peserta'
         ]));
-
-        // $width_cm = 21; // 10 cm width
-        // $height_cm = 14; // 15 cm height
-
-        // $width_points = $width_cm * (72 / 2.54);
-        // $height_points = $height_cm * (72 / 2.54);
-
-        // $customPaper = [0, 0, $width_points, $height_points];
-        // $pdf->setPaper($customPaper, 'portrait'); // Or 'landscape'
         return $pdf->stream('document.pdf');
     }
     public function cetaksep22($sep)
