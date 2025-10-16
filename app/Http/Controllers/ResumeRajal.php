@@ -535,7 +535,6 @@ AND cc.status_layanan_detail = 'opn'
 AND bb.keterangan = 'Terkirim'
 )Q
 WHERE layanan <> ''");
-
         return $hasil;
     }
 }

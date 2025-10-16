@@ -11,6 +11,6 @@ class model_template_resep_detail extends Model
     protected $connection = 'mysql5';
     const UPDATED_AT = null;
     const CREATED_AT = null;
-    protected $table = 'erm_template_resep_detail';
+    protected $table = 'erm_template_resep_detail_2';
     protected $guarded = ['id'];
 }

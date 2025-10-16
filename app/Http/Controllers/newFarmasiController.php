@@ -186,8 +186,8 @@ class newFarmasiController extends Controller
     public function riwayattemplateresep(Request $request)
     {
         $dokter = auth()->user()->kode_paramedis;
-        $header = db::connection('mysql5')->select('select * from erm_template_resep_header where kode_paramedis = ?', [$dokter]);
-        $detail = db::connection('mysql5')->select('select * from erm_template_resep_header a inner join erm_template_resep_detail b on a.id = b.id_header where a.kode_paramedis = ?', [$dokter]);
+        $header = db::connection('mysql5')->select('select * from erm_template_resep_header_2 where kode_paramedis = ?', [$dokter]);
+        $detail = db::connection('mysql5')->select('select * from erm_template_resep_header_2 a inner join erm_template_resep_detail_2 b on a.id = b.id_header where a.kode_paramedis = ?', [$dokter]);
         return view('new_farmasi.tabel_template_resep_dokter', compact([
             'header',
             'detail'
@@ -196,7 +196,7 @@ class newFarmasiController extends Controller
     public function ambil_detail_template(Request $request)
     {
         $idresep = $request->id;
-        $detail = db::connection('mysql5')->select('select * from erm_template_resep_header a inner join erm_template_resep_detail b on a.id = b.id_header where a.id = ?', [$idresep]);
+        $detail = db::connection('mysql5')->select('select * from erm_template_resep_header_2 a inner join erm_template_resep_detail_2 b on a.id = b.id_header where a.id = ?', [$idresep]);
         $str = "";
         foreach ($detail as $d) {
             $str .= "<div class='form-row text-xs'><div class='form-group col-md-2 text-xxs'><label for=''>Tipe Anestesi</label><select class='form-control' id='tipeanestesi' name='tipeanestesi'><option value='REG'>REGULER</option><option value='KRONIS'>KRONIS</option></select></div><div class='form-group col-md-1'><label for=''>Jumlah</label><input type='' class='form-control form-control-sm text-xs edit_field' id='jumlah' name='jumlah' value='$d->jumlah'></div><div class='form-group col-md-2'><label for=''>Nama Barang</label><input readonly type='' class='form-control form-control-sm text-xs edit_field' id='namabarang' name='namabarang' value='$d->namabarang'><input   hidden readonly type='' class='form-control form-control-sm' id='kodebarang' name='kodebarang' value='$d->kodebarang'><input hidden readonly type='' class='form-control form-control-sm' id='jenisresep' name='jenisresep' value='$d->jenisresep'></div><div class='form-group col-md-1'><label for=''>Dosis</label><input readonly type='' class='form-control form-control-sm text-xs edit_field' id='dosis' name='dosis' value='$d->dosis'></div><div class='form-group col-md-1'><label for=''>Stok</label><input readonly type='' class='form-control form-control-sm text-xs edit_field' id='stok' name='stok' value=''></div><div class='form-group col-md-1'><label for=''>Sediaan</label><input readonly type='' class='form-control form-control-sm text-xs edit_field' id='sediaan' name='sediaan' value='$d->sediaan'></div><div class='form-group col-md-3'><label for=''>Aturan Pakai</label><textarea type='' cols='3' rows='3' class='form-control form-control-sm text-xs edit_field' id='aturanpakai' name='aturanpakai' value=''>$d->aturanpakai</textarea></div><i class='bi bi-x-square remove_field form-group col-md-1 text-danger' kode2=''></i></div>";
