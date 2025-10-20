@@ -163,7 +163,17 @@
                                     <th>Aturan Pakai</th>
                                 </thead>
                                 <tbody>
-                                    @foreach ($orderfarmasi as $t)
+                                     @foreach ($orderfarmasi2 as $t)
+                                                            <tr>
+                                                                <td>{{ $t->namabarang }}
+                                                                </td>
+                                                                <td>{{ $t->jumlah }}
+                                                                </td>
+                                                                <td>{{ $t->aturanpakai }}
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                    {{-- @foreach ($orderfarmasi as $t)
                                         <tr>
                                             <td>{{ $t->kode_barang }}
                                             </td>
@@ -172,7 +182,7 @@
                                             <td>{{ $t->aturan_pakai }}
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @endforeach --}}
                                 </tbody>
                             </table>
                         </div>
@@ -533,7 +543,17 @@
                                                         <th>Aturan Pakai</th>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach ($orderfarmasi as $t)
+                                                        @foreach ($orderfarmasi2 as $t)
+                                                            <tr>
+                                                                <td>{{ $t->namabarang }}
+                                                                </td>
+                                                                <td>{{ $t->jumlah }}
+                                                                </td>
+                                                                <td>{{ $t->aturanpakai }}
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                        {{-- @foreach ($orderfarmasi as $t)
                                                             <tr>
                                                                 <td>{{ $t->kode_barang }}
                                                                 </td>
@@ -542,7 +562,7 @@
                                                                 <td>{{ $t->aturan_pakai }}
                                                                 </td>
                                                             </tr>
-                                                        @endforeach
+                                                        @endforeach --}}
                                                     </tbody>
                                                 </table>
                                             </div>

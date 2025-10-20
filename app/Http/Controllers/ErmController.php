@@ -4891,6 +4891,7 @@ class ErmController extends Controller
         $mt_paramedis = db::select('select * from mt_paramedis where kode_paramedis = ?', [$kode_paramedis]);
 
         $orderfarmasi = db::select('SELECT kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.kode_kunjungan = ? and  kode_unit > ?', [$kodekunjungan, '4000']);
+        $orderfarmasi2 = db::select('SELECT namabarang,jumlah,dosis,sediaan,aturanpakai,jenisresep FROM order_farmasi_header a INNER JOIN order_farmasi_detail b ON a.id = b.idheader WHERE a.kode_kunjungan = ? and  kode_paramedis = ? and status_detail = 1', [$kodekunjungan, $kode_paramedis]);
 
         $order_penunjang = db::select('SELECT fc_nama_unit1(a.`kode_unit`)AS nama_unit,a.kode_unit,SUBSTR(kode_tarif_detail,1,6) AS kode_tarif_header,c.`NAMA_TARIF` FROM ts_layanan_header_order a
         INNER JOIN ts_layanan_detail_order b ON a.id = b.`row_id_header`
@@ -4916,7 +4917,8 @@ class ErmController extends Controller
             'kodekunjungan',
             'orderfarmasi',
             'order_penunjang',
-            'assesmendd'
+            'assesmendd',
+            'orderfarmasi2'
         ]));
     }
     public function simpanttdperawat(Request $request)
