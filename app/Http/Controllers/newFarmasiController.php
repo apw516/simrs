@@ -19,6 +19,7 @@ use App\Models\ts_layanan_header_dummy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use simitsdk\phpjasperxml\PHPJasperXML;
 
 class newFarmasiController extends Controller
 {
@@ -73,7 +74,7 @@ class newFarmasiController extends Controller
         ,simrs_waled.fc_alamat(B.no_rm) AS alamat
         FROM ts_layanan_header A
         INNER JOIN simrs_waled.ts_kunjungan B ON A.`kode_kunjungan` = B.`kode_kunjungan`
-        WHERE A.kode_unit = ? AND DATE(A.tgl_entry) BETWEEN ? AND  ?', [$unit, $awal, $akhir]);
+        WHERE A.kode_unit = ? AND A.status_layanan != 3 AND DATE(A.tgl_entry) BETWEEN ? AND  ?', [$unit, $awal, $akhir]);
         return view('new_farmasi.riwayat_pelayanan', compact([
             'riwayat'
         ]));
@@ -82,6 +83,8 @@ class newFarmasiController extends Controller
     {
         $idheader = $request->idheader;
         $datalayanan = db::connection('mysql4')->select('SELECT a.id AS idheader
+        ,a.kode_layanan_header
+        ,a.kode_kunjungan
         ,b.`id` AS iddetail
         ,b.`kode_barang`
         ,c.`nama_barang`
@@ -99,7 +102,7 @@ class newFarmasiController extends Controller
         LEFT OUTER JOIN mt_racikan e on b.kode_barang = e.kode_racik
         WHERE a.id = ?', [$idheader]);
         return view('new_farmasi.detail_layanan_farmasi', compact([
-            'datalayanan'
+            'datalayanan','idheader'
         ]));
     }
     public function ambilformfarmasi2(Request $request)
@@ -1224,5 +1227,45 @@ class newFarmasiController extends Controller
         return view('depofarmasi.tabel_riwayat_kartu_stok', compact([
             'stok'
         ]));
+    }
+    public function cetakEtiket_new($id)
+    {
+        $get_header = DB::connection('mysql')->select('select * from ts_layanan_header where id = ?', [$id]);
+        // dd($get_header);
+        // $KODE_HEADER = $DH[0]->kode_layanan_header;
+        // $ID_HEADER = $DK[0]->counter;
+        $kodeheader = $get_header[0]->kode_layanan_header;
+        // $TE = db::connection('mysql')->select("CALL `SP_CETAK_ETIKET_FARMASI_WD`('$kodeheader','$id')");
+        // DD($TE);
+        $PDO = DB::connection()->getPdo();
+        $QUERY = $PDO->prepare("CALL SP_CETAK_ETIKET_FARMASI_WD('$kodeheader','$id')");
+        $QUERY->execute();
+        $data = $QUERY->fetchAll();
+        $filename = 'C:\cetakanresep\etiket.jrxml';
+        $config = ['driver' => 'array', 'data' => $data];
+        $report = new PHPJasperXML();
+        $report->load_xml_file($filename)
+            ->setDataSource($config)
+            ->export('Pdf');
+    }
+    public function cetaknota_new($kodekunjungan, $kodeheader,$idheader)
+    {
+        // dd($kodeheader);
+        // SP_Karcis_Pendaftaran3(kodelayananheader,norm)
+        // $DH = DB::select('select * from ts_layanan_header where id = ?', [$id]);
+        $DK = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+        $rm = $DK[0]->no_rm;
+        // $KODE_HEADER = $DH[0]->kode_layanan_header;
+        // $ID_HEADER = $DK[0]->counter;
+        $PDO = DB::connection()->getPdo();
+        $QUERY = $PDO->prepare("CALL SP_CETAK_NOTA_WEB('$kodeheader','$idheader')");
+        $QUERY->execute();
+        $data = $QUERY->fetchAll();
+        $filename = 'C:\cetakanresep\cetakannotaresep.jrxml';
+        $config = ['driver' => 'array', 'data' => $data];
+        $report = new PHPJasperXML();
+        $report->load_xml_file($filename)
+            ->setDataSource($config)
+            ->export('Pdf');
     }
 }

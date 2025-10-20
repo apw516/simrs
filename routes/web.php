@@ -819,3 +819,5 @@ Route::post('dataorderpenunjang', [FarmasiController::class, 'dataorderpenunjang
 Route::get('datakunjungan_farmasi', [FarmasiController::class, 'datakunjungan_farmasi'])->name('datakunjungan_farmasi');
 Route::post('cari_data_kunjungan_farmasi', [FarmasiController::class, 'cari_data_kunjungan_farmasi'])->name('cari_data_kunjungan_farmasi');
 Route::post('kirimorderfarmasi', [FarmasiController::class, 'kirimorderfarmasi'])->name('kirimorderfarmasi');
+Route::get('cetaketiket_2/{id}', [newFarmasiController::class, 'cetakEtiket_new']); //formpasien_bpjs
+Route::get('cetaknotafarmasi_2/{id}/{kodeheader}/{idheader}', [newFarmasiController::class, 'cetaknota_new']); //formpasien_bpjs

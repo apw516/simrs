@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="card-header bg-info">Catatan Medis Pasien</div>
+    <div class="card-header bg-info">Riwayat Kunjungan</div>
     <div class="card-body">
         <button class="btn btn-warning mb-2 scanrm_liat" rm="{{ $rm }}" data-toggle="modal"
             data-target="#modalscan_rm"><i class="bi bi-journal-text"></i> BERKAS RM SCAN</button>
