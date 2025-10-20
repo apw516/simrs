@@ -56,8 +56,22 @@
                 </table>
             </div>
             <div class="card-footer">
+                <button class="btn btn-success cetaketiket" idheader="{{ $arrayobatfix[0][0]->idheader }}"><i class="bi bi-list-check mr-1 ml-1"></i> Cetak Etiket</button>
+                <button class="btn btn-success cetaknota" idheader="{{ $arrayobatfix[0][0]->idheader }}" kode_kunjungan="{{ $arrayobatfix[0][0]->kode_kunjungan }}" kodeheader="{{ $arrayobatfix[0][0]->kode_layanan_header }}"><i class="bi bi-list-check mr-1 ml-1"></i> Cetak Nota</button>
                 <button class="btn btn-success" idheader="{{ $idorder }}"><i class="bi bi-list-check mr-1 ml-1"></i> Selesai</button>
             </div>
         </div>
     </div>
 </div>
+<script>
+     $(".cetaketiket").on('click', function(event) {
+        idheader = $(this).attr('idheader')
+        window.open('cetaketiket_2/' + idheader);
+    });
+     $(".cetaknota").on('click', function(event) {
+        idheader = $(this).attr('idheader')
+        kodekunjungan = $(this).attr('kode_kunjungan')
+        kodeheader = $(this).attr('kodeheader')
+        window.open('cetaknotafarmasi_2/' + kodekunjungan +'/'+ kodeheader+'/'+idheader);
+    });
+</script>

@@ -738,13 +738,17 @@ class newFarmasiController extends Controller
         }
         $unit = mt_unit::where('kode_unit', '=', "$kode_unit")->get();
         $date = $this->get_now();
-        $r = DB::connection('mysql4')->select("CALL GET_NOMOR_LAYANAN_HEADER('$kode_unit')");
-        $kode_layanan_header = $r[0]->no_trx_layanan;
-        if ($kode_layanan_header == "") {
+        // $r = DB::connection('mysql')->select("CALL GET_NOMOR_LAYANAN_HEADER('$kode_unit')");
+        // $kode_layanan_header = $r[0]->no_trx_layanan;
+        // if ($kode_layanan_header == "") {
             $year = date('y');
-            $kode_layanan_header = $unit[0]['prefix_unit'] . $year . date('m') . date('d') . '000001';
-            DB::connection('mysql4')->select('insert into mt_nomor_trx (tgl,no_trx_layanan,unit) values (?,?,?)', [date('Y-m-d h:i:s'), $kode_layanan_header, $kode_unit]);
-        }
+            $PREF = $unit[0]['prefix_unit'];
+            $KODEUNITFAR = $kode_unit;
+            $kode_layanan_header = $this->createLayananheader($KODEUNITFAR,$PREF);
+            // $kode_layanan_header = $unit[0]['prefix_unit'] . $year . date('m') . date('d') . '000001';
+            // DB::connection('mysql4')->select('insert into mt_nomor_trx (tgl,no_trx_layanan,unit) values (?,?,?)', [date('Y-m-d h:i:s'), $kode_layanan_header, $kode_unit]);
+        // }
+        // createLayananheader
         $dataheader = [
             'kode_layanan_header' => $kode_layanan_header,
             'tgl_entry' => $date,
@@ -760,7 +764,6 @@ class newFarmasiController extends Controller
         $racikannya = 0;
         $nonracikannya = 0;
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamat_px from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
-
         foreach ($arrayobat as $ob) {
             if ($ob['jenisresep'] != 'RACIKAN') {
                 $kodebarang = $ob['kodebarang'];
@@ -1020,9 +1023,11 @@ class newFarmasiController extends Controller
         if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
             $tagihan_penjamin_header = 0;
             $tagihan_pribadi_header = $total_layanan_header;
+            $status_lyheader = 1;
         } else {
             $tagihan_penjamin_header = $total_layanan_header;
             $tagihan_pribadi_header = 0;
+            $status_lyheader = 2;
         }
         $data_header_update = [
             'total_layanan' => $total_layanan_header,
@@ -1032,7 +1037,8 @@ class newFarmasiController extends Controller
             'status_pembayaran' => 'OPN',
             'dok_kirim' => $ts_kunjungan[0]->kode_paramedis,
             'unit_pengirim' => $ts_kunjungan[0]->kode_unit . ' | ' . $ts_kunjungan[0]->nama_unit,
-            'diagnosa' => $diagnosa
+            'diagnosa' => $diagnosa,
+            'status_layanan' => $status_lyheader
         ];
         DB::connection('mysql4')->table('ts_layanan_header')->where('id', $layanan_header->id)->update($data_header_update);
         //end jasa obat non racikan
@@ -1074,7 +1080,7 @@ class newFarmasiController extends Controller
         LEFT OUTER JOIN mt_tarif_header d ON SUBSTR(b.kode_tarif_detail,1,6) = d.KODE_TARIF_HEADER
         LEFT OUTER JOIN mt_racikan e on b.kode_barang = e.kode_racik where a.kode_kunjungan = ? and a.kode_unit > 4000', [$kodekunjungan]);
 
-        $dataheader = db::connection('mysql4')->select('select *,fc_nama_unit1(kode_unit) as nama_unit,fc_NAMA_PARAMEDIS1(dok_kirim) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjaminx) as nama_penjamin from ts_layanan_header where kode_kunjungan = ?', [$kodekunjungan]);
+        $dataheader = db::connection('mysql4')->select('select *,fc_nama_unit1(kode_unit) as nama_unit,fc_NAMA_PARAMEDIS1(dok_kirim) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjaminx) as nama_penjamin from ts_layanan_header where kode_kunjungan = ? and kode_unit > 4000', [$kodekunjungan]);
         return view('depofarmasi.tabel_riwayat_resepdilayani', compact([
             'datalayanan',
             'dataheader'
@@ -1086,9 +1092,10 @@ class newFarmasiController extends Controller
         $detail =  DB::connection('mysql5')->select('select * from erm_antrian_farmasi_detail where idheader_antrian = ?', [$idorder]);
         foreach ($detail as $d) {
             $detail =  DB::connection('mysql5')->select('select * from order_farmasi_detail where idheader = ?', [$d->id_header_order]);
-            $detail2 =  DB::connection('mysql4')->select("SELECT b.`kode_barang`,b.`nama_barang`,b.`sediaan`,b.`dosis`,a.`aturan_pakai`,a.jumlah_layanan FROM ts_layanan_detail a
+            $detail2 =  DB::connection('mysql4')->select("SELECT d.kode_kunjungan,d.id as idheader, d.kode_layanan_header,b.`kode_barang`,b.`nama_barang`,b.`sediaan`,b.`dosis`,a.`aturan_pakai`,a.jumlah_layanan FROM ts_layanan_detail a
             LEFT OUTER JOIN mt_barang b ON a.`kode_barang` = b.`kode_barang`
             LEFT OUTER JOIN mt_racikan c ON a.`kode_barang` = c.`kode_racik`
+            LEFT OUTER JOIN ts_layanan_header d ON a.row_id_header = d.id
             WHERE a.row_id_header = ? AND a.`kode_barang` != ''", [$d->id_layanan_header]);
             $arrayobatorder[] = $detail;
             $arrayobatfix[] = $detail2;
@@ -1098,6 +1105,22 @@ class newFarmasiController extends Controller
             'arrayobatfix',
             'idorder'
         ]));
+    }
+    public function createLayananheader($KODEUNIT,$PREFIX)
+    {
+        $q = DB::connection('mysql4')->select("SELECT id,RIGHT(kode_layanan_header,6) AS kd_max FROM ts_layanan_header WHERE kode_unit = $KODEUNIT AND DATE(tgl_entry) = CURDATE()
+        ORDER BY id DESC LIMIT 1");
+        $kd = "";
+        if (count($q) > 0) {
+            foreach ($q as $k) {
+                $tmp = ((int) $k->kd_max) + 1;
+                $kd = sprintf("%06s", $tmp);
+            }
+        } else {
+            $kd = "000001";
+        }
+        date_default_timezone_set('Asia/Jakarta');
+        return $PREFIX . date('ymd') . $kd;
     }
     public function createLayanandetail()
     {
