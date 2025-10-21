@@ -20,6 +20,7 @@
                 <td>
                     <button class="btn btn-info detaillayanan" idheader="{{ $r->id_layanan_header }}" data-toggle="modal"
                         data-target="#modaldetaillayanan"><i class="bi bi-ticket-detailed"></i></button>
+                    <button class="btn btn-success layani" idheader="{{ $r->id_layanan_header }}"><i class="bi bi-folder-plus"></i></button>
                 </td>
             </tr>
         @endforeach
@@ -75,3 +76,24 @@
             }
         });
     });
+    $(".layani").on('click', function(event) {
+            idorder = $(this).attr('idheader')
+            $('.v_1').attr('hidden', true)
+            $(".v_2").removeAttr('hidden', true);
+            spinneron()
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    idorder
+                },
+                url: '<?= route('detailorderan2') ?>',
+                error: function(response) {
+                    spinnerof()
+                },
+                success: function(response) {
+                    spinnerof()
+                    $('.v_2').html(response);
+                }
+            });
+        })

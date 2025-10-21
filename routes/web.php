@@ -746,6 +746,7 @@ Route::post('dataorderfarmasi', [newFarmasiController::class, 'dataorderfarmasi'
 Route::post('cariorderfarmasi', [newFarmasiController::class, 'cariorderfarmasi'])->name('cariorderfarmasi');
 Route::post('cariorderfarmasidilayani', [newFarmasiController::class, 'cariorderfarmasidilayani'])->name('cariorderfarmasidilayani');
 Route::post('detailorderan', [newFarmasiController::class, 'detailorderan'])->name('detailorderan');
+Route::post('detailorderan2', [newFarmasiController::class, 'detailorderan2'])->name('detailorderan2');
 Route::post('detailorderanditerima', [newFarmasiController::class, 'detailorderanditerima'])->name('detailorderanditerima');
 Route::post('simpandatapelayanan', [newFarmasiController::class, 'simpandatapelayanan'])->name('simpandatapelayanan');
 Route::post('riwayatresepdilayani', [newFarmasiController::class, 'riwayatresepdilayani'])->name('riwayatresepdilayani');

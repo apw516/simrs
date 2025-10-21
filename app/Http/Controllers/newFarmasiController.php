@@ -543,6 +543,26 @@ class newFarmasiController extends Controller
             'dataorder'
         ]));
     }
+    public function detailorderan2(Request $request)
+    {
+        $idorder = $request->idorder;
+        $tanggal = $request->tanggal;
+        $lyanan_header = db::connection('mysql')->select('select kode_kunjungan from ts_layanan_header where id = ?',[$idorder]);
+        $kode_kunjungan = $lyanan_header[0]->kode_kunjungan;
+        $ts_kunjungan = db::select('select *,fc_nama_px(no_rm) as nama_pasien,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?',[$kode_kunjungan]);
+
+        $dataaa = [];
+        $dataorder = [];
+        $dataorder2 = [];
+        $idorder = 0;
+       
+        return view('depofarmasi.detail_order_resep_2', compact([
+            'dataorder2',
+            'idorder',
+            'kode_kunjungan',
+            'ts_kunjungan'
+        ]));
+    }
     public function detailorderan(Request $request)
     {
         $idorder = $request->idorder;
@@ -1044,6 +1064,7 @@ class newFarmasiController extends Controller
         //end jasa obat non racikan
         foreach ($arrayobat as $ob) {
             if (empty($ob['idantrianheader'])) {
+            }elseif($ob['idantrianheader'] == 0){                
             } else {
                 $id_antrian = $ob['idantrianheader'];
                 $id_header_order = $ob['idheaderorder'];
@@ -1081,6 +1102,7 @@ class newFarmasiController extends Controller
         LEFT OUTER JOIN mt_racikan e on b.kode_barang = e.kode_racik where a.kode_kunjungan = ? and a.kode_unit > 4000', [$kodekunjungan]);
 
         $dataheader = db::connection('mysql4')->select('select *,fc_nama_unit1(kode_unit) as nama_unit,fc_NAMA_PARAMEDIS1(dok_kirim) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjaminx) as nama_penjamin from ts_layanan_header where kode_kunjungan = ? and kode_unit > 4000', [$kodekunjungan]);
+
         return view('depofarmasi.tabel_riwayat_resepdilayani', compact([
             'datalayanan',
             'dataheader'

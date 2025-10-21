@@ -30,6 +30,7 @@
                              <button class="btn btn-info detailresepditerima" idorder="{{ $d->id }}"
                                  data-toggle="modal" data-target="#modalorderandilayani"><i
                                      class="bi bi-ticket-detailed"></i></button>
+                            <button idorder="{{ $d->id }}" class="btn btn-success layani"><i class="bi bi-folder-plus"></i></button>
                          </td>
                      </tr>
                  @endforeach
@@ -97,6 +98,27 @@
              success: function(response) {
                  spinnerof()
                  $('.v_obat_nya').html(response);
+             }
+         });
+     })
+       $(".layani").on('click', function(event) {
+         idorder = $(this).attr('idorder')
+         $('.v_1').attr('hidden', true)
+         $(".v_2").removeAttr('hidden', true);
+         spinneron()
+         $.ajax({
+             type: 'post',
+             data: {
+                 _token: "{{ csrf_token() }}",
+                 idorder
+             },
+             url: '<?= route('detailorderan') ?>',
+             error: function(response) {
+                 spinnerof()
+             },
+             success: function(response) {
+                 spinnerof()
+                 $('.v_2').html(response);
              }
          });
      })

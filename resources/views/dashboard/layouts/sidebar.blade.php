@@ -526,6 +526,13 @@
                       </a>
                   </li>
                   <li class="nav-item ">
+                      <a href="{{ route('indexdataorderfarmasi') }}"
+                          class="nav-link @if ($sidebar == 'indexdatapasienfarmasi') active @endif">
+                          <i class="nav-icon fasbi bi-back"></i>
+                          <p>Data Pasien</p>
+                      </a>
+                  </li>
+                  <li class="nav-item ">
                       <a href="{{ route('indexriwayatpelayananfarmasi') }}"
                           class="nav-link @if ($sidebar == 'indexriwayatpelayananresep') active @endif">
                           <i class="nav-icon fasbi bi-back"></i>
