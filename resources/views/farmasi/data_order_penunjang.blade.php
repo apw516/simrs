@@ -11,7 +11,7 @@
                         <th>Aturan Pakai</th>
                         <th>Status antrian</th>
                         <th>Status detail</th>
-                        <th>Nomor Antrian</th>
+                        {{-- <th>Nomor Antrian</th> --}}
                     </thead>
                     <tbody>
                         @foreach ($data_order as $d)
@@ -21,7 +21,7 @@
                                 <td>{{ $d->aturanpakai }}</td>
                                 <td>
                                     @if ($d->status_antrian == 0)
-                                        Belum dikirim
+                                    Belum dikirim
                                     @elseif($d->status_antrian == 1)
                                     Sudah dikirim
                                     @endif
@@ -33,7 +33,7 @@
                                         Retur
                                     @endif
                                 </td>
-                                <td>{{ $d->nomor_antrian }}</td>
+                                {{-- <td>{{ $d->nomor_antrian }}</td> --}}
                             </tr>
                         @endforeach
                     </tbody>

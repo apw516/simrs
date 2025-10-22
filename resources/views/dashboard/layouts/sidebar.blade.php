@@ -526,7 +526,7 @@
                       </a>
                   </li>
                   <li class="nav-item ">
-                      <a href="{{ route('indexdataorderfarmasi') }}"
+                      <a href="{{ route('indexdatapasienfarmasi') }}"
                           class="nav-link @if ($sidebar == 'indexdatapasienfarmasi') active @endif">
                           <i class="nav-icon fasbi bi-back"></i>
                           <p>Data Pasien</p>

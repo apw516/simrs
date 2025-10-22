@@ -747,6 +747,7 @@ Route::post('cariorderfarmasi', [newFarmasiController::class, 'cariorderfarmasi'
 Route::post('cariorderfarmasidilayani', [newFarmasiController::class, 'cariorderfarmasidilayani'])->name('cariorderfarmasidilayani');
 Route::post('detailorderan', [newFarmasiController::class, 'detailorderan'])->name('detailorderan');
 Route::post('detailorderan2', [newFarmasiController::class, 'detailorderan2'])->name('detailorderan2');
+Route::post('detailorderan3', [newFarmasiController::class, 'detailorderan3'])->name('detailorderan3');
 Route::post('detailorderanditerima', [newFarmasiController::class, 'detailorderanditerima'])->name('detailorderanditerima');
 Route::post('simpandatapelayanan', [newFarmasiController::class, 'simpandatapelayanan'])->name('simpandatapelayanan');
 Route::post('riwayatresepdilayani', [newFarmasiController::class, 'riwayatresepdilayani'])->name('riwayatresepdilayani');
@@ -817,8 +818,10 @@ Route::get('/cetaksep_v2/{sep}', [SimrsController::class, 'Cetaksep_v']); //form
 
 // datakunjungan_farmasi
 Route::post('dataorderpenunjang', [FarmasiController::class, 'dataorderpenunjang'])->name('dataorderpenunjang');
+Route::get('indexdatapasienfarmasi', [FarmasiController::class, 'indexdatapasienfarmasi'])->name('indexdatapasienfarmasi');
 Route::get('datakunjungan_farmasi', [FarmasiController::class, 'datakunjungan_farmasi'])->name('datakunjungan_farmasi');
 Route::post('cari_data_kunjungan_farmasi', [FarmasiController::class, 'cari_data_kunjungan_farmasi'])->name('cari_data_kunjungan_farmasi');
 Route::post('kirimorderfarmasi', [FarmasiController::class, 'kirimorderfarmasi'])->name('kirimorderfarmasi');
+Route::post('cari_data_pasien', [newFarmasiController::class, 'cari_data_pasien'])->name('cari_data_pasien');
 Route::get('cetaketiket_2/{id}', [newFarmasiController::class, 'cetakEtiket_new']); //formpasien_bpjs
 Route::get('cetaknotafarmasi_2/{id}/{kodeheader}/{idheader}', [newFarmasiController::class, 'cetaknota_new']); //formpasien_bpjs

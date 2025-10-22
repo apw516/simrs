@@ -43,6 +43,21 @@ class FarmasiController extends Controller
             'mt_unit'
         ]));
     }
+    public function indexdatapasienfarmasi()
+    {
+        $title = 'SIMRS - ERM';
+        $sidebar = 'indexdatapasienfarmasi';
+        $sidebar_m = 'indexdatapasienfarmasi';
+        $mt_unit = DB::select('select * from mt_unit where group_unit = ?', (['J']));
+        $now = $this->get_date();
+        return view('depofarmasi.index_data_pasien', compact([
+            'title',
+            'sidebar',
+            'sidebar_m',
+            'now',
+            'mt_unit'
+        ]));
+    }
     public function index_cek_pasien_kronis()
     {
         $title = 'SIMRS - ERM';

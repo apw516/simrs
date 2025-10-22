@@ -74,70 +74,62 @@
                     <div class="card-body">
                         <form action="" method="post" class="formourderobat">
                             @if (count($dataorder2) == 0)
-                                <h5 class="text-danger">Tidak ada obat yang dipilih ...</h5>
+                            <h5 class="text-danger">Tidak ada obat yang dipilih ...</h5>
                             @endif
                             <div class="draft_obat2">
                                 <div>
                                     @foreach ($dataorder2 as $d)
-                                        <div class="form-row text-md">
-                                            <div class="form-group col-md-2 text-md"><label for="">Tipe
-                                                    Anestesi</label> <select class="form-control" id="tipeanestesi"
-                                                    name="tipeanestesi">
-                                                    <option value="REG"
-                                                        @if ($d['tipeanestesi'] == 'REG') selected @endif>
-                                                        REGULER</option>
-                                                    <option value="KRONIS"
-                                                        @if ($d['tipeanestesi'] == 'KRONIS') selected @endif>
-                                                        KRONIS</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-md-1"><label for="">Jumlah</label><input
-                                                    type="" class="form-control  text-md edit_field"
-                                                    id="jumlah" name="jumlah" value="{{ $d['jumlah'] }}">
-                                            </div>
-                                            <div class="form-group col-md-2">
-                                                <label for="">Nama Barang</label>
-                                                <input readonly type=""
-                                                    class="form-control  text-md edit_field" id="namabarang"
-                                                    name="namabarang" value="{{ $d['namabarang'] }}">
-                                                <input hidden readonly type="" class="form-control "
-                                                    id="kodebarang" name="kodebarang" value="{{ $d['kodebarang'] }}">
-                                                <input readonly type="" class="form-control "
-                                                    id="idantrianheader" name="idantrianheader"
-                                                    value="{{ $d['id_antrian'] }}">
-                                                <input hidden readonly type="" class="form-control "
-                                                    id="idheaderorder" name="idheaderorder"
-                                                    value="{{ $d['id_header_order'] }}">
-                                                <input hidden readonly type="" class="form-control "
-                                                    id="iddetailorder" name="iddetailorder"
-                                                    value="{{ $d['id_detail_order'] }}">
-                                                <input hidden readonly type="" class="form-control "
-                                                    id="jenisresep" name="jenisresep"
-                                                    value="{{ $d['jenisresep'] }}">
-                                            </div>
-                                            <div class="form-group col-md-1"><label for="">Dosis</label>
-                                                <input readonly type=""
-                                                    class="form-control  text-md edit_field" id="dosis"
-                                                    name="dosis" value="{{ $d['dosis'] }}">
-                                            </div>
-                                            <div class="form-group col-md-1"><label for="">Stok</label>
-                                                <input readonly type=""
-                                                    class="form-control  text-md edit_field" id="stok"
-                                                    name="stok" value="{{ $d['stok'] }}">
-                                            </div>
-                                            <div class="form-group col-md-1">
-                                                <label for="">Sediaan</label><input readonly type=""
-                                                    class="form-control  text-md edit_field" id="sediaan"
-                                                    name="sediaan" value="{{ $d['sediaan'] }}">
-                                            </div>
-                                            <div class="form-group col-md-3"><label for="">Aturan
-                                                    Pakai / Keterangan</label>
-                                                <textarea type="" cols="3" rows="3" class="form-control  text-md edit_field" id="aturanpakai"
-                                                    name="aturanpakai">{{ $d['aturanpakai'] }}</textarea>
-                                            </div>
-                                            <i class="bi bi-x-square remove_field form-group col-md-1 text-danger"
-                                                kode2=""></i>
+                                    <div class="form-row text-md">
+                                        <div class="form-group col-md-2 text-md"><label for="">Tipe
+                                                Anestesi</label> <select class="form-control" id="tipeanestesi"
+                                                name="tipeanestesi">
+                                                <option value="REG" @if ($d['tipeanestesi']=='REG' ) selected @endif>
+                                                    REGULER</option>
+                                                <option value="KRONIS" @if ($d['tipeanestesi']=='KRONIS' ) selected
+                                                    @endif>
+                                                    KRONIS</option>
+                                            </select>
                                         </div>
+                                        <div class="form-group col-md-1"><label for="">Jumlah</label><input type=""
+                                                class="form-control  text-md edit_field" id="jumlah" name="jumlah"
+                                                value="{{ $d['jumlah'] }}">
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <label for="">Nama Barang</label>
+                                            <input readonly type="" class="form-control  text-md edit_field"
+                                                id="namabarang" name="namabarang" value="{{ $d['namabarang'] }}">
+                                            <input hidden readonly type="" class="form-control " id="kodebarang"
+                                                name="kodebarang" value="{{ $d['kodebarang'] }}">
+                                            <input readonly type="" class="form-control " id="idantrianheader"
+                                                name="idantrianheader" value="{{ $d['id_antrian'] }}">
+                                            <input hidden readonly type="" class="form-control " id="idheaderorder"
+                                                name="idheaderorder" value="{{ $d['id_header_order'] }}">
+                                            <input hidden readonly type="" class="form-control " id="iddetailorder"
+                                                name="iddetailorder" value="{{ $d['id_detail_order'] }}">
+                                            <input hidden readonly type="" class="form-control " id="jenisresep"
+                                                name="jenisresep" value="{{ $d['jenisresep'] }}">
+                                        </div>
+                                        <div class="form-group col-md-1"><label for="">Dosis</label>
+                                            <input readonly type="" class="form-control  text-md edit_field" id="dosis"
+                                                name="dosis" value="{{ $d['dosis'] }}">
+                                        </div>
+                                        <div class="form-group col-md-1"><label for="">Stok</label>
+                                            <input readonly type="" class="form-control  text-md edit_field" id="stok"
+                                                name="stok" value="{{ $d['stok'] }}">
+                                        </div>
+                                        <div class="form-group col-md-1">
+                                            <label for="">Sediaan</label><input readonly type=""
+                                                class="form-control  text-md edit_field" id="sediaan" name="sediaan"
+                                                value="{{ $d['sediaan'] }}">
+                                        </div>
+                                        <div class="form-group col-md-3"><label for="">Aturan
+                                                Pakai / Keterangan</label>
+                                            <textarea type="" cols="3" rows="3" class="form-control  text-md edit_field"
+                                                id="aturanpakai" name="aturanpakai">{{ $d['aturanpakai'] }}</textarea>
+                                        </div>
+                                        <i class="bi bi-x-square remove_field form-group col-md-1 text-danger"
+                                            kode2=""></i>
+                                    </div>
                                     @endforeach
                                 </div>
                             </div>
@@ -149,6 +141,273 @@
                             <label class="form-check-label" for="exampleCheck1">Ceklis untuk simpan resep sebagai
                                 template</label>
                         </div>
+                        <form action="" class="formtelaahobat">
+                        <div class="card">
+                            <div class="card-header bg-secondary">TELAAH RESEP</div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        1. Kejelasan Tulisan Obat
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TR_kejelasan_tulisan_obat"
+                                                id="TR_kejelasan_tulisan_obat" value="1" checked>
+                                            <label class="form-check-label" for="inlineRadio1">YA</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TR_kejelasan_tulisan_obat"
+                                                id="TR_kejelasan_tulisan_obat" value="0">
+                                            <label class="form-check-label" for="inlineRadio2">TIDAK</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        2. Tepat Nama Pasien
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TR_tepat_nama_pasien"
+                                                id="TR_tepat_nama_pasien" value="1" checked>
+                                            <label class="form-check-label" for="inlineRadio1">YA</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TR_tepat_nama_pasien"
+                                                id="TR_tepat_nama_pasien" value="0">
+                                            <label class="form-check-label" for="inlineRadio2">TIDAK</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        3. Tepat Nama Obat
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TR_tepat_nama_obat"
+                                                id="TR_tepat_nama_obat" value="1" checked>
+                                            <label class="form-check-label" for="inlineRadio1">YA</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TR_tepat_nama_obat"
+                                                id="TR_tepat_nama_obat" value="0">
+                                            <label class="form-check-label" for="inlineRadio2">TIDAK</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        4. Tepat Dosis
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TR_tepat_dosis"
+                                                id="TR_tepat_dosis" value="1" checked>
+                                            <label class="form-check-label" for="inlineRadio1">YA</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TR_tepat_dosis"
+                                                id="TR_tepat_dosis" value="0">
+                                            <label class="form-check-label" for="inlineRadio2">TIDAK</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        5. Tepat Aturan Pakai
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TR_tepat_aturan_pakai"
+                                                id="TR_tepat_aturan_pakai" value="1" checked>
+                                            <label class="form-check-label" for="inlineRadio1">YA</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TR_tepat_aturan_pakai"
+                                                id="TR_tepat_aturan_pakai" value="0">
+                                            <label class="form-check-label" for="inlineRadio2">TIDAK</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        6. Tepat Cara Pemberian Obat
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TR_tepat_cara_pemberian_obat"
+                                                id="TR_tepat_cara_pemberian_obat" value="1" checked>
+                                            <label class="form-check-label" for="inlineRadio1">YA</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TR_tepat_cara_pemberian_obat"
+                                                id="TR_tepat_cara_pemberian_obat" value="0">
+                                            <label class="form-check-label" for="inlineRadio2">TIDAK</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        7. Poli Farmasi
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TR_poli_farmasi"
+                                                id="TR_poli_farmasi" value="1" checked>
+                                            <label class="form-check-label" for="inlineRadio1">YA</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TR_poli_farmasi"
+                                                id="TR_poli_farmasi" value="0">
+                                            <label class="form-check-label" for="inlineRadio2">TIDAK</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        8. Duplikasi
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TR_duplikasi"
+                                                id="TR_duplikasi" value="1" checked>
+                                            <label class="form-check-label" for="inlineRadio1">YA</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TR_duplikasi"
+                                                id="TR_duplikasi" value="0">
+                                            <label class="form-check-label" for="inlineRadio2">TIDAK</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        9. Interaksi Obat
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TR_interaksi_obat"
+                                                id="TR_interaksi_obat" value="1" checked>
+                                            <label class="form-check-label" for="inlineRadio1">YA</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TR_interaksi_obat"
+                                                id="TR_interaksi_obat" value="0">
+                                            <label class="form-check-label" for="inlineRadio2">TIDAK</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header bg-secondary">TELAAH OBAT</div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        1. Kejelasan Tulisan Obat
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TO_kejelasan_tulisan_obat"
+                                                id="TO_kejelasan_tulisan_obat" value="1" checked>
+                                            <label class="form-check-label" for="inlineRadio1">YA</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TO_kejelasan_tulisan_obat"
+                                                id="TO_kejelasan_tulisan_obat" value="0">
+                                            <label class="form-check-label" for="inlineRadio2">TIDAK</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        2. Benar Pasien
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TO_benar_pasien"
+                                                id="TO_benar_pasien" value="1" checked>
+                                            <label class="form-check-label" for="inlineRadio1">YA</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TO_benar_pasien"
+                                                id="TO_benar_pasien" value="0">
+                                            <label class="form-check-label" for="inlineRadio2">TIDAK</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        3. Benar Obat
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TO_benar_obat"
+                                                id="TO_benar_obat" value="1" checked>
+                                            <label class="form-check-label" for="inlineRadio1">YA</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TO_benar_obat"
+                                                id="TO_benar_obat" value="0">
+                                            <label class="form-check-label" for="inlineRadio2">TIDAK</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        4. Benar Dosis
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TO_benar_dosis"
+                                                id="TO_benar_dosis" value="1" checked>
+                                            <label class="form-check-label" for="inlineRadio1">YA</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TO_benar_dosis"
+                                                id="TO_benar_dosis" value="0">
+                                            <label class="form-check-label" for="inlineRadio2">TIDAK</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        5. Benar Waktu Pemberian Obat
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TO_benar_waktu_pemberian_obat"
+                                                id="TO_benar_waktu_pemberian_obat" value="1" checked>
+                                            <label class="form-check-label" for="inlineRadio1">YA</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TO_benar_waktu_pemberian_obat"
+                                                id="TO_benar_waktu_pemberian_obat" value="0">
+                                            <label class="form-check-label" for="inlineRadio2">TIDAK</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        6. Benar Cara Pemberian Obat
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TO_benar_cara_pemberian_obat"
+                                                id="TO_benar_cara_pemberian_obat" value="1" checked>
+                                            <label class="form-check-label" for="inlineRadio1">YA</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TO_benar_cara_pemberian_obat"
+                                                id="TO_benar_cara_pemberian_obat" value="0">
+                                            <label class="form-check-label" for="inlineRadio2">TIDAK</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </form>
                         <button class="btn btn-danger" onclick="kembali()"><i class="bi bi-backspace mr-1 ml-1"></i>
                             Kembali</button>
                         <button class="btn btn-success" onclick="simpanpelayanan()"><i
@@ -277,7 +536,16 @@
     $(document).ready(function() {
         riwayatresepdilayani()
     });
-
+    function spinneron()
+    {
+         spinner = $('#loader2')
+         spinner.show();
+    }
+    function spinnerof()
+    {
+         spinner = $('#loader2')
+         spinner.hide();
+    }
 
     function kembali() {
         $('.v_1').removeAttr('hidden', true)
@@ -311,6 +579,7 @@
     function simpanpemakaianobat() {
         spinneron()
         var data = $('.formourderobat').serializeArray();
+        var data2 = $('.formtelaahobat').serializeArray();
         kodekunjungan = $('#kodekunjungan').val()
         $.ajax({
             async: true,
@@ -319,6 +588,7 @@
             data: {
                 _token: "{{ csrf_token() }}",
                 data: JSON.stringify(data),
+                data2: JSON.stringify(data2),
                 kodekunjungan
             },
             url: '<?= route('simpandatapelayanan') ?>',
