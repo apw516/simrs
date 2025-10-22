@@ -69,6 +69,7 @@ class newFarmasiController extends Controller
         $akhir = $request->tanggalakhir;
         $riwayat = db::connection('mysql4')->select('SELECT B.no_rm as rm,a.id AS id_layanan_header,a.`tgl_entry`,a.`kode_kunjungan`
         ,fc_nama_unit1(B.kode_unit) AS unit_pengirim
+        ,A.keterangan as ktlayanan
         ,fc_nama_paramedis1(B.kode_paramedis) as nama_dokter
         ,simrs_waled.fc_nama_px(B.no_rm) AS nama_pasien
         ,simrs_waled.fc_alamat(B.no_rm) AS alamat
@@ -102,7 +103,8 @@ class newFarmasiController extends Controller
         LEFT OUTER JOIN mt_racikan e on b.kode_barang = e.kode_racik
         WHERE a.id = ?', [$idheader]);
         return view('new_farmasi.detail_layanan_farmasi', compact([
-            'datalayanan','idheader'
+            'datalayanan',
+            'idheader'
         ]));
     }
     public function ambilformfarmasi2(Request $request)
@@ -216,8 +218,16 @@ class newFarmasiController extends Controller
         WHERE d.no = (SELECT MAX(no) from ti_kartu_stok f where f.kode_barang = b.kode_barang and f.kode_unit = a.kode_unit)
         AND b.`row_id_header` = ?', ([$idresep]));
         $str = "";
+
         foreach ($detail as $d) {
-            $str .= "<div class='form-row text-xs'><div class='form-group col-md-2 text-xxs'><label for=''>Tipe Anestesi</label><select class='form-control' id='tipeanestesi' name='tipeanestesi'><option value='REG'>REGULER</option><option value='KRONIS'>KRONIS</option></select></div><div class='form-group col-md-1'><label for=''>Jumlah</label><input type='' class='form-control form-control-sm text-xs edit_field' id='jumlah' name='jumlah' value='$d->jumlah_layanan'></div><div class='form-group col-md-2'><label for=''>Nama Barang</label><input readonly type='' class='form-control form-control-sm text-xs edit_field' id='namabarang' name='namabarang' value='$d->nama_barang'><input   hidden readonly type='' class='form-control form-control-sm' id='kodebarang' name='kodebarang' value='$d->kode_barang'><input hidden readonly type='' class='form-control form-control-sm' id='jenisresep' name='jenisresep' value='NON RACIK'></div><div class='form-group col-md-1'><label for=''>Dosis</label><input readonly type='' class='form-control form-control-sm text-xs edit_field' id='dosis' name='dosis' value='$d->dosis'></div><div class='form-group col-md-1'><label for=''>Stok</label><input readonly type='' class='form-control form-control-sm text-xs edit_field' id='stok' name='stok' value='$d->stok_current'></div><div class='form-group col-md-1'><label for=''>Sediaan</label><input readonly type='' class='form-control form-control-sm text-xs edit_field' id='sediaan' name='sediaan' value='$d->sediaan'></div><div class='form-group col-md-3'><label for=''>Aturan Pakai</label><textarea type='' cols='3' rows='3' class='form-control form-control-sm text-xs edit_field' id='aturanpakai' name='aturanpakai' value=''>$d->aturan_pakai</textarea></div><i class='bi bi-x-square remove_field form-group col-md-1 text-danger' kode2=''></i></div>";
+            if ($d->tipe_anestesi == 81) {
+                $kronis = 'selected';
+                $reguler = '';
+            } else {
+                $kronis = '';
+                $reguler = 'selected';
+            }
+            $str .= "<div class='form-row text-xs'><div class='form-group col-md-2 text-xxs'><label for=''>Tipe Anestesi</label><select class='form-control' id='tipeanestesi' name='tipeanestesi'><option value='REG' $reguler>REGULER</option><option value='KRONIS' $kronis>KRONIS</option></select></div><div class='form-group col-md-1'><label for=''>Jumlah</label><input type='' class='form-control form-control-sm text-xs edit_field' id='jumlah' name='jumlah' value='$d->jumlah_layanan'></div><div class='form-group col-md-2'><label for=''>Nama Barang</label><input readonly type='' class='form-control form-control-sm text-xs edit_field' id='namabarang' name='namabarang' value='$d->nama_barang'><input   hidden readonly type='' class='form-control form-control-sm' id='kodebarang' name='kodebarang' value='$d->kode_barang'><input hidden readonly type='' class='form-control form-control-sm' id='jenisresep' name='jenisresep' value='NON RACIK'></div><div class='form-group col-md-1'><label for=''>Dosis</label><input readonly type='' class='form-control form-control-sm text-xs edit_field' id='dosis' name='dosis' value='$d->dosis'></div><div class='form-group col-md-1'><label for=''>Stok</label><input readonly type='' class='form-control form-control-sm text-xs edit_field' id='stok' name='stok' value='$d->stok_current'></div><div class='form-group col-md-1'><label for=''>Sediaan</label><input readonly type='' class='form-control form-control-sm text-xs edit_field' id='sediaan' name='sediaan' value='$d->sediaan'></div><div class='form-group col-md-3'><label for=''>Aturan Pakai</label><textarea type='' cols='3' rows='3' class='form-control form-control-sm text-xs edit_field' id='aturanpakai' name='aturanpakai' value=''>$d->aturan_pakai</textarea></div><i class='bi bi-x-square remove_field form-group col-md-1 text-danger' kode2=''></i></div>";
         }
         return $str;
     }
@@ -229,12 +239,11 @@ class newFarmasiController extends Controller
         WHERE a.no_rm = ? AND b.`kode_unit` IN (4001,4002,4008) AND LEFT(a.kode_unit,1) = 1
         ORDER BY a.`kode_kunjungan` DESC', ([$rm]));
 
-        $detail = db::select('SELECT d.nama_barang,c.jumlah_layanan,c.aturan_pakai,c.row_id_header FROM ts_kunjungan a
+        $detail = db::select('SELECT d.nama_barang,c.jumlah_layanan,c.aturan_pakai,c.row_id_header,c.tipe_anestesi FROM ts_kunjungan a
         INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
         INNER JOIN ts_layanan_detail c ON b.id = c.row_id_header
         INNER JOIN mt_barang d ON c.kode_barang = d.kode_barang
         WHERE a.no_rm = ? AND b.`kode_unit` IN (4001,4002,4008)', ([$rm]));
-
         return view('new_farmasi.tabel_riwaat_resep_pasien', compact([
             'header',
             'detail'
@@ -547,15 +556,15 @@ class newFarmasiController extends Controller
     {
         $idorder = $request->idorder;
         $tanggal = $request->tanggal;
-        $lyanan_header = db::connection('mysql')->select('select kode_kunjungan from ts_layanan_header where id = ?',[$idorder]);
+        $lyanan_header = db::connection('mysql')->select('select kode_kunjungan from ts_layanan_header where id = ?', [$idorder]);
         $kode_kunjungan = $lyanan_header[0]->kode_kunjungan;
-        $ts_kunjungan = db::select('select *,fc_nama_px(no_rm) as nama_pasien,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?',[$kode_kunjungan]);
+        $ts_kunjungan = db::select('select *,fc_nama_px(no_rm) as nama_pasien,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kode_kunjungan]);
 
         $dataaa = [];
         $dataorder = [];
         $dataorder2 = [];
         $idorder = 0;
-       
+
         return view('depofarmasi.detail_order_resep_2', compact([
             'dataorder2',
             'idorder',
@@ -680,6 +689,17 @@ class newFarmasiController extends Controller
                 $arrayobat[] = $dataSet2;
             }
         }
+        $obat_kronis = [];
+        $obat_reguler = [];
+        foreach ($arrayobat as $ad) {
+            if ($ad['tipeanestesi'] == 'KRONIS') {
+                $obat_kronis[] = $ad;
+            } else {
+                $obat_reguler[] = $ad;
+            }
+        }
+        foreach ($obat_kronis as $dd) {
+        }
         //looping cek stok obat
         foreach ($arrayobat as $ab) {
             //cekstok obat
@@ -752,338 +772,992 @@ class newFarmasiController extends Controller
         if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
             $kode_unit = '4002';
             $kode_tipe_transaksi = 1;
+            $kategori_resep = 'RESEP TUNAI';
         } else {
             $kode_unit = '4008';
             $kode_tipe_transaksi = 2;
+            $kategori_resep = 'RESEP KREDIT';
         }
         $unit = mt_unit::where('kode_unit', '=', "$kode_unit")->get();
         $date = $this->get_now();
-        // $r = DB::connection('mysql')->select("CALL GET_NOMOR_LAYANAN_HEADER('$kode_unit')");
-        // $kode_layanan_header = $r[0]->no_trx_layanan;
-        // if ($kode_layanan_header == "") {
-            $year = date('y');
-            $PREF = $unit[0]['prefix_unit'];
-            $KODEUNITFAR = $kode_unit;
-            $kode_layanan_header = $this->createLayananheader($KODEUNITFAR,$PREF);
-            // $kode_layanan_header = $unit[0]['prefix_unit'] . $year . date('m') . date('d') . '000001';
-            // DB::connection('mysql4')->select('insert into mt_nomor_trx (tgl,no_trx_layanan,unit) values (?,?,?)', [date('Y-m-d h:i:s'), $kode_layanan_header, $kode_unit]);
-        // }
-        // createLayananheader
-        $dataheader = [
-            'kode_layanan_header' => $kode_layanan_header,
-            'tgl_entry' => $date,
-            'kode_kunjungan' => $kodekunjungan,
-            'kode_unit' => $kode_unit,
-            'kode_tipe_transaksi' => $kode_tipe_transaksi,
-            'kode_penjaminx' => $ts_kunjungan[0]->kode_penjamin,
-            'pic' => auth()->user()->id,
-            'status_layanan' => 3
-        ];
-        $layanan_header = ts_layanan_header_dummy::create($dataheader);
-        $total_layanan_header = 0;
-        $racikannya = 0;
-        $nonracikannya = 0;
-        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamat_px from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
-        foreach ($arrayobat as $ob) {
-            if ($ob['jenisresep'] != 'RACIKAN') {
-                $kodebarang = $ob['kodebarang'];
-                $mt_barang = db::select('select * from mt_barang where kode_barang = ?', [$kodebarang]);
-                $hna = $mt_barang[0]->hna;
-                $persen = $hna * 30 / 100;
-                $hh = $hna + $persen;
-                $total_tarif = $hh * $ob['jumlah'];
-                if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
-                    $tagihan_pribadi = $total_tarif;
-                    $tagihan_penjamin = 0;
-                } else {
-                    $tagihan_pribadi = 0;
-                    $tagihan_penjamin = $total_tarif;
-                }
-                if ($ob['tipeanestesi'] == 'REG') {
-                    $tipeanes = '80';
-                } elseif ($ob['tipeanestesi'] == 'KRONIS') {
-                    $tipeanes = '81';
-                }
-                $detailbarang = $this->createLayanandetail();
-                $now1 = $this->get_now();
-                $datadetail = [
-                    'id_layanan_detail' => $detailbarang,
-                    'kode_layanan_header' => $kode_layanan_header,
-                    'row_id_header' => $layanan_header->id,
-                    'total_tarif' => $hna,
-                    'jumlah_layanan' => $ob['jumlah'],
-                    'total_layanan' => $total_tarif,
-                    'diskon_layanan' => '0',
-                    'cyto' => 0,
-                    'diskonan_global' => 0,
-                    'grantotal_layanan' => $total_tarif,
-                    'tagihan_pribadi' => $tagihan_pribadi,
-                    'tagihan_penjamin' => $tagihan_penjamin,
-                    'kode_dokter1' => $ts_kunjungan[0]->kode_paramedis,
-                    'tipe_anestesi' => $tipeanes,
-                    'kode_barang' => $ob['kodebarang'],
-                    'aturan_pakai' => $ob['aturanpakai'],
-                    'satuan_barang' => $mt_barang[0]->satuan,
-                    'status_layanan_detail' => 'OPN',
-                    'tgl_layanan_detail' => $date,
-                    'tgl_layanan_detail_2' => $date,
-                ];
-                $layanan_detail = ts_layanan_detail_dummy::create($datadetail);
-                $tarif_embalase = $master_jasa[0]->jasa_resep + $master_jasa[0]->jasa_embalase;
+        $year = date('y');
+        $PREF = $unit[0]['prefix_unit'];
+        $KODEUNITFAR = $kode_unit;
 
-                if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
-                    $tagihan_pribadi_embalase = $tarif_embalase;
-                    $tagihan_penjamin_embalase = 0;
-                } else {
-                    $tagihan_pribadi_embalase = 0;
-                    $tagihan_penjamin_embalase = $tarif_embalase;
-                }
-                $jasaembalase = [
-                    'id_layanan_detail' => $this->createLayanandetail(),
-                    'kode_layanan_header' => $kode_layanan_header,
-                    'kode_tarif_detail' => 'TX23513',
-                    'total_tarif' => $tarif_embalase,
-                    'jumlah_layanan' => 1,
-                    'total_layanan' =>  $tarif_embalase,
-                    'diskon_layanan' => 0,
-                    'grantotal_layanan' =>  $tarif_embalase,
-                    'kode_dokter1' => $ts_kunjungan[0]->kode_paramedis,
-                    'status_layanan_detail' => 'OPN',
-                    'tgl_layanan_detail' => $date,
-                    'tgl_layanan_detail_2' => $date,
-                    'satuan_barang' => '-',
-                    'cyto' => 0,
-                    'tagihan_pribadi' => $tagihan_pribadi_embalase,
-                    'tagihan_penjamin' => $tagihan_penjamin_embalase,
-                    'diskonan_global' => 0,
-                    'status_layanan_detail' => 'OPN',
-                    'tipe_anestesi' => $tipeanes,
-                    'row_id_header' => $layanan_header->id
-                ];
-                $layanan_detail_embalase = ts_layanan_detail_dummy::create($jasaembalase);
-                $total_layanan_header = $total_layanan_header + $total_tarif + $tarif_embalase;
-                $nonracikannya = $nonracikannya + 1;
-                //penguranganstok
-                $cek_stok = db::connection('mysql')->select('SELECT * FROM ti_kartu_stok WHERE NO = ( SELECT MAX(a.no ) AS nomor FROM ti_kartu_stok a WHERE kode_barang = ? AND kode_unit = ? )', ([$ob['kodebarang'], auth()->user()->unit]));
-                $datastok = [
-                    'no_dokumen' => $kode_layanan_header,
-                    'no_dokumen_detail' => $detailbarang,
-                    'tgl_stok' => $now1,
-                    'kode_unit' => auth()->user()->unit,
-                    'kode_barang' => $ob['kodebarang'],
-                    'stok_last' => $cek_stok[0]->stok_current,
-                    'stok_out' => $ob['jumlah'],
-                    'stok_current' => $cek_stok[0]->stok_current - $ob['jumlah'],
-                    'qty_pending' => '0',
-                    'stok_global' => '0',
-                    'harga_beli' => $cek_stok[0]->harga_beli,
-                    'inputby' => auth()->user()->id,
-                    'keterangan' => $ts_kunjungan[0]->no_rm . ' | ' . $mt_pasien[0]->nama_px . ' | ' . $mt_pasien[0]->alamat_px,
-                ];
-                ti_kartu_stok::create($datastok);
-            } else {
-                $racikannya = $racikannya + 1;
+        if (count($obat_kronis) > 0) {
+            $kode_layanan_header = $this->createLayananheader($KODEUNITFAR, $PREF);
+            $cek = db::select('select * from ts_layanan_header where kode_kunjungan = ? and kode_unit = ?',[$kodekunjungan,$KODEUNITFAR]);
+            if(count($cek) == 0){
+                $RESEPKE = 'Resep Ke :'. 1;
+            }else{
+                $totalresep = count($cek);
+                $newtot = $totalresep+1;
+                $RESEPKE = 'Resep Ke :'. $newtot;
             }
-        }
-
-        if ($racikannya > 0) {
-            foreach ($arrayobat as $ob) {
-                if ($ob['jenisresep'] == 'RACIKAN') {
-                    $koderacik = $ob['kodebarang'];
-                    $get_data_racikan = db::connection('mysql5')->select('select * from template_racikan_header a inner join template_racikan_detail b on a.id = b.idheader where a.id = ?', [$koderacik]);
-                    $koderacik = $this->createkoderacik();
-                    //membuat mt racikan header dan mt racikan detail
-                    $mt_racikan = [
-                        'kode_racik' => $koderacik,
-                        'tgl_racik' => $this->get_date(),
-                        'nama_racik' => $ob['namabarang'],
-                        'total_racik' => '0',
-                        'tipe_racik' => '',
-                        'qty_racik' => $ob['jumlah'],
-                        'kemasan' => 'S',
-                        'hrg_kemasan' => 0,
-                    ];
-                    $header_racikan = mt_racikan::create($mt_racikan);
-                    $total_racik = 0;
-                    foreach ($get_data_racikan as $gdr) {
-                        $mt_barang = db::select('select * from mt_barang where kode_barang = ?', [$gdr->kodebarang]);
-                        $hna = $mt_barang[0]->hna;
-                        $hargajual2 = $hna * 30 / 100;
-                        $hargabarang = $hna + $hargajual2;
-                        // $hargabarang = $mt_barang[0]->hragajual;
-                        $mt_racikan_detail = [
-                            'kode_racik' => $koderacik,
-                            'kode_barang' => $gdr->kodebarang,
-                            'qty_barang' => $gdr->jumlah,
-                            'satuan_barang' => $gdr->sediaan,
-                            'harga_satuan_barang' => $hargabarang,
-                            'subtotal_barang' => $hargabarang * $gdr->jumlah,
-                            'grantotal_barang' => $hargabarang * $gdr->jumlah,
-                            'harga_brg_embalase' => $hargabarang * $gdr->jumlah,
-                        ];
-                        mt_racikan_detail::create($mt_racikan_detail);
-                        $mt_racikan_detail_2 = [
-                            'kode_racik' => $koderacik,
-                            'kode_barang' => 'TX23513',
-                            'qty_barang' => 1,
-                            'satuan_barang' => '-',
-                            'harga_satuan_barang' => 1700,
-                            'subtotal_barang' => 1700,
-                            'grantotal_barang' => 1700,
-                            'harga_brg_embalase' => 1700,
-                        ];
-                        mt_racikan_detail::create($mt_racikan_detail_2);
-                        $totalbarang = $hargabarang * $gdr->jumlah;
-                        $total = $totalbarang + 1700;
-                        $total_racik = $total + $total_racik;
-                        $now1 = $this->get_now();
-                        $cek_stok2 = db::connection('mysql')->select('SELECT * FROM ti_kartu_stok WHERE NO = ( SELECT MAX(a.no ) AS nomor FROM ti_kartu_stok a WHERE kode_barang = ? AND kode_unit = ? )', ([$gdr->kodebarang, auth()->user()->unit]));
-                        $datastok = [
-                            'no_dokumen' => $kode_layanan_header,
-                            'no_dokumen_detail' => $koderacik,
-                            'tgl_stok' => $now1,
-                            'kode_unit' => auth()->user()->unit,
-                            'kode_barang' => $gdr->kodebarang,
-                            'stok_last' => $cek_stok2[0]->stok_current,
-                            'stok_out' => $ob['jumlah'],
-                            'stok_current' => $cek_stok2[0]->stok_current - $ob['jumlah'],
-                            'qty_pending' => '0',
-                            'stok_global' => '0',
-                            'harga_beli' => $cek_stok2[0]->harga_beli,
-                            'inputby' => auth()->user()->id,
-                            'keterangan' => $ts_kunjungan[0]->no_rm . ' | ' . $mt_pasien[0]->nama_px . ' | ' . $mt_pasien[0]->alamat_px,
-                        ];
-                        ti_kartu_stok::create($datastok);
-                    }
-                    if ($ob['sediaan'] == 'POTSALEP') {
-                        $hargakemasan = 7000;
-                    } else {
-                        $hargakemasan = 700 * $ob['jumlah'];
-                    }
-                    $update = [
-                        'total_racik' => $total_racik,
-                        'hrg_kemasan' => $hargakemasan
-                    ];
-                    mt_racikan::whereRaw('id = ?', array($header_racikan->id))->update($update);
-                    $totalracikan = $total_racik;
-                    //insert racikan ke ts_layanan_detail .....
+            $dataheader = [
+                'kode_layanan_header' => $kode_layanan_header,
+                'tgl_entry' => $date,
+                'kode_kunjungan' => $kodekunjungan,
+                'kode_unit' => $kode_unit,
+                'kode_tipe_transaksi' => $kode_tipe_transaksi,
+                'kode_penjaminx' => $ts_kunjungan[0]->kode_penjamin,
+                'pic' => auth()->user()->id,
+                'keterangan' => $RESEPKE.' '. 'DIINPUT MELALUI FARMASI WEB',
+                'status_layanan' => 3
+            ];
+            $layanan_header = ts_layanan_header_dummy::create($dataheader);
+            $total_layanan_header = 0;
+            $racikannya = 0;
+            $nonracikannya = 0;
+            $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamat_px from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
+            foreach ($obat_kronis as $ob) {
+                if ($ob['jenisresep'] != 'RACIKAN') {
+                    $kodebarang = $ob['kodebarang'];
+                    $mt_barang = db::select('select * from mt_barang where kode_barang = ?', [$kodebarang]);
+                    $hna = $mt_barang[0]->hna;
+                    $persen = $hna * 30 / 100;
+                    $hh = $hna + $persen;
+                    $total_tarif = $hh * $ob['jumlah'];
                     if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
-                        $tagihan_pribadi = $totalracikan + $hargakemasan;
+                        $tagihan_pribadi = $total_tarif;
                         $tagihan_penjamin = 0;
                     } else {
                         $tagihan_pribadi = 0;
-                        $tagihan_penjamin =  $totalracikan + $hargakemasan;
+                        $tagihan_penjamin = $total_tarif;
                     }
                     if ($ob['tipeanestesi'] == 'REG') {
                         $tipeanes = '80';
                     } elseif ($ob['tipeanestesi'] == 'KRONIS') {
                         $tipeanes = '81';
                     }
-                    $datadetail_Racikan = [
-                        'id_layanan_detail' => $this->createLayanandetail(),
+                    $detailbarang = $this->createLayanandetail();
+                    $now1 = $this->get_now();
+                    $datadetail = [
+                        'id_layanan_detail' => $detailbarang,
                         'kode_layanan_header' => $kode_layanan_header,
                         'row_id_header' => $layanan_header->id,
-                        'total_tarif' =>  $totalracikan + $hargakemasan,
+                        'total_tarif' => $hna,
                         'jumlah_layanan' => $ob['jumlah'],
-                        'total_layanan' =>  $totalracikan + $hargakemasan,
+                        'total_layanan' => $total_tarif,
                         'diskon_layanan' => '0',
                         'cyto' => 0,
                         'diskonan_global' => 0,
-                        'grantotal_layanan' =>  $totalracikan + $hargakemasan,
+                        'grantotal_layanan' => $total_tarif,
                         'tagihan_pribadi' => $tagihan_pribadi,
                         'tagihan_penjamin' => $tagihan_penjamin,
                         'kode_dokter1' => $ts_kunjungan[0]->kode_paramedis,
                         'tipe_anestesi' => $tipeanes,
-                        'kode_barang' => $koderacik,
+                        'kode_barang' => $ob['kodebarang'],
                         'aturan_pakai' => $ob['aturanpakai'],
-                        'satuan_barang' => '-',
+                        'satuan_barang' => $mt_barang[0]->satuan,
                         'status_layanan_detail' => 'OPN',
+                        'kategori_resep' => $kategori_resep,
                         'tgl_layanan_detail' => $date,
                         'tgl_layanan_detail_2' => $date,
                     ];
-                    $layanan_detail = ts_layanan_detail_dummy::create($datadetail_Racikan);
-                    $total_layanan_header = $total_layanan_header + $total_racik;
+                    $layanan_detail = ts_layanan_detail_dummy::create($datadetail);
+                    $tarif_embalase = $master_jasa[0]->jasa_resep + $master_jasa[0]->jasa_embalase;
+
+                    if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
+                        $tagihan_pribadi_embalase = $tarif_embalase;
+                        $tagihan_penjamin_embalase = 0;
+                    } else {
+                        $tagihan_pribadi_embalase = 0;
+                        $tagihan_penjamin_embalase = $tarif_embalase;
+                    }
+                    $jasaembalase = [
+                        'id_layanan_detail' => $this->createLayanandetail(),
+                        'kode_layanan_header' => $kode_layanan_header,
+                        'kode_tarif_detail' => 'TX23513',
+                        'total_tarif' => $tarif_embalase,
+                        'jumlah_layanan' => 1,
+                        'total_layanan' =>  $tarif_embalase,
+                        'diskon_layanan' => 0,
+                        'grantotal_layanan' =>  $tarif_embalase,
+                        'kode_dokter1' => $ts_kunjungan[0]->kode_paramedis,
+                        'status_layanan_detail' => 'OPN',
+                        'tgl_layanan_detail' => $date,
+                        'tgl_layanan_detail_2' => $date,
+                        'satuan_barang' => '-',
+                        'cyto' => 0,
+                        'tagihan_pribadi' => $tagihan_pribadi_embalase,
+                        'tagihan_penjamin' => $tagihan_penjamin_embalase,
+                        'diskonan_global' => 0,
+                        'status_layanan_detail' => 'OPN',
+                        'kategori_resep' => $kategori_resep,
+                        'tipe_anestesi' => $tipeanes,
+                        'row_id_header' => $layanan_header->id
+                    ];
+                    $layanan_detail_embalase = ts_layanan_detail_dummy::create($jasaembalase);
+                    $total_layanan_header = $total_layanan_header + $total_tarif + $tarif_embalase;
+                    $nonracikannya = $nonracikannya + 1;
+                    //penguranganstok
+                    $cek_stok = db::connection('mysql')->select('SELECT * FROM ti_kartu_stok WHERE NO = ( SELECT MAX(a.no ) AS nomor FROM ti_kartu_stok a WHERE kode_barang = ? AND kode_unit = ? )', ([$ob['kodebarang'], auth()->user()->unit]));
+                    $datastok = [
+                        'no_dokumen' => $kode_layanan_header,
+                        'no_dokumen_detail' => $detailbarang,
+                        'tgl_stok' => $now1,
+                        'kode_unit' => auth()->user()->unit,
+                        'kode_barang' => $ob['kodebarang'],
+                        'stok_last' => $cek_stok[0]->stok_current,
+                        'stok_out' => $ob['jumlah'],
+                        'stok_current' => $cek_stok[0]->stok_current - $ob['jumlah'],
+                        'qty_pending' => '0',
+                        'stok_global' => '0',
+                        'harga_beli' => $cek_stok[0]->harga_beli,
+                        'inputby' => auth()->user()->id,
+                        'keterangan' => $ts_kunjungan[0]->no_rm . ' | ' . $mt_pasien[0]->nama_px . ' | ' . $mt_pasien[0]->alamat_px,
+                    ];
+                    ti_kartu_stok::create($datastok);
+                } else {
+                    $racikannya = $racikannya + 1;
+                }
+            }
+            if ($racikannya > 0) {
+                foreach ($obat_kronis as $ob) {
+                    if ($ob['jenisresep'] == 'RACIKAN') {
+                        $koderacik = $ob['kodebarang'];
+                        $get_data_racikan = db::connection('mysql5')->select('select * from template_racikan_header a inner join template_racikan_detail b on a.id = b.idheader where a.id = ?', [$koderacik]);
+                        $koderacik = $this->createkoderacik();
+                        //membuat mt racikan header dan mt racikan detail
+                        $mt_racikan = [
+                            'kode_racik' => $koderacik,
+                            'tgl_racik' => $this->get_date(),
+                            'nama_racik' => $ob['namabarang'],
+                            'total_racik' => '0',
+                            'tipe_racik' => '',
+                            'qty_racik' => $ob['jumlah'],
+                            'kemasan' => 'S',
+                            'hrg_kemasan' => 0,
+                        ];
+                        $header_racikan = mt_racikan::create($mt_racikan);
+                        $total_racik = 0;
+                        foreach ($get_data_racikan as $gdr) {
+                            $mt_barang = db::select('select * from mt_barang where kode_barang = ?', [$gdr->kodebarang]);
+                            $hna = $mt_barang[0]->hna;
+                            $hargajual2 = $hna * 30 / 100;
+                            $hargabarang = $hna + $hargajual2;
+                            // $hargabarang = $mt_barang[0]->hragajual;
+                            $mt_racikan_detail = [
+                                'kode_racik' => $koderacik,
+                                'kode_barang' => $gdr->kodebarang,
+                                'qty_barang' => $gdr->jumlah,
+                                'satuan_barang' => $gdr->sediaan,
+                                'harga_satuan_barang' => $hargabarang,
+                                'subtotal_barang' => $hargabarang * $gdr->jumlah,
+                                'grantotal_barang' => $hargabarang * $gdr->jumlah,
+                                'harga_brg_embalase' => $hargabarang * $gdr->jumlah,
+                            ];
+                            mt_racikan_detail::create($mt_racikan_detail);
+                            $mt_racikan_detail_2 = [
+                                'kode_racik' => $koderacik,
+                                'kode_barang' => 'TX23513',
+                                'qty_barang' => 1,
+                                'satuan_barang' => '-',
+                                'harga_satuan_barang' => 1700,
+                                'subtotal_barang' => 1700,
+                                'grantotal_barang' => 1700,
+                                'harga_brg_embalase' => 1700,
+                            ];
+                            mt_racikan_detail::create($mt_racikan_detail_2);
+                            $totalbarang = $hargabarang * $gdr->jumlah;
+                            $total = $totalbarang + 1700;
+                            $total_racik = $total + $total_racik;
+                            $now1 = $this->get_now();
+                            $cek_stok2 = db::connection('mysql')->select('SELECT * FROM ti_kartu_stok WHERE NO = ( SELECT MAX(a.no ) AS nomor FROM ti_kartu_stok a WHERE kode_barang = ? AND kode_unit = ? )', ([$gdr->kodebarang, auth()->user()->unit]));
+                            $datastok = [
+                                'no_dokumen' => $kode_layanan_header,
+                                'no_dokumen_detail' => $koderacik,
+                                'tgl_stok' => $now1,
+                                'kode_unit' => auth()->user()->unit,
+                                'kode_barang' => $gdr->kodebarang,
+                                'stok_last' => $cek_stok2[0]->stok_current,
+                                'stok_out' => $ob['jumlah'],
+                                'stok_current' => $cek_stok2[0]->stok_current - $ob['jumlah'],
+                                'qty_pending' => '0',
+                                'stok_global' => '0',
+                                'harga_beli' => $cek_stok2[0]->harga_beli,
+                                'inputby' => auth()->user()->id,
+                                'keterangan' => $ts_kunjungan[0]->no_rm . ' | ' . $mt_pasien[0]->nama_px . ' | ' . $mt_pasien[0]->alamat_px,
+                            ];
+                            ti_kartu_stok::create($datastok);
+                        }
+                        if ($ob['sediaan'] == 'POTSALEP') {
+                            $hargakemasan = 7000;
+                        } else {
+                            $hargakemasan = 700 * $ob['jumlah'];
+                        }
+                        $update = [
+                            'total_racik' => $total_racik,
+                            'hrg_kemasan' => $hargakemasan
+                        ];
+                        mt_racikan::whereRaw('id = ?', array($header_racikan->id))->update($update);
+                        $totalracikan = $total_racik;
+                        //insert racikan ke ts_layanan_detail .....
+                        if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
+                            $tagihan_pribadi = $totalracikan + $hargakemasan;
+                            $tagihan_penjamin = 0;
+                        } else {
+                            $tagihan_pribadi = 0;
+                            $tagihan_penjamin =  $totalracikan + $hargakemasan;
+                        }
+                        if ($ob['tipeanestesi'] == 'REG') {
+                            $tipeanes = '80';
+                        } elseif ($ob['tipeanestesi'] == 'KRONIS') {
+                            $tipeanes = '81';
+                        }
+                        $datadetail_Racikan = [
+                            'id_layanan_detail' => $this->createLayanandetail(),
+                            'kode_layanan_header' => $kode_layanan_header,
+                            'row_id_header' => $layanan_header->id,
+                            'total_tarif' =>  $totalracikan + $hargakemasan,
+                            'jumlah_layanan' => $ob['jumlah'],
+                            'total_layanan' =>  $totalracikan + $hargakemasan,
+                            'diskon_layanan' => '0',
+                            'cyto' => 0,
+                            'diskonan_global' => 0,
+                            'grantotal_layanan' =>  $totalracikan + $hargakemasan,
+                            'tagihan_pribadi' => $tagihan_pribadi,
+                            'tagihan_penjamin' => $tagihan_penjamin,
+                            'kode_dokter1' => $ts_kunjungan[0]->kode_paramedis,
+                            'tipe_anestesi' => $tipeanes,
+                            'kode_barang' => $koderacik,
+                            'aturan_pakai' => $ob['aturanpakai'],
+                            'satuan_barang' => '-',
+                            'kategori_resep' => $kategori_resep,
+                            'status_layanan_detail' => 'OPN',
+                            'tgl_layanan_detail' => $date,
+                            'tgl_layanan_detail_2' => $date,
+                        ];
+                        $layanan_detail = ts_layanan_detail_dummy::create($datadetail_Racikan);
+                        $total_layanan_header = $total_layanan_header + $total_racik;
+                    }
+                }
+            }
+            //jasa obat non racikan
+            $tarif_jasa_baca = $master_jasa[0]->jasa_baca;
+            if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
+                $tagihan_pribadi_jasabaca = $tarif_jasa_baca;
+                $tagihan_penjamin_jasabaca = 0;
+            } else {
+                $tagihan_pribadi_jasabaca = 0;
+                $tagihan_penjamin_jasabaca = $tarif_jasa_baca;
+            }
+            $jasa_baca = [
+                'id_layanan_detail' => $this->createLayanandetail(),
+                'kode_layanan_header' => $kode_layanan_header,
+                'kode_tarif_detail' => 'TX23523',
+                'total_tarif' => $tarif_jasa_baca,
+                'jumlah_layanan' => 1,
+                'total_layanan' =>  $tarif_jasa_baca,
+                'diskon_layanan' => 0,
+                'grantotal_layanan' =>  $tarif_jasa_baca,
+                'kode_dokter1' => $ts_kunjungan[0]->kode_paramedis,
+                'status_layanan_detail' => 'OPN',
+                'tgl_layanan_detail' => $date,
+                'tgl_layanan_detail_2' => $date,
+                'satuan_barang' => '-',
+                'cyto' => 0,
+                'tagihan_pribadi' => $tagihan_pribadi_jasabaca,
+                'tagihan_penjamin' => $tagihan_penjamin_jasabaca,
+                'diskonan_global' => 0,
+                'kategori_resep' => $kategori_resep,
+                'status_layanan_detail' => 'OPN',
+                'tipe_anestesi' => $tipeanes,
+                'row_id_header' => $layanan_header->id
+            ];
+            $total_layanan_header = $total_layanan_header + $tarif_jasa_baca;
+            $layanan_detail_jasa_baca = ts_layanan_detail_dummy::create($jasa_baca);
+            if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
+                $tagihan_penjamin_header = 0;
+                $tagihan_pribadi_header = $total_layanan_header;
+                $status_lyheader = 1;
+            } else {
+                $tagihan_penjamin_header = $total_layanan_header;
+                $tagihan_pribadi_header = 0;
+                $status_lyheader = 2;
+            }
+            $data_header_update = [
+                'total_layanan' => $total_layanan_header,
+                'status_retur' => 'OPN',
+                'tagihan_penjamin' => $tagihan_penjamin_header,
+                'tagihan_pribadi' => $tagihan_pribadi_header,
+                'status_pembayaran' => 'OPN',
+                'dok_kirim' => $ts_kunjungan[0]->kode_paramedis,
+                'unit_pengirim' => $ts_kunjungan[0]->kode_unit . ' | ' . $ts_kunjungan[0]->nama_unit,
+                'diagnosa' => $diagnosa,
+                'status_layanan' => $status_lyheader
+            ];
+            DB::connection('mysql4')->table('ts_layanan_header')->where('id', $layanan_header->id)->update($data_header_update);
+            foreach ($obat_kronis as $ob) {
+                if (empty($ob['idantrianheader'])) {
+                } elseif ($ob['idantrianheader'] == 0) {
+                } else {
+                    $id_antrian = $ob['idantrianheader'];
+                    $id_header_order = $ob['idheaderorder'];
+                    $iddetailorder = $ob['iddetailorder'];
+                    $cek_antrian = db::connection('mysql5')->select('select * from erm_antrian_farmasi where id = ? and status_antrian = ?', [$id_antrian, 0]);
+                    $cek_order_header = db::connection('mysql5')->select('select * from order_farmasi_header where id = ? and status_antrian = ?', [$id_header_order, 1]);
+                    $cek_order_detail = db::connection('mysql5')->select('select * from order_farmasi_detail where id = ? and status_detail = ?', [$iddetailorder, 1]);
+                    if (count($cek_antrian) > 0) {
+                        DB::connection('mysql5')->table('erm_antrian_farmasi')->where('id', $id_antrian)->update(['status_antrian' => 1]);
+                        DB::connection('mysql5')->table('erm_antrian_farmasi_detail')->where('idheader_antrian', $id_antrian)->update(['id_layanan_header' => $layanan_header->id]);
+                    }
+                    if (count($cek_order_header) > 0) {
+                        DB::connection('mysql5')->table('order_farmasi_header')->where('id', $id_header_order)->update(['status_antrian' => 2]);
+                    }
+                    if (count($cek_antrian) > 0) {
+                        DB::connection('mysql5')->table('order_farmasi_detail')->where('id', $iddetailorder)->update(['status_detail' => 2]);
+                    }
                 }
             }
         }
 
-        //jasa obat non racikan
-        $tarif_jasa_baca = $master_jasa[0]->jasa_baca;
-        if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
-            $tagihan_pribadi_jasabaca = $tarif_jasa_baca;
-            $tagihan_penjamin_jasabaca = 0;
-        } else {
-            $tagihan_pribadi_jasabaca = 0;
-            $tagihan_penjamin_jasabaca = $tarif_jasa_baca;
-        }
-        $jasa_baca = [
-            'id_layanan_detail' => $this->createLayanandetail(),
-            'kode_layanan_header' => $kode_layanan_header,
-            'kode_tarif_detail' => 'TX23523',
-            'total_tarif' => $tarif_jasa_baca,
-            'jumlah_layanan' => 1,
-            'total_layanan' =>  $tarif_jasa_baca,
-            'diskon_layanan' => 0,
-            'grantotal_layanan' =>  $tarif_jasa_baca,
-            'kode_dokter1' => $ts_kunjungan[0]->kode_paramedis,
-            'status_layanan_detail' => 'OPN',
-            'tgl_layanan_detail' => $date,
-            'tgl_layanan_detail_2' => $date,
-            'satuan_barang' => '-',
-            'cyto' => 0,
-            'tagihan_pribadi' => $tagihan_pribadi_jasabaca,
-            'tagihan_penjamin' => $tagihan_penjamin_jasabaca,
-            'diskonan_global' => 0,
-            'status_layanan_detail' => 'OPN',
-            'tipe_anestesi' => $tipeanes,
-            'row_id_header' => $layanan_header->id
-        ];
-        $total_layanan_header = $total_layanan_header + $tarif_jasa_baca;
-        $layanan_detail_jasa_baca = ts_layanan_detail_dummy::create($jasa_baca);
-        if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
-            $tagihan_penjamin_header = 0;
-            $tagihan_pribadi_header = $total_layanan_header;
-            $status_lyheader = 1;
-        } else {
-            $tagihan_penjamin_header = $total_layanan_header;
-            $tagihan_pribadi_header = 0;
-            $status_lyheader = 2;
-        }
-        $data_header_update = [
-            'total_layanan' => $total_layanan_header,
-            'status_retur' => 'OPN',
-            'tagihan_penjamin' => $tagihan_penjamin_header,
-            'tagihan_pribadi' => $tagihan_pribadi_header,
-            'status_pembayaran' => 'OPN',
-            'dok_kirim' => $ts_kunjungan[0]->kode_paramedis,
-            'unit_pengirim' => $ts_kunjungan[0]->kode_unit . ' | ' . $ts_kunjungan[0]->nama_unit,
-            'diagnosa' => $diagnosa,
-            'status_layanan' => $status_lyheader
-        ];
-        DB::connection('mysql4')->table('ts_layanan_header')->where('id', $layanan_header->id)->update($data_header_update);
-        //end jasa obat non racikan
-        foreach ($arrayobat as $ob) {
-            if (empty($ob['idantrianheader'])) {
-            }elseif($ob['idantrianheader'] == 0){                
+        if (count($obat_reguler) > 0) {
+            $kode_layanan_header = $this->createLayananheader($KODEUNITFAR, $PREF);
+            $cek = db::select('select * from ts_layanan_header where kode_kunjungan = ? and kode_unit = ?',[$kodekunjungan,$KODEUNITFAR]);
+            if(count($cek) == 0){
+                $RESEPKE = 'Resep Ke :'. 1;
+            }else{
+                $totalresep = count($cek);
+                $newtot = $totalresep+1;
+                $RESEPKE = 'Resep Ke :'. $newtot;
+            }
+            $dataheader = [
+                'kode_layanan_header' => $kode_layanan_header,
+                'tgl_entry' => $date,
+                'kode_kunjungan' => $kodekunjungan,
+                'kode_unit' => $kode_unit,
+                'kode_tipe_transaksi' => $kode_tipe_transaksi,
+                'kode_penjaminx' => $ts_kunjungan[0]->kode_penjamin,
+                'pic' => auth()->user()->id,
+                'keterangan' => $RESEPKE.' '. 'DIINPUT MELALUI FARMASI WEB',
+                'status_layanan' => 3
+            ];
+            $layanan_header = ts_layanan_header_dummy::create($dataheader);
+            $total_layanan_header = 0;
+            $racikannya = 0;
+            $nonracikannya = 0;
+            $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamat_px from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
+            foreach ($obat_reguler as $ob) {
+                if ($ob['jenisresep'] != 'RACIKAN') {
+                    $kodebarang = $ob['kodebarang'];
+                    $mt_barang = db::select('select * from mt_barang where kode_barang = ?', [$kodebarang]);
+                    $hna = $mt_barang[0]->hna;
+                    $persen = $hna * 30 / 100;
+                    $hh = $hna + $persen;
+                    $total_tarif = $hh * $ob['jumlah'];
+                    if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
+                        $tagihan_pribadi = $total_tarif;
+                        $tagihan_penjamin = 0;
+                    } else {
+                        $tagihan_pribadi = 0;
+                        $tagihan_penjamin = $total_tarif;
+                    }
+                    if ($ob['tipeanestesi'] == 'REG') {
+                        $tipeanes = '80';
+                    } elseif ($ob['tipeanestesi'] == 'KRONIS') {
+                        $tipeanes = '81';
+                    }
+                    $detailbarang = $this->createLayanandetail();
+                    $now1 = $this->get_now();
+                    $datadetail = [
+                        'id_layanan_detail' => $detailbarang,
+                        'kode_layanan_header' => $kode_layanan_header,
+                        'row_id_header' => $layanan_header->id,
+                        'total_tarif' => $hna,
+                        'jumlah_layanan' => $ob['jumlah'],
+                        'total_layanan' => $total_tarif,
+                        'diskon_layanan' => '0',
+                        'cyto' => 0,
+                        'diskonan_global' => 0,
+                        'grantotal_layanan' => $total_tarif,
+                        'tagihan_pribadi' => $tagihan_pribadi,
+                        'tagihan_penjamin' => $tagihan_penjamin,
+                        'kode_dokter1' => $ts_kunjungan[0]->kode_paramedis,
+                        'tipe_anestesi' => $tipeanes,
+                        'kode_barang' => $ob['kodebarang'],
+                        'aturan_pakai' => $ob['aturanpakai'],
+                        'satuan_barang' => $mt_barang[0]->satuan,
+                        'status_layanan_detail' => 'OPN',
+                        'tgl_layanan_detail' => $date,
+                        'kategori_resep' => $kategori_resep,
+                        'tgl_layanan_detail_2' => $date,
+                    ];
+                    $layanan_detail = ts_layanan_detail_dummy::create($datadetail);
+                    $tarif_embalase = $master_jasa[0]->jasa_resep + $master_jasa[0]->jasa_embalase;
+
+                    if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
+                        $tagihan_pribadi_embalase = $tarif_embalase;
+                        $tagihan_penjamin_embalase = 0;
+                    } else {
+                        $tagihan_pribadi_embalase = 0;
+                        $tagihan_penjamin_embalase = $tarif_embalase;
+                    }
+                    $jasaembalase = [
+                        'id_layanan_detail' => $this->createLayanandetail(),
+                        'kode_layanan_header' => $kode_layanan_header,
+                        'kode_tarif_detail' => 'TX23513',
+                        'total_tarif' => $tarif_embalase,
+                        'jumlah_layanan' => 1,
+                        'total_layanan' =>  $tarif_embalase,
+                        'diskon_layanan' => 0,
+                        'grantotal_layanan' =>  $tarif_embalase,
+                        'kode_dokter1' => $ts_kunjungan[0]->kode_paramedis,
+                        'status_layanan_detail' => 'OPN',
+                        'tgl_layanan_detail' => $date,
+                        'tgl_layanan_detail_2' => $date,
+                        'satuan_barang' => '-',
+                        'cyto' => 0,
+                        'kategori_resep' => $kategori_resep,
+                        'tagihan_pribadi' => $tagihan_pribadi_embalase,
+                        'tagihan_penjamin' => $tagihan_penjamin_embalase,
+                        'diskonan_global' => 0,
+                        'status_layanan_detail' => 'OPN',
+                        'tipe_anestesi' => $tipeanes,
+                        'row_id_header' => $layanan_header->id
+                    ];
+                    $layanan_detail_embalase = ts_layanan_detail_dummy::create($jasaembalase);
+                    $total_layanan_header = $total_layanan_header + $total_tarif + $tarif_embalase;
+                    $nonracikannya = $nonracikannya + 1;
+                    //penguranganstok
+                    $cek_stok = db::connection('mysql')->select('SELECT * FROM ti_kartu_stok WHERE NO = ( SELECT MAX(a.no ) AS nomor FROM ti_kartu_stok a WHERE kode_barang = ? AND kode_unit = ? )', ([$ob['kodebarang'], auth()->user()->unit]));
+                    $datastok = [
+                        'no_dokumen' => $kode_layanan_header,
+                        'no_dokumen_detail' => $detailbarang,
+                        'tgl_stok' => $now1,
+                        'kode_unit' => auth()->user()->unit,
+                        'kode_barang' => $ob['kodebarang'],
+                        'stok_last' => $cek_stok[0]->stok_current,
+                        'stok_out' => $ob['jumlah'],
+                        'stok_current' => $cek_stok[0]->stok_current - $ob['jumlah'],
+                        'qty_pending' => '0',
+                        'stok_global' => '0',
+                        'harga_beli' => $cek_stok[0]->harga_beli,
+                        'inputby' => auth()->user()->id,
+                        'keterangan' => $ts_kunjungan[0]->no_rm . ' | ' . $mt_pasien[0]->nama_px . ' | ' . $mt_pasien[0]->alamat_px,
+                    ];
+                    ti_kartu_stok::create($datastok);
+                } else {
+                    $racikannya = $racikannya + 1;
+                }
+            }
+            if ($racikannya > 0) {
+                foreach ($obat_reguler as $ob) {
+                    if ($ob['jenisresep'] == 'RACIKAN') {
+                        $koderacik = $ob['kodebarang'];
+                        $get_data_racikan = db::connection('mysql5')->select('select * from template_racikan_header a inner join template_racikan_detail b on a.id = b.idheader where a.id = ?', [$koderacik]);
+                        $koderacik = $this->createkoderacik();
+                        //membuat mt racikan header dan mt racikan detail
+                        $mt_racikan = [
+                            'kode_racik' => $koderacik,
+                            'tgl_racik' => $this->get_date(),
+                            'nama_racik' => $ob['namabarang'],
+                            'total_racik' => '0',
+                            'tipe_racik' => '',
+                            'qty_racik' => $ob['jumlah'],
+                            'kemasan' => 'S',
+                            'hrg_kemasan' => 0,
+                        ];
+                        $header_racikan = mt_racikan::create($mt_racikan);
+                        $total_racik = 0;
+                        foreach ($get_data_racikan as $gdr) {
+                            $mt_barang = db::select('select * from mt_barang where kode_barang = ?', [$gdr->kodebarang]);
+                            $hna = $mt_barang[0]->hna;
+                            $hargajual2 = $hna * 30 / 100;
+                            $hargabarang = $hna + $hargajual2;
+                            // $hargabarang = $mt_barang[0]->hragajual;
+                            $mt_racikan_detail = [
+                                'kode_racik' => $koderacik,
+                                'kode_barang' => $gdr->kodebarang,
+                                'qty_barang' => $gdr->jumlah,
+                                'satuan_barang' => $gdr->sediaan,
+                                'harga_satuan_barang' => $hargabarang,
+                                'subtotal_barang' => $hargabarang * $gdr->jumlah,
+                                'grantotal_barang' => $hargabarang * $gdr->jumlah,
+                                'harga_brg_embalase' => $hargabarang * $gdr->jumlah,
+                            ];
+                            mt_racikan_detail::create($mt_racikan_detail);
+                            $mt_racikan_detail_2 = [
+                                'kode_racik' => $koderacik,
+                                'kode_barang' => 'TX23513',
+                                'qty_barang' => 1,
+                                'satuan_barang' => '-',
+                                'harga_satuan_barang' => 1700,
+                                'subtotal_barang' => 1700,
+                                'grantotal_barang' => 1700,
+                                'harga_brg_embalase' => 1700,
+                            ];
+                            mt_racikan_detail::create($mt_racikan_detail_2);
+                            $totalbarang = $hargabarang * $gdr->jumlah;
+                            $total = $totalbarang + 1700;
+                            $total_racik = $total + $total_racik;
+                            $now1 = $this->get_now();
+                            $cek_stok2 = db::connection('mysql')->select('SELECT * FROM ti_kartu_stok WHERE NO = ( SELECT MAX(a.no ) AS nomor FROM ti_kartu_stok a WHERE kode_barang = ? AND kode_unit = ? )', ([$gdr->kodebarang, auth()->user()->unit]));
+                            $datastok = [
+                                'no_dokumen' => $kode_layanan_header,
+                                'no_dokumen_detail' => $koderacik,
+                                'tgl_stok' => $now1,
+                                'kode_unit' => auth()->user()->unit,
+                                'kode_barang' => $gdr->kodebarang,
+                                'stok_last' => $cek_stok2[0]->stok_current,
+                                'stok_out' => $ob['jumlah'],
+                                'stok_current' => $cek_stok2[0]->stok_current - $ob['jumlah'],
+                                'qty_pending' => '0',
+                                'stok_global' => '0',
+                                'harga_beli' => $cek_stok2[0]->harga_beli,
+                                'inputby' => auth()->user()->id,
+                                'keterangan' => $ts_kunjungan[0]->no_rm . ' | ' . $mt_pasien[0]->nama_px . ' | ' . $mt_pasien[0]->alamat_px,
+                            ];
+                            ti_kartu_stok::create($datastok);
+                        }
+                        if ($ob['sediaan'] == 'POTSALEP') {
+                            $hargakemasan = 7000;
+                        } else {
+                            $hargakemasan = 700 * $ob['jumlah'];
+                        }
+                        $update = [
+                            'total_racik' => $total_racik,
+                            'hrg_kemasan' => $hargakemasan
+                        ];
+                        mt_racikan::whereRaw('id = ?', array($header_racikan->id))->update($update);
+                        $totalracikan = $total_racik;
+                        //insert racikan ke ts_layanan_detail .....
+                        if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
+                            $tagihan_pribadi = $totalracikan + $hargakemasan;
+                            $tagihan_penjamin = 0;
+                        } else {
+                            $tagihan_pribadi = 0;
+                            $tagihan_penjamin =  $totalracikan + $hargakemasan;
+                        }
+                        if ($ob['tipeanestesi'] == 'REG') {
+                            $tipeanes = '80';
+                        } elseif ($ob['tipeanestesi'] == 'KRONIS') {
+                            $tipeanes = '81';
+                        }
+                        $datadetail_Racikan = [
+                            'id_layanan_detail' => $this->createLayanandetail(),
+                            'kode_layanan_header' => $kode_layanan_header,
+                            'row_id_header' => $layanan_header->id,
+                            'total_tarif' =>  $totalracikan + $hargakemasan,
+                            'jumlah_layanan' => $ob['jumlah'],
+                            'total_layanan' =>  $totalracikan + $hargakemasan,
+                            'diskon_layanan' => '0',
+                            'cyto' => 0,
+                            'kategori_resep' => $kategori_resep,
+                            'diskonan_global' => 0,
+                            'grantotal_layanan' =>  $totalracikan + $hargakemasan,
+                            'tagihan_pribadi' => $tagihan_pribadi,
+                            'tagihan_penjamin' => $tagihan_penjamin,
+                            'kode_dokter1' => $ts_kunjungan[0]->kode_paramedis,
+                            'tipe_anestesi' => $tipeanes,
+                            'kode_barang' => $koderacik,
+                            'aturan_pakai' => $ob['aturanpakai'],
+                            'satuan_barang' => '-',
+                            'status_layanan_detail' => 'OPN',
+                            'tgl_layanan_detail' => $date,
+                            'tgl_layanan_detail_2' => $date,
+                        ];
+                        $layanan_detail = ts_layanan_detail_dummy::create($datadetail_Racikan);
+                        $total_layanan_header = $total_layanan_header + $total_racik;
+                    }
+                }
+            }
+            //jasa obat non racikan
+            $tarif_jasa_baca = $master_jasa[0]->jasa_baca;
+            if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
+                $tagihan_pribadi_jasabaca = $tarif_jasa_baca;
+                $tagihan_penjamin_jasabaca = 0;
             } else {
-                $id_antrian = $ob['idantrianheader'];
-                $id_header_order = $ob['idheaderorder'];
-                $iddetailorder = $ob['iddetailorder'];
-                $cek_antrian = db::connection('mysql5')->select('select * from erm_antrian_farmasi where id = ? and status_antrian = ?', [$id_antrian, 0]);
-                $cek_order_header = db::connection('mysql5')->select('select * from order_farmasi_header where id = ? and status_antrian = ?', [$id_header_order, 1]);
-                $cek_order_detail = db::connection('mysql5')->select('select * from order_farmasi_detail where id = ? and status_detail = ?', [$iddetailorder, 1]);
-                if (count($cek_antrian) > 0) {
-                    DB::connection('mysql5')->table('erm_antrian_farmasi')->where('id', $id_antrian)->update(['status_antrian' => 1]);
-                    DB::connection('mysql5')->table('erm_antrian_farmasi_detail')->where('idheader_antrian', $id_antrian)->update(['id_layanan_header' => $layanan_header->id]);
-                }
-                if (count($cek_order_header) > 0) {
-                    DB::connection('mysql5')->table('order_farmasi_header')->where('id', $id_header_order)->update(['status_antrian' => 2]);
-                }
-                if (count($cek_antrian) > 0) {
-                    DB::connection('mysql5')->table('order_farmasi_detail')->where('id', $iddetailorder)->update(['status_detail' => 2]);
+                $tagihan_pribadi_jasabaca = 0;
+                $tagihan_penjamin_jasabaca = $tarif_jasa_baca;
+            }
+            $jasa_baca = [
+                'id_layanan_detail' => $this->createLayanandetail(),
+                'kode_layanan_header' => $kode_layanan_header,
+                'kode_tarif_detail' => 'TX23523',
+                'total_tarif' => $tarif_jasa_baca,
+                'jumlah_layanan' => 1,
+                'total_layanan' =>  $tarif_jasa_baca,
+                'diskon_layanan' => 0,
+                'grantotal_layanan' =>  $tarif_jasa_baca,
+                'kode_dokter1' => $ts_kunjungan[0]->kode_paramedis,
+                'status_layanan_detail' => 'OPN',
+                'tgl_layanan_detail' => $date,
+                'tgl_layanan_detail_2' => $date,
+                'satuan_barang' => '-',
+                'cyto' => 0,
+                'kategori_resep' => $kategori_resep,
+                'tagihan_pribadi' => $tagihan_pribadi_jasabaca,
+                'tagihan_penjamin' => $tagihan_penjamin_jasabaca,
+                'diskonan_global' => 0,
+                'status_layanan_detail' => 'OPN',
+                'tipe_anestesi' => $tipeanes,
+                'row_id_header' => $layanan_header->id
+            ];
+            $total_layanan_header = $total_layanan_header + $tarif_jasa_baca;
+            $layanan_detail_jasa_baca = ts_layanan_detail_dummy::create($jasa_baca);
+            if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
+                $tagihan_penjamin_header = 0;
+                $tagihan_pribadi_header = $total_layanan_header;
+                $status_lyheader = 1;
+            } else {
+                $tagihan_penjamin_header = $total_layanan_header;
+                $tagihan_pribadi_header = 0;
+                $status_lyheader = 2;
+            }
+            $data_header_update = [
+                'total_layanan' => $total_layanan_header,
+                'status_retur' => 'OPN',
+                'tagihan_penjamin' => $tagihan_penjamin_header,
+                'tagihan_pribadi' => $tagihan_pribadi_header,
+                'status_pembayaran' => 'OPN',
+                'dok_kirim' => $ts_kunjungan[0]->kode_paramedis,
+                'unit_pengirim' => $ts_kunjungan[0]->kode_unit . ' | ' . $ts_kunjungan[0]->nama_unit,
+                'diagnosa' => $diagnosa,
+                'status_layanan' => $status_lyheader
+            ];
+            DB::connection('mysql4')->table('ts_layanan_header')->where('id', $layanan_header->id)->update($data_header_update);
+            foreach ($obat_reguler as $ob) {
+                if (empty($ob['idantrianheader'])) {
+                } elseif ($ob['idantrianheader'] == 0) {
+                } else {
+                    $id_antrian = $ob['idantrianheader'];
+                    $id_header_order = $ob['idheaderorder'];
+                    $iddetailorder = $ob['iddetailorder'];
+                    $cek_antrian = db::connection('mysql5')->select('select * from erm_antrian_farmasi where id = ? and status_antrian = ?', [$id_antrian, 0]);
+                    $cek_order_header = db::connection('mysql5')->select('select * from order_farmasi_header where id = ? and status_antrian = ?', [$id_header_order, 1]);
+                    $cek_order_detail = db::connection('mysql5')->select('select * from order_farmasi_detail where id = ? and status_detail = ?', [$iddetailorder, 1]);
+                    if (count($cek_antrian) > 0) {
+                        DB::connection('mysql5')->table('erm_antrian_farmasi')->where('id', $id_antrian)->update(['status_antrian' => 1]);
+                        DB::connection('mysql5')->table('erm_antrian_farmasi_detail')->where('idheader_antrian', $id_antrian)->update(['id_layanan_header' => $layanan_header->id]);
+                    }
+                    if (count($cek_order_header) > 0) {
+                        DB::connection('mysql5')->table('order_farmasi_header')->where('id', $id_header_order)->update(['status_antrian' => 2]);
+                    }
+                    if (count($cek_antrian) > 0) {
+                        DB::connection('mysql5')->table('order_farmasi_detail')->where('id', $iddetailorder)->update(['status_detail' => 2]);
+                    }
                 }
             }
         }
+
+
+        //inputn baru
+        // $kode_layanan_header = $this->createLayananheader($KODEUNITFAR, $PREF);
+        // $dataheader = [
+        //     'kode_layanan_header' => $kode_layanan_header,
+        //     'tgl_entry' => $date,
+        //     'kode_kunjungan' => $kodekunjungan,
+        //     'kode_unit' => $kode_unit,
+        //     'kode_tipe_transaksi' => $kode_tipe_transaksi,
+        //     'kode_penjaminx' => $ts_kunjungan[0]->kode_penjamin,
+        //     'pic' => auth()->user()->id,
+        //     'status_layanan' => 3
+        // ];
+        // $layanan_header = ts_layanan_header_dummy::create($dataheader);
+        // $total_layanan_header = 0;
+        // $racikannya = 0;
+        // $nonracikannya = 0;
+        // $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamat_px from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
+        // foreach ($arrayobat as $ob) {
+        //     if ($ob['jenisresep'] != 'RACIKAN') {
+        //         $kodebarang = $ob['kodebarang'];
+        //         $mt_barang = db::select('select * from mt_barang where kode_barang = ?', [$kodebarang]);
+        //         $hna = $mt_barang[0]->hna;
+        //         $persen = $hna * 30 / 100;
+        //         $hh = $hna + $persen;
+        //         $total_tarif = $hh * $ob['jumlah'];
+        //         if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
+        //             $tagihan_pribadi = $total_tarif;
+        //             $tagihan_penjamin = 0;
+        //         } else {
+        //             $tagihan_pribadi = 0;
+        //             $tagihan_penjamin = $total_tarif;
+        //         }
+        //         if ($ob['tipeanestesi'] == 'REG') {
+        //             $tipeanes = '80';
+        //         } elseif ($ob['tipeanestesi'] == 'KRONIS') {
+        //             $tipeanes = '81';
+        //         }
+        //         $detailbarang = $this->createLayanandetail();
+        //         $now1 = $this->get_now();
+        //         $datadetail = [
+        //             'id_layanan_detail' => $detailbarang,
+        //             'kode_layanan_header' => $kode_layanan_header,
+        //             'row_id_header' => $layanan_header->id,
+        //             'total_tarif' => $hna,
+        //             'jumlah_layanan' => $ob['jumlah'],
+        //             'total_layanan' => $total_tarif,
+        //             'diskon_layanan' => '0',
+        //             'cyto' => 0,
+        //             'diskonan_global' => 0,
+        //             'grantotal_layanan' => $total_tarif,
+        //             'tagihan_pribadi' => $tagihan_pribadi,
+        //             'tagihan_penjamin' => $tagihan_penjamin,
+        //             'kode_dokter1' => $ts_kunjungan[0]->kode_paramedis,
+        //             'tipe_anestesi' => $tipeanes,
+        //             'kode_barang' => $ob['kodebarang'],
+        //             'aturan_pakai' => $ob['aturanpakai'],
+        //             'satuan_barang' => $mt_barang[0]->satuan,
+        //             'status_layanan_detail' => 'OPN',
+        //             'tgl_layanan_detail' => $date,
+        //             'tgl_layanan_detail_2' => $date,
+        //         ];
+        //         $layanan_detail = ts_layanan_detail_dummy::create($datadetail);
+        //         $tarif_embalase = $master_jasa[0]->jasa_resep + $master_jasa[0]->jasa_embalase;
+
+        //         if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
+        //             $tagihan_pribadi_embalase = $tarif_embalase;
+        //             $tagihan_penjamin_embalase = 0;
+        //         } else {
+        //             $tagihan_pribadi_embalase = 0;
+        //             $tagihan_penjamin_embalase = $tarif_embalase;
+        //         }
+        //         $jasaembalase = [
+        //             'id_layanan_detail' => $this->createLayanandetail(),
+        //             'kode_layanan_header' => $kode_layanan_header,
+        //             'kode_tarif_detail' => 'TX23513',
+        //             'total_tarif' => $tarif_embalase,
+        //             'jumlah_layanan' => 1,
+        //             'total_layanan' =>  $tarif_embalase,
+        //             'diskon_layanan' => 0,
+        //             'grantotal_layanan' =>  $tarif_embalase,
+        //             'kode_dokter1' => $ts_kunjungan[0]->kode_paramedis,
+        //             'status_layanan_detail' => 'OPN',
+        //             'tgl_layanan_detail' => $date,
+        //             'tgl_layanan_detail_2' => $date,
+        //             'satuan_barang' => '-',
+        //             'cyto' => 0,
+        //             'tagihan_pribadi' => $tagihan_pribadi_embalase,
+        //             'tagihan_penjamin' => $tagihan_penjamin_embalase,
+        //             'diskonan_global' => 0,
+        //             'status_layanan_detail' => 'OPN',
+        //             'tipe_anestesi' => $tipeanes,
+        //             'row_id_header' => $layanan_header->id
+        //         ];
+        //         $layanan_detail_embalase = ts_layanan_detail_dummy::create($jasaembalase);
+        //         $total_layanan_header = $total_layanan_header + $total_tarif + $tarif_embalase;
+        //         $nonracikannya = $nonracikannya + 1;
+        //         //penguranganstok
+        //         $cek_stok = db::connection('mysql')->select('SELECT * FROM ti_kartu_stok WHERE NO = ( SELECT MAX(a.no ) AS nomor FROM ti_kartu_stok a WHERE kode_barang = ? AND kode_unit = ? )', ([$ob['kodebarang'], auth()->user()->unit]));
+        //         $datastok = [
+        //             'no_dokumen' => $kode_layanan_header,
+        //             'no_dokumen_detail' => $detailbarang,
+        //             'tgl_stok' => $now1,
+        //             'kode_unit' => auth()->user()->unit,
+        //             'kode_barang' => $ob['kodebarang'],
+        //             'stok_last' => $cek_stok[0]->stok_current,
+        //             'stok_out' => $ob['jumlah'],
+        //             'stok_current' => $cek_stok[0]->stok_current - $ob['jumlah'],
+        //             'qty_pending' => '0',
+        //             'stok_global' => '0',
+        //             'harga_beli' => $cek_stok[0]->harga_beli,
+        //             'inputby' => auth()->user()->id,
+        //             'keterangan' => $ts_kunjungan[0]->no_rm . ' | ' . $mt_pasien[0]->nama_px . ' | ' . $mt_pasien[0]->alamat_px,
+        //         ];
+        //         ti_kartu_stok::create($datastok);
+        //     } else {
+        //         $racikannya = $racikannya + 1;
+        //     }
+        // }
+        // if ($racikannya > 0) {
+        //     foreach ($arrayobat as $ob) {
+        //         if ($ob['jenisresep'] == 'RACIKAN') {
+        //             $koderacik = $ob['kodebarang'];
+        //             $get_data_racikan = db::connection('mysql5')->select('select * from template_racikan_header a inner join template_racikan_detail b on a.id = b.idheader where a.id = ?', [$koderacik]);
+        //             $koderacik = $this->createkoderacik();
+        //             //membuat mt racikan header dan mt racikan detail
+        //             $mt_racikan = [
+        //                 'kode_racik' => $koderacik,
+        //                 'tgl_racik' => $this->get_date(),
+        //                 'nama_racik' => $ob['namabarang'],
+        //                 'total_racik' => '0',
+        //                 'tipe_racik' => '',
+        //                 'qty_racik' => $ob['jumlah'],
+        //                 'kemasan' => 'S',
+        //                 'hrg_kemasan' => 0,
+        //             ];
+        //             $header_racikan = mt_racikan::create($mt_racikan);
+        //             $total_racik = 0;
+        //             foreach ($get_data_racikan as $gdr) {
+        //                 $mt_barang = db::select('select * from mt_barang where kode_barang = ?', [$gdr->kodebarang]);
+        //                 $hna = $mt_barang[0]->hna;
+        //                 $hargajual2 = $hna * 30 / 100;
+        //                 $hargabarang = $hna + $hargajual2;
+        //                 // $hargabarang = $mt_barang[0]->hragajual;
+        //                 $mt_racikan_detail = [
+        //                     'kode_racik' => $koderacik,
+        //                     'kode_barang' => $gdr->kodebarang,
+        //                     'qty_barang' => $gdr->jumlah,
+        //                     'satuan_barang' => $gdr->sediaan,
+        //                     'harga_satuan_barang' => $hargabarang,
+        //                     'subtotal_barang' => $hargabarang * $gdr->jumlah,
+        //                     'grantotal_barang' => $hargabarang * $gdr->jumlah,
+        //                     'harga_brg_embalase' => $hargabarang * $gdr->jumlah,
+        //                 ];
+        //                 mt_racikan_detail::create($mt_racikan_detail);
+        //                 $mt_racikan_detail_2 = [
+        //                     'kode_racik' => $koderacik,
+        //                     'kode_barang' => 'TX23513',
+        //                     'qty_barang' => 1,
+        //                     'satuan_barang' => '-',
+        //                     'harga_satuan_barang' => 1700,
+        //                     'subtotal_barang' => 1700,
+        //                     'grantotal_barang' => 1700,
+        //                     'harga_brg_embalase' => 1700,
+        //                 ];
+        //                 mt_racikan_detail::create($mt_racikan_detail_2);
+        //                 $totalbarang = $hargabarang * $gdr->jumlah;
+        //                 $total = $totalbarang + 1700;
+        //                 $total_racik = $total + $total_racik;
+        //                 $now1 = $this->get_now();
+        //                 $cek_stok2 = db::connection('mysql')->select('SELECT * FROM ti_kartu_stok WHERE NO = ( SELECT MAX(a.no ) AS nomor FROM ti_kartu_stok a WHERE kode_barang = ? AND kode_unit = ? )', ([$gdr->kodebarang, auth()->user()->unit]));
+        //                 $datastok = [
+        //                     'no_dokumen' => $kode_layanan_header,
+        //                     'no_dokumen_detail' => $koderacik,
+        //                     'tgl_stok' => $now1,
+        //                     'kode_unit' => auth()->user()->unit,
+        //                     'kode_barang' => $gdr->kodebarang,
+        //                     'stok_last' => $cek_stok2[0]->stok_current,
+        //                     'stok_out' => $ob['jumlah'],
+        //                     'stok_current' => $cek_stok2[0]->stok_current - $ob['jumlah'],
+        //                     'qty_pending' => '0',
+        //                     'stok_global' => '0',
+        //                     'harga_beli' => $cek_stok2[0]->harga_beli,
+        //                     'inputby' => auth()->user()->id,
+        //                     'keterangan' => $ts_kunjungan[0]->no_rm . ' | ' . $mt_pasien[0]->nama_px . ' | ' . $mt_pasien[0]->alamat_px,
+        //                 ];
+        //                 ti_kartu_stok::create($datastok);
+        //             }
+        //             if ($ob['sediaan'] == 'POTSALEP') {
+        //                 $hargakemasan = 7000;
+        //             } else {
+        //                 $hargakemasan = 700 * $ob['jumlah'];
+        //             }
+        //             $update = [
+        //                 'total_racik' => $total_racik,
+        //                 'hrg_kemasan' => $hargakemasan
+        //             ];
+        //             mt_racikan::whereRaw('id = ?', array($header_racikan->id))->update($update);
+        //             $totalracikan = $total_racik;
+        //             //insert racikan ke ts_layanan_detail .....
+        //             if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
+        //                 $tagihan_pribadi = $totalracikan + $hargakemasan;
+        //                 $tagihan_penjamin = 0;
+        //             } else {
+        //                 $tagihan_pribadi = 0;
+        //                 $tagihan_penjamin =  $totalracikan + $hargakemasan;
+        //             }
+        //             if ($ob['tipeanestesi'] == 'REG') {
+        //                 $tipeanes = '80';
+        //             } elseif ($ob['tipeanestesi'] == 'KRONIS') {
+        //                 $tipeanes = '81';
+        //             }
+        //             $datadetail_Racikan = [
+        //                 'id_layanan_detail' => $this->createLayanandetail(),
+        //                 'kode_layanan_header' => $kode_layanan_header,
+        //                 'row_id_header' => $layanan_header->id,
+        //                 'total_tarif' =>  $totalracikan + $hargakemasan,
+        //                 'jumlah_layanan' => $ob['jumlah'],
+        //                 'total_layanan' =>  $totalracikan + $hargakemasan,
+        //                 'diskon_layanan' => '0',
+        //                 'cyto' => 0,
+        //                 'diskonan_global' => 0,
+        //                 'grantotal_layanan' =>  $totalracikan + $hargakemasan,
+        //                 'tagihan_pribadi' => $tagihan_pribadi,
+        //                 'tagihan_penjamin' => $tagihan_penjamin,
+        //                 'kode_dokter1' => $ts_kunjungan[0]->kode_paramedis,
+        //                 'tipe_anestesi' => $tipeanes,
+        //                 'kode_barang' => $koderacik,
+        //                 'aturan_pakai' => $ob['aturanpakai'],
+        //                 'satuan_barang' => '-',
+        //                 'status_layanan_detail' => 'OPN',
+        //                 'tgl_layanan_detail' => $date,
+        //                 'tgl_layanan_detail_2' => $date,
+        //             ];
+        //             $layanan_detail = ts_layanan_detail_dummy::create($datadetail_Racikan);
+        //             $total_layanan_header = $total_layanan_header + $total_racik;
+        //         }
+        //     }
+        // }
+        //jasa obat non racikan
+        // $tarif_jasa_baca = $master_jasa[0]->jasa_baca;
+        // if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
+        //     $tagihan_pribadi_jasabaca = $tarif_jasa_baca;
+        //     $tagihan_penjamin_jasabaca = 0;
+        // } else {
+        //     $tagihan_pribadi_jasabaca = 0;
+        //     $tagihan_penjamin_jasabaca = $tarif_jasa_baca;
+        // }
+        // $jasa_baca = [
+        //     'id_layanan_detail' => $this->createLayanandetail(),
+        //     'kode_layanan_header' => $kode_layanan_header,
+        //     'kode_tarif_detail' => 'TX23523',
+        //     'total_tarif' => $tarif_jasa_baca,
+        //     'jumlah_layanan' => 1,
+        //     'total_layanan' =>  $tarif_jasa_baca,
+        //     'diskon_layanan' => 0,
+        //     'grantotal_layanan' =>  $tarif_jasa_baca,
+        //     'kode_dokter1' => $ts_kunjungan[0]->kode_paramedis,
+        //     'status_layanan_detail' => 'OPN',
+        //     'tgl_layanan_detail' => $date,
+        //     'tgl_layanan_detail_2' => $date,
+        //     'satuan_barang' => '-',
+        //     'cyto' => 0,
+        //     'tagihan_pribadi' => $tagihan_pribadi_jasabaca,
+        //     'tagihan_penjamin' => $tagihan_penjamin_jasabaca,
+        //     'diskonan_global' => 0,
+        //     'status_layanan_detail' => 'OPN',
+        //     'tipe_anestesi' => $tipeanes,
+        //     'row_id_header' => $layanan_header->id
+        // ];
+        // $total_layanan_header = $total_layanan_header + $tarif_jasa_baca;
+        // $layanan_detail_jasa_baca = ts_layanan_detail_dummy::create($jasa_baca);
+        // if ($ts_kunjungan[0]->kode_penjamin == 'P01') {
+        //     $tagihan_penjamin_header = 0;
+        //     $tagihan_pribadi_header = $total_layanan_header;
+        //     $status_lyheader = 1;
+        // } else {
+        //     $tagihan_penjamin_header = $total_layanan_header;
+        //     $tagihan_pribadi_header = 0;
+        //     $status_lyheader = 2;
+        // }
+        // $data_header_update = [
+        //     'total_layanan' => $total_layanan_header,
+        //     'status_retur' => 'OPN',
+        //     'tagihan_penjamin' => $tagihan_penjamin_header,
+        //     'tagihan_pribadi' => $tagihan_pribadi_header,
+        //     'status_pembayaran' => 'OPN',
+        //     'dok_kirim' => $ts_kunjungan[0]->kode_paramedis,
+        //     'unit_pengirim' => $ts_kunjungan[0]->kode_unit . ' | ' . $ts_kunjungan[0]->nama_unit,
+        //     'diagnosa' => $diagnosa,
+        //     'status_layanan' => $status_lyheader
+        // ];
+        // DB::connection('mysql4')->table('ts_layanan_header')->where('id', $layanan_header->id)->update($data_header_update);
+        //end jasa obat non racikan
+        // foreach ($arrayobat as $ob) {
+        //     if (empty($ob['idantrianheader'])) {
+        //     } elseif ($ob['idantrianheader'] == 0) {
+        //     } else {
+        //         $id_antrian = $ob['idantrianheader'];
+        //         $id_header_order = $ob['idheaderorder'];
+        //         $iddetailorder = $ob['iddetailorder'];
+        //         $cek_antrian = db::connection('mysql5')->select('select * from erm_antrian_farmasi where id = ? and status_antrian = ?', [$id_antrian, 0]);
+        //         $cek_order_header = db::connection('mysql5')->select('select * from order_farmasi_header where id = ? and status_antrian = ?', [$id_header_order, 1]);
+        //         $cek_order_detail = db::connection('mysql5')->select('select * from order_farmasi_detail where id = ? and status_detail = ?', [$iddetailorder, 1]);
+        //         if (count($cek_antrian) > 0) {
+        //             DB::connection('mysql5')->table('erm_antrian_farmasi')->where('id', $id_antrian)->update(['status_antrian' => 1]);
+        //             DB::connection('mysql5')->table('erm_antrian_farmasi_detail')->where('idheader_antrian', $id_antrian)->update(['id_layanan_header' => $layanan_header->id]);
+        //         }
+        //         if (count($cek_order_header) > 0) {
+        //             DB::connection('mysql5')->table('order_farmasi_header')->where('id', $id_header_order)->update(['status_antrian' => 2]);
+        //         }
+        //         if (count($cek_antrian) > 0) {
+        //             DB::connection('mysql5')->table('order_farmasi_detail')->where('id', $iddetailorder)->update(['status_detail' => 2]);
+        //         }
+        //     }
+        // }
         $data = [
             'kode' => 200,
             'message' => 'Data berhasil simpan !'
@@ -1128,7 +1802,7 @@ class newFarmasiController extends Controller
             'idorder'
         ]));
     }
-    public function createLayananheader($KODEUNIT,$PREFIX)
+    public function createLayananheader($KODEUNIT, $PREFIX)
     {
         $q = DB::connection('mysql4')->select("SELECT id,RIGHT(kode_layanan_header,6) AS kd_max FROM ts_layanan_header WHERE kode_unit = $KODEUNIT AND DATE(tgl_entry) = CURDATE()
         ORDER BY id DESC LIMIT 1");
@@ -1293,7 +1967,7 @@ class newFarmasiController extends Controller
             ->setDataSource($config)
             ->export('Pdf');
     }
-    public function cetaknota_new($kodekunjungan, $kodeheader,$idheader)
+    public function cetaknota_new($kodekunjungan, $kodeheader, $idheader)
     {
         // dd($kodeheader);
         // SP_Karcis_Pendaftaran3(kodelayananheader,norm)

@@ -44,7 +44,7 @@
                     <label class="form-check-label" for="exampleCheck1">Simpan sebagai template</label>
                 </div>
 
-                <button class="btn btn-success" onclick="simpanorderobat()">Simpan</button>
+                <button class="btn btn-success" onclick="simpanlayanan()">Simpan</button>
             </div>
         </div>
         <div class="card">
@@ -512,7 +512,22 @@ function simpantemplateracikan() {
             }
         });
     })
-
+    function simpanlayanan()
+    {
+        Swal.fire({
+        title: "Data order akan disimpan ?",
+        text: "kli ok untuk menyimpan !",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "OK"
+        }).then((result) => {
+        if (result.isConfirmed) {
+            simpanorderobat()
+        }
+        });
+    }
     function simpanorderobat() {
         spinneron()
         var data = $('.formourderobat').serializeArray();

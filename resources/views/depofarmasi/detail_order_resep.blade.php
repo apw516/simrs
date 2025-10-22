@@ -102,7 +102,7 @@
                                                     name="namabarang" value="{{ $d['namabarang'] }}">
                                                 <input hidden readonly type="" class="form-control "
                                                     id="kodebarang" name="kodebarang" value="{{ $d['kodebarang'] }}">
-                                                <input readonly type="" class="form-control "
+                                                <input hidden readonly type="" class="form-control "
                                                     id="idantrianheader" name="idantrianheader"
                                                     value="{{ $d['id_antrian'] }}">
                                                 <input hidden readonly type="" class="form-control "

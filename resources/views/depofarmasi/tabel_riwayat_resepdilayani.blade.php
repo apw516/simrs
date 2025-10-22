@@ -5,8 +5,8 @@
             DOKTER PENGIRIM : {{ $d->nama_dokter}}<br>
             UNIT PENGIRIM : {{ $d->unit_pengirim}}
             <br>
-            <button class="btn btn-primary btn-sm mt-3"><i class="bi bi-printer mr-1"></i>Nota</button>
-            <button class="btn btn-primary btn-sm mt-3"><i class="bi bi-printer mr-1"></i>Etiket</button>
+            <button class="btn btn-primary btn-sm mt-3 cetaknota" idheader="{{ $d->id }}" kodekunjungan="{{ $d->kode_kunjungan}}" kodeheader="{{ $d->kode_layanan_header}}"><i class="bi bi-printer mr-1"></i>Nota</button>
+            <button class="btn btn-primary btn-sm mt-3 cetaketiket" idheader="{{ $d->id }}"><i class="bi bi-printer mr-1"></i>Etiket</button>
         </div>
         <div class="card-body">
             <table class="table table-sm table-bordered table-hover">
@@ -43,4 +43,16 @@
             </table>
         </div>
     </div>
+    <script>
+     $(".cetaketiket").on('click', function(event) {
+        idheader = $(this).attr('idheader')
+        window.open('cetaketiket_2/' + idheader);
+    });
+     $(".cetaknota").on('click', function(event) {
+        idheader = $(this).attr('idheader')
+        kodekunjungan = $(this).attr('kode_kunjungan')
+        kodeheader = $(this).attr('kodeheader')
+        window.open('cetaknotafarmasi_2/' + kodekunjungan +'/'+ kodeheader+'/'+idheader);
+    });
+</script>
 @endforeach

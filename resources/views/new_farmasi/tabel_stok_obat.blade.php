@@ -7,11 +7,12 @@
         <th>Dosis</th>
         <th>Satuan</th>
         <th>Aturan Pakai</th>
+        <td></td>
     </thead>
     <tbody>
         @foreach ($data as $d )
-            <tr class="pilihobat" kodebarang="{{ $d->kode_barang }}" namabarang="{{ $d->nama_barang }}" dosis="{{ $d->dosis}}" sediaan="{{ $d->sediaan }}"
-                aturanpakai="{{ $d->aturan_pakai}}" stok="{{ $d->stok_current}}" jenisobat="REGULER">
+        @if($d->stok_current > 0)
+            <tr>
                 <td>{{ $d->nama_barang}}</td>
                 <td>{{ $d->nama_generik}}</td>
                 <td>{{ $d->nama_unit}}</td>
@@ -19,7 +20,11 @@
                 <td>{{ $d->dosis}}</td>
                 <td>{{ $d->sediaan}}</td>
                 <td>{{ $d->aturan_pakai}}</td>
+                <td>
+                    <button class="btn btn-success btn-sm pilihobat" kodebarang="{{ $d->kode_barang }}" namabarang="{{ $d->nama_barang }}" dosis="{{ $d->dosis}}" sediaan="{{ $d->sediaan }}" aturanpakai="{{ $d->aturan_pakai}}" stok="{{ $d->stok_current}}" jenisobat="REGULER"><i class="bi bi-check2-square"></i></button>
+                </td>
             </tr>
+            @endif
         @endforeach
     </tbody>
 </table>
@@ -58,6 +63,11 @@
             aturanpakai +
             '</textarea></div><i class="bi bi-x-square remove_field form-group col-md-1 text-danger" kode2=""></i></div>'
         );
+        Swal.fire({
+            title: "Obat berhasil dipilih " + namabarang,
+            text: "ok!",
+            icon: "success"
+        });
         $(wrapper).on("click", ".remove_field", function(e) { //user click on remove
             e.preventDefault();
             $(this).parent('div').remove();

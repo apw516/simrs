@@ -16,6 +16,7 @@
                                     <th>Nama Obat</th>
                                     <th>Aturan Pakai</th>
                                     <th>Jumlah</th>
+                                    <th>Tipe anestesi</th>
                                 </thead>
                                 <tbody>
                                     @foreach ($detail as $d)
@@ -24,6 +25,7 @@
                                                 <td>{{ $d->nama_barang }}</td>
                                                 <td>{{ $d->aturan_pakai }}</td>
                                                 <td>{{ $d->jumlah_layanan }}</td>
+                                                <td>@if($d->tipe_anestesi == 80) REGULER @elseif($d->tipe_anestesi == 81) KRONIS @endif</td>
                                             </tr>
                                         @endif
                                     @endforeach

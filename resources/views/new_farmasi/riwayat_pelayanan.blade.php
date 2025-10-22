@@ -6,6 +6,7 @@
         <th>Alamat</th>
         <th>Unit Pengirim</th>
         <th>Dokter Pengirim</th>
+        <th>Keterangan</th>
         <th></th>
     </thead>
     <tbody>
@@ -17,6 +18,7 @@
                 <td>{{ $r->alamat }}</td>
                 <td>{{ $r->unit_pengirim }}</td>
                 <td>{{ $r->nama_dokter }}</td>
+                <td>{{ $r->ktlayanan}}</td>
                 <td>
                     <button class="btn btn-info detaillayanan" idheader="{{ $r->id_layanan_header }}" data-toggle="modal"
                         data-target="#modaldetaillayanan"><i class="bi bi-ticket-detailed"></i></button>

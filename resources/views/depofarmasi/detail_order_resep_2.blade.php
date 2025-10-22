@@ -352,7 +352,6 @@
             }
         });
     }
-
     function reload() {
         idorder = $('#idorder').val()
         $('.v_1').attr('hidden', true)
@@ -374,7 +373,6 @@
             }
         });
     }
-
     function riwayatresepdilayani() {
         kodekunjungan = $('#kodekunjungan').val()
         $.ajax({
