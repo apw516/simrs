@@ -104,7 +104,7 @@
                 </td>
             </tr>
         </table>
-        <table class="table table-sm mt-2 table-bordered text-xs text-bold font-italic">
+        <table class="table table-sm mt-2 table-bordered text-bold font-italic">
             <tr>
                 <td class="text-center">
                     <img width="5%"src="{{ public_path('../public/img/logo_rs.png') }}" class="logo">
@@ -162,7 +162,7 @@
         </table>
         @foreach ($assesmen as $k)
             @if ($k->kode_unit != '1028')
-                <table class="table table-sm table-bordered text-xs font-italic text-bold">
+                <table class="table table-sm table-bordered font-italic text-bold">
                     <tr>
                         <td width="30%">Sumber Data</td>
                         <td colspan="3">{{ $k->sumberdataperiksa }}</td>
@@ -234,7 +234,7 @@
                         <td colspan="4" class="text-center">Skrinning Gizi</td>
                     </tr>
                     <tr>
-                        <td>1. Apakah pasien mengalami penurunan berat badan yang tidak diinginkan dalam 6 bulan terakhir ? </td>
+                        <td class="text-xs">1. Apakah pasien mengalami penurunan berat badan yang tidak diinginkan dalam 6 bulan terakhir ? </td>
                         <td colspan="3">{{ $k->Skrininggizi }}</td>
                     </tr>
                     <tr>
@@ -242,11 +242,11 @@
                         <td colspan="3">{{ $k->beratskrininggizi }}</td>
                     </tr>
                     <tr>
-                        <td>2. Apakah asupan makanan berkurang karena berkurangnya nafsu makan</td>
+                        <td class="text-xs">2. Apakah asupan makanan berkurang karena berkurangnya nafsu makan</td>
                         <td colspan="3">{{ $k->status_asupanmkanan }}</td>
                     </tr>
                     <tr>
-                        <td>3. Pasien dengan diagnosa khusus : Penyakit DM / Ginjal / Hati / Paru / Stroke / Kanker / Penurunan imunitas geriatri, lain lain...</td>
+                        <td class="text-xs">3. Pasien dengan diagnosa khusus : Penyakit DM / Ginjal / Hati / Paru / Stroke / Kanker / Penurunan imunitas geriatri, lain lain...</td>
                         <td colspan="3">{{ $k->diagnosakhusus }}</td>
                     </tr>
                     <tr>
@@ -254,7 +254,7 @@
                         <td colspan="3">{{ $k->penyakitlainpasien }}</td>
                     </tr>
                     <tr>
-                        <td>4. Bila skor >= 2, pasien beresiko malnutrisi dilakukan pengkajian lanjut oleh ahli gizi</td>
+                        <td class="text-xs">4. Bila skor >= 2, pasien beresiko malnutrisi dilakukan pengkajian lanjut oleh ahli gizi</td>
                         <td colspan="3">{{ $k->resikomalnutrisi }}</td>
                     </tr>
                     <tr>
@@ -266,20 +266,20 @@
                         <td colspan="3">{{ $k->diagnosakeperawatan }}</td>
                     </tr>
                     <tr>
-                        <td>Rencana Keperawatan/Kebidanan/Terapis</td>
+                        <td class="text-xs">Rencana Keperawatan/Kebidanan/Terapis</td>
                         <td colspan="3">{{ $k->rencanakeperawatan }}</td>
                     </tr>
                     <tr>
-                        <td>Tindakan Keperawatan/Kebidanan/Terapis</td>
+                        <td class="text-xs">Tindakan Keperawatan/Kebidanan/Terapis</td>
                         <td colspan="3">{{ $k->tindakankeperawatan }}</td>
                     </tr>
                     <tr>
-                        <td>Evaluasi Keperawatan/Kebidanan/Terapis</td>
+                        <td class="text-xs">Evaluasi Keperawatan/Kebidanan/Terapis</td>
                         <td colspan="3">{{ $k->evaluasikeperawatan }}</td>
                     </tr>
                     <tr>
                         <td>Nama Pemeriksa</td>
-                        <td colspan="3" height="10%" style="vertical-align: bottom">{{ $k->namapemeriksa }}</td>
+                        <td colspan="3" height="5%" style="vertical-align: bottom">{{ $k->namapemeriksa }}</td>
                     </tr>
                 </table>
             @else
