@@ -8,12 +8,9 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ public_path('../public/dist/css/adminlte.min.css') }}">
     <!-- DataTables -->
-    <link rel="stylesheet"
-        href="{{ public_path('../public/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }} ">
-    <link rel="stylesheet"
-        href="{{ public_path('../public/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-    <link rel="stylesheet"
-        href="{{ public_path('../public/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ public_path('../public/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }} ">
+    <link rel="stylesheet" href="{{ public_path('../public/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ public_path('../public/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ public_path('../public/dist/css/datepicker.css') }}" rel="stylesheet">
     <style>
         @page {
@@ -41,6 +38,7 @@
             color: #1d1c1c;
             margin-top: 10px;
         }
+
     </style>
     <style>
         .kop-surat {
@@ -89,6 +87,7 @@
         .text-xxxs {
             font-size: 8px;
         }
+
     </style>
 </head>
 
@@ -133,9 +132,9 @@
                             <td>Jenis Kelamin</td>
                             <td>
                                 @if (strtoupper($mt_pasien[0]->jenis_kelamin) == 'L')
-                                    Laki - Laki
+                                Laki - Laki
                                 @else
-                                    Perempuan
+                                Perempuan
                                 @endif
                             </td>
                         </tr>
@@ -158,135 +157,136 @@
             </tr>
         </table>
         @foreach ($assesmen as $k)
-            @if ($k->kode_unit != '1028')
-                <table class="table table-sm table-bordered font-italic text-bold">
-                    <tr>
-                        <td width="30%">Sumber Data</td>
-                        <td colspan="3">{{ $k->sumberdataperiksa }}</td>
-                    </tr>
-                    <tr>
-                        <td>Keluhan Utama</td>
-                        <td  colspan="3">{{ $k->keluhanutama }}</td>
-                    </tr>
-                    <tr>
-                        <td>Umur</td>
-                        <td  colspan="3">{{ $k->usia }}</td>
-                    </tr>
-                    <tr>
-                        <td>Tekanan Darah</td>
-                        <td>{{ $k->tekanandarah }} mmHg</td>
-                        <td width="15%">Frekuensi Nadi</td>
-                        <td>{{ $k->frekuensinadi }} x/menit</td>
-                    </tr>
-                    <tr>
-                        <td>BB / TB / IMT</td>
-                        <td  colspan="3">{{ $k->beratbadan }} </td>
-                    </tr>
-                    <tr>
-                        <td>Frekuensi Nafas</td>
-                        <td>{{ $k->frekuensinapas }} x/menit</td>
-                        <td>Suhu</td>
-                        <td>{{ $k->suhutubuh }} °C</td>
-                    </tr>
-                    <tr>
-                        <td>Riwayat Psikologis</td>
-                        <td>{{ $k->Riwayatpsikologi }}</td>
-                        <td>Keterangan</td>
-                        <td>{{ $k->keterangan_riwayat_psikolog }}</td>
-                    </tr>
-                    <tr>
-                        <td  colspan="4" class="text-center">Status Fungsional</td>
-                    </tr>
-                    <tr>
-                        <td>Penggunaan Alat Bantu</td>
-                        <td>{{ $k->penggunaanalatbantu }}</td>
-                        <td width="15%">Keterangan</td>
-                        <td>{{ $k->keterangan_alat_bantu }}</td>
-                    </tr>
-                    <tr>
-                        <td>Cacat Tubuh</td>
-                        <td>{{ $k->cacattubuh }}</td>
-                        <td width="15%">Keterangan</td>
-                        <td>{{ $k->keterangancacattubuh }}</td>
-                    </tr>
-                    <tr>
-                        <td  colspan="4" class="text-center">Assesmen Nyeri</td>
-                    </tr>
-                    <tr>
-                        <td>Keluhan Nyeri</td>
-                        <td>{{ $k->Keluhannyeri }}</td>
-                        <td width="15%">Keterangan</td>
-                        <td>{{ $k->skalenyeripasien }}</td>
-                    </tr>
-                    <tr>
-                        <td  colspan="4" class="text-center">Assesmen Resiko Jatuh</td>
-                    </tr>
-                    <tr>
-                        <td>Resiko Jatuh</td>
-                        <td>{{ $k->resikojatuh }}</td>
-                        <td width="15%">Keterangan</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td colspan="4" class="text-center">Skrinning Gizi</td>
-                    </tr>
-                    <tr>
-                        <td>1. Apakah pasien mengalami penurunan berat badan yang tidak diinginkan dalam 6 bulan terakhir ? </td>
-                        <td colspan="3">{{ $k->Skrininggizi }}</td>
-                    </tr>
-                    <tr>
-                        <td>Keterangan</td>
-                        <td colspan="3">{{ $k->beratskrininggizi }}</td>
-                    </tr>
-                    <tr>
-                        <td>2. Apakah asupan makanan berkurang karena berkurangnya nafsu makan</td>
-                        <td colspan="3">{{ $k->status_asupanmkanan }}</td>
-                    </tr>
-                    <tr>
-                        <td>3. Pasien dengan diagnosa khusus : Penyakit DM / Ginjal / Hati / Paru / Stroke / Kanker / Penurunan imunitas geriatri, lain lain...</td>
-                        <td colspan="3">{{ $k->diagnosakhusus }}</td>
-                    </tr>
-                    <tr>
-                        <td>Keterangan</td>
-                        <td colspan="3">{{ $k->penyakitlainpasien }}</td>
-                    </tr>
-                    <tr>
-                        <td>4. Bila skor >= 2, pasien beresiko malnutrisi dilakukan pengkajian lanjut oleh ahli gizi</td>
-                        <td colspan="3">{{ $k->resikomalnutrisi }}</td>
-                    </tr>
-                    <tr>
-                        <td>Keterangan</td>
-                        <td colspan="3">{{ $k->tglpengkajianlanjutgizi }}</td>
-                    </tr>
-                    <tr>
-                        <td>Diagnosa Keperawatan</td>
-                        <td colspan="3">{{ $k->diagnosakeperawatan }}</td>
-                    </tr>
-                    <tr class="text-xs">
-                        <td>Rencana Keperawatan/Kebidanan/Terapis</td>
-                        <td colspan="3">{{ $k->rencanakeperawatan }}</td>
-                    </tr>
-                    <tr class="text-xs">
-                        <td>Tindakan Keperawatan/Kebidanan/Terapis</td>
-                        <td colspan="3">{{ $k->tindakankeperawatan }}</td>
-                    </tr>
-                    <tr class="text-xs">
-                        <td>Evaluasi Keperawatan/Kebidanan/Terapis</td>
-                        <td colspan="3">{{ $k->evaluasikeperawatan }}</td>
-                    </tr>
-                    <tr>
-                        <td>Nama Pemeriksa</td>
-                        <td colspan="3">{{ $k->namapemeriksa }}</td>
-                    </tr>
-                </table>
-            @else
-            @endif
+        @if ($k->kode_unit != '1028')
+        <table class="table table-sm table-bordered font-italic text-bold">
+            <tr>
+                <td width="30%">Sumber Data</td>
+                <td colspan="3">{{ $k->sumberdataperiksa }}</td>
+            </tr>
+            <tr>
+                <td>Keluhan Utama</td>
+                <td colspan="3">{{ $k->keluhanutama }}</td>
+            </tr>
+            <tr>
+                <td>Umur</td>
+                <td colspan="3">{{ $k->usia }}</td>
+            </tr>
+            <tr>
+                <td>Tekanan Darah</td>
+                <td>{{ $k->tekanandarah }} mmHg</td>
+                <td width="15%">Frekuensi Nadi</td>
+                <td>{{ $k->frekuensinadi }} x/menit</td>
+            </tr>
+            <tr>
+                <td>BB / TB / IMT</td>
+                <td colspan="3">{{ $k->beratbadan }} </td>
+            </tr>
+            <tr>
+                <td>Frekuensi Nafas</td>
+                <td>{{ $k->frekuensinapas }} x/menit</td>
+                <td>Suhu</td>
+                <td>{{ $k->suhutubuh }} °C</td>
+            </tr>
+            <tr>
+                <td>Riwayat Psikologis</td>
+                <td>{{ $k->Riwayatpsikologi }}</td>
+                <td>Keterangan</td>
+                <td>{{ $k->keterangan_riwayat_psikolog }}</td>
+            </tr>
+            <tr>
+                <td colspan="4" class="text-center">Status Fungsional</td>
+            </tr>
+            <tr>
+                <td>Penggunaan Alat Bantu</td>
+                <td>{{ $k->penggunaanalatbantu }}</td>
+                <td width="15%">Keterangan</td>
+                <td>{{ $k->keterangan_alat_bantu }}</td>
+            </tr>
+            <tr>
+                <td>Cacat Tubuh</td>
+                <td>{{ $k->cacattubuh }}</td>
+                <td width="15%">Keterangan</td>
+                <td>{{ $k->keterangancacattubuh }}</td>
+            </tr>
+            <tr>
+                <td colspan="4" class="text-center">Assesmen Nyeri</td>
+            </tr>
+            <tr>
+                <td>Keluhan Nyeri</td>
+                <td>{{ $k->Keluhannyeri }}</td>
+                <td width="15%">Keterangan</td>
+                <td>{{ $k->skalenyeripasien }}</td>
+            </tr>
+            <tr>
+                <td colspan="4" class="text-center">Assesmen Resiko Jatuh</td>
+            </tr>
+            <tr>
+                <td>Resiko Jatuh</td>
+                <td>{{ $k->resikojatuh }}</td>
+                <td width="15%">Keterangan</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="4" class="text-center">Skrinning Gizi</td>
+            </tr>
+            <tr>
+                <td class="text-xs">1. Apakah pasien mengalami penurunan berat badan yang tidak diinginkan dalam 6 bulan terakhir ? </td>
+                <td colspan="3">{{ $k->Skrininggizi }}</td>
+            </tr>
+            <tr>
+                <td>Keterangan</td>
+                <td colspan="3">{{ $k->beratskrininggizi }}</td>
+            </tr>
+            <tr>
+                <td class="text-xs">2. Apakah asupan makanan berkurang karena berkurangnya nafsu makan</td>
+                <td colspan="3">{{ $k->status_asupanmkanan }}</td>
+            </tr>
+            <tr>
+                <td class="text-xs">3. Pasien dengan diagnosa khusus : Penyakit DM / Ginjal / Hati / Paru / Stroke / Kanker / Penurunan imunitas geriatri, lain lain...</td>
+                <td colspan="3">{{ $k->diagnosakhusus }}</td>
+            </tr>
+            <tr>
+                <td>Keterangan</td>
+                <td colspan="3">{{ $k->penyakitlainpasien }}</td>
+            </tr>
+            <tr>
+                <td class="text-xs">4. Bila skor >= 2, pasien beresiko malnutrisi dilakukan pengkajian lanjut oleh ahli gizi</td>
+                <td colspan="3">{{ $k->resikomalnutrisi }}</td>
+            </tr>
+            <tr>
+                <td>Keterangan</td>
+                <td colspan="3">{{ $k->tglpengkajianlanjutgizi }}</td>
+            </tr>
+            <tr class="text-xs">
+                <td>Diagnosa Keperawatan</td>
+                <td colspan="3">{{ $k->diagnosakeperawatan }}</td>
+            </tr>
+            <tr class="text-xs">
+                <td>Rencana Keperawatan/Kebidanan/Terapis</td>
+                <td colspan="3">{{ $k->rencanakeperawatan }}</td>
+            </tr>
+            <tr class="text-xs">
+                <td>Tindakan Keperawatan/Kebidanan/Terapis</td>
+                <td colspan="3">{{ $k->tindakankeperawatan }}</td>
+            </tr>
+            <tr class="text-xs">
+                <td>Evaluasi Keperawatan/Kebidanan/Terapis</td>
+                <td colspan="3">{{ $k->evaluasikeperawatan }}</td>
+            </tr>
+            <tr>
+                <td>Nama Pemeriksa</td>
+                <td colspan="3" height="5%" style="vertical-align: bottom">{{ $k->namapemeriksa }}</td>
+
+            </tr>
+        </table>
+        @else
+        @endif
         @endforeach
     </div>
     <footer>
         <div class="text-xxxs font-italic" id="footer">
             {{-- <img class="mr-1 ml-1 mt-2" width="8%" src="{{ public_path('../public/img/logobsre.png') }}"
-                alt=""> *Dokumen ini telah ditanda tangani secara elektronik menggunakan sertifikat elektronik
+            alt=""> *Dokumen ini telah ditanda tangani secara elektronik menggunakan sertifikat elektronik
             yang
             telah diterbitkan oleh Balai Besar Sertifikasi ( BSrE ), Badan Siber dan Sandi Negara.(
             cetakan..,ke-{{ $cetakanke }}) --}}
