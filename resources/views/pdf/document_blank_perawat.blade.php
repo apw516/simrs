@@ -82,6 +82,9 @@
             margin-left: 120px;
         }
 
+        .text-xs {
+            font-size: 14px;
+        }
         .text-xxs {
             font-size: 10px;
         }
@@ -104,7 +107,7 @@
         <table class="table table-sm mt-2 table-bordered text-xs text-bold font-italic">
             <tr>
                 <td class="text-center">
-                    <img src="{{ public_path('../public/img/logo_rs.png') }}" class="logo">
+                    <img width="5%"src="{{ public_path('../public/img/logo_rs.png') }}" class="logo">
                     <div class="instansi2">
                         PEMERINTAH KABUPATEN CIREBON
                     </div>
@@ -159,7 +162,7 @@
         </table>
         @foreach ($assesmen as $k)
             @if ($k->kode_unit != '1028')
-                <table class="table table-sm table-bordered text-xxxs font-italic text-bold">
+                <table class="table table-sm table-bordered text-xs font-italic text-bold">
                     <tr>
                         <td width="30%">Sumber Data</td>
                         <td colspan="3">{{ $k->sumberdataperiksa }}</td>
@@ -276,7 +279,7 @@
                     </tr>
                     <tr>
                         <td>Nama Pemeriksa</td>
-                        <td colspan="3">{{ $k->namapemeriksa }}</td>
+                        <td colspan="3" height="10%" style="vertical-align: bottom">{{ $k->namapemeriksa }}</td>
                     </tr>
                 </table>
             @else
@@ -284,7 +287,7 @@
         @endforeach
     </div>
     <footer>
-        <div class="text-xxxs font-italic" id="footer">
+        <div class="text-xs font-italic" id="footer">
             {{-- <img class="mr-1 ml-1 mt-2" width="8%" src="{{ public_path('../public/img/logobsre.png') }}"
                 alt=""> *Dokumen ini telah ditanda tangani secara elektronik menggunakan sertifikat elektronik
             yang
