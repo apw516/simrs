@@ -80,12 +80,12 @@
             margin-left: 120px;
         }
 
-        .text-xxs {
-            font-size: 10px;
+        .text-xs {
+            font-size: 14px;
         }
 
         .text-xxxs {
-            font-size: 8px;
+            font-size: 14px;
         }
 
     </style>
@@ -253,11 +253,12 @@
                 <td class="text-xs">4. Bila skor >= 2, pasien beresiko malnutrisi dilakukan pengkajian lanjut oleh ahli gizi</td>
                 <td colspan="3">{{ $k->resikomalnutrisi }}</td>
             </tr>
+            
             <tr>
                 <td>Keterangan</td>
                 <td colspan="3">{{ $k->tglpengkajianlanjutgizi }}</td>
             </tr>
-            <tr class="text-xs">
+            <tr class="text-cxs">
                 <td>Diagnosa Keperawatan</td>
                 <td colspan="3">{{ $k->diagnosakeperawatan }}</td>
             </tr>
