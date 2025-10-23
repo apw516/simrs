@@ -101,7 +101,7 @@
                 </td>
             </tr>
         </table>
-        <table class="table table-sm mt-2 table-bordered text-xs text-bold font-italic">
+        <table class="table table-sm mt-2 table-bordered text-bold font-italic">
             <tr>
                 <td class="text-center">
                     <img src="{{ public_path('../public/img/logo_rs.png') }}" class="logo">
@@ -159,7 +159,7 @@
         </table>
         @foreach ($assesmen as $k)
             @if ($k->kode_unit != '1028')
-                <table class="table table-sm table-bordered text-xxxs font-italic text-bold">
+                <table class="table table-sm table-bordered font-italic text-bold">
                     <tr>
                         <td width="30%">Sumber Data</td>
                         <td colspan="3">{{ $k->sumberdataperiksa }}</td>
@@ -262,15 +262,15 @@
                         <td>Diagnosa Keperawatan</td>
                         <td colspan="3">{{ $k->diagnosakeperawatan }}</td>
                     </tr>
-                    <tr>
+                    <tr class="text-xs">
                         <td>Rencana Keperawatan/Kebidanan/Terapis</td>
                         <td colspan="3">{{ $k->rencanakeperawatan }}</td>
                     </tr>
-                    <tr>
+                    <tr class="text-xs">
                         <td>Tindakan Keperawatan/Kebidanan/Terapis</td>
                         <td colspan="3">{{ $k->tindakankeperawatan }}</td>
                     </tr>
-                    <tr>
+                    <tr class="text-xs">
                         <td>Evaluasi Keperawatan/Kebidanan/Terapis</td>
                         <td colspan="3">{{ $k->evaluasikeperawatan }}</td>
                     </tr>
