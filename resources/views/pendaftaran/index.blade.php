@@ -108,6 +108,8 @@
                         <th>No BPJS</th>
                         <th>Nama</th>
                         <th>Alamat</th>
+                        <th>Tgl lahir</th>
+                        <th>Usia</th>
                         <th>Action</th>
                     </thead>
                     <tbody>
@@ -126,6 +128,8 @@
                                         null
                                     @endempty
                                 </td>
+                                <td>{{ date('d-M-Y', strtotime($p->tgl_lahir)); }}</td>
+                                <td>{{ \Carbon\Carbon::parse(date('d-m-Y', strtotime($p->tgl_lahir)))->diff(\Carbon\Carbon::now())->format('%y Tahun'); }}</td>
                                 <td>
                                     <button class="badge badge-warning detailpasien" norm={{ $p['no_rm'] }}
                                         data-toggle="modal" data-target="#modaldetailpasien"><i

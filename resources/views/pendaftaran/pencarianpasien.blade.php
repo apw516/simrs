@@ -1,10 +1,12 @@
-<table id="tabelpasienbaru" class="table table-bordered table-sm">
+<table id="tabelpasienbaru" class="table table-bordered table-xl text-xs">
     <thead>
         <th>Nomor RM</th>
         <th>NIK</th>
         <th>No BPJS</th>
         <th>Nama</th>
         <th>Alamat</th>
+        <th>Tgl lahir</th>
+        <th>Usia</th>
         <th>Action</th>
     </thead>
     <tbody>
@@ -13,8 +15,10 @@
                 <td>{{ $p->no_rm }}</td>
                 <td>{{ $p->NIK }}</td>
                 <td>{{ $p->no_asuransi }}</td>
-                <td>{{ $p->nama_pasien }}</td>
-                <td>{{ $p->alamat }}</td>
+                <td class="text-xs">{{ $p->nama_pasien }}</td>
+                <td class="text-xs">{{ $p->alamat }}</td>
+                <td>{{ date('d-M-Y', strtotime($p->TGL_LAHIR)); }}</td>
+                <td>{{ \Carbon\Carbon::parse($p->TGL_LAHIR)->diff(\Carbon\Carbon::now())->format('%y Tahun'); }}</td>
                 <td>
                     <button class="badge badge-warning detailpasien" norm={{ $p->no_rm }} data-toggle="modal"
                         data-target="#modaldetailpasien"><i class="bi bi-pencil-square"></i></button>
