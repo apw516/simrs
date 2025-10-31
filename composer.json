@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "afrizalmy/laraindo": "^1.0",
         "barryvdh/laravel-dompdf": "^3.1",
         "chillerlan/php-qrcode": "^5.0",
         "codedge/laravel-fpdf": "^1.12",

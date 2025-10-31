@@ -64,6 +64,11 @@
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
                                         unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i class="bi bi-printer mr-2"></i>Assesmen
                                         Medis </button>
+                                    @if($k->kode_unit == 1014)
+                                    <button type="button" class="btn btn-secondary laporanoperasi"
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i class="bi bi-printer mr-2"></i>Laporan Operasi </button>
+                                    @endif
                                 </div>
                             </div>
                             <div class="row">
@@ -1407,6 +1412,10 @@
     $(".cetakresumetanpattd").on('click', function(event) {
         kode_kunjungan = $(this).attr('kodekunjungan')
         window.open('cetakresumeblank/' + kode_kunjungan);
+    })
+    $(".laporanoperasi").on('click', function(event) {
+        kode_kunjungan = $(this).attr('kodekunjungan')
+        window.open('cetaklaporanoperasi/' + kode_kunjungan);
     })
     $(".cetakresumeperawatbaru").on('click', function(event) {
         kode_kunjungan = $(this).attr('kodekunjungan')

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
@@ -90,7 +89,6 @@
 
     </style>
 </head>
-
 <body>
     <div class="isi-surat">
         <table class="mb-4" style="width: 100%">

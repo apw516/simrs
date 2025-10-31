@@ -235,7 +235,6 @@ class PdfController extends Controller
             'today',
             'cetakanke'
         ]));
-        return $pdf->download('document.pdf');
         return $pdf->stream('document.pdf');
 
         // $pdf->set_option("isPhpEnabled", true);
@@ -266,6 +265,31 @@ class PdfController extends Controller
         ]));
         return $pdf->download('document.pdf');
         return $pdf->stream('document.pdf');
+    }
+    public function cetaklaporanoperasi($kodekunjungan)
+    {
+        $data = db::select('select * from laporan_operasi_poli_mata where kode_kunjungan = ?',[$kodekunjungan]);
+        $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
+        if(count($data) > 0){
+            $user = db::select('select * from user where id = ?',[$data[0]->pic]);
+            $username = $user[0]->nama;
+        }else{
+            $username = '';
+        }
+        $dompdf = Pdf::loadView('pdf.laporan_operasi', compact([
+            'data',
+            'mt_pasien',
+            'username'
+        ]));
+        $dompdf->setPaper('A4', 'portrait'); // 'A4' for paper size, 'portrait' or 'landscape' for orientation
+
+        // Render the HTML as PDF
+        $dompdf->render();
+        $namaberkas = 'LAPORAN_OPERASI_'.$mt_pasien[0]->nama_px;
+        return $dompdf->download($namaberkas.'.pdf');
+        // Output the generated PDF to Browser
+        return $dompdf->stream($namaberkas.".pdf", array("Attachment" => false));
     }
     public function get_now()
     {

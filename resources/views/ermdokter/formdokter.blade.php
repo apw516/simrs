@@ -102,6 +102,13 @@
                         </a>
                     </li> --}}
                     @endif
+                    @if(auth()->user()->unit == 1014)
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="laporanoperasi()">
+                            <i class="fas fa-filter mr-2"></i> Laporan Operasi
+                        </a>
+                    </li>
+                    @endif
                     <li class="nav-item">
                         <a href="#" class="nav-link" onclick="resume2()">
                             <i class="fas fa-filter mr-2"></i> Resume
@@ -193,17 +200,32 @@
             });
         // }
     })
-
     function tutupicare() {
         $('#icareshow').attr('Hidden', true)
         $('.slide3').removeAttr('Hidden', true)
     }
-
     function lihaticare() {
         $('#icareshow').removeAttr('Hidden', true)
         $('.slide3').attr('Hidden', true)
     }
-
+    function laporanoperasi() {
+        rm = $('#nomorrm').val()
+        kodekunjungan = $('#kodekunjungan').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm,kodekunjungan
+            },
+            url: '<?= route('formlaporanoperasimata') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
     function formcatatanmedis2(rm) {
         rm = $('#nomorrm').val()
         spinner = $('#loader')
@@ -238,7 +260,6 @@
             }
         });
     }
-
     function formpemeriksaandokter() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -258,7 +279,6 @@
             }
         });
     }
-
     function formpemeriksaankhusus() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -278,7 +298,6 @@
             }
         });
     }
-
     function formupload() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -298,7 +317,6 @@
             }
         });
     }
-
     function orderfarmasi() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -318,7 +336,6 @@
             }
         });
     }
-
     function orderpenunjang() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -338,7 +355,6 @@
             }
         });
     }
-
     function forminputtindakan() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -358,7 +374,6 @@
             }
         });
     }
-
     function formtindaklanjut() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -378,7 +393,6 @@
             }
         });
     }
-
     function resume() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
