@@ -173,7 +173,7 @@
                         </tr>
                         <tr>
                             <td style="text-align: left;height: 1px" colspan="2">Cito /Terencana : @foreach ($data as $d) {{ $d->citoterencana}} @endforeach</td>
-                            <td>Tanggal Operasi : @foreach ($data as $d) @DateIndo($d->tanggaloperasi) @endforeach / Jam : @foreach ($data as $d) {{ $d->jamoperasi}} @endforeach</td>
+                            <td>Tanggal Operasi : @foreach ($data as $d) {{ \Carbon\Carbon::parse($d->tanggaloperasi )->format('d-M-Y') }}@endforeach / Jam : @foreach ($data as $d) {{ $d->jamoperasi}} @endforeach</td>
                         </tr>
                         <tr>
                             <td style="text-align: left;height: 1px">Pembedah : @foreach ($data as $d) {{ $d->pembedah}} @endforeach<br><br>
@@ -305,7 +305,7 @@
                     </tbody>
                     <tr>
                         <td colspan="2" style="text-align: right">
-                            <p style="margin-right:135px">Waled @foreach ($data as $d) @DateIndo($d->tgl_entry) @endforeach
+                            <p style="margin-right:135px">Waled @foreach ($data as $d) {{ \Carbon\Carbon::parse($d->tgl_entry )->format('d-M-Y') }} @endforeach
                             </p>
                         </td>
                     </tr>
