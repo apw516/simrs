@@ -15,9 +15,14 @@ class VclaimModel extends Model
     public $baseUrl = 'https://apijkn.bpjs-kesehatan.go.id/vclaim-rest/';
     public static function signature()
     {
-        $cons_id =  env('CONS_ID');
-        $secretKey = env('SECRET_KEY');
-        $userkey = env('USER_KEY');
+        
+        // CONS_ID = "3431"
+        // SECRET_KEY = "fCnLyXF5QdhrSHT2CnqmD"
+        // USER_KEY = "8c4bf16aee4629511617bd55de88b4fe"
+
+        $cons_id =  '3431';
+        $secretKey = 'fCnLyXF5QdhrSHT2CnqmD';
+        $userkey = '8c4bf16aee4629511617bd55de88b4fe';
 
         date_default_timezone_set('UTC');
         $tStamp = strval(time() - strtotime('1970-01-01 00:00:00'));
