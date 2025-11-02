@@ -383,22 +383,22 @@ class SimrsController extends Controller
     }
     public function Formbpjs(Request $request)
     {
-        $v = new VclaimModel();
-        $noka = $v->get_peserta_noka($request->nomorbpjs, date('Y-m-d'));
-        try {
-            $noka = $v->get_peserta_noka($request->nomorbpjs, date('Y-m-d'));
-        } catch (\Exception $e) {
-            $err = $e->getMessage();
-            echo "<div class='alert alert-danger' role='alert'> $err </div>";
-            die;
-        }
+        // $v = new VclaimModel();
+        // $noka = $v->get_peserta_noka($request->nomorbpjs, date('Y-m-d'));
+        // try {
+        //     $noka = $v->get_peserta_noka($request->nomorbpjs, date('Y-m-d'));
+        // } catch (\Exception $e) {
+        //     $err = $e->getMessage();
+        //     echo "<div class='alert alert-danger' role='alert'> $err </div>";
+        //     die;
+        // }
 
-        $status_code = $noka->metaData->code;
-        $status_message = $noka->metaData->message;
-        if ($status_code != 200) {
-            echo "<div class='alert alert-danger' role='alert'> $status_message </div>";
-            die;
-        }
+        // $status_code = $noka->metaData->code;
+        // $status_message = $noka->metaData->message;
+        // if ($status_code != 200) {
+        //     echo "<div class='alert alert-danger' role='alert'> $status_message </div>";
+        //     die;
+        // }
         $cek_rm = DB::select('select * from ts_kunjungan where no_rm = ? and status_kunjungan = 1', [$request->nomorrm]);
         $total = count($cek_rm);
         if ($total > 0) {
@@ -408,13 +408,13 @@ class SimrsController extends Controller
         }
         $cek_iter = db::select('select *,date(tgl_iter) as tgl_iter2,fc_nama_paramedis1(kode_paramedis) as namadokter,fc_nama_unit1(kode_unit) as nama_unit from ts_header_iter_bpjs where no_rm = ? order by id desc', [$request->nomorrm]);
         return view('pendaftaran.form_pasien_bpjs', [
-            'data_peserta' => $noka,
+            // 'data_peserta' => $noka,
             'riwayat_kunjungan' => DB::select("CALL SP_RIWAYAT_KUNJUNGAN_PX('$request->nomorrm')"),
             'alasan_masuk' => DB::select('select * from mt_alasan_masuk'),
             'nomorrm' => $request->nomorrm,
             'mt_pasien' => Pasien::where('no_rm', $request->nomorrm)->get(),
             'mt_unit' => mt_unit::where('kelas_unit', 2)->get(),
-            'provinsi' => $v->referensi_propinsi(),
+            // 'provinsi' => $v->referensi_propinsi(),
             'cek_kunjungan' => $total,
             'kunjungan_aktif' => $tanggal_k,
             'cek_iter' => $cek_iter
@@ -617,11 +617,13 @@ class SimrsController extends Controller
     {
         $v = new VclaimModel();
         $result = $v->referensi_poli($request['term']);
-        if (count($result->response->poli) > 0) {
-            foreach ($result->response->poli as $row)
+        $mt_unit = db::select('select * from mt_unit where nama_unit LIKE  ?',['%'.$request['term'].'%']);
+        // dd($mt_unit);
+        if (count($mt_unit) > 0) {
+            foreach ($mt_unit as $r)
                 $arr_result[] = array(
-                    'label' => $row->nama,
-                    'kode' => $row->kode,
+                    'label' => $r->nama_unit,
+                    'kode' => $r->KDPOLI,
                 );
             echo json_encode($arr_result);
         }
@@ -662,6 +664,19 @@ class SimrsController extends Controller
                 $arr_result[] = array(
                     'label' => $row->nama_paramedis,
                     'kode' => $row->kode_paramedis,
+                );
+            echo json_encode($arr_result);
+        }
+    }
+    public function caripenjaminlokal(Request $request)
+    {
+        $result = DB::table('mt_penjamin_bpjs')->where('nama_penjamin_bpjs', 'LIKE', '%' . $request['term'] . '%')->get();
+        // $mt_penjamin = DB::select('select * from mt_penjamin_bpjs where nama_penjamin_bpjs = ?', [$request->penjamin]);
+        if (count($result) > 0) {
+            foreach ($result as $row)
+                $arr_result[] = array(
+                    'label' => $row->nama_penjamin_bpjs,
+                    'kode' => $row->nama_penjamin_bpjs,
                 );
             echo json_encode($arr_result);
         }
@@ -812,6 +827,20 @@ class SimrsController extends Controller
             'poli' => $poli
         ]);
     }
+    public function Caripolikontrol2(Request $request)
+    {
+       $poli = db::select('select * from mt_unit');
+        return view('pendaftaran.tabelpolikontrol2', [
+            'poli' => $poli
+        ]);
+    }
+    public function caridokterkontrol2(Request $request)
+    {
+        $dokter = DB::select('select * from mt_paramedis');
+        return view('pendaftaran.tabeldokterkontrol2', [
+            'dokter' => $dokter
+        ]);
+    }
     public function Caridokterkontrol(Request $request)
     {
         $v = new VclaimModel();
@@ -822,6 +851,7 @@ class SimrsController extends Controller
     }
     public function Buatsuratkontrol(Request $request)
     {
+        $rm =$request->rm;
         if ($request->jenissurat == 1) {
             $datasurat = [
                 "request" =>
@@ -1068,7 +1098,8 @@ class SimrsController extends Controller
         // }
         $cek_kunjungan_aktif = DB::select('select * from ts_kunjungan where no_rm = ? AND status_kunjungan = ?', [$request->norm, '1']);
         if ($request->jenispelayanan == 2) {
-            $paramedis = Dokter::where('kode_dpjp', '=', "$request->kodedokterlayan")->get();
+            // $paramedis = Dokter::where('kode_dpjp', '=', "$request->kodedokterlayan")->get();
+            $paramedis = db::select('select * from mt_paramedis where kode_dokter_jkn = ?',[$request->kodedokterlayan]);
             $cek_paramedis = count($paramedis);
             if ($request->kodedokterlayan == '') {
                 $data = [

@@ -63,72 +63,90 @@
                         <div class="card-body text-md">
                             <div class="row">
                                 <div class="col-sm-3">Nomor RM</div>
-                                <div class="col-sm-5">: {{ $data_peserta->response->peserta->mr->noMR }}</div>
+                                <div class="col-sm-5">: {{ $mt_pasien[0]->no_rm }}</div>
+                                {{-- <div class="col-sm-5">: {{ $data_peserta->response->peserta->mr->noMR }}</div> --}}
                             </div>
                             <div class="row">
                                 <div class="col-sm-3">Nomor Kartu</div>
-                                <div class="col-sm-5">: {{ $data_peserta->response->peserta->noKartu }}</div>
-                                <input hidden type="text" value="{{ $data_peserta->response->peserta->noKartu }}"
+                                <div class="col-sm-5">: {{  $mt_pasien[0]->no_Bpjs }}</div>
+                                <input hidden type="text" value="{{  $mt_pasien[0]->no_Bpjs }}"
                                     id="nomorkartu">
+                                {{-- <div class="col-sm-5">: {{ $data_peserta->response->peserta->noKartu }}</div> --}}
+                                {{-- <input hidden type="text" value="{{ $data_peserta->response->peserta->noKartu }}"
+                                    id="nomorkartu"> --}}
                             </div>
                             <div class="row">
                                 <div class="col-sm-3">Nomor KTP</div>
-                                <div class="col-sm-5">: {{ $data_peserta->response->peserta->nik }}
+                                <div class="col-sm-5">: {{ $mt_pasien[0]->nik_bpjs }}
                                     <input hidden type="text" class="form-control" id="nomorktp_pendaftaran"
-                                        value="{{ $data_peserta->response->peserta->nik }}">
+                                        value="{{ $mt_pasien[0]->nik_bpjs }}">
+                                {{-- <div class="col-sm-5">: {{ $data_peserta->response->peserta->nik }}
+                                    <input hidden type="text" class="form-control" id="nomorktp_pendaftaran"
+                                        value="{{ $data_peserta->response->peserta->nik }}"> --}}
                                 </div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-sm-3">Nama</div>
-                                <div class="col-sm-8">: {{ $data_peserta->response->peserta->nama }}</div>
-                                <input hidden type="text" value="{{ $data_peserta->response->peserta->nama }}"
+                                <div class="col-sm-8">: {{ $mt_pasien[0]->nama_px }}</div>
+                                <input hidden type="text" value="{{ $mt_pasien[0]->nama_px }}"
                                     id="namapasien">
+                                {{-- <div class="col-sm-8">: {{ $data_peserta->response->peserta->nama }}</div>
+                                <input hidden type="text" value="{{ $data_peserta->response->peserta->nama }}"
+                                    id="namapasien"> --}}
                             </div>
                             <div class="row">
                                 <div class="col-sm-3">Nomor Telp</div>
-                                <div class="col-sm-8">: {{ $data_peserta->response->peserta->mr->noTelepon }}
+                                <div class="col-sm-8">: {{ $mt_pasien[0]->no_tlp }}
                                 </div>
+                                {{-- <div class="col-sm-8">: {{ $data_peserta->response->peserta->mr->noTelepon }}
+                                </div> --}}
                             </div>
                             <div class="row">
                                 <div class="col-sm-3">Tgl lahir</div>
-                                <div class="col-sm-8">: {{ $data_peserta->response->peserta->tglLahir }}</div>
+                                <div class="col-sm-8">: {{ $mt_pasien[0]->tgl_lahir }}</div>
+                                {{-- <div class="col-sm-8">: {{ $data_peserta->response->peserta->tglLahir }}</div> --}}
                             </div>
                             <div class="row">
                                 <div class="col-sm-3">Status Peserta</div>
                                 <div class="col-sm-8">:
-                                    {{ $data_peserta->response->peserta->statusPeserta->keterangan }}</div>
+                                    {{-- {{ $data_peserta->response->peserta->statusPeserta->keterangan }} --}}
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-3">Jenis Peserta</div>
                                 <div class="col-sm-8">:
-                                    {{ $data_peserta->response->peserta->jenisPeserta->keterangan }}</div>
-                                <input hidden type="text"
+                                    {{-- {{ $data_peserta->response->peserta->jenisPeserta->keterangan }} --}}
+                                </div>
+                                {{-- <input hidden type="text"
                                     value="{{ $data_peserta->response->peserta->jenisPeserta->keterangan }}"
-                                    id="penjamin">
+                                    id="penjamin"> --}}
+                                {{-- <input hidden type="text" value=""  id="penjamin"> --}}
                             </div>
                             <div class="row">
                                 <div class="col-sm-3">Hak Kelas</div>
-                                <div class="col-sm-8">:
-                                    {{ $data_peserta->response->peserta->hakKelas->keterangan }}</div>
+                                <div class="col-sm-8">:</div>
+                                    {{-- {{ $data_peserta->response->peserta->hakKelas->keterangan }}</div> --}}
                             </div>
                             <div class="row">
                                 <div class="col-sm-3">Faskes 1</div>
-                                <div class="col-sm-8">:
-                                    {{ $data_peserta->response->peserta->provUmum->nmProvider }}</div>
+                                <div class="col-sm-8">:</div>
+                                    {{-- {{ $data_peserta->response->peserta->provUmum->nmProvider }}</div> --}}
                             </div>
                             <div class="row">
                                 <div class="col-sm-3">Umur</div>
-                                <div class="col-sm-8">:
-                                    {{ $data_peserta->response->peserta->umur->umurSekarang }}</div>
+                                <div class="col-sm-8">:</div>
+                                    {{-- {{ $data_peserta->response->peserta->umur->umurSekarang }}</div> --}}
                             </div>
                             <div class="row mt-3">
                                 <div class="col-sm-3">COB</div>
-                                <div class="col-sm-8">: {{ $data_peserta->response->peserta->cob->nmAsuransi }}
+                                <div class="col-sm-8">: 
+                                    {{-- {{ $data_peserta->response->peserta->cob->nmAsuransi }} --}}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-3">Nomor</div>
-                                <div class="col-sm-8">: {{ $data_peserta->response->peserta->cob->noAsuransi }}
+                                <div class="col-sm-8">: 
+                                    {{-- {{ $data_peserta->response->peserta->cob->noAsuransi }} --}}
                                 </div>
                             </div>
                         </div>
@@ -180,7 +198,7 @@
                         </button>
                     </div>
                 @endif
-                @if ($data_peserta->response->peserta->statusPeserta->keterangan != 'AKTIF')
+                {{-- @if ($data_peserta->response->peserta->statusPeserta->keterangan != 'AKTIF')
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <strong>STATUS PASIEN
                             {{ $data_peserta->response->peserta->statusPeserta->keterangan }}</strong>
@@ -188,7 +206,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                @endif
+                @endif --}}
                 <div id="kunjunganrujukan_count"></div>
                 <div class="container mt-3">
                     <div class="row justify-content-center mt-2">
@@ -277,9 +295,16 @@
                         <div class="row mt-2">
                             <div class="col-sm-4 text-right text-bold">DPJP Pemberi Surat Kontrol / SPRI</div>
                             <div class="col-sm-7">
-                                <input readonly type="text" class="form-control" id="namadpjp">
+                                <input type="text" class="form-control" id="namadpjp">
                                 <input hidden type="text" class="form-control" id="kodedpjp">
                             </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-sm-4 text-right text-bold">Jenis BPJS</div>
+                        <div class="col-sm-7">
+                            <input class="form-control" type="text" value=""  id="namapenjamin">
+                            <input class="form-control" type="text" value=""  id="penjamin">
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -315,10 +340,14 @@
                                         </div>
                                     </div>
                                     <input readonly type="text" class="form-control" id="keteranganhakkelas"
-                                        value="{{ $data_peserta->response->peserta->hakKelas->keterangan }}">
+                                        value="">
+                                    {{-- <input readonly type="text" class="form-control" id="keteranganhakkelas"
+                                        value="{{ $data_peserta->response->peserta->hakKelas->keterangan }}"> --}}
                                 </div>
                                 <input hidden readonly type="text" class="form-control" id="hakkelas"
-                                    value="{{ $data_peserta->response->peserta->hakKelas->kode }}">
+                                    value="">
+                                {{-- <input hidden readonly type="text" class="form-control" id="hakkelas"
+                                    value="{{ $data_peserta->response->peserta->hakKelas->kode }}"> --}}
                             </div>
                         </div>
                         <div hidden id="formnaikkelas" class="card-body bg-secondary">
@@ -498,9 +527,9 @@
                             <div class="col-sm-7">
                                 <select class="form-control form-control-sm" id="provinsikejadian">
                                     <option value="">-- Silahkan Pilih Provinsi --</option>
-                                    @foreach ($provinsi->response->list as $p)
+                                    {{-- @foreach ($provinsi->response->list as $p)
                                         <option value="{{ $p->kode }}">{{ $p->nama }}</option>
-                                    @endforeach
+                                    @endforeach --}}
                                 </select>
                             </div>
                         </div>
@@ -531,8 +560,7 @@
                         <div class="col-sm-4 text-right text-bold">
                         </div>
                         <div class="col-sm-7">
-                            <button @if ($data_peserta->response->peserta->statusPeserta->keterangan != 'AKTIF') disabled @endif
-                                class="btn btn-success mt-3 float-right simpanpendaftaran" data-toggle="modal"
+                            <button class="btn btn-success mt-3 float-right simpanpendaftaran" data-toggle="modal"
                                 data-target="#modalasessment">Simpan</button>
                             <button class="btn btn-danger mt-3 float-right mr-2"
                                 onclick="location.reload()">Batal</button>
@@ -686,7 +714,9 @@
                 <div class="form-group">
                     <label for="exampleFormControlInput1">Nomor Kartu</label>
                     <input type="email" class="form-control" id="nomorkartukontrol"
-                        value="{{ $data_peserta->response->peserta->noKartu }}" placeholder="name@example.com">
+                        value="{{ $mt_pasien[0]->no_Bpjs }}" placeholder="name@example.com">
+                    {{-- <input type="email" class="form-control" id="nomorkartukontrol"
+                        value="{{ $data_peserta->response->peserta->noKartu }}" placeholder="name@example.com"> --}}
                 </div>
                 <div class="form-group">
                     <label for="exampleFormControlInput1">Poli Kontrol</label>
@@ -798,8 +828,8 @@
                         <div class="col-sm-3">
                             <label for="">nomor kartu</label>
                             <input type="text" class="form-control" id="nomorkartu_riwayatsep"
-                                value="{{ $data_peserta->response->peserta->noKartu }}"
-                                placeholder="masukan nomor kartu ...">
+                                value="{{ $mt_pasien[0]->no_Bpjs }}"
+                                placeholder="masukan nomor kartu ...">                                
                         </div>
                         <div class="col-sm-3">
                             <label for="">tanggal awal</label>
@@ -1497,6 +1527,22 @@
             select: function(event, ui) {
                 $('[id="namadokterlayan"]').val(ui.item.label);
                 $('[id="kodedokterlayan"]').val(ui.item.kode);
+            }
+        });
+        
+       $('#namadpjp').autocomplete({
+            source: "<?= route('caridokter') ?>",
+            select: function(event, ui) {
+                $('[id="namadpjp"]').val(ui.item.label);
+                $('[id="kodedpjp"]').val(ui.item.kode);
+            }
+        });       
+
+       $('#namapenjamin').autocomplete({
+            source: "<?= route('caripenjaminlokal') ?>",
+            select: function(event, ui) {
+                $('[id="namapenjamin"]').val(ui.item.label);
+                $('[id="penjamin"]').val(ui.item.kode);
             }
         });
     });

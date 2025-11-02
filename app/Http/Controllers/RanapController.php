@@ -53,30 +53,30 @@ class RanapController extends VclaimController
         $mt_pasien = DB::select('select * from mt_pasien where no_rm = ?',[$request->rm]);
         $no_bpjs = $mt_pasien[0]->no_Bpjs;
         $sep = $request->nomorsurat;
-        $cek_sep = $v->carisep($sep);
-        // $this->get_app();
-        if($no_bpjs != $cek_sep->response->peserta->noKartu){
-            $data = [
-                'metaData' =>
-                [
-                    'code' => 500,
-                    'message' => 'Nomor SEP Tidak Sesuai !'
-                ]
-            ];
-            echo json_encode($data);
-            die;
-        }
-        if($cek_sep->response->jnsPelayanan == 'Rawat Jalan'){
-            $data = [
-                'metaData' =>
-                [
-                    'code' => 500,
-                    'message' => 'Nomor SEP Tidak Sesuai !'
-                ]
-            ];
-            echo json_encode($data);
-            die;
-        }
+        // $cek_sep = $v->carisep($sep);
+        // // $this->get_app();
+        // if($no_bpjs != $cek_sep->response->peserta->noKartu){
+        //     $data = [
+        //         'metaData' =>
+        //         [
+        //             'code' => 500,
+        //             'message' => 'Nomor SEP Tidak Sesuai !'
+        //         ]
+        //     ];
+        //     echo json_encode($data);
+        //     die;
+        // }
+        // if($cek_sep->response->jnsPelayanan == 'Rawat Jalan'){
+        //     $data = [
+        //         'metaData' =>
+        //         [
+        //             'code' => 500,
+        //             'message' => 'Nomor SEP Tidak Sesuai !'
+        //         ]
+        //     ];
+        //     echo json_encode($data);
+        //     die;
+        // }
         $alasan = $request->alasan;
         $kodekunjungan = $request->kodekunjungan;
         $stm = '';

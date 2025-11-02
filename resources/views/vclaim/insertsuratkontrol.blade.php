@@ -109,7 +109,7 @@
                   nomor,
                   tanggal
               },
-              url: '<?= route('caripolikontrol') ?>',
+              url: '<?= route('caripolikontrol2') ?>',
               error: function(data) {
                   spinner.hide();
                   alert('error!')
@@ -136,7 +136,33 @@
                   kodepoli,
                   tanggal
               },
-              url: '<?= route('caridokterkontrol') ?>',
+              url: '<?= route('caridokterkontrol2') ?>',
+              error: function(data) {
+                  spinner.hide();
+                  alert('error!')
+              },
+              success: function(response) {
+                  spinner.hide();
+                  $('.vdokterkontrol').html(response);
+                  // $('#daftarpxumum').attr('disabled', true);
+              }
+          });
+      }
+      function caridokterkontrol() {
+          spinner = $('#loader');
+          spinner.show();
+          jenis = $('#jenissurat2').val()
+          kodepoli = $('#kodepolikontrol2').val()
+          tanggal = $('#tanggalkontrol2').val()
+          $.ajax({
+              type: 'post',
+              data: {
+                  _token: "{{ csrf_token() }}",
+                  jenis,
+                  kodepoli,
+                  tanggal
+              },
+              url: '<?= route('caridokterkontrol2') ?>',
               error: function(data) {
                   spinner.hide();
                   alert('error!')

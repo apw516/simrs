@@ -43,12 +43,16 @@
                             <td>{{ $d->no_rm }}</td>
                             <td>{{ $d->no_sep }}</td>
                             <td>{{ $d->tgl_keluar }}</td>
-                            <td>{{ $d->alasan_pulang }} | {{ $d->keterangan2 }}</td>
+                            <td width="20%">{{ $d->alasan_pulang }} | {{ $d->keterangan2 }}</td>
                             <td>{{ $d->nama }}</td>
                             <td>{{ $d->unit }}</td>
                             {{-- <td>{{ $d->kamar }}</td>
                             <td>{{ $d->no_bed }}</td> --}}
                             <td class="text-center">
+                                <button kodekunjungan="{{ $d->kode_kunjungan }}" nama="{{ $d->nama }}"
+                                    nomorsep="{{ $d->no_sep }}" rm="{{ $d->no_rm }}" bpjs="{{ $d->no_Bpjs }}"
+                                    class="badge badge-success buatsurkon" data-toggle="tooltip" data-placement="top"
+                                    title="edit nomor sep ...">buat surat kontrol</button>
                                 <button kodekunjungan="{{ $d->kode_kunjungan }}" nama="{{ $d->nama }}"
                                     nomorsep="{{ $d->no_sep }}" rm="{{ $d->no_rm }}" bpjs="{{ $d->no_Bpjs }}"
                                     class="badge badge-danger editkunjungan" data-toggle="tooltip" data-placement="top"
@@ -210,6 +214,8 @@
                             <label for="exampleFormControlInput1">Nomor SEP</label>
                             <input type="" class="form-control" id="seppasca" value=""
                                 placeholder="name@example.com">
+                            <input hidden type="" class="form-control" id="rm" value=""
+                                placeholder="name@example.com">
                         </div>
                         <div class="form-group">
                             <label for="exampleFormControlInput1">Poli Kontrol</label>
@@ -287,7 +293,6 @@
                 </div>
             </div>
         </div>
-
         <div class="modal fade" id="modaleditkunjungan" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog">
@@ -387,6 +392,12 @@
         $('#tabelpasienranappulang').on('click', '.editkunjungan', function() {
             $("#modaleditkunjungan").modal();
             $('#NOSEPUPDATE').val($(this).attr('nomorsep'))
+            $('#KODEKUNJUNGAN').val($(this).attr('kodekunjungan'))
+        })
+        $('#tabelpasienranappulang').on('click', '.buatsurkon', function() {
+            $("#modalsurkonpasca").modal();
+            $('#seppasca').val($(this).attr('nomorsep'))
+            $('#rm').val($(this).attr('rm'))
             $('#KODEKUNJUNGAN').val($(this).attr('kodekunjungan'))
         })
 
@@ -511,7 +522,7 @@
                     nomor,
                     tanggal
                 },
-                url: '<?= route('caripolikontrol') ?>',
+                url: '<?= route('caripolikontrol2') ?>',
                 error: function(data) {
                     spinner.hide();
                     alert('error!')
@@ -538,7 +549,7 @@
                     kodepoli,
                     tanggal
                 },
-                url: '<?= route('caridokterkontrol') ?>',
+                url: '<?= route('caridokterkontrol2') ?>',
                 error: function(data) {
                     spinner.hide();
                     alert('error!')
@@ -559,6 +570,7 @@
             tanggalkontrol = $('#tglkontrol_pasca').val()
             polikontrol = $('#polikontrolpasca').val()
             kodepolikontrol = $('#kodepolikontrolpasca').val()
+            rm = $('#rm').val()
             dokterkontrol = $('#dokterkontrolpasca').val()
             kodedokterkontrol = $('#kodedokterkontrolpasca').val()
             $.ajax({
@@ -571,7 +583,8 @@
                     jenissurat,
                     tanggalkontrol,
                     kodepolikontrol,
-                    kodedokterkontrol
+                    kodedokterkontrol,
+                    rm
                 },
                 url: '<?= route('buatsuratkontrol') ?>',
                 error: function(data) {
