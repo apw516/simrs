@@ -82,10 +82,16 @@
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
                                         unit="{{ $k->kode_unit }}"><i class="bi bi-printer mr-2"></i>Assesmen
                                         Medis</button> --}}
-                                            <button type="button" class="btn btn-secondary cetakresumetanpattd"
+                                 <button type="button" class="btn btn-secondary cetakresumetanpattd"
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
                                         unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i class="bi bi-printer mr-2"></i>Assesmen
                                         Medis </button>
+                                           @if($k->kode_unit == 1014)
+                                    <button type="button" class="btn btn-secondary laporanoperasi"
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i class="bi bi-printer mr-2"></i>Laporan Operasi </button>
+                                    @endif
+                                            
                                 </div>
                             </div>
                             <div class="row">
@@ -1471,6 +1477,10 @@
                 $('.vhex').html(response);
             }
         });
+    })
+    $(".laporanoperasi").on('click', function(event) {
+        kode_kunjungan = $(this).attr('kodekunjungan')
+        window.open('cetaklaporanoperasi/' + kode_kunjungan);
     })
     $(".scanrm_liat").on('click', function(event) {
         rm = $(this).attr('rm')
