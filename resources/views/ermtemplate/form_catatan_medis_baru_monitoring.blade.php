@@ -76,7 +76,7 @@
                                         data-target="#modalhasil_lab"><i class="bi bi-eye mr-2"></i>Hasil
                                         Laboratorium</button>
                                     <button type="button" class="btn btn-secondary cetakresumesus"
-                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"><i
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}" kodekunjungan="{{ $k->kodek }}"><i
                                             class="bi bi-printer mr-2"></i>Assesmen Keperawatan</button>
                                     {{-- <button type="button" class="btn btn-secondary cetakresumedok"
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
@@ -1421,9 +1421,8 @@
         });
     });
     $(".cetakresumesus").on('click', function(event) {
-        rm = $(this).attr('rm')
-        counter = $(this).attr('counter')
-        window.open('cetakresumeperawat/' + rm + '/' + counter);
+        kode_kunjungan = $(this).attr('kodekunjungan')
+        window.open('cetakresumeblank_perawat/' + kode_kunjungan);
     })
     $(".cetakresumedok").on('click', function(event) {
         rm = $(this).attr('rm')

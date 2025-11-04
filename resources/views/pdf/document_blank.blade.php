@@ -101,7 +101,7 @@
                 </td>
             </tr>
         </table>
-        <table class="table table-sm mt-2 table-bordered text-xs text-bold font-italic">
+        <table class="table table-sm mt-2 table-bordered text-bold font-italic">
             <tr>
                 <td class="text-center">
                     <img src="{{ public_path('../public/img/logo_rs.png') }}" class="logo">
@@ -116,7 +116,7 @@
                     </div>
                 </td>
                 <td>
-                    <table style="width:100%">
+                    <table style="width:100%" style="font-size: 14px">
                         <tr>
                             <td>Nomor RM</td>
                             <td>{{ $mt_pasien[0]->no_rm }}</td>
@@ -159,7 +159,7 @@
         </table>
         @foreach ($assesmen as $cp)
             @if ($cp->kode_unit != '1028')
-                <table class="table table-sm table-bordered text-xxxs font-italic text-bold">
+                <table class="table table-sm table-bordered font-italic text-bold">
                     <tr hidden>
                         <td>Sumber Data</td>
                         <td colspan="3">{{ $cp->sumber_data }}
@@ -363,7 +363,7 @@
                     <tr>
                         <td>
                             <div class="card">
-                                <table class="table table-sm text-xxxs table-bordered table-striped font-italic">
+                                <table class="table table-sm table-bordered table-striped font-italic">
                                     <tr>
                                         <td>Anamnesa</td>
                                         <td>: {{ $cp->anamnesa }}</td>
@@ -512,7 +512,7 @@
                                     <tr>
                                         <td>Dokter Pemeriksa</td>
                                         <td style="height:50px">
-                                            <table class="text-xxs float-left text-bold">
+                                            <table class="text-xxs float-left text-bold float-right">
                                                 {{-- <tr>
                                                     <td style="height:90px" class="text-center">
                                                         <br>
