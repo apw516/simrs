@@ -46,7 +46,7 @@ class PdfController extends Controller
             'peserta'
         ]));
 
-        $pdf->set_paper(array(0, 0,420, 300), 'portrait');
+        $pdf->set_paper(array(0, 0, 420, 300), 'portrait');
 
         // $width_cm = 21; // 10 cm width
         // $height_cm = 14; // 15 cm height
@@ -243,6 +243,61 @@ class PdfController extends Controller
         // $name = $kodekunjungan . '.pdf';
         // $pdf->save(Storage::disk('shared', $name)->put($name, $d));
     }
+    public function cetakcppt($idheader)
+    {
+        $header = db::select('select (a.id) as idasskep ,a.kode_kunjungan,a.no_rm, fc_NAMA_UNIT1(a.kode_unit) as NAMAUNIT,a.tanggalkunjungan,a.sumberdataperiksa,keluhanutama,tekanandarah,frekuensinadi,frekuensinapas,a.imt,a.tinggibadan,a.beratbadan,a.suhutubuh,a.umur,a.diagnosakeperawatan,a.rencanakeperawatan,a.tindakankeperawatan,a.evaluasikeperawatan,b.* from erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b on a.id = b.id_asskep where a.id = ?', [$idheader]);
+        $no_rm = $header[0]->no_rm;
+        
+        $cppt = DB::connection('mysql')->select('SELECT *,a.id as idasskep,b.versi as versidk,date(c.tgl_masuk) as tglk,a.kode_unit as unitpoli ,fc_nama_unit1(a.kode_unit) as nama_unit FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b on a.kode_kunjungan = b.id_kunjungan LEFT OUTER JOIN ts_kunjungan c on a.kode_kunjungan = c.kode_kunjungan WHERE a.no_rm = ? and c.status_kunjungan != 8 and a.jenis_berkas = ? order  by c.kode_kunjungan asc', [$no_rm, 2]);
+
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$no_rm]);
+        $datakonsul = db::select('select *,fc_nama_unit1(unit_pengirim) as poli_pengirim,fc_nama_unit1(unit_tujuan) as poli_konsul,fc_nama_paramedis1(dokter_penerima) as dokter_penerima_2 from ts_konsul_antar_poli where no_rm = ?', [$no_rm]);
+        $tindakan = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+            ,c.`kode_tarif_detail`,d.`NAMA_TARIF`
+            FROM ts_kunjungan a
+            INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+            INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+            INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER`
+            WHERE SUBSTR(b.`kode_unit`,1,1) = 1
+            AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
+            AND a.no_rm = ?", [$no_rm]);
+        $farmasi = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+            ,c.`kode_tarif_detail`,d.`nama_barang`,C.`jumlah_layanan`,C.`aturan_pakai`
+            FROM ts_kunjungan a
+            INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+            INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+            INNER JOIN mt_barang d ON c.`kode_barang` = d.`kode_barang`
+            WHERE SUBSTR(b.`kode_unit`,1,1) = 4
+            AND a.no_rm = ?", [$no_rm]);
+        $penunjang = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+            ,c.`kode_tarif_detail`,d.`NAMA_TARIF`,b.kode_unit
+            FROM ts_kunjungan a
+            INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+            INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+            INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER`
+            WHERE SUBSTR(b.`kode_unit`,1,1) = 3
+            AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
+            AND a.no_rm = ?", [$no_rm]);
+        $orderfarmasi = db::select('SELECT kode_kunjungan,a.keterangan as keteranganresep,kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.no_rm = ? and  kode_unit > ?', [$no_rm, '4000']);
+        $dompdf = Pdf::loadView('pdf.cetakan_cppt', compact([
+            'mt_pasien',
+            'header',
+            'datakonsul',
+            'tindakan',
+            'farmasi',
+            'orderfarmasi',
+            'penunjang',
+            'cppt'
+        ]));
+        $dompdf->setPaper('A4', 'portrait'); // 'A4' for paper size, 'portrait' or 'landscape' for orientation
+        $dompdf->set_option("isPhpEnabled", true);
+        // Render the HTML as PDF
+        $dompdf->render();
+        $namaberkas = 'CPPT' . $mt_pasien[0]->nama_px;
+        return $dompdf->download($namaberkas . '.pdf');
+        // Output the generated PDF to Browser
+        return $dompdf->stream($namaberkas . ".pdf", array("Attachment" => false));
+    }
     public function cetakresumeblank_perawat($kodekunjungan)
     {
         $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
@@ -268,13 +323,13 @@ class PdfController extends Controller
     }
     public function cetaklaporanoperasi($kodekunjungan)
     {
-        $data = db::select('select * from laporan_operasi_poli_mata where kode_kunjungan = ?',[$kodekunjungan]);
+        $data = db::select('select * from laporan_operasi_poli_mata where kode_kunjungan = ?', [$kodekunjungan]);
         $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
-        if(count($data) > 0){
-            $user = db::select('select * from user where id = ?',[$data[0]->pic]);
+        if (count($data) > 0) {
+            $user = db::select('select * from user where id = ?', [$data[0]->pic]);
             $username = $user[0]->nama;
-        }else{
+        } else {
             $username = '';
         }
         $dompdf = Pdf::loadView('pdf.laporan_operasi', compact([
@@ -286,10 +341,10 @@ class PdfController extends Controller
 
         // Render the HTML as PDF
         $dompdf->render();
-        $namaberkas = 'LAPORAN_OPERASI_'.$mt_pasien[0]->nama_px;
-        return $dompdf->download($namaberkas.'.pdf');
+        $namaberkas = 'LAPORAN_OPERASI_' . $mt_pasien[0]->nama_px;
+        return $dompdf->download($namaberkas . '.pdf');
         // Output the generated PDF to Browser
-        return $dompdf->stream($namaberkas.".pdf", array("Attachment" => false));
+        return $dompdf->stream($namaberkas . ".pdf", array("Attachment" => false));
     }
     public function get_now()
     {

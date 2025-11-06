@@ -2883,6 +2883,7 @@
                 </div>
                 <div class="active tab-pane" id="timeline">
                     @foreach ($header as $h)
+                            <button class="btn btn-info mb-2 mt-2 cetakcppt" idheader="{{ $h->idasskep}}"><i class="bi bi-printer mr-1 ml-1"></i> Cetak CPPT</button>
                         <div class="card">
                             <div class="card-header bg-info">ASSESMEN AWAL MEDIS <br>
                                 {{ \Carbon\Carbon::parse($h->tglk)->format('d / M / Y') }} {{ $h->nama_unit }}</div>
@@ -3737,4 +3738,9 @@
     $(".cetaksuratkonsul").on('click', function(event) {
         window.open("http://192.168.2.30/siramah/kunjunganPoliklinik");
     })
+     $(".cetakcppt").on('click', function(event) {
+        idheader = $(this).attr('idheader')
+        window.open('cetakcppt/' + idheader);
+    })
 </script>
+idheader

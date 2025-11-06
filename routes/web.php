@@ -792,3 +792,4 @@ Route::get('/cetaksep/{kodekunjungan}', [PdfController::class, 'Cetaksep2']); //
 Route::get('/cetaksep_v/{nosep}', [PdfController::class, 'cetaksep']);
 // Route::get('/cetaksep_v/{sep}', [SimrsController::class, 'Cetaksep_v']); //formpasien_bpjs
 Route::get('/cetaksep_v22/{nosep}', [PdfController::class, 'cetaksep22']);
+Route::get('/cetakcppt/{nosep}', [PdfController::class, 'cetakcppt']);
