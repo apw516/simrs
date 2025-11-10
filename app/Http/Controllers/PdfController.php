@@ -245,10 +245,22 @@ class PdfController extends Controller
     }
     public function cetakcppt($idheader)
     {
-        $header = db::select('select (a.id) as idasskep ,a.kode_kunjungan,a.no_rm, fc_NAMA_UNIT1(a.kode_unit) as NAMAUNIT,a.tanggalkunjungan,a.sumberdataperiksa,keluhanutama,tekanandarah,frekuensinadi,frekuensinapas,a.imt,a.tinggibadan,a.beratbadan,a.suhutubuh,a.umur,a.diagnosakeperawatan,a.rencanakeperawatan,a.tindakankeperawatan,a.evaluasikeperawatan,b.* from erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b on a.id = b.id_asskep where a.id = ?', [$idheader]);
+        $kode_kunjungan = $idheader;
+
+        $header = db::select('SELECT (a.id) AS idasskep ,a.kode_kunjungan,a.no_rm, fc_NAMA_UNIT1(a.kode_unit) AS NAMAUNIT
+        ,a.kode_unit,a.tanggalkunjungan
+        ,a.sumberdataperiksa,keluhanutama,tekanandarah,frekuensinadi,frekuensinapas,a.imt,a.tinggibadan
+        ,a.beratbadan,a.suhutubuh,a.umur,a.diagnosakeperawatan,a.rencanakeperawatan,a.tindakankeperawatan,a.evaluasikeperawatan,a.namapemeriksa ,b.* 
+        FROM ts_kunjungan c 
+        LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal a ON a.`kode_kunjungan` = c.`kode_kunjungan`
+        LEFT OUTER JOIN assesmen_dokters b ON c.kode_kunjungan = b.id_kunjungan WHERE c.kode_kunjungan = ?', [$kode_kunjungan]);
+
         $no_rm = $header[0]->no_rm;
-        
-        $cppt = DB::connection('mysql')->select('SELECT *,a.id as idasskep,b.versi as versidk,date(c.tgl_masuk) as tglk,a.kode_unit as unitpoli ,fc_nama_unit1(a.kode_unit) as nama_unit FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b on a.kode_kunjungan = b.id_kunjungan LEFT OUTER JOIN ts_kunjungan c on a.kode_kunjungan = c.kode_kunjungan WHERE a.no_rm = ? and c.status_kunjungan != 8 and a.jenis_berkas = ? order  by c.kode_kunjungan asc', [$no_rm, 2]);
+
+        $cppt = DB::connection('mysql')->select('SELECT *,a.id AS idasskep,b.versi AS versidk,DATE(c.tgl_masuk) AS tglk,a.kode_unit AS unitpoli ,fc_nama_unit1(a.kode_unit) AS nama_unit ,c.kode_kunjungan,a. kode_kunjungan as kode_kunjungan_asskep,b.id_kunjungan as kode_kunjungan_assdok
+        FROM ts_kunjungan c LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal a ON c.kode_kunjungan = a.`kode_kunjungan`
+        LEFT OUTER JOIN assesmen_dokters b ON a.kode_kunjungan = b.id_kunjungan
+        WHERE a.no_rm = ? AND c.status_kunjungan != 8 AND a.jenis_berkas = ? ORDER  BY c.kode_kunjungan DESC', [$no_rm, 0]);
 
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$no_rm]);
         $datakonsul = db::select('select *,fc_nama_unit1(unit_pengirim) as poli_pengirim,fc_nama_unit1(unit_tujuan) as poli_konsul,fc_nama_paramedis1(dokter_penerima) as dokter_penerima_2 from ts_konsul_antar_poli where no_rm = ?', [$no_rm]);
@@ -293,7 +305,7 @@ class PdfController extends Controller
         $dompdf->set_option("isPhpEnabled", true);
         // Render the HTML as PDF
         $dompdf->render();
-        $namaberkas = 'CPPT' . $mt_pasien[0]->nama_px;
+        $namaberkas = 'CPPT_' . $mt_pasien[0]->nama_px;
         return $dompdf->download($namaberkas . '.pdf');
         // Output the generated PDF to Browser
         return $dompdf->stream($namaberkas . ".pdf", array("Attachment" => false));

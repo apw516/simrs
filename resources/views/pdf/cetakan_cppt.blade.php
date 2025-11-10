@@ -17,23 +17,23 @@
         @media print {
             .page-break-row {
                 page-break-after: always;
-                 margin-top: 2cm;
+                margin-top: 2cm;
             }
-            
+
         }
 
     </style>
     <style>
         @page {
-            margin: 10px;
-            margin-top: 10px;
-            margin-bottom: 10px;
+            margin: 2px;
+            margin-top: 2px;
+            margin-bottom: 2px;
             /* Adjust this value as needed */
         }
 
         .page-break-row {
             page-break-after: always;
-             margin-top: 2cm;
+            margin-top: 2cm;
         }
 
         /* Add your CSS styles here for PDF formatting */
@@ -202,6 +202,7 @@
                         </tr>
                         <tr>
                             <td style="text-align: left;height: 1px;vertical-align: top;" colspan="1">
+                                @if($header[0]->kode_unit != 1028)
                                 Sumber Data : {{ $header[0]->sumberdataperiksa }}<br>
                                 Keluhan : {{ $header[0]->keluhanutama }}<br>
 
@@ -219,8 +220,12 @@
                                 Rencana Keperawatan : {{ $header[0]->rencanakeperawatan }}<br><br>
                                 Tindakan Keperawatan : {{ $header[0]->tindakankeperawatan }}<br><br>
                                 Evaluasi Keperawatan : {{ $header[0]->evaluasikeperawatan }}<br><br>
+                                @else
+                                Hasil Pemeriksaan : {{ $header[0]->tindakankeperawatan }}<br>
+                                @endif
                             </td>
                             <td style="text-align: left;height: 1px;font-size:12px" colspan="3">
+                                @if($header[0]->kode_unit != 1028)
                                 Sumber data : {{ $header[0]->sumber_data }}<br>
                                 Keluhan Utama : {{ $header[0]->keluhan_pasien }}<br>
                                 Riwayat Penyakit Dahulu : {{ $header[0]->riwayat_kehamilan_pasien_wanita }}<br>
@@ -267,13 +272,6 @@
                                 {{ $of->kode_barang }} {{ $of->keteranganresep }} | qty : {{ $of->jumlah_layanan }} | {{ $of->aturan_pakai }}<br>
                                 @endif
                                 @endforeach
-                                {{-- <br>
-                                Obat yang diberikan farmasi<br>
-                                @foreach ($farmasi as $t)
-                                @if ($t->kode_kunjungan == $header[0]->kode_kunjungan)
-                                {{ $t->nama_barang }} | qty : {{ $t->jumlah_layanan }} | {{ $t->aturan_pakai }} <br>
-                                @endif
-                                @endforeach --}}
                                 <br>
                                 <br>
                                 Pemeriksaan Penunjang : <br>
@@ -288,153 +286,227 @@
                                 @endforeach
                                 <br>
                                 Jawaban Konsul Ke poli lain : {{ $header[0]->keterangan_tindak_lanjut_2 }}<br>
+                                @else
+                                Anamnesa : {{ $header[0]->anamnesa }} <br>
+                                Pemeriksaan Fisik dan Uji Fungsi : {{ $header[0]->pemeriksaan_fisik }} <br>
+                                Diagnosis Medis ( ICD 10 ) : {{ $header[0]->diagnosakerja }} <br>
+                                Diagnosis Fungsi ( ICD 10 ) : {{ $header[0]->diagnosabanding }} <br>
+                                Pemeriksaan Penunjang : {{ $header[0]->rencanakerja }} <br>
+                                Terapi yang dilakukan :
+                                @foreach ($penunjang as $p)
+                                @if ($p->kode_kunjungan == $header[0]->id_kunjungan)
+                                {{ $p->nama_unit }} | {{ $p->NAMA_TARIF }} <br>
+                                @endif
+                                @endforeach
+                                <br>
+                                Obat Obatan : Order yang dikirim<br>
+                                    @foreach ($orderfarmasi as $of)
+                                    @if ($of->kode_kunjungan == $header[0]->kode_kunjungan)
+                                    {{ $of->kode_barang }} | {{ $of->keteranganresep }} | qty :{{ $of->jumlah_layanan }} | {{ $of->aturan_pakai }} <br>
+                                    @endif
+                                    @endforeach
+                                    <br>
+                                    Tata laksana KFR : {{ $header[0]->tatalaksana_kfr }}
+                                    Anjuran : {{ $header[0]->anjuran }}
+                                    Evaluasi : {{ $header[0]->evaluasi }}
+                                    Suspek Penyakit akibat kerja : {{ $header[0]->riwayatlain }}
+                                    ketereangan : {{ $header[0]->ket_riwayatlain }}
+                                    Tindak Lanjut :
+                                    : {{ $header[0]->tindak_lanjut }} |
+                                    {{ $header[0]->keterangan_tindak_lanjut }}
+                                    Keterangan :
+                                    {{ $header[0]->keterangan_tindak_lanjut }}
+                                @endif
                             </td>
                         </tr>
                         <tr class="page-break-row">
-                            <td colspan="1"><br><br><br>Pemeriksa : Kurdin <br></td>
+                            <td colspan="1"><br><br><br>Pemeriksa : {{ $header[0]->namapemeriksa}} <br></td>
                             <td colspan="3"><br><br><br>Dokter pemeriksa : {{ $header[0]->nama_dokter }}<br></td>
                         </tr>
+                    </tbody>
+                </table>
+                <table style="font-size: 10px">
+                    <thead>
                         <tr>
-                            <td style="text-align: center;height: 1px;" colspan="4" class="text-bold">Catatan
-                                Perkembangan Pasien Terintegrasi</td>
+                            <th colspan="4" style="text-align: center;height: 1px;">Catatan
+                                Perkembangan Pasien Terintegrasi</th>
                         </tr>
-                        <tr></tr>
                         <tr>
-                            <td colspan="4">
-                                <table style="font-size: 10px">
-                                    <thead>
-                                        <th>Tanggal dan jam</th>
-                                        <th>Hasil Pemeriksaan, Analisa, Rencana Penatalaksanaan pasien( ditulis dengan
-                                            format SOAP, disertai target yang terukur, evaluasi hasil, tata laksana
-                                            dituliskan dalam assesmen )</th>
-                                        <th>Instruksi tenaga kesehatan termasuk pasca bedah / prosedur </th>
-                                        <th>nama Dpjp</th>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($cppt as $cp)
-                                        @if ($header[0]->idasskep == $cp->id_header)
-                                        <tr>
-                                            <td style="vertical-align: top;">{{ \Carbon\Carbon::parse($cp->tglk)->format('d / M / Y') }}</td>
-                                            <td width="40%" style="vertical-align:top">
-                                                Sumber Data : {{ $cp->sumberdataperiksa }}<br>
-                                                Keluhan : {{ $cp->keluhanutama }}<br><br>
+                            <th>Tanggal dan jam</th>
+                            <th>Hasil Pemeriksaan, Analisa, Rencana Penatalaksanaan pasien( ditulis dengan
+                                format SOAP, disertai target yang terukur, evaluasi hasil, tata laksana
+                                dituliskan dalam assesmen )</th>
+                            <th>Instruksi tenaga kesehatan termasuk pasca bedah / prosedur </th>
+                            <th>nama Dpjp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($cppt as $cp)
+                        @if ($header[0]->kode_kunjungan == $cp->id_header || $header[0]->kode_kunjungan == $cp->ref_kunjungan)
+                        <tr>
+                            <td style="vertical-align: top;">{{ \Carbon\Carbon::parse($cp->tglk)->format('d / M / Y') }}</td>
+                            <td width="40%" style="vertical-align:top">
+                                @if($cp->kode_unit != 1028)
+                                Sumber Data : {{ $cp->sumberdataperiksa }}<br>
+                                Keluhan : {{ $cp->keluhanutama }}<br><br>
 
-                                                Tekanan Darah : {{ $cp->tekanandarah }} mmHg <br>
-                                                Frekuensi Nadi : {{ $cp->frekuensinadi }} x/menit<br>
-                                                Frekuensi Nafas : {{ $cp->frekuensinapas }} x/menit<br>
-                                                Suhu tubuh: {{ $cp->suhutubuh }} °C<br>
-                                                Berat badan: {{ $cp->beratbadan }} kg<br>
-                                                Tinggi badan: {{ $cp->tinggibadan }} cm<br>
-                                                IMT: {{ $cp->imt }}<br>
-                                                Umur: {{ $cp->usia }}<br>
-                                                Diagnosa Keperawatan :
-                                                {{ $cp->diagnosakeperawatan }}<br>
-                                                Rencana Keperawatan : {{ $cp->rencanakeperawatan }}<br>
-                                                Tindakan Keperawatan :
-                                                {{ $cp->tindakankeperawatan }}<br>
-                                                Evaluasi Keperawatan :
-                                                {{ $cp->evaluasikeperawatan }}<br>
-                                                <br>
-                                                Pemeriksa : {{ $cp->namapemeriksa }}
-                                            </td>
-                                            <td width="40%" style="vertical-align:top">
-                                                Sumber Data : {{ $cp->sumber_data }} <br>
-                                                Keluhan Utama : {{ $cp->keluhan_pasien }} <br>
-                                                Riwayat Penyakit Dahulu : {{ $cp->riwayat_kehamilan_pasien_wanita }} <br> {{ $cp->riwyat_kelahiran_pasien_anak }} <br> {{ $cp->riwyat_penyakit_sekarang }} <br>
+                                Tekanan Darah : {{ $cp->tekanandarah }} mmHg <br>
+                                Frekuensi Nadi : {{ $cp->frekuensinadi }} x/menit<br>
+                                Frekuensi Nafas : {{ $cp->frekuensinapas }} x/menit<br>
+                                Suhu tubuh: {{ $cp->suhutubuh }} °C<br>
+                                Berat badan: {{ $cp->beratbadan }} kg<br>
+                                Tinggi badan: {{ $cp->tinggibadan }} cm<br>
+                                IMT: {{ $cp->imt }}<br>
+                                Umur: {{ $cp->usia }}<br>
+                                Diagnosa Keperawatan :
+                                {{ $cp->diagnosakeperawatan }}<br>
+                                Rencana Keperawatan : {{ $cp->rencanakeperawatan }}<br>
+                                Tindakan Keperawatan :
+                                {{ $cp->tindakankeperawatan }}<br>
+                                Evaluasi Keperawatan :
+                                {{ $cp->evaluasikeperawatan }}<br>
+                                <br>
+                                Pemeriksa : {{ $cp->namapemeriksa }}
+                                @else
+                                Hasil Pemeriksaan : {{ $cp->tindakankeperawatan }}<br>
+                                Pemeriksa : {{ $cp->namapemeriksa }}
+                                @endif
+                            </td>
+                            <td width="40%" style="vertical-align:top">
+                                @if($cp->kode_unit != 1028)
+                                Sumber Data : {{ $cp->sumber_data }} <br>
+                                Keluhan Utama : {{ $cp->keluhan_pasien }} <br>
+                                Riwayat Penyakit Dahulu : {{ $cp->riwayat_kehamilan_pasien_wanita }} <br> {{ $cp->riwyat_kelahiran_pasien_anak }} <br> {{ $cp->riwyat_penyakit_sekarang }} <br>
 
-                                                Riwayat Alergi : {{ $cp->riwayat_alergi }} | {{ $cp->keterangan_alergi }}<br>
-                                                Pemeriksaan Fisik ( O ) : {{ $cp->pemeriksaan_fisik }} <br>
-                                                Diagnosis ( A ) <br>
-                                                Diagnosa Utama : {{ $cp->diagnosakerja }} <br>
-                                                Diagnosa Sekunder : {{ $cp->diagnosabanding }} <br>
-                                                Tindakan :{{ $cp->tindakanmedis }}<br>
-                                                @foreach ($tindakan as $t)
-                                                @if ($t->kode_kunjungan == $cp->kode_kunjungan)
-                                                {{ $t->NAMA_TARIF }}<br>
-                                                @endif
-                                                @endforeach
-                                                Rencana Terapi ( P ) : {{ $cp->rencanakerja }} <br>
-                                                Tindak Lanjut : {{ $cp->tindak_lanjut }}<br>
-                                                {{ $cp->keterangan_tindak_lanjut }}<br>
-                                                @foreach ($datakonsul as $dk)
-                                                @if ($dk->kode_kunjungan == $cp->kode_kunjungan)
-                                                @if ($dk->jenis == 'KONSUL')
-                                                KONSUL KE POLI
-                                                {{ $dk->poli_konsul }} <br>
-                                                keterangan :
-                                                {{ $dk->catatan }}
-                                                <br><br><br>
-                                                JAWABAN KONSUL <br>
-                                                {{ $dk->dokter_penerima_2 }}
-                                                <br><br>
-                                                {{ $dk->jawaban_konsul }}<br>
-                                                @else
-                                                RUJUK POLI LAIN (
-                                                {{ $dk->poli_konsul }}) <br>
-                                                @endif
-                                                <br>
-                                                <br>
-                                                @endif
-                                                @endforeach
-                                                Obat Obatan : Order yang dikirim<<br>
-                                                    @foreach ($orderfarmasi as $of)
-                                                    @if ($of->kode_kunjungan == $cp->kode_kunjungan)
-                                                    {{ $of->kode_barang }} | {{ $of->keteranganresep }} | qty :{{ $of->jumlah_layanan }} | {{ $of->aturan_pakai }} <br>
-                                                    @endif
-                                                    @endforeach
-                                                    {{-- <br>
-                                                    Obat yang diberikan farmasi<br>
-                                                    @foreach ($farmasi as $t)
-                                                    @if ($t->kode_kunjungan == $cp->kode_kunjungan)
-                                                    {{ $t->nama_barang }} | qty : {{ $t->jumlah_layanan }} | {{ $t->aturan_pakai }} <br>
-                                                    @endif
-                                                    @endforeach --}}
-                                                    <br>
-                                                    Pemeriksaan Penunjang : @if ($cp->kode_unit == '1012' || $cp->kode_unit == '1027')
-                                                    hasil expertisi : <br>
-                                                    {{ $cp->evaluasi }} <br> @endif
-                                                    <br>
+                                Riwayat Alergi : {{ $cp->riwayat_alergi }} | {{ $cp->keterangan_alergi }}<br>
+                                Pemeriksaan Fisik ( O ) : {{ $cp->pemeriksaan_fisik }} <br>
+                                Diagnosis ( A ) <br>
+                                Diagnosa Utama : {{ $cp->diagnosakerja }} <br>
+                                Diagnosa Sekunder : {{ $cp->diagnosabanding }} <br>
+                                Tindakan :{{ $cp->tindakanmedis }}<br>
+                                @foreach ($tindakan as $t)
+                                @if ($t->kode_kunjungan == $cp->kode_kunjungan)
+                                {{ $t->NAMA_TARIF }}<br>
+                                @endif
+                                @endforeach
+                                Rencana Terapi ( P ) : {{ $cp->rencanakerja }} <br>
+                                Tindak Lanjut : {{ $cp->tindak_lanjut }}<br>
+                                {{ $cp->keterangan_tindak_lanjut }}<br>
+                                @foreach ($datakonsul as $dk)
+                                @if ($dk->kode_kunjungan == $cp->kode_kunjungan)
+                                @if ($dk->jenis == 'KONSUL')
+                                KONSUL KE POLI
+                                {{ $dk->poli_konsul }} <br>
+                                keterangan :
+                                {{ $dk->catatan }}
+                                <br><br><br>
+                                JAWABAN KONSUL <br>
+                                {{ $dk->dokter_penerima_2 }}
+                                <br><br>
+                                {{ $dk->jawaban_konsul }}<br>
+                                @else
+                                RUJUK POLI LAIN (
+                                {{ $dk->poli_konsul }}) <br>
+                                @endif
+                                <br>
+                                <br>
+                                @endif
+                                @endforeach
+                                Obat Obatan : Order yang dikirim<<br>
+                                    @foreach ($orderfarmasi as $of)
+                                    @if ($of->kode_kunjungan == $cp->kode_kunjungan)
+                                    {{ $of->kode_barang }} | {{ $of->keteranganresep }} | qty :{{ $of->jumlah_layanan }} | {{ $of->aturan_pakai }} <br>
+                                    @endif
+                                    @endforeach
+                                    <br>
+                                    Pemeriksaan Penunjang : @if ($cp->kode_unit == '1012' || $cp->kode_unit == '1027')
+                                    hasil expertisi : <br>
+                                    {{ $cp->evaluasi }} <br> @endif
+                                    <br>
 
-                                                    @foreach ($penunjang as $p)
-                                                    @if ($p->kode_kunjungan == $cp->kode_kunjungan)
-                                                    {{ $p->nama_unit }} | {{ $p->NAMA_TARIF }} <br>
-                                                    @endif
-                                                    @endforeach
-                                                    <br>
-                                                    Jawaban Konsul Ke poli lain : {{ $cp->keterangan_tindak_lanjut_2 }}<br><br>
-                                                    @foreach ($datakonsul as $dk)
-                                                    @if ($dk->kode_kunjungan_2 == $cp->kode_kunjungan)
-                                                    @if ($dk->jenis == 'KONSUL')
-                                                    KONSUL DARI POLI
-                                                    {{ $dk->poli_pengirim }} <br>
-                                                    {{ $dk->catatan }}
-                                                    <br><br><br>
-                                                    JAWABAN KONSUL <br>
-                                                    {{ $dk->jawaban_konsul }}
-                                                    @endif
-                                                    @endif
-                                                    @endforeach
-                                                    Tanggal Periksa : {{ $cp->tgl_pemeriksaan }} <br>
-
-                                            </td>
-                                            <td> {{ $cp->nama_dokter }} | {{ $cp->nama_unit }}</td>
-                                        </tr>
+                                    @foreach ($penunjang as $p)
+                                    @if ($p->kode_kunjungan == $cp->kode_kunjungan)
+                                    {{ $p->nama_unit }} | {{ $p->NAMA_TARIF }} <br>
+                                    @endif
+                                    @endforeach
+                                    <br>
+                                    Jawaban Konsul Ke poli lain : {{ $cp->keterangan_tindak_lanjut_2 }}<br><br>
+                                    @foreach ($datakonsul as $dk)
+                                    @if ($dk->kode_kunjungan_2 == $cp->kode_kunjungan)
+                                    @if ($dk->jenis == 'KONSUL')
+                                    KONSUL DARI POLI
+                                    {{ $dk->poli_pengirim }} <br>
+                                    {{ $dk->catatan }}
+                                    <br><br><br>
+                                    JAWABAN KONSUL <br>
+                                    {{ $dk->jawaban_konsul }}
+                                    @endif
+                                    @endif
+                                    @endforeach
+                                    Tanggal Periksa : {{ $cp->tgl_pemeriksaan }} <br>
+                                    @else
+                                    Anamnesa : {{ $cp->anamnesa }} <br>
+                                    Pemeriksaan Fisik dan Uji Fungsi : {{ $cp->pemeriksaan_fisik }} <br>
+                                    Diagnosis Medis ( ICD 10 ) : {{ $cp->diagnosakerja }} <br>
+                                    Diagnosis Fungsi ( ICD 10 ) : {{ $cp->diagnosabanding }} <br>
+                                    Pemeriksaan Penunjang : {{ $cp->rencanakerja }} <br>
+                                    Terapi yang dilakukan :
+                                    @foreach ($penunjang as $p)
+                                    @if ($p->kode_kunjungan == $cp->id_kunjungan)
+                                    {{ $p->nama_unit }} | {{ $p->NAMA_TARIF }} <br>
+                                    @endif
+                                    @endforeach
+                                    Obat Obatan : Order yang dikirim<<br>
+                                        @foreach ($orderfarmasi as $of)
+                                        @if ($of->kode_kunjungan == $cp->kode_kunjungan)
+                                        {{ $of->kode_barang }} | {{ $of->keteranganresep }} | qty :{{ $of->jumlah_layanan }} | {{ $of->aturan_pakai }} <br>
                                         @endif
                                         @endforeach
-                                    </tbody>
-                                </table>
+                                        <br>
+                                        Tata laksana KFR : {{ $cp->tatalaksana_kfr }}
+                                        Anjuran : {{ $cp->anjuran }}
+                                        Evaluasi : {{ $cp->evaluasi }}
+                                        Suspek Penyakit akibat kerja : {{ $cp->riwayatlain }}
+                                        ketereangan : {{ $cp->ket_riwayatlain }}
+                                        Tindak Lanjut :
+                                        @if ($cp->versidk != 2)
+                                        : {{ $cp->tindak_lanjut }} |
+                                        {{ $cp->keterangan_tindak_lanjut }}
+                                        @else
+                                        @php $tinjut = explode('|',$cp->tindak_lanjut ) @endphp
+                                        @if ($tinjut[0] == 1)
+                                        Kontrol <br>
+                                        @endif
+                                        @if ($tinjut[1] == 1)
+                                        Konsul <br>
+                                        @endif
+                                        @if ($tinjut[2] == 1)
+                                        Rujuk Internal <br>
+                                        @endif
+                                        @if ($tinjut[3] == 1)
+                                        Rujuak Keluar <br>
+                                        @endif
+                                        @if ($tinjut[4] == 1)
+                                        Rawat Inap <br>
+                                        @endif
+                                        @if ($tinjut[5] == 1)
+                                        Dipulangkan <br>
+                                        @endif
+                                        @endif
+                                        Keterangan :
+                                        {{ $cp->keterangan_tindak_lanjut }}
+                                        @endif
+
                             </td>
+                            <td> {{ $cp->nama_dokter }} | {{ $cp->nama_unit }}</td>
                         </tr>
+                        @endif
+                        @endforeach
                     </tbody>
                 </table>
             </div>
             <footer>
                 <div class="text-xxxs font-italic" id="footer">
-                    {{-- <img class="mr-1 ml-1 mt-2" width="8%" src="{{ public_path('../public/img/logobsre.png') }}"
-                    alt=""> *Dokumen ini telah ditanda tangani secara elektronik menggunakan sertifikat elektronik
-                    yang
-                    telah diterbitkan oleh Balai Besar Sertifikasi ( BSrE ), Badan Siber dan Sandi Negara.(
-                    cetakan..,ke-{{ $cetakanke }}) --}}
                 </div>
             </footer>
         </div>

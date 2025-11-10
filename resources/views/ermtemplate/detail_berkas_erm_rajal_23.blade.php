@@ -2883,11 +2883,12 @@
                 </div>
                 <div class="active tab-pane" id="timeline">
                     @foreach ($header as $h)
-                            <button class="btn btn-info mb-2 mt-2 cetakcppt" idheader="{{ $h->idasskep}}"><i class="bi bi-printer mr-1 ml-1"></i> Cetak CPPT</button>
+                            <button class="btn btn-info mb-2 mt-2 cetakcppt" idheader="{{ $h->kode_kunjungan}}"><i class="bi bi-printer mr-1 ml-1"></i> Cetak CPPT</button>
                         <div class="card">
                             <div class="card-header bg-info">ASSESMEN AWAL MEDIS <br>
                                 {{ \Carbon\Carbon::parse($h->tglk)->format('d / M / Y') }} {{ $h->nama_unit }}</div>
                             <div class="card-body">
+                                @if($h->kode_unit != 1028)
                                 <table class="table table-sm table-bordered table-striped">
                                     <tr>
                                         <td>Sumber Data</td>
@@ -3000,7 +3001,6 @@
                                             </div>
                                         </td>
                                     </tr>
-
                                     <tr>
                                         <td>Pemeriksaan Penunjang</td>
                                         <td>
@@ -3061,7 +3061,6 @@
                                             @endforeach
                                         </td>
                                     </tr>
-
                                     <tr>
                                         <td>Jawaban Konsul Ke Poli lain</td>
                                         <td>{{ $h->keterangan_tindak_lanjut_2 }}<br><br>
@@ -3087,6 +3086,37 @@
                                         <td>{{ $h->nama_dokter }}</td>
                                     </tr>
                                 </table>
+                                @else
+                                Anamnesa : {{ $header[0]->anamnesa }} <br>
+                                Pemeriksaan Fisik dan Uji Fungsi : {{ $header[0]->pemeriksaan_fisik }} <br>
+                                Diagnosis Medis ( ICD 10 ) : {{ $header[0]->diagnosakerja }} <br>
+                                Diagnosis Fungsi ( ICD 10 ) : {{ $header[0]->diagnosabanding }} <br>
+                                Pemeriksaan Penunjang : {{ $header[0]->rencanakerja }} <br>
+                                Terapi yang dilakukan :
+                                @foreach ($penunjang as $p)
+                                @if ($p->kode_kunjungan == $header[0]->id_kunjungan)
+                                {{ $p->nama_unit }} | {{ $p->NAMA_TARIF }} <br>
+                                @endif
+                                @endforeach
+                                <br>
+                                Obat Obatan : Order yang dikirim<br>
+                                    @foreach ($orderfarmasi as $of)
+                                    @if ($of->kode_kunjungan == $header[0]->kode_kunjungan)
+                                    {{ $of->kode_barang }} | {{ $of->keteranganresep }} | qty :{{ $of->jumlah_layanan }} | {{ $of->aturan_pakai }} <br>
+                                    @endif
+                                    @endforeach
+                                    <br>
+                                    Tata laksana KFR : {{ $header[0]->tatalaksana_kfr }}
+                                    Anjuran : {{ $header[0]->anjuran }}
+                                    Evaluasi : {{ $header[0]->evaluasi }}
+                                    Suspek Penyakit akibat kerja : {{ $header[0]->riwayatlain }}
+                                    ketereangan : {{ $header[0]->ket_riwayatlain }}
+                                    Tindak Lanjut :
+                                    : {{ $header[0]->tindak_lanjut }} |
+                                    {{ $header[0]->keterangan_tindak_lanjut }}
+                                    Keterangan :
+                                    {{ $header[0]->keterangan_tindak_lanjut }}
+                                @endif
                             </div>
                         </div>
                         <div class="card">
@@ -3107,7 +3137,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($cppt as $cp)
-                                            @if ($h->idasskep == $cp->id_header)
+                                            @if ($h->kode_kunjungan == $cp->id_header || $h->kode_kunjungan == $cp->ref_kunjungan)
                                                 @if ($cp->unitpoli != '1028')
                                                     <tr>
                                                         <td>
@@ -3621,7 +3651,6 @@
             <!-- /.tab-content -->
         </div><!-- /.card-body -->
     </div>
-    <!-- /.card -->
 </div>
 <!-- Modal -->
 <div class="modal fade" id="modalhasillab" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -3743,4 +3772,3 @@
         window.open('cetakcppt/' + idheader);
     })
 </script>
-idheader

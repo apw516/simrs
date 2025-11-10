@@ -38,7 +38,12 @@
             data-target="#modalhasilrad"><i class="bi bi-journal-text"></i> Hasil Radiologi</button>
         <button class="btn btn-info mb-2 liathasil_pa" nomorrm="{{ $rm }}" data-toggle="modal"
             data-target="#modalhasilpa"><i class="bi bi-journal-text"></i> Hasil Lab PA</button>
-        <div class="accordion" id="accordionExample">
+        <button class="btn btn-success mb-2 lihatcppt" nomorrm="{{ $rm }}"><i class="bi bi-journal-text"></i> CATATAN PERKEMBANGAN PASIEN TERINTEGRASI ( RAWAT JALAN )</button>
+        <button class="btn btn-success mb-2 catatanmedis"><i class="bi bi-journal-text"></i> RIWAYAT KUNJUNGAN</button>
+        <div hidden class="slide3">
+
+        </div>
+        <div class="accordion slide4" id="accordionExample">
             @php
                 $urutan = 1;
             @endphp
@@ -1225,7 +1230,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="modalscan_rm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -1332,6 +1336,31 @@
     </div>
 </div>
 <script>
+    $(".lihatcppt").click(function() {
+            rm = $(this).attr('nomorrm')
+            spinner = $('#loader')
+            spinner.show();
+            $('.slide4').attr('hidden',true)
+            $('.slide3').removeAttr('hidden',true)
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    rm
+                },
+                url: '<?= route('lihatcppt_pasien2') ?>',
+                success: function(response) {
+                    $('.slide3').html(response);
+                    spinner.hide()
+                }
+            });
+        // }
+    })
+    $(".catatanmedis").click(function() {
+            $('.slide3').attr('hidden',true)
+            $('.slide4').removeAttr('hidden',true)
+
+    })
     $(".riwayatorderfarmasi").on('click', function(event) {
         kodekunjungan = $(this).attr('kodekunjungan')
         $.ajax({
