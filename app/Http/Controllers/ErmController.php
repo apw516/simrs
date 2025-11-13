@@ -8696,6 +8696,35 @@ class ErmController extends Controller
             'kodekunjungan','cek'
         ]));
     }
+    public function formpembuatansuratpengantar(Request $request){
+        $kodekunjungan = $request->kodekunjungan;
+        return view('ermtemplate.form_surat_pengantar');
+    }
+    public function simpansurkon(Request $request)
+    {
+        $data = json_decode($_POST['data'], true);
+        $kode_kunjungan = $request->kode_kunjungan;
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+                dd($kode_kunjungan);
+
+        dd($dataSet);
+    }
+    public function simpanrujin(Request $request)
+    {
+        $data = json_decode($_POST['data'], true);
+        $kode_kunjungan = $request->kode_kunjungan;
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+        dd($kode_kunjungan);
+        dd($dataSet);
+    }
 }
 
 

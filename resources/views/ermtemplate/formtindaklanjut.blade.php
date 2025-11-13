@@ -1,4 +1,6 @@
 @if(count($cek_konsul) > 0)
+<input hidden type="text" class="form-control" id="kode_kunjungan" aria-describedby="emailHelp"
+    value="{{ $data_kunjungan[0]->kode_kunjungan }}">
 <label for="">Data Poliklinik konsul</label>
 <table class="table table-sm table-bordered table-hover">
     <thead>
@@ -61,8 +63,10 @@
                 {{ $as->tgl_pemeriksaan }} @endforeach</p>
             {{-- <a class="btn btn-primary btn-lg btntindaklanjut" jenis="surkon" role="button"><i
                     class="bi bi-plus-lg mr-1"></i> Surat Kontrol</a> --}}
+            <a class="btnbuatsurat btn btn-success"> Buat surat pengantar ...</a><br><br>
             <a class="btn btn-primary btn-lg btntindaklanjut" jenis="konsul" role="button"><i
-                    class="bi bi-plus-lg mr-1"></i>Konsul Poli Lain</a>
+                    class="bi bi-plus-lg mr-1"></i>Daftar</a>
+            <small id="emailHelp" class="form-text text-danger font-italic">Klik daftar jika pasien dikonsulkan / dirujuk ke poli lain dihari yang sama ...( Jika pasien dirujuk atau dikonsulkan ke poli lain dihari yang berbeda cukup buat surat pengantarnya ... )<br><br></small>
             {{-- <a class="btn btn-primary btn-lg btntindaklanjut" jenis="rujukkeluar" role="button"><i
                     class="bi bi-plus-lg mr-1"></i> Rujuk Keluar</a> --}}
         </div>
@@ -74,6 +78,21 @@
     </div>
 </div>
 <script>
+    $(".btnbuatsurat").on('click', function(event) {
+        kodekunjungan = $('#kodekunjungan').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan,
+            },
+            url: '<?= route('formpembuatansuratpengantar') ?>',
+            success: function(response) {
+                $('.formtindaklanjutnya').html(response);
+                spinner.hide()
+            }
+        });
+    });
     $(".btntindaklanjut").on('click', function(event) {
         kodekunjungan = $('#kodekunjungan').val()
         jenis = $(this).attr('jenis')

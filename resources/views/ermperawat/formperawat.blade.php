@@ -71,7 +71,7 @@
                                 <i class="fas fa-inbox mr-2"></i>Form Tindak Lanjut / Rujuk internal / Konsul
                             </a>
                         </li>
-                        <li class="nav-item" id="pemeriksaan">
+                        <li hidden class="nav-item" id="pemeriksaan">
                             <a href="#" class="nav-link" onclick="formtindaklanjut2()">
                                 <i class="fas fa-inbox mr-2"></i>Form Rujuk internal
                             </a>
