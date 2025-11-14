@@ -1,6 +1,6 @@
-@if(count($cek_konsul) > 0)
 <input hidden type="text" class="form-control" id="kode_kunjungan" aria-describedby="emailHelp"
-    value="{{ $data_kunjungan[0]->kode_kunjungan }}">
+    value="{{ $kodekunjungan }}">
+@if(count($cek_konsul) > 0)
 <label for="">Data Poliklinik konsul</label>
 <table class="table table-sm table-bordered table-hover">
     <thead>
@@ -64,6 +64,9 @@
             {{-- <a class="btn btn-primary btn-lg btntindaklanjut" jenis="surkon" role="button"><i
                     class="bi bi-plus-lg mr-1"></i> Surat Kontrol</a> --}}
             <a class="btnbuatsurat btn btn-success"> Buat surat pengantar ...</a><br><br>
+            <div class="v_t_surat mt-2 mb-2">
+                
+            </div>
             <a class="btn btn-primary btn-lg btntindaklanjut" jenis="konsul" role="button"><i
                     class="bi bi-plus-lg mr-1"></i>Daftar</a>
             <small id="emailHelp" class="form-text text-danger font-italic">Klik daftar jika pasien dikonsulkan / dirujuk ke poli lain dihari yang sama ...( Jika pasien dirujuk atau dikonsulkan ke poli lain dihari yang berbeda cukup buat surat pengantarnya ... )<br><br></small>
@@ -149,4 +152,34 @@
             }
         });
     })
+     $(document).ready(function() {
+        ambilriwayatsurat()
+     })
+    function ambilriwayatsurat()
+    {
+        spinner = $('#loader')
+        spinner.show();
+        kodekunjungan = $('#kode_kunjungan').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('ambilriwayatsurat') ?>',
+            error:function(data){
+                 Swal.fire({
+                    icon: 'error',
+                    title: 'Ooops....',
+                    text: 'Sepertinya ada masalah......',
+                    footer: ''
+                })
+                spinner.hide()
+            },
+            success: function(response) {
+                $('.v_t_surat').html(response);
+                spinner.hide()
+            }
+        });
+    }
 </script>

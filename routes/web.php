@@ -777,6 +777,9 @@ Route::get('/cetakresumeblank/{kodekunjungan}', [PdfController::class, 'cetakres
 Route::get('/generate-pdf', [PdfController::class, 'generatePDF']);
 
 
+Route::post('detailsuratpengantar', [ErmController::class, 'detailsuratpengantar'])->name('detailsuratpengantar'); //formpasien_bpjs
+Route::post('ambilriwayatsurat', [ErmController::class, 'ambilriwayatsurat'])->name('ambilriwayatsurat'); //formpasien_bpjs
+Route::get('cariunitkonsul', [ErmController::class, 'cariunitkonsul'])->name('cariunitkonsul'); //formpasien_bpjs
 Route::post('formlaporanoperasimata', [ErmController::class, 'formlaporanoperasimata'])->name('formlaporanoperasimata'); //formpasien_bpjs
 Route::post('simpansurkon', [ErmController::class, 'simpansurkon'])->name('simpansurkon'); //formpasien_bpjs
 Route::post('simpanrujin', [ErmController::class, 'simpanrujin'])->name('simpanrujin'); //formpasien_bpjs
@@ -796,3 +799,4 @@ Route::get('/cetaksep_v/{nosep}', [PdfController::class, 'cetaksep']);
 // Route::get('/cetaksep_v/{sep}', [SimrsController::class, 'Cetaksep_v']); //formpasien_bpjs
 Route::get('/cetaksep_v22/{nosep}', [PdfController::class, 'cetaksep22']);
 Route::get('/cetakcppt/{nosep}', [PdfController::class, 'cetakcppt']);
+Route::get('/cetaksuratpengantar/{id}', [PdfController::class, 'cetaksuratpengantar']);

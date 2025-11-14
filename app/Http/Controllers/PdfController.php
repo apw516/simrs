@@ -366,4 +366,28 @@ class PdfController extends Controller
         $now = $date . ' ' . $time;
         return $now;
     }
+    public function cetaksuratpengantar($id)
+    {
+        $cek = db::select('select *,fc_NAMA_UNIT1(unit_tujuan) as namaunittujuan from mt_surat_tindak_lanjut where id = ?',[$id]);
+        $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?',[$cek[0]->kode_kunjungan]);
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
+        if($cek[0]->jenis_surat == 'SURAT KONSUL'){
+            $dompdf = Pdf::loadView('pdf.cetakan_surat_konsul', compact([
+                'cek',
+                'mt_pasien','ts_kunjungan'
+            ]));
+        }else{
+              $dompdf = Pdf::loadView('pdf.cetakan_surat_rujin', compact([
+                'cek',
+                'mt_pasien','ts_kunjungan'
+            ]));
+        }
+        $dompdf->setPaper('A4', 'portrait'); // 'A4' for paper size, 'portrait' or 'landscape' for orientation
+
+        // Render the HTML as PDF
+        $dompdf->render();
+        $namaberkas = 'surat';
+        // Output the generated PDF to Browser
+        return $dompdf->stream($namaberkas . ".pdf", array("Attachment" => false));
+    }
 }

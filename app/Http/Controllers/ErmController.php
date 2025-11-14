@@ -19,6 +19,7 @@ use App\Models\erm_upload_gambar;
 use App\Models\ts_layanan_detail_dummy;
 use App\Models\ts_layanan_header_dummy;
 use App\Models\ts_header_iter;
+use App\Models\mt_surat;
 use App\Models\ts_layanan_header_order;
 use App\Models\ts_layanan_detail_order;
 use App\Models\templateresep;
@@ -74,19 +75,19 @@ class ErmController extends Controller
     {
         $date = $this->get_date();
         $kodekunjungan = $request->kodekunjungan;
-        $ts_kj = db::select('select * from ts_kunjungan where kode_kunjungan = ?',[$kodekunjungan]);
+        $ts_kj = db::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
         $dataSet['pic'] = auth()->user()->id;
         $dataSet['tgl_entry'] = $this->get_now();
         $dataSet['kode_kunjungan'] = $kodekunjungan;
         $dataSet['no_rm'] = $ts_kj[0]->no_rm;
-        $cek = db::select('select * from laporan_operasi_poli_mata where kode_kunjungan = ? LIMIT 1',[$kodekunjungan]);
-        if(count($cek) >0){
-            $user = db::select('select * from user where id = ?',[$cek[0]->pic]);
+        $cek = db::select('select * from laporan_operasi_poli_mata where kode_kunjungan = ? LIMIT 1', [$kodekunjungan]);
+        if (count($cek) > 0) {
+            $user = db::select('select * from user where id = ?', [$cek[0]->pic]);
             $username = $user[0]->nama;
-        }else{
+        } else {
             $username = '';
         }
-        return view('ermdokter.form_laporan_operasi_mata',compact([
+        return view('ermdokter.form_laporan_operasi_mata', compact([
             'date',
             'cek',
             'username'
@@ -101,23 +102,23 @@ class ErmController extends Controller
             $dataSet[$index] = $value;
         }
         $kodekunjungan = $request->kodekunjungan;
-        $ts_kj = db::select('select * from ts_kunjungan where kode_kunjungan = ?',[$kodekunjungan]);
+        $ts_kj = db::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
         $dataSet['pic'] = auth()->user()->id;
         $dataSet['tgl_entry'] = $this->get_now();
         $dataSet['kode_kunjungan'] = $kodekunjungan;
         $dataSet['no_rm'] = $ts_kj[0]->no_rm;
-        $cek = db::select('select * from laporan_operasi_poli_mata where kode_kunjungan = ? LIMIT 1',[$kodekunjungan]);
-        if(count($cek) > 0){
+        $cek = db::select('select * from laporan_operasi_poli_mata where kode_kunjungan = ? LIMIT 1', [$kodekunjungan]);
+        if (count($cek) > 0) {
             laporan_operasi_poli_mata::where('kode_kunjungan', $kodekunjungan)
                 ->update($dataSet);
-        }else{
+        } else {
             laporan_operasi_poli_mata::create($dataSet);
         }
-            $data = [
-                'kode' => 200,
-                'message' => 'Data Berhasil disimpan ...'
-            ];
-            echo json_encode($data);
+        $data = [
+            'kode' => 200,
+            'message' => 'Data Berhasil disimpan ...'
+        ];
+        echo json_encode($data);
     }
     public function indexPerawat(Request $request)
     {
@@ -415,7 +416,7 @@ class ErmController extends Controller
         $orderfarmasi = db::select('SELECT kode_kunjungan,a.keterangan as keteranganresep,kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.no_rm = ? and  kode_unit > ?', [$rm, '4000']);
         $farmasi = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit,c.`kode_tarif_detail`,d.`nama_barang`,C.`jumlah_layanan`,C.`aturan_pakai` FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header` INNER JOIN mt_barang d ON c.`kode_barang` = d.`kode_barang` WHERE SUBSTR(b.`kode_unit`,1,1) = 4 AND a.no_rm = ?", [$rm]);
         $order_penunjang = db::select('SELECT a.kode_kunjungan,fc_nama_unit1(a.`kode_unit`)AS nama_unit,a.kode_unit,SUBSTR(kode_tarif_detail,1,6) AS kode_tarif_header,c.`NAMA_TARIF` FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.`row_id_header` INNER JOIN mt_tarif_header c ON SUBSTR(b.kode_tarif_detail,1,6) = c.`KODE_TARIF_HEADER` WHERE a.`no_rm` = ? AND a.`kode_unit` < ?', [$rm, '4000']);
-        $penunjang = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit,c.`kode_tarif_detail`,d.`NAMA_TARIF`,b.kode_unit FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header` INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER` WHERE SUBSTR(b.`kode_unit`,1,1) = 3 AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883') AND a.no_rm = ?", [$rm]);            
+        $penunjang = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit,c.`kode_tarif_detail`,d.`NAMA_TARIF`,b.kode_unit FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header` INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER` WHERE SUBSTR(b.`kode_unit`,1,1) = 3 AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883') AND a.no_rm = ?", [$rm]);
         return view('ermtemplate.form_catatan_medis_baru', compact([
             'kunjungan',
             'rm',
@@ -7225,7 +7226,8 @@ class ErmController extends Controller
             'cek_konsul',
             'kunjunganKronis',
             'selisih',
-            'cek_iter'
+            'cek_iter',
+            'kodekunjungan'
         ]));
         // } else {
         //     return view('ermtemplate.dokterbelummengisi');
@@ -8698,7 +8700,23 @@ class ErmController extends Controller
     }
     public function formpembuatansuratpengantar(Request $request){
         $kodekunjungan = $request->kodekunjungan;
-        return view('ermtemplate.form_surat_pengantar');
+        $date = $this->get_date();
+        return view('ermtemplate.form_surat_pengantar',compact([
+            'kodekunjungan','date'
+        ]));
+    }
+    public function cariunitkonsul(Request $request)
+    {
+        $r = $request['term'];
+        $result = mt_unit::where('nama_unit', 'LIKE', "%{$r}%")->where('group_unit', '=', 'J')->get();
+        if (count($result) > 0) {
+            foreach ($result as $row)
+                $arr_result[] = array(
+                    'label' => $row['nama_unit'],
+                    'kode' => $row['kode_unit'],
+                );
+            echo json_encode($arr_result);
+        }
     }
     public function simpansurkon(Request $request)
     {
@@ -8709,25 +8727,1586 @@ class ErmController extends Controller
             $value =  $nama['value'];
             $dataSet[$index] = $value;
         }
-                dd($kode_kunjungan);
-
-        dd($dataSet);
+        if($dataSet['unittujuan'] == ''){
+        $data = [
+            'kode' => 500,
+            'message' => 'Unit belum dipilih'
+        ];
+        echo json_encode($data);
+        die;
+        }
+        $ts_kunjungan = db::select('select * from ts_kunjungan where kode_kunjungan = ?',[$kode_kunjungan]);
+        if (empty($dataSet['konsul1'])) {
+            $konsul1 = 0;
+        } else {
+            $konsul1 = 1;
+        }
+        if (empty($dataSet['konsul2'])) {
+            $konsul2 = 0;
+        } else {
+            $konsul2 = 1;
+        }
+        if (empty($dataSet['konsul3'])) {
+            $konsul3 = 0;
+        } else {
+            $konsul3 = 1;
+        }
+        
+        $data = [
+            'kode_kunjungan' => $kode_kunjungan,
+            'no_rm' => $ts_kunjungan[0]->no_rm,
+            'unit_asal' => $ts_kunjungan[0]->kode_unit,
+            'dok_kirim' => $ts_kunjungan[0]->kode_paramedis,
+            'unit_tujuan' =>$dataSet['unittujuan'],
+            'tanggal_surat' =>$dataSet['tanggalkonsul'],
+            'tanggal_entry' => $this->get_now(),
+            'keterangan' => $dataSet['keterangan'],
+            'keterangan_klinis' => '',
+            'konsul1' => $konsul1,
+            'konsul2' => $konsul2,
+            'konsul3' => $konsul3,
+            'konsul4' => '',
+            'jenis_surat' => 'SURAT KONSUL',
+        ];
+        $cek = db::select('select * from mt_surat_tindak_lanjut where kode_kunjungan = ? and unit_tujuan = ? and jenis_surat = ?',[$kode_kunjungan,$dataSet['unittujuan'],'SURAT KONSUL']);
+        if(count($cek) > 0){
+            mt_surat::where('id', $cek[0]->id)
+            ->update($data);
+        }else{
+            mt_surat::create($data);
+        }
+        $data = [
+            'kode' => 200,
+            'message' => 'Data surat sudah disimpan ...'
+        ];
+        echo json_encode($data);
+        die;
     }
     public function simpanrujin(Request $request)
     {
         $data = json_decode($_POST['data'], true);
         $kode_kunjungan = $request->kode_kunjungan;
+        $ts_kunjungan = db::select('select * from ts_kunjungan where kode_kunjungan = ?',[$kode_kunjungan]);
         foreach ($data as $nama) {
             $index =  $nama['name'];
             $value =  $nama['value'];
             $dataSet[$index] = $value;
         }
-        dd($kode_kunjungan);
-        dd($dataSet);
+        if($dataSet['unittujuan2'] == ''){
+        $data = [
+            'kode' => 500,
+            'message' => 'Unit belum dipilih'
+        ];
+        echo json_encode($data);
+        die;
+        }
+        if (empty($dataSet['konsul1'])) {
+            $konsul1 = 0;
+        } else {
+            $konsul1 = 1;
+        }
+        if (empty($dataSet['konsul2'])) {
+            $konsul2 = 0;
+        } else {
+            $konsul2 = 1;
+        }
+        if (empty($dataSet['konsul3'])) {
+            $konsul3 = 0;
+        } else {
+            $konsul3 = 1;
+        }
+        if (empty($dataSet['konsul4'])) {
+            $konsul4 = 0;
+        } else {
+            $konsul4 = 1;
+        }
+         $data = [
+            'kode_kunjungan' => $kode_kunjungan,
+            'no_rm' => $ts_kunjungan[0]->no_rm,
+            'unit_asal' => $ts_kunjungan[0]->kode_unit,
+            'dok_kirim' => $ts_kunjungan[0]->kode_paramedis,
+            'unit_tujuan' =>$dataSet['unittujuan2'],
+            'tanggal_surat' =>$dataSet['tanggalkonsul'],
+            'tanggal_entry' => $this->get_now(),
+            'keterangan' => $dataSet['keterangan'],
+            'keterangan_klinis' => $dataSet['keteranganklinis'],
+            'konsul1' => $konsul1,
+            'konsul2' => $konsul2,
+            'konsul3' => $konsul3,
+            'konsul4' => $konsul4,
+            'jenis_surat' => 'SURAT RUJUK INTERNAL',
+        ];
+         $cek = db::select('select * from mt_surat_tindak_lanjut where kode_kunjungan = ? and unit_tujuan = ? and jenis_surat = ?',[$kode_kunjungan,$dataSet['unittujuan2'],'SURAT RUJUK INTERNAL']);
+        if(count($cek) > 0){
+            mt_surat::where('id', $cek[0]->id)
+            ->update($data);
+        }else{
+            mt_surat::create($data);
+        }
+          $data = [
+            'kode' => 200,
+            'message' => 'Data surat sudah disimpan ...'
+        ];
+        echo json_encode($data);
+        die;
+    }
+    public function ambilriwayatsurat(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        $cek = db::select('select *,fc_NAMA_UNIT1(unit_tujuan) as namaunittujuan from mt_surat_tindak_lanjut where kode_kunjungan = ?',[$kodekunjungan]);
+        return view('ermtemplate.tabel_riwayat_surat',compact([
+            'cek'
+        ]));
+    }
+    public function detailsuratpengantar(Request $request)
+    {
+        $cek = db::select('select *,fc_NAMA_UNIT1(unit_tujuan) as namaunittujuan from mt_surat_tindak_lanjut where id = ?',[$request->iddokumen]);
+        return view('ermtemplate.form_detail_surat',compact([
+            'cek'
+        ]));
     }
 }
 
+    
+    
+    
+        
+    
+    
+    
+        
+    
+    
+    
+        
+    
+    
+    
+        
+        
+            
+            
+            
+        
+        
+            
+            
+            
+            
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+        
+            
+        
+            
+                
+        
+        
+            
+            
+        
+        
+        
+    
+    
+    
+        
+        
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+        
+            
+        
+            
+                
+        
+        
+            
+            
+        
+        
+        
+    
+    
+    
+        
+        
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+        
+            
+        
+            
+                
+        
+        
+            
+            
+        
+        
+        
+    
+    
+    
+        
+        
+        
+            
+            
+        
+        
+        
+    
+    
+    
+        
+        
+            
+            
+        
+        
+        
+    
+    
+    
+        
+        
+        
+        
+            
+            
+        
+    
+    
+    
+        
+        
+        
+        
+        
+        
+            
+            
+            
+            
+            
+        
+    
+    
+    
+        
+        
+        
+            
+            
+        
+    
+    
+    
+        
+        
+        
+        
+        
+            
+            
+            
+            
+        
+    
+    
+    
+        
+        
+        
+        
+            
+            
+            
+        
+    
+    
+    
+        
+        
+            
+            
+            
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+        
+            
+            
+        
+        
+        
+    
+    
+    
+        
+        
+            
+            
+            
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+        
+        
+            
+            
+        
+        
+        
+    
+    
+    
+        
+        
+            
+            
+            
+        
+        
+            
+        
+        
+            
+        
+        
+            
+        
+        
+            
+        
 
 
+        
+            
+        
+        
+            
+        
+        
+            
+        
+        
+            
+        
 
+
+        
+            
+        
+        
+            
+        
+        
+            
+        
+        
+            
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        
+        
+            
+        
+            
+            
+        
+        
+        
+    
+    
+    
+        
+        
+         
+         
+            
+        
+    
+    
+    
+        
+         
+        
+         
+            
+            
+        
+    
+    
+    
+        
+        
+         
+            
+            
+        
+    
+    
+    
+        
+        
+        
+            
+                
+                    
+                    
+                
+            
+        
+    
+    
+    
+        
+        
+        
+            
+            
+            
+        
+          
+            
+                
+                
+            
+            
+            
+        
+         
+        
+            
+        
+            
+        
+        
+            
+        
+            
+        
+        
+            
+        
+            
+        
+
+        
+            
+            
+            
+            
+             
+             
+            
+            
+            
+            
+            
+            
+            
+            
+        
+           
+          
+            
+                
+          
+            
+        
+        
+            
+            
+        
+        
+        
+    
+    
+    
+        
+        
+         
+        
+            
+            
+            
+        
+          
+            
+                
+                
+            
+            
+            
+        
+        
+            
+        
+            
+        
+        
+            
+        
+            
+        
+        
+            
+        
+            
+        
+        
+            
+        
+            
+        
+        
+            
+            
+            
+            
+             
+             
+            
+            
+            
+            
+            
+            
+            
+            
+        
+           
+          
+            
+                
+          
+            
+        
+        
+            
+            
+        
+        
+        
+    
+
+
+    
+    
+    
+        
+    
+    
+    
+        
+    
+    
+    
+        
+    
+    
+    
+        
+        
+            
+            
+            
+        
+        
+            
+            
+            
+            
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+        
+            
+        
+            
+                
+        
+        
+            
+            
+        
+        
+        
+    
+    
+    
+        
+        
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+        
+            
+        
+            
+                
+        
+        
+            
+            
+        
+        
+        
+    
+    
+    
+        
+        
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+        
+            
+        
+            
+                
+        
+        
+            
+            
+        
+        
+        
+    
+    
+    
+        
+        
+        
+            
+            
+        
+        
+        
+    
+    
+    
+        
+        
+            
+            
+        
+        
+        
+    
+    
+    
+        
+        
+        
+        
+            
+            
+        
+    
+    
+    
+        
+        
+        
+        
+        
+        
+            
+            
+            
+            
+            
+        
+    
+    
+    
+        
+        
+        
+            
+            
+        
+    
+    
+    
+        
+        
+        
+        
+        
+            
+            
+            
+            
+        
+    
+    
+    
+        
+        
+        
+        
+            
+            
+            
+        
+    
+    
+    
+        
+        
+            
+            
+            
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+        
+            
+            
+        
+        
+        
+    
+    
+    
+        
+        
+            
+            
+            
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+                
+                
+            
+            
+            
+        
+        
+            
+        
+        
+            
+            
+        
+        
+        
+    
+    
+    
+        
+        
+            
+            
+            
+        
+        
+            
+        
+        
+            
+        
+        
+            
+        
+        
+            
+        
+
+
+        
+            
+        
+        
+            
+        
+        
+            
+        
+        
+            
+        
+
+
+        
+            
+        
+        
+            
+        
+        
+            
+        
+        
+            
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        
+        
+            
+        
+            
+            
+        
+        
+        
+    
+    
+    
+        
+        
+         
+         
+            
+        
+    
+    
+    
+        
+         
+        
+         
+            
+            
+        
+    
+    
+    
+        
+        
+         
+            
+            
+        
+    
+    
+    
+        
+        
+        
+            
+                
+                    
+                    
+                
+            
+        
+    
+    
+    
+        
+        
+        
+            
+            
+            
+        
+          
+            
+                
+                
+            
+            
+            
+        
+         
+        
+            
+        
+            
+        
+        
+            
+        
+            
+        
+        
+            
+        
+            
+        
+
+        
+            
+            
+            
+            
+             
+             
+            
+            
+            
+            
+            
+            
+            
+            
+        
+           
+          
+            
+                
+          
+            
+        
+        
+            
+            
+        
+        
+        
+    
+    
+    
+        
+        
+         
+        
+            
+            
+            
+        
+          
+            
+                
+                
+            
+            
+            
+        
+        
+            
+        
+            
+        
+        
+            
+        
+            
+        
+        
+            
+        
+            
+        
+        
+            
+        
+            
+        
+        
+            
+            
+            
+            
+             
+             
+            
+            
+            
+            
+            
+            
+            
+            
+        
+           
+          
+            
+                
+          
+            
+        
+        
+            
+            
+        
+        
+        
+    
 

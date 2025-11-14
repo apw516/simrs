@@ -13,11 +13,12 @@
                     <form action="" class="formsuratkonsul">
                         <div class="form-group">
                             <label for="exampleFormControlInput1">Pilih Poli</label>
-                            <input type="text" class="form-control" id="unittujuan" name="unittujuan" placeholder="name@example.com">
+                            <input type="text" class="form-control" id="namaunittujuan" name="namaunittujuan" placeholder="name@example.com">
+                            <input type="text" hidden class="form-control" id="unittujuan" name="unittujuan" placeholder="name@example.com">
                         </div>
                         <div class="form-group">
                             <label for="exampleFormControlInput1">Tanggal Konsul</label>
-                            <input type="date" class="form-control" id="tanggalkonsul" name="tanggalkonsul" placeholder="name@example.com">
+                            <input type="date" class="form-control" id="tanggalkonsul" name="tanggalkonsul" placeholder="name@example.com" value="{{ $date }}">
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="1" id="konsul1" name="konsul1">
@@ -53,11 +54,12 @@
                     <form action="" class="formsuratrujukinternal">
                         <div class="form-group">
                             <label for="exampleFormControlInput1">Pilih Poli</label>
-                            <input type="text" class="form-control" id="unittujuan" name="unittujuan" placeholder="name@example.com">
+                            <input type="text" class="form-control" id="namaunittujuan2" name="namaunittujuan2" placeholder="name@example.com">
+                            <input hidden type="text" class="form-control" id="unittujuan2" name="unittujuan2" placeholder="name@example.com">
                         </div>
                         <div class="form-group">
                             <label for="exampleFormControlInput1">Tanggal Konsul</label>
-                            <input type="date" class="form-control" id="tanggalkonsul" name="tanggalkonsul" placeholder="name@example.com">
+                            <input type="date" class="form-control" id="tanggalkonsul" name="tanggalkonsul" placeholder="name@example.com" value="{{ $date }}">
                         </div>
                         <div class="form-group">
                             <label for="exampleFormControlTextarea1">Keterangan Klinik / Diagnosa </label>
@@ -100,6 +102,7 @@
         </div>
     </div>
 </div>
+<input type="text" value="{{ $kodekunjungan }}" id="kode_kunjungan" hidden>
 <script>
     function gantiform() {
         cek = $('#exampleFormControlSelect1').val()
@@ -152,15 +155,16 @@
                         , text: data.message
                         , footer: ''
                     })
+                    ambilriwayatsurat()
                 }
             }
         });
     }
-
     function simpansurkon() {
         var data = $('.formsuratkonsul').serializeArray();
         spinner = $('#loader')
         spinner.show();
+        kode_kunjungan = $('#kode_kunjungan').val()
         $.ajax({
             async: true
             , type: 'post'
@@ -168,6 +172,7 @@
             , data: {
                 _token: "{{ csrf_token() }}"
                 , data: JSON.stringify(data)
+                , kode_kunjungan
             }
             , url: '<?= route('simpansurkon') ?>'
             , error: function(data) {
@@ -195,9 +200,26 @@
                         , text: data.message
                         , footer: ''
                     })
+                    ambilriwayatsurat()
                 }
             }
         });
     }
+    $(document).ready(function() {
+        $('#namaunittujuan').autocomplete({
+            source: "<?= route('cariunitkonsul') ?>"
+            , select: function(event, ui) {
+                $('[id="namaunittujuan"]').val(ui.item.label);
+                $('[id="unittujuan"]').val(ui.item.kode);
+            }
+        });
+        $('#namaunittujuan2').autocomplete({
+            source: "<?= route('cariunitkonsul') ?>"
+            , select: function(event, ui) {
+                $('[id="namaunittujuan2"]').val(ui.item.label);
+                $('[id="unittujuan2"]').val(ui.item.kode);
+            }
+        });
+    });
 
 </script>
