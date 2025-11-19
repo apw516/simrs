@@ -63,7 +63,8 @@
                 {{ $as->tgl_pemeriksaan }} @endforeach</p>
             {{-- <a class="btn btn-primary btn-lg btntindaklanjut" jenis="surkon" role="button"><i
                     class="bi bi-plus-lg mr-1"></i> Surat Kontrol</a> --}}
-            <a class="btnbuatsurat btn btn-success"> Buat surat pengantar ...</a><br><br>
+            <a class="btnbuatsurat btn btn-success"> Buat surat pengantar Konsul / Rujin ...</a><br><br>
+            <a class="btnbuatsurat btn btn-success" onclick="goto_suratkontrol()"> Buat Surat Kontrol ...</a><br><br>
             <div class="v_t_surat mt-2 mb-2">
                 
             </div>

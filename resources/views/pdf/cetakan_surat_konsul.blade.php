@@ -178,10 +178,8 @@
                     <input type="checkbox" @if($cek[0]->konsul2 == 1) checked @endif readonly>
                     <label class="form-check-label" for="exampleCheck1">Alih Rawat</label> <br>
                     <input type="checkbox" @if($cek[0]->konsul3 == 1) checked @endif readonly>
-                    <label class="form-check-label" for="exampleCheck1">Tim Medis, sebagai DPJP : dr .................</label> <br><br>
+                    <label class="form-check-label" for="exampleCheck1">Tim Medis, sebagai DPJP : dr .................</label> <br>
                     Pasien dengan : {{ $cek[0]->keterangan }} 
-                    <br>
-                    <br>
                     <br>
                     <br>
                     <br>
@@ -289,7 +287,7 @@
                     </tbody>
                     <tr>
                         <td colspan="2" style="text-align: right">
-                            <p style="margin-right:135px">Waled {{ \Carbon\Carbon::parse($cek[0]->tanggal_entry )->format('d-M-Y') }}                             </p>
+                            <p style="margin-right:135px">Waled ,{{ \Carbon\Carbon::parse($cek[0]->tanggal_entry )->format('d-M-Y') }}                             </p>
                         </td>
                     </tr>
                     <tr>
@@ -312,10 +310,7 @@
                 <p style="text-align: left;font-style:oblique;margin-top:10px">Jawaban Konsul : <br> <input type="checkbox" readonly> <label class="form-check-label" for="exampleCheck1">Kondisi  saat ini</label>,  <input type="checkbox" readonly>
                     <label class="form-check-label" for="exampleCheck1">Setuju Alih Rawat</label> <br> <input type="checkbox" readonly>
                     <label class="form-check-label" for="exampleCheck1">Setuju Tim medis, dengan DPJP, dr : ..................</label><br>
-                <br>
-                <br>
                 Yth. TS.
-                <br>
                 <br>
                 <br>
                 <br>
@@ -325,7 +320,7 @@
                     </tbody>
                     <tr>
                         <td colspan="2" style="text-align: right">
-                            <p style="margin-right:135px">Waled {{ \Carbon\Carbon::parse($cek[0]->tanggal_entry )->format('d-M-Y') }}                             </p>
+                            <p style="margin-right:135px">Waled, ............................</p>
                         </td>
                     </tr>
                     <tr>

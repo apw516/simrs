@@ -40,7 +40,8 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleFormControlTextarea1">Keterangan</label>
-                            <textarea class="form-control" id="keterangan" name="keterangan" rows="3"></textarea>
+                            <textarea class="form-control" id="keterangan" name="keterangan" rows="3">@if(count($assdok) >0)Diagnosa Kerja : {{ $assdok[0]->diagnosakerja }}
+                            Keterangan : {{ $assdok[0]->keterangan_tindak_lanjut}}@endif</textarea>
                         </div>
                     </form>
                 </div>
@@ -63,7 +64,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleFormControlTextarea1">Keterangan Klinik / Diagnosa </label>
-                            <textarea class="form-control" id="keterangan" name="keteranganklinis" rows="3"></textarea>
+                            <textarea class="form-control" id="keterangan" name="keteranganklinis" rows="3">@if(count($assdok) >0)Diagnosa Kerja : {{ $assdok[0]->diagnosakerja }} @endif</textarea>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="1" id="konsul1" name="konsul1">
@@ -91,7 +92,8 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleFormControlTextarea1">Keterangan tindakan lain</label>
-                            <textarea class="form-control" id="keterangan" name="keterangan" rows="3"></textarea>
+                            <textarea class="form-control" id="keterangan" name="keterangan" rows="3">@if(count($assdok) >0)
+                            Keterangan : {{ $assdok[0]->keterangan_tindak_lanjut}} @endif</textarea>
                         </div>
                     </form>
                 </div>

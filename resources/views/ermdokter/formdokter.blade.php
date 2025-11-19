@@ -147,7 +147,11 @@
                 <button class="btn btn-danger" onclick="tutupicare()"><i class="bi bi-x mr-1 ml-1"></i> Tutup</button>
             </div>
         </div>
+        <div class="warning catatankonsul">
+            
+        </div>       
         <div hidden class="slide3">
+
         </div>
     </div>
     <!-- /.col -->
@@ -178,7 +182,27 @@
     $(document).ready(function() {
         rm = $('#nomorrm').val()
         formcatatanmedis(rm)
+        catatankonsul()
     })
+    function catatankonsul()
+    {
+        rm = $('#nomorrm').val()
+        kodekunjungan = $('#kodekunjungan').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm,kodekunjungan
+            },
+            url: '<?= route('formcatatankonsul') ?>',
+            success: function(response) {
+                $('.catatankonsul').html(response);
+                spinner.hide()
+            }
+        });
+    }
     $(".lihatcppt2").click(function() {
         status = $('#statuslihatcppt2').val()
         // if (status == 0) {

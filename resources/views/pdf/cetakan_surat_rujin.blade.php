@@ -67,26 +67,38 @@
             <h3><img src="{{ public_path('../public/img/logo_rs.png') }}" style="width: 77%;margin-top:23px;margin-left:10px"></h3>
         </div>
     </div>
-    <hr style="width:90%;text-align:left;margin-center0;margin-top:160px">
+    <hr style="width:90%;text-align:left;margin-top:160px">
     <p clas="kolom-tengah" style="margin-left:290px;font-weight:bold">FORMULIR RUJUKAN INTERNAL</p>
     <p clas="kolom-tengah" style="float:right;margin-right:60px">NO : ................</p>
     <p style="margin-left:40px">Kepada Yth ....... <br> Poli {{ $cek[0]->namaunittujuan}}</p>
+    <p style="margin-left:40px">Berikut kami kirimkan pasien : </p>
+    <p style="margin-left:70px">Nama Pasien <a style="margin-left:73px"> : {{ $mt_pasien[0]->nama_px }}</a></p>
+    <p style="margin-left:70px">Tanggal lahir / Umur <a style="margin-left:21px"> : {{ $mt_pasien[0]->tgl_lahirs }}</a></p>
+    <p style="margin-left:70px">No RM <a style="margin-left:108px"> : {{ $mt_pasien[0]->no_rm }}</a></p>
+    <p style="margin-left:70px">Keterangan klinis / diagnosa <a style="margin-left:50px"> : {{ $cek[0]->keterangan_klinis }}</a></p>
+    <p style="margin-left:40px">Mohon untuk dapat dilakukan</p>
+    <input style="margin-left:100px" type="checkbox" @if($cek[0]->konsul1 == 1) checked @endif readonly>
+    <label class="form-check-label" for="exampleCheck1">Konsultasi / Konseling</label> ,
+    <input type="checkbox" @if($cek[0]->konsul2 == 1) checked @endif readonly>
+    <label class="form-check-label" for="exampleCheck1">Fisioterapi</label>,
+    <input type="checkbox" @if($cek[0]->konsul3 == 1) checked @endif readonly>
+    <label class="form-check-label" for="exampleCheck1">Rawat Luka</label> <br>
+    <input style="margin-left:100px" type="checkbox" @if($cek[0]->konsul3 == 1) checked @endif readonly>
+    <label class="form-check-label" for="exampleCheck1">Tindakan lain</label>
+    <p style="margin-left:40px">Keterangan : {{ $cek[0]->keterangan }}</p>
+    <p style="margin-left:40px">Mohon untuk dapat diberikan umpan balik berikut dibawah ini. Terima kasih </p>
+    <p style="margin-left:540px">Waled ,{{ \Carbon\Carbon::parse($cek[0]->tanggal_entry )->format('d-M-Y') }} </p><br>
     <br>
+    <p style="margin-left:500px">( {{ $ts_kunjungan[0]->nama_dokter}} ) </p>
+    <hr style="width:90%;text-align:left;margin-center0;margin-top:0px">
+    <p clas="kolom-tengah" style="margin-left:290px;font-weight:bold">FORMULIR UMPAN BALIK</p>
+    <p style="margin-left:40px">Kepada Yth ....... <br> Poli {{ $cek[0]->unitasal}}</p>
+    <p style="margin-left:40px">Berikut hasil yang kami dapatkan : ...............................................................................................................................................................................</p>
+    <p style="margin-left:40px">Saran : ...................................................................................................................................................................</p>
+    <p style="margin-left:40px">Atas konsultasinya kami sampaikan terima kasih. </p>
+    <p style="margin-left:540px">Waled ,.................................. </p><br>
     <br>
-    <p>Berikut kami kirimkan pasien : </p>
-    <p>Nama Pasien : </p>
-    <p>Tanggal lahir / Umur : </p>
-    <p>No RM : </p>
-    <p>Keterangan klinis / diagnosis : </p>
-    <p>Mohon untuk dapat dilakukan : </p>
-     <input type="checkbox" @if($cek[0]->konsul1 == 1) checked @endif readonly>
-                    <label class="form-check-label" for="exampleCheck1">Konsultasi / Konseling</label> ,
-                    <input type="checkbox" @if($cek[0]->konsul2 == 1) checked @endif readonly>
-                    <label class="form-check-label" for="exampleCheck1">Fisioterapi</label>,
-                    <input type="checkbox" @if($cek[0]->konsul3 == 1) checked @endif readonly>
-                    <label class="form-check-label" for="exampleCheck1">Rawat Luka</label> <br>
-                    <input type="checkbox" @if($cek[0]->konsul3 == 1) checked @endif readonly>
-                    <label class="form-check-label" for="exampleCheck1">Tindakan lain : .........................</label>
-                    <p>Keterangan : </p>
+    <p style="margin-left:500px">( ...................................................... ) </p>
+
 </body>
 </html>

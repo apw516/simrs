@@ -38,8 +38,10 @@
             data-target="#modalhasilrad"><i class="bi bi-journal-text"></i> Hasil Radiologi</button>
         <button class="btn btn-info mb-2 liathasil_pa" nomorrm="{{ $rm }}" data-toggle="modal"
             data-target="#modalhasilpa"><i class="bi bi-journal-text"></i> Hasil Lab PA</button>
-        <button class="btn btn-success mb-2 lihatcppt" nomorrm="{{ $rm }}"><i class="bi bi-journal-text"></i> CATATAN PERKEMBANGAN PASIEN TERINTEGRASI ( RAWAT JALAN )</button>
+        <button class="btn btn-success mb-2 lihatcppt" nomorrm="{{ $rm }}"><i class="bi bi-journal-text"></i> CPPT( RAWAT JALAN )</button>
         <button class="btn btn-success mb-2 catatanmedis"><i class="bi bi-journal-text"></i> RIWAYAT KUNJUNGAN</button>
+        <button class="btn btn-success mb-2 catatanmedis" data-toggle="modal"
+            data-target="#modalsuratkonsul"><i class="bi bi-journal-text"></i>SURAT KONSUL / RUJUK INTERNAL </button>
         <div hidden class="slide3">
 
         </div>
@@ -1080,6 +1082,53 @@
     </div>
 </div>
 <!-- Modal -->
+<div class="modal fade" id="modalsuratkonsul" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Riwayat Konsul / Rujuk Internal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               <table class="table table-sm table-bordered">
+                <thead>
+                    <th>Tanggal</th>
+                    <th>Unit Asal</th>
+                    <th>Dokter Pengirim</th>
+                    <th>Unit Tujuan</th>
+                    <th>Dokter Penerima</th>
+                    <th>Keterangan</th>
+                    <th>Jawaban</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                    @foreach ($suratkonsul as $d )
+                        <tr>
+                            <td>{{ $d->tanggal_surat}}</td>
+                            <td>{{ $d->unit_asal}}</td>
+                            <td>{{ $d->dok_kirim}}</td>
+                            <td>{{ $d->unit_tujuan}}</td>
+                            <td>{{ $d->dokter_jawab}}</td>
+                            <td>{{ $d->keterangan_klinis}} <br> {{ $d->keterangan}}</td>
+                            <td>{{ $d->jawaban}}</td>
+                            <td>
+                                <button class="btn btn-success cetakdokumen" iddokumen="{{ $d->id }}">Cetak</button>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+               </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
 <div class="modal fade" id="modalriwayattindakan" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -1603,4 +1652,10 @@
             }
         });
     })
+</script>
+<script>
+     $(".cetakdokumen").on('click', function(event) {
+        iddokumen = $(this).attr('iddokumen')
+        window.open('cetaksuratpengantar/' + iddokumen)
+    });
 </script>
