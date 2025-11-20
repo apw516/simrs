@@ -64,13 +64,14 @@
             {{-- <a class="btn btn-primary btn-lg btntindaklanjut" jenis="surkon" role="button"><i
                     class="bi bi-plus-lg mr-1"></i> Surat Kontrol</a> --}}
             <a class="btnbuatsurat btn btn-success"> Buat surat pengantar Konsul / Rujin ...</a><br><br>
+            <a class="btn btn-primary btn-lg btntindaklanjut" jenis="konsul" role="button"><i
+                    class="bi bi-plus-lg mr-1"></i>Daftar</a>
+            <h5 id="emailHelp" class="form-text text-danger font-italic">Klik daftar jika pasien dikonsulkan / dirujuk ke poli lain dihari yang sama ...( Jika pasien dirujuk atau dikonsulkan ke poli lain dihari yang berbeda cukup buat surat pengantarnya ... )<br><br></h5>
             <a class="btnbuatsurat btn btn-success" onclick="goto_suratkontrol()"> Buat Surat Kontrol ...</a><br><br>
             <div class="v_t_surat mt-2 mb-2">
                 
             </div>
-            <a class="btn btn-primary btn-lg btntindaklanjut" jenis="konsul" role="button"><i
-                    class="bi bi-plus-lg mr-1"></i>Daftar</a>
-            <small id="emailHelp" class="form-text text-danger font-italic">Klik daftar jika pasien dikonsulkan / dirujuk ke poli lain dihari yang sama ...( Jika pasien dirujuk atau dikonsulkan ke poli lain dihari yang berbeda cukup buat surat pengantarnya ... )<br><br></small>
+            
             {{-- <a class="btn btn-primary btn-lg btntindaklanjut" jenis="rujukkeluar" role="button"><i
                     class="bi bi-plus-lg mr-1"></i> Rujuk Keluar</a> --}}
         </div>
@@ -84,6 +85,7 @@
 <script>
     $(".btnbuatsurat").on('click', function(event) {
         kodekunjungan = $('#kodekunjungan').val()
+        Swal.fire("Silahkan isi form dibawah ... !");
         $.ajax({
             type: 'post',
             data: {
@@ -100,6 +102,7 @@
     $(".btntindaklanjut").on('click', function(event) {
         kodekunjungan = $('#kodekunjungan').val()
         jenis = $(this).attr('jenis')
+        Swal.fire("Silahkan isi form dibawah ... !");
         $.ajax({
             type: 'post',
             data: {

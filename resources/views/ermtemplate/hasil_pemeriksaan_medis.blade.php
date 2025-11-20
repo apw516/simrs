@@ -3,6 +3,102 @@
     <div class="card-body">
         @foreach ($assesmen_dokter as $cp)
             @if ($cp->kode_unit != '1028')
+            @if($cp->kode_unit == '1046')
+                <table class="table table-sm table-bordered table-striped">
+                    <tr>
+                        <td>1. Lamanya nyeri ( hari / bulan / tahunan)</td>
+                        <td>: {{ $cp->lamanyeri }}</td>
+                    </tr>
+                    <tr>
+                        <td>2. Bagaimana kwalitas nyeri sekarang ?</td>
+                        <td>: {{ $cp->kualitasnyeri }}</td>
+                    </tr>
+                    <tr>
+                        <td>3. Dalam satu bulan terakhir bagaimana kwalitas nyeri ?</td>
+                        <td>: {{ $cp->kualitasnyerisatubulan }}</td>
+                    </tr>
+                    <tr>
+                        <td>4. Tandai Gambaran nyeri anda</td>
+                        <td>
+                                A. Tetap nyeri kadang agak meningkat
+                            <input disabled readonly class="form-check-input mr-1 ml-1" type="checkbox" value="1" id="gambar1" name="gambar1" @if($cp->gambar1 == 1) checked @endif>
+                            <img width="10%" src="{{ asset('public/img/nyeri1.png') }}" alt="" class="mr-5 ml-4">
+                                <br>B. Tetap nyeri kadang sangat nyeri
+                            <input disabled readonly class="form-check-input mr-1 ml-1" type="checkbox" value="1" id="gambar1" name="gambar1" @if($cp->gambar2 == 1) checked @endif>
+                            <img width="10%" src="{{ asset('public/img/nyeri2.png') }}" alt="" class="mr-5 ml-4">
+                                <br>C. Nyeri dengan episode tanpa nyeri
+                            <input  disabled readonlyclass="form-check-input mr-1 ml-1" type="checkbox" value="1" id="gambar1" name="gambar1" @if($cp->gambar3 == 1) checked @endif>
+                            <img width="10%" src="{{ asset('public/img/nyeri3.png') }}" alt="" class="mr-5 ml-4">
+                                <br>D. Mendadak lebih nyeri, dengan episode nyeri diantaranya
+                            <input disabled readonly class="form-check-input mr-1 ml-1" type="checkbox" value="1" id="gambar1" name="gambar1" @if($cp->gambar4 == 1) checked @endif>
+                            <img width="10%" src="{{ asset('public/img/nyeri4.png') }}" alt="" class="mr-5 ml-4">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>5. Apakah nyeri menyebar ke bagian tubuh yang lain ?</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Keterangan</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Obat obatan</td>
+                        <td>
+                            <div class="card">
+                                <div class="card-header text-bold bg-secondary">Order yang dikirim dokter</div>
+                                <div class="card-body">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <th>Nama Obat</th>
+                                            <th>qty</th>
+                                            <th>Aturan Pakai</th>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($orderfarmasi as $t)
+                                                <tr>
+                                                    <td>{{ $t->kode_barang }}
+                                                    </td>
+                                                    <td>{{ $t->jumlah_layanan }}
+                                                    </td>
+                                                    <td>{{ $t->aturan_pakai }}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            {{-- <div class="card">
+                                <div class="card-header text-bold bg-secondary">Obat yang dilayani</div>
+                                <div class="card-body">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <th>Nama Obat</th>
+                                            <th>qty</th>
+                                            <th>Aturan Pakai</th>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($farmasi as $t)
+                                                @if ($t->kode_kunjungan == $cp->id_kunjungan)
+                                                    <tr>
+                                                        <td>{{ $t->nama_barang }}
+                                                        </td>
+                                                        <td>{{ $t->jumlah_layanan }}
+                                                        </td>
+                                                        <td>{{ $t->aturan_pakai }}
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div> --}}
+                        </td>
+                    </tr>
+                </table>
+                @else
                 <table class="table table-sm table-bordered table-striped">
                     <tr>
                         <td>Sumber Data</td>
@@ -269,7 +365,8 @@
                         <td>{{ $cp->nama_dokter }}</td>
                     </tr>
                 </table>
-            @else
+            @endif
+            @else               
                 <table class="table table-sm">
                     <tr>
                         <td>

@@ -64,11 +64,18 @@
                                 </a>
                             </li>
                         @endif
-                        <li class="nav-item" id="pemeriksaan">
+                        <li class="nav-item" id="pemeriksaan" @if(auth()->user()->unit == '1046') hidden @endif>
                             <a href="#" class="nav-link" onclick="formpemeriksaandokter()">
                                 <i class="fas fa-inbox mr-2"></i>Catatan Perkembangan Pasien Terintegrasi ( CPPT )
                             </a>
                         </li>
+                        @if(auth()->user()->unit == '1046')
+                        <li class="nav-item" id="pemeriksaan">
+                            <a href="#" class="nav-link" onclick="pengkajiannyeri()">
+                                <i class="fas fa-inbox mr-2"></i>PENGKAJIAN NYERI ACUTE/ CHRONIC/CANCER
+                            </a>
+                        </li>
+                        @endif
                         {{-- <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formpemeriksaankhusus()">
                             <i class="fas fa-inbox mr-2"></i>Pemeriksaan Khusus
@@ -278,6 +285,25 @@
                 rm
             },
             url: '<?= route('ambilcatatanmedis_pasien') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    function pengkajiannyeri() {
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('formpengkajiannyeri') ?>',
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()
