@@ -8089,12 +8089,15 @@ class ErmController extends Controller
     public function lihathasilpenunjang_rad(Request $request)
     {
         $rm = $request->nomorrm;
+        $DATA = db::connection('mysql6')->select('select * from order_table where PID = ?',[$rm]);
+        // dd($data);
         $hasil_rad = DB::select('SELECT * FROM ts_hasil_expertisi WHERE no_rm = ? ORDER BY id DESC', [$rm]);
         $date = $this->get_date();
         return view('ermtemplate.view_hasil_penunjang_rad', compact([
             'hasil_rad',
             'rm',
-            'date'
+            'date',
+            'DATA'
         ]));
     }
     public function lihathasilpenunjang_pa(Request $request)
