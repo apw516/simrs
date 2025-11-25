@@ -7,6 +7,8 @@
             data-target="#modalberkasluar"><i class="bi bi-journal-text"></i> BERKAS LAIN</button>
         <button class="btn btn-info mb-2 liathasil_lab" nomorrm="{{ $rm }}" data-toggle="modal"
             data-target="#modalhasillab"><i class="bi bi-journal-text"></i> Hasil laboratorium</button>
+        <button class="btn btn-info mb-2 liathasil_lab2" nomorrm="{{ $rm }}" data-toggle="modal"
+            data-target="#modalhasillab"><i class="bi bi-journal-text"></i> Hasil laboratorium Spesial Order</button>
         <button class="btn btn-info mb-2 liathasil_rad" nomorrm="{{ $rm }}" data-toggle="modal"
             data-target="#modalhasilrad"><i class="bi bi-journal-text"></i> Hasil Radiologi</button>
         <button class="btn btn-info mb-2 liathasil_pa" nomorrm="{{ $rm }}" data-toggle="modal"
@@ -1565,6 +1567,23 @@
                 nomorrm
             },
             url: '<?= route('lihathasilpenunjang_lab') ?>',
+            success: function(response) {
+                $('.v_hasil_penunjang_lab').html(response);
+                spinner.hide()
+            }
+        });
+    })
+    $(".liathasil_lab2").click(function() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm
+            },
+            url: '<?= route('lihathasilpenunjang_lab2') ?>',
             success: function(response) {
                 $('.v_hasil_penunjang_lab').html(response);
                 spinner.hide()

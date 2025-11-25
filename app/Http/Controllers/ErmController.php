@@ -8086,6 +8086,22 @@ class ErmController extends Controller
             'rm'
         ]));
     }
+    public function lihathasilpenunjang_lab2(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $kunjungan = db::select('select * from ts_kunjungan where status_kunjungan != 8 and no_rm = ?',[$rm]);
+        $data = [];
+        foreach($kunjungan as $d){
+            $hasil = db::select("CALL HASIL_PK_LAB_ERM('$d->kode_kunjungan')");
+            if(count($hasil) > 0){    
+                $data[] = $hasil[0]->link;
+            }
+        }
+        return view('ermtemplate.view_hasil_penunjang_lab_2', compact([
+            'rm',
+            'data'
+        ]));
+    }
     public function lihathasilpenunjang_rad(Request $request)
     {
         $rm = $request->nomorrm;
