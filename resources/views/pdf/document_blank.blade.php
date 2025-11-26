@@ -329,7 +329,7 @@
                     <tr>
                         <td>Dokter Pemeriksa</td>
                         <td style="height:50px" colspan="3" class="">
-                            <table class="text-xxs float-left text-bold float-right">
+                            <table class="float-left text-bold float-right">
                                 {{-- <tr>
                                     <td style="height:90px" class="text-center">
                                         <br>
