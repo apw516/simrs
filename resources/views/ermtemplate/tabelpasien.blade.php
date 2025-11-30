@@ -51,7 +51,8 @@
             "lengthChange": false,
             "autoWidth": true,
             "pageLength": 10,
-            "searching": true
+            "searching": true,
+            "ordering":false
         })
     });
     $('#tablepasienpoli').on('click', '.pilihpasien', function() {

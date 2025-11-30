@@ -2,6 +2,9 @@
     <div class="card-header bg-info">CPPT
         <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
             data-target="#modalresumeperawat"><i class="bi bi-eye mr-1"></i> Hasil Assesmen Keperawatan</button>
+        <button class="btn btn-warning lihatcppt" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
+            data-target="#modalcppt"><i class="bi bi-info-circle ml-1 ml-1"></i> CPPT</button>
+
         @if ($kunjungan[0]->ref_kunjungan != '0')
             <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
                 data-target="#modalcatatankonsul"><i class="bi bi-eye mr-1"></i> Catatan Konsul</button>
@@ -296,7 +299,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-bold font-italic">Berat Badan</td>
+                                <td class="text-bold font-italic">Berat Badan / tinggi badan / IMT</td>
                                 <td>
                                     <div class="input-group">
                                         <input type="text" class="form-control"
@@ -304,7 +307,7 @@
                                             aria-label="Recipient's username" aria-describedby="basic-addon2"
                                             value="{{ $resume_perawat[0]->beratbadan }}">
                                         <div class="input-group-append">
-                                            <span class="input-group-text" id="basic-addon2">kg</span>
+                                            <span class="input-group-text" id="basic-addon2"></span>
                                         </div>
                                     </div>
                                 </td>
@@ -1308,8 +1311,8 @@
                                                                     <div class="row">
                                                                         <div class="col-md-12">
                                                                             <label for="">Oslkel</label>
-                                                                            <input type="text" class="form-control"
-                                                                                name="oslkel">
+                                                                            <input type="text"
+                                                                                class="form-control" name="oslkel">
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
@@ -2336,7 +2339,7 @@
                     <table class="table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-bold font-italic">Diagnosa Kerja</td>
+                                <td class="text-bold font-italic">Diagnosa Utama</td>
                                 <td colspan="2">
                                     <textarea name="diagnosakerja" id="diagnosakerja" class="form-control">{{ $resume[0]->diagnosakerja }}</textarea>
                                 </td>
@@ -2345,7 +2348,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-bold font-italic">Diagnosa banding</td>
+                                <td class="text-bold font-italic">Diagnosa sekunder</td>
                                 <td colspan="2">
                                     <textarea name="diagnosabanding" id="diagnosabanding" class="form-control">{{ $resume[0]->diagnosabanding }}</textarea>
                                 </td>
@@ -2410,8 +2413,26 @@
                         </tbody>
                     </table>
                 </form>
+                     <div @if (auth()->user()->unit != '1012' && auth()->user()->unit != '1027') hidden @endif class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-header text-bold bg-dark">Hasil Expertisi</div>
+                                            <div class="card-body">
+                                                <textarea class="form-control" id="hasilexpertisi" name="hasilexpertisi" cols="30" rows="10"
+                                                    placeholder="Silahkan isi hasil expertisi ...">{{ $resume[0]->evaluasi }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
                 {{-- formfarmasi --}}
                 <div class="card">
+                    @if ($selisih > 70)
+                        <div class="alert alert-warning" role="alert">
+                            @if (count($kunjunganKronis) > 0)
+                                Pasien Kronis ,
+                            @endif Pasien Berpotensi PRB, dan melanjutkan pengobatan kembali ke
+                            faskes 1... <b>( Abaikan pesan ini jika diagnosa pasien tidak termasuk 9 diagnosa PRB
+                                ...)</b>
+                        </div>
+                    @endif
                     <div class="card-header bg-light">Order Farmasi <button type="button"
                             class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
                             onclick="ambilresep()">Template resep</button></div>
@@ -2423,6 +2444,7 @@
                             <button type="button" class="btn btn-success tambahobat" onclick="addform()">+ Tambah
                                 Obat</button>
                         </div>
+                        <input hidden type="text" id="selisih" value="{{ $selisih }}">
                         <input hidden type="text" value="" id="jumlahform">
                         <form action="" method="post" class="arrayobat">
                             <div class="formobatfarmasi2">
@@ -2438,6 +2460,10 @@
                             <input hidden type="text" class="form-control col-md-3 mb-3" id="namaresep"
                                 name="namaresep" placeholder="isi nama resep ...">
                         </form>
+                        <div class="v_itterasi_obat">
+
+                        </div>
+
                     </div>
                 </div>
                 {{-- formtindaklanjut --}}
@@ -2458,6 +2484,12 @@
                                     id="pilihtindaklanjut" value="KONTROL"
                                     @if ($resume[0]->tindak_lanjut == 'KONTROL') checked @endif>
                                 <label class="form-check-label" for="inlineRadio2">KONTROL</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="pilihtindaklanjut"
+                                    id="pilihtindaklanjut" value="RUJUK INTERNAL"
+                                    @if ($resume[0]->tindak_lanjut == 'RUJUK INTERNAL') checked @endif>
+                                <label class="form-check-label" for="inlineRadio2">RUJUK INTERNAL</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="pilihtindaklanjut"
@@ -2491,7 +2523,6 @@
                         </div>
                     </div>
                 </form>
-
                 <div class="accordion" id="accordionExample">
                     <div class="card">
                         <div class="card-header bg-danger" id="headingOne">
@@ -2546,15 +2577,6 @@
                                             </div>
                                             <div class="card-footer">
                                                 <p>pilih layanan untuk pasien</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div @if (auth()->user()->unit != '1012' && auth()->user()->unit != '1027') hidden @endif class="col-md-12">
-                                        <div class="card">
-                                            <div class="card-header text-bold bg-dark">Hasil Expertisi</div>
-                                            <div class="card-body">
-                                                <textarea class="form-control" id="hasilexpertisi" name="hasilexpertisi" cols="30" rows="10"
-                                                    placeholder="Silahkan isi hasil expertisi ...">{{ $resume[0]->evaluasi }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -3081,6 +3103,29 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalcppt" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Catatan Perkembangan Pasien Terintegrasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_cppt">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="text" id="statuslihatcppt" value="0">
 <link rel="stylesheet" href="{{ asset('public/dist/css/datepicker.css') }}" rel="stylesheet">
 <script src="{{ asset('public/dist/js/bootstrap-datepicker.js') }}"></script>
 <script>
@@ -3090,6 +3135,27 @@
             todayHighlight: true,
         }).datepicker('update', new Date());
     });
+    $(".lihatcppt").click(function() {
+        status = $('#statuslihatcppt').val()
+        if (status == 0) {
+            status = $('#statuslihatcppt').val(1)
+            rm = $(this).attr('rm')
+            spinner = $('#loader')
+            spinner.show();
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    rm
+                },
+                url: '<?= route('lihatcppt_pasien') ?>',
+                success: function(response) {
+                    $('.v_cppt').html(response);
+                    spinner.hide()
+                }
+            });
+        }
+    })
 
     function simpanhasil() {
         var canvas1 = document.getElementById("myCanvas1");
@@ -3120,6 +3186,9 @@
         var namaresep = $('#namaresep').val()
         var kodekunjungan = $('#kodekunjungan').val()
         var hasilexpertisi = $('#hasilexpertisi').val()
+        var pasieniter = $('#iterasipilih:checked').val()
+        var jumlahiter = $('#jumlahiterasi').val()
+        var selisih = $('#selisih').val()
         spinner = $('#loader')
         spinner.show();
         $.ajax({
@@ -3140,6 +3209,7 @@
                 simpantemplate,
                 namaresep,
                 kodekunjungan,
+                selisih,
                 gambar,
                 formtelingakanan: JSON.stringify(formtelingakanan),
                 formtelingakiri: JSON.stringify(formtelingakiri),
@@ -3149,7 +3219,9 @@
                 formkesimpulanhidung: JSON.stringify(formkesimpulanhidung),
                 formorder_lab: JSON.stringify(formorder_lab),
                 formtindakan_rad: JSON.stringify(formtindakan_rad),
-                hasilexpertisi
+                hasilexpertisi,
+                pasieniter,
+                jumlahiter
             },
             url: '<?= route('simpanpemeriksaandokter_2') ?>',
             error: function(data) {
@@ -3179,6 +3251,22 @@
                     })
                     resume()
                 }
+            }
+        });
+    }
+
+    function ambilformiterasiobat() {
+        var kodekunjungan = $('#kodekunjungan').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('ambil_formiterasiobat') ?>',
+            success: function(response) {
+                $('.v_itterasi_obat').html(response);
+                spinner.hide()
             }
         });
     }
@@ -3314,6 +3402,7 @@
         tindakanhariini()
         tindakanhariini_lab()
         tindakanhariini_rad()
+        ambilformiterasiobat()
     });
     $(".riwayatkonsul").click(function() {
         $.ajax({

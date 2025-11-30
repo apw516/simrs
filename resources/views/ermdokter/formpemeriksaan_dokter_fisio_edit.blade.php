@@ -1,9 +1,13 @@
 <div class="card">
     <div class="card-header bg-info">Catatan Perkembangan Pasien Terintegrasi
-        <button class="btn btn-danger ml-2 lihathasilpenunjang_lab" nomorrm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
-            data-target="#modalhasilpenunjang_lab"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan Laboratorium</button>
-        <button class="btn btn-danger ml-2 lihathasilpenunjang_rad" nomorrm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
-            data-target="#modalhasilpenunjang_rad"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan Radiologi</button>
+        <button class="btn btn-danger ml-2 lihathasilpenunjang_lab" nomorrm="{{ $kunjungan[0]->no_rm }}"
+            data-toggle="modal" data-target="#modalhasilpenunjang_lab"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan
+            Laboratorium</button>
+        <button class="btn btn-danger ml-2 lihathasilpenunjang_rad" nomorrm="{{ $kunjungan[0]->no_rm }}"
+            data-toggle="modal" data-target="#modalhasilpenunjang_rad"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan
+            Radiologi</button>
+        <button class="btn btn-warning lihatcppt" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
+            data-target="#modalcppt"><i class="bi bi-info-circle ml-1 ml-1"></i> CPPT</button>
         @if ($kunjungan[0]->ref_kunjungan != '0')
             <button class="btn btn-warning ml-2" data-toggle="modal" data-target="#modalcatatankonsul"><i
                     class="bi bi-eye mr-1"></i> Catatan Konsul</button>
@@ -193,6 +197,56 @@
                 </div>
             </div>
         </form>
+        {{-- formtindaklanjut --}}
+        <form action="" class="formtindaklanjut">
+            <div class="card">
+                <div class="card-header bg-light">Tindak Lanjut <button type="button"
+                        class="btn btn-success float-right riwayatkonsul" data-toggle="modal"
+                        data-target="#modalriwayatkonsul">Riwayat Konsul</button></div>
+                <div class="card-body">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
+                            id="pilihtindaklanjut" value="KONSUL KE POLI LAIN"
+                            @if ($last_assdok[0]->tindak_lanjut == 'KONSUL KE POLI LAIN') checked @endif>
+                        <label class="form-check-label" for="inlineRadio1">KONSUL KE POLI LAIN</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
+                            id="pilihtindaklanjut" value="KONTROL" @if ($last_assdok[0]->tindak_lanjut == 'KONTROL') checked @endif>
+                        <label class="form-check-label" for="inlineRadio2">KONTROL</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
+                            id="pilihtindaklanjut" value="PASIEN DIPULANGKAN"
+                            @if ($last_assdok[0]->tindak_lanjut == 'PASIEN DIPULANGKAN') checked @endif>
+                        <label class="form-check-label" for="inlineRadio2">PULANG</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
+                            id="pilihtindaklanjut" value="RUJUK KELUAR"
+                            @if ($last_assdok[0]->tindak_lanjut == 'RUJUK KELUAR') checked @endif>
+                        <label class="form-check-label" for="inlineRadio2">RUJUK KELUAR</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
+                            id="pilihtindaklanjut" value="RUJUK RAWAT INAP"
+                            @if ($last_assdok[0]->tindak_lanjut == 'RUJUK RAWAT INAP') checked @endif>
+                        <label class="form-check-label" for="inlineRadio2">RAWAT INAP</label>
+                    </div>
+                    <div class="form-check form-check-inline mb-2">
+                        <input class="form-check-input" type="radio" name="pilihtindaklanjut"
+                            id="pilihtindaklanjut" value="PASIEN MENINGGAL"
+                            @if ($last_assdok[0]->tindak_lanjut == 'PASIEN MENINGGAL') checked @endif>
+                        <label class="form-check-label" for="inlineRadio2">PASIEN MENINGGAL</label>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="exampleInputEmail1">Keterangan</label>
+                        <textarea type="text" class="form-control" id="keterangantindaklanjut" name="keterangantindaklanjut"
+                            aria-describedby="emailHelp">{{ $last_assdok[0]->keterangan_tindak_lanjut }}</textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
         <div class="card">
             <div class="card-header bg-light">Order Farmasi <button type="button"
                     class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
@@ -224,6 +278,9 @@
                     <input hidden type="text" class="form-control col-md-3 mb-3" id="namaresep" name="namaresep"
                         placeholder="isi nama resep ...">
                 </form>
+                <div class="v_itterasi_obat">
+
+                </div>
             </div>
         </div>
 
@@ -309,15 +366,78 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalcppt" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Catatan Perkembangan Pasien Terintegrasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_cppt">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<input hidden type="text" id="statuslihatcppt" value="0">
 <script>
+    function ambilformiterasiobat() {
+        var kodekunjungan = $('#kodekunjungan').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('ambil_formiterasiobat') ?>',
+            success: function(response) {
+                $('.v_itterasi_obat').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    $(".lihatcppt").click(function() {
+        status = $('#statuslihatcppt').val()
+        if (status == 0) {
+            status = $('#statuslihatcppt').val(1)
+            rm = $(this).attr('rm')
+            spinner = $('#loader')
+            spinner.show();
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    rm
+                },
+                url: '<?= route('lihatcppt_pasien') ?>',
+                success: function(response) {
+                    $('.v_cppt').html(response);
+                    spinner.hide()
+                }
+            });
+        }
+    })
+
     function simpanhasil() {
         var data = $('.formpemeriksaan_fisio').serializeArray();
         var data2 = $('.arrayobat').serializeArray();
         var kodekunjungan = $('#kodekunjungan').val()
+        var datatindaklanjut = $('.formtindaklanjut').serializeArray();
         var counter = $('#counter').val()
         var unit = $('#unit').val()
         var nomorrm = $('#nomorrm').val()
         var simpantemplate = $('#simpantemplate:checked').val()
+        var pasieniter = $('#iterasipilih:checked').val()
+        var jumlahiter = $('#jumlahiterasi').val()
         spinner = $('#loader')
         spinner.show();
         $.ajax({
@@ -328,11 +448,14 @@
                 _token: "{{ csrf_token() }}",
                 data: JSON.stringify(data),
                 dataobat: JSON.stringify(data2),
+                datatindaklanjut: JSON.stringify(datatindaklanjut),
                 kodekunjungan,
                 counter,
                 unit,
                 nomorrm,
-                simpantemplate
+                simpantemplate,
+                pasieniter,
+                jumlahiter
             },
             url: '<?= route('simpanpemeriksaandokter_fisio') ?>',
             error: function(data) {
@@ -387,6 +510,7 @@
     }
     $(document).ready(function() {
         orderobathariini()
+        ambilformiterasiobat()
     });
 
     function addform() {
@@ -436,7 +560,7 @@
             $('#namaresep').attr('Hidden', true)
         }
     }
-    $(".lihathasilpenunjang_lab").click(function(){
+    $(".lihathasilpenunjang_lab").click(function() {
         spinner = $('#loader')
         spinner.show();
         nomorrm = $(this).attr('nomorrm')
@@ -453,7 +577,7 @@
             }
         });
     })
-    $(".lihathasilpenunjang_rad").click(function(){
+    $(".lihathasilpenunjang_rad").click(function() {
         spinner = $('#loader')
         spinner.show();
         nomorrm = $(this).attr('nomorrm')

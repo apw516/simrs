@@ -31,6 +31,10 @@
                     <td>{{ $resume[0]->suhu_tubuh }} °C</td>
                 </tr>
                 <tr>
+                    <td>Berat Badan / tinggi badan / IMT</td>
+                    <td>{{ $resume[0]->beratbadan }}</td>
+                </tr>
+                <tr>
                     <td colspan="4" class="bg-info">Riwayat Kesehatan</td>
                 </tr>
                 <tr>
@@ -144,11 +148,11 @@
                     <td colspan="3">{{ $resume[0]->kesadaran }}</td>
                 </tr>
                 <tr>
-                    <td>Diagnosa Kerja</td>
+                    <td>Diagnosa Utama</td>
                     <td colspan="3">{{ $resume[0]->diagnosakerja }}</td>
                 </tr>
                 <tr>
-                    <td>Diagnosa Banding</td>
+                    <td>Diagnosa Sekunder</td>
                     <td colspan="3">{{ $resume[0]->diagnosabanding }}</td>
                 </tr>
                 <tr>
@@ -1292,7 +1296,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="card">
-                            <div class="card-header bg-light">Mata Kiri</div>
+                            <div class="card-header bg-light">Mata Kanan</div>
                             <div class="card-body">
                                 <table class="table table-sm">
                                     <tr>
@@ -1384,7 +1388,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="card">
-                            <div class="card-header bg-light">Mata Kanan</div>
+                            <div class="card-header bg-light">Mata Kiri</div>
                             <div class="card-body">
                                 <table class="table table-sm">
                                     <tr>

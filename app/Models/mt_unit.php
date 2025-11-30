@@ -9,7 +9,7 @@ class mt_unit extends Model
 {
     use HasFactory;
     protected $table = 'mt_unit';
-    protected $connection = 'mysql2';
+    protected $connection = 'mysql';
     public function mt_tarif_detail(){
         // $data = array(
             return  $this->hasOne(mt_tarif_detail::class,'KODE_TARIF_DETAIL','kode_tarif_adm');

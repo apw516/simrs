@@ -22,15 +22,47 @@
 <div class="card">
     <div class="card-header bg-warning">Tindak Lanjut</div>
     <div class="card-body table-responsive p-5" style="height: 757Px">
+        @if(count($cek_iter) > 0)
+            <h5 class="text-danger">*Pasien termasuk kedalam layanan Iterasi obat BPJS ( layanan peresepan obat kronis yang memungkinkan peserta JKN (Jaminan Kesehatan Nasional) untuk mendapatkan obat-obatan tanpa harus berkonsultasi dengan dokter setiap bulan.  )</h5> <br>
+            <table class="table table-sm mb-4">
+                <thead>
+                    <th>Tanggal iterasi</th>
+                    <th>Dokter</th>
+                    <th>Unit</th>
+                    <th>Jumlah iterasi obat</th>
+                </thead>
+                <tbody>
+                    @foreach ($cek_iter as $c )
+                        <tr>
+                            <td>{{ $c->tgl_iter}}</td>
+                            <td>{{ $c->nama_dokter}}</td>
+                            <td>{{ $c->nama_unit}}</td>
+                            <td>{{ $c->jumlah}}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
         <div class="jumbotron">
             {{-- <h1 class="display-4">Tindak Lanjut</h1> --}}
-            <p class="lead mt-4"><strong>* {{ $assdok[0]->tindak_lanjut }}</strong></p>
+            @if ($selisih > 70)
+            <div class="alert alert-warning" role="alert">
+                @if (count($kunjunganKronis) > 0)
+                    Pasien Kronis ,
+                @endif Pasien Berpotensi PRB, dan melanjutkan pengobatan kembali ke faskes 1...
+              </div>
+            @endif
+            <p class="lead mt-4"><strong>* @foreach ($assdok as $as)
+                {{ $as->tindak_lanjut }}
+            @endforeach</strong></p>
             <hr class="my-4">
-            <p>diisi oleh : {{ $assdok[0]->nama_dokter }} | {{ $assdok[0]->tgl_pemeriksaan }}</p>
+            <p>diisi oleh :  @foreach ($assdok as $as)
+                {{ $as->nama_dokter }} @endforeach |  @foreach ($assdok as $as)
+                {{ $as->tgl_pemeriksaan }} @endforeach</p>
             {{-- <a class="btn btn-primary btn-lg btntindaklanjut" jenis="surkon" role="button"><i
                     class="bi bi-plus-lg mr-1"></i> Surat Kontrol</a> --}}
             <a class="btn btn-primary btn-lg btntindaklanjut" jenis="konsul" role="button"><i
-                    class="bi bi-plus-lg mr-1"></i> Konsul Poli Lain</a>
+                    class="bi bi-plus-lg mr-1"></i>Konsul Poli Lain</a>
             {{-- <a class="btn btn-primary btn-lg btntindaklanjut" jenis="rujukkeluar" role="button"><i
                     class="bi bi-plus-lg mr-1"></i> Rujuk Keluar</a> --}}
         </div>

@@ -103,8 +103,12 @@
                         </tr>
                         <tr>
                             <td class="text-bold font-italic">Riwayat Psikologis</td>
-                            <td colspan="3" class="text-bold">
+                            <td colspan="" class="text-bold">
                                 {{ $resume[0]->Riwayatpsikologi }}
+                            </td>
+                            <td class="text-bold font-italic">Berat Badan / Tinggi Badan / IMT</td>
+                            <td colspan="" class="text-bold">
+                                {{ $resume[0]->beratbadan }}
                             </td>
                         </tr>
                         <tr>

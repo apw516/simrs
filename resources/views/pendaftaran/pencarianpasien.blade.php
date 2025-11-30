@@ -24,7 +24,7 @@
                         nomorktp_edit="{{ $p->NIK }}" nomorbpjs_edit="{{ $p->no_asuransi }}"
                         rm="{{ $p->no_rm }}" data-toggle="modal" data-target="#editpasien"><i class="bi bi-pencil-square"></i></button> --}}
                     <button class="badge badge-primary daftarumum" nama="{{ $p->nama_pasien }}" rm="{{ $p->no_rm }}"
-                        nik="{{ $p->NIK }}">Umum</button>
+                        nik="{{ $p->NIK }}">IGD & Umum</button>
                     <button class="badge badge-success daftarbpjs" rm="{{ $p->no_rm }}"
                         noka="{{ $p->no_asuransi }}">Bpjs</button>
                 </td>

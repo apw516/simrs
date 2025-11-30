@@ -462,7 +462,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-bold font-italic">Berat badan</td>
+                                        <td class="text-bold font-italic">Berat badan / Tinggi Badan / IMT</td>
                                         <td>
                                             <div class="input-group">
                                                 <input type="text" class="form-control"
@@ -471,7 +471,7 @@
                                                     aria-describedby="basic-addon2"
                                                     value="{{ $resume[0]->beratbadan }}">
                                                 <div class="input-group-append">
-                                                    <span class="input-group-text" id="basic-addon2">x/menit</span>
+                                                    <span class="input-group-text" id="basic-addon2">Kg</span>
                                                 </div>
                                             </div>
                                         </td>

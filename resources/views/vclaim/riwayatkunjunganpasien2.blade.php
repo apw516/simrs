@@ -8,6 +8,7 @@
                 <th>Tgl Masuk</th>
                 <th class="text-xs">Tgl Keluar</th>
                 <th class="text-xs">PENJAMIN</th>
+                <th class="text-xs">User</th>
                 <th>Status</th>
                 <th>catatan</th>
                 <th>Dokter</th>
@@ -23,6 +24,7 @@
                         <td class="text-xs"><button class="badge badge-warning">{{ $r->tgl_masuk }}</button></td>
                         <td>{{ $r->tgl_keluar }}</td>
                         <td class="text-xs">{{ $r->nama_penjamin }}</td>
+                        <td class="text-xs">{{ $r->username }}</td>
                         <td class="text-xs">
                             @if ($r->status_kunjungan == 1)
                                 aktif

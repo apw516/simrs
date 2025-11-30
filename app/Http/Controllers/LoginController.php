@@ -30,17 +30,21 @@ class LoginController extends Controller
                     return redirect()->intended('indexigd');
                 }else{
                     // return redirect()->intended('indexdokter');
-                    return redirect()->intended('indexperawat');
+                    return redirect()->intended('dashboard');
                 }
             } else if (auth()->user()->hak_akses == 5) {
                     if(auth()->user()->unit == '1002'){
                         return redirect()->intended('indexdokter_igd');
                     }else{
-                        return redirect()->intended('indexdokter');
+                        return redirect()->intended('dashboard');
                     }
             } else if (auth()->user()->hak_akses == 99) {
                 return redirect()->intended('antrianigd');
-            } else {
+            }
+            // else if(auth()->user()->hak_akses == 9){
+            //     return redirect()->intended('logout');
+            // }
+            else {
                 return redirect()->intended('dashboard');
             }
         }

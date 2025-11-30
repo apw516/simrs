@@ -2,6 +2,8 @@
     <div class="card-header bg-info">CPPT
         <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
             data-target="#modalresumeperawat"><i class="bi bi-eye mr-1"></i> Hasil Assesmen Keperawatan</button>
+        <button class="btn btn-warning lihatcppt" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal" data-target="#modalcppt"><i class="bi bi-info-circle ml-1 ml-1"></i> CPPT</button>
+
         @if ($kunjungan[0]->ref_kunjungan != '0')
             <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
                 data-target="#modalcatatankonsul"><i class="bi bi-eye mr-1"></i> Catatan Konsul</button>
@@ -296,7 +298,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-bold font-italic">Berat Badan</td>
+                                <td class="text-bold font-italic">Berat Badan / tinggi badan / IMT</td>
                                 <td>
                                     <div class="input-group">
                                         <input type="text" class="form-control"
@@ -304,7 +306,7 @@
                                             aria-label="Recipient's username" aria-describedby="basic-addon2"
                                             value="{{ $resume_perawat[0]->beratbadan }}">
                                         <div class="input-group-append">
-                                            <span class="input-group-text" id="basic-addon2">kg</span>
+                                            <span class="input-group-text" id="basic-addon2"></span>
                                         </div>
                                     </div>
                                 </td>
@@ -382,19 +384,19 @@
                                             value="">
                                         @if (count($k1) > 0)
                                             @php
-                                            $a = explode('|',$k1[0]->catatanpemeriksaanlain );
-                                            $b = explode('|',$k1[0]->palpebra );
-                                            $c = explode('|',$k1[0]->konjungtiva );
-                                            $d = explode('|',$k1[0]->kornea);
-                                            $e = explode('|',$k1[0]->bilikmatadepan );
-                                            $f = explode('|',$k1[0]->pupil );
-                                            $g = explode('|',$k1[0]->iris );
-                                            $h = explode('|',$k1[0]->lensa );
-                                            $i = explode('|',$k1[0]->funduskopi );
-                                            $j = explode('|',$k1[0]->status_oftamologis_khusus );
-                                            $k = explode('|',$k1[0]->masalahmedis );
-                                            $l = explode('|',$k1[0]->prognosis );
-                                            $m = explode('|',$k1[0]->tekananintraokular );
+                                                $a = explode('|', $k1[0]->catatanpemeriksaanlain);
+                                                $b = explode('|', $k1[0]->palpebra);
+                                                $c = explode('|', $k1[0]->konjungtiva);
+                                                $d = explode('|', $k1[0]->kornea);
+                                                $e = explode('|', $k1[0]->bilikmatadepan);
+                                                $f = explode('|', $k1[0]->pupil);
+                                                $g = explode('|', $k1[0]->iris);
+                                                $h = explode('|', $k1[0]->lensa);
+                                                $i = explode('|', $k1[0]->funduskopi);
+                                                $j = explode('|', $k1[0]->status_oftamologis_khusus);
+                                                $k = explode('|', $k1[0]->masalahmedis);
+                                                $l = explode('|', $k1[0]->prognosis);
+                                                $m = explode('|', $k1[0]->tekananintraokular);
                                             @endphp
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -407,7 +409,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="card">
-                                                        <div class="card-header bg-danger">Mata Kiri</div>
+                                                        <div class="card-header bg-danger">Mata Kanan</div>
                                                         <div class="card-body">
                                                             <table class="table table-sm">
                                                                 <tr>
@@ -424,73 +426,109 @@
                                                                 <tr>
                                                                     <td>Tekanan Intra Okular</td>
                                                                     <td colspan="3">
-                                                                        <textarea class="form-control" id="kiri_tekanan_intra_okular" name="kiri_tekanan_intra_okular">@if(count($m) > 1){{ $m[1]}} @endif </textarea>
+                                                                        <textarea class="form-control" id="kiri_tekanan_intra_okular" name="kiri_tekanan_intra_okular">
+@if (count($m) > 1)
+{{ $m[1] }}
+@endif
+</textarea>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Catatan Pemeriksaan Lainnya</td>
                                                                     <td colspan="3">
-                                                                        <textarea class="form-control" name="kiri_catatan_pemeriksaan_lainnya" id="kiri_catatan_pemerikssaan_lainnya">@if(count($a) > 1){{ $a[1]}}@endif</textarea>
+                                                                        <textarea class="form-control" name="kiri_catatan_pemeriksaan_lainnya" id="kiri_catatan_pemerikssaan_lainnya">
+@if (count($a) > 1)
+{{ $a[1] }}
+@endif
+</textarea>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Palpebra</td>
-                                                                    <td colspan="3"><input class="form-control" value="@if(count($b) > 1){{ $b[1]}}@endif"
-                                                                            id="kiri_palpebra" name="kiri_palpebra"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="@if (count($b) > 1) {{ $b[1] }} @endif"
+                                                                            id="kiri_palpebra"
+                                                                            name="kiri_palpebra"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Konjungtiva</td>
-                                                                    <td colspan="3"><input class="form-control" value="@if(count($c) > 1){{ $c[1]}}@endif"
-                                                                            id="kiri_konjungtiva" name="kiri_konjungtiva"></input>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="@if (count($c) > 1) {{ $c[1] }} @endif"
+                                                                            id="kiri_konjungtiva"
+                                                                            name="kiri_konjungtiva"></input>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Kornea</td>
-                                                                    <td colspan="3"><input class="form-control" value="@if(count($d) > 1){{ $d[1]}}@endif"
-                                                                            name="kiri_kornea" id="kiri_kornea"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="@if (count($d) > 1) {{ $d[1] }} @endif"
+                                                                            name="kiri_kornea"
+                                                                            id="kiri_kornea"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Bilik Mata Depan</td>
-                                                                    <td colspan="3"><input class="form-control" value="@if(count($e) > 1){{ $e[1]}}@endif"
-                                                                            name="kiri_bilik_mata_depan" id="kiri_bilik_mata_depan"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="@if (count($e) > 1) {{ $e[1] }} @endif"
+                                                                            name="kiri_bilik_mata_depan"
+                                                                            id="kiri_bilik_mata_depan"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Pupil</td>
-                                                                    <td colspan="3"><input class="form-control" value="@if(count($f) > 1){{ $f[1]}}@endif"
-                                                                            id="kiri_pupil" name="kiri_pupil"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="@if (count($f) > 1) {{ $f[1] }} @endif"
+                                                                            id="kiri_pupil" name="kiri_pupil"></input>
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Iris</td>
-                                                                    <td colspan="3"><input class="form-control" value="@if(count($g) > 1){{ $g[1]}}@endif"
-                                                                            name="kiri_iris" id="kiri_iris"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="@if (count($g) > 1) {{ $g[1] }} @endif"
+                                                                            name="kiri_iris" id="kiri_iris"></input>
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Lensa</td>
-                                                                    <td colspan="3"><input class="form-control" value="@if(count($h) > 1){{ $h[1]}}@endif"
-                                                                            name="kiri_lensa" id="kiri_lensa"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="@if (count($h) > 1) {{ $h[1] }} @endif"
+                                                                            name="kiri_lensa" id="kiri_lensa"></input>
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Funduskopi</td>
-                                                                    <td colspan="3"><input class="form-control" value="@if(count($i) > 1){{ $i[1]}}@endif"
-                                                                            name="kiri_funduskopi" id="kiri_funduskopi"></input>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="@if (count($i) > 1) {{ $i[1] }} @endif"
+                                                                            name="kiri_funduskopi"
+                                                                            id="kiri_funduskopi"></input>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Status Oftalmologis Khusus</td>
                                                                     <td colspan="3">
-                                                                        <textarea class="form-control" value="" name="kiri_oftamologis" id="kiri_oftamologis">@if(count($j) > 1){{ $j[1]}}@endif</textarea>
+                                                                        <textarea class="form-control" value="" name="kiri_oftamologis" id="kiri_oftamologis">
+@if (count($j) > 1)
+{{ $j[1] }}
+@endif
+</textarea>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Masalah Medis</td>
                                                                     <td colspan="3">
-                                                                        <textarea class="form-control" value="" name="kiri_masalahmedis" id="kiri_masalahmedis">@if(count($k) > 1){{ $k[1]}}@endif</textarea>
+                                                                        <textarea class="form-control" value="" name="kiri_masalahmedis" id="kiri_masalahmedis">
+@if (count($k) > 1)
+{{ $k[1] }}
+@endif
+</textarea>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Prognosis</td>
                                                                     <td colspan="3">
-                                                                        <textarea class="form-control" value="" name="kiri_prognosis" id="kiri_prognosis">@if(count($l) > 1){{ $l[1]}}@endif</textarea>
+                                                                        <textarea class="form-control" value="" name="kiri_prognosis" id="kiri_prognosis">
+@if (count($l) > 1)
+{{ $l[1] }}
+@endif
+</textarea>
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -499,7 +537,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="card">
-                                                        <div class="card-header bg-danger">Mata Kanan</div>
+                                                        <div class="card-header bg-danger">Mata Kiri</div>
                                                         <div class="card-body">
                                                             <table class="table table-sm">
                                                                 <tr>
@@ -516,73 +554,88 @@
                                                                 <tr>
                                                                     <td>Tekanan Intra Okular</td>
                                                                     <td colspan="3">
-                                                                        <textarea class="form-control" id="tekanan_intra_okular" name="tekanan_intra_okular">{{ $m[0]}}</textarea>
+                                                                        <textarea class="form-control" id="tekanan_intra_okular" name="tekanan_intra_okular">{{ $m[0] }}</textarea>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Catatan Pemeriksaan Lainnya</td>
                                                                     <td colspan="3">
-                                                                        <textarea class="form-control" name="catatan_pemeriksaan_lainnya" id="catatan_pemerikssaan_lainnya">{{ $a[0]}}</textarea>
+                                                                        <textarea class="form-control" name="catatan_pemeriksaan_lainnya" id="catatan_pemerikssaan_lainnya">{{ $a[0] }}</textarea>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Palpebra</td>
-                                                                    <td colspan="3"><input class="form-control" value="{{ $b[0]}}"
-                                                                            id="palpebra" name="palpebra"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="{{ $b[0] }}"
+                                                                            id="palpebra" name="palpebra"></input>
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Konjungtiva</td>
-                                                                    <td colspan="3"><input class="form-control" value="{{ $c[0]}}"
-                                                                            id="konjungtiva" name="konjungtiva"></input>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="{{ $c[0] }}"
+                                                                            id="konjungtiva"
+                                                                            name="konjungtiva"></input>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Kornea</td>
-                                                                    <td colspan="3"><input class="form-control" value="{{ $d[0]}}"
-                                                                            name="kornea" id="kornea"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="{{ $d[0] }}"
+                                                                            name="kornea" id="kornea"></input>
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Bilik Mata Depan</td>
-                                                                    <td colspan="3"><input class="form-control" value="{{ $e[0]}}"
-                                                                            name="bilik_mata_depan" id="bilik_mata_depan"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="{{ $e[0] }}"
+                                                                            name="bilik_mata_depan"
+                                                                            id="bilik_mata_depan"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Pupil</td>
-                                                                    <td colspan="3"><input class="form-control" value="{{ $f[0]}}"
-                                                                            id="pupil" name="pupil"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="{{ $f[0] }}"
+                                                                            id="pupil" name="pupil"></input>
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Iris</td>
-                                                                    <td colspan="3"><input class="form-control" value="{{ $g[0]}}"
-                                                                            name="iris" id="iris"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="{{ $g[0] }}"
+                                                                            name="iris" id="iris"></input>
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Lensa</td>
-                                                                    <td colspan="3"><input class="form-control" value="{{ $h[0]}}"
-                                                                            name="lensa" id="lensa"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="{{ $h[0] }}"
+                                                                            name="lensa" id="lensa"></input>
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Funduskopi</td>
-                                                                    <td colspan="3"><input class="form-control" value="{{ $i[0]}}"
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="{{ $i[0] }}"
                                                                             name="funduskopi" id="funduskopi"></input>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Status Oftalmologis Khusus</td>
                                                                     <td colspan="3">
-                                                                        <textarea class="form-control" value="" name="oftamologis" id="oftamologis">{{ $j[0]}}</textarea>
+                                                                        <textarea class="form-control" value="" name="oftamologis" id="oftamologis">{{ $j[0] }}</textarea>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Masalah Medis</td>
                                                                     <td colspan="3">
-                                                                        <textarea class="form-control" value="" name="masalahmedis" id="masalahmedis">{{ $k[0]}}</textarea>
+                                                                        <textarea class="form-control" value="" name="masalahmedis" id="masalahmedis">{{ $k[0] }}</textarea>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Prognosis</td>
                                                                     <td colspan="3">
-                                                                        <textarea class="form-control" value="" name="prognosis" id="prognosis">{{ $l[0]}}</textarea>
+                                                                        <textarea class="form-control" value="" name="prognosis" id="prognosis">{{ $l[0] }}</textarea>
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -630,44 +683,53 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Palpebra</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            id="kiri_palpebra" name="kiri_palpebra"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" id="kiri_palpebra"
+                                                                            name="kiri_palpebra"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Konjungtiva</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            id="kiri_konjungtiva" name="kiri_konjungtiva"></input>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" id="kiri_konjungtiva"
+                                                                            name="kiri_konjungtiva"></input>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Kornea</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            name="kiri_kornea" id="kiri_kornea"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" name="kiri_kornea"
+                                                                            id="kiri_kornea"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Bilik Mata Depan</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            name="kiri_bilik_mata_depan" id="kiri_bilik_mata_depan"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value=""
+                                                                            name="kiri_bilik_mata_depan"
+                                                                            id="kiri_bilik_mata_depan"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Pupil</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            id="kiri_pupil" name="kiri_pupil"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" id="kiri_pupil"
+                                                                            name="kiri_pupil"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Iris</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            name="kiri_iris" id="kiri_iris"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" name="kiri_iris"
+                                                                            id="kiri_iris"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Lensa</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            name="kiri_lensa" id="kiri_lensa"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" name="kiri_lensa"
+                                                                            id="kiri_lensa"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Funduskopi</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            name="kiri_funduskopi" id="kiri_funduskopi"></input>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" name="kiri_funduskopi"
+                                                                            id="kiri_funduskopi"></input>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -722,44 +784,52 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Palpebra</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            id="palpebra" name="palpebra"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" id="palpebra"
+                                                                            name="palpebra"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Konjungtiva</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            id="konjungtiva" name="konjungtiva"></input>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" id="konjungtiva"
+                                                                            name="konjungtiva"></input>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Kornea</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            name="kornea" id="kornea"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" name="kornea"
+                                                                            id="kornea"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Bilik Mata Depan</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            name="bilik_mata_depan" id="bilik_mata_depan"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" name="bilik_mata_depan"
+                                                                            id="bilik_mata_depan"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Pupil</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            id="pupil" name="pupil"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" id="pupil"
+                                                                            name="pupil"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Iris</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            name="iris" id="iris"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" name="iris"
+                                                                            id="iris"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Lensa</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            name="lensa" id="lensa"></input></td>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" name="lensa"
+                                                                            id="lensa"></input></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Funduskopi</td>
-                                                                    <td colspan="3"><input class="form-control" value=""
-                                                                            name="funduskopi" id="funduskopi"></input>
+                                                                    <td colspan="3"><input class="form-control"
+                                                                            value="" name="funduskopi"
+                                                                            id="funduskopi"></input>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -840,8 +910,8 @@
                 <button class="btn btn-danger ml-2 lihathasilpenunjang_pa" nomorrm="{{ $kunjungan[0]->no_rm }}"
                     data-toggle="modal" data-target="#modalhasilpenunjang_pa"><i class="bi bi-eye mr-1"></i>
                     Hasil LAB PA</button>
-                <button class="btn btn-warning ml-2 scanrm_liat" rm="{{ $kunjungan[0]->no_rm }}"
-                    data-toggle="modal" data-target="#modalscan_rm"><i class="bi bi-journal-text"></i> BERKAS RM
+                <button class="btn btn-warning ml-2 scanrm_liat" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
+                    data-target="#modalscan_rm"><i class="bi bi-journal-text"></i> BERKAS RM
                     SCAN</button>
                 <button class="btn btn-warning ml-2 liatsumarilis" rm="{{ $kunjungan[0]->no_rm }}"
                     data-toggle="modal" data-target="#modalsumarilis"><i class="bi bi-journal-text"></i>
@@ -881,6 +951,15 @@
                             class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
                             onclick="ambilresep()">Template resep</button></div>
                     <div class="card-body">
+                        @if ($selisih > 70)
+                            <div class="alert alert-danger" role="alert">
+                                @if (count($kunjunganKronis) > 0)
+                                    Pasien Kronis ,
+                                @endif Pasien Berpotensi PRB, dan melanjutkan pengobatan kembali ke
+                                faskes 1... <b>( Abaikan pesan ini jika diagnosa pasien tidak termasuk 9 diagnosa PRB
+                                    ...)</b>
+                            </div>
+                        @endif
                         <div class="orderobathari_ini">
 
                         </div>
@@ -888,6 +967,7 @@
                             <button type="button" class="btn btn-success tambahobat" onclick="addform()">+ Tambah
                                 Obat</button>
                         </div>
+                        <input hidden type="text" id="selisih" value="{{ $selisih }}">
                         <input hidden type="text" value="" id="jumlahform">
                         <form action="" method="post" class="arrayobat">
                             <div class="formobatfarmasi2">
@@ -903,6 +983,9 @@
                             <input hidden type="text" class="form-control col-md-3 mb-3" id="namaresep"
                                 name="namaresep" placeholder="isi nama resep ...">
                         </form>
+                        <div class="v_itterasi_obat">
+
+                        </div>
                     </div>
                 </div>
                 {{-- formtindaklanjut --}}
@@ -1546,6 +1629,30 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalcppt" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Catatan Perkembangan Pasien Terintegrasi</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="v_cppt">
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<input hidden type="text" id="statuslihatcppt" value="0">
 <link rel="stylesheet" href="{{ asset('public/dist/css/datepicker.css') }}" rel="stylesheet">
 <script src="{{ asset('public/dist/js/bootstrap-datepicker.js') }}"></script>
 <script>
@@ -1556,7 +1663,27 @@
         }).datepicker('update', new Date());
     });
 
-
+  $(".lihatcppt").click(function() {
+        status = $('#statuslihatcppt').val()
+        if (status == 0) {
+            status = $('#statuslihatcppt').val(1)
+            rm = $(this).attr('rm')
+            spinner = $('#loader')
+            spinner.show();
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    rm
+                },
+                url: '<?= route('lihatcppt_pasien') ?>',
+                success: function(response) {
+                    $('.v_cppt').html(response);
+                    spinner.hide()
+                }
+            });
+        }
+    })
     function simpanhasil() {
         var canvas1 = document.getElementById("myCanvas1");
         var ctx1 = canvas1.getContext("2d");
@@ -1590,6 +1717,9 @@
         var namaresep = $('#namaresep').val()
         var kodekunjungan = $('#kodekunjungan').val()
         var hasilexpertisi = $('#hasilexpertisi').val()
+        var selisih = $('#selisih').val()
+        var pasieniter = $('#iterasipilih:checked').val()
+        var jumlahiter = $('#jumlahiterasi').val()
         spinner = $('#loader')
         spinner.show();
         $.ajax({
@@ -1612,9 +1742,12 @@
                 kodekunjungan,
                 gambar,
                 gambar2,
+                selisih,
                 formorder_lab: JSON.stringify(formorder_lab),
                 formtindakan_rad: JSON.stringify(formtindakan_rad),
-                hasilexpertisi
+                hasilexpertisi,
+                pasieniter,
+                jumlahiter
             },
             url: '<?= route('simpanpemeriksaandokter_mata') ?>',
             error: function(data) {
@@ -1807,6 +1940,22 @@
             },
             success: function(response) {
                 $('.tindakanhariini').html(response)
+            }
+        });
+    }
+
+    function ambilformiterasiobat() {
+        var kodekunjungan = $('#kodekunjungan').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('ambil_formiterasiobat') ?>',
+            success: function(response) {
+                $('.v_itterasi_obat').html(response);
+                spinner.hide()
             }
         });
     }
@@ -2079,9 +2228,10 @@
         orderobathariini()
         gambarmatakiri()
         gambarmatakanan()
+        ambilformiterasiobat()
     });
-    function gambarmatakiri()
-    {
+
+    function gambarmatakiri() {
         $.ajax({
             type: 'post',
             data: {
@@ -2097,8 +2247,8 @@
             }
         });
     }
-    function gambarmatakanan()
-    {
+
+    function gambarmatakanan() {
         $.ajax({
             type: 'post',
             data: {
@@ -2114,6 +2264,7 @@
             }
         });
     }
+
     function orderobathariini() {
         spinner = $('#loader')
         spinner.show();
@@ -2157,6 +2308,7 @@
             }
         });
     }
+
     function resetgambar_2() {
         $.ajax({
             type: 'post',
