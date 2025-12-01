@@ -130,7 +130,6 @@
           </div>
       </div>
   </div>
-  </div>
   <div class="modal fade" id="modalpengajuansep" tabindex="-1" aria-labelledby="exampleModalLabel"
       aria-hidden="true">
       <div class="modal-dialog modal-lg">
@@ -373,19 +372,20 @@
                   </button>
               </div>
               <div class="modal-body">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-md-6">
-                        <div class="input-group mb-3">
-                            <input type="text" id="nomorkartupencarian" class="form-control" placeholder="Masukan nomor Kartu BPJS ..."
-                                aria-label="Recipient's username" aria-describedby="button-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button"
-                                    id="button-addon2" onclick="cariinfopasienbpjs()">Info Pasien</button>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
+                  <div class="container">
+                      <div class="row justify-content-center">
+                          <div class="col-md-6">
+                              <div class="input-group mb-3">
+                                  <input type="text" id="nomorkartupencarian" class="form-control"
+                                      placeholder="Masukan nomor Kartu BPJS ..." aria-label="Recipient's username"
+                                      aria-describedby="button-addon2">
+                                  <div class="input-group-append">
+                                      <button class="btn btn-outline-secondary" type="button" id="button-addon2"
+                                          onclick="cariinfopasienbpjs()">Info Pasien</button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
                   </div>
                   <div class="viewinfopasien">
 
@@ -409,17 +409,18 @@
                   </button>
               </div>
               <div class="modal-body">
-                <div class="container">
-                    <div class="col-md-6">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" id="pencariannomor_rujukan" placeholder="Masukan nomor rujukan ..."
-                                aria-label="Recipient's username" aria-describedby="button-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button"
-                                    id="button-addon2" onclick="yukcarirujukan()">Cari Rujukan</button>
-                            </div>
-                        </div>
-                    </div>
+                  <div class="container">
+                      <div class="col-md-6">
+                          <div class="input-group mb-3">
+                              <input type="text" class="form-control" id="pencariannomor_rujukan"
+                                  placeholder="Masukan nomor rujukan ..." aria-label="Recipient's username"
+                                  aria-describedby="button-addon2">
+                              <div class="input-group-append">
+                                  <button class="btn btn-outline-secondary" type="button" id="button-addon2"
+                                      onclick="yukcarirujukan()">Cari Rujukan</button>
+                              </div>
+                          </div>
+                      </div>
                   </div>
                   <div class="detailinforujukan">
 
@@ -444,16 +445,17 @@
               </div>
               <div class="modal-body ui-front">
                   <div class="container">
-                    <div class="col-md-6">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" id="nomorseppencarian" placeholder="Masukan nomor SEP ..."
-                                aria-label="Recipient's username" aria-describedby="button-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button"
-                                    id="button-addon2" onclick="yukcarisep()">Cari Sep</button>
-                            </div>
-                        </div>
-                    </div>
+                      <div class="col-md-6">
+                          <div class="input-group mb-3">
+                              <input type="text" class="form-control" id="nomorseppencarian"
+                                  placeholder="Masukan nomor SEP ..." aria-label="Recipient's username"
+                                  aria-describedby="button-addon2">
+                              <div class="input-group-append">
+                                  <button class="btn btn-outline-secondary" type="button" id="button-addon2"
+                                      onclick="yukcarisep()">Cari Sep</button>
+                              </div>
+                          </div>
+                      </div>
                   </div>
                   <div class="viewinfoSEP">
 
@@ -1103,12 +1105,12 @@
           //       }
           //   });
       }
-      function cariinfopasienbpjs()
-      {
-        spinner = $('#loader')
-        spinner.show()
-        noka = $('#nomorkartupencarian').val()
-        $.ajax({
+
+      function cariinfopasienbpjs() {
+          spinner = $('#loader')
+          spinner.show()
+          noka = $('#nomorkartupencarian').val()
+          $.ajax({
               type: 'post',
               data: {
                   _token: "{{ csrf_token() }}",
@@ -1128,12 +1130,12 @@
               }
           });
       }
-      function yukcarisep()
-      {
-        spinner = $('#loader')
-        spinner.show()
-        nosep = $('#nomorseppencarian').val()
-        $.ajax({
+
+      function yukcarisep() {
+          spinner = $('#loader')
+          spinner.show()
+          nosep = $('#nomorseppencarian').val()
+          $.ajax({
               type: 'post',
               data: {
                   _token: "{{ csrf_token() }}",
@@ -1153,12 +1155,12 @@
               }
           });
       }
-      function yukcarirujukan()
-      {
-        spinner = $('#loader')
-        spinner.show()
-        norujukan = $('#pencariannomor_rujukan').val()
-        $.ajax({
+
+      function yukcarirujukan() {
+          spinner = $('#loader')
+          spinner.show()
+          norujukan = $('#pencariannomor_rujukan').val()
+          $.ajax({
               type: 'post',
               data: {
                   _token: "{{ csrf_token() }}",

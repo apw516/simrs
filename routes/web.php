@@ -19,6 +19,7 @@ use App\Http\Controllers\ReportingController;
 use App\Http\Controllers\newMasterController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\JasaMedisController;
+use App\Http\Controllers\CasemixController;
 
 Route::get('/berkas_ersep', [ReportingController::class, 'index'])->middleware('auth')->name('berkas_ersep');
 Route::post('/ambildataeresep', [ReportingController::class, 'ambilDataEresep'])->middleware('auth')->name('ambildataeresep');
@@ -808,3 +809,8 @@ Route::get('/cetaksep_v/{nosep}', [PdfController::class, 'cetaksep']);
 Route::get('/cetaksep_v22/{nosep}', [PdfController::class, 'cetaksep22']);
 Route::get('/cetakcppt/{nosep}', [PdfController::class, 'cetakcppt']);
 Route::get('/cetaksuratpengantar/{id}', [PdfController::class, 'cetaksuratpengantar']);
+
+
+Route::get('/index_merger_berkas', [CasemixController::class, 'index_merger_berkas'])->name('index_merger_berkas');
+Route::post('/caridatakunjungan_casemix', [CasemixController::class, 'caridatakunjungan_casemix'])->name('caridatakunjungan_casemix');
+Route::get('/downloadberkas/{kode_kunjungan}', [CasemixController::class, 'downloadberkas'])->name('downloadberkas');

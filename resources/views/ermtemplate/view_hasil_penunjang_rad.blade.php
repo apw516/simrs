@@ -11,6 +11,12 @@
                 <div class="card-body">
                 @foreach ($DATA as $T )
                     <iframe src ="{{ $T->PUBLICURL}}" width="100%" height="600px"></iframe>
+                    <div class="card">
+                        <div class="card-header">Expertisi</div>
+                        <div class="card-body">
+                        <iframe src ="http://196.196.196.251/SIRAMAH/cetakexp/{{ $T->ACCESSIONNUMBER}}" width="100%" height="600px"></iframe>
+                        </div>
+                    </div>
                     @endforeach
                 </div>
             </div>

@@ -674,6 +674,16 @@
                           </a>
                       </li>
                   @endif
+                    <li hidden class="nav-header">CASEMIX</li>
+                      <li hidden class="nav-item">
+                          <a href="{{ route('index_merger_berkas') }}"
+                              class="nav-link @if ($sidebar == 'mergerberkas') active @endif">
+                              <i class="nav-icon fas fa-th"></i>
+                              <p>
+                                  Merger Berkas
+                              </p>
+                          </a>
+                      </li>
                   <li class="nav-header"> <i class="nav-icon bi bi-person-circle mr-2"></i> INFO AKUN</li>
                   <li class="nav-item">
                       <a href="{{ route('profil') }}" class="nav-link">

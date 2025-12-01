@@ -2098,6 +2098,7 @@ class FarmasiController extends Controller
     }
     public function mergerpdf($kodekunjungan)
     {
+        // http://192.168.2.30/siramah/cetakSEPAntrian?noSep='+data.sep
         $date = $this->get_date();
         // ... inside a controller method or similar
         $pdf = PdfMerger::init();
