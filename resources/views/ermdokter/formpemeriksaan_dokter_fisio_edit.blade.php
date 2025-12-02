@@ -14,8 +14,40 @@
         @endif
     </div>
     <div class="card-body">
+        @if ($status_cek_rujukan == 1)
+            <H3 class="mb-3">Pasien BPJS</H3>
+            <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalicare" onclick="showicare2()">Lihat Icare</button>
+            @if ($jenisrujukan == 'FASKES 1')
+                <div class="alert alert-light" role="alert">
+                    <h5 class="text-bold mb-2">Kunjungan Pasien Dengan Rujukan dari Faskes
+                        {{ $detailrujukan->response->asalFaskes }}</h5>
+                    <p>
+                    <h5>Faskes Perujuk : {{ $detailrujukan->response->rujukan->provPerujuk->nama }}</h5>
+                    <h5>Nomor Rujukan : {{ $rujukan }}</h5>
+                    <h5>Tanggal Rujukan : {{ $detailrujukan->response->rujukan->tglKunjungan }}</h5>
+                    <h5 class="text-danger font-italic mt-2"> Rujukan dibuat {{ $selisih }} hari yang lalu, masa
+                        berlaku rujukan adalah 90 hari ....</h5>
+                    @if ($selisih > 60)                        
+                        <div class="alert alert-warning mt-4 mb-4 font-italic" role="alert">
+                            <h3 class="text-bold"> @if(count($kunjunganKronis) > 0)
+                                Pasien Kronis ,@endif Pasien berpotensi PRB ( PRB BPJS adalah
+                                Program Rujuk Balik yang memungkinkan pasien penyakit kronis stabil untuk melanjutkan
+                                pengobatan di Fasilitas Kesehatan Tingkat Pertama (FKTP) seperti puskesmas atau klinik.
+                                )</h3>
+                        </div>
+                    @endif
+                    </p>
+                </div>
+            @elseif($jenisrujukan == 'FASKES 2')
+                <div class="alert alert-light" role="alert">
+                    <h5 class="text-bold mb-2">Kunjungan Pasien Pasca Rawat Inap</h5>
+                </div>
+            @endif
+        @else
+            <H3 class="mb-3">Pasien UMUM</H3>
+        @endif
         @if ($kunjungan[0]->ref_kunjungan != '0')
-            <div class="jumbotron">
+            <div class="jumbotron mt-3">
                 <h1 class="display-4">Hello {{ auth()->user()->nama }} </h1><br>
                 <p class="lead">Dokter Pengirim : {{ $kunjungan[0]->dokter_kirim }}</p>
                 <p class="lead">Poliklinik Pengirim : {{ $kunjungan[0]->poli_asal }}</p>
@@ -344,6 +376,27 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modalicare" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Icare Pasien BPJS</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_icare2">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Modal -->
 <div class="modal fade" id="modalhasilpenunjang_rad" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -488,7 +541,21 @@
             }
         });
     }
-
+ function showicare2() {
+        var kodekunjungan = $('#kodekunjungan').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('ambil_icarepasien') ?>',
+            success: function(response) {
+                $('.v_icare2').html(response);
+                spinner.hide()
+            }
+        });
+    }
     function orderobathariini() {
         spinner = $('#loader')
         spinner.show();

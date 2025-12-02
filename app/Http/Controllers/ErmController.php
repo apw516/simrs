@@ -290,48 +290,48 @@ class ErmController extends Controller
         $unitk = $kunjungan[0]->kode_unit;
         $kunjunganKronis = DB::select('select * from ts_kunjungan where no_rm = ? and kode_unit = ? and catatan = ?', [$request->rm, $unitk, 'KRONIS']);
         $cek_konsul = db::select('select *,FC_NAMA_PARAMEDIS1(dok_kirim) as namadokterkirim,fc_NAMA_UNIT1(unit_tujuan) as namaunittujuan,fc_NAMA_UNIT1(unit_asal) as unitasal from mt_surat_tindak_lanjut where no_rm = ? and unit_tujuan = ? and status_jawab = 0',[$mt_pasien[0]->no_rm,auth()->user()->unit]);
-        $rujukan = $kunjungan[0]->no_rujukan;
-        $rujukan = 'AB';
-        $cekrujukan1 = strlen($rujukan);
-        if ($cekrujukan1 > 5) {
-            $cekrujukan2 = substr($rujukan, 0, 8);
-            if ($cekrujukan2 != '1018R001') {
-                $v = new VclaimModel();
-                try {
-                    $detailrujukan = $v->carirujukan_byno($rujukan);
-                    if ($detailrujukan->metaData->code == 200) {
-                        $tglkunjungan = $detailrujukan->response->rujukan->tglKunjungan;
-                        $date1 = date_create($tglkunjungan);
-                        $date2 = date_create($this->get_date());
-                        $interval = date_diff($date1, $date2);
-                        $selisih = ($interval->days);
-                        $daterujukan = $tglkunjungan;
-                    } else {
-                        $detailrujukan = $v->carirujukanRS_byno_($rujukan);
-                        if ($detailrujukan->metaData->code == 200) {
-                            $tglkunjungan = $detailrujukan->response->rujukan->tglKunjungan;
-                            $date1 = date_create($tglkunjungan);
-                            $date2 = date_create($this->get_date());
-                            $interval = date_diff($date1, $date2);
-                            $selisih = ($interval->days);
-                            $daterujukan = $tglkunjungan;
-                        } else {
-                            $selisih = 0;
-                            $daterujukan = 0;
-                        }
-                    }
-                } catch (\Exception $e) {
-                    $selisih = 0;
-                    $daterujukan = 0;
-                }
-            } else {
-                $selisih = 0;
-                $daterujukan = 0;
-            }
-        } else {
+        // $rujukan = $kunjungan[0]->no_rujukan;
+        // $rujukan = 'AB';
+        // $cekrujukan1 = strlen($rujukan);
+        // if ($cekrujukan1 > 5) {
+        //     $cekrujukan2 = substr($rujukan, 0, 8);
+        //     if ($cekrujukan2 != '1018R001') {
+        //         $v = new VclaimModel();
+        //         try {
+        //             $detailrujukan = $v->carirujukan_byno($rujukan);
+        //             if ($detailrujukan->metaData->code == 200) {
+        //                 $tglkunjungan = $detailrujukan->response->rujukan->tglKunjungan;
+        //                 $date1 = date_create($tglkunjungan);
+        //                 $date2 = date_create($this->get_date());
+        //                 $interval = date_diff($date1, $date2);
+        //                 $selisih = ($interval->days);
+        //                 $daterujukan = $tglkunjungan;
+        //             } else {
+        //                 $detailrujukan = $v->carirujukanRS_byno_($rujukan);
+        //                 if ($detailrujukan->metaData->code == 200) {
+        //                     $tglkunjungan = $detailrujukan->response->rujukan->tglKunjungan;
+        //                     $date1 = date_create($tglkunjungan);
+        //                     $date2 = date_create($this->get_date());
+        //                     $interval = date_diff($date1, $date2);
+        //                     $selisih = ($interval->days);
+        //                     $daterujukan = $tglkunjungan;
+        //                 } else {
+        //                     $selisih = 0;
+        //                     $daterujukan = 0;
+        //                 }
+        //             }
+        //         } catch (\Exception $e) {
+        //             $selisih = 0;
+        //             $daterujukan = 0;
+        //         }
+        //     } else {
+        //         $selisih = 0;
+        //         $daterujukan = 0;
+        //     }
+        // } else {
             $selisih = 0;
             $daterujukan = 0;
-        }
+        // }
         $pic = $request->pic;
         $unit = auth()->user()->unit;
         $last_assdok = DB::select('SELECT * FROM assesmen_dokters
@@ -927,6 +927,24 @@ class ErmController extends Controller
             }
         }
     }
+    public function ambil_icarepasien(Request $request)
+    {
+        $mw = new antrianmarwan();
+        $kode_paramedis = auth()->user()->kode_paramedis;
+        $kodekunjungan = $request->kodekunjungan;
+        $ts_kunjungan = db::select('select * from ts_kunjungan where kode_kunjungan = ?',[$kodekunjungan]);
+        $mt_pasien = db::select('select * from mt_pasien where no_rm = ?',[$ts_kunjungan[0]->no_rm]);
+        $mt_paramedis = db::select('select * from mt_paramedis where kode_paramedis = ?',[$kode_paramedis]);
+        $icare = $mw->icare($mt_pasien[0]->no_Bpjs, $mt_paramedis[0]->kode_dokter_jkn);
+        if ($icare->metadata->code == 200) {
+            $urlicare = $icare->response->url;
+        } else {
+        $urlicare = '';
+        }
+        return view('ermtemplate.v_icare',compact([
+            'urlicare'
+        ]));
+    }
     public function formpemeriksaan_dokter(Request $request)
     {
         $kunjungan = DB::select('select *,fc_nama_px(no_rm) as nama_pasien,fc_nama_paramedis(ref_paramedis) AS dokter_kirim,fc_nama_unit1(ref_unit) AS poli_asal from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
@@ -934,12 +952,13 @@ class ErmController extends Controller
         $rm = $kunjungan[0]->no_rm;
         $cek_konsul = db::select('select * from mt_surat_tindak_lanjut where no_rm = ? and unit_tujuan = ? and status_jawab = 0',[$rm,auth()->user()->unit]);
         $kunjunganKronis = DB::select('select * from ts_kunjungan where no_rm = ? and kode_unit = ? and catatan = ?', [$rm, $unitk, 'KRONIS']);
-        // $rujukan = $kunjungan[0]->no_rujukan;
-        $rujukan = 'AB';
+        $rujukan = $kunjungan[0]->no_rujukan;
         $cekrujukan1 = strlen($rujukan);
+        $detailrujukan = '';
         if ($cekrujukan1 > 5) {
             $cekrujukan2 = substr($rujukan, 0, 8);
             if ($cekrujukan2 != '1018R001') {
+                $jenisrujukan = 'FASKES 1';
                 $v = new VclaimModel();
                 try {
                     $detailrujukan = $v->carirujukan_byno($rujukan);
@@ -950,6 +969,7 @@ class ErmController extends Controller
                         $interval = date_diff($date1, $date2);
                         $selisih = ($interval->days);
                         $daterujukan = $tglkunjungan;
+                        $status_cek_rujukan = 1;
                     } else {
                         $detailrujukan = $v->carirujukanRS_byno_($rujukan);
                         if ($detailrujukan->metaData->code == 200) {
@@ -959,22 +979,29 @@ class ErmController extends Controller
                             $interval = date_diff($date1, $date2);
                             $selisih = ($interval->days);
                             $daterujukan = $tglkunjungan;
+                            $status_cek_rujukan = 1;
                         } else {
                             $selisih = 0;
                             $daterujukan = 0;
+                            $status_cek_rujukan = 0;
                         }
                     }
                 } catch (\Exception $e) {
                     $selisih = 0;
                     $daterujukan = 0;
+                    $status_cek_rujukan = 0;
                 }
             } else {
+                $jenisrujukan = 'FASKES 2';
                 $selisih = 0;
                 $daterujukan = 0;
+                $status_cek_rujukan = 1;
             }
         } else {
+            $jenisrujukan = 'Tidak ditemukan no rujukan !';
             $selisih = 0;
             $daterujukan = 0;
+            $status_cek_rujukan = 0;
         }
         $ref_kunjungan = $kunjungan[0]->ref_kunjungan;
         if ($ref_kunjungan != 0) {
@@ -1019,7 +1046,11 @@ class ErmController extends Controller
                             'last_assdok',
                             'first_assdok',
                             'ref_resume',
-                            'cek_konsul'
+                            'cek_konsul',
+                            'jenisrujukan',
+                            'status_cek_rujukan',
+                            'detailrujukan',
+                            'rujukan'
                         ]));
                     } else {
                         if ($unit == '1014') {
@@ -1036,7 +1067,11 @@ class ErmController extends Controller
                                 'ref_resume',
                                 'kunjunganKronis',
                                 'selisih',
-                                'cek_konsul'
+                                'cek_konsul',
+                                'jenisrujukan',
+                                'status_cek_rujukan',
+                                'detailrujukan',
+                                'rujukan'
                             ]));
                         } else {
                             return view('ermdokter.new_formpemeriksaan_dokter_edit_2', compact([
@@ -1052,7 +1087,11 @@ class ErmController extends Controller
                                 'ref_resume',
                                 'kunjunganKronis',
                                 'selisih',
-                                'cek_konsul'
+                                'cek_konsul',
+                                'jenisrujukan',
+                                'status_cek_rujukan',
+                                'detailrujukan',
+                                'rujukan'
                             ]));
                         }
                     }
@@ -1076,7 +1115,11 @@ class ErmController extends Controller
                             'penyakit',
                             'hasil_ro',
                             'ref_resume',
-                            'cek_konsul'
+                            'cek_konsul',
+                            'jenisrujukan',
+                            'status_cek_rujukan',
+                            'detailrujukan',
+                            'rujukan'
                         ]));
                     } else {
                         // return view('ermdokter.new_form_pemeriksaan_dokter', compact([
@@ -1103,7 +1146,11 @@ class ErmController extends Controller
                                 'ref_resume',
                                 'kunjunganKronis',
                                 'selisih',
-                                'cek_konsul'
+                                'cek_konsul',
+                                'jenisrujukan',
+                                'status_cek_rujukan',
+                                'detailrujukan',
+                                'rujukan'
                             ]));
                         } else {
                             return view('ermdokter.new_form_pemeriksaan_dokter_2', compact([
@@ -1119,7 +1166,11 @@ class ErmController extends Controller
                                 'ref_resume',
                                 'kunjunganKronis',
                                 'selisih',
-                                'cek_konsul'
+                                'cek_konsul',
+                                'jenisrujukan',
+                                'status_cek_rujukan',
+                                'detailrujukan',
+                                'rujukan'
                             ]));
                         }
                     }
@@ -1136,8 +1187,13 @@ class ErmController extends Controller
                     'last_assdok',
                     'kunjungan',
                     'resume_now',
+                    'selisih',
                     'ref_resume',
-                    'cek_konsul'
+                    'cek_konsul',
+                    'jenisrujukan',
+                    'status_cek_rujukan',
+                    'detailrujukan',
+                    'rujukan'
                 ]));
             } else {
                 return view('ermdokter.formpemeriksaan_dokter_fisio', compact([
@@ -1147,7 +1203,11 @@ class ErmController extends Controller
                     'ref_resume',
                     'kunjunganKronis',
                     'selisih',
-                    'cek_konsul'
+                    'cek_konsul',
+                    'jenisrujukan',
+                    'status_cek_rujukan',
+                    'detailrujukan',
+                    'rujukan'
                 ]));
             }
         }

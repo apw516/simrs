@@ -38,7 +38,7 @@
                         Medis</b></a> --}}
                 <a href="#" class="btn btn-primary btn-block lihatcppt2" rm="{{ $kunjungan[0]->no_rm }}"><b>CPPT</b></a>
                 <a href="#" class="btn btn-primary btn-block" onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})" rm="{{ $kunjungan[0]->no_rm }}"><b>Riwayat Kunjungan</b></a>
-                <a href="#" onclick="lihaticare()" class="btn btn-success btn-block"><b>Icare BPJS</b></a>
+                <a hidden href="#" onclick="lihaticare()" class="btn btn-success btn-block"><b>Icare BPJS</b></a>
                 <input hidden type="text" id="kodekunjungan" value="{{ $kunjungan[0]->kode_kunjungan }}">
                 <input hidden type="text" id="nomorrm" value="{{ $kunjungan[0]->no_rm }}">
             </div>
@@ -143,7 +143,7 @@
             @endif Pasien PRB, dan melanjutkan pengobatan kembali ke faskes 1...
           </div>
         @endif --}}
-        <div class="card" id="icareshow">
+        <div hidden class="card" id="icareshow">
             <div class="card-header">Icare BPJS <button class="btn btn-danger float-right" onclick="tutupicare()"><i
                         class="bi bi-x mr-1 ml-1"></i> Tutup</button>
             </div>
@@ -157,7 +157,7 @@
         <div class="warning catatankonsul">
             
         </div>       
-        <div hidden class="slide3">
+        <div class="slide3">
 
         </div>
     </div>

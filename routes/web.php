@@ -584,6 +584,8 @@ Route::group(['middleware' => ['auth', 'hak_akses1:5,7']], function () {
         ->name('ambildatapasienpoli_dokter_cari'); //sidebar
     Route::post('/ambildetailpasien_dokter', [ErmController::class, 'ambildetailpasien_dokter'])
         ->name('ambildetailpasien_dokter'); //sidebar
+    Route::post('/ambil_icarepasien', [ErmController::class, 'ambil_icarepasien'])
+        ->name('ambil_icarepasien'); //sidebar
     Route::post('/formpemeriksaan_dokter', [ErmController::class, 'formpemeriksaan_dokter'])
         ->name('formpemeriksaan_dokter'); //sidebar
     Route::post('/ambil_form_igd_dokter', [ErmController::class, 'ambil_form_igd_dokter'])
