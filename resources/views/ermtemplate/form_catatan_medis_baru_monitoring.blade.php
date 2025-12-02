@@ -38,7 +38,7 @@
             data-target="#modalhasillab"><i class="bi bi-journal-text"></i> Hasil laboratorium Spesial Order</button>
         <button class="btn btn-info mb-2 liathasil_rad" nomorrm="{{ $rm }}" data-toggle="modal"
             data-target="#modalhasilrad"><i class="bi bi-journal-text"></i> Hasil Radiologi</button>
-        <button class="btn btn-info mb-2 liathasil_pa" nomorrm="{{ $rm }}" data-toggle="modal"
+        <button hidden class="btn btn-info mb-2 liathasil_pa" nomorrm="{{ $rm }}" data-toggle="modal"
             data-target="#modalhasilpa"><i class="bi bi-journal-text"></i> Hasil Lab PA</button>
         <button class="btn btn-success mb-2 lihatcppt" nomorrm="{{ $rm }}"><i class="bi bi-journal-text"></i> CPPT( RAWAT JALAN )</button>
         <button class="btn btn-success mb-2 catatanmedis"><i class="bi bi-journal-text"></i> RIWAYAT KUNJUNGAN</button>
