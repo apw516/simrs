@@ -609,6 +609,10 @@ class SimrsController extends Controller
     }
     public function Caripasien(Request $request)
     {
+        try {
+            $dd = DB::select('CALL sp_AutoCloseRegRajal()');
+        } catch (\Exception $e) {
+        }
         return view('pendaftaran.pencarianpasien', [
             'data_pasien' =>  DB::select("CALL WSP_PANGGIL_DATAPASIEN('$request->nomorrm','$request->nama','$request->alamat','$request->nomorktp','$request->nomorbpjs')")
         ]);
