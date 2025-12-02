@@ -45,11 +45,19 @@ class RanapController extends VclaimController
             AND b.kode_kelompok < 3 ', [$user, $oneweek, $now])
         ]);
     }
+    public function get_date()
+    {
+        $dt = Carbon::now()->timezone('Asia/Jakarta');
+        $date = $dt->toDateString();
+        $now = $date;
+        return $now;
+    }
     public function UpdateSEP(Request $request)
     {
         // return redirect()->intended('logout');
         $v = new VclaimModel();
         // dd($request->rm);
+        $RM = $request->rm;
         $mt_pasien = DB::select('select * from mt_pasien where no_rm = ?',[$request->rm]);
         $no_bpjs = $mt_pasien[0]->no_Bpjs;
         $sep = $request->nomorsurat;
@@ -79,6 +87,15 @@ class RanapController extends VclaimController
         }
         $alasan = $request->alasan;
         $kodekunjungan = $request->kodekunjungan;
+        $ts_kunjungan = db::select('SELECT * FROM ts_kunjungan WHERE no_rm = ? AND catatan = ? AND kode_kunjungan = (SELECT MAX(kode_kunjungan) from ts_kunjungan where no_rm = ? and catatan = ?)',[$RM,'KRONIS',$RM,'KRONIS']);
+        if(count($ts_kunjungan)> 0){
+            $date1 = date_create($ts_kunjungan[0]->tgl_masuk);
+            $date2 = date_create($this->get_date());
+            $interval = date_diff($date1, $date2);
+            $selisih = ($interval->days);
+        }else{
+            $selisih = 120;
+        }
         $stm = '';
         $dtm = '';
         $nolp = $request->nolp;
@@ -116,7 +133,11 @@ class RanapController extends VclaimController
         if ($pulang->metaData->code == 200) {
             DB::table('ts_kunjungan')->where('kode_kunjungan', $kodekunjungan)->update(['keterangan2' => $keterangan2]);
         }
-        echo json_encode($pulang);
+        $data = [
+            'pulang' => $pulang,
+            'status_kronis' => $selisih
+        ];
+        echo json_encode($data);
     }
     public function Infopasien(Request $request)
     {

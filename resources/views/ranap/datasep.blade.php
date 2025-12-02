@@ -426,7 +426,7 @@
                 },
                 success: function(data) {
                     spinner.hide()
-                    if (data.metaData.code == 200) {
+                    if (data.pulang.metaData.code == 200) {
                         Swal.fire({
                             icon: 'success',
                             title: 'Update tanggal pulang sep Berhasil ...',
@@ -437,7 +437,7 @@
                     } else {
                         Swal.fire({
                             icon: 'error',
-                            title: data.metaData.message,
+                            title: data.pulang.metaData.message,
                         })
                     }
                 }
@@ -477,7 +477,10 @@
                 },
                 success: function(data) {
                     spinner.hide()
-                    if (data.metaData.code == 200) {
+                    if (data.pulang.metaData.code == 200) {         
+                        if(data.status_kronis < 30){
+                            alert('Pasien memiliki kunjungan kronis..'+ data.status_kronis +' Hari yang lalu ....')
+                        }               
                         Swal.fire({
                             icon: 'success',
                             title: 'Update tanggal pulang sep Berhasil,silahkan buat surat kontrol pasca rawat inap ...',
@@ -490,7 +493,7 @@
                     } else {
                         Swal.fire({
                             icon: 'error',
-                            title: data.metaData.message,
+                            title: data.pulang.metaData.message,
                         })
                     }
                 }
