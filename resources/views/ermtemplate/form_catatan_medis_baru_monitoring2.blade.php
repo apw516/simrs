@@ -128,7 +128,6 @@
                         aria-labelledby="headingOne{{ $k->kode_kunjungan }}{{ $urutan }}"
                         data-parent="#accordionExample">
                         <div class="card-body">
-
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="card">
