@@ -4358,7 +4358,6 @@ class SimrsController extends Controller
     {
         $v = new VclaimModel();
         $sep = $v->carisep($request->nosep);
-        dd($sep);
         $sepkontrol = $v->carisep_kontrol($request->nosep);
         $diagnosa = $sepkontrol->response->diagnosa;
         $kodediagnosa = (explode('-', $diagnosa));
