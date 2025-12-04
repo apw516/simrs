@@ -198,7 +198,7 @@ class PdfController extends Controller
         WHERE a.`kode_kunjungan` = ? AND a.`kode_unit` < ?', [$kodekunjungan, '4000']);
         $today = Carbon::now()->isoFormat('D MMMM Y');
         if (count($assesmen) > 0) {
-            $tglll =  $assesmen[0]->tglk2;
+            $tglll =  $assesmen[0]->tgl_kunjungan;
             $carbonDate = Carbon::parse($tglll);
             $tglperiksa = $carbonDate->isoFormat('dddd, D MMMM Y');
         } else {
@@ -318,7 +318,7 @@ class PdfController extends Controller
         $assesmen = db::select('select *,date(tanggalperiksa) as tglk2  from erm_hasil_assesmen_keperawatan_rajal where kode_kunjungan = ?', [$kodekunjungan]);
         $today = Carbon::now()->isoFormat('D MMMM Y');
         if (count($assesmen) > 0) {
-            $tglll =  $assesmen[0]->tglk2;
+            $tglll =  $assesmen[0]->tanggalkunjungan;
             $carbonDate = Carbon::parse($tglll);
             $tglperiksa = $carbonDate->isoFormat('dddd, D MMMM Y');
         } else {

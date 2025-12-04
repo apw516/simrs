@@ -313,7 +313,6 @@ class RanapController extends VclaimController
         $rm = $request->rm;
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpasien from mt_pasien where no_rm = ?',[$rm]);
         $kunjungan = db::select("CALL SP_ERM_CARIBERKAS_BY_RM('$rm')");
-
         $tindakan = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit,c.`kode_tarif_detail`,d.`NAMA_TARIF` FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header` INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER` WHERE SUBSTR(b.`kode_unit`,1,1) = 1 AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883') AND a.no_rm = ?", [$rm]);
         $orderfarmasi = db::select('SELECT kode_kunjungan,a.keterangan as keteranganresep,kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.no_rm = ? and  kode_unit > ?', [$rm, '4000']);
         $farmasi = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit,c.`kode_tarif_detail`,d.`nama_barang`,C.`jumlah_layanan`,C.`aturan_pakai` FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header` INNER JOIN mt_barang d ON c.`kode_barang` = d.`kode_barang` WHERE SUBSTR(b.`kode_unit`,1,1) = 4 AND a.no_rm = ?", [$rm]);

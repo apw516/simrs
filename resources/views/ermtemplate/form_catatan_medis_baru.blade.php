@@ -630,7 +630,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td>Tanggal Periksa</td>
-                                                                            <td>{{ $k->tgl_pemeriksaan }}</td>
+                                                                            <td>{{ $k->tanggalassemen }}</td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td>Dokter Pemeriksa</td>
@@ -763,7 +763,7 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr>
-                                                                <td>{{ $k->tgl_pemeriksaan }}</td>
+                                                                <td>{{ $k->tanggalassemen }}</td>
                                                                 <td>
                                                                     <img src="{{ $k->signature_dokter }}"
                                                                         alt=""><br>
@@ -1028,7 +1028,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Tanggal Periksa</td>
-                                                            <td>{{ $k->tgl_pemeriksaan }}</td>
+                                                            <td>{{ $k->tanggalassemen }}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Dokter pemeriksa</td>
