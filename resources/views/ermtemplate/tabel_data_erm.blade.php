@@ -11,7 +11,7 @@
     <tbody>
         @foreach ($dataerm as $d)
             <tr>
-                <td>{{ $d->tgl_pemeriksaan }}</td>
+                <td>{{ $d->tgl_kunjungan }}</td>
                 <td>{{ $d->id_pasien }}</td>
                 <td>{{ $d->nama_pasien }}</td>
                 <td>{{ $d->nama_dokter }}</td>

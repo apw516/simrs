@@ -7929,7 +7929,7 @@ class ErmController extends Controller
             $d2 = $request->tglawal;
         }
         $dataerm = db::select('SELECT b.id as id_asskep,a.id as id_assdok,a.id_pasien,fc_nama_px(a.`id_pasien`) AS nama_pasien,a.`nama_dokter`,b.`namapemeriksa` AS perawat
-        ,fc_nama_unit1(a.`kode_unit`) nama_poli,a.`tgl_pemeriksaan` FROM assesmen_dokters AS a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`id_asskep` = b.id WHERE DATE(a.tgl_pemeriksaan) BETWEEN ? AND ?', [$d2, $now]);
+        ,fc_nama_unit1(a.`kode_unit`) nama_poli,a.`tgl_pemeriksaan`,a.tgl_kunjungan FROM assesmen_dokters AS a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`id_asskep` = b.id WHERE DATE(a.tgl_kunjungan) BETWEEN ? AND ?', [$d2, $now]);
         return view('ermtemplate.tabel_data_erm', compact([
             'dataerm'
         ]));
