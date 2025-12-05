@@ -21,7 +21,7 @@
     </div>
     <section class="content">
         <div class="container-fluid">
-            <button disabled class="btn btn-success" onclick="getruangan()"><i class="bi bi-bullseye"></i> Get
+            <button class="btn btn-success" onclick="getruangan()"><i class="bi bi-bullseye"></i> Get
                 Ruangan</button>
         </div>
         <div class="card mt-2">
@@ -53,6 +53,8 @@
                     success: function(response) {
                         $('.v_t_r').html(response);
                         spinner.hide()
+                        ambildataruangan()
+
                     }
                 });
             }

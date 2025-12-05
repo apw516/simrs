@@ -202,7 +202,7 @@
                  updatebed()
                  setInterval(function() {
                     window.location.reload(); // Reloads the entire page
-                    }, 10000);
+                    }, 20000);
             });
             // Refreshes every 5 seconds (5000 milliseconds)
             const ctx = document.getElementById('chart');

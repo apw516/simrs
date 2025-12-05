@@ -633,9 +633,27 @@ class SimrsController extends Controller
                 'tersediapria' => $d->tersediapria,
                 'tersediawanita' => $d->tersediawanita,
                 'tersediapriawanita' => $d->tersediapriawanita,
-                'status_send' => 0,
             ];
-            mode_ketersediaan_bed_bpjs::create($databed);
+            $kodekelas = $d->kodekelas;
+            $koderuang = $d->koderuang;
+            $cek = db::select('select * from ts_ketersediaan_kamar_bpjs where kodekelas = ? and koderuang = ?',[$kodekelas,$koderuang]);
+            if(count($cek) > 0){
+                $databed = [
+                    'status_send' => 1,
+                    'last_update' => $this->get_now(),
+                    'last_update_from_sp' => $this->get_now()
+
+                ];
+                mode_ketersediaan_bed_bpjs::whereRaw('kodekelas = ? and koderuang = ?', array($d->kodekelas,$d->koderuang))->update($databed);
+            }else{
+                  $databed = [
+                    'status_send' => 0,
+                    'last_update' => $this->get_now(),
+                    'last_update_from_sp' => $this->get_now()
+
+                ];
+                mode_ketersediaan_bed_bpjs::create($databed);
+            }
         }
     }
     public function ambildataruangan()
@@ -707,6 +725,28 @@ class SimrsController extends Controller
     {
         $av = new Apliacares_bpjs();
         $data = db::select('select * from ts_ketersediaan_kamar_bpjs order by last_update asc');
+        $jam = Carbon::now()->hour;
+        $menit = Carbon::now()->minute;
+        $waktu = $jam.':'.$menit;
+        if($waktu == '01:00'){
+            $this->get_ruangan_for_brid();
+        }elseif($waktu == '05:00'){
+            $this->get_ruangan_for_brid();
+        }elseif($waktu == '09:00'){
+            $this->get_ruangan_for_brid();
+        }elseif($waktu == '11:00'){
+            $this->get_ruangan_for_brid();
+        }elseif($waktu == '14:00'){
+            $this->get_ruangan_for_brid();
+        }elseif($waktu == '16:00'){
+            $this->get_ruangan_for_brid();
+        }elseif($waktu == '18:00'){
+            $this->get_ruangan_for_brid();
+        }elseif($waktu == '21:00'){
+            $this->get_ruangan_for_brid();
+        }elseif($waktu == '23:30'){
+            $this->get_ruangan_for_brid();
+        }
         try {
             foreach ($data as $d) {
                 $this->loopbrid($d);
