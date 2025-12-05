@@ -21,6 +21,12 @@ use App\Http\Controllers\PdfController;
 use App\Http\Controllers\JasaMedisController;
 use App\Http\Controllers\CasemixController;
 
+Route::post('/updateruangan2', [SimrsController::class, 'updateruangan2'])->name('updateruangan2');
+Route::get('/index_bridging_bed', [SimrsController::class, 'index_bridging_bed'])->middleware('auth')->name('index_bridging_bed');
+Route::post('/get_ruangan_for_brid', [SimrsController::class, 'get_ruangan_for_brid'])->middleware('auth')->name('get_ruangan_for_brid');
+Route::post('/ambildataruangan', [SimrsController::class, 'ambildataruangan'])->middleware('auth')->name('ambildataruangan');
+Route::post('/kirimruangan', [SimrsController::class, 'kirimruangan'])->middleware('auth')->name('kirimruangan');
+Route::post('/updateruangan', [SimrsController::class, 'updateruangan'])->middleware('auth')->name('updateruangan');
 Route::get('/berkas_ersep', [ReportingController::class, 'index'])->middleware('auth')->name('berkas_ersep');
 Route::post('/ambildataeresep', [ReportingController::class, 'ambilDataEresep'])->middleware('auth')->name('ambildataeresep');
 Route::get('/', [LoginController::class, 'index']);

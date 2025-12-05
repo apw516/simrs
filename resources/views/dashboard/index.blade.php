@@ -193,8 +193,18 @@
                     </div>
                 </div>
             </div>
+            <div class="v_bed">
+
+            </div>
         </div>
         <script>
+             $(document).ready(function() {
+                 updatebed()
+                 setInterval(function() {
+                    window.location.reload(); // Reloads the entire page
+                    }, 10000);
+            });
+            // Refreshes every 5 seconds (5000 milliseconds)
             const ctx = document.getElementById('chart');
             var unit = {!! json_encode($unit) !!};
             var total = {!! json_encode($total) !!};
@@ -265,8 +275,6 @@
                     }
                 }
             });
-
-
             function tampilperbulan() {
                 awal = $('#tanggal_awal').val()
                 akhir = $('#tanggal_akhir').val()
@@ -313,6 +321,20 @@
                     success: function(response) {
                         $('.graf_2').html(response);
                         spinner.hide()
+                    }
+                });
+            }
+            function updatebed() {
+                $.ajax({
+                    type: 'post',
+                    data: {
+                        _token: "{{ csrf_token() }}"
+                    },
+                    url: '<?= route('updateruangan2') ?>',
+                    error: function(response) {
+                    },
+                    success: function(response) {
+                        $('.v_bed').html(response);
                     }
                 });
             }

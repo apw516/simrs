@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
 use App\Models\VclaimModel;
+use App\Models\mode_ketersediaan_bed_bpjs;
 use App\Models\antrianmarwan;
 use App\Models\Pasien;
 use App\Models\Dokter;
@@ -38,6 +39,7 @@ use App\Models\Provinsi;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Desa;
+use App\Models\Apliacares_bpjs;
 use App\Models\mt_keluarga;
 use App\Models\mt_domisili;
 use App\Models\logantrian;
@@ -606,6 +608,135 @@ class SimrsController extends Controller
                 // 'cek_kunjungan' => $total
             ]
         );
+    }
+    public function index_bridging_bed()
+    {
+        $title = 'SIMRS - PENDAFTARAN';
+        $sidebar = 'indexbedmonitoring';
+        $sidebar_m = '2';
+        return view('bedmonitoring.index', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+        ]);
+    }
+    public function get_ruangan_for_brid()
+    {
+        $databed = db::select('CALL SP_BRIDGING_SIRANAP2_bpjs()');
+        foreach ($databed as $d) {
+            $databed = [
+                'kodekelas' => $d->kodekelas,
+                'koderuang' => $d->koderuang,
+                'namaruang' => $d->namaruang,
+                'kapasitas' => $d->kapasitas,
+                'tersedia' => $d->tersedia,
+                'tersediapria' => $d->tersediapria,
+                'tersediawanita' => $d->tersediawanita,
+                'tersediapriawanita' => $d->tersediapriawanita,
+                'status_send' => 0,
+            ];
+            mode_ketersediaan_bed_bpjs::create($databed);
+        }
+    }
+    public function ambildataruangan()
+    {
+        $data = db::select('select * from ts_ketersediaan_kamar_bpjs order by last_update ASC');
+        return view('bedmonitoring.tabel_bed_akan_dikirim', compact([
+            'data'
+        ]));
+    }
+    public function kirimruangan(Request $request)
+    {
+        $av = new Apliacares_bpjs();
+        $id = $request->idruangan;
+        $data = db::select('select * from ts_ketersediaan_kamar_bpjs where id = ?', [$id]);
+        try {
+            $LIST2 = $av->bedbaru($data);
+            if ($LIST2->metadata->code == 1) {
+                mode_ketersediaan_bed_bpjs::whereRaw('id = ?', array($id))->update(['status_send' => 1]);
+                $datae = [
+                    'kode' => 200,
+                    'pesan' => 'ruangan berhasil dikirim ...'
+                ];
+            } elseif ($LIST2->metadata->code == 0) {
+                mode_ketersediaan_bed_bpjs::whereRaw('id = ?', array($id))->update(['status_send' => 1]);
+                $datae = [
+                    'kode' => 200,
+                    'pesan' => 'ruangan sudah tersimpan ...'
+                ];
+            }
+        } catch (\Exception $e) {
+            $datae = [
+                'kode' => 500,
+                'pesan' => $e
+            ];
+        }
+        echo json_encode($datae);
+        die;
+    }
+    public function updateruangan(Request $request)
+    {
+        $av = new Apliacares_bpjs();
+        $id = $request->idruangan;
+        $data = db::select('select * from ts_ketersediaan_kamar_bpjs where id = ?', [$id]);
+        try {
+            $LIST2 = $av->updatebed($data);
+            if ($LIST2->metadata->code == 1) {
+                mode_ketersediaan_bed_bpjs::whereRaw('id = ?', array($id))->update(['last_update' => $this->get_now()]);
+                $datae = [
+                    'kode' => 200,
+                    'pesan' => 'ruangan berhasil diupdate ...'
+                ];
+            } elseif ($LIST2->metadata->code == 0) {
+                mode_ketersediaan_bed_bpjs::whereRaw('id = ?', array($id))->update(['last_update' => $this->get_now()]);
+                $datae = [
+                    'kode' => 200,
+                    'pesan' => 'ruangan sudah terupdate ...'
+                ];
+            }
+        } catch (\Exception $e) {
+            $datae = [
+                'kode' => 500,
+                'pesan' => $e
+            ];
+        }
+        echo json_encode($datae);
+        die;
+    }
+    public function updateruangan2(Request $request)
+    {
+        $av = new Apliacares_bpjs();
+        $data = db::select('select * from ts_ketersediaan_kamar_bpjs order by last_update asc');
+        try {
+            foreach ($data as $d) {
+                $this->loopbrid($d);
+                sleep(2);
+            }
+        } catch (\Exception $e) {
+            foreach ($data as $d) {
+                $this->loopbrid($d);
+                sleep(2);
+            }
+        }
+    }
+    public function loopbrid($d)
+    {
+        $av = new Apliacares_bpjs();
+        $LIST2 = $av->updatebed2($d);
+        if ($LIST2->metadata->code == 1) {
+            mode_ketersediaan_bed_bpjs::whereRaw('id = ?', array($d->id))->update(['last_update' => $this->get_now()]);
+            $datae = [
+                'kode' => 200,
+                'pesan' => 'ruangan berhasil diupdate ...'
+            ];
+        } elseif ($LIST2->metadata->code == 0) {
+            mode_ketersediaan_bed_bpjs::whereRaw('id = ?', array($d->id))->update(['last_update' => $this->get_now()]);
+            $datae = [
+                'kode' => 200,
+                'pesan' => 'ruangan sudah terupdate ...'
+            ];
+        }
+        return 'ok';
     }
     public function Caripasien(Request $request)
     {

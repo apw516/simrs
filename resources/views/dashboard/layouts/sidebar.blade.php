@@ -553,6 +553,13 @@
                               <p>Data User</p>
                           </a>
                       </li>
+                      <li class="nav-item ">
+                          <a href="{{ route('index_bridging_bed') }}"
+                              class="nav-link @if ($sidebar == 'indexbedmonitoring') active @endif">
+                              <i class="bi bi-person-lines-fill nav-icon"></i>
+                              <p>Bridging Bed</p>
+                          </a>
+                      </li>
                   @endif
                   @if (auth()->user()->hak_akses == 6)
                       <li class="nav-header">FARMASI</li>

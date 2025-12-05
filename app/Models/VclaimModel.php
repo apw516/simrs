@@ -42,6 +42,46 @@ class VclaimModel extends Model
         $output = \LZCompressor\LZString::decompressFromEncodedURIComponent($output);
         return $output;
     }
+     public function referensi_kamar()
+    {
+        $client = new Client();
+        $url = 'https://new-api.bpjs-kesehatan.go.id/aplicaresws/rest/ref/kelas';
+        $signature = $this->signature();       
+        $response = $client->request('GET', $url, [
+            'headers' => $signature
+        ]);
+        $response = json_decode($response->getBody());
+        dd($response);
+        if ($response->metaData->code == 200) {
+            $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
+            $response->response = json_decode($decrypt);
+        }
+        return $response;
+    }
+    public function updatebed($databed)
+    {
+        $client = new Client();
+        $data = json_encode($databed);
+        $url = "https://new-api.bpjs-kesehatan.go.id/aplicaresws/rest/bed/update/1018R001";
+        $signature = $this->signature();       
+        // try{
+            $response = $client->request('POST', $url, [
+                'headers' => $signature,
+                'body' => $data,
+                'allow_redirects' => true,
+                'timeout' => 20 
+                ]);
+            $response = json_decode($response->getBody());
+            dd($response);
+        //     if ($response->metaData->code == 200) {
+        //         $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
+        //         $response->response = json_decode($decrypt);
+        //     }
+        //     return $response;
+        // }catch(ClientException){
+        //     return 'RTO';
+        // }          
+    }
     public function get_peserta_noka($noka, $tanggal)
     {
         $client = new Client();
@@ -366,7 +406,7 @@ class VclaimModel extends Model
             $response->response = json_decode($decrypt);
         }
         return $response;
-    }
+    }  
     public function insertsep2($data_sep)
     {
         $client = new Client();
