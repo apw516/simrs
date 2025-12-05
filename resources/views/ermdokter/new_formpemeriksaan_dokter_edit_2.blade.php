@@ -4,12 +4,35 @@
             data-target="#modalresumeperawat"><i class="bi bi-eye mr-1"></i> Hasil Assesmen Keperawatan</button>
         <button class="btn btn-warning lihatcppt" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
             data-target="#modalcppt"><i class="bi bi-info-circle ml-1 ml-1"></i> CPPT</button>
+ <button class="btn btn-success liathasil_lab2" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
+            data-target="#modalhasillab"><i class="bi bi-info-circle ml-1 ml-1"></i> Hasil laboratorium Spesial Order </button>
 
         @if ($kunjungan[0]->ref_kunjungan != '0')
             <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
                 data-target="#modalcatatankonsul"><i class="bi bi-eye mr-1"></i> Catatan Konsul</button>
         @endif
     </div>
+        <!-- Modal -->
+<div class="modal fade" id="modalhasillab" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hasil Pemeriksaan Laboratorium</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_hasil_penunjang_lab">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
     <div class="card-body  table-responsive p-5" style="height: 757Px">
         @if ($status_cek_rujukan == 1)
             <H3 class="mb-3">Pasien BPJS</H3>
@@ -3309,7 +3332,23 @@
             }
         });
     }
-
+ $(".liathasil_lab2").click(function() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm
+            },
+            url: '<?= route('lihathasilpenunjang_lab2') ?>',
+            success: function(response) {
+                $('.v_hasil_penunjang_lab').html(response);
+                spinner.hide()
+            }
+        });
+    })
     function showicare2() {
         var kodekunjungan = $('#kodekunjungan').val()
         $.ajax({
