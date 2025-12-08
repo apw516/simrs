@@ -66,8 +66,12 @@ Route::post('/riwayatupload', [ErmController::class, 'riwayatupload'])
     ->name('riwayatupload'); //sidebar
 Route::post('/ambilresep', [ErmController::class, 'ambilresep'])
     ->name('ambilresep'); //sidebar
+Route::post('/ambilriwayatreseppasien', [ErmController::class, 'ambilriwayatreseppasien'])
+    ->name('ambilriwayatreseppasien'); //sidebar
 Route::post('/ambilresep_detail', [ErmController::class, 'ambilresep_detail'])
     ->name('ambilresep_detail'); //sidebar
+Route::post('/ambilresep_detail2', [ErmController::class, 'ambilresep_detail2'])
+    ->name('ambilresep_detail2'); //sidebar
 Route::post('/lihathasillab', [ErmController::class, 'lihathasillab'])
     ->name('lihathasillab'); //sidebar
 Route::post('/lihathasilex', [ErmController::class, 'lihathasilex'])

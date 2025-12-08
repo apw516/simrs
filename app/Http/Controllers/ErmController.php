@@ -7319,6 +7319,27 @@ class ErmController extends Controller
             'resep'
         ));
     }
+    public function ambilriwayatreseppasien(Request $request)
+    {
+        // $user = auth()->user()->kode_paramedis;
+        $t = db::select('select no_rm from ts_kunjungan where kode_kunjungan = ?',[$request->kodekunjungan]);
+        $rm = $t[0]->no_rm;
+
+        $resep = db::select('select b.* from ts_layanan_header_order a inner join ts_layanan_detail_order b on a.id = b.row_id_header where a.no_rm = ? and kode_unit in (4002,4008)',[$rm]);
+        $header = db::select('select *,fc_nama_unit1(unit_pengirim) as unit_pengirim,fc_NAMA_PARAMEDIS1(dok_kirim) as nama_dokter from ts_layanan_header_order where no_rm = ? and kode_unit in (4002,4008) order by kode_kunjungan DESC',[$rm]);
+        // $resep = DB::SELECT('select * from ts_template_resep where user = ? and status = ?', [$user, 1]);
+        return view('ermtemplate.tabel_riwayat_resep_pasien', compact(
+            'header',
+            'resep'
+        ));
+    }
+    public function ambilresep_detail2(Request $request)
+    {
+        $resep = DB::SELECT('select * from ts_layanan_detail_order where row_id_header = ?', [$request->idheader]);
+        return view('ermtemplate.reseptemplatedetail2', compact(
+            'resep'
+        ));
+    }
     public function ambilresep_detail(Request $request)
     {
         $resep = DB::SELECT('select * from erm_ts_resep_detail where id_template = ?', [$request->id]);

@@ -1242,9 +1242,13 @@
                                     </div>
                 {{-- formfarmasi --}}
                 <div class="card">
-                    <div class="card-header bg-light">Order Farmasi <button type="button"
+                    <div class="card-header bg-light">Order Farmasi 
+                        <button type="button"
                             class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
-                            onclick="ambilresep()">Template resep</button></div>
+                            onclick="ambilresep()">Template resep</button>
+                        <button type="button"
+                            class="btn btn-success float-right mr-1 ml-1" data-toggle="modal" data-target="#modaltemplate"
+                            onclick="ambilriwayatresep()">Riwayat Resep Pasien</button></div>
                     <div class="card-body">
                         @if ($selisih > 70)
                             <div class="alert alert-warning" role="alert">
@@ -1264,6 +1268,8 @@
                         <form action="" method="post" class="arrayobat">
                             <div class="formobatfarmasi2">
 
+                            </div>
+                            <div class="formobatfarmasiriwayat">
                             </div>
                             <div class="form-group form-check">
                                 <input type="checkbox" class="form-check-input" id="simpantemplate"
@@ -2363,6 +2369,27 @@
             url: '<?= route('ambilresep') ?>',
             error: function(data) {
                 alert('ok')
+                spinner.hide()
+            },
+            success: function(response) {
+                $('.vtemplateresep').html(response)
+                spinner.hide()
+            }
+        });
+    }
+    function ambilriwayatresep() {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan: $('#kodekunjungan').val()
+            },
+            url: '<?= route('ambilriwayatreseppasien') ?>',
+            error: function(data) {
+                alert('ok')
+                spinner.hide()
             },
             success: function(response) {
                 $('.vtemplateresep').html(response)
