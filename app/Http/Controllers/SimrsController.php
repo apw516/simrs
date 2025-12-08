@@ -728,11 +728,11 @@ class SimrsController extends Controller
         $jam = Carbon::now()->hour;
         $menit = Carbon::now()->minute;
         $waktu = $jam.':'.$menit;
-        if($waktu == '01:00'){
+        if($waktu == '1:00'){
             $this->get_ruangan_for_brid();
-        }elseif($waktu == '05:00'){
+        }elseif($waktu == '5:00'){
             $this->get_ruangan_for_brid();
-        }elseif($waktu == '09:00'){
+        }elseif($waktu == '9:00'){
             $this->get_ruangan_for_brid();
         }elseif($waktu == '11:00'){
             $this->get_ruangan_for_brid();
