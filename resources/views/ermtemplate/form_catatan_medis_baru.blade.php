@@ -11,7 +11,7 @@
             data-target="#modalhasillab"><i class="bi bi-journal-text"></i> Hasil laboratorium Spesial Order</button>
         <button class="btn btn-info mb-2 liathasil_rad" nomorrm="{{ $rm }}" data-toggle="modal"
             data-target="#modalhasilrad"><i class="bi bi-journal-text"></i> Hasil Radiologi</button>
-        <button hidden class="btn btn-info mb-2 liathasil_pa" nomorrm="{{ $rm }}" data-toggle="modal"
+        <button class="btn btn-info mb-2 liathasil_pa" nomorrm="{{ $rm }}" data-toggle="modal"
             data-target="#modalhasilpa"><i class="bi bi-journal-text"></i> Hasil Lab PA</button>
         <button class="btn btn-info mb-2 liathasil_pa" nomorrm="{{ $rm }}" data-toggle="modal"
             data-target="#modalsuratkonsul"><i class="bi bi-journal-text"></i> Riwayat Konsul / Rujuk Internal</button>

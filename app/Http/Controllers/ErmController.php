@@ -8172,6 +8172,15 @@ class ErmController extends Controller
             'rm'
         ]));
     }
+    public function lihathasilpenunjang_lab_dokter(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $hasil_lab = DB::select('SELECT * FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` WHERE a.`no_rm` = ? AND b.`kode_unit` = ? ORDER BY a.`kode_kunjungan`DESC LIMIT 1', [$rm, '3002']);
+        return view('ermtemplate.view_hasil_penunjang_lab_dokter', compact([
+            'hasil_lab',
+            'rm'
+        ]));
+    }
     public function lihathasilpenunjang_lab2(Request $request)
     {
         $rm = $request->nomorrm;

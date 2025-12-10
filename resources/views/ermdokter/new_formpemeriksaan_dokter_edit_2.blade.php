@@ -4,7 +4,7 @@
             data-target="#modalresumeperawat"><i class="bi bi-eye mr-1"></i> Hasil Assesmen Keperawatan</button>
         <button class="btn btn-warning lihatcppt" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
             data-target="#modalcppt"><i class="bi bi-info-circle ml-1 ml-1"></i> CPPT</button>
-        <button class="btn btn-success liathasil_lab2" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
+        <button hidden class="btn btn-success liathasil_lab2" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
             data-target="#modalhasillab"><i class="bi bi-info-circle ml-1 ml-1"></i> Hasil laboratorium Spesial Order
         </button>
 
@@ -2435,8 +2435,10 @@
         <div class="card">
             <div class="card-header text-bold bg-success">+ PLANNING ( P ) <button
                     class="btn btn-danger ml-2 lihathasilpenunjang_lab" nomorrm="{{ $kunjungan[0]->no_rm }}"
-                    data-toggle="modal" data-target="#modalhasilpenunjang_lab"><i class="bi bi-eye mr-1"></i>
+                    data-toggle="modal" data-target="#hasil_lab_by_form_dokter"><i class="bi bi-eye mr-1"></i>
                     Hasil Laboratorium</button>
+                     <button class="btn btn-info liathasil_lab2" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
+            data-target="#modalhasillab"><i class="bi bi-info-circle ml-1 ml-1"></i> Hasil laboratorium Spesial Order </button>
                 <button class="btn btn-danger ml-2 lihathasilpenunjang_rad" nomorrm="{{ $kunjungan[0]->no_rm }}"
                     data-toggle="modal" data-target="#modalhasilpenunjang_rad"><i class="bi bi-eye mr-1"></i>
                     Hasil Radiologi</button>
@@ -3217,6 +3219,41 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="hasil_lab_by_form_dokter" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Hasil Laboratorium</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+            <div class="col-md-2">
+                 <div class="form-group">
+                    <label for="exampleInputEmail1">Jumlah data</label>
+                    <input type="email" class="form-control" id="jumlahdatahasil" aria-describedby="emailHelp">
+                    <small id="emailHelp" class="form-text text-muted">Masukan jumlah data yang ingin ditampilkan ...</small>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-success" style="margin-top:32px" onclick="tampilkanhasilnya()">Tampilkan</button>
+            </div>
+        </div>
+        <div class="v_hasil_lab_by_dokter mt-2">
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <input hidden type="text" id="statuslihatcppt" value="0">
 <link rel="stylesheet" href="{{ asset('public/dist/css/datepicker.css') }}" rel="stylesheet">
 <script src="{{ asset('public/dist/js/bootstrap-datepicker.js') }}"></script>
@@ -3248,7 +3285,28 @@
             });
         }
     })
-
+    function tampilkanhasilnya() {
+                jlh = $('#jumlahdatahasil').val()
+                rm = $('#rm').val()
+                spinner = $('#loader')
+                spinner.show();
+                $.ajax({
+                    type: 'post',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        jlh,rm
+                    },
+                    url: '<?= route('ambilhasillab_by_limit') ?>',
+                    error: function(response){
+                        spinner.hide()
+                        alert('error')
+                    },
+                    success: function(response) {
+                        $('.v_hasil_lab_by_dokter').html(response);
+                        spinner.hide()
+                    }
+                });
+            }
     function simpanhasil() {
         var canvas1 = document.getElementById("myCanvas1");
         var ctx1 = canvas1.getContext("2d");

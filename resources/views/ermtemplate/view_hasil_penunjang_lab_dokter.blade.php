@@ -9,42 +9,44 @@
             <div class="card">
                 <div class="card-header">Hasil Pemeriksaan Laboraotrium</div>
                 <div class="card-body">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control col-md-3"
-                            placeholder="Masukan jumlah hasil yang ingin ditampilkan ..."
-                            aria-label="Recipient's username" aria-describedby="button-addon2" id="jumlahdata2">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button" id="button-addon2"
-                                onclick="tampilkanhasillab()">Tampilkan</button>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Jumlah data</label>
+                                <input type="text" class="form-control" id="jumlahnya"
+                                    aria-describedby="emailHelp" value="5">
+                                <small class="form-text text-muted">masukan jumlah hasil yang ingin ditampilkan ...</small>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-success" style="margin-top:32px" onclick="tampilkanhasillab22()">Tampillkan</button>
                         </div>
                     </div>
                 </div>
                 <div class="v_hasil_lab_2">
 
                 </div>
-                {{-- @foreach ($hasil_lab as $c)
-                    <iframe src="//192.168.2.74/smartlab_waled/his/his_report?hisno={{ $c->kode_layanan_header }}"
-                        width="100%" height="1000px"></iframe>
-                @endforeach --}}
             </div>
         </div>
     </div>
 </div>
 <input hidden type="text" value="{{ $rm }}" id="rm">
 <script>
-    function tampilkanhasillab() {
-        jlh = $('#jumlahdata2').val()
+    function tampilkanhasillab22() {
+        jlh = $('#jumlahnya').val()
         rm = $('#rm').val()
+        alert(jlh)
         spinner = $('#loader')
         spinner.show();
         $.ajax({
             type: 'post',
             data: {
                 _token: "{{ csrf_token() }}",
-                jlh,rm
+                jlh,
+                rm
             },
             url: '<?= route('ambilhasillab_by_limit') ?>',
-            error: function(response){
+            error: function(response) {
                 spinner.hide()
                 alert('error')
             },
