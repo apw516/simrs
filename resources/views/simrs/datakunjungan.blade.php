@@ -66,6 +66,7 @@
                     </thead>
                     <tbody>
                         @foreach ($datakunjungan as $d)
+                            @if($d->kode_unit != 1002 && $d->kode_unit != 1023 && $d->kode_unit < 2000)
                             <tr @if($d->nama_penjamin != 'PRIBADI' && $d->no_sep == '') class="bg-warning" @endif>
                                 <td>{{ $d->no_rm }}</td>
                                 {{-- <td>{{ $d->kode_kunjungan }}</td> --}}
@@ -92,6 +93,7 @@
                                             class="bi bi-pencil-square text-sm"></i></button>
                                 </td> --}}
                             </tr>
+                            @endif
                         @endforeach
                     </tbody>
                 </table>
