@@ -28,6 +28,9 @@ class RanapController extends VclaimController
         $oneweek = (Carbon::now()->subMonth(1)->toDateString());
         $now = (Carbon::now()->toDateString());
         $user = auth()->user()->unit;
+        if($user == '2008'){
+            sleep(50);
+        }
         $title = 'SIMRS -SEP RAWAT INAP';
         $sidebar = 'RANAP';
         $sidebar_m = 'SEP RANAP';
