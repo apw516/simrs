@@ -1187,7 +1187,7 @@
                     data-toggle="modal" data-target="#hasil_lab_by_form_dokter"><i class="bi bi-eye mr-1"></i>
                     Hasil Laboratorium</button>
                     <button class="btn btn-info liathasil_lab2" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
-            data-target="#modalhasillab"><i class="bi bi-info-circle ml-1 ml-1"></i> Hasil laboratorium Spesial Order </button>
+                    data-target="#modalhasillab"><i class="bi bi-info-circle ml-1 ml-1"></i> Hasil laboratorium Spesial Order </button>
                 <button class="btn btn-danger ml-2 lihathasilpenunjang_rad" nomorrm="{{ $kunjungan[0]->no_rm }}"
                     data-toggle="modal" data-target="#modalhasilpenunjang_rad"><i class="bi bi-eye mr-1"></i>
                     Hasil Radiologi</button>
@@ -2633,7 +2633,7 @@
      $(".liathasil_lab2").click(function() {
         spinner = $('#loader')
         spinner.show();
-        nomorrm = $(this).attr('nomorrm')
+        nomorrm = $(this).attr('rm')
         $.ajax({
             type: 'post',
             data: {

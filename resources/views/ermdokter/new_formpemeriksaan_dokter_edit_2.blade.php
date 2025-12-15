@@ -3407,7 +3407,7 @@
     $(".liathasil_lab2").click(function() {
         spinner = $('#loader')
         spinner.show();
-        nomorrm = $(this).attr('nomorrm')
+        nomorrm = $(this).attr('rm')
         $.ajax({
             type: 'post',
             data: {
