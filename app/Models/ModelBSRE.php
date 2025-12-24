@@ -71,7 +71,7 @@ class ModelBSRE extends Model
         $url_ttd = auth()->user()->image_ttd;
         $client = new Client();
         // $file1 = fopen(storage_path('app/downloaded_pdfs/' . $kodekunjungan . '.pdf'), 'r');
-        $urlfile = '\\\\193.193.193.203\\erm\\resume_medis_rawat_jalan/';
+        $urlfile = '\\\\193.193.193.192\\erm\\resume_medis_rawat_jalan/';
         $file1 = fopen(($urlfile . $kodekunjungan . '.pdf'), 'r');
         // dd($file1);
         $file2 = fopen($url_ttd, 'r');

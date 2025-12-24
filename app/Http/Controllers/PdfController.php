@@ -316,8 +316,8 @@ class PdfController extends Controller
         $name = $kodekunjungan . '.pdf';
         $pdf->save(Storage::disk('shared', $name)->put($name, $d));
         // $pdf->save(storage_path('app/downloaded_pdfs/' . $name));
-        $nik = '1234567890123452';
-        $password = 'Bsre2025.#!';
+        // $nik = '1234567890123452';
+        // $password = 'Bsre2025.#!';
         $save_report = [
             'kode_kunjungan' => $kodekunjungan,
             'status' => 0
@@ -330,7 +330,7 @@ class PdfController extends Controller
             'halaman' => '',
             'page' => '',
             'image' => 'false',
-            'linkQR' => 'https://drive.google.com/file/d/' . $idreport->id,
+            'linkQR' => 'https://siramah.rsudwaled.com/tte/dr-erwin',
             'width' => '80',
             'height' => '60',
             'reason' => '',
@@ -344,7 +344,7 @@ class PdfController extends Controller
             $id_dokumen = $DD['messagee'];
             $name2 = $id_dokumen . '.pdf';
             $DD2 = $v->downloadpdf($id_dokumen, $kodekunjungan);
-            $urlfile = '\\\\193.193.193.203\\erm\\resume_medis_rawat_jalan/';
+            $urlfile = '\\\\193.193.193.192\\erm\\resume_medis_rawat_jalan/';
             $cek = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and status = 1', [$kodekunjungan]);
             if (count($cek) > 0) {
                 Model_log_tte::whereRaw('kode_kunjungan = ?', array($kodekunjungan))->update(['status_file' => 0, 'status' => 2]);
@@ -370,6 +370,7 @@ class PdfController extends Controller
             echo json_encode($data1);
             die;
         } else {
+
             $save_report = [
                 'status_code' => $DD['code'],
                 'response' => $DD['messagee'],

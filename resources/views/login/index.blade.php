@@ -39,17 +39,21 @@
                         </div>
                         <input type="submit" value="Log In" class="btn btn-block btn-success">
                         <span class="d-block text-center my-4"><a href="{{ route('register')}}">Register</a></span>
-                        <span class="d-block text-center my-4 text-muted">&mdash; view dashboard &mdash;</span>
+                        {{-- <span class="d-block text-center my-4 text-muted">&mdash; view dashboard &mdash;</span> --}}
                         <div class="social-login text-center">
-                            <a href="#" class="facebook">
+                            {{-- <a href="#" class="facebook">
                                 <span class="icon-facebook mr-3"></span>
-                            </a>
-                            <a href="#" class="twitter">
-                                <span class="icon-twitter mr-3"></span>
-                            </a>
-                            <a href="#" class="google">
+                            </a> --}}
+                            {{-- <a href="#" class="twitter"> --}}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <img width="100%" src="{{ asset('public/img/logodiskominfo.png');}}" alt="">
+                                    </div>                                  
+                                </div>
+                            {{-- </a> --}}
+                            {{-- <a href="#" class="google">
                                 <span class="icon-google mr-3"></span>
-                            </a>
+                            </a> --}}
                         </div>
                     </form>
                 </div>
