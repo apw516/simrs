@@ -2,15 +2,15 @@
 @section('container')
 <div class="container">
     <div class="row">
-        <div class="col-md-6">
-            <img src="{{ asset('public/auth/images/BG.svg');}}" alt="Image"
+        <div class="col-md-8">
+            <img width="200%" src="{{ asset('public/auth/images/logo_bg_login.png');}}" alt="Image"
                 class="img-fluid">
             {{-- <img src="{{ asset('public/auth/images/BG.svg');}}" alt="Image"
                 class="img-fluid"> --}}
         </div>
-        <div class="col-md-6 contents">
-            <div class="row justify-content-center">
-                <div class="col-md-8">
+        <div class="col-md-4 contents">
+            <div class="row justify-content-center" style="margin-top:65px">
+                <div class="col-md-12">
                     <div class="mb-4">
                         <h3>Silahkan Login</h3>
                         @if(session()->has('success'))
@@ -41,7 +41,7 @@
                         <span class="d-block text-center my-4"><a href="{{ route('register')}}">Register</a></span>
                         <span class="d-block text-center my-4 text-muted">&mdash; view dashboard &mdash;</span>
                         <div class="social-login text-center">
-                            <a href="#" class="facebook">
+                            {{-- <a href="#" class="facebook">
                                 <span class="icon-facebook mr-3"></span>
                             </a>
                             <a href="#" class="twitter">
@@ -49,7 +49,7 @@
                             </a>
                             <a href="#" class="google">
                                 <span class="icon-google mr-3"></span>
-                            </a>
+                            </a> --}}
                         </div>
                     </form>
                 </div>

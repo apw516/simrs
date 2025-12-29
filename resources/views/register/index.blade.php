@@ -2,12 +2,15 @@
 @section('container')
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
-                <img src="{{ asset('public/auth/images/BG.svg')}}" alt="Image" class="img-fluid">
-            </div>
-            <div class="col-md-6 contents">
+            <div class="col-md-8">
+            <img width="200%" src="{{ asset('public/auth/images/logo_bg_login.png');}}" alt="Image"
+                class="img-fluid">
+            {{-- <img src="{{ asset('public/auth/images/BG.svg');}}" alt="Image"
+                class="img-fluid"> --}}
+        </div>
+            <div class="col-md-4 contents">
                 <div class="row justify-content-center">
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <div class="mb-4">
                             <h3>Silahkan Registrasi</h3>
                             @if (session()->has('success'))
