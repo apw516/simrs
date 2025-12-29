@@ -77,6 +77,11 @@
                             </a>
                         </li>
                     @else
+                        <li hidden class="nav-item" id="pemeriksaan">
+                            <a href="#" class="nav-link" onclick="formprogramrehab()">
+                                <i class="fas fa-inbox mr-2"></i>Formulir Program Rehabilitasi Medik
+                            </a>
+                        </li>
                         <li class="nav-item" id="pemeriksaan">
                             <a href="#" class="nav-link" onclick="formpemeriksaan_fisio()">
                                 <i class="fas fa-inbox mr-2"></i>CPPT Fisioterapi
@@ -276,6 +281,25 @@
         });
     }
 
+    function formprogramrehab() {
+        spinner = $('#loader')
+        spinner.show();
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('formprogramrehabmedik') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
     function formpemeriksaan_fisio() {
         spinner = $('#loader')
         spinner.show();

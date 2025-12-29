@@ -845,6 +845,10 @@ class ErmController extends Controller
             // }
         }
     }
+    public function formprogramrehabmedik(Request $request)
+    {
+        return view('ermperawat.formprogramrehab');
+    }
     public function formpemeriksaan_perawat_fisio(Request $request)
     {
         $kunjungan = DB::select('select *,fc_umur(no_rm) as umur from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);

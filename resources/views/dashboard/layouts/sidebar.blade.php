@@ -504,7 +504,7 @@
                                   class="nav-link @if ($sidebar == 'ermperawat') active @endif">
                                   <i class="nav-icon fas fa-th"></i>
                                   <p>
-                                      ERM Perawat
+                                      @if(auth()->user()->unit == '1028') ERM Terapis @else ERM Perawat @endif
                                   </p>
                               </a>
                           </li>
