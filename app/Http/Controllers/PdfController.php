@@ -275,7 +275,6 @@ class PdfController extends Controller
             AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
             AND a.kode_kunjungan = ?", [$kodekunjungan]);
         $orderfarmasi = db::select('SELECT kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.kode_kunjungan = ? and  kode_unit > ?', [$kodekunjungan, '4000']);
-
         $order_penunjang = db::select('SELECT fc_nama_unit1(a.`kode_unit`)AS nama_unit,a.kode_unit,SUBSTR(kode_tarif_detail,1,6) AS kode_tarif_header,c.`NAMA_TARIF` FROM ts_layanan_header_order a
         INNER JOIN ts_layanan_detail_order b ON a.id = b.`row_id_header`
         INNER JOIN mt_tarif_header c ON SUBSTR(b.kode_tarif_detail,1,6) = c.`KODE_TARIF_HEADER`
@@ -344,7 +343,7 @@ class PdfController extends Controller
             $id_dokumen = $DD['messagee'];
             $name2 = $id_dokumen . '.pdf';
             $DD2 = $v->downloadpdf($id_dokumen, $kodekunjungan);
-            $urlfile = '\\\\193.193.193.192\\erm\\resume_medis_rawat_jalan/';
+            $urlfile = '\\\\192.168.2.14\\erm\\resume_medis_rawat_jalan/';
             $cek = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and status = 1', [$kodekunjungan]);
             if (count($cek) > 0) {
                 Model_log_tte::whereRaw('kode_kunjungan = ?', array($kodekunjungan))->update(['status_file' => 0, 'status' => 2]);

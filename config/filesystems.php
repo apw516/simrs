@@ -36,47 +36,47 @@ return [
         ],
         'shared2' => [
             'driver' => 'local',
-            'root' => '\\\\193.193.193.192\\erm\\resume_medis_rawat_jalan_no_ttd',
+            'root' => '\\\\192.168.2.14\\erm\\resume_medis_rawat_jalan_no_ttd',
         ],
         'shared' => [
             'driver' => 'local',
-            'root' => '\\\\193.193.193.192\\erm\\resume_medis_rawat_jalan',
+            'root' => '\\\\192.168.2.14\\erm\\resume_medis_rawat_jalan',
         ],
         'SEP' => [
             'driver' => 'local',
-            'root' => '\\\\193.193.193.192\\erm\\sep',
+            'root' => '\\\\192.168.2.14\\erm\\sep',
         ],
         'LAB_1' => [
             'driver' => 'local',
-            'root' => '\\\\193.193.193.192\\erm\\hasil_lab_1',
+            'root' => '\\\\192.168.2.14\\erm\\hasil_lab_1',
         ],
         'LAB_2' => [
             'driver' => 'local',
-            'root' => '\\\\193.193.193.192\\erm\\hasil_lab_2',
+            'root' => '\\\\192.168.2.14\\erm\\hasil_lab_2',
         ],
         'LAB_3' => [
             'driver' => 'local',
-            'root' => '\\\\193.193.193.192\\erm\\hasil_lab_3',
+            'root' => '\\\\192.168.2.14\\erm\\hasil_lab_3',
         ],
         'LAB_4' => [
             'driver' => 'local',
-            'root' => '\\\\193.193.193.192\\erm\\hasil_lab_4',
+            'root' => '\\\\192.168.2.14\\erm\\hasil_lab_4',
         ],
         'LAB_5' => [
             'driver' => 'local',
-            'root' => '\\\\193.193.193.192\\erm\\hasil_lab_5',
+            'root' => '\\\\192.168.2.14\\erm\\hasil_lab_5',
         ],
         'RAD' => [
             'driver' => 'local',
-            'root' => '\\\\193.193.193.192\\erm\\expertisi_radiologi',
+            'root' => '\\\\192.168.2.14\\erm\\expertisi_radiologi',
         ],
         'FAR' => [
             'driver' => 'local',
-            'root' => '\\\\193.193.193.192\\erm\\resepfarmasi',
+            'root' => '\\\\192.168.2.14\\erm\\resepfarmasi',
         ],
         'MER' => [
             'driver' => 'local',
-            'root' => '\\\\193.193.193.192\\erm\\merger_resume_rajal',
+            'root' => '\\\\192.168.2.14\\erm\\merger_resume_rajal',
         ],
         'public' => [
             'driver' => 'local',

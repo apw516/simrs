@@ -328,8 +328,12 @@
                     </tr>
                     <tr>
                         <td>Dokter Pemeriksa</td>
-                        <td style="height:140px" colspan="3" class="">
+                        <td style="height:160px" colspan="3" class="">
                             <table class="text-xxs float-left text-bold float-right">
+                                <tr>
+                                    <td>Waled, {{ $today }}
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td style="height:90px" class="text-center">
                                         <br>
@@ -511,8 +515,12 @@
                                     </tr>
                                     <tr>
                                         <td>Dokter Pemeriksa</td>
-                                        <td style="height:140px">
+                                        <td style="height:160px">
                                             <table class="text-xxs float-left text-bold">
+                                                <tr>
+                                                    <td>Waled, {{ $today }}
+                                                    </td>
+                                                </tr>
                                                 <tr>
                                                     <td style="height:90px" class="text-center">
                                                         <br>
@@ -547,7 +555,7 @@
     </div>
     <footer>
         <div class="text-xxxs font-italic" id="footer">
-            <img class="mr-1 ml-1 mt-2" width="8%" src="{{ public_path('../public/img/logobsre.png') }}"
+            <img class="mr-1 ml-1 mt-2" width="4%" src="{{ public_path('../public/img/logobsre.png') }}"
                 alt=""> *Dokumen ini telah ditanda tangani secara elektronik menggunakan sertifikat elektronik
             yang
             telah diterbitkan oleh Balai Besar Sertifikasi ( BSrE ), Badan Siber dan Sandi Negara.(
