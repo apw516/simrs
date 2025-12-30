@@ -466,7 +466,7 @@ class PdfController extends Controller
     }
     public function ambildataberkastte()
     {
-        $data = db::select('select *,fc_nama_px(b.no_rm) as nama_pasien,fc_NAMA_UNIT1(b.kode_unit) as nama_unit,fc_NAMA_PARAMEDIS1(b.kode_paramedis) as nama_dokter from log_ttd_elektronik a inner join ts_kunjungan b on a.kode_kunjungan = b.kode_kunjungan where status_code = ? and status_file = ?', [200, 1]);
+        $data = db::select('select *,fc_nama_px(b.no_rm) as nama_pasien,fc_NAMA_UNIT1(b.kode_unit) as nama_unit,fc_NAMA_PARAMEDIS1(b.kode_paramedis) as nama_dokter from log_ttd_elektronik a inner join ts_kunjungan b on a.kode_kunjungan = b.kode_kunjungan');
         return view('pdf.tabel_data_berkas', compact([
             'data'
         ]));

@@ -1,12 +1,14 @@
-<table class="table table-sm table-bordered" id="tabeldatatte">
+<table class="table table-sm table-bordered text-xs" id="tabeldatatte">
     <thead>
         <th>Tanggal Kirim</th>
         <th>Nomor RM</th>
         <th>Nama Pasien</th>
         <th>Unit</th>
         <th>Dokter</th>
+        <th>File</th>
+        <th>Response</th>
         <th>Status Verifikasi</th>
-        <th></th>
+        <th width="30%"></th>
     </thead>
     <tbody>
         @foreach ($data as $d)
@@ -16,11 +18,13 @@
                 <td>{{ $d->nama_pasien }}</td>
                 <td>{{ $d->nama_unit }}</td>
                 <td>{{ $d->nama_dokter }}</td>
+                <td>{{ $d->file }}</td>
+                <td>{{ $d->response }}</td>
                 <td class="text-xs">{{ $d->status_verif}}</td>
                 <td>
-                    <button class="btn btn-sm btn-info lihatberkas" kodekunjungan="{{ $d->kode_kunjungan }}">Lihat
+                    <button class="badge btn-sm btn-info lihatberkas" kodekunjungan="{{ $d->kode_kunjungan }}">Lihat
                         Berkas</button>
-                    <button class="btn btn-sm btn-success verifberkas" id_table="{{ $d->id }}"
+                    <button class="badge btn-sm btn-success verifberkas" id_table="{{ $d->id }}"
                         namapasien={{ $d->nama_pasien }}>Verif</button>
                 </td>
             </tr>
