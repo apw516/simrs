@@ -145,11 +145,31 @@ class ErmController extends Controller
             ]));
         } else {
             if (auth()->user()->unit == '1028') {
-                $pasienpoli = DB::select('SELECT IFNULL(d.nomorantrean, TIME(a.`tgl_masuk`)) AS antrian,d.`nomorantrean`,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.ref_kunjungan,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,(SELECT COUNT(id) FROM erm_hasil_assesmen_keperawatan_rajal b WHERE b.kode_kunjungan = a.`kode_kunjungan`) AS cek ,(SELECT COUNT(id) FROM assesmen_dokters b WHERE b.id_kunjungan = a.`kode_kunjungan`) AS cek2 FROM ts_kunjungan a LEFT OUTER JOIN jkn_antrian d ON a.`kode_kunjungan` = d.`kode_kunjungan`
-                 WHERE a.status_kunjungan = ? AND DATE(a.tgl_masuk) = CURDATE() AND a.`kode_unit` = ?', [
-                    '1',
+                $pasienpoli = DB::select('SELECT a.kode_kunjungan
+                ,a.`ref_kunjungan`
+                ,d.`nomorantrean` as antrian
+                ,a.tgl_masuk
+                ,b.id AS id_asskep
+                ,c.`id` AS id_assdok 
+                ,a.no_rm
+                ,fc_nama_px(a.no_rm) AS nama_pasien
+                ,fc_nama_unit1(a.kode_unit) AS nama_unit
+                ,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin
+                ,b.`namapemeriksa`
+                ,c.`nama_dokter`
+                ,c.status as status_assdok
+                FROM ts_kunjungan a 
+                LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+                LEFT OUTER JOIN assesmen_dokters c ON a.`kode_kunjungan` = c.`id_kunjungan`
+                LEFT OUTER JOIN jkn_antrian d ON a.`kode_kunjungan` = d.kode_kunjungan
+                WHERE DATE(a.tgl_masuk) BETWEEN DATE(NOW()) AND DATE(NOW()) AND a.kode_unit = ? ORDER BY a.`kode_kunjungan` ASC', [
                     auth()->user()->unit
                 ]);
+                // $pasienpoli = DB::select('SELECT IFNULL(d.nomorantrean, TIME(a.`tgl_masuk`)) AS antrian,d.`nomorantrean`,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.ref_kunjungan,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,(SELECT COUNT(id) FROM erm_hasil_assesmen_keperawatan_rajal b WHERE b.kode_kunjungan = a.`kode_kunjungan`) AS cek ,(SELECT COUNT(id) FROM assesmen_dokters b WHERE b.id_kunjungan = a.`kode_kunjungan`) AS cek2 FROM ts_kunjungan a LEFT OUTER JOIN jkn_antrian d ON a.`kode_kunjungan` = d.`kode_kunjungan`
+                //  WHERE a.status_kunjungan = ? AND DATE(a.tgl_masuk) = CURDATE() AND a.`kode_unit` = ?', [
+                //     '1',
+                //     auth()->user()->unit
+                // ]);
                 return view('ermtemplate.tabelpasien_fisio_perawat', compact([
                     'pasienpoli'
                 ]));
@@ -179,12 +199,34 @@ class ErmController extends Controller
             ]));
         } else {
             if (auth()->user()->unit == '1028') {
-                $pasienpoli = DB::select('SELECT IFNULL(d.nomorantrean, TIME(a.`tgl_masuk`)) AS antrian,d.`nomorantrean`,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.ref_kunjungan,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,(SELECT COUNT(id) FROM erm_hasil_assesmen_keperawatan_rajal b WHERE b.kode_kunjungan = a.`kode_kunjungan`) AS cek ,(SELECT COUNT(id) FROM assesmen_dokters b WHERE b.id_kunjungan = a.`kode_kunjungan`) AS cek2 FROM ts_kunjungan a LEFT OUTER JOIN jkn_antrian d ON a.`kode_kunjungan` = d.`kode_kunjungan`
-               WHERE a.`kode_unit` = ? AND DATE(a.tgl_masuk) BETWEEN ? AND ? AND status_kunjungan != ?', [
-                    auth()->user()->unit,
+            //     $pasienpoli = DB::select('SELECT IFNULL(d.nomorantrean, TIME(a.`tgl_masuk`)) AS antrian,d.`nomorantrean`,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.ref_kunjungan,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,(SELECT COUNT(id) FROM erm_hasil_assesmen_keperawatan_rajal b WHERE b.kode_kunjungan = a.`kode_kunjungan`) AS cek ,(SELECT COUNT(id) FROM assesmen_dokters b WHERE b.id_kunjungan = a.`kode_kunjungan`) AS cek2 FROM ts_kunjungan a LEFT OUTER JOIN jkn_antrian d ON a.`kode_kunjungan` = d.`kode_kunjungan`
+            //    WHERE a.`kode_unit` = ? AND DATE(a.tgl_masuk) BETWEEN ? AND ? AND status_kunjungan != ?', [
+            //         auth()->user()->unit,
+            //         $request->tgl_awal,
+            //         $request->tgl_akhir,
+            //         '8'
+            //     ]);
+             $pasienpoli = DB::select('SELECT a.kode_kunjungan
+                ,a.`ref_kunjungan`
+                ,d.`nomorantrean` as antrian
+                ,a.tgl_masuk
+                ,b.id AS id_asskep
+                ,c.`id` AS id_assdok 
+                ,a.no_rm
+                ,fc_nama_px(a.no_rm) AS nama_pasien
+                ,fc_nama_unit1(a.kode_unit) AS nama_unit
+                ,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin
+                ,b.`namapemeriksa`
+                ,c.`nama_dokter`
+                ,c.status as status_assdok
+                FROM ts_kunjungan a 
+                LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+                LEFT OUTER JOIN assesmen_dokters c ON a.`kode_kunjungan` = c.`id_kunjungan`
+                LEFT OUTER JOIN jkn_antrian d ON a.`kode_kunjungan` = d.kode_kunjungan
+                WHERE DATE(a.tgl_masuk) BETWEEN ? AND ? AND a.kode_unit = ? ORDER BY a.`kode_kunjungan` ASC', [
                     $request->tgl_awal,
                     $request->tgl_akhir,
-                    '8'
+                    auth()->user()->unit
                 ]);
                 return view('ermtemplate.tabelpasien_fisio_perawat', compact([
                     'pasienpoli'
@@ -220,8 +262,28 @@ class ErmController extends Controller
             ]));
         } else {
             if (auth()->user()->unit == '1028') {
-                $pasienpoli = DB::select('SELECT a.ref_kunjungan,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.ref_kunjungan,a.`kode_penjamin`,(SELECT COUNT(id) FROM assesmen_dokters b WHERE b.id_kunjungan = a.`kode_kunjungan`) AS cek,(SELECT COUNT(id) FROM erm_hasil_assesmen_keperawatan_rajal b WHERE b.kode_kunjungan = a.`kode_kunjungan`) AS cek2 FROM ts_kunjungan a WHERE a.status_kunjungan = ? AND DATE(a.tgl_masuk) =  CURDATE() AND a.`kode_unit` = ? ORDER BY a.kode_kunjungan ASC', [
-                    '1',
+                // $pasienpoli = DB::select('SELECT a.ref_kunjungan,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.ref_kunjungan,a.`kode_penjamin`,(SELECT COUNT(id) FROM assesmen_dokters b WHERE b.id_kunjungan = a.`kode_kunjungan`) AS cek,(SELECT COUNT(id) FROM erm_hasil_assesmen_keperawatan_rajal b WHERE b.kode_kunjungan = a.`kode_kunjungan`) AS cek2 FROM ts_kunjungan a WHERE a.status_kunjungan = ? AND DATE(a.tgl_masuk) =  CURDATE() AND a.`kode_unit` = ? ORDER BY a.kode_kunjungan ASC', [
+                //     '1',
+                //     auth()->user()->unit
+                // ]);
+                $pasienpoli = DB::select('SELECT a.kode_kunjungan
+                ,a.`ref_kunjungan`
+                ,d.`nomorantrean` as antrian
+                ,a.tgl_masuk
+                ,b.id AS id_asskep
+                ,c.`id` AS id_assdok 
+                ,a.no_rm
+                ,fc_nama_px(a.no_rm) AS nama_pasien
+                ,fc_nama_unit1(a.kode_unit) AS nama_unit
+                ,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin
+                ,b.`namapemeriksa`
+                ,c.`nama_dokter`
+                ,c.status as status_assdok
+                FROM ts_kunjungan a 
+                LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+                LEFT OUTER JOIN assesmen_dokters c ON a.`kode_kunjungan` = c.`id_kunjungan`
+                LEFT OUTER JOIN jkn_antrian d ON a.`kode_kunjungan` = d.kode_kunjungan
+                WHERE DATE(a.tgl_masuk) BETWEEN DATE(NOW()) AND DATE(NOW()) AND a.kode_unit = ? ORDER BY a.`kode_kunjungan` ASC', [
                     auth()->user()->unit
                 ]);
                 return view('ermtemplate.tabelpasien_dokter_fisio', compact([
@@ -257,11 +319,33 @@ class ErmController extends Controller
             ]));
         } else {
             if (auth()->user()->unit == '1028') {
-                $pasienpoli = DB::select('SELECT a.ref_kunjungan,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,(SELECT COUNT(id) FROM assesmen_dokters b WHERE b.id_kunjungan = a.`kode_kunjungan`) AS cek,(SELECT COUNT(id) FROM erm_hasil_assesmen_keperawatan_rajal b WHERE b.kode_kunjungan = a.`kode_kunjungan`) AS cek2 FROM ts_kunjungan a  WHERE a.`kode_unit` = ? AND DATE(a.tgl_masuk) BETWEEN ? AND ? AND status_kunjungan != ?',  [
-                    auth()->user()->unit,
+                // $pasienpoli = DB::select('SELECT a.ref_kunjungan,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,(SELECT COUNT(id) FROM assesmen_dokters b WHERE b.id_kunjungan = a.`kode_kunjungan`) AS cek,(SELECT COUNT(id) FROM erm_hasil_assesmen_keperawatan_rajal b WHERE b.kode_kunjungan = a.`kode_kunjungan`) AS cek2 FROM ts_kunjungan a  WHERE a.`kode_unit` = ? AND DATE(a.tgl_masuk) BETWEEN ? AND ? AND status_kunjungan != ?',  [
+                //     auth()->user()->unit,
+                //     $request->tgl_awal,
+                //     $request->tgl_akhir,
+                //     8
+                // ]);
+                 $pasienpoli = DB::select('SELECT a.kode_kunjungan
+                ,a.`ref_kunjungan`
+                ,d.`nomorantrean` as antrian
+                ,a.tgl_masuk
+                ,b.id AS id_asskep
+                ,c.`id` AS id_assdok 
+                ,a.no_rm
+                ,fc_nama_px(a.no_rm) AS nama_pasien
+                ,fc_nama_unit1(a.kode_unit) AS nama_unit
+                ,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin
+                ,b.`namapemeriksa`
+                ,c.`nama_dokter`
+                ,c.status as status_assdok
+                FROM ts_kunjungan a 
+                LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+                LEFT OUTER JOIN assesmen_dokters c ON a.`kode_kunjungan` = c.`id_kunjungan`
+                LEFT OUTER JOIN jkn_antrian d ON a.`kode_kunjungan` = d.kode_kunjungan
+                WHERE DATE(a.tgl_masuk) BETWEEN ? AND ? AND a.kode_unit = ? ORDER BY a.`kode_kunjungan` ASC', [
                     $request->tgl_awal,
                     $request->tgl_akhir,
-                    8
+                    auth()->user()->unit
                 ]);
                 return view('ermtemplate.tabelpasien_dokter_fisio', compact([
                     'pasienpoli'
@@ -5172,8 +5256,18 @@ class ErmController extends Controller
         INNER JOIN mt_tarif_header c ON SUBSTR(b.kode_tarif_detail,1,6) = c.`KODE_TARIF_HEADER`
         WHERE a.`kode_kunjungan` = ? AND a.`kode_unit` < ?', [$kodekunjungan, '4000']);
 
-        $assesmen_dokter = DB::connection('mysql')->select('SELECT *,a.id as idasskep,b.versi as versidk,date(a.tanggalkunjungan) as tglk,a.kode_unit as unitpoli ,fc_nama_unit1(a.kode_unit) as nama_unit,b.pic as iddokter FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b on a.kode_kunjungan = b.id_kunjungan LEFT OUTER JOIN ts_kunjungan c on a.kode_kunjungan = c.kode_kunjungan
-             WHERE a.kode_kunjungan = ? and c.status_kunjungan != 8 order  by a.id desc limit 1', [$kodekunjungan]);
+        $assesmen_dokter = DB::connection('mysql')->select('SELECT *
+        ,a.id AS idasskep
+        ,b.versi AS versidk
+        ,c.kode_unit
+        ,DATE(a.tanggalkunjungan) AS tglk
+        ,a.kode_unit AS unitpoli 
+        ,fc_nama_unit1(a.kode_unit) AS nama_unit
+        ,b.pic AS iddokter 
+        FROM ts_kunjungan c
+        LEFT OUTER JOIN assesmen_dokters b ON c.kode_kunjungan = b.id_kunjungan 
+        LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal a ON a.kode_kunjungan = c.kode_kunjungan
+        WHERE c.kode_kunjungan =  ? AND c.status_kunjungan != 8 ORDER  BY a.id DESC LIMIT 1', [$kodekunjungan]);
 
         $assesmendd = db::connection('mysql')->select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
         return view('ermtemplate.hasil_pemeriksaan_medis', compact([

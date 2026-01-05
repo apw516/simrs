@@ -366,7 +366,7 @@
                     </tr>
                 </table>
             @endif
-            @else               
+            @else          
                 <table class="table table-sm">
                     <tr>
                         <td>
@@ -744,8 +744,8 @@
 
             </div>
         @else
-            @if ($cp->signature == '')
-                @if ($cp->iddokter == auth()->user()->id || $cp->iddokter == '')
+            @if ($assesmendd[0]->signature == '')
+                @if ($assesmendd[0]->iddokter == auth()->user()->id || $assesmendd[0]->iddokter == '')
                     {{-- <button class="btn btn-success float-right" onclick="simpantandatangan()">Simpan</button> --}}
                     <div class="jumbotron">
                         <h1 class="display-2 mb-3">Terima Kasih !</h1>

@@ -5,7 +5,7 @@
         <th>Nama Pasien</th>
         <th>Unit</th>
         <th>Penjamin</th>
-        <th>Assemen Keperawatan</th>
+        <th>Terapis</th>
         <th>Assemen Medis</th>
     </thead>
     <tbody>
@@ -18,15 +18,22 @@
                 <td>{{ $p->nama_unit }}</td>
                 <td>{{ $p->nama_penjamin }}</td>
                 <td>
-                    @if ($p->cek2 != 0)
-                            <button class="badge badge-success"> sudah diisi </button>
+                    {{-- @if ($p->cek2 != 0) --}}
+                    @if (strlen($p->id_asskep) > 1)
+                            <button class="badge badge-success"> sudah diisi </button> | {{ $p->namapemeriksa}}
                     @else
                         <button class="badge badge-danger"> belum diisi </button>
                     @endif
                 </td>
                 <td>
-                    @if ($p->cek != 0)
-                            <button class="badge badge-success"> sudah diisi </button>
+                    {{-- @if ($p->cek != 0) --}}
+                    @if (strlen($p->id_assdok) > 1)
+                        @if($p->status_assdok == 0) 
+                            <button class="badge badge-warning"> Belum validasi </button>
+                             | {{ $p->nama_dokter }}
+                        @else
+                            <button class="badge badge-success"> sudah diisi</button> | {{ $p->nama_dokter}}
+                        @endif
                     @else
                         <button class="badge badge-danger"> belum diisi </button>
                     @endif
