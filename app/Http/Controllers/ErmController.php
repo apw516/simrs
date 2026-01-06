@@ -931,7 +931,12 @@ class ErmController extends Controller
     }
     public function formprogramrehabmedik(Request $request)
     {
-        return view('ermperawat.formprogramrehab');
+        $kodekunjungan = $request->kodekunjungan;
+        $nomorrm = $request->nomorrm;
+        $mt_pasien = db::select('select * from mt_pasien where no_rm = ?',[$nomorrm]);
+        return view('ermperawat.formprogramrehab',compact([
+            'nomorrm'
+        ]));
     }
     public function formpemeriksaan_perawat_fisio(Request $request)
     {
@@ -1281,7 +1286,8 @@ class ErmController extends Controller
                     'jenisrujukan',
                     'status_cek_rujukan',
                     'detailrujukan',
-                    'rujukan'
+                    'rujukan',
+                    'kunjunganKronis'
                 ]));
             } else {
                 return view('ermdokter.formpemeriksaan_dokter_fisio', compact([
