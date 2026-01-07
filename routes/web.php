@@ -501,6 +501,10 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('formpemeriksaan_wicara'); //sidebar
     Route::post('/formprogramrehabmedik', [ErmController::class, 'formprogramrehabmedik'])
         ->name('formprogramrehabmedik'); //sidebar
+    Route::post('/simpanformrehab', [ErmController::class, 'simpanformrehab'])
+        ->name('simpanformrehab'); //sidebar
+    Route::post('/simpanformprogram', [ErmController::class, 'simpanformprogram'])
+        ->name('simpanformprogram'); //sidebar
     Route::post('/simpanpemeriksaanperawat', [ErmController::class, 'simpanpemeriksaanperawat'])
         ->name('simpanpemeriksaanperawat'); //sidebar
     Route::post('/simpanbilling', [ErmController::class, 'simpanbilling'])

@@ -14,6 +14,7 @@ use App\Models\ermtht_telinga;
 use App\Models\erm_tht_hidung;
 use App\Models\erm_gambar_gigi;
 use App\Models\erm_catatan_gambar;
+use App\Models\model_header_program_rehab;
 use App\Models\erm_mata_kanan_kiri;
 use App\Models\erm_upload_gambar;
 use App\Models\ts_layanan_detail_dummy;
@@ -933,10 +934,51 @@ class ErmController extends Controller
     {
         $kodekunjungan = $request->kodekunjungan;
         $nomorrm = $request->nomorrm;
-        $mt_pasien = db::select('select * from mt_pasien where no_rm = ?',[$nomorrm]);
+        $mt_pasien = db::select('select *,date(tgl_lahir) as tgl_lahir from mt_pasien where no_rm = ?',[$nomorrm]);
+        $assdok = DB::select('SELECT * FROM assesmen_dokters WHERE id_pasien = ? AND kode_unit = ? 
+        AND id = (SELECT MAX(id) FROM assesmen_dokters WHERE id_pasien = ? AND kode_unit = ?)',[$nomorrm,'1028',$nomorrm,'1028']);
+        if(count($assdok) == 0){
+            $ts_kunjungan = db::select('select * from ts_kunjungan where kode_kunjungan = ?',[$kodekunjungan]);
+            $diagnosa_kerja = $ts_kunjungan[0]->diagx;
+        }else{
+            $diagnosa_kerja = $assdok[0]->diagnosakerja;
+        }
+        $dataheader = db::select('select * from ts_header_program_rehab_medis where nomorrm = ? ORDER BY id DESC',[$nomorrm]);
         return view('ermperawat.formprogramrehab',compact([
-            'nomorrm'
+            'mt_pasien','diagnosa_kerja','kodekunjungan','dataheader'
         ]));
+    }
+    public function simpanformprogram(Request $request)
+    {
+        $data = json_decode($_POST['data'], true);
+        foreach ($data as $nama) {
+                    $index =  $nama['name'];
+                    $value =  $nama['value'];
+                    $dataSet[$index] = $value;
+                }
+        $dataSet['nama_terapis'] = auth()->user()->nama;
+    }
+    public function simpanformrehab(Request $request)
+    {
+        $data = json_decode($_POST['data'], true);
+        foreach ($data as $nama) {
+                    $index =  $nama['name'];
+                    $value =  $nama['value'];
+                    $dataSet[$index] = $value;
+                }
+        $kodekunjungan = $dataSet['kodekunjungan'];
+        $kunjungan = db::select('select * from ts_kunjungan where kode_kunjungan = ?',[$kodekunjungan]);
+        $dataSet['tglkunjungan'] = $kunjungan[0]->tgl_masuk;
+        $dataSet['tglentry'] = $this->get_now();
+        $dataSet['nama_pic'] = auth()->user()->nama;
+        $dataSet['pic'] = auth()->user()->id;
+        model_header_program_rehab::create($dataSet);
+           $data = [
+            'kode' => 200,
+            'message' => 'Data berhasil disimpan !'
+        ];
+        echo json_encode($data);
+        die;
     }
     public function formpemeriksaan_perawat_fisio(Request $request)
     {
