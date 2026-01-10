@@ -1056,7 +1056,7 @@
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="modalsuratkonsul" tabindex="-1" aria-labelledby="exampleModalLabel"
+{{-- <div class="modal fade" id="modalsuratkonsul" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -1101,7 +1101,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 <!-- Modal -->
 <div class="modal fade" id="modalriwayattindakan" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
