@@ -14,7 +14,7 @@
         @endif --}}
     </div>
     <div class="card-body table-responsive p-5" style="height: 757Px">
-         @if ($status_cek_rujukan == 1)
+         {{-- @if ($status_cek_rujukan == 1)
             <H3 class="mb-3">Pasien BPJS</H3>
             <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalicare" onclick="showicare2()">Lihat Icare</button>
             @if ($jenisrujukan == 'FASKES 1')
@@ -45,7 +45,7 @@
             @endif
         @else
             <H3 class="mb-3">Pasien UMUM</H3>
-        @endif
+        @endif --}}
         @if ($kunjungan[0]->ref_kunjungan != '0')
             <div class="jumbotron mt-3">
                 <h1 class="display-4">Hello {{ auth()->user()->nama }} </h1><br>
