@@ -18,15 +18,15 @@
                 <td>{{ $p->nama_unit }}</td>
                 <td>{{ $p->nama_penjamin }}</td>
                 <td>
-                    @if ($p->cek2 != 0)
-                            <button class="badge badge-success"> sudah diisi </button>
+                    @if (strlen($p->idasskep) > 0)
+                        {{ $p->namapemeriksa}} | <button class="badge badge-success"> sudah diisi </button>
                     @else
                         <button class="badge badge-danger"> belum diisi </button>
                     @endif
                 </td>
                 <td>
-                    @if ($p->cek != 0)
-                            <button class="badge badge-success"> sudah diisi </button>
+                    @if (strlen($p->idassdok) > 0)
+                            {{ $p->nama_dokter}} | <button class="badge badge-success"> sudah diisi </button>
                     @else
                         <button class="badge badge-danger"> belum diisi </button>
                     @endif
