@@ -1002,12 +1002,21 @@ class SimrsController extends Controller
                 "request" =>
                 [
                     "noKartu" => "$request->nomorkartu",
-                    "kodeDokter" => "$request->kodedokterkontrol",
+                    "kodeDokter" => "354554",
                     "poliKontrol" => "$request->kodepolikontrol",
                     "tglRencanaKontrol" => "$request->tanggalkontrol",
                     "user" => "waled | " . auth()->user()->id_simrs
 
                 ]
+                // "request" =>
+                // [
+                //     "noKartu" => "$request->nomorkartu",
+                //     "kodeDokter" => "$request->kodedokterkontrol",
+                //     "poliKontrol" => "$request->kodepolikontrol",
+                //     "tglRencanaKontrol" => "$request->tanggalkontrol",
+                //     "user" => "waled | " . auth()->user()->id_simrs
+
+                // ]
             ];
             $v = new VclaimModel();
             $poli = $v->InsertSPRI($datasurat);
@@ -1072,6 +1081,7 @@ class SimrsController extends Controller
             ];
             $v = new VclaimModel();
             $poli = $v->UpdateSPRI($datasurat);
+            dd($poli);
         } else {
             $datasurat = [
                 "request" =>

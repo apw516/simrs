@@ -680,6 +680,25 @@
                               </p>
                           </a>
                       </li>
+                      <li class="nav-header">BRIDGING APOTEK ONLINE</li>
+                      <li class="nav-item">
+                          <a href="{{ route('indexsettingapotek') }}"
+                              class="nav-link @if ($title == 'SIMRS - DATA APOTEK') active @endif">
+                              <i class="nav-icon fas fa-th"></i>
+                              <p style="font-size:12px">
+                                  Data Apotek
+                              </p>
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a href="{{ route('indexreferensidpho') }}"
+                              class="nav-link @if ($title == 'SIMRS - Referensi DPHO') active @endif">
+                              <i class="nav-icon fas fa-th"></i>
+                              <p style="font-size:12px">
+                                  Referensi DPHO
+                              </p>
+                          </a>
+                      </li>
                   @endif
                     <li hidden class="nav-header">CASEMIX</li>
                       <li hidden class="nav-item">

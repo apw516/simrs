@@ -20,6 +20,7 @@ use App\Http\Controllers\newMasterController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\JasaMedisController;
 use App\Http\Controllers\CasemixController;
+use App\Http\Controllers\apotekOnlineBpjsController;
 
 Route::post('/updateruangan2', [SimrsController::class, 'updateruangan2'])->name('updateruangan2');
 Route::get('/index_bridging_bed', [SimrsController::class, 'index_bridging_bed'])->middleware('auth')->name('index_bridging_bed');
@@ -830,3 +831,14 @@ Route::get('/cetaksuratpengantar/{id}', [PdfController::class, 'cetaksuratpengan
 Route::get('/index_merger_berkas', [CasemixController::class, 'index_merger_berkas'])->name('index_merger_berkas');
 Route::post('/caridatakunjungan_casemix', [CasemixController::class, 'caridatakunjungan_casemix'])->name('caridatakunjungan_casemix');
 Route::get('/downloadberkas/{kode_kunjungan}', [CasemixController::class, 'downloadberkas'])->name('downloadberkas');
+
+
+
+Route::get('/indexreferensidpho', [apotekOnlineBpjsController::class, 'indexreferensidpho'])->name('indexreferensidpho');
+Route::get('/indexsettingapotek', [apotekOnlineBpjsController::class, 'indexsettingapotek'])->name('indexsettingapotek');
+
+
+Route::post('/downloadrefdpho', [apotekOnlineBpjsController::class, 'downloadrefdpho'])->name('downloadrefdpho');
+Route::post('/get_set_apotek', [apotekOnlineBpjsController::class, 'getsetapotek'])->name('get_set_apotek');
+Route::post('/ambilrefdpholokal', [apotekOnlineBpjsController::class, 'ambilrefdpholokal'])->name('ambilrefdpholokal');
+Route::post('/ambilsetapotek', [apotekOnlineBpjsController::class, 'ambilsetapotek'])->name('ambilsetapotek');
