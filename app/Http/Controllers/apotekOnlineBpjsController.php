@@ -182,15 +182,15 @@ class apotekOnlineBpjsController extends Controller
     public function post_non_racikan()
     {
         $dataAPOTEK = [
-            'NOSJP' => '0112A01704190000001' ,
-            'NORESEP' => '01236' ,
-            'KDOBT' => '123456' ,
-            'NMOBAT' => 'IVAN' ,
-            'SIGNA1OBT' => '1' ,
-            'SIGNA2OBT' => '1' ,
-            'JMLOBT' => '1' ,
-            'JHO' => '1' ,
-            'CatKhsObt' => 'TEST' ,
+            'NOSJP' => '0112A01704190000001',
+            'NORESEP' => '01236',
+            'KDOBT' => '123456',
+            'NMOBAT' => 'IVAN',
+            'SIGNA1OBT' => '1',
+            'SIGNA2OBT' => '1',
+            'JMLOBT' => '1',
+            'JHO' => '1',
+            'CatKhsObt' => 'TEST',
         ];
         $v = new MODEL_APOTEK_ONLINE();
         $DATA = $v->save_non_racik($dataAPOTEK);
@@ -199,17 +199,17 @@ class apotekOnlineBpjsController extends Controller
     public function post_racikan()
     {
         $dataAPOTEK = [
-            'NOSJP' => '0112A01704190000001' ,
-            'NORESEP' => '01236' ,
+            'NOSJP' => '0112A01704190000001',
+            'NORESEP' => '01236',
             'JNSROBT' => 'R.01',
-            'KDOBT' => '123456' ,
-            'NMOBAT' => 'IVAN' ,
-            'SIGNA1OBT' => '1' ,
-            'SIGNA2OBT' => '1' ,
+            'KDOBT' => '123456',
+            'NMOBAT' => 'IVAN',
+            'SIGNA1OBT' => '1',
+            'SIGNA2OBT' => '1',
             'PERMINTAAN' => '1',
-            'JMLOBT' => '1' ,
-            'JHO' => '1' ,
-            'CatKhsObt' => 'TEST' ,
+            'JMLOBT' => '1',
+            'JHO' => '1',
+            'CatKhsObt' => 'TEST',
         ];
         $v = new MODEL_APOTEK_ONLINE();
         $DATA = $v->save_racikan($dataAPOTEK);
@@ -218,11 +218,15 @@ class apotekOnlineBpjsController extends Controller
     public function riwayatpelayananobat()
     {
         $v = new MODEL_APOTEK_ONLINE();
+        $v2 = new VclaimModel();
+        // return view('pendaftaran.profilpeserta', [
+        // ]);
         $awal = $this->get_date();
         $akhir = $this->get_date();
         $nokartu = '0002083363874';
-        $DATA = $v->riwayat_obat($awal,$akhir,$nokartu);
-        dd($DATA);
+        $data_peserta = $v2->get_peserta_noka($nokartu, date('Y-m-d'));
+        dd($data_peserta);
+        $DATA = $v->riwayat_obat($awal, $akhir, $nokartu);
     }
 
     public function get_now()

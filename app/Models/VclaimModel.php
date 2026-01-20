@@ -11,8 +11,8 @@ use GuzzleHttp\Exception\RequestException;
 
 class VclaimModel extends Model
 {
-    // public $baseUrl = 'https://apijkn-dev.bpjs-kesehatan.go.id/vclaim-rest-dev/';
-    public $baseUrl = 'https://apijkn.bpjs-kesehatan.go.id/vclaim-rest/';
+    public $baseUrl = 'https://apijkn-dev.bpjs-kesehatan.go.id/vclaim-rest-dev/';
+    // public $baseUrl = 'https://apijkn.bpjs-kesehatan.go.id/vclaim-rest/';
     public static function signature()
     {
         
@@ -51,7 +51,7 @@ class VclaimModel extends Model
             'headers' => $signature
         ]);
         $response = json_decode($response->getBody());
-        dd($response);
+        // dd($response);
         if ($response->metaData->code == 200) {
             $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
             $response->response = json_decode($decrypt);
@@ -98,6 +98,7 @@ class VclaimModel extends Model
             $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
             $response->response = json_decode($decrypt);
         }
+        dd($response);
         return $response;
     }
     public function get_peserta_nik($nik, $tanggal)
