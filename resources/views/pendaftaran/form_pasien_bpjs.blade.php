@@ -498,9 +498,9 @@
                             <div class="col-sm-7">
                                 <select class="form-control form-control-sm" id="provinsikejadian">
                                     <option value="">-- Silahkan Pilih Provinsi --</option>
-                                    @foreach ($provinsi->response->list as $p)
+                                    {{-- @foreach ($provinsi->response->list as $p)
                                         <option value="{{ $p->kode }}">{{ $p->nama }}</option>
-                                    @endforeach
+                                    @endforeach --}}
                                 </select>
                             </div>
                         </div>

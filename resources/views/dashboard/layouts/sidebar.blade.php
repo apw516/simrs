@@ -682,6 +682,24 @@
                       </li>
                       <li class="nav-header">BRIDGING APOTEK ONLINE</li>
                       <li class="nav-item">
+                          <a href="{{ route('indexmasterbarangbpjs') }}"
+                              class="nav-link @if ($title == 'SIMRS - Master Barang Mapping') active @endif">
+                              <i class="nav-icon fas fa-th"></i>
+                              <p style="font-size:12px">
+                                  Master Barang SIMRS & BPJS
+                              </p>
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a href="{{ route('indexmappingobat') }}"
+                              class="nav-link @if ($title == 'SIMRS - MAPPING OBAT') active @endif">
+                              <i class="nav-icon fas fa-th"></i>
+                              <p style="font-size:12px">
+                                  Mapping Data Obat
+                              </p>
+                          </a>
+                      </li>
+                      <li class="nav-item">
                           <a href="{{ route('indexsettingapotek') }}"
                               class="nav-link @if ($title == 'SIMRS - DATA APOTEK') active @endif">
                               <i class="nav-icon fas fa-th"></i>

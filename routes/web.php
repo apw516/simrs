@@ -836,9 +836,13 @@ Route::get('/downloadberkas/{kode_kunjungan}', [CasemixController::class, 'downl
 
 Route::get('/indexreferensidpho', [apotekOnlineBpjsController::class, 'indexreferensidpho'])->name('indexreferensidpho');
 Route::get('/indexsettingapotek', [apotekOnlineBpjsController::class, 'indexsettingapotek'])->name('indexsettingapotek');
-
-
 Route::post('/downloadrefdpho', [apotekOnlineBpjsController::class, 'downloadrefdpho'])->name('downloadrefdpho');
 Route::post('/get_set_apotek', [apotekOnlineBpjsController::class, 'getsetapotek'])->name('get_set_apotek');
 Route::post('/ambilrefdpholokal', [apotekOnlineBpjsController::class, 'ambilrefdpholokal'])->name('ambilrefdpholokal');
 Route::post('/ambilsetapotek', [apotekOnlineBpjsController::class, 'ambilsetapotek'])->name('ambilsetapotek');
+
+
+Route::GET('/monitoringklaim', [apotekOnlineBpjsController::class, 'monitoringklaim'])->name('monitoringklaim');
+Route::GET('/indexmasterbarangbpjs', [apotekOnlineBpjsController::class, 'indexmasterbarangbpjs'])->name('indexmasterbarangbpjs');
+Route::GET('/indexmappingobat', [apotekOnlineBpjsController::class, 'indexmappingobat'])->name('indexmappingobat');
+Route::POST('/simpandatamappingobat', [apotekOnlineBpjsController::class, 'simpandatamappingobat'])->name('simpandatamappingobat');

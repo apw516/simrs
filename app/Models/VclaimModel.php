@@ -98,7 +98,7 @@ class VclaimModel extends Model
             $decrypt = $this->stringDecrypt($signature['decrypt_key'], $response->response);
             $response->response = json_decode($decrypt);
         }
-        dd($response);
+        // dd($response);
         return $response;
     }
     public function get_peserta_nik($nik, $tanggal)
