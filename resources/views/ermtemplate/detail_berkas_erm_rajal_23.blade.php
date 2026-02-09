@@ -2942,6 +2942,10 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td>Rencana Tindakan ( P )</td>
+                                        <td>{{ $h->rencanakerja }}</td>
+                                    </tr>
+                                    <tr>
                                         <td>Rencana Terapi ( P )</td>
                                         <td>{{ $h->rencanakerja }}</td>
                                     </tr>
@@ -3238,6 +3242,10 @@
                                                                                 @endif
                                                                             @endforeach
                                                                         </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Rencana Tindakan ( P )</td>
+                                                                        <td>{{ $cp->rencanakerja }}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>Rencana Terapi ( P )</td>

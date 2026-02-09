@@ -2466,6 +2466,12 @@
                     <table class="table table-sm">
                         <tbody>
                             <tr>
+                                <td class="text-bold font-italic">Rencana Tindakan </td>
+                                <td colspan="3">
+                                    <textarea class="form-control" name="rencana_tindakan">{{ $resume[0]->renjana_tindakan }}</textarea>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td class="text-bold font-italic">Rencana Terapi </td>
                                 <td colspan="3">
                                     <textarea class="form-control" name="rencanakerja">{{ $resume[0]->rencanakerja }}</textarea>

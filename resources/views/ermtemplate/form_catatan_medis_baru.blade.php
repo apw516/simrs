@@ -836,6 +836,10 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
+                                                            <td>Rencana Tindakan ( P )</td>
+                                                            <td>{{ $k->renjana_tindakan }}</td>
+                                                        </tr>
+                                                        <tr>
                                                             <td>Rencana Terapi ( P )</td>
                                                             <td>{{ $k->rencanakerja }}</td>
                                                         </tr>

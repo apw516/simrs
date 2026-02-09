@@ -1213,6 +1213,14 @@
                     <table class="table table-sm">
                         <tbody>
                             <tr>
+                                <td class="text-bold font-italic">Rencana Tindakan</td>
+                                <td colspan="3">
+                                    <textarea class="form-control" name="rencanatindakan">
+@if (count($last_assdok) > 0){{ $last_assdok[0]->renjana_tindakan }} @endif
+</textarea>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td class="text-bold font-italic">Rencana Terapi</td>
                                 <td colspan="3">
                                     <textarea class="form-control" name="rencanakerja">

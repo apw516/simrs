@@ -204,12 +204,25 @@
                         <td colspan="3">{{ $cp->pemeriksaan_fisik }}</td>
                     </tr>
                     <tr>
-                        <td>Hasil Laboratorium</td>
-                        <td colspan="3"></td>
+                        <td>Layanan Laboratorium</td>
+                        <td colspan="2">
+                            @foreach($penunjang as $pp)
+                                @if($pp->kode_unit == 3002)
+                                {{ $pp->NAMA_TARIF }} <br>
+                                @endif
+                            @endforeach
+                        </td>
+                        <td colspan="2" rowspan="2">ICD 9</td>
                     </tr>
                     <tr>
-                        <td>Hasil Radiologi</td>
-                        <td colspan="3"></td>
+                        <td>Layanan Radiologi</td>
+                        <td colspan="2">
+                             @foreach($penunjang as $pp)
+                                @if($pp->kode_unit == 3003)
+                                {{ $pp->NAMA_TARIF }} <br>
+                                @endif
+                            @endforeach
+                        </td>
                     </tr>
                     @if ($cp->kode_unit == '1012')
                         <tr>
@@ -260,8 +273,8 @@
                         <td class="text-left" colspan="2">ICD 9 CM</td>
                     </tr>
                     <tr>
-                        <td>Rencana Terapi ( P )</td>
-                        <td colspan="3">{{ $cp->rencanakerja }}</td>
+                        <td>Rencana Tindakan ( P )</td>
+                        <td colspan="3">{{ $cp->renjana_tindakan }}</td>
                     </tr>
                     <tr>
                         <td>Tindak Lanjut</td>
@@ -292,7 +305,7 @@
                             </table> --}}
                         </td>
                     </tr>
-                    <tr>
+                    <tr hidden>
                         <td>Pemeriksaan Penunjang termasuk lab, rad, dll</td>
                         <td>
                             Order Pemeriksasan Penunjang <br>
