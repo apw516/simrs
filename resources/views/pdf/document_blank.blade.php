@@ -273,10 +273,10 @@
                         <td></td>
                         <td class="text-left" colspan="2">ICD 9 CM :</td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <td>Rencana Tindakan ( P )</td>
                         <td colspan="3">{{ $cp->renjana_tindakan }}</td>
-                    </tr>
+                    </tr> --}}
                     <tr>
                         <td>Tindak Lanjut</td>
                         <td colspan="3">{{ $cp->tindak_lanjut }}<br>
