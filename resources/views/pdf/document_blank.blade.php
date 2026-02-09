@@ -144,7 +144,7 @@
             </tr>
             <tr>
                 <td colspan="2" class="text-center text-bold bg-success">
-                    RESUME MEDIS RAWAT JALAN
+                    FORMULIR HASIL PEMERIKSAAN RAWAT JALAN
                 </td>
             </tr>
             <tr>
@@ -212,7 +212,7 @@
                                 @endif
                             @endforeach
                         </td>
-                        <td colspan="2" rowspan="2">ICD 9</td>
+                        <td colspan="2">ICD 9 CM :</td>
                     </tr>
                     <tr>
                         <td>Layanan Radiologi</td>
@@ -223,6 +223,7 @@
                                 @endif
                             @endforeach
                         </td>
+                        <td colspan="2">ICD 9 CM :</td>
                     </tr>
                     @if ($cp->kode_unit == '1012')
                         <tr>
@@ -248,12 +249,12 @@
                     <tr>
                         <td>Diagnosa Utama</td>
                         <td>{{ $cp->diagnosakerja }}<br></td>
-                        <td class="text-left" colspan="2">ICD X</td>
+                        <td class="text-left" colspan="2">ICD X :</td>
                     </tr>
                     <tr>
                         <td>Diagnosa Sekunder</td>
                         <td>{{ $cp->diagnosabanding }}<br></td>
-                        <td class="text-left" colspan="2">ICD X</td>
+                        <td class="text-left" colspan="2">ICD X :</td>
                     </tr>
                     <tr>
                         <td>Tindakan / Prosedur</td>
@@ -265,12 +266,12 @@
                                 @endif
                             @endforeach
                         </td>
-                        <td class="text-left" colspan="2">ICD 9 CM</td>
+                        <td class="text-left" colspan="2">ICD 9 CM :</td>
                     </tr>
                     <tr>
                         <td>Tindakan Operasi</td>
                         <td></td>
-                        <td class="text-left" colspan="2">ICD 9 CM</td>
+                        <td class="text-left" colspan="2">ICD 9 CM :</td>
                     </tr>
                     <tr>
                         <td>Rencana Tindakan ( P )</td>
@@ -323,7 +324,7 @@
                             {{-- </tbody>
                             </table> --}}
                         </td>
-                        <td colspan="2">ICD 9 CM</td>
+                        <td colspan="2">ICD 9 CM :</td>
                     </tr>
                     <tr>
                         <td>Jawaban Konsul Ke poli lain</td>
