@@ -8,6 +8,7 @@ use Codedge\Fpdf\Fpdf\Fpdf;
 use Codedge\Fpdf\Fpdf\pdf;
 use Codedge\Fpdf\Fpdf\printresume;
 use App\Models\assesmenawalperawat;
+use App\Models\model_catatan_hemodialisis;
 use App\Models\assesmenawalperawat_igd;
 use App\Models\assesmenawaldokter;
 use App\Models\ermtht_telinga;
@@ -9308,16 +9309,153 @@ class ErmController extends Controller
             'cek'
         ]));
     }
+    public function formcatatanhemodialisis(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $kode_kunjungan = $request->kodekunjungan;
+        return view('Hemodialisa.form_catatan_hd',compact([
+            'rm','kode_kunjungan'
+        ]));
+    }
+    public function simpanheaderpemeriksaanhd(Request $request)
+    {
+        $data1 = json_decode($_POST['data'], true);
+            foreach ($data1 as $nama) 
+                {
+                    $index =  $nama['name'];
+                    $value =  $nama['value'];
+                    $dataSet[$index] = $value;
+                }
+            if (!isset($dataSet['inisiasi'])) 
+                {
+                    $inisiasi = 0;
+                } 
+            else {
+                    $inisiasi = 1; // Index ada              
+                }
+            if (!isset($dataSet['akut'])) 
+                {
+                    $akut = 0;
+                } 
+            else {
+                    $akut = 1; // Index ada              
+                }
+            if (!isset($dataSet['rutin'])) 
+                {
+                    $rutin = 0;
+                } 
+            else {
+                    $rutin = 1; // Index ada              
+                }
+            if (!isset($dataSet['preop'])) 
+                {
+                    $preop = 0;
+                } 
+            else {
+                    $preop = 1; // Index ada              
+                }
+            if (!isset($dataSet['sled'])) 
+                {
+                    $sled = 0;
+                } 
+            else {
+                    $sled = 1; // Index ada              
+                }
+            if (!isset($dataSet['dialist'])) 
+                {
+                    $dialist = 0;
+                } 
+            else {
+                    $dialist = $dataSet['dialist']; // Index ada              
+                }
+            if (!isset($dataSet['NA'])) 
+                {
+                    $NA = 0;
+                } 
+            else {
+                    $NA = $dataSet['NA']; // Index ada              
+                }
+            if (!isset($dataSet['UF'])) 
+                {
+                    $UF = 0;
+                } 
+            else {
+                    $UF = $dataSet['UF']; // Index ada              
+                }
+            if (!isset($dataSet['bicarbonat'])) 
+                {
+                    $bicarbonat = 0;
+                } 
+            else{
+                    $bicarbonat = $dataSet['bicarbonat']; // Index ada              
+                }
+            if (!isset($dataSet['dializer'])) 
+                {
+                    $dializer = 0;
+                } 
+            else{
+                    $dializer = $dataSet['dializer']; // Index ada              
+                }
+            $dataheader = [
+                'no_rm' => $request->rm,
+                'kode_kunjungan' => $request->kode_kunjungan,
+                'tgl_entry' => $this->get_now(),
+                'tgl_periksa' => $dataSet['tgl_periksa'],
+                'inisiasi' => $inisiasi,
+                'akut' => $akut,
+                'rutin' => $rutin,
+                'preop' => $preop,
+                'sled' => $sled,
+                'qb' => $dataSet['qb'],
+                'qd' => $dataSet['qd'],
+                'ufgoal' => $dataSet['ufgoal'],
+                'dialist' => $dialist,
+                'NA' => $NA,
+                'UF' => $UF,
+                'bicarbonat' => $bicarbonat,
+                'dosissirkulasi' => $dataSet['dosissirkulasi'],
+                'dosisawal' => $dataSet['dosisawal'],
+                'continues' => $dataSet['continues'],
+                'intermitten' => $dataSet['intermitten'],
+                'LWMH' => $dataSet['LWMH'],
+                'tanpaheparin' => $dataSet['tanpaheparin'],
+                'programbilas' => $dataSet['programbilas'],
+                'lamahd' => $dataSet['lamahd'],
+                'dializer' => $dializer,
+                'hd_ke' => $dataSet['hd_ke'],
+                'bb_pre_hd' => $dataSet['bb_pre_hd'],
+                'bb_post_hd' => $dataSet['bb_post_hd'],
+                'jam_mulai_hd' => $dataSet['jam_mulai_hd'],
+                'jam_selesai_hd' => $dataSet['jam_selesai_hd'],
+                'ke' => $dataSet['ke'],
+                'target_bb_kering' => $dataSet['target_bb_kering'],
+                'bb_observasi' => $dataSet['bb_observasi'],
+                'pic' => auth()->user()->id
+            ];
+            model_catatan_hemodialisis::create($dataheader);
+             $data = [
+            'kode' => 200,
+            'message' => 'Data berhasil disimpan ...'
+            ];
+        echo json_encode($data);
+            die;
+    }
+    public function ambilriwayatcatatanhemodialisa(Request $request)
+    {
+        $rm = $request->rm;
+        $kode_kunjungan = $request->kode_kunjungan;
+        $datah = db::select('select * from ts_header_catatan_hemodialisis where no_rm = ? ORDER BY id DESC',[$rm]);
+        return view('Hemodialisa.riwayathd',compact([
+            'datah'
+        ]));
+    }
 }
 
     
     
     
         
-    
-    
-    
-        
+
     
     
     

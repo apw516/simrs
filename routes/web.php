@@ -472,7 +472,16 @@ Route::group(['middleware' => ['auth', 'hak_akses1:9']], function () {
         ->name('simpanajuan'); //sidebar
 });
 //erm
-Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
+    Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
+    Route::post('/formcatatanhemodialisis', [ErmController::class, 'formcatatanhemodialisis'])
+        ->name('formcatatanhemodialisis'); //sidebar
+    Route::post('/simpanheaderpemeriksaanhd', [ErmController::class, 'simpanheaderpemeriksaanhd'])
+        ->name('simpanheaderpemeriksaanhd'); //sidebar
+    Route::post('/ambilriwayatcatatanhemodialisa', [ErmController::class, 'ambilriwayatcatatanhemodialisa'])
+        ->name('ambilriwayatcatatanhemodialisa'); //sidebar
+
+
+
     Route::get('/indexperawat', [ErmController::class, 'indexPerawat'])
         ->name('indexperawat'); //sidebar
     Route::get('/indexigd', [ErmIgdController::class, 'indexigd'])

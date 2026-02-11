@@ -54,6 +54,13 @@
                                 <i class="fas fa-inbox mr-2"></i>Catatan Perkembangan Pasien Terintegrasi ( CPPT )
                             </a>
                         </li>
+                        @if (auth()->user()->unit == '3007')
+                            <li class="nav-item" id="pemeriksaan">
+                                <a href="#" class="nav-link" onclick="formcatatanhemodialisis()">
+                                    <i class="fas fa-inbox mr-2"></i>Catatan Hemodialisis
+                                </a>
+                            </li>
+                        @endif
                         @if (auth()->user()->unit == '1029' || auth()->user()->unit == '1045')
                             <li class="nav-item" id="pemeriksaan">
                                 <a href="#" class="nav-link" onclick="formsumarilis()">
@@ -261,6 +268,25 @@
         });
     }
 
+    function formcatatanhemodialisis() {
+        spinner = $('#loader')
+        spinner.show();
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('formcatatanhemodialisis') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
     function formpemeriksaan() {
         spinner = $('#loader')
         spinner.show();
