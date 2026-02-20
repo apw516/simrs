@@ -141,7 +141,7 @@
                               </p>
                           </a>
                           <ul class="nav nav-treeview">
-                              <li class="nav-item ">
+                              <li hidden class="nav-item ">
                                   <a href="{{ route('riwayatpelayanan_user') }}"
                                       class="nav-link @if ($sidebar_m == '3.1') active @endif ">
                                       <i class="far fa-circle nav-icon"></i>
@@ -157,7 +157,7 @@
                               </li>
                           </ul>
                       </li>
-                      <li class="nav-item">
+                      <li hidden class="nav-item">
                           <a href="{{ route('menuriwayatpasien') }}"
                               class="nav-link text-sm @if ($sidebar == 'riwayatpasien') active @endif">
                               <i class="nav-icon  bi bi-clock-history"></i>
@@ -177,7 +177,7 @@
                               </p>
                           </a>
                           <ul class="nav nav-treeview">
-                              <li class="nav-item">
+                              <li hidden class="nav-item">
                                   <a href="{{ route('menusepvalidasi') }}"
                                       class="nav-link @if ($sidebar_m == 'INSERT SEP') active @endif">
                                       <i class="far fa-circle nav-icon"></i>
