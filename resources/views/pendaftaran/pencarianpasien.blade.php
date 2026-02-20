@@ -22,7 +22,7 @@
                 <td>
                     <button class="badge badge-warning detailpasien" norm={{ $p->no_rm }} data-toggle="modal"
                         data-target="#modaldetailpasien"><i class="bi bi-pencil-square"></i></button>
-                    <button class="badge badge-danger daftarranap" nama="{{ $p->nama_pasien }}"
+                    <button hidden class="badge badge-danger daftarranap" nama="{{ $p->nama_pasien }}"
                                         rm="{{ $p->no_rm }}">Ranap</button>
                     {{-- <button class="badge badge-warning editpasien" namapasien_edit="{{ $p->nama_pasien }}"
                         nomorktp_edit="{{ $p->NIK }}" nomorbpjs_edit="{{ $p->no_asuransi }}"
