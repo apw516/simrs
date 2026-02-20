@@ -8247,8 +8247,19 @@ class ErmController extends Controller
     }
     public function lihathasilpenunjang_lab(Request $request)
     {
+        // $hasil_lab = DB::select('SELECT * FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` WHERE a.`no_rm` = ? AND b.`kode_unit` = ? ORDER BY a.`kode_kunjungan`DESC LIMIT 1', [$rm, '3002']);
         $rm = $request->nomorrm;
-        $hasil_lab = DB::select('SELECT * FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` WHERE a.`no_rm` = ? AND b.`kode_unit` = ? ORDER BY a.`kode_kunjungan`DESC LIMIT 1', [$rm, '3002']);
+        $ts_kunjungan = db::select('select counter from ts_kunjungan where no_rm = ? and status_kunjungan != 8 ORDER BY kode_kunjungan DESC limit 8',[$rm]);
+        $hasil_lab = []; // Array untuk menampung semua link
+        foreach ($ts_kunjungan as $d) {
+            $data_lab = db::select("CALL LIHAT_HASIL_LAB(?, ?)", [$rm, $d->counter]);            
+            // Karena db::select mengembalikan array, kita loop data_lab-nya
+            foreach ($data_lab as $item) {
+                if (isset($item->link)) { // Pastikan kolom 'link' ada
+                    $hasil_lab[] = $item->link;
+                }
+            }
+        }
         return view('ermtemplate.view_hasil_penunjang_lab', compact([
             'hasil_lab',
             'rm'
