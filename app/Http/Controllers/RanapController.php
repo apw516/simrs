@@ -25,28 +25,32 @@ class RanapController extends VclaimController
 {
     public function index()
     {
-        $oneweek = (Carbon::now()->subMonth(1)->toDateString());
-        $now = (Carbon::now()->toDateString());
-        $user = auth()->user()->unit;
-        if($user == '2008'){
-            sleep(50);
-        }
-        $title = 'SIMRS -SEP RAWAT INAP';
-        $sidebar = 'RANAP';
-        $sidebar_m = 'SEP RANAP';
-        // $this->get_app();
-        return view('ranap.datasep', [
-            'title' => $title,
-            'sidebar' => $sidebar,
-            'sidebar_m' => $sidebar_m,
-            'datapasien' => DB::select('SELECT kode_kunjungan,keterangan2,a.no_rm,d.no_Bpjs,no_sep,fc_nama_px(a.no_rm) AS nama ,tgl_masuk,DATE(tgl_keluar) as tgl_keluar,fc_nama_unit1(kode_unit) AS unit,kamar,no_bed,b.nama_penjamin,c.alasan_pulang,c.kode
-            FROM ts_kunjungan a
-            INNER JOIN mt_penjamin b ON b.kode_penjamin = a.kode_penjamin
-            INNER JOIN mt_alasan_pulang c ON c.kode = a.id_alasan_pulang
-            INNER JOIN mt_pasien d ON a.no_rm = d.no_rm
-            WHERE kode_unit = ? AND DATE(tgl_keluar) BETWEEN ? AND ?
-            AND b.kode_kelompok < 3 ', [$user, $oneweek, $now])
-        ]);
+        // Auth::logout();
+        // $request->session()->invalidate();
+        // $request->session()->regenerateToken();
+        return redirect('/logout');
+        // $oneweek = (Carbon::now()->subMonth(1)->toDateString());
+        // $now = (Carbon::now()->toDateString());
+        // $user = auth()->user()->unit;
+        // if($user == '2008'){
+        //     sleep(50);
+        // }
+        // $title = 'SIMRS -SEP RAWAT INAP';
+        // $sidebar = 'RANAP';
+        // $sidebar_m = 'SEP RANAP';
+        // // $this->get_app();
+        // return view('ranap.datasep', [
+        //     'title' => $title,
+        //     'sidebar' => $sidebar,
+        //     'sidebar_m' => $sidebar_m,
+        //     'datapasien' => DB::select('SELECT kode_kunjungan,keterangan2,a.no_rm,d.no_Bpjs,no_sep,fc_nama_px(a.no_rm) AS nama ,tgl_masuk,DATE(tgl_keluar) as tgl_keluar,fc_nama_unit1(kode_unit) AS unit,kamar,no_bed,b.nama_penjamin,c.alasan_pulang,c.kode
+        //     FROM ts_kunjungan a
+        //     INNER JOIN mt_penjamin b ON b.kode_penjamin = a.kode_penjamin
+        //     INNER JOIN mt_alasan_pulang c ON c.kode = a.id_alasan_pulang
+        //     INNER JOIN mt_pasien d ON a.no_rm = d.no_rm
+        //     WHERE kode_unit = ? AND DATE(tgl_keluar) BETWEEN ? AND ?
+        //     AND b.kode_kelompok < 3 ', [$user, $oneweek, $now])
+        // ]);
     }
     public function get_date()
     {
