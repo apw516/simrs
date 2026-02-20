@@ -95,7 +95,7 @@
                               </p>
                           </a>
                       </li> --}}
-                      <li class="nav-item">
+                      <li hidden class="nav-item">
                           <a href="{{ route('datasepranap') }}"
                               class="nav-link @if ($title == 'SIMRS -SEP RAWAT INAP') active @endif">
                               <i class="nav-icon fas fa-th"></i>
@@ -104,7 +104,7 @@
                               </p>
                           </a>
                       </li>
-                      <li class="nav-item">
+                      <li hidden class="nav-item">
                           <a href="{{ route('menucarisep') }}"
                               class="nav-link @if ($title == 'SIMRS - CARI SEP') active @endif">
                               <i class="nav-icon fas fa-th"></i>
