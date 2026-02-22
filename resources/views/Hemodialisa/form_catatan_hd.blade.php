@@ -4,7 +4,7 @@
         <button class="btn btn-success" onclick="buatheader()"><i class="bi bi-file-earmark-plus"></i> Buat
             Catatan Header</button>
         <div hidden class="card mt-4 formheader">
-            <div class="card-header">Form catatan HD</div>
+            <div class="card-header bg-success">Form catatan HD</div>
             <div class="card-body">
                 <form action="" class="form_header_pemeriksaan">
                     <div class="form-group">
@@ -123,7 +123,7 @@
                                 <div class="row">
                                     <div class="col-md-2">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value=""
+                                            <input class="form-check-input" type="checkbox" value="1"
                                                 id="NA" name="NA">
                                             <label class="form-check-label" for="checkDefault">
                                                 Na
@@ -132,7 +132,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value=""
+                                            <input class="form-check-input" type="checkbox" value="2"
                                                 id="UF" name="UF">
                                             <label class="form-check-label" for="checkDefault">
                                                 UF
@@ -141,7 +141,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value=""
+                                            <input class="form-check-input" type="checkbox" value="3"
                                                 id="bicarbonat" name="bicarbonat">
                                             <label class="form-check-label" for="checkDefault">
                                                 Bicarbonat
@@ -299,6 +299,7 @@
             </div>
             <div class="card-footer">
                 <button class="btn btn-success" onclick="simpanheader()">Simpan</button>
+                <button class="btn btn-danger" onclick="batal()">Batal</button>
             </div>
         </div>
         <div class="v_riwayat_header">
@@ -315,6 +316,9 @@
 
     function buatheader() {
         $('.formheader').removeAttr('hidden', true)
+    }
+    function batal() {
+        $('.formheader').attr('hidden', true)
     }
 
     function simpanheader() {

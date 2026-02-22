@@ -3236,7 +3236,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-md-2">
                  <div class="form-group">
                     <label for="exampleInputEmail1">Jumlah data</label>
@@ -3247,7 +3247,7 @@
             <div class="col-md-2">
                 <button class="btn btn-success" style="margin-top:32px" onclick="tampilkanhasilnya()">Tampilkan</button>
             </div>
-        </div>
+        </div> --}}
         <div class="v_hasil_lab_by_dokter mt-2">
 
         </div>
@@ -3531,7 +3531,7 @@
             },
             url: '<?= route('lihathasilpenunjang_lab') ?>',
             success: function(response) {
-                $('.v_hasil_penunjang_lab').html(response);
+                $('.v_hasil_lab_by_dokter').html(response);
                 spinner.hide()
             }
         });

@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class model_catatan_hemodialisis extends Model
+class model_catatan_pre_hd extends Model
 {
     use HasFactory;
     const UPDATED_AT = null;
     const CREATED_AT = null;
-    protected $table = 'ts_header_catatan_hemodialisis';
+    protected $table = 'ts_catatan_pre_hemodialisa';
     protected $guarded = [];
 }

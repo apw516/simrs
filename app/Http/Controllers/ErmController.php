@@ -9,6 +9,7 @@ use Codedge\Fpdf\Fpdf\pdf;
 use Codedge\Fpdf\Fpdf\printresume;
 use App\Models\assesmenawalperawat;
 use App\Models\model_catatan_hemodialisis;
+use App\Models\model_catatan_pre_hd;
 use App\Models\assesmenawalperawat_igd;
 use App\Models\assesmenawaldokter;
 use App\Models\ermtht_telinga;
@@ -8268,8 +8269,23 @@ class ErmController extends Controller
     public function lihathasilpenunjang_lab_dokter(Request $request)
     {
         $rm = $request->nomorrm;
-        $hasil_lab = DB::select('SELECT * FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` WHERE a.`no_rm` = ? AND b.`kode_unit` = ? ORDER BY a.`kode_kunjungan`DESC LIMIT 1', [$rm, '3002']);
-        return view('ermtemplate.view_hasil_penunjang_lab_dokter', compact([
+        // $hasil_lab = DB::select('SELECT * FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` WHERE a.`no_rm` = ? AND b.`kode_unit` = ? ORDER BY a.`kode_kunjungan`DESC LIMIT 1', [$rm, '3002']);
+        // return view('ermtemplate.view_hasil_penunjang_lab_dokter', compact([
+        //     'hasil_lab',
+        //     'rm'
+        // ]));
+        $ts_kunjungan = db::select('select counter from ts_kunjungan where no_rm = ? and status_kunjungan != 8 ORDER BY kode_kunjungan DESC limit 8',[$rm]);
+        $hasil_lab = []; // Array untuk menampung semua link
+        foreach ($ts_kunjungan as $d) {
+            $data_lab = db::select("CALL LIHAT_HASIL_LAB(?, ?)", [$rm, $d->counter]);            
+            // Karena db::select mengembalikan array, kita loop data_lab-nya
+            foreach ($data_lab as $item) {
+                if (isset($item->link)) { // Pastikan kolom 'link' ada
+                    $hasil_lab[] = $item->link;
+                }
+            }
+        }
+        return view('ermtemplate.view_hasil_penunjang_lab', compact([
             'hasil_lab',
             'rm'
         ]));
@@ -8277,18 +8293,33 @@ class ErmController extends Controller
     public function lihathasilpenunjang_lab2(Request $request)
     {
         $rm = $request->nomorrm;
-        $kunjungan = db::select('select * from ts_kunjungan where status_kunjungan != 8 and no_rm = ?',[$rm]);
-        $data = [];
-        foreach($kunjungan as $d){
-            $hasil = db::select("CALL HASIL_PK_LAB_ERM('$d->kode_kunjungan')");
-            if(count($hasil) > 0){    
-                $data[] = $hasil[0]->link;
+        $ts_kunjungan = db::select('select counter from ts_kunjungan where no_rm = ? and status_kunjungan != 8 ORDER BY kode_kunjungan DESC limit 8',[$rm]);
+        $hasil_lab = []; // Array untuk menampung semua link
+        foreach ($ts_kunjungan as $d) {
+            $data_lab = db::select("CALL LIHAT_HASIL_LAB(?, ?)", [$rm, $d->counter]);            
+            // Karena db::select mengembalikan array, kita loop data_lab-nya
+            foreach ($data_lab as $item) {
+                if (isset($item->link)) { // Pastikan kolom 'link' ada
+                    $hasil_lab[] = $item->link;
+                }
             }
         }
-        return view('ermtemplate.view_hasil_penunjang_lab_2', compact([
-            'rm',
-            'data'
+        return view('ermtemplate.view_hasil_penunjang_lab', compact([
+            'hasil_lab',
+            'rm'
         ]));
+        // $kunjungan = db::select('select * from ts_kunjungan where status_kunjungan != 8 and no_rm = ?',[$rm]);
+        // $data = [];
+        // foreach($kunjungan as $d){
+        //     $hasil = db::select("CALL HASIL_PK_LAB_ERM('$d->kode_kunjungan')");
+        //     if(count($hasil) > 0){    
+        //         $data[] = $hasil[0]->link;
+        //     }
+        // }
+        // return view('ermtemplate.view_hasil_penunjang_lab_2', compact([
+        //     'rm',
+        //     'data'
+        // ]));
     }
     public function lihathasilpenunjang_rad(Request $request)
     {
@@ -9455,10 +9486,64 @@ class ErmController extends Controller
     {
         $rm = $request->rm;
         $kode_kunjungan = $request->kode_kunjungan;
-        $datah = db::select('select * from ts_header_catatan_hemodialisis where no_rm = ? ORDER BY id DESC',[$rm]);
+        $datah = db::select('select * from ts_header_catatan_hemodialisis where no_rm = ? ORDER BY id DESC', [$rm]);
+
+        // Ambil semua ID header terlebih dahulu
+        $ids = collect($datah)->pluck('id')->toArray();
+
+        if (!empty($ids)) {
+            // Gunakan WHERE IN untuk mengambil semua data sekaligus
+            $placeholder = implode(',', array_fill(0, count($ids), '?'));
+            $arrayBaru = db::select("select * from ts_catatan_pre_hemodialisa where idheader IN ($placeholder) ORDER BY id DESC", $ids);
+        } else {
+            $arrayBaru = [];
+        }
+        // dd($arrayBaru);
         return view('Hemodialisa.riwayathd',compact([
-            'datah'
+            'datah','arrayBaru'
         ]));
+    }
+    public function simpanprehd(Request $request)
+    {
+        $data1 = json_decode($_POST['data'], true);
+          foreach ($data1 as $nama) 
+                {
+                    $index =  $nama['name'];
+                    $value =  $nama['value'];
+                    $dataSet[$index] = $value;
+                }
+        $dataSet['pic'] = auth()->user()->id;
+        $dataSet['nama_pic'] = auth()->user()->nama;
+        $dataSet['tgl_entry'] = $this->get_now();
+        $dataSet['jenis'] = 1;
+        model_catatan_pre_hd::create($dataSet);
+          $data = [
+            'kode' => 200,
+            'message' => 'Data berhasil disimpan ...'
+            ];
+        echo json_encode($data);
+            die;
+    }
+    public function simpanintrahd(Request $request)
+    {
+        $data1 = json_decode($_POST['data'], true);
+          foreach ($data1 as $nama) 
+                {
+                    $index =  $nama['name'];
+                    $value =  $nama['value'];
+                    $dataSet[$index] = $value;
+                }
+        $dataSet['pic'] = auth()->user()->id;
+        $dataSet['nama_pic'] = auth()->user()->nama;
+        $dataSet['tgl_entry'] = $this->get_now();
+        $dataSet['jenis'] = 2;
+        model_catatan_pre_hd::create($dataSet);
+          $data = [
+            'kode' => 200,
+            'message' => 'Data berhasil disimpan ...'
+            ];
+        echo json_encode($data);
+            die;
     }
 }
 

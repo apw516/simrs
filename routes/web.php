@@ -479,6 +479,11 @@ Route::group(['middleware' => ['auth', 'hak_akses1:9']], function () {
         ->name('simpanheaderpemeriksaanhd'); //sidebar
     Route::post('/ambilriwayatcatatanhemodialisa', [ErmController::class, 'ambilriwayatcatatanhemodialisa'])
         ->name('ambilriwayatcatatanhemodialisa'); //sidebar
+    Route::post('/simpanprehd', [ErmController::class, 'simpanprehd'])
+        ->name('simpanprehd'); //sidebar
+
+    Route::post('/simpanintrahd', [ErmController::class, 'simpanintrahd'])
+        ->name('simpanintrahd'); //sidebar
 
 
 
