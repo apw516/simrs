@@ -4,7 +4,9 @@
         <button class="btn btn-success" onclick="buatheader()"><i class="bi bi-file-earmark-plus"></i> Buat
             Catatan Header</button>
         <div hidden class="card mt-4 formheader">
-            <div class="card-header bg-success">Form catatan HD</div>
+            <div class="card-header bg-success">Form catatan HD <button class="btn btn-danger"
+                    onclick="batal()">Batal</button>
+            </div>
             <div class="card-body">
                 <form action="" class="form_header_pemeriksaan">
                     <div class="form-group">
@@ -317,6 +319,7 @@
     function buatheader() {
         $('.formheader').removeAttr('hidden', true)
     }
+
     function batal() {
         $('.formheader').attr('hidden', true)
     }
@@ -380,6 +383,7 @@
                         text: data.message,
                         footer: ''
                     })
+                    formcatatanhemodialisis()
                 }
             }
         });

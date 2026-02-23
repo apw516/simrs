@@ -10,6 +10,7 @@ use Codedge\Fpdf\Fpdf\printresume;
 use App\Models\assesmenawalperawat;
 use App\Models\model_catatan_hemodialisis;
 use App\Models\model_catatan_pre_hd;
+use App\Models\model_penyulit_hd;
 use App\Models\assesmenawalperawat_igd;
 use App\Models\assesmenawaldokter;
 use App\Models\ermtht_telinga;
@@ -9487,21 +9488,42 @@ class ErmController extends Controller
         $rm = $request->rm;
         $kode_kunjungan = $request->kode_kunjungan;
         $datah = db::select('select * from ts_header_catatan_hemodialisis where no_rm = ? ORDER BY id DESC', [$rm]);
-
         // Ambil semua ID header terlebih dahulu
         $ids = collect($datah)->pluck('id')->toArray();
-
         if (!empty($ids)) {
             // Gunakan WHERE IN untuk mengambil semua data sekaligus
             $placeholder = implode(',', array_fill(0, count($ids), '?'));
-            $arrayBaru = db::select("select * from ts_catatan_pre_hemodialisa where idheader IN ($placeholder) ORDER BY id DESC", $ids);
+            $arrayBaru = db::select("select * from ts_catatan_pre_hemodialisa where idheader IN ($placeholder) and jenis = 1 ORDER BY id DESC", $ids);
+            $arrayBaru2 = db::select("select * from ts_catatan_pre_hemodialisa where idheader IN ($placeholder) and jenis = 2 ORDER BY id DESC", $ids);
+            $arrayBaru3 = db::select("select * from ts_catatan_pre_hemodialisa where idheader IN ($placeholder) and jenis = 3 ORDER BY id DESC", $ids);
+            $arrayBaru4 = db::select("select * from ts_catatan_penyulit_hemodialisa where idheader IN ($placeholder) ORDER BY id DESC", $ids);
         } else {
             $arrayBaru = [];
+            $arrayBaru2 = [];
+            $arrayBaru3 = [];
+            $arrayBaru4 = [];
         }
         // dd($arrayBaru);
         return view('Hemodialisa.riwayathd',compact([
-            'datah','arrayBaru'
+            'datah','arrayBaru','arrayBaru2','arrayBaru3','arrayBaru4'
         ]));
+    }
+    public function simpanevaluasi(Request $request)
+    {
+         $data1 = json_decode($_POST['data'], true);
+          foreach ($data1 as $nama) 
+                {
+                    $index =  $nama['name'];
+                    $value =  $nama['value'];
+                    $dataSet[$index] = $value;
+                }
+                model_catatan_hemodialisis::where('id',$dataSet['idheader5'])->update(['evaluasi_keperawatan' => $dataSet['evaluasi_keperawatan']]);
+                   $data = [
+                        'kode' => 200,
+                        'message' => 'Data berhasil disimpan ...'
+                        ];
+                    echo json_encode($data);
+                        die;
     }
     public function simpanprehd(Request $request)
     {
@@ -9533,11 +9555,125 @@ class ErmController extends Controller
                     $value =  $nama['value'];
                     $dataSet[$index] = $value;
                 }
+        $dataSet['idheader'] = $dataSet['idheader2'];
         $dataSet['pic'] = auth()->user()->id;
         $dataSet['nama_pic'] = auth()->user()->nama;
         $dataSet['tgl_entry'] = $this->get_now();
         $dataSet['jenis'] = 2;
+        unset($dataSet['idheader2']);
         model_catatan_pre_hd::create($dataSet);
+          $data = [
+            'kode' => 200,
+            'message' => 'Data berhasil disimpan ...'
+            ];
+        echo json_encode($data);
+            die;
+    }
+    public function simpanposthd(Request $request)
+    {
+        $data1 = json_decode($_POST['data'], true);
+          foreach ($data1 as $nama) 
+                {
+                    $index =  $nama['name'];
+                    $value =  $nama['value'];
+                    $dataSet[$index] = $value;
+                }
+        $dataSet['idheader'] = $dataSet['idheader3'];
+        $dataSet['pic'] = auth()->user()->id;
+        $dataSet['nama_pic'] = auth()->user()->nama;
+        $dataSet['tgl_entry'] = $this->get_now();
+        $dataSet['jenis'] = 3;
+        unset($dataSet['idheader3']);
+        model_catatan_pre_hd::create($dataSet);
+          $data = [
+            'kode' => 200,
+            'message' => 'Data berhasil disimpan ...'
+            ];
+        echo json_encode($data);
+            die;
+    }
+    public function simpanpenyulithd(Request $request)
+    {
+        $data1 = json_decode($_POST['data'], true);
+          foreach ($data1 as $nama) 
+                {
+                    $index =  $nama['name'];
+                    $value =  $nama['value'];
+                    $dataSet[$index] = $value;
+                }
+                $masalahakses = $dataSet['masalahakses'] ?? 0;
+                $perdarahan = $dataSet['perdarahan'] ?? 0;
+                $fus = $dataSet['fus'] ?? 0;
+                $hiperkalemia = $dataSet['hiperkalemia'] ?? 0;
+                $hipotensi = $dataSet['hipotensi'] ?? 0;
+                $hipertensi = $dataSet['hipertensi'] ?? 0;
+                $demam = $dataSet['demam'] ?? 0;
+                $menggigil = $dataSet['menggigil'] ?? 0;
+                $sakitkepala = $dataSet['sakitkepala'] ?? 0;
+                $mualmuntah = $dataSet['mualmuntah'] ?? 0;
+                $kramototo = $dataSet['kramototo'] ?? 0;
+                $nyeridada = $dataSet['nyeridada'] ?? 0;
+                $aritmia = $dataSet['aritmia'] ?? 0;
+                $gatalgatal = $dataSet['gatalgatal'] ?? 0;
+                $dataSet['idheader'] = $dataSet['idheader4'];
+                $dataSet['pic'] = auth()->user()->id;
+                $dataSet['nama_pic'] = auth()->user()->nama;
+                $dataSet['tgl_entry'] = $this->get_now();
+                $dataSet['jenis'] = 3;
+                $dataSave = [
+                    'masalahakses' => $masalahakses,
+                    'perdarahan' => $perdarahan,
+                    'fus' => $fus,
+                    'hiperkalemia' => $hiperkalemia,
+                    'hipotensi' => $hipotensi,
+                    'hipertensi' => $hipertensi,
+                    'demam' => $demam,
+                    'menggigil' => $menggigil,
+                    'sakitkepala' => $sakitkepala,
+                    'mualmuntah' => $mualmuntah,
+                    'kramototo' => $kramototo,
+                    'nyeridada' => $nyeridada,
+                    'aritmia' => $aritmia,
+                    'gatalgatal' => $gatalgatal,
+                    'idheader' => $dataSet['idheader'],
+                    'pic' => $dataSet['pic'],
+                    'nama_pic' => $dataSet['nama_pic'],
+                    'tgl_entry' => $dataSet['tgl_entry'],
+                    'pic' => $dataSet['pic'],
+                    'lainnya' => $dataSet['lainnya']
+                ];
+        model_penyulit_hd::create($dataSave);
+          $data = [
+            'kode' => 200,
+            'message' => 'Data berhasil disimpan ...'
+            ];
+        echo json_encode($data);
+            die;
+    }
+    public function simpanaksesvaskularfinal(Request $request)
+    {
+        $data1 = json_decode($_POST['data'], true);
+          foreach ($data1 as $nama) 
+                {
+                    $index =  $nama['name'];
+                    $value =  $nama['value'];
+                    $dataSet[$index] = $value;
+                }
+                $avshunt = $dataSet['avshunt'] ?? 0;
+                $avfemoral = $dataSet['avfemoral'] ?? 0;
+                $cateterdoublelumensubclavia = $dataSet['cateterdoublelumensubclavia'] ?? 0;
+                $cataterdoublelumenjugularis = $dataSet['cataterdoublelumenjugularis'] ?? 0;
+                $cateterdoublelumenfemoralis = $dataSet['cateterdoublelumenfemoralis'] ?? 0;
+                $dataSet['idheader'] = $dataSet['idheader6'];
+                $dataup = [
+                    'avshunt' => $avshunt,
+                    'avfemoral' => $avfemoral,
+                    'cateterdoublelumensubclavia' => $cateterdoublelumensubclavia,
+                    'cataterdoublelumenjugularis' => $cataterdoublelumenjugularis,
+                    'cateterdoublelumenfemoralis' => $cateterdoublelumenfemoralis,
+                    'akses_vaskuler_oleh' => auth()->user()->nama
+                ];
+        model_catatan_hemodialisis::where('id',$dataSet['idheader'])->update($dataup);
           $data = [
             'kode' => 200,
             'message' => 'Data berhasil disimpan ...'

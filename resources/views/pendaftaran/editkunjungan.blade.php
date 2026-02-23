@@ -12,7 +12,7 @@
     </div>
     <div class="form-group">
       <label for="exampleFormControlInput1">Nomor SEP</label>
-      <input type="email" class="form-control" id="nomorsep" value="{{ $data['sep'] }}">
+      <input readonly type="email" class="form-control" id="nomorsep" value="{{ $data['sep'] }}">
     </div>
     <div class="form-group">
       <label for="exampleFormControlInput1">Nomor Rujukan</label>
@@ -27,7 +27,7 @@
     </div>
     <div class="form-group">
       <label for="exampleFormControlSelect1">Status Kunjungan</label>
-      <select class="form-control" id="status_kunjungan">
+      <select disabled class="form-control" id="status_kunjungan">
         <option value="">Silahkan pilih</option>
         <option value="1" @if($data['status'] == 1) selected @endif >Aktif</option>
         <option value="2" @if($data['status'] == 2) selected @endif>Selesai</option>

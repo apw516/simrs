@@ -157,7 +157,7 @@
                               </li>
                           </ul>
                       </li>
-                      <li hidden class="nav-item">
+                      <li  class="nav-item">
                           <a href="{{ route('menuriwayatpasien') }}"
                               class="nav-link text-sm @if ($sidebar == 'riwayatpasien') active @endif">
                               <i class="nav-icon  bi bi-clock-history"></i>
