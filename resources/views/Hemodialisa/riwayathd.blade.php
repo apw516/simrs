@@ -13,10 +13,10 @@
                             <br>
                         </div>
                         <div class="card-body">
-                            <button class="btn btn-danger mb-2"><i class="bi bi-trash3"></i></button>
+                            <button class="btn btn-danger mb-2 hapusheader" idheader="{{ $item->id }}"><i
+                                    class="bi bi-trash3"></i></button>
                             <button class="btn btn-warning mb-2"><i class="bi bi-pencil-square"></i></button>
                             <button class="btn btn-info mb-2"><i class="bi bi-printer"></i></button>
-
                             <table class="table">
                                 <tr>
                                     <td colspan="2">Preskripsi HD :
@@ -284,7 +284,7 @@
                                                     <td>{{ $dd->keteranganlain }}</td>
                                                     <td>{{ $dd->nama_pic }} </td>
                                                     <td>
-                                                        <button class="badge btn-danger mb-2"><i
+                                                        <button class="badge btn-danger mb-2 hapusprehd" idpre="{{ $dd->id }}"><i
                                                                 class="bi bi-trash3"></i></button>
                                                         <button class="badge btn-warning mb-2"><i
                                                                 class="bi bi-pencil-square"></i></button>
@@ -325,7 +325,7 @@
                                                     <td>{{ $dd->keteranganlain }}</td>
                                                     <td>{{ $dd->nama_pic }}</td>
                                                     <td>
-                                                        <button class="badge btn-danger mb-2"><i
+                                                        <button class="badge btn-danger mb-2 hapusprehd" idpre="{{ $dd->id }}"><i
                                                                 class="bi bi-trash3"></i></button>
                                                         <button class="badge btn-warning mb-2"><i
                                                                 class="bi bi-pencil-square"></i></button>
@@ -366,7 +366,7 @@
                                                     <td>{{ $dd->keteranganlain }}</td>
                                                     <td>{{ $dd->nama_pic }}</td>
                                                     <td>
-                                                        <button class="badge btn-danger mb-2"><i
+                                                        <button class="badge btn-danger mb-2 hapusprehd" idpre="{{ $dd->id }}"><i
                                                                 class="bi bi-trash3"></i></button>
                                                         <button class="badge btn-warning mb-2"><i
                                                                 class="bi bi-pencil-square"></i></button>
@@ -443,9 +443,9 @@
                         </div>
                         <div class="container">
                             <p>
-                            <h5>Penyulit selama HD <button class="badge btn-danger mb-2"><i
-                                        class="bi bi-trash3"></i></button>
-                                <button class="badge btn-warning mb-2"><i class="bi bi-pencil-square"></i></button>
+                            <h5>Penyulit selama HD 
+                                {{-- <button class="badge btn-danger mb-2 hapuspenyulit" idheader="{{ $item->id}}"><i class="bi bi-trash3"></i></button>
+                                <button class="badge btn-warning mb-2"><i class="bi bi-pencil-square"></i></button> --}}
                             </h5> <br>
                             @foreach ($arrayBaru4 as $dd)
                                 @if ($dd->idheader == $item->id)
@@ -599,17 +599,19 @@
                         </div>
                         <div class="container">
                             <p>
-                            <h5>Evaluasi Keperawatan : {{ $item->evaluasi_keperawatan }} <br><button
+                            <h5>Evaluasi Keperawatan : {{ $item->evaluasi_keperawatan }} <br>
+                                {{-- <button
                                     class="badge btn-danger mb-2"><i class="bi bi-trash3"></i></button>
-                                <button class="badge btn-warning mb-2"><i class="bi bi-pencil-square"></i></button>
+                                <button class="badge btn-warning mb-2"><i class="bi bi-pencil-square"></i></button> --}}
                             </h5>
                             </p>
                         </div>
                         <div class="container">
                             <p>
-                            <h5>Akses Vaskuler</h5> <button class="badge btn-danger mb-2"><i
+                            <h5>Akses Vaskuler</h5>
+                             {{-- <button class="badge btn-danger mb-2"><i
                                     class="bi bi-trash3"></i></button>
-                            <button class="badge btn-warning mb-2"><i class="bi bi-pencil-square"></i></button><br>
+                            <button class="badge btn-warning mb-2"><i class="bi bi-pencil-square"></i></button><br> --}}
                             <div class="row">
                                 <div class="col-md-1">
                                     <div class="form-check">
@@ -668,7 +670,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <p>
-                                    <h5>Akses Vaskuler Oleh  : {{  $item->akses_vaskuler_oleh    }}</h5>
+                                    <h5>Akses Vaskuler Oleh : {{ $item->akses_vaskuler_oleh }}</h5>
                                     </p>
                                 </div>
                                 <div class="col-md-6">
@@ -684,7 +686,7 @@
                                         <br>
                                         <br>
                                         <br>
-                                        {{ strtoupper($item->akses_vaskuler_oleh )}}
+                                        {{ strtoupper($item->akses_vaskuler_oleh) }}
                                     </h5>
                                     </p>
                                 </div>
@@ -1296,8 +1298,8 @@
                         </div>
                         <div class="col-md-1">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox"
-                                    value="1" id="avfemoral" name="avfemoral">
+                                <input class="form-check-input" type="checkbox" value="1" id="avfemoral"
+                                    name="avfemoral">
                                 <label class="form-check-label" for="checkDefault">
                                     AV Femoral
                                 </label>
@@ -1305,8 +1307,8 @@
                         </div>
                         <div class="col-md-1">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox"
-                                    value="1" id="cateterdoublelumensubclavia" name="cateterdoublelumensubclavia">
+                                <input class="form-check-input" type="checkbox" value="1"
+                                    id="cateterdoublelumensubclavia" name="cateterdoublelumensubclavia">
                                 <label class="form-check-label" for="checkDefault">
                                     Cateter double lumen subclavia
                                 </label>
@@ -1314,8 +1316,8 @@
                         </div>
                         <div class="col-md-1">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox"
-                                    value="1" id="cataterdoublelumenjugularis" name="cataterdoublelumenjugularis">
+                                <input class="form-check-input" type="checkbox" value="1"
+                                    id="cataterdoublelumenjugularis" name="cataterdoublelumenjugularis">
                                 <label class="form-check-label" for="checkDefault">
                                     Cateter double lumen jugularis
                                 </label>
@@ -1323,8 +1325,8 @@
                         </div>
                         <div class="col-md-1">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox"
-                                    value="1" id="cateterdoublelumenfemoralis" name="cateterdoublelumenfemoralis">
+                                <input class="form-check-input" type="checkbox" value="1"
+                                    id="cateterdoublelumenfemoralis" name="cateterdoublelumenfemoralis">
                                 <label class="form-check-label" for="checkDefault">
                                     Cateter double lumen femoralis
                                 </label>
@@ -1372,6 +1374,7 @@
             }
         });
     }
+
     function simpanakses() {
         Swal.fire({
             title: "Anda yakin ?",
@@ -1680,6 +1683,7 @@
             }
         });
     }
+
     function simpanaksesfinal() {
         spinner = $('#loader')
         spinner.show();
@@ -1728,4 +1732,219 @@
             }
         });
     }
+    $(".hapusheader").on('click', function(event) {
+        idheader = $(this).attr('idheader')
+        Swal.fire({
+            title: "Anda yakin ?",
+            text: "Data header catatan HD akan dihapus !",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya Hapus "
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Menghapus header catatan HD akan menghapus hasil pemeriksaan lainnya seperti hasil pre-hd,intra-hd,post hd dsb ...",
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: "ya hapus",
+                    denyButtonText: `Don't save`
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        hapusheader(idheader)
+                    } else if (result.isDenied) {
+                        Swal.fire("Batal hapus header ...", "", "info");
+                    }
+                });
+            }
+        });
+    })
+    $(".hapusprehd").on('click', function(event) {
+        idpre = $(this).attr('idpre')
+        Swal.fire({
+            title: "Anda yakin ?",
+            text: "Data  catatan pre - HD akan dihapus !",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya Hapus "
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "yakin hapus data ?",
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: "ya hapus",
+                    denyButtonText: `Don't save`
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        hapusprehd(idpre)
+                    } else if (result.isDenied) {
+                        Swal.fire("Batal hapus header ...", "", "info");
+                    }
+                });
+            }
+        });
+    })
+    $(".hapuspenyulit").on('click', function(event) {
+        idheader = $(this).attr('idheader')
+        Swal.fire({
+            title: "Anda yakin ?",
+            text: "Data  akan dihapus !",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya Hapus "
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "yakin hapus data ?",
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: "ya hapus",
+                    denyButtonText: `Don't save`
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        hapuspenyulit(idheader)
+                    } else if (result.isDenied) {
+                        Swal.fire("Batal hapus header ...", "", "info");
+                    }
+                });
+            }
+        });
+    })
+
+    function hapusheader(id) {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            async: true,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                _token: "{{ csrf_token() }}",
+                id
+            },
+            url: '<?= route('hapusheaderhemodialisa') ?>',
+            error: function(data) {
+                spinner.hide()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ooops....',
+                    text: 'Sepertinya ada masalah......',
+                    footer: ''
+                })
+            },
+            success: function(data) {
+                spinner.hide()
+                if (data.kode == 500) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oopss...',
+                        text: data.message,
+                        footer: ''
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'OK',
+                        text: data.message,
+                        footer: ''
+                    })
+                    formcatatanhemodialisis()
+                }
+            }
+        });
+    }
+    function hapusprehd(id) {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            async: true,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                _token: "{{ csrf_token() }}",
+                id
+            },
+            url: '<?= route('hapusprehd') ?>',
+            error: function(data) {
+                spinner.hide()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ooops....',
+                    text: 'Sepertinya ada masalah......',
+                    footer: ''
+                })
+            },
+            success: function(data) {
+                spinner.hide()
+                if (data.kode == 500) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oopss...',
+                        text: data.message,
+                        footer: ''
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'OK',
+                        text: data.message,
+                        footer: ''
+                    })
+                    formcatatanhemodialisis()
+                }
+            }
+        });
+    }
+    function hapuspenyulit(id) {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            async: true,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                _token: "{{ csrf_token() }}",
+                id
+            },
+            url: '<?= route('hapuspenyulit') ?>',
+            error: function(data) {
+                spinner.hide()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ooops....',
+                    text: 'Sepertinya ada masalah......',
+                    footer: ''
+                })
+            },
+            success: function(data) {
+                spinner.hide()
+                if (data.kode == 500) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oopss...',
+                        text: data.message,
+                        footer: ''
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'OK',
+                        text: data.message,
+                        footer: ''
+                    })
+                    formcatatanhemodialisis()
+                }
+            }
+        });
+    }
+
+
+    
+
 </script>

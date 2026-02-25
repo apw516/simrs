@@ -9681,6 +9681,44 @@ class ErmController extends Controller
         echo json_encode($data);
             die;
     }
+    public function hapusheaderhemodialisa(Request $request)
+    {
+        $id = $request->id;
+        $catatan = model_catatan_hemodialisis::find($id);
+        DB::table('ts_catatan_pre_hemodialisa')->where('idheader', $id)->delete();
+        DB::table('ts_catatan_penyulit_hemodialisa')->where('idheader', $id)->delete();
+        if ($catatan) {
+            $catatan->delete();
+             $data = [
+            'kode' => 200,
+            'message' => 'Data berhasil dihapus ...'
+            ];
+            echo json_encode($data);
+            die;
+        }
+    }
+    public function hapusprehd(Request $request)
+    {
+        $id = $request->id;
+        DB::table('ts_catatan_pre_hemodialisa')->where('id', $id)->delete();
+            $data = [
+            'kode' => 200,
+            'message' => 'Data berhasil dihapus ...'
+            ];
+            echo json_encode($data);
+            die;
+    }
+    public function hapuspenyulit(Request $request)
+    {
+        $id = $request->id;
+        DB::table('ts_catatan_penyulit_hemodialisa')->where('idheader', $id)->delete();
+            $data = [
+            'kode' => 200,
+            'message' => 'Data berhasil dihapus ...'
+            ];
+            echo json_encode($data);
+            die;
+    }
 }
 
     

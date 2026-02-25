@@ -43,8 +43,7 @@
                 
             </div>
         </div>
-    </section>
-   
+    </section>   
     <script>
         function caririrwayatkunjungan()
         {

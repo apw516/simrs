@@ -33,7 +33,7 @@
                         <button class="badge badge-primary detailkunjungan" kodekunjungan="{{ $d->kode_kunjungan }}"
                             data-placement="right" title="detail"><i class="bi bi-eye text-sm" data-toggle="modal"
                                 data-target="#detailkunjungan"></i></button>
-                        <button class="badge badge-danger batal" kodekunjungan="{{ $d->kode_kunjungan }}"
+                        <button disabled class="badge badge-danger batal" kodekunjungan="{{ $d->kode_kunjungan }}"
                             data-placement="right" title="batal periksa"><i class="bi bi-trash text-sm"></i></button>
                         {{-- <button class="badge badge-success pulangkan" nama="{{ $d->nama_px }}"
                         kodekunjungan2="{{ $d->kode_kunjungan }}" data-placement="right"

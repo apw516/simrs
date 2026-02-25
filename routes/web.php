@@ -492,6 +492,12 @@ Route::group(['middleware' => ['auth', 'hak_akses1:9']], function () {
         ->name('simpanevaluasi'); //sidebar
     Route::post('/simpanaksesvaskularfinal', [ErmController::class, 'simpanaksesvaskularfinal'])
         ->name('simpanaksesvaskularfinal'); //sidebar
+    Route::post('/hapusheaderhemodialisa', [ErmController::class, 'hapusheaderhemodialisa'])
+        ->name('hapusheaderhemodialisa'); //sidebar
+    Route::post('/hapusprehd', [ErmController::class, 'hapusprehd'])
+        ->name('hapusprehd'); //sidebar
+    Route::post('/hapuspenyulit', [ErmController::class, 'hapuspenyulit'])
+        ->name('hapuspenyulit'); //sidebar
 
 
 
