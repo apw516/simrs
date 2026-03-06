@@ -1272,6 +1272,7 @@ class ErmController extends Controller
                     'resume_now',
                     'selisih',
                     'ref_resume',
+                    'kunjunganKronis',
                     'cek_konsul',
                     'jenisrujukan',
                     'status_cek_rujukan',
