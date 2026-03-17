@@ -537,6 +537,14 @@
                 </div>
             </div>
         </div>
+        <div class="card">
+            <div class="card-body">
+                  <div class="form-group">
+                    <label for="exampleFormControlTextarea1" style="font-size:18px">Goal of treatment</label>
+                    <textarea class="form-control" id="got" name="got" rows="6" placeholder="Sillahkan isi disini ...."></textarea>
+                </div>
+            </div>
+        </div>
         <button type="button" class="btn btn-danger float-right ml-1" onclick="simpanhasil()">Batal</button>
         <button type="button" class="btn btn-success float-right" onclick="simpanhasil()">Simpan</button>
     </div>
@@ -749,6 +757,7 @@
         var simpantemplate = $('#simpantemplate:checked').val()
         var pasieniter = $('#iterasipilih:checked').val()
         var jumlahiter = $('#jumlahiterasi').val()
+        var got = $('#got').val()
         spinner = $('#loader')
         spinner.show();
         $.ajax({
@@ -766,7 +775,8 @@
                 nomorrm,
                 simpantemplate,
                 pasieniter,
-                jumlahiter
+                jumlahiter,
+                got
             },
             url: '<?= route('simpanpemeriksaandokter_fisio') ?>',
             error: function(data) {

@@ -2613,6 +2613,10 @@ class ErmController extends Controller
 
         $pasieniter = $request->pasieniter;
         $jumlahiter = $request->jumlahiter;
+        $keterangan_iter = '';
+        if ($pasieniter == 1){
+            $keterangan_iter = 'PASIEN ITER ' . $jumlahiter . ' x';
+        }
         $data1 = json_decode($_POST['data1'], true);
         $data2 = json_decode($_POST['data2'], true);
         $data3 = json_decode($_POST['data3'], true);
@@ -2803,7 +2807,7 @@ class ErmController extends Controller
             'tindakanmedis' => trim($dataSet_4['tindakanmedis']),
             'keluhan_pasien' => trim($dataSet_1['keluhanutama']),
             'tindak_lanjut' => $dataSet_tindaklanjut['pilihtindaklanjut'],
-            'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'],
+            'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'] .' '. $keterangan_iter,
             'keterangan_tindak_lanjut_2' => trim($dataSet_3['jawabankonsul']),
             'umur' => $dataSet_2['usia'],
             'tgl_entry' => $this->get_now(),
@@ -2860,7 +2864,7 @@ class ErmController extends Controller
                     'rencanakerja' => trim($dataSet_4['rencanakerja']),
                     'keluhan_pasien' => trim($dataSet_1['keluhanutama']),
                     'tindak_lanjut' => $dataSet_tindaklanjut['pilihtindaklanjut'],
-                    'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'],
+                    'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'] .' '. $keterangan_iter,
                     'keterangan_tindak_lanjut_2' => trim($dataSet_3['jawabankonsul']),
                     'status' => '0',
                     'signature' => '',
@@ -3063,7 +3067,7 @@ class ErmController extends Controller
                 }
                 try {
                     if ($pasieniter == 1) {
-                        $itt = 'RESEP ITER';
+                        $itt = 'RESEP ITER' . $jumlahiter . ' x';
                     } else {
                         $itt = '';
                     }
@@ -3797,7 +3801,10 @@ class ErmController extends Controller
         // gambar2 = matakiri
         $pasieniter = $request->pasieniter;
         $jumlahiter = $request->jumlahiter;
-
+        $keterangan_iter = '';
+        if ($pasieniter == 1){
+            $keterangan_iter = 'PASIEN ITER ' . $jumlahiter . ' x';
+        }
         $data1 = json_decode($_POST['data1'], true);
         $data2 = json_decode($_POST['data2'], true);
         $data3 = json_decode($_POST['data3'], true);
@@ -3985,7 +3992,7 @@ class ErmController extends Controller
             'tindakanmedis' => trim($dataSet_4['tindakanmedis']),
             'keluhan_pasien' => trim($dataSet_1['keluhanutama']),
             'tindak_lanjut' => $dataSet_tindaklanjut['pilihtindaklanjut'],
-            'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'],
+            'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'] .' '. $keterangan_iter,
             'keterangan_tindak_lanjut_2' => trim($dataSet_3['jawabankonsul']),
             'umur' => $dataSet_2['usia'],
             'tgl_entry' => $this->get_now(),
@@ -4042,7 +4049,7 @@ class ErmController extends Controller
                     'rencanakerja' => trim($dataSet_4['rencanakerja']),
                     'keluhan_pasien' => trim($dataSet_1['keluhanutama']),
                     'tindak_lanjut' => $dataSet_tindaklanjut['pilihtindaklanjut'],
-                    'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'],
+                    'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'] .' '. $keterangan_iter,
                     'keterangan_tindak_lanjut_2' => trim($dataSet_3['jawabankonsul']),
                     'status' => '0',
                     'signature' => '',
@@ -4233,7 +4240,7 @@ class ErmController extends Controller
                 }
                 try {
                     if ($pasieniter == 1) {
-                        $itt = 'RESEP ITER';
+                        $itt = 'RESEP ITER ' . $jumlahiter . ' x';
                     } else {
                         $itt = '';
                     }
@@ -4549,7 +4556,11 @@ class ErmController extends Controller
     {
         $pasieniter = $request->pasieniter;
         $jumlahiter = $request->jumlahiter;
-
+        $got = $request->got;
+        $keterangan_iter = '';
+        if ($pasieniter == 1){
+            $keterangan_iter = 'PASIEN ITER ' . $jumlahiter . ' x';
+        }
         $data = json_decode($_POST['data'], true);
         $dataobat = json_decode($_POST['dataobat'], true);
         $datatindaklanjut = json_decode($_POST['datatindaklanjut'], true);
@@ -4593,7 +4604,7 @@ class ErmController extends Controller
             'ket_riwayatlain' => $dataSet['keterangansuspek'],
             // 'keluhan_pasien' => $dataSet['keluhanutama'],
             'tindak_lanjut' => $dataSet_tindaklanjut['pilihtindaklanjut'],
-            'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'],
+            'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'] .' '. $keterangan_iter,
             'keterangan_tindak_lanjut_2' => trim($dataSet['jawabankonsul']),
             'status' => '0'
         ];
@@ -4703,7 +4714,7 @@ class ErmController extends Controller
             }
             try {
                 if ($pasieniter == 1) {
-                    $itt = 'RESEP ITER';
+                    $itt = 'RESEP ITER ' . $jumlahiter . ' x';
                 } else {
                     $itt = '';
                 }
