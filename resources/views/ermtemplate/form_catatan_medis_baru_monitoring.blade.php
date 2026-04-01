@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-header bg-info">Catatan Medis Pasien</div>
     <div class="card-body">
-   <div class="card card-primary card-outline">
+        <div class="card card-primary card-outline">
             <div class="card-body box-profile">
                 <div class="text-center">
                     <img class="profile-user-img img-fluid img-circle" src="{{ asset('public/img/user.jpg') }}"
@@ -40,10 +40,14 @@
             data-target="#modalhasilrad"><i class="bi bi-journal-text"></i> Hasil Radiologi</button>
         <button hidden class="btn btn-info mb-2 liathasil_pa" nomorrm="{{ $rm }}" data-toggle="modal"
             data-target="#modalhasilpa"><i class="bi bi-journal-text"></i> Hasil Lab PA</button>
-        <button class="btn btn-success mb-2 lihatcppt" nomorrm="{{ $rm }}"><i class="bi bi-journal-text"></i> CPPT( RAWAT JALAN )</button>
+        <button class="btn btn-success mb-2 lihatcppt" nomorrm="{{ $rm }}"><i class="bi bi-journal-text"></i>
+            CPPT( RAWAT JALAN )</button>
         <button class="btn btn-success mb-2 catatanmedis"><i class="bi bi-journal-text"></i> RIWAYAT KUNJUNGAN</button>
-        <button class="btn btn-success mb-2 catatanmedis" data-toggle="modal"
-            data-target="#modalsuratkonsul"><i class="bi bi-journal-text"></i>SURAT KONSUL / RUJUK INTERNAL </button>
+        <button class="btn btn-success mb-2 catatanmedis" data-toggle="modal" data-target="#modalsuratkonsul"><i
+                class="bi bi-journal-text"></i>SURAT KONSUL / RUJUK INTERNAL </button>
+        <button class="btn btn-success mb-2 lihat_catatan_hd" nomorrm="{{ $rm }}" data-toggle="modal"
+            data-target="#modalcatatanhemodialisa"><i
+                class="bi bi-journal-text"></i>CATATAN HEMODIALISA</button>
         <div hidden class="slide3">
 
         </div>
@@ -58,15 +62,17 @@
                         <h2 class="mb-0">
                             <button class="btn btn-link btn-block text-left text-dark text-bold" type="button"
                                 data-toggle="collapse"
-                                data-target="#collapse{{ $k->kode_kunjungan }}{{ $urutan }}" aria-expanded="true"
-                                aria-controls="collapseOne">Nomor SEP : {{ $k->no_sep }} <br><br>
+                                data-target="#collapse{{ $k->kode_kunjungan }}{{ $urutan }}"
+                                aria-expanded="true" aria-controls="collapseOne">Nomor SEP : {{ $k->no_sep }}
+                                <br><br>
                                 Kunjungan Ke - {{ $k->counter }} | {{ $k->nama_unit }} @if ($k->kode_unit == '1028')
                                     | {{ $k->keterangan_cppt }}
                                     @endif @if ($k->ref_kunjungan != 0)
                                         <a class="text-bold text-dark"> | Pasien Konsul dari
                                             {{ $k->nama_ref_unit }}</a>
                                     @endif
-                                    <p class="float-right"> {{ \Carbon\Carbon::parse($k->tgl_masuk)->format('d / M / Y')}}</p>
+                                    <p class="float-right">
+                                        {{ \Carbon\Carbon::parse($k->tgl_masuk)->format('d / M / Y') }}</p>
                             </button>
                         </h2>
                     </div>
@@ -85,22 +91,25 @@
                                         data-target="#modalhasil_lab"><i class="bi bi-eye mr-2"></i>Hasil
                                         Laboratorium</button>
                                     <button type="button" class="btn btn-secondary cetakresumesus"
-                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}" kodekunjungan="{{ $k->kodek }}"><i
-                                            class="bi bi-printer mr-2"></i>Assesmen Keperawatan</button>
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                        kodekunjungan="{{ $k->kodek }}"><i class="bi bi-printer mr-2"></i>Assesmen
+                                        Keperawatan</button>
                                     {{-- <button type="button" class="btn btn-secondary cetakresumedok"
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
                                         unit="{{ $k->kode_unit }}"><i class="bi bi-printer mr-2"></i>Assesmen
                                         Medis</button> --}}
-                                 <button type="button" class="btn btn-secondary cetakresumetanpattd"
+                                    <button type="button" class="btn btn-secondary cetakresumetanpattd"
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
-                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i class="bi bi-printer mr-2"></i>Assesmen
+                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
+                                            class="bi bi-printer mr-2"></i>Assesmen
                                         Medis </button>
-                                           @if($k->kode_unit == 1014)
-                                    <button type="button" class="btn btn-secondary laporanoperasi"
-                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
-                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i class="bi bi-printer mr-2"></i>Laporan Operasi </button>
+                                    @if ($k->kode_unit == 1014)
+                                        <button type="button" class="btn btn-secondary laporanoperasi"
+                                            rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                            unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
+                                                class="bi bi-printer mr-2"></i>Laporan Operasi </button>
                                     @endif
-                                            
+
                                 </div>
                             </div>
                             <div class="row">
@@ -130,7 +139,8 @@
                                                             <td>{{ $k->frekuensinadi }} x/menit</td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="text-bold font-italic">Berat Badan / Tinggi Badan
+                                                            <td class="text-bold font-italic">Berat Badan / Tinggi
+                                                                Badan
                                                                 / IMT</td>
                                                             <td colspan="3">{{ $k->beratbadan }}</td>
                                                         </tr>
@@ -151,9 +161,11 @@
                                                                 Fungsional</td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="text-bold font-italic">Penggunaan Alat Bantu</td>
+                                                            <td class="text-bold font-italic">Penggunaan Alat Bantu
+                                                            </td>
                                                             <td>{{ $k->penggunaanalatbantu }}</td>
-                                                            <td class="text-bold font-italic">Keterangan Alat Bantu</td>
+                                                            <td class="text-bold font-italic">Keterangan Alat Bantu
+                                                            </td>
                                                             <td>{{ $k->keterangan_alat_bantu }}</td>
                                                         </tr>
                                                         <tr>
@@ -1042,19 +1054,19 @@
                                                                 @endforeach --}}
                                                             </td>
                                                         </tr>
-                                                         <tr>
+                                                        <tr>
                                                             <td>Hasil Pemeriksaan Khusus</td>
                                                             <td>
-                                                                 {{-- <div class="card">
+                                                                {{-- <div class="card">
                                                                     <div class="card-header bg-danger">Hasil Pemeriksaan khusus
                                                                     </div>
                                                                     <div class="card-body"> --}}
-                                                                        {{ $k->pemeriksaan_khusus }} <br><br>
-                                                                        {{ $k->pemeriksaan_khusus_2 }}<br><br>
-                                                                        <img width="80%"src="{{ $k->gambar_1 }}"
-                                                                            alt=""><br><br>
-                                                                        {{-- <img src="{{ $k->gambar_2 }}" alt=""><br><br> --}}
-                                                                    {{-- </div>
+                                                                {{ $k->pemeriksaan_khusus }} <br><br>
+                                                                {{ $k->pemeriksaan_khusus_2 }}<br><br>
+                                                                <img width="80%"src="{{ $k->gambar_1 }}"
+                                                                    alt=""><br><br>
+                                                                {{-- <img src="{{ $k->gambar_2 }}" alt=""><br><br> --}}
+                                                                {{-- </div>
                                                                 </div> --}}
                                                             </td>
                                                         </tr>
@@ -1099,34 +1111,35 @@
                 </button>
             </div>
             <div class="modal-body">
-               <table class="table table-sm table-bordered">
-                <thead>
-                    <th>Tanggal</th>
-                    <th>Unit Asal</th>
-                    <th>Dokter Pengirim</th>
-                    <th>Unit Tujuan</th>
-                    <th>Dokter Penerima</th>
-                    <th>Keterangan</th>
-                    <th>Jawaban</th>
-                    <th></th>
-                </thead>
-                <tbody>
-                    @foreach ($suratkonsul as $d )
-                        <tr>
-                            <td>{{ $d->tanggal_surat}}</td>
-                            <td>{{ $d->unit_asal}}</td>
-                            <td>{{ $d->dok_kirim}}</td>
-                            <td>{{ $d->unit_tujuan}}</td>
-                            <td>{{ $d->dokter_jawab}}</td>
-                            <td>{{ $d->keterangan_klinis}} <br> {{ $d->keterangan}}</td>
-                            <td>{{ $d->jawaban}}</td>
-                            <td>
-                                <button class="btn btn-success cetakdokumen" iddokumen="{{ $d->id }}">Cetak</button>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-               </table>
+                <table class="table table-sm table-bordered">
+                    <thead>
+                        <th>Tanggal</th>
+                        <th>Unit Asal</th>
+                        <th>Dokter Pengirim</th>
+                        <th>Unit Tujuan</th>
+                        <th>Dokter Penerima</th>
+                        <th>Keterangan</th>
+                        <th>Jawaban</th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        @foreach ($suratkonsul as $d)
+                            <tr>
+                                <td>{{ $d->tanggal_surat }}</td>
+                                <td>{{ $d->unit_asal }}</td>
+                                <td>{{ $d->dok_kirim }}</td>
+                                <td>{{ $d->unit_tujuan }}</td>
+                                <td>{{ $d->dokter_jawab }}</td>
+                                <td>{{ $d->keterangan_klinis }} <br> {{ $d->keterangan }}</td>
+                                <td>{{ $d->jawaban }}</td>
+                                <td>
+                                    <button class="btn btn-success cetakdokumen"
+                                        iddokumen="{{ $d->id }}">Cetak</button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -1390,30 +1403,50 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modalcatatanhemodialisa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 95%; margin: 1.75rem auto;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Catatan Hemodialisa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_catatan_hd">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $(".lihatcppt").click(function() {
-            rm = $(this).attr('nomorrm')
-            spinner = $('#loader')
-            spinner.show();
-            $('.slide4').attr('hidden',true)
-            $('.slide3').removeAttr('hidden',true)
-            $.ajax({
-                type: 'post',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    rm
-                },
-                url: '<?= route('lihatcppt_pasien2') ?>',
-                success: function(response) {
-                    $('.slide3').html(response);
-                    spinner.hide()
-                }
-            });
+        rm = $(this).attr('nomorrm')
+        spinner = $('#loader')
+        spinner.show();
+        $('.slide4').attr('hidden', true)
+        $('.slide3').removeAttr('hidden', true)
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm
+            },
+            url: '<?= route('lihatcppt_pasien2') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
         // }
     })
     $(".catatanmedis").click(function() {
-            $('.slide3').attr('hidden',true)
-            $('.slide4').removeAttr('hidden',true)
+        $('.slide3').attr('hidden', true)
+        $('.slide4').removeAttr('hidden', true)
 
     })
     $(".riwayatorderfarmasi").on('click', function(event) {
@@ -1515,7 +1548,7 @@
         window.open('http://192.168.2.30/siramah/cppt_print?rm=' + rm + '&counter=' + counter + '&kode_unit=' +
             unit);
     })
-     $(".cetakresumetanpattd").on('click', function(event) {
+    $(".cetakresumetanpattd").on('click', function(event) {
         kode_kunjungan = $(this).attr('kodekunjungan')
         window.open('cetakresumeblank/' + kode_kunjungan);
     })
@@ -1565,7 +1598,7 @@
         kode_kunjungan = $(this).attr('kodekunjungan')
         window.open('cetaklaporanoperasi/' + kode_kunjungan);
     })
-     $(".liathasil_lab2").click(function() {
+    $(".liathasil_lab2").click(function() {
         spinner = $('#loader')
         spinner.show();
         nomorrm = $(this).attr('nomorrm')
@@ -1675,9 +1708,28 @@
             }
         });
     })
+    $(".lihat_catatan_hd").click(function() {
+        spinner = $('#loader')
+        spinner.show();
+        rm = $(this).attr('nomorrm')
+        jenis = '1'
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm,
+                jenis
+            },
+            url: '<?= route('ambilriwayatcatatanhemodialisa') ?>',
+            success: function(response) {
+                $('.v_catatan_hd').html(response);
+                spinner.hide()
+            }
+        });
+    })
 </script>
 <script>
-     $(".cetakdokumen").on('click', function(event) {
+    $(".cetakdokumen").on('click', function(event) {
         iddokumen = $(this).attr('iddokumen')
         window.open('cetaksuratpengantar/' + iddokumen)
     });

@@ -472,13 +472,11 @@ Route::group(['middleware' => ['auth', 'hak_akses1:9']], function () {
         ->name('simpanajuan'); //sidebar
 });
 //erm
-    Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
+Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
     Route::post('/formcatatanhemodialisis', [ErmController::class, 'formcatatanhemodialisis'])
         ->name('formcatatanhemodialisis'); //sidebar
     Route::post('/simpanheaderpemeriksaanhd', [ErmController::class, 'simpanheaderpemeriksaanhd'])
-        ->name('simpanheaderpemeriksaanhd'); //sidebar
-    Route::post('/ambilriwayatcatatanhemodialisa', [ErmController::class, 'ambilriwayatcatatanhemodialisa'])
-        ->name('ambilriwayatcatatanhemodialisa'); //sidebar
+        ->name('simpanheaderpemeriksaanhd'); //sidebar  
     Route::post('/simpanprehd', [ErmController::class, 'simpanprehd'])
         ->name('simpanprehd'); //sidebar
     Route::post('/ambilformedithd', [ErmController::class, 'ambilformedithd'])
@@ -809,23 +807,23 @@ Route::post('ambil_formiterasiobat', [ErmController::class, 'ambil_formiterasiob
     ->name('ambil_formiterasiobat'); //sidebar
 
 
-    Route::get('/carisep_2/{sep}', [SimrsController::class, 'carisep_2'])->name('carisep_2'); //formpasien_bpjs
+Route::get('/carisep_2/{sep}', [SimrsController::class, 'carisep_2'])->name('carisep_2'); //formpasien_bpjs
 
 
-    Route::post('/lihatcppt_pasien', [ReportingController::class, 'ambilcatatanmedis_pasien2'])->name('lihatcppt_pasien'); //formpasien_bpjs
-    Route::post('/lihatcppt_pasien2', [ReportingController::class, 'ambilcatatanmedis_pasien23'])->name('lihatcppt_pasien2'); //formpasien_bpjs
-    Route::get('/dataermrajal', [ReportingController::class, 'dataermrajal'])->name('dataermrajal'); //formpasien_bpjs
-    Route::post('/ambilberkasermrajal', [ReportingController::class, 'ambilberkasermrajal'])->name('ambilberkasermrajal'); //formpasien_bpjs
-    Route::post('/cari_detail_iter', [SimrsController::class, 'cari_detail_iter'])->name('cari_detail_iter'); //formpasien_bpjs
-    Route::post('/ambil_form_iterasi', [SimrsController::class, 'ambil_form_iterasi'])->name('ambil_form_iterasi'); //formpasien_bpjs
-    Route::post('/simpanpendaftaraniter', [SimrsController::class, 'simpanpendaftaraniter'])->name('simpanpendaftaraniter'); //formpasien_bpjs
+Route::post('/lihatcppt_pasien', [ReportingController::class, 'ambilcatatanmedis_pasien2'])->name('lihatcppt_pasien'); //formpasien_bpjs
+Route::post('/lihatcppt_pasien2', [ReportingController::class, 'ambilcatatanmedis_pasien23'])->name('lihatcppt_pasien2'); //formpasien_bpjs
+Route::get('/dataermrajal', [ReportingController::class, 'dataermrajal'])->name('dataermrajal'); //formpasien_bpjs
+Route::post('/ambilberkasermrajal', [ReportingController::class, 'ambilberkasermrajal'])->name('ambilberkasermrajal'); //formpasien_bpjs
+Route::post('/cari_detail_iter', [SimrsController::class, 'cari_detail_iter'])->name('cari_detail_iter'); //formpasien_bpjs
+Route::post('/ambil_form_iterasi', [SimrsController::class, 'ambil_form_iterasi'])->name('ambil_form_iterasi'); //formpasien_bpjs
+Route::post('/simpanpendaftaraniter', [SimrsController::class, 'simpanpendaftaraniter'])->name('simpanpendaftaraniter'); //formpasien_bpjs
 
 Route::post('/formpembuatansuratpengantar', [ErmController::class, 'formpembuatansuratpengantar'])->name('formpembuatansuratpengantar'); //formpasien_bpjs
 Route::post('/hasillab', [ReportingController::class, 'hasillab'])->name('hasillab'); //formpasien_bpjs
 Route::post('/hasilrad', [ReportingController::class, 'hasilrad'])->name('hasilrad'); //formpasien_bpjs
 Route::post('/hasilpa', [ReportingController::class, 'hasilpa'])->name('hasilpa'); //formpasien_bpjs
 Route::post('/resumepasien_dokter2', [ErmController::class, 'resumepasien_dokter2'])
-->name('resumepasien_dokter2'); //sidebar
+    ->name('resumepasien_dokter2'); //sidebar
 
 Route::get('/cetakresumeblank_perawat/{kodekunjungan}', [PdfController::class, 'cetakresumeblank_perawat']);
 Route::get('/cetakresumeblank/{kodekunjungan}', [PdfController::class, 'cetakresumedokterblank']);
@@ -862,3 +860,5 @@ Route::get('/cetaksuratpengantar/{id}', [PdfController::class, 'cetaksuratpengan
 Route::get('/index_merger_berkas', [CasemixController::class, 'index_merger_berkas'])->name('index_merger_berkas');
 Route::post('/caridatakunjungan_casemix', [CasemixController::class, 'caridatakunjungan_casemix'])->name('caridatakunjungan_casemix');
 Route::get('/downloadberkas/{kode_kunjungan}', [CasemixController::class, 'downloadberkas'])->name('downloadberkas');
+  Route::post('/ambilriwayatcatatanhemodialisa', [ErmController::class, 'ambilriwayatcatatanhemodialisa'])
+        ->name('ambilriwayatcatatanhemodialisa'); //sidebar
