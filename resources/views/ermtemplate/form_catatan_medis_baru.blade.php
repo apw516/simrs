@@ -15,6 +15,8 @@
             data-target="#modalhasilpa"><i class="bi bi-journal-text"></i> Hasil Lab PA</button>
         <button class="btn btn-info mb-2 liathasil_pa" nomorrm="{{ $rm }}" data-toggle="modal"
             data-target="#modalsuratkonsul"><i class="bi bi-journal-text"></i> Riwayat Konsul / Rujuk Internal</button>
+        <button class="btn btn-danger mb-2 lihat_catatan_hd" nomorrm="{{ $rm }}" data-toggle="modal"
+            data-target="#modalcatatanhemodialisa"><i class="bi bi-journal-text"></i> Catatan Hemodialisa </button>
         <div class="accordion" id="accordionExample">
             @php
                 $urutan = 1;
@@ -1257,7 +1259,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="modalscan_rm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -1354,6 +1355,27 @@
             </div>
             <div class="modal-body">
                 <div class="v_hasil_penunjang_pa">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalcatatanhemodialisa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 95%; margin: 1.75rem auto;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Catatan Hemodialisa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_catatan_hd">
 
                 </div>
             </div>
@@ -1624,6 +1646,25 @@
             url: '<?= route('lihathasilpenunjang_pa') ?>',
             success: function(response) {
                 $('.v_hasil_penunjang_pa').html(response);
+                spinner.hide()
+            }
+        });
+    })
+    $(".lihat_catatan_hd").click(function() {
+        spinner = $('#loader')
+        spinner.show();
+        rm = $(this).attr('nomorrm')
+        jenis = '1'
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm,
+                jenis
+            },
+            url: '<?= route('ambilriwayatcatatanhemodialisa') ?>',
+            success: function(response) {
+                $('.v_catatan_hd').html(response);
                 spinner.hide()
             }
         });

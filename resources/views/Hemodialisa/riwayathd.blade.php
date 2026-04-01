@@ -1,4 +1,5 @@
 <div class="card mt-2">
+    <input hidden type="text" value="{{ $jenis }}" id="jenisdokumen">
     <div class="card-header bg-light">Riwayat Catatan Hemodialisa</div>
     <div class="card-body">
         @foreach ($datah as $item)
@@ -15,7 +16,8 @@
                         <div class="card-body">
                             <button class="btn btn-danger mb-2 hapusheader" idheader="{{ $item->id }}"><i
                                     class="bi bi-trash3"></i></button>
-                            <button class="btn btn-warning mb-2"><i class="bi bi-pencil-square"></i></button>
+                            <button class="btn btn-warning mb-2 ambilformeditheadercatatanhd" idheader="{{ $item->id }}"><i
+                                    class="bi bi-pencil-square"></i></button>
                             <button class="btn btn-info mb-2"><i class="bi bi-printer"></i></button>
                             <table class="table">
                                 <tr>
@@ -284,7 +286,8 @@
                                                     <td>{{ $dd->keteranganlain }}</td>
                                                     <td>{{ $dd->nama_pic }} </td>
                                                     <td>
-                                                        <button class="badge btn-danger mb-2 hapusprehd" idpre="{{ $dd->id }}"><i
+                                                        <button class="badge btn-danger mb-2 hapusprehd"
+                                                            idpre="{{ $dd->id }}"><i
                                                                 class="bi bi-trash3"></i></button>
                                                         <button class="badge btn-warning mb-2"><i
                                                                 class="bi bi-pencil-square"></i></button>
@@ -325,7 +328,8 @@
                                                     <td>{{ $dd->keteranganlain }}</td>
                                                     <td>{{ $dd->nama_pic }}</td>
                                                     <td>
-                                                        <button class="badge btn-danger mb-2 hapusprehd" idpre="{{ $dd->id }}"><i
+                                                        <button class="badge btn-danger mb-2 hapusprehd"
+                                                            idpre="{{ $dd->id }}"><i
                                                                 class="bi bi-trash3"></i></button>
                                                         <button class="badge btn-warning mb-2"><i
                                                                 class="bi bi-pencil-square"></i></button>
@@ -366,7 +370,8 @@
                                                     <td>{{ $dd->keteranganlain }}</td>
                                                     <td>{{ $dd->nama_pic }}</td>
                                                     <td>
-                                                        <button class="badge btn-danger mb-2 hapusprehd" idpre="{{ $dd->id }}"><i
+                                                        <button class="badge btn-danger mb-2 hapusprehd"
+                                                            idpre="{{ $dd->id }}"><i
                                                                 class="bi bi-trash3"></i></button>
                                                         <button class="badge btn-warning mb-2"><i
                                                                 class="bi bi-pencil-square"></i></button>
@@ -443,7 +448,7 @@
                         </div>
                         <div class="container">
                             <p>
-                            <h5>Penyulit selama HD 
+                            <h5>Penyulit selama HD
                                 {{-- <button class="badge btn-danger mb-2 hapuspenyulit" idheader="{{ $item->id}}"><i class="bi bi-trash3"></i></button>
                                 <button class="badge btn-warning mb-2"><i class="bi bi-pencil-square"></i></button> --}}
                             </h5> <br>
@@ -609,7 +614,7 @@
                         <div class="container">
                             <p>
                             <h5>Akses Vaskuler</h5>
-                             {{-- <button class="badge btn-danger mb-2"><i
+                            {{-- <button class="badge btn-danger mb-2"><i
                                     class="bi bi-trash3"></i></button>
                             <button class="badge btn-warning mb-2"><i class="bi bi-pencil-square"></i></button><br> --}}
                             <div class="row">
@@ -1342,6 +1347,28 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modaleditheader" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Data Header</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_form_edit_header">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="simpanupdate()">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     function simpanprehd() {
         Swal.fire({
@@ -1375,6 +1402,21 @@
         });
     }
 
+    function simpanupdate() {
+        Swal.fire({
+            title: "Anda yakin ?",
+            text: "catatan header akan diedit !",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "ya, simpan edit"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                simpanedit()
+            }
+        });
+    }
     function simpanakses() {
         Swal.fire({
             title: "Anda yakin ?",
@@ -1537,6 +1579,54 @@
         });
     }
 
+    function simpanedit() {
+        spinner = $('#loader')
+        spinner.show();
+        rm = $('#rm').val()
+        kode_kunjungan = $('#kode_kunjungan').val()
+        var data = $('.form_edit_header_pemeriksaan').serializeArray();
+        $.ajax({
+            async: true,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                _token: "{{ csrf_token() }}",
+                data: JSON.stringify(data),
+                rm,
+                kode_kunjungan
+            },
+            url: '<?= route('simpaneditcatatanhemodialisa') ?>',
+            error: function(data) {
+                spinner.hide()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ooops....',
+                    text: 'Sepertinya ada masalah......',
+                    footer: ''
+                })
+            },
+            success: function(data) {
+                spinner.hide()
+                if (data.kode == 500) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oopss...',
+                        text: data.message,
+                        footer: ''
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'OK',
+                        text: data.message,
+                        footer: ''
+                    })
+                    $('#modaleditheader').modal('toggle');
+                    formcatatanhemodialisis()
+                }
+            }
+        });
+    }
     function simpanposthdfinal() {
         spinner = $('#loader')
         spinner.show();
@@ -1816,6 +1906,24 @@
             }
         });
     })
+    $(".ambilformeditheadercatatanhd").on('click', function(event) {
+        $('#modaleditheader').modal('show');
+        spinner = $('#loader')
+        spinner.show();
+        idheader = $(this).attr('idheader')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+               idheader
+            },
+            url: '<?= route('ambilformedithd') ?>',
+            success: function(response) {
+                $('.v_form_edit_header').html(response);
+                spinner.hide()
+            }
+        });
+    })
 
     function hapusheader(id) {
         spinner = $('#loader')
@@ -1859,6 +1967,7 @@
             }
         });
     }
+
     function hapusprehd(id) {
         spinner = $('#loader')
         spinner.show();
@@ -1901,6 +2010,7 @@
             }
         });
     }
+
     function hapuspenyulit(id) {
         spinner = $('#loader')
         spinner.show();
@@ -1943,8 +2053,24 @@
             }
         });
     }
+    $(document).ready(function() {
+        jenis = $('#jenisdokumen').val()
+        if (jenis == 1) {
+            lockFormHD()
+        }
+    })
 
+    function lockFormHD() {
+        let modal = $('#modalcatatanhemodialisa');
 
-    
+        // 1. Membuat input teks, textarea, dan number menjadi Readonly
+        modal.find('input, textarea').attr('readonly', true);
 
+        // 2. Membuat Select, Checkbox, Radio, dan Tombol menjadi Disabled
+        // Catatan: Select tidak bisa 'readonly', harus 'disabled'
+        modal.find('select, input[type="checkbox"], input[type="radio"], button').attr('disabled', true);
+
+        // 3. Khusus tombol 'Close' di footer agar tetap bisa diklik untuk menutup modal
+        modal.find('.modal-footer .btn-secondary, .btn-close').attr('disabled', false);
+    }
 </script>

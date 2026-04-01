@@ -55,7 +55,7 @@
                             </a>
                         </li>
                         @if (auth()->user()->unit == '3007')
-                            <li hidden class="nav-item" id="pemeriksaan">
+                            <li class="nav-item" id="pemeriksaan">
                                 <a href="#" class="nav-link" onclick="formcatatanhemodialisis()">
                                     <i class="fas fa-inbox mr-2"></i>Catatan Hemodialisis
                                 </a>
