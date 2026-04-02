@@ -104,7 +104,7 @@ Route::post('ambil_berkas_erm_pasien_scan', [ErmController::class, 'lihathasil_s
     ->name('ambil_berkas_erm_pasien_scan'); //sidebar
 Route::post('lihathasilpenunjang_lab', [ErmController::class, 'lihathasilpenunjang_lab'])
     ->name('lihathasilpenunjang_lab'); //sidebar
-Route::post('lihathasilpenunjang_lab_dokter', [ErmController::class, 'lihathasilpenunjang_lab_dokter'])
+Route::post('lihathasilpenunjang_lab_dokter', [ErmController::class, 'lihathasilpenunjang_lab'])
     ->name('lihathasilpenunjang_lab_dokter'); //sidebar
 Route::post('lihathasilpenunjang_lab2', [ErmController::class, 'lihathasilpenunjang_lab2'])
     ->name('lihathasilpenunjang_lab2'); //sidebar
