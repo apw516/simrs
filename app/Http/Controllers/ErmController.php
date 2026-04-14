@@ -9514,10 +9514,10 @@ class ErmController extends Controller
         if (!empty($ids)) {
             // Gunakan WHERE IN untuk mengambil semua data sekaligus
             $placeholder = implode(',', array_fill(0, count($ids), '?'));
-            $arrayBaru = db::select("select * from ts_catatan_pre_hemodialisa where idheader IN ($placeholder) and jenis = 1 ORDER BY id DESC", $ids);
-            $arrayBaru2 = db::select("select * from ts_catatan_pre_hemodialisa where idheader IN ($placeholder) and jenis = 2 ORDER BY id DESC", $ids);
-            $arrayBaru3 = db::select("select * from ts_catatan_pre_hemodialisa where idheader IN ($placeholder) and jenis = 3 ORDER BY id DESC", $ids);
-            $arrayBaru4 = db::select("select * from ts_catatan_penyulit_hemodialisa where idheader IN ($placeholder) ORDER BY id DESC", $ids);
+            $arrayBaru = db::select("select * from ts_catatan_pre_hemodialisa where idheader IN ($placeholder) and jenis = 1 ORDER BY id asc", $ids);
+            $arrayBaru2 = db::select("select * from ts_catatan_pre_hemodialisa where idheader IN ($placeholder) and jenis = 2 ORDER BY id asc", $ids);
+            $arrayBaru3 = db::select("select * from ts_catatan_pre_hemodialisa where idheader IN ($placeholder) and jenis = 3 ORDER BY id asc", $ids);
+            $arrayBaru4 = db::select("select * from ts_catatan_penyulit_hemodialisa where idheader IN ($placeholder) ORDER BY id asc", $ids);
         } else {
             $arrayBaru = [];
             $arrayBaru2 = [];

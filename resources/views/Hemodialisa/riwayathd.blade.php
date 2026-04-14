@@ -270,7 +270,7 @@
                                                         </td>
                                                         @php $isFirst = false; @endphp {{-- Set ke false agar tidak muncul di baris berikutnya --}}
                                                     @endif
-                                                    <td>{{ \Carbon\Carbon::parse('2026-02-22 04:46:26')->locale('id')->translatedFormat('d F Y') }}
+                                                    <td>{{ \Carbon\Carbon::parse($dd->tgl_entry)->locale('id')->translatedFormat('d F Y') }}
                                                         / {{ $dd->jam }}</td>
                                                     <td>{{ $dd->qb }}</td>
                                                     <td>{{ $dd->ufrate }}</td>
@@ -434,7 +434,7 @@
                                     onclick="$('#idheader4').val($(this).attr('idheader'));"><i
                                         class="bi bi-journal-plus" style="margin-right: 8px"></i>
                                     Penyulit selama HD</button>
-                                <button type="button" class="btn btn-secondary" data-toggle="modal"
+                                <button hidden type="button" class="btn btn-secondary" data-toggle="modal"
                                     data-target="#modalevaluasikeperawatan" idheader="{{ $item->id }}"
                                     onclick="$('#idheader5').val($(this).attr('idheader'));"><i
                                         class="bi bi-journal-plus" style="margin-right: 8px"></i>
