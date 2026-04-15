@@ -1065,7 +1065,7 @@
                                                                 {{ $k->pemeriksaan_khusus_2 }}<br><br>
                                                                 <img width="80%"src="{{ $k->gambar_1 }}"
                                                                     alt=""><br><br>
-                                                                {{-- <img src="{{ $k->gambar_2 }}" alt=""><br><br> --}}
+                                                                <img src="{{ $k->gambar_2 }}" alt=""><br><br>
                                                                 {{-- </div>
                                                                 </div> --}}
                                                             </td>
