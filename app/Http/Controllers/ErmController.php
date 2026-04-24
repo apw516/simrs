@@ -2610,7 +2610,6 @@ class ErmController extends Controller
     }
     public function simpanpemeriksaandokter_2(Request $request)
     {
-
         $pasieniter = $request->pasieniter;
         $jumlahiter = $request->jumlahiter;
         $keterangan_iter = '';
@@ -3067,7 +3066,7 @@ class ErmController extends Controller
                 }
                 try {
                     if ($pasieniter == 1) {
-                        $itt = 'RESEP ITER' . $jumlahiter . ' x';
+                        $itt = 'RESEP ITER_ ' . $jumlahiter . ' x';
                     } else {
                         $itt = '';
                     }
