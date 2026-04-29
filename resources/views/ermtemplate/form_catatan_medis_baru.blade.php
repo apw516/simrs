@@ -17,6 +17,8 @@
             data-target="#modalsuratkonsul"><i class="bi bi-journal-text"></i> Riwayat Konsul / Rujuk Internal</button>
         <button class="btn btn-danger mb-2 lihat_catatan_hd" nomorrm="{{ $rm }}" data-toggle="modal"
             data-target="#modalcatatanhemodialisa"><i class="bi bi-journal-text"></i> Catatan Hemodialisa </button>
+        <button class="btn btn-info mb-2 lihat_catatan_prmj" nomorrm="{{ $rm }}" data-toggle="modal"
+            data-target="#modalprmj"><i class="bi bi-journal-text"></i> Profil Ringkas Medis Rawat Jalan </button>
         <div class="accordion" id="accordionExample">
             @php
                 $urutan = 1;
@@ -1385,6 +1387,27 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalprmj" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 95%; margin: 1.75rem auto;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Profil Ringkas Medis Rawat Jalan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_prmj">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $(".riwayatorderfarmasi").on('click', function(event) {
         kodekunjungan = $(this).attr('kodekunjungan')
@@ -1665,6 +1688,25 @@
             url: '<?= route('ambilriwayatcatatanhemodialisa') ?>',
             success: function(response) {
                 $('.v_catatan_hd').html(response);
+                spinner.hide()
+            }
+        });
+    })
+    $(".lihat_catatan_prmj").click(function() {
+        spinner = $('#loader')
+        spinner.show();
+        rm = $(this).attr('nomorrm')
+        jenis = '1'
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm,
+                jenis
+            },
+            url: '<?= route('ambilcatatanprmj') ?>',
+            success: function(response) {
+                $('.v_prmj').html(response);
                 spinner.hide()
             }
         });

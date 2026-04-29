@@ -829,6 +829,11 @@ Route::get('/cetakresumeblank_perawat/{kodekunjungan}', [PdfController::class, '
 Route::get('/cetakresumeblank/{kodekunjungan}', [PdfController::class, 'cetakresumedokterblank']);
 Route::get('/generate-pdf', [PdfController::class, 'generatePDF']);
 
+Route::post('form_prmj', [ErmController::class, 'form_prmj'])->name('form_prmj'); //formpasien_bpjs
+Route::post('simpanpemeriksaanprmj', [ErmController::class, 'simpanpemeriksaanprmj'])->name('simpanpemeriksaanprmj'); //formpasien_bpjs
+Route::post('simpanpemeriksaanprmjedit', [ErmController::class, 'simpanpemeriksaanprmjedit'])->name('simpanpemeriksaanprmjedit'); //formpasien_bpjs
+Route::post('hapusdataprmj', [ErmController::class, 'hapusdataprmj'])->name('hapusdataprmj'); //formpasien_bpjs
+Route::post('ambilcatatanprmj', [ErmController::class, 'ambilcatatanprmj'])->name('ambilcatatanprmj'); //formpasien_bpjs
 
 Route::post('simpanpemeriksaanpolinyeri', [ErmController::class, 'simpanpemeriksaanpolinyeri'])->name('simpanpemeriksaanpolinyeri'); //formpasien_bpjs
 Route::post('formpengkajiannyeri', [ErmController::class, 'formpengkajiannyeri'])->name('formpengkajiannyeri'); //formpasien_bpjs

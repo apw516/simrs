@@ -43,6 +43,7 @@ use Carbon\Carbon;
 use simitsdk\phpjasperxml\PHPJasperXML;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Dokter;
+use App\Models\model_prmj;
 use App\Models\mt_unit;
 use File;
 
@@ -72,6 +73,93 @@ class ErmController extends Controller
             'sidebar',
             'sidebar_m',
             'now'
+        ]));
+    }
+    public function form_prmj(Request $request)
+    {
+        
+        $kode_kunjungan = $request->kodekunjungan;        
+        $no_rm = $request->nomorrm;
+        $cek = model_prmj::where('kode_kunjungan', $kode_kunjungan)->get()->first();
+        $riwayat = model_prmj::where('no_rm', $no_rm )->get();
+        return view('ermdokter.form_prmj',compact([
+            'kode_kunjungan','no_rm','cek','riwayat'
+        ]));
+    }
+    public function simpanpemeriksaanprmjedit(Request $request)
+    {
+        $data = json_decode($_POST['data'], true);
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+        $data_edit = [
+            'diagnosis' => trim($dataSet['diagnosapenting_edit']),
+            'uraian' => trim($dataSet['uraianklinispenting_edit']),
+            'rencana' => trim($dataSet['rencanapenting_edit']),
+            'catatan' => trim($dataSet['catatanpenting_edit']),
+            'verifikasi' => '1',
+        ];
+        model_prmj::where('id',$dataSet['id_dokumen_edit'])->update($data_edit);
+      
+         $data = [
+            'kode' => 200,
+            'message' => 'Data Berhasil disimpan ...'
+        ];
+        echo json_encode($data);
+    }
+    public function simpanpemeriksaanprmj(Request $request)
+    {
+        $data = json_decode($_POST['data'], true);
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+        $dokter = db::select('select * from mt_paramedis where kode_paramedis = ?',[auth()->user()->kode_paramedis]);
+        $cek = model_prmj::where('kode_kunjungan', $dataSet['kode_kunjungan'])->get()->first();
+        $data_save = [
+            'kode_kunjungan' => $dataSet['kode_kunjungan'],
+            'no_rm' => $dataSet['nomor_rm'],
+            'kode_paramedis' => auth()->user()->kode_paramedis,
+            'nama_dokter' => $dokter[0]->nama_paramedis,
+            'pic' => auth()->user()->id,
+            'tgl_entry' => $dataSet['kode_kunjungan'],
+            'diagnosis' => trim($dataSet['diagnosapenting']),
+            'uraian' => trim($dataSet['uraianklinispenting']),
+            'rencana' => trim($dataSet['rencanapenting']),
+            'catatan' => trim($dataSet['catatanpenting']),
+            'tgl_entry' => $this->get_now(),
+            'verifikasi' => '1',
+        ];
+        if($cek){
+            model_prmj::where('id',$cek->id)->update($data_save);
+        }else{
+            model_prmj::create($data_save);
+        }
+         $data = [
+            'kode' => 200,
+            'message' => 'Data Berhasil disimpan ...'
+        ];
+        echo json_encode($data);
+    }
+    public function hapusdataprmj(Request $request)
+    {
+        $id = $request->id;
+        model_prmj::where('id',$id)->delete();
+          $data = [
+            'kode' => 200,
+            'message' => 'Data Berhasil disimpan ...'
+        ];
+        echo json_encode($data);
+    }
+    public function ambilcatatanprmj(Request $request)
+    {
+        $rm = $request->rm;
+       $data = model_prmj::where('no_rm',$rm)->get();
+        return view('ermtemplate.v_catatan_prmj',compact([
+            'data'
         ]));
     }
     public function formlaporanoperasimata(Request $request)

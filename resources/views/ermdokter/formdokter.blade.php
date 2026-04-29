@@ -36,8 +36,11 @@
                 {{-- <a href="#" onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})"
                     class="btn btn-primary btn-block"><b>Catatan
                         Medis</b></a> --}}
-                <a href="#" class="btn btn-primary btn-block lihatcppt2" rm="{{ $kunjungan[0]->no_rm }}"><b>CPPT</b></a>
-                <a href="#" class="btn btn-primary btn-block" onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})" rm="{{ $kunjungan[0]->no_rm }}"><b>Riwayat Kunjungan</b></a>
+                <a href="#" class="btn btn-primary btn-block lihatcppt2"
+                    rm="{{ $kunjungan[0]->no_rm }}"><b>CPPT</b></a>
+                <a href="#" class="btn btn-primary btn-block"
+                    onclick="formcatatanmedis({{ $kunjungan[0]->no_rm }})" rm="{{ $kunjungan[0]->no_rm }}"><b>Riwayat
+                        Kunjungan</b></a>
                 <a hidden href="#" onclick="lihaticare()" class="btn btn-success btn-block"><b>Icare BPJS</b></a>
                 <input hidden type="text" id="kodekunjungan" value="{{ $kunjungan[0]->kode_kunjungan }}">
                 <input hidden type="text" id="nomorrm" value="{{ $kunjungan[0]->no_rm }}">
@@ -64,17 +67,24 @@
                                 </a>
                             </li>
                         @endif
-                        <li class="nav-item" id="pemeriksaan" @if(auth()->user()->unit == '1046') hidden @endif>
+                        <li class="nav-item" id="pemeriksaan" @if (auth()->user()->unit == '1046') hidden @endif>
                             <a href="#" class="nav-link" onclick="formpemeriksaandokter()">
                                 <i class="fas fa-inbox mr-2"></i>Catatan Perkembangan Pasien Terintegrasi ( CPPT )
                             </a>
                         </li>
-                        @if(auth()->user()->unit == '1046')
-                        <li class="nav-item" id="pemeriksaan">
-                            <a href="#" class="nav-link" onclick="pengkajiannyeri()">
-                                <i class="fas fa-inbox mr-2"></i>PENGKAJIAN NYERI ACUTE/ CHRONIC/CANCER
-                            </a>
-                        </li>
+                        @if (auth()->user()->unit == 1014)
+                            <li class="nav-item">
+                                <a href="#" class="nav-link" onclick="laporanoperasi()">
+                                    <i class="fas fa-filter mr-2"></i> Laporan Operasi
+                                </a>
+                            </li>
+                        @endif
+                        @if (auth()->user()->unit == '1046')
+                            <li class="nav-item" id="pemeriksaan">
+                                <a href="#" class="nav-link" onclick="pengkajiannyeri()">
+                                    <i class="fas fa-inbox mr-2"></i>PENGKAJIAN NYERI ACUTE/ CHRONIC/CANCER
+                                </a>
+                            </li>
                         @endif
                         {{-- <li class="nav-item" id="pemeriksaan">
                         <a href="#" class="nav-link" onclick="formpemeriksaankhusus()">
@@ -109,13 +119,10 @@
                         </a>
                     </li> --}}
                     @endif
-                    @if(auth()->user()->unit == 1014)
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="laporanoperasi()">
-                            <i class="fas fa-filter mr-2"></i> Laporan Operasi
-                        </a>
+                    <li class="nav-item" id="pemeriksaan" @if (auth()->user()->unit == '1046') hidden @endif>
+                        <a href="#" class="nav-link" onclick="formprmj()">
+                            <i class="fas fa-inbox mr-2"></i>Profil Ringkas Medis Rawat Jalan</a>
                     </li>
-                    @endif
                     <li class="nav-item">
                         <a href="#" class="nav-link" onclick="resume2()">
                             <i class="fas fa-filter mr-2"></i> Resume
@@ -155,8 +162,8 @@
             </div>
         </div>
         <div class="warning catatankonsul">
-            
-        </div>       
+
+        </div>
         <div class="slide3">
 
         </div>
@@ -191,8 +198,8 @@
         formcatatanmedis(rm)
         catatankonsul()
     })
-    function catatankonsul()
-    {
+
+    function catatankonsul() {
         rm = $('#nomorrm').val()
         kodekunjungan = $('#kodekunjungan').val()
         spinner = $('#loader')
@@ -201,7 +208,8 @@
             type: 'post',
             data: {
                 _token: "{{ csrf_token() }}",
-                rm,kodekunjungan
+                rm,
+                kodekunjungan
             },
             url: '<?= route('formcatatankonsul') ?>',
             success: function(response) {
@@ -213,32 +221,35 @@
     $(".lihatcppt2").click(function() {
         status = $('#statuslihatcppt2').val()
         // if (status == 0) {
-            status = $('#statuslihatcppt2').val(1)
-            rm = $(this).attr('rm')
-            spinner = $('#loader')
-            spinner.show();
-            $.ajax({
-                type: 'post',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    rm
-                },
-                url: '<?= route('lihatcppt_pasien2') ?>',
-                success: function(response) {
-                    $('.slide3').html(response);
-                    spinner.hide()
-                }
-            });
+        status = $('#statuslihatcppt2').val(1)
+        rm = $(this).attr('rm')
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm
+            },
+            url: '<?= route('lihatcppt_pasien2') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
         // }
     })
+
     function tutupicare() {
         $('#icareshow').attr('Hidden', true)
         $('.slide3').removeAttr('Hidden', true)
     }
+
     function lihaticare() {
         $('#icareshow').removeAttr('Hidden', true)
         $('.slide3').attr('Hidden', true)
     }
+
     function laporanoperasi() {
         rm = $('#nomorrm').val()
         kodekunjungan = $('#kodekunjungan').val()
@@ -248,7 +259,8 @@
             type: 'post',
             data: {
                 _token: "{{ csrf_token() }}",
-                rm,kodekunjungan
+                rm,
+                kodekunjungan
             },
             url: '<?= route('formlaporanoperasimata') ?>',
             success: function(response) {
@@ -257,6 +269,7 @@
             }
         });
     }
+
     function formcatatanmedis2(rm) {
         rm = $('#nomorrm').val()
         spinner = $('#loader')
@@ -274,6 +287,7 @@
             }
         });
     }
+
     function formcatatanmedis(rm) {
         rm = $('#nomorrm').val()
         spinner = $('#loader')
@@ -291,6 +305,7 @@
             }
         });
     }
+
     function pengkajiannyeri() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -310,6 +325,7 @@
             }
         });
     }
+
     function formpemeriksaandokter() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -329,6 +345,27 @@
             }
         });
     }
+
+    function formprmj() {
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('form_prmj') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+
     function formpemeriksaankhusus() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -348,6 +385,7 @@
             }
         });
     }
+
     function formupload() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -367,6 +405,7 @@
             }
         });
     }
+
     function orderfarmasi() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -386,6 +425,7 @@
             }
         });
     }
+
     function orderpenunjang() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -405,6 +445,7 @@
             }
         });
     }
+
     function forminputtindakan() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -424,6 +465,7 @@
             }
         });
     }
+
     function formtindaklanjut() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -443,6 +485,7 @@
             }
         });
     }
+
     function resume() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -462,6 +505,7 @@
             }
         });
     }
+
     function resume2() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -481,6 +525,7 @@
             }
         });
     }
+
     function riwayatsumarilis() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
