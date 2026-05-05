@@ -344,10 +344,12 @@ class PdfController extends Controller
         } else {
             $username = '';
         }
+        $kode_unit = $ts_kunjungan[0]->kode_unit;
         $dompdf = Pdf::loadView('pdf.laporan_operasi', compact([
             'data',
             'mt_pasien',
-            'username'
+            'username',
+            'kode_unit'
         ]));
         $dompdf->setPaper('A4', 'portrait'); // 'A4' for paper size, 'portrait' or 'landscape' for orientation
 

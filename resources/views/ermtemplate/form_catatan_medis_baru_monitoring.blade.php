@@ -105,12 +105,12 @@
                                         unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
                                             class="bi bi-printer mr-2"></i>Assesmen
                                         Medis </button>
-                                    @if ($k->kode_unit == 1014)
+                                    {{-- @if ($k->kode_unit == 1014) --}}
                                         <button type="button" class="btn btn-secondary laporanoperasi"
                                             rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
                                             unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
                                                 class="bi bi-printer mr-2"></i>Laporan Operasi </button>
-                                    @endif
+                                    {{-- @endif --}}
 
                                 </div>
                             </div>

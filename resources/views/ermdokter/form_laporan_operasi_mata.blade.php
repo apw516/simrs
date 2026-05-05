@@ -181,6 +181,7 @@
             <div class="row">
                 <div class="col-md-5">
                     <label for="exampleInputEmail1" class="mb-2">Teknik Operasi dan temuan intra - operasi</label>
+                    @if(auth()->user()->unit == '1014')
                     <label for="exampleInputEmail1">1. Pasien tidur terlentang di meja operasi</label>
                     <label for="exampleInputEmail1">2. Dilakukan tindakan aseptik dan antiseptik dengan betadine </label><br>
                     <div class="form-check form-check-inline">
@@ -199,6 +200,10 @@
                     <label for="exampleInputEmail1">8. Lepaskan klem </label><br>
                     <label for="exampleInputEmail1">9. Berikan Salep Antibiotik </label><br>
                     <label for="exampleInputEmail1">10. Operasi Selesai </label><br>
+                    @else
+                    <label for="exampleInputEmail1" class="mb-2">Teknik Operasi dan temuan intra - operasi</label>
+                    <textarea cols="30" rows="10" class="form-control" placeholder="Silahkan isi disini ..." name="teknikoperasi" id="teknikoperasi">@foreach ($cek as $c ){{$c->teknikoperasi}}@endforeach</textarea>
+                    @endif
                 </div>
             </div>
             <div class="row">

@@ -222,6 +222,7 @@
                         <tr>
                             <td style="text-align: left;height: 200px" width="20%" colspan="4">
                                 Teknik Operasi dan Temuan Intra Operasi<br><br>
+                                @if($kode_unit == '1014')
                                 <p style="font-style:normal;margin-left:120px" class="text-reguler">
                                     <label for="exampleInputEmail1">1. Pasien tidur terlentang di meja operasi</label><br>
                                     <label for="exampleInputEmail1">2. Dilakukan tindakan aseptik dan antiseptik dengan betadine </label><br>
@@ -242,6 +243,9 @@
                                     <label style="font-style:normal;margin-left:120px" for="exampleInputEmail1">9. Berikan Salep Antibiotik </label><br>
                                     <label style="font-style:normal;margin-left:118px" for="exampleInputEmail1">10. Operasi Selesai </label><br>
                                 </p>
+                                @else
+                                : @foreach($data as $d) {{ $d->teknikoperasi}} @endforeach
+                                @endif
                             </td>
                         </tr>
                         <tr>

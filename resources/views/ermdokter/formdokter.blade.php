@@ -72,13 +72,13 @@
                                 <i class="fas fa-inbox mr-2"></i>Catatan Perkembangan Pasien Terintegrasi ( CPPT )
                             </a>
                         </li>
-                        @if (auth()->user()->unit == 1014)
+                        {{-- @if (auth()->user()->unit == 1014) --}}
                             <li class="nav-item">
                                 <a href="#" class="nav-link" onclick="laporanoperasi()">
                                     <i class="fas fa-filter mr-2"></i> Laporan Operasi
                                 </a>
                             </li>
-                        @endif
+                        {{-- @endif --}}
                         @if (auth()->user()->unit == '1046')
                             <li class="nav-item" id="pemeriksaan">
                                 <a href="#" class="nav-link" onclick="pengkajiannyeri()">
