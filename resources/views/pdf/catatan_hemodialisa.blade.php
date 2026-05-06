@@ -582,176 +582,336 @@
                         <tr>
                             <td colspan="3">
                                 <p>
-                                Penyulit selama HD
-                                <br>
-                                @foreach ($arrayBaru4 as $dd)
-                                    @if ($dd->idheader == $header->id)
-                                        <div class="row">
-                                            <div class="col-md-1">
-                                                <div class="form-check">
-                                                    <input style="pointer-events: none;" style="pointer-events: none;"
-                                                        class="form-check-input" type="checkbox" value="1"
-                                                        id="inisiasi" name="inisiasi"
-                                                        @if ($dd->masalahakses == 1) checked @endif>
-                                                    <label class="form-check-label" for="checkDefault">
-                                                        Masalah akses
-                                                    </label>
+                                    Penyulit selama HD
+                                    <br>
+                                    @foreach ($arrayBaru4 as $dd)
+                                        @if ($dd->idheader == $header->id)
+                                            <style>
+                                                .komplikasi-table {
+                                                    width: 100%;
+                                                    border-collapse: collapse;
+                                                    margin-top: 5px;
+                                                }
+
+                                                .komplikasi-table td {
+                                                    vertical-align: middle;
+                                                    font-size: 10px;
+                                                    /* Ukuran font sedikit dikecilkan karena kolom banyak */
+                                                    padding: 3px 2px;
+                                                    width: 25%;
+                                                    /* Membagi menjadi 4 kolom per baris agar teks tidak numpuk */
+                                                }
+
+                                                .cb-box {
+                                                    display: inline-block;
+                                                    width: 11px;
+                                                    height: 11px;
+                                                    border: 1px solid #000;
+                                                    text-align: center;
+                                                    line-height: 10px;
+                                                    font-family: DejaVu Sans, sans-serif;
+                                                    margin-right: 4px;
+                                                    vertical-align: middle;
+                                                }
+
+                                                .label-text {
+                                                    vertical-align: middle;
+                                                }
+                                            </style>
+                                            {{-- <div class="row">
+                                                <div class="col-md-1">
+                                                    <div class="form-check">
+                                                        <input style="pointer-events: none;"
+                                                            style="pointer-events: none;" class="form-check-input"
+                                                            type="checkbox" value="1" id="inisiasi"
+                                                            name="inisiasi"
+                                                            @if ($dd->masalahakses == 1) checked @endif>
+                                                        <label class="form-check-label" for="checkDefault">
+                                                            Masalah akses
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <div class="form-check">
-                                                    <input style="pointer-events: none;" class="form-check-input"
-                                                        type="checkbox" value="1" id="akut"
-                                                        @if ($dd->perdarahan == 1) checked @endif
-                                                        name="akut">
-                                                    <label class="form-check-label" for="checkDefault">
-                                                        Perdarahan
-                                                    </label>
+                                                <div class="col-md-1">
+                                                    <div class="form-check">
+                                                        <input style="pointer-events: none;" class="form-check-input"
+                                                            type="checkbox" value="1" id="akut"
+                                                            @if ($dd->perdarahan == 1) checked @endif
+                                                            name="akut">
+                                                        <label class="form-check-label" for="checkDefault">
+                                                            Perdarahan
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <div class="form-check">
-                                                    <input style="pointer-events: none;" class="form-check-input"
-                                                        type="checkbox" value="" id="rutin"
-                                                        @if ($dd->fus == 1) checked @endif
-                                                        name="rutin">
-                                                    <label class="form-check-label" for="checkDefault">
-                                                        First use syndrome
-                                                    </label>
+                                                <div class="col-md-1">
+                                                    <div class="form-check">
+                                                        <input style="pointer-events: none;" class="form-check-input"
+                                                            type="checkbox" value="" id="rutin"
+                                                            @if ($dd->fus == 1) checked @endif
+                                                            name="rutin">
+                                                        <label class="form-check-label" for="checkDefault">
+                                                            First use syndrome
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <div class="form-check">
-                                                    <input style="pointer-events: none;" class="form-check-input"
-                                                        type="checkbox" value="" id="preop"
-                                                        @if ($dd->sakitkepala == 1) checked @endif
-                                                        name="preop">
-                                                    <label class="form-check-label" for="checkDefault">
-                                                        Sakit kepala
-                                                    </label>
+                                                <div class="col-md-1">
+                                                    <div class="form-check">
+                                                        <input style="pointer-events: none;" class="form-check-input"
+                                                            type="checkbox" value="" id="preop"
+                                                            @if ($dd->sakitkepala == 1) checked @endif
+                                                            name="preop">
+                                                        <label class="form-check-label" for="checkDefault">
+                                                            Sakit kepala
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <div class="form-check">
-                                                    <input style="pointer-events: none;" class="form-check-input"
-                                                        type="checkbox" value="" id="sled"
-                                                        @if ($dd->mualmuntah == 1) checked @endif
-                                                        name="sled">
-                                                    <label class="form-check-label" for="checkDefault">
-                                                        Mual dan muntah
-                                                    </label>
+                                                <div class="col-md-1">
+                                                    <div class="form-check">
+                                                        <input style="pointer-events: none;" class="form-check-input"
+                                                            type="checkbox" value="" id="sled"
+                                                            @if ($dd->mualmuntah == 1) checked @endif
+                                                            name="sled">
+                                                        <label class="form-check-label" for="checkDefault">
+                                                            Mual dan muntah
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <div class="form-check">
-                                                    <input style="pointer-events: none;" class="form-check-input"
-                                                        type="checkbox" value="" id="sled"
-                                                        @if ($dd->kramototo == 1) checked @endif
-                                                        name="sled">
-                                                    <label class="form-check-label" for="checkDefault">
-                                                        kram otot
-                                                    </label>
+                                                <div class="col-md-1">
+                                                    <div class="form-check">
+                                                        <input style="pointer-events: none;" class="form-check-input"
+                                                            type="checkbox" value="" id="sled"
+                                                            @if ($dd->kramototo == 1) checked @endif
+                                                            name="sled">
+                                                        <label class="form-check-label" for="checkDefault">
+                                                            kram otot
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <div class="form-check">
-                                                    <input style="pointer-events: none;" class="form-check-input"
-                                                        type="checkbox" value="" id="sled"
-                                                        @if ($dd->hiperkalemia == 1) checked @endif
-                                                        name="sled">
-                                                    <label class="form-check-label" for="checkDefault">
-                                                        Hiperkalemia
-                                                    </label>
+                                                <div class="col-md-1">
+                                                    <div class="form-check">
+                                                        <input style="pointer-events: none;" class="form-check-input"
+                                                            type="checkbox" value="" id="sled"
+                                                            @if ($dd->hiperkalemia == 1) checked @endif
+                                                            name="sled">
+                                                        <label class="form-check-label" for="checkDefault">
+                                                            Hiperkalemia
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <div class="form-check">
-                                                    <input style="pointer-events: none;" class="form-check-input"
-                                                        type="checkbox" value="" id="sled"
-                                                        @if ($dd->hipotensi == 1) checked @endif
-                                                        name="sled">
-                                                    <label class="form-check-label" for="checkDefault">
-                                                        Hipotensi
-                                                    </label>
+                                                <div class="col-md-1">
+                                                    <div class="form-check">
+                                                        <input style="pointer-events: none;" class="form-check-input"
+                                                            type="checkbox" value="" id="sled"
+                                                            @if ($dd->hipotensi == 1) checked @endif
+                                                            name="sled">
+                                                        <label class="form-check-label" for="checkDefault">
+                                                            Hipotensi
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <div class="form-check">
-                                                    <input style="pointer-events: none;" class="form-check-input"
-                                                        type="checkbox" value="" id="sled"
-                                                        @if ($dd->hipertensi == 1) checked @endif
-                                                        name="sled">
-                                                    <label class="form-check-label" for="checkDefault">
-                                                        Hipertensi
-                                                    </label>
+                                                <div class="col-md-1">
+                                                    <div class="form-check">
+                                                        <input style="pointer-events: none;" class="form-check-input"
+                                                            type="checkbox" value="" id="sled"
+                                                            @if ($dd->hipertensi == 1) checked @endif
+                                                            name="sled">
+                                                        <label class="form-check-label" for="checkDefault">
+                                                            Hipertensi
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <div class="form-check">
-                                                    <input style="pointer-events: none;" class="form-check-input"
-                                                        type="checkbox" value="" id="sled"
-                                                        @if ($dd->nyeridada == 1) checked @endif
-                                                        name="sled">
-                                                    <label class="form-check-label" for="checkDefault">
-                                                        Nyeri dada
-                                                    </label>
+                                                <div class="col-md-1">
+                                                    <div class="form-check">
+                                                        <input style="pointer-events: none;" class="form-check-input"
+                                                            type="checkbox" value="" id="sled"
+                                                            @if ($dd->nyeridada == 1) checked @endif
+                                                            name="sled">
+                                                        <label class="form-check-label" for="checkDefault">
+                                                            Nyeri dada
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <div class="form-check">
-                                                    <input style="pointer-events: none;" class="form-check-input"
-                                                        type="checkbox" value="" id="sled"
-                                                        @if ($dd->aritmia == 1) checked @endif
-                                                        name="sled">
-                                                    <label class="form-check-label" for="checkDefault">
-                                                        Aritmia
-                                                    </label>
+                                                <div class="col-md-1">
+                                                    <div class="form-check">
+                                                        <input style="pointer-events: none;" class="form-check-input"
+                                                            type="checkbox" value="" id="sled"
+                                                            @if ($dd->aritmia == 1) checked @endif
+                                                            name="sled">
+                                                        <label class="form-check-label" for="checkDefault">
+                                                            Aritmia
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <div class="form-check">
-                                                    <input style="pointer-events: none;" class="form-check-input"
-                                                        type="checkbox" value="" id="sled"
-                                                        @if ($dd->gatalgatal == 1) checked @endif
-                                                        name="sled">
-                                                    <label class="form-check-label" for="checkDefault">
-                                                        Gatal gatal
-                                                    </label>
+                                                <div class="col-md-1">
+                                                    <div class="form-check">
+                                                        <input style="pointer-events: none;" class="form-check-input"
+                                                            type="checkbox" value="" id="sled"
+                                                            @if ($dd->gatalgatal == 1) checked @endif
+                                                            name="sled">
+                                                        <label class="form-check-label" for="checkDefault">
+                                                            Gatal gatal
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <div class="form-check">
-                                                    <input style="pointer-events: none;" class="form-check-input"
-                                                        type="checkbox" value="" id="sled"
-                                                        @if ($dd->demam == 1) checked @endif
-                                                        name="sled">
-                                                    <label class="form-check-label" for="checkDefault">
-                                                        Demam
-                                                    </label>
+                                                <div class="col-md-1">
+                                                    <div class="form-check">
+                                                        <input style="pointer-events: none;" class="form-check-input"
+                                                            type="checkbox" value="" id="sled"
+                                                            @if ($dd->demam == 1) checked @endif
+                                                            name="sled">
+                                                        <label class="form-check-label" for="checkDefault">
+                                                            Demam
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <div class="form-check">
-                                                    <input style="pointer-events: none;" class="form-check-input"
-                                                        type="checkbox" value="" id="sled"
-                                                        @if ($dd->menggigil == 1) checked @endif
-                                                        name="sled">
-                                                    <label class="form-check-label" for="checkDefault">
-                                                        Menggigil / dingin
-                                                    </label>
+                                                <div class="col-md-1">
+                                                    <div class="form-check">
+                                                        <input style="pointer-events: none;" class="form-check-input"
+                                                            type="checkbox" value="" id="sled"
+                                                            @if ($dd->menggigil == 1) checked @endif
+                                                            name="sled">
+                                                        <label class="form-check-label" for="checkDefault">
+                                                            Menggigil / dingin
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        Lainnya : {{ $dd->lainnya }}
-                                        </p>
-                                    @endif
+                                            </div> --}}
+                                            <table class="komplikasi-table">
+                                                <!-- Baris 1 -->
+                                                <tr>
+                                                    <td>
+                                                        <div class="cb-box">
+                                                            @if ($dd->masalahakses == 1)
+                                                                &#10003;
+                                                            @endif
+                                                        </div>
+                                                        <span class="label-text">Masalah Akses</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="cb-box">
+                                                            @if ($dd->perdarahan == 1)
+                                                                &#10003;
+                                                            @endif
+                                                        </div>
+                                                        <span class="label-text">Perdarahan</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="cb-box">
+                                                            @if ($dd->fus == 1)
+                                                                &#10003;
+                                                            @endif
+                                                        </div>
+                                                        <span class="label-text">First Use Syndrome</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="cb-box">
+                                                            @if ($dd->sakitkepala == 1)
+                                                                &#10003;
+                                                            @endif
+                                                        </div>
+                                                        <span class="label-text">Sakit Kepala</span>
+                                                    </td>
+                                                </tr>
+                                                <!-- Baris 2 -->
+                                                <tr>
+                                                    <td>
+                                                        <div class="cb-box">
+                                                            @if ($dd->mualmuntah == 1)
+                                                                &#10003;
+                                                            @endif
+                                                        </div>
+                                                        <span class="label-text">Mual & Muntah</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="cb-box">
+                                                            @if ($dd->kramototo == 1)
+                                                                &#10003;
+                                                            @endif
+                                                        </div>
+                                                        <span class="label-text">Kram Otot</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="cb-box">
+                                                            @if ($dd->hiperkalemia == 1)
+                                                                &#10003;
+                                                            @endif
+                                                        </div>
+                                                        <span class="label-text">Hiperkalemia</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="cb-box">
+                                                            @if ($dd->hipotensi == 1)
+                                                                &#10003;
+                                                            @endif
+                                                        </div>
+                                                        <span class="label-text">Hipotensi</span>
+                                                    </td>
+                                                </tr>
+                                                <!-- Baris 3 -->
+                                                <tr>
+                                                    <td>
+                                                        <div class="cb-box">
+                                                            @if ($dd->hipertensi == 1)
+                                                                &#10003;
+                                                            @endif
+                                                        </div>
+                                                        <span class="label-text">Hipertensi</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="cb-box">
+                                                            @if ($dd->nyeridada == 1)
+                                                                &#10003;
+                                                            @endif
+                                                        </div>
+                                                        <span class="label-text">Nyeri Dada</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="cb-box">
+                                                            @if ($dd->aritmia == 1)
+                                                                &#10003;
+                                                            @endif
+                                                        </div>
+                                                        <span class="label-text">Aritmia</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="cb-box">
+                                                            @if ($dd->gatalgatal == 1)
+                                                                &#10003;
+                                                            @endif
+                                                        </div>
+                                                        <span class="label-text">Gatal-gatal</span>
+                                                    </td>
+                                                </tr>
+                                                <!-- Baris 4 -->
+                                                <tr>
+                                                    <td>
+                                                        <div class="cb-box">
+                                                            @if ($dd->demam == 1)
+                                                                &#10003;
+                                                            @endif
+                                                        </div>
+                                                        <span class="label-text">Demam</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="cb-box">
+                                                            @if ($dd->menggigil == 1)
+                                                                &#10003;
+                                                            @endif
+                                                        </div>
+                                                        <span class="label-text">Menggigil</span>
+                                                    </td>
+                                                    <td colspan="2"></td> <!-- Kosongkan sisa kolom -->
+                                                </tr>
+                                            </table>
+                                            Lainnya : {{ $dd->lainnya }}
+                                </p>
+                                @endif
                                 @endforeach
                             </td>
                         </tr>
                         <tr>
                             <td colspan="3">
                                 <p>
-                                Evaluasi Keperawatan : {{ $header->evaluasi_keperawatan }} <br>
+                                    Evaluasi Keperawatan : {{ $header->evaluasi_keperawatan }} <br>
                                 </p>
                             </td>
                         </tr>
@@ -786,7 +946,7 @@
                                     }
                                 </style>
                                 <p>
-                                Akses Vaskuler
+                                    Akses Vaskuler
                                 <table class="access-table">
                                     <tr>
                                         <!-- Akses 1: AV Shunt -->
@@ -846,12 +1006,12 @@
                         <tr>
                             <td>
                                 <p style="font-weight:bolder;font-size:12px">
-                                 Akses Vaskuler Oleh : {{ $header->akses_vaskuler_oleh }}
+                                    Akses Vaskuler Oleh : {{ $header->akses_vaskuler_oleh }}
                                 </p>
                             </td>
                             <td colspan="2">
                                 <p class="text-center" style="font-weight: bolder">
-                                {{-- <h5 class="text-center"> --}}
+                                    {{-- <h5 class="text-center"> --}}
                                     diperiksa :
                                     {{ \Carbon\Carbon::parse($header->tgl_periksa)->locale('id')->translatedFormat('d F Y') }}
                                     <br>Nama dan tanda tangan perawat yang bertugas :
@@ -863,7 +1023,7 @@
                                     <br>
                                     <br>
                                     {{ strtoupper($header->akses_vaskuler_oleh) }}
-                                {{-- </h5> --}}
+                                    {{-- </h5> --}}
                                 </p>
                             </td>
                         </tr>
