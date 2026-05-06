@@ -604,13 +604,19 @@
 
                                                 .cb-box {
                                                     display: inline-block;
-                                                    width: 11px;
-                                                    height: 11px;
-                                                    border: 1px solid #000;
+                                                    width: 9px;
+                                                    /* Ukuran kotak diperkecil */
+                                                    height: 9px;
+                                                    /* Ukuran kotak diperkecil */
+                                                    border: 0.5pt solid #000;
+                                                    /* Garis border lebih tipis agar tidak terlihat tebal saat kotak kecil */
                                                     text-align: center;
-                                                    line-height: 10px;
+                                                    line-height: 8px;
+                                                    /* Menyesuaikan posisi vertikal centang di dalam kotak */
                                                     font-family: DejaVu Sans, sans-serif;
-                                                    margin-right: 4px;
+                                                    font-size: 8px;
+                                                    /* Ukuran simbol centang (tick) diperkecil */
+                                                    margin-right: 3px;
                                                     vertical-align: middle;
                                                 }
 
@@ -779,124 +785,82 @@
                                                 <!-- Baris 1 -->
                                                 <tr>
                                                     <td>
-                                                        <div class="cb-box">
-                                                            @if ($dd->masalahakses == 1)
-                                                                &#10003;
-                                                            @endif
-                                                        </div>
+                                                        <input type="checkbox"
+                                                            @if ($dd->masalahakses == 1) checked @endif>
                                                         <span class="label-text">Masalah Akses</span>
                                                     </td>
                                                     <td>
-                                                        <div class="cb-box">
-                                                            @if ($dd->perdarahan == 1)
-                                                                &#10003;
-                                                            @endif
-                                                        </div>
+                                                        <input type="checkbox"
+                                                            @if ($dd->perdarahan == 1) checked @endif>
                                                         <span class="label-text">Perdarahan</span>
                                                     </td>
                                                     <td>
-                                                        <div class="cb-box">
-                                                            @if ($dd->fus == 1)
-                                                                &#10003;
-                                                            @endif
-                                                        </div>
+                                                        <input type="checkbox"
+                                                            @if ($dd->fus == 1) checked @endif>
                                                         <span class="label-text">First Use Syndrome</span>
                                                     </td>
                                                     <td>
-                                                        <div class="cb-box">
-                                                            @if ($dd->sakitkepala == 1)
-                                                                &#10003;
-                                                            @endif
-                                                        </div>
+                                                        <input type="checkbox"
+                                                            @if ($dd->sakitkepala == 1) checked @endif>
                                                         <span class="label-text">Sakit Kepala</span>
                                                     </td>
                                                 </tr>
                                                 <!-- Baris 2 -->
                                                 <tr>
                                                     <td>
-                                                        <div class="cb-box">
-                                                            @if ($dd->mualmuntah == 1)
-                                                                &#10003;
-                                                            @endif
-                                                        </div>
+                                                        <input type="checkbox"
+                                                            @if ($dd->mualmuntah == 1) checked @endif>
                                                         <span class="label-text">Mual & Muntah</span>
                                                     </td>
                                                     <td>
-                                                        <div class="cb-box">
-                                                            @if ($dd->kramototo == 1)
-                                                                &#10003;
-                                                            @endif
-                                                        </div>
+                                                        <input type="checkbox"
+                                                            @if ($dd->kramototo == 1) checked @endif>
                                                         <span class="label-text">Kram Otot</span>
                                                     </td>
                                                     <td>
-                                                        <div class="cb-box">
-                                                            @if ($dd->hiperkalemia == 1)
-                                                                &#10003;
-                                                            @endif
-                                                        </div>
+                                                        <input type="checkbox"
+                                                            @if ($dd->hiperkalemia == 1) checked @endif>
                                                         <span class="label-text">Hiperkalemia</span>
                                                     </td>
                                                     <td>
-                                                        <div class="cb-box">
-                                                            @if ($dd->hipotensi == 1)
-                                                                &#10003;
-                                                            @endif
-                                                        </div>
+                                                        <input type="checkbox"
+                                                            @if ($dd->hipotensi == 1) checked @endif>
                                                         <span class="label-text">Hipotensi</span>
                                                     </td>
                                                 </tr>
                                                 <!-- Baris 3 -->
                                                 <tr>
                                                     <td>
-                                                        <div class="cb-box">
-                                                            @if ($dd->hipertensi == 1)
-                                                                &#10003;
-                                                            @endif
-                                                        </div>
+                                                        <input type="checkbox"
+                                                            @if ($dd->hipertensi == 1) checked @endif>
                                                         <span class="label-text">Hipertensi</span>
                                                     </td>
                                                     <td>
-                                                        <div class="cb-box">
-                                                            @if ($dd->nyeridada == 1)
-                                                                &#10003;
-                                                            @endif
-                                                        </div>
+                                                        <input type="checkbox"
+                                                            @if ($dd->nyeridada == 1) checked @endif>
                                                         <span class="label-text">Nyeri Dada</span>
                                                     </td>
                                                     <td>
-                                                        <div class="cb-box">
-                                                            @if ($dd->aritmia == 1)
-                                                                &#10003;
-                                                            @endif
-                                                        </div>
+                                                        <input type="checkbox"
+                                                            @if ($dd->aritmia == 1) checked @endif>
                                                         <span class="label-text">Aritmia</span>
                                                     </td>
                                                     <td>
-                                                        <div class="cb-box">
-                                                            @if ($dd->gatalgatal == 1)
-                                                                &#10003;
-                                                            @endif
-                                                        </div>
+                                                        <input type="checkbox"
+                                                            @if ($dd->gatalgatal == 1) checked @endif>
                                                         <span class="label-text">Gatal-gatal</span>
                                                     </td>
                                                 </tr>
                                                 <!-- Baris 4 -->
                                                 <tr>
                                                     <td>
-                                                        <div class="cb-box">
-                                                            @if ($dd->demam == 1)
-                                                                &#10003;
-                                                            @endif
-                                                        </div>
+                                                        <input type="checkbox"
+                                                            @if ($dd->demam == 1) checked @endif>
                                                         <span class="label-text">Demam</span>
                                                     </td>
                                                     <td>
-                                                        <div class="cb-box">
-                                                            @if ($dd->menggigil == 1)
-                                                                &#10003;
-                                                            @endif
-                                                        </div>
+                                                        <input type="checkbox"
+                                                            @if ($dd->menggigil == 1) checked @endif>
                                                         <span class="label-text">Menggigil</span>
                                                     </td>
                                                     <td colspan="2"></td> <!-- Kosongkan sisa kolom -->
@@ -951,51 +915,30 @@
                                     <tr>
                                         <!-- Akses 1: AV Shunt -->
                                         <td>
-                                            <div class="checkbox-box">
-                                                @if ($header->avshunt == 1)
-                                                    &#10003;
-                                                @endif
-                                            </div>
+                                            <input type="checkbox" @if ($header->avshunt == 1) checked @endif>
                                             <span>AV Shunt</span>
                                         </td>
 
                                         <!-- Akses 2: AV Femoral -->
                                         <td>
-                                            <div class="checkbox-box">
-                                                @if ($header->avfemoral == 1)
-                                                    &#10003;
-                                                @endif
-                                            </div>
+                                            <input type="checkbox" @if ($header->avfemoral == 1) checked @endif>
                                             <span>AV Femoral</span>
                                         </td>
 
                                         <!-- Akses 3: Subclavia -->
                                         <td>
-                                            <div class="checkbox-box">
-                                                @if ($header->cateterdoublelumensubclavia == 1)
-                                                    &#10003;
-                                                @endif
-                                            </div>
+                                            <input type="checkbox" @if ($header->cateterdoublelumensubclavia == 1) checked @endif>
                                             <span>Cateter Double Lumen Subclavia</span>
                                         </td>
 
                                         <!-- Akses 4: Jugularis -->
                                         <td>
-                                            <div class="checkbox-box">
-                                                @if ($header->cataterdoublelumenjugularis == 1)
-                                                    &#10003;
-                                                @endif
-                                            </div>
+                                            <input type="checkbox" @if ($header->cataterdoublelumenjugularis == 1) checked @endif>
                                             <span>Cateter Double Lumen Jugularis</span>
                                         </td>
 
                                         <!-- Akses 5: Femoralis -->
-                                        <td>
-                                            <div class="checkbox-box">
-                                                @if ($header->cateterdoublelumenfemoralis == 1)
-                                                    &#10003;
-                                                @endif
-                                            </div>
+                                        <td>                                                                                        <input type="checkbox" @if ($header->cateterdoublelumenfemoralis == 1) checked @endif>
                                             <span>Cateter Double Lumen Femoralis</span>
                                         </td>
                                     </tr>
@@ -1019,9 +962,7 @@
                                     <br>
                                     <br>
                                     <br>
-                                    <br>
-                                    <br>
-                                    <br>
+                                   
                                     {{ strtoupper($header->akses_vaskuler_oleh) }}
                                     {{-- </h5> --}}
                                 </p>
