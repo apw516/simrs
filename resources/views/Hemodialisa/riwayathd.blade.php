@@ -18,7 +18,7 @@
                                     class="bi bi-trash3"></i></button>
                             <button class="btn btn-warning mb-2 ambilformeditheadercatatanhd" idheader="{{ $item->id }}"><i
                                     class="bi bi-pencil-square"></i></button>
-                            <button class="btn btn-info mb-2 cetakanhd" onclick="cetakcatatanhd({{$item->id}})"><i class="bi bi-printer"></i></button>
+                            <button class="btn btn-success mb-2 cetakanhd" onclick="cetakcatatanhd({{$item->id}})"><i class="bi bi-printer"></i></button>
                             <table class="table">
                                 <tr>
                                     <td colspan="2">Preskripsi HD :
