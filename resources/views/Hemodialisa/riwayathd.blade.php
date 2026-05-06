@@ -18,7 +18,7 @@
                                     class="bi bi-trash3"></i></button>
                             <button class="btn btn-warning mb-2 ambilformeditheadercatatanhd" idheader="{{ $item->id }}"><i
                                     class="bi bi-pencil-square"></i></button>
-                            <button class="btn btn-info mb-2"><i class="bi bi-printer"></i></button>
+                            <button class="btn btn-info mb-2 cetakanhd" onclick="cetakcatatanhd({{$item->id}})"><i class="bi bi-printer"></i></button>
                             <table class="table">
                                 <tr>
                                     <td colspan="2">Preskripsi HD :
@@ -380,6 +380,7 @@
                                             @endif
                                         @endforeach
                                         @foreach ($arrayBaru3 as $dd)
+                                            @if ($dd->idheader == $item->id)
                                             <tr>
                                                 <td></td>
                                                 <td></td>
@@ -409,6 +410,7 @@
                                                 <td></td>
                                                 <td></td>
                                             </tr>
+                                            @endif
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -449,8 +451,6 @@
                         <div class="container">
                             <p>
                             <h5>Penyulit selama HD
-                                {{-- <button class="badge btn-danger mb-2 hapuspenyulit" idheader="{{ $item->id}}"><i class="bi bi-trash3"></i></button>
-                                <button class="badge btn-warning mb-2"><i class="bi bi-pencil-square"></i></button> --}}
                             </h5> <br>
                             @foreach ($arrayBaru4 as $dd)
                                 @if ($dd->idheader == $item->id)
@@ -605,18 +605,12 @@
                         <div class="container">
                             <p>
                             <h5>Evaluasi Keperawatan : {{ $item->evaluasi_keperawatan }} <br>
-                                {{-- <button
-                                    class="badge btn-danger mb-2"><i class="bi bi-trash3"></i></button>
-                                <button class="badge btn-warning mb-2"><i class="bi bi-pencil-square"></i></button> --}}
                             </h5>
                             </p>
                         </div>
                         <div class="container">
                             <p>
                             <h5>Akses Vaskuler</h5>
-                            {{-- <button class="badge btn-danger mb-2"><i
-                                    class="bi bi-trash3"></i></button>
-                            <button class="badge btn-warning mb-2"><i class="bi bi-pencil-square"></i></button><br> --}}
                             <div class="row">
                                 <div class="col-md-1">
                                     <div class="form-check">
@@ -1925,6 +1919,9 @@
         });
     })
 
+    function cetakcatatanhd(id) {
+        window.open('cetakcatatanhemodialisa/' + id);
+    }
     function hapusheader(id) {
         spinner = $('#loader')
         spinner.show();
@@ -2068,7 +2065,7 @@
 
         // 2. Membuat Select, Checkbox, Radio, dan Tombol menjadi Disabled
         // Catatan: Select tidak bisa 'readonly', harus 'disabled'
-        modal.find('select, input[type="checkbox"], input[type="radio"], button').attr('disabled', true);
+        modal.find('select, input[type="checkbox"], input[type="radio"], button').not('.cetakanhd').attr('disabled', true);
 
         // 3. Khusus tombol 'Close' di footer agar tetap bisa diklik untuk menutup modal
         modal.find('.modal-footer .btn-secondary, .btn-close').attr('disabled', false);

@@ -356,7 +356,7 @@ class PdfController extends Controller
         // Render the HTML as PDF
         $dompdf->render();
         $namaberkas = 'LAPORAN_OPERASI_' . $mt_pasien[0]->nama_px;
-        return $dompdf->download($namaberkas . '.pdf');
+        // return $dompdf->download($namaberkas . '.pdf');
         // Output the generated PDF to Browser
         return $dompdf->stream($namaberkas . ".pdf", array("Attachment" => false));
     }
@@ -370,18 +370,20 @@ class PdfController extends Controller
     }
     public function cetaksuratpengantar($id)
     {
-        $cek = db::select('select *,fc_NAMA_UNIT1(unit_tujuan) as namaunittujuan,fc_NAMA_UNIT1(unit_asal) as unitasal from mt_surat_tindak_lanjut where id = ?',[$id]);
-        $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?',[$cek[0]->kode_kunjungan]);
+        $cek = db::select('select *,fc_NAMA_UNIT1(unit_tujuan) as namaunittujuan,fc_NAMA_UNIT1(unit_asal) as unitasal from mt_surat_tindak_lanjut where id = ?', [$id]);
+        $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$cek[0]->kode_kunjungan]);
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
-        if($cek[0]->jenis_surat == 'SURAT KONSUL'){
+        if ($cek[0]->jenis_surat == 'SURAT KONSUL') {
             $dompdf = Pdf::loadView('pdf.cetakan_surat_konsul', compact([
                 'cek',
-                'mt_pasien','ts_kunjungan'
+                'mt_pasien',
+                'ts_kunjungan'
             ]));
-        }else{
-              $dompdf = Pdf::loadView('pdf.cetakan_surat_rujin', compact([
+        } else {
+            $dompdf = Pdf::loadView('pdf.cetakan_surat_rujin', compact([
                 'cek',
-                'mt_pasien','ts_kunjungan'
+                'mt_pasien',
+                'ts_kunjungan'
             ]));
         }
         $dompdf->setPaper('A4', 'portrait'); // 'A4' for paper size, 'portrait' or 'landscape' for orientation
@@ -391,5 +393,45 @@ class PdfController extends Controller
         $namaberkas = 'surat';
         // Output the generated PDF to Browser
         return $dompdf->stream($namaberkas . ".pdf", array("Attachment" => false));
+    }
+    public function cetakcatatanhemodialisa($id)
+    {
+        $header = db::table('ts_header_catatan_hemodialisis')->where('id',$id)->get()->first();
+        $rm = $header->no_rm;
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$rm]);
+
+        // dd($rm);
+        // if(!!$request->jenis){
+            $jenis = 1;
+        // }else{
+        //     $jenis = 0;
+        // }
+        $kode_kunjungan = $header->kode_kunjungan;
+        $datah = db::select('select * from ts_header_catatan_hemodialisis where id = ? ORDER BY id DESC', [$id]);
+        // Ambil semua ID header terlebih dahulu
+        $ids = collect($datah)->pluck('id')->toArray();
+        // dd($datah);
+        if (!empty($ids)) {
+            // Gunakan WHERE IN untuk mengambil semua data sekaligus
+            $placeholder = implode(',', array_fill(0, count($ids), '?'));
+            $arrayBaru = db::select("select * from ts_catatan_pre_hemodialisa where idheader IN ($placeholder) and jenis = 1 ORDER BY id asc", $ids);
+            $arrayBaru2 = db::select("select * from ts_catatan_pre_hemodialisa where idheader IN ($placeholder) and jenis = 2 ORDER BY id asc", $ids);
+            $arrayBaru3 = db::select("select * from ts_catatan_pre_hemodialisa where idheader IN ($placeholder) and jenis = 3 ORDER BY id asc", $ids);
+            $arrayBaru4 = db::select("select * from ts_catatan_penyulit_hemodialisa where idheader IN ($placeholder) ORDER BY id asc", $ids);
+        } else {
+            $arrayBaru = [];
+            $arrayBaru2 = [];
+            $arrayBaru3 = [];
+            $arrayBaru4 = [];
+        }
+
+        $dompdf = Pdf::loadView('pdf.catatan_hemodialisa', compact([
+           'mt_pasien','header','datah','arrayBaru','arrayBaru2','arrayBaru3','arrayBaru4','jenis'
+        ]));
+        $dompdf->setPaper('A4', 'portrait'); // 'A4' for paper size, 'portrait' or 'landscape' for orientation
+        // Render the HTML as PDF
+        $dompdf->render();
+        $namaberkas = 'HD ';
+        return $dompdf->stream($namaberkas. $mt_pasien[0]->nama_px . ".pdf", array("Attachment" => false));
     }
 }

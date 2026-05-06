@@ -68,7 +68,7 @@
                                         <label for="exampleInputEmail1">QB</label>
                                         <div class="input-group mb-3">
                                             <input type="text" class="form-control"
-                                                placeholder="Recipient's username" aria-label="Recipient's username"
+                                                placeholder="Masukan Nilai QB ..." aria-label="Recipient's username"
                                                 aria-describedby="basic-addon2" name="qb" id="qb">
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="basic-addon2">ml/menit</span>
@@ -79,7 +79,7 @@
                                         <label for="exampleInputEmail1">QD</label>
                                         <div class="input-group mb-3">
                                             <input type="text" class="form-control"
-                                                placeholder="Recipient's username" aria-label="Recipient's username"
+                                                placeholder="Masukan Nilai QD ..." aria-label="Recipient's username"
                                                 aria-describedby="basic-addon2" name="qd" id="qd">
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="basic-addon2">ml/menit</span>
@@ -90,7 +90,7 @@
                                         <label for="exampleInputEmail1">UF GOAL</label>
                                         <div class="input-group mb-3">
                                             <input type="text" class="form-control"
-                                                placeholder="Recipient's username" aria-label="Recipient's username"
+                                                placeholder="Masukan UF Goal ..." aria-label="Recipient's username"
                                                 aria-describedby="basic-addon2" name="ufgoal" name="ufgoal">
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="basic-addon2">ml</span>
@@ -160,18 +160,18 @@
                                 <label for="">Heparinasi</label>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Dosis sirkulasi</label>
-                                    <input type="password" class="form-control" id="dosissirkulasi"
-                                        name="dosissirkulasi">
+                                    <input type="text" class="form-control" id="dosissirkulasi"
+                                        name="dosissirkulasi" placeholder="Masukan dosis sirkulasi ...">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Dosis Awal</label>
-                                    <input type="password" class="form-control" id="dosisawal" name="dosisawal">
+                                    <input type="text" class="form-control" id="dosisawal" name="dosisawal" placeholder="Masukan Dosis Awal ...">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Dosis maintenance</label><br>
                                     <label for="exampleInputEmail1">Continues</label>
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Recipient's username"
+                                        <input type="text" class="form-control" placeholder="Masukan Dosis Maintenance continues ..."
                                             aria-label="Recipient's username" aria-describedby="basic-addon2"
                                             name="continues" id="continues">
                                         <div class="input-group-append">
@@ -181,7 +181,7 @@
                                     <label for="exampleInputEmail1">Intermitten</label>
                                     <div class="input-group mb-3">
                                         <input name="intermitten" id="intermitten" type="text"
-                                            class="form-control" placeholder="Recipient's username"
+                                            class="form-control" placeholder="Masukan intermitten ..."
                                             aria-label="Recipient's username" aria-describedby="basic-addon2">
                                         <div class="input-group-append">
                                             <span class="input-group-text" id="basic-addon2">iu/jam</span>
@@ -190,14 +190,14 @@
                                     <label for="exampleInputEmail1">LWMH</label>
                                     <div class="input-group mb-3">
                                         <input type="text" name="LWMH" id="LWMH" class="form-control"
-                                            placeholder="Recipient's username" aria-label="Recipient's username"
+                                            placeholder="Masukan LWMH ..." aria-label="Recipient's username"
                                             aria-describedby="basic-addon2">
 
                                     </div>
                                     <label for="exampleInputEmail1">Tanpa heparin, penyebab ...</label>
                                     <div class="input-group mb-3">
                                         <input name="tanpaheparin" id="tanpaheparin" type="text"
-                                            class="form-control" placeholder="Recipient's username"
+                                            class="form-control" placeholder="Masukan penyebab ..."
                                             aria-label="Recipient's username" aria-describedby="basic-addon2">
 
                                     </div>
@@ -205,7 +205,7 @@
                                         ...</label>
                                     <div class="input-group mb-3">
                                         <input name="programbilas" id="programbilas" type="text"
-                                            class="form-control" placeholder="Recipient's username"
+                                            class="form-control" placeholder=" ...."
                                             aria-label="Recipient's username" aria-describedby="basic-addon2">
 
                                     </div>
@@ -215,7 +215,7 @@
                                 <label for="exampleInputEmail1">Lama HD</label>
                                 <div class="input-group mb-3">
                                     <input name="lamahd" id="lamahd" type="text" class="form-control"
-                                        placeholder="Recipient's username" aria-label="Recipient's username"
+                                        placeholder="Masukan lama hd ..." aria-label="Recipient's username"
                                         aria-describedby="basic-addon2">
                                     <div class="input-group-append">
                                         <span class="input-group-text" id="basic-addon2">jam</span>
@@ -240,19 +240,19 @@
                                     <div class="input-group mb-3">
                                         <label for="exampleInputEmail1" class="mr-2 ml-2">Ke</label>
                                         <input name="hd_ke" id="hd_ke" type="text" class="form-control"
-                                            placeholder="Recipient's username" aria-label="Recipient's username"
+                                            placeholder="Masukan dializer ke berapa ..." aria-label="Recipient's username"
                                             aria-describedby="basic-addon2">
                                     </div>
                                     <label for="exampleInputEmail1">BB pre HD</label>
                                     <div class="input-group mb-3">
                                         <input name="bb_pre_hd" id="bb_pre_hd" type="text" class="form-control"
-                                            placeholder="Recipient's username" aria-label="Recipient's username"
+                                            placeholder="Masukan BB pre HD ..." aria-label="Recipient's username"
                                             aria-describedby="basic-addon2">
                                     </div>
                                     <label for="exampleInputEmail1">BB Post HD</label>
                                     <div class="input-group mb-3">
                                         <input name="bb_post_hd" id="bb_post_hd" type="text" class="form-control"
-                                            placeholder="Recipient's username" aria-label="Recipient's username"
+                                            placeholder="Masukan BB Post HD ..." aria-label="Recipient's username"
                                             aria-describedby="basic-addon2">
                                     </div>
                                 </div>
@@ -261,23 +261,23 @@
                                 <label for="exampleInputEmail1">Jam mulai HD</label>
                                 <div class="input-group mb-3">
                                     <input name="jam_mulai_hd" id="jam_mulai_hd" type="text" class="form-control"
-                                        placeholder="Recipient's username" aria-label="Recipient's username"
+                                        placeholder="Masukan Jam mulai HD ..." aria-label="Recipient's username"
                                         aria-describedby="basic-addon2">
                                 </div>
                                 <label for="exampleInputEmail1">Jam Selesai HD</label>
                                 <div class="input-group mb-3">
                                     <input name="jam_selesai_hd" id="jam_selesai_hd" type="text"
-                                        class="form-control" placeholder="Recipient's username"
+                                        class="form-control" placeholder="Masukan Jam Selesai HD ..."
                                         aria-label="Recipient's username" aria-describedby="basic-addon2">
                                 </div>
                                 <label for="exampleInputEmail1">ke ...</label>
                                 <div class="input-group mb-3">
                                     <input type="text" name="ke" id="ke" class="form-control"
-                                        placeholder="Recipient's username" aria-label="Recipient's username"
+                                        placeholder="Masukan HD ke berapa ..." aria-label="Recipient's username"
                                         aria-describedby="basic-addon2">
                                 </div>
-                                <label for="exampleInputEmail1">HD ke ...</label>
-                                <div class="input-group mb-3">
+                                <label hidden  for="exampleInputEmail1">HD ke ...</label>
+                                <div  hidden class="input-group mb-3">
                                     <input type="text" name="hd_ke" id="hd_ke" class="form-control"
                                         placeholder="Recipient's username" aria-label="Recipient's username"
                                         aria-describedby="basic-addon2">
@@ -285,13 +285,13 @@
                                 <label for="exampleInputEmail1">Target BB kering :</label>
                                 <div class="input-group mb-3">
                                     <input name="target_bb_kering" id="target_bb_kering" type="text"
-                                        class="form-control" placeholder="Recipient's username"
+                                        class="form-control" placeholder="Target BB Kering ..."
                                         aria-label="Recipient's username" aria-describedby="basic-addon2">
                                 </div>
                                 <label for="exampleInputEmail1">BB Observasi :</label>
                                 <div class="input-group mb-3">
                                     <input name="bb_observasi" id="bb_observasi" type="text" class="form-control"
-                                        placeholder="Recipient's username" aria-label="Recipient's username"
+                                        placeholder="BB Observasi ..." aria-label="Recipient's username"
                                         aria-describedby="basic-addon2">
                                 </div>
                             </td>
