@@ -2958,6 +2958,8 @@ class ErmController extends Controller
                     'diagnosakerja' => trim($dataSet_3['diagnosakerja']),
                     'diagnosabanding' => $dataSet_3['diagnosabanding'],
                     'rencanakerja' => trim($dataSet_4['rencanakerja']),
+                    'renjana_tindakan' => trim($dataSet_4['rencanatindakan']),
+                    'tindakanmedis' => trim($dataSet_4['tindakanmedis']),
                     'keluhan_pasien' => trim($dataSet_1['keluhanutama']),
                     'tindak_lanjut' => $dataSet_tindaklanjut['pilihtindaklanjut'],
                     'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'] .' '. $keterangan_iter,
