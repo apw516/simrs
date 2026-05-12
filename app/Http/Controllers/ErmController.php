@@ -1733,6 +1733,7 @@ class ErmController extends Controller
                     //     die;
                     // } else {
                     assesmenawalperawat::whereRaw('no_rm = ? and kode_unit = ? and tanggalkunjungan = ?', array($dataSet['nomorrm'],  $dataSet['unit'], $dataSet['tanggalkunjungan']))->update($data);
+                    assesmenawaldokter::where('id_kunjungan',$dataSet['kodekunjungan'])->update(['keluhan_pasien' => trim($dataSet['keluhanutama'])]);
                     // }
                 } else {
                     $erm_assesmen = assesmenawalperawat::create($data);
