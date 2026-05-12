@@ -2971,6 +2971,8 @@ class ErmController extends Controller
                 ];
                 assesmenawaldokter::whereRaw('id_pasien = ? and kode_unit = ? and id_kunjungan = ?', array($dataSet_1['nomorrm'],  $dataSet_1['unit'], $dataSet_1['kodekunjungan']))->update($data);
                 $id_assesmen = $cek[0]->id;
+                assesmenawalperawat::where('kode_kunjungan',$dataSet_1['kodekunjungan'])->update(
+                    ['keluhanutama' => trim($dataSet_1['keluhanutama'])]);
             } else {
                 $erm_assesmen = assesmenawaldokter::create($data);
                 $id_assesmen = $erm_assesmen->id;
@@ -4088,6 +4090,7 @@ class ErmController extends Controller
             'diagnosakerja' => trim($dataSet_3['diagnosakerja']),
             'diagnosabanding' => $dataSet_3['diagnosabanding'],
             'rencanakerja' => trim($dataSet_4['rencanakerja']),
+            'renjana_tindakan' => trim($dataSet_4['rencanatindakan']),
             'tindakanmedis' => trim($dataSet_4['tindakanmedis']),
             'keluhan_pasien' => trim($dataSet_1['keluhanutama']),
             'tindak_lanjut' => $dataSet_tindaklanjut['pilihtindaklanjut'],
@@ -4146,6 +4149,8 @@ class ErmController extends Controller
                     'diagnosakerja' => trim($dataSet_3['diagnosakerja']),
                     'diagnosabanding' => $dataSet_3['diagnosabanding'],
                     'rencanakerja' => trim($dataSet_4['rencanakerja']),
+                    'renjana_tindakan' => trim($dataSet_4['rencanatindakan']),
+                    'tindakanmedis' => trim($dataSet_4['tindakanmedis']),
                     'keluhan_pasien' => trim($dataSet_1['keluhanutama']),
                     'tindak_lanjut' => $dataSet_tindaklanjut['pilihtindaklanjut'],
                     'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'] .' '. $keterangan_iter,

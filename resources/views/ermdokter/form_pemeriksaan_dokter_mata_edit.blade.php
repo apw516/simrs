@@ -962,6 +962,14 @@
                 <form action="" class="form_pemeriksaan_4">
                     <table class="table table-sm">
                         <tbody>
+                               <tr>
+                                <td class="text-bold font-italic">Rencana Tindakan</td>
+                                <td colspan="3">
+                                    <textarea class="form-control" name="rencanatindakan">
+                                    {{ $resume[0]->renjana_tindakan }}
+                                    </textarea>
+                                </td>
+                            </tr>
                             <tr>
                                 <td class="text-bold font-italic">Rencana Terapi </td>
                                 <td colspan="3">
