@@ -313,7 +313,7 @@ class PdfController extends Controller
         $pdf->setPaper('Letter', 'portrait');
         $d = $pdf->output();
         $name = $kodekunjungan . '.pdf';
-        $pdf->save(Storage::disk('public', $name)->put($name, $d));
+        $pdf->save(Storage::disk('shared', $name)->put($name, $d));
         // $pdf->save(storage_path('app/downloaded_pdfs/' . $name));
         // $nik = '1234567890123452';
         // $password = 'Bsre2025.#!';
@@ -343,8 +343,7 @@ class PdfController extends Controller
             $id_dokumen = $DD['messagee'];
             $name2 = $id_dokumen . '.pdf';
             $DD2 = $v->downloadpdf($id_dokumen, $kodekunjungan);
-            // $urlfile = '\\\\192.168.2.14\\erm\\resume_medis_rawat_jalan/';
-            $urlfile = storage_path('app/public/');
+            $urlfile = '\\\\192.168.2.14\\erm\\resume_medis_rawat_jalan/';
             $cek = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and status = 1', [$kodekunjungan]);
             if (count($cek) > 0) {
                 Model_log_tte::whereRaw('kode_kunjungan = ?', array($kodekunjungan))->update(['status_file' => 0, 'status' => 2]);
