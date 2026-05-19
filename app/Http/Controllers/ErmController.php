@@ -5416,9 +5416,7 @@ class ErmController extends Controller
         ];
         assesmenawaldokter::whereRaw('id_kunjungan = ?', array($request->kodekunjungan))->update($data);
         ts_layanan_header_order::whereRaw('kode_kunjungan = ? and status_order = ?', array($request->kodekunjungan, 0))->update($data2);
-
-
-        
+        $tte = $this->simpanttddokter_bsre($request->kodekunjungan);
         $data = [
             'kode' => 200,
             'message' => 'Data berhasil disimpan !'
@@ -5426,6 +5424,7 @@ class ErmController extends Controller
         echo json_encode($data);
         die;
     }
+   
     public function formtindakan(Request $request)
     {
         $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
