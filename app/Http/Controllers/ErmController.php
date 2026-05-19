@@ -9,6 +9,7 @@ use Codedge\Fpdf\Fpdf\Fpdf;
 use Codedge\Fpdf\Fpdf\printresume;
 use App\Models\assesmenawalperawat;
 use App\Models\model_catatan_hemodialisis;
+use App\Models\model_log_tte;
 use App\Models\model_catatan_pre_hd;
 use App\Models\model_penyulit_hd;
 use App\Models\assesmenawalperawat_igd;
