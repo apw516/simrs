@@ -10,6 +10,7 @@ use Codedge\Fpdf\Fpdf\printresume;
 use App\Models\assesmenawalperawat;
 use App\Models\model_catatan_hemodialisis;
 use App\Models\model_log_tte;
+use App\Models\ModelBSRE;
 use App\Models\model_catatan_pre_hd;
 use App\Models\model_penyulit_hd;
 use App\Models\assesmenawalperawat_igd;
@@ -5428,8 +5429,8 @@ class ErmController extends Controller
     public function simpantandatanganbsre($kodekunjungan)
     {
         $kodekunjungan = $kodekunjungan;
-        $nik = '1234567890123452';
-        $password = 'Bsre2025.#!';
+        $nik ='1234567890123452';
+        $password ='Bsre2025.#!';
         $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
         $data = ['title' => 'My PDF Document', 'content' => 'This is some content for the PDF.', $mt_pasien];
