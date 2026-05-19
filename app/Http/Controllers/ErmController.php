@@ -5416,6 +5416,9 @@ class ErmController extends Controller
         ];
         assesmenawaldokter::whereRaw('id_kunjungan = ?', array($request->kodekunjungan))->update($data);
         ts_layanan_header_order::whereRaw('kode_kunjungan = ? and status_order = ?', array($request->kodekunjungan, 0))->update($data2);
+
+
+        
         $data = [
             'kode' => 200,
             'message' => 'Data berhasil disimpan !'
