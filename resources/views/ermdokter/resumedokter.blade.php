@@ -1715,8 +1715,7 @@
             </table> --}}
             @if ($resume[0]->signature == '')
                 @if ($resume[0]->pic == auth()->user()->id || $resume[0]->pic == '')
-                    {{-- <button class="btn btn-success float-right" onclick="simpantandatangan()">Simpan</button> --}}
-                    <div class="jumbotron">
+                    {{-- <div class="jumbotron">
                         <h1 class="display-2 mb-3">Terima Kasih !</h1>
                         <p class="lead">Anda telah mengisi form assesmen medis rawat jalan ... </p>
                         <p class="lead">Tindak lanjut pasien <br>
@@ -1726,6 +1725,25 @@
                         <p>Pastikan data sudah terisi dengan benar.</p>
                         <a class="btn btn-success btn-lg" href="#" role="button"
                             onclick="simpantandatangan()">Simpan</a>
+                    </div> --}}
+                      <div class="card border-0 shadow-sm text-center py-4 bg-light mt-4">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <!-- Menggunakan text-success dan ukuran font standar inline -->
+                                <i class="bi bi-check-circle-fill text-success" style="font-size: 3.5rem;"></i>
+                            </div>
+                            <h3 class="font-weight-bold text-dark mb-2">Asesmen Medis Selesai Terisi!</h3>
+                            <p class="text-muted mx-auto mb-4"
+                                style="max-width: 500px; font-size: 0.95rem; line-height: 1.6;">
+                                Anda telah mengisi form asesmen medis rawat jalan. Pastikan seluruh diagnosis klinis
+                                dan instruksi medis sudah terinput dengan benar sebelum mengunci data.
+                            </p>
+                            <hr class="my-4 mx-auto border-light" style="max-width: 250px;">
+                            <button type="button" class="btn btn-success btn-lg px-5 shadow-sm font-weight-bold"
+                                onclick="simpantandatangan()">
+                                <i class="bi bi-pencil-square mr-2"></i> Kunci & Simpan Tanda Tangan
+                            </button>
+                        </div>
                     </div>
                 @endif
             @else
@@ -1801,7 +1819,7 @@
                     },
                     success: function(data) {
                         spinner.hide()
-                        if (data.kode == '502') {
+                        if (data.kode == '500') {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops',
@@ -1815,7 +1833,7 @@
                                 text: data.message,
                                 footer: 'ermwaled2023'
                             })
-                            ambildatapasien()
+                            resume2()
                         }
                     }
                 });

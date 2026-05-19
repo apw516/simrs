@@ -5374,9 +5374,15 @@ class ErmController extends Controller
              WHERE a.kode_kunjungan = ? and c.status_kunjungan != 8 order  by a.id desc limit 1', [$kodekunjungan]);
 
         $assesmendd = db::connection('mysql')->select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
+
+        $cektte = DB::table('log_ttd_elektronik')
+                ->where('kode_kunjungan', $kodekunjungan)
+                ->where('status_code', 200)
+                ->exists();
         return view('ermtemplate.hasil_pemeriksaan_medis', compact([
             'assesmen_dokter',
             'datakonsul',
+            'cektte',
             'tindakan',
             'farmasi',
             'penunjang',
@@ -5407,22 +5413,26 @@ class ErmController extends Controller
     }
     public function simpanttddokter(Request $request)
     {
+        
         $data = [
-            // 'tanggalassemen' => $this->get_now(),
-            'status' => '1',
-            'signature' => 'SUDAH VALIDASI'
-        ];
-        $data2 = [
-            // 'tanggalassemen' => $this->get_now(),
-            'status_order' => '1',
-        ];
-        assesmenawaldokter::whereRaw('id_kunjungan = ?', array($request->kodekunjungan))->update($data);
-        ts_layanan_header_order::whereRaw('kode_kunjungan = ? and status_order = ?', array($request->kodekunjungan, 0))->update($data2);
+         // 'tanggalassemen' => $this->get_now(),
+         'status' => '1',
+         'signature' => 'SUDAH VALIDASI'
+         ];
+         $data2 = [
+             // 'tanggalassemen' => $this->get_now(),
+             'status_order' => '1',
+         ];
+         assesmenawaldokter::whereRaw('id_kunjungan = ?', array($request->kodekunjungan))->update($data);
+         ts_layanan_header_order::whereRaw('kode_kunjungan = ? and status_order = ?', array($request->kodekunjungan, 0))->update($data2);
         $tte = $this->simpantandatanganbsre($request->kodekunjungan);
+        if($tte['kode'] == 200){
+        }
         $data = [
-            'kode' => 200,
-            'message' => 'Data berhasil disimpan !'
+            'kode' => $tte['kode'],
+            'message' => $tte['message']
         ];
+        // dd($data);
         echo json_encode($data);
         die;
     }
@@ -5555,10 +5565,10 @@ class ErmController extends Controller
                 'message' => 'Berkas berhasil ditanda tangan !',
                 'id' => $id_dokumen
             ];
-            echo json_encode($data1);
-            die;
+            return $data1;
+            // echo json_encode($data1);
+            // die;
         } else {
-
             $save_report = [
                 'status_code' => $DD['code'],
                 'response' => $DD['messagee'],
@@ -5572,8 +5582,9 @@ class ErmController extends Controller
                 'kode' => 500,
                 'message' => 'Berkas gagal ditanda tangan ! ' . $DD['messagee']
             ];
-            echo json_encode($data);
-            die;
+            return $data;
+            // echo json_encode($data);
+            // die;
         }
     }
     public function formtindakan(Request $request)
