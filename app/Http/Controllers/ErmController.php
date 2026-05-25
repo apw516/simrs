@@ -2904,6 +2904,7 @@ class ErmController extends Controller
             'rencanakerja' => trim($dataSet_4['rencanakerja']),
             'renjana_tindakan' => trim($dataSet_4['rencanatindakan']),
             'tindakanmedis' => trim($dataSet_4['tindakanmedis']),
+            'tindakanpenunjang' => trim($dataSet_4['tindakanpenunjang']),
             'keluhan_pasien' => trim($dataSet_1['keluhanutama']),
             'tindak_lanjut' => $dataSet_tindaklanjut['pilihtindaklanjut'],
             'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'] .' '. $keterangan_iter,
@@ -2963,6 +2964,7 @@ class ErmController extends Controller
                     'rencanakerja' => trim($dataSet_4['rencanakerja']),
                     'renjana_tindakan' => trim($dataSet_4['rencanatindakan']),
                     'tindakanmedis' => trim($dataSet_4['tindakanmedis']),
+                    'tindakanpenunjang' => trim($dataSet_4['tindakanpenunjang']),
                     'keluhan_pasien' => trim($dataSet_1['keluhanutama']),
                     'tindak_lanjut' => $dataSet_tindaklanjut['pilihtindaklanjut'],
                     'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'] .' '. $keterangan_iter,
@@ -4094,6 +4096,7 @@ class ErmController extends Controller
             'rencanakerja' => trim($dataSet_4['rencanakerja']),
             'renjana_tindakan' => trim($dataSet_4['rencanatindakan']),
             'tindakanmedis' => trim($dataSet_4['tindakanmedis']),
+            'tindakanpenunjang' => trim($dataSet_4['tindakanpenunjang']),
             'keluhan_pasien' => trim($dataSet_1['keluhanutama']),
             'tindak_lanjut' => $dataSet_tindaklanjut['pilihtindaklanjut'],
             'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'] .' '. $keterangan_iter,
@@ -4153,6 +4156,7 @@ class ErmController extends Controller
                     'rencanakerja' => trim($dataSet_4['rencanakerja']),
                     'renjana_tindakan' => trim($dataSet_4['rencanatindakan']),
                     'tindakanmedis' => trim($dataSet_4['tindakanmedis']),
+                    'tindakanpenunjang' => trim($dataSet_4['tindakanpenunjang']),
                     'keluhan_pasien' => trim($dataSet_1['keluhanutama']),
                     'tindak_lanjut' => $dataSet_tindaklanjut['pilihtindaklanjut'],
                     'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'] .' '. $keterangan_iter,
@@ -5493,7 +5497,7 @@ class ErmController extends Controller
         $hitung = count($cek2);
         $cetakanke = $hitung + 1;
         $mt_paramedis = db::select('select * from mt_paramedis where kode_paramedis = ?', [auth()->user()->kode_paramedis]);
-        $pdf = Pdf::loadView('pdf.document', compact([
+        $pdf = Pdf::loadView('pdf.document_blank', compact([
             'data',
             'tglperiksa',
             'mt_pasien',
@@ -5586,6 +5590,26 @@ class ErmController extends Controller
             // echo json_encode($data);
             // die;
         }
+    }
+     public function verifikasi_berkas2($id)
+    {
+        $data = db::select('select * from log_ttd_elektronik where id = ?', [$id]);
+        $file = $data[0]->file;
+        $id = $data[0]->id;
+        $v = new ModelBSRE();
+        $DD = $v->send_verifikasi($file, $id);
+        if ($DD['code'] == 200) {
+            $notes = $DD['messagee']->notes;
+        } else {
+            $notes = 'GAGAL VERIFIKASI';
+        }
+        Model_log_tte::whereRaw('id = ?', array($id))->update(['status_verif' => $notes]);
+        $data = [
+            'kode' => $DD['code'],
+            'message' => $notes
+        ];
+        // echo json_encode($data);
+        // die;
     }
     public function formtindakan(Request $request)
     {

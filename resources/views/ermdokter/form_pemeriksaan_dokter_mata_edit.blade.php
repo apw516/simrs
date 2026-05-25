@@ -962,6 +962,12 @@
                 <form action="" class="form_pemeriksaan_4">
                     <table class="table table-sm">
                         <tbody>
+                            <tr>
+                                <td class="text-bold font-italic">Tindakan Medis</td>
+                                <td colspan="3">
+                                    <textarea class="form-control" name="tindakanmedis">{{ $resume[0]->tindakanmedis }}</textarea>
+                                </td>
+                            </tr>
                                <tr>
                                 <td class="text-bold font-italic">Rencana Tindakan</td>
                                 <td colspan="3">
@@ -977,9 +983,9 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-bold font-italic">Tindakan Medis</td>
+                                <td class="text-bold font-italic">Tindakan Penunjang </td>
                                 <td colspan="3">
-                                    <textarea class="form-control" name="tindakanmedis">{{ $resume[0]->tindakanmedis }}</textarea>
+                                    <textarea class="form-control" name="tindakanpenunjang">{{ $resume[0]->tindakanpenunjang }}</textarea>
                                 </td>
                             </tr>
                         </tbody>

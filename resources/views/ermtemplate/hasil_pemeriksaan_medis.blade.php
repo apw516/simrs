@@ -218,6 +218,10 @@
                             </td>
                         </tr>
                         <tr>
+                            <td>Tindakan Penunjang</td>
+                            <td>{{ $cp->tindakanpenunjang }}</td>
+                        </tr>
+                        <tr>
                             <td>Tindakan Operasi</td>
                             <td></td>
                         </tr>

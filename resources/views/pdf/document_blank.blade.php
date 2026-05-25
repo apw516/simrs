@@ -162,16 +162,16 @@
                 <table class="table table-sm table-bordered font-italic text-bold">
                     <tr hidden>
                         <td>Sumber Data</td>
-                        <td colspan="3">{{ $cp->sumber_data }}
+                        <td colspan="4">{{ $cp->sumber_data }}
                         </td>
                     </tr>
                     <tr>
                         <td>Keluhan Utama</td>
-                        <td colspan="3">{{ $cp->keluhan_pasien }}</td>
+                        <td colspan="4">{{ $cp->keluhan_pasien }}</td>
                     </tr>
                     <tr hidden>
                         <td>Riwayat Penyakit Dahulu</td>
-                        <td colspan="3">{{ $cp->riwayat_kehamilan_pasien_wanita }}
+                        <td colspan="4">{{ $cp->riwayat_kehamilan_pasien_wanita }}
                             <br>
                             {{ $cp->riwyat_kelahiran_pasien_anak }}
                             <br>
@@ -181,34 +181,34 @@
                     </tr>
                     <tr>
                         <td>Riwayat Alergi</td>
-                        <td colspan="3">{{ $cp->riwayat_alergi }} |
+                        <td colspan="4">{{ $cp->riwayat_alergi }} |
                             {{ $cp->keterangan_alergi }} </td>
                     </tr>
                     <tr hidden>
                         <td>Riwayat Obat yang diminum</td>
-                        <td colspan="3"></td>
+                        <td colspan="4"></td>
                     </tr>
                     <tr>
                         <td>Kesadaran</td>
-                        <td colspan="3">{{ $cp->kesadaran }}</td>
+                        <td colspan="4">{{ $cp->kesadaran }}</td>
                     </tr>
                     <tr>
                         <td>Pemeriksaan Tanda Tanda Vital</td>
-                        <td colspan="3">
+                        <td colspan="4">
                             Tekanan Darah : {{ $cp->tekanan_darah }} / Frekuensi Nadi : {{ $cp->frekuensi_nadi }} /
                             Frekuensi Nafas : {{ $cp->frekuensi_nafas }} / Suhu Tubuh : {{ $cp->suhu_tubuh }} <br> Bb
                             / TB / IMT : {{ $cp->beratbadan }} | Umur : {{ $cp->umur }} </td>
                     </tr>
                     <tr>
                         <td>Pemeriksaan Fisik ( O )</td>
-                        <td colspan="3">{{ $cp->pemeriksaan_fisik }}</td>
+                        <td colspan="4">{{ $cp->pemeriksaan_fisik }}</td>
                     </tr>
                     <tr>
                         <td>Layanan Laboratorium</td>
                         <td colspan="2">
-                            @foreach($penunjang as $pp)
-                                @if($pp->kode_unit == 3002)
-                                {{ $pp->NAMA_TARIF }} <br>
+                            @foreach ($penunjang as $pp)
+                                @if ($pp->kode_unit == 3002)
+                                    {{ $pp->NAMA_TARIF }} <br>
                                 @endif
                             @endforeach
                         </td>
@@ -217,9 +217,9 @@
                     <tr>
                         <td>Layanan Radiologi</td>
                         <td colspan="2">
-                             @foreach($penunjang as $pp)
-                                @if($pp->kode_unit == 3003)
-                                {{ $pp->NAMA_TARIF }} <br>
+                            @foreach ($penunjang as $pp)
+                                @if ($pp->kode_unit == 3003)
+                                    {{ $pp->NAMA_TARIF }} <br>
                                 @endif
                             @endforeach
                         </td>
@@ -244,17 +244,17 @@
                         </tr>
                     @endif
                     <tr>
-                        <td class="text-center" colspan="4">Diagnosis ( A ) <br></td>
+                        <td class="text-center" colspan="5">Diagnosis ( A ) <br></td>
                     </tr>
                     <tr>
                         <td>Diagnosa Utama</td>
                         <td>{{ $cp->diagnosakerja }}<br></td>
-                        <td class="text-left" colspan="2">ICD X :</td>
+                        <td class="text-left" colspan="3">ICD X :</td>
                     </tr>
                     <tr>
                         <td>Diagnosa Sekunder</td>
                         <td>{{ $cp->diagnosabanding }}<br></td>
-                        <td class="text-left" colspan="2">ICD X :</td>
+                        <td class="text-left" colspan="3">ICD X :</td>
                     </tr>
                     <tr>
                         <td>Tindakan / Prosedur</td>
@@ -266,12 +266,12 @@
                                 @endif
                             @endforeach
                         </td>
-                        <td class="text-left" colspan="2">ICD 9 CM :</td>
+                        <td class="text-left" colspan="3">ICD 9 CM :</td>
                     </tr>
                     <tr>
                         <td>Tindakan Operasi</td>
                         <td></td>
-                        <td class="text-left" colspan="2">ICD 9 CM :</td>
+                        <td class="text-left" colspan="3">ICD 9 CM :</td>
                     </tr>
                     {{-- <tr>
                         <td>Rencana Tindakan ( P )</td>
@@ -279,7 +279,7 @@
                     </tr> --}}
                     <tr>
                         <td>Tindak Lanjut</td>
-                        <td colspan="3">{{ $cp->tindak_lanjut }}<br>
+                        <td colspan="4">{{ $cp->tindak_lanjut }}<br>
                             {{ $cp->keterangan_tindak_lanjut }}
                         </td>
                     </tr>
@@ -289,7 +289,7 @@
                     </tr> --}}
                     <tr>
                         <td>Obat obatan</td>
-                        <td colspan="3">
+                        <td colspan="4">
                             {{-- <table class="table table-sm">
                                 <thead>
                                     <th>Nama Obat</th>
@@ -324,33 +324,52 @@
                             {{-- </tbody>
                             </table> --}}
                         </td>
-                        <td colspan="2">ICD 9 CM :</td>
+                        <td colspan="3">ICD 9 CM :</td>
                     </tr>
                     <tr>
                         <td>Jawaban Konsul Ke poli lain</td>
-                        <td colspan="3">{{ $cp->keterangan_tindak_lanjut_2 }} <br><br>
+                        <td colspan="4">{{ $cp->keterangan_tindak_lanjut_2 }} <br><br>
 
                         </td>
                     </tr>
                     <tr>
                         <td>Hasil Pemeriksaan Khusus</td>
-                        <td colspan="3">
+                        <td colspan="4">
                             {{ $cp->pemeriksaan_khusus }} <br>
                             {{ $cp->pemeriksaan_khusus_2 }}
                             {{-- <img width="80%"src="{{ $cp->gambar_1 }}" alt=""><br><br> --}}
                         </td>
                     </tr>
                     <tr>
+                        <td class="align-middle fw-bold text-secondary" width="25%">Dokter Pemeriksa</td>
+                        <td colspan="4" class="align-middle text-right">
+                            <div class="d-inline-block text-center pe-4">
+                                <div class="py-4 text-muted fs-7">
+                                    {{-- Anda bisa menaruh gambar tanda tangan digital / QR Code TTE di sini --}}
+                                    <span class="text-uppercase text-xs d-block mb-2">#</span>
+                                    <i class="bi bi-qr-code fs-2 d-block"></i>
+                                </div>
+
+                                <div class="fw-bold text-dark">
+                                    {{ $mt_paramedis[0]->nama_paramedis }}
+                                </div>
+                                <div class="text-muted fs-7">
+                                    NIP. {{ $mt_paramedis[0]->nip ?? '-' }}
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {{-- <tr>
                         <td>Dokter Pemeriksa</td>
                         <td style="height:50px" colspan="3" class="">
                             <table class="float-left text-bold float-right">
-                                {{-- <tr>
+                                <tr>
                                     <td style="height:90px" class="text-center">
                                         <br>
                                         <br>
                                         #
                                     </td>
-                                </tr> --}}
+                                </tr>
                                 <tr>
                                     <td>{{ $mt_paramedis[0]->nama_paramedis }} <br> NIP {{ $mt_paramedis[0]->nip }}
                                         </p>
@@ -358,7 +377,7 @@
                                 </tr>
                             </table>
                         </td>
-                    </tr>
+                    </tr> --}}
                     {{-- <tr>
                         <td>Tanggal Periksa</td>
                         <td>{{ $cp->tgl_pemeriksaan }}</td>
@@ -527,13 +546,13 @@
                                         <td>Dokter Pemeriksa</td>
                                         <td style="height:50px">
                                             <table class="text-xxs float-left text-bold float-right">
-                                                {{-- <tr>
+                                                <tr>
                                                     <td style="height:90px" class="text-center">
                                                         <br>
                                                         <br>
                                                         #
                                                     </td>
-                                                </tr> --}}
+                                                </tr>
                                                 <tr>
                                                     <td>{{ $mt_paramedis[0]->nama_paramedis }} <br> NIP
                                                         {{ $mt_paramedis[0]->nip }}
@@ -559,6 +578,15 @@
             @endif
         @endforeach
     </div>
+     <footer>
+        <div class="text-xxxs font-italic" id="footer">
+            <img class="mr-1 ml-1 mt-2" width="4%" src="{{ public_path('../public/img/logobsre.png') }}"
+                alt=""> *Dokumen ini telah ditanda tangani secara elektronik menggunakan sertifikat elektronik
+            yang
+            telah diterbitkan oleh Balai Besar Sertifikasi ( BSrE ), Badan Siber dan Sandi Negara.(
+            cetakan..,ke-{{ $cetakanke }})
+        </div>
+    </footer>
     <footer>
         <div class="text-xxxs font-italic" id="footer">
             {{-- <img class="mr-1 ml-1 mt-2" width="8%" src="{{ public_path('../public/img/logobsre.png') }}"

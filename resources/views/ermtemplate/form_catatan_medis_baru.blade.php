@@ -848,6 +848,10 @@
                                                             <td>{{ $k->rencanakerja }}</td>
                                                         </tr>
                                                         <tr>
+                                                            <td>Tindakan Penunjang ( P )</td>
+                                                            <td>{{ $k->tindakanpenunjang }}</td>
+                                                        </tr>
+                                                        <tr>
                                                             <td>Tindak Lanjut</td>
                                                             <td>{{ $k->tindak_lanjut }}<br>
                                                                 {{ $k->keterangan_tindak_lanjut }} <br><br>
