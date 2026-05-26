@@ -2,7 +2,8 @@
     <div class="card-header bg-info">CPPT
         <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
             data-target="#modalresumeperawat"><i class="bi bi-eye mr-1"></i> Hasil Assesmen Keperawatan</button>
-        <button class="btn btn-warning lihatcppt" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal" data-target="#modalcppt"><i class="bi bi-info-circle ml-1 ml-1"></i> CPPT</button>
+        <button class="btn btn-warning lihatcppt" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
+            data-target="#modalcppt"><i class="bi bi-info-circle ml-1 ml-1"></i> CPPT</button>
 
         @if ($kunjungan[0]->ref_kunjungan != '0')
             <button class="btn btn-warning ml-2" idrp="{{ $resume_perawat[0]->id }}" data-toggle="modal"
@@ -10,9 +11,10 @@
         @endif
     </div>
     <div class="card-body  table-responsive p-5" style="height: 757Px">
-         @if ($status_cek_rujukan == 1)
+        @if ($status_cek_rujukan == 1)
             <H3 class="mb-3">Pasien BPJS</H3>
-            <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalicare" onclick="showicare2()">Lihat Icare</button>
+            <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalicare"
+                onclick="showicare2()">Lihat Icare</button>
             @if ($jenisrujukan == 'FASKES 1')
                 <div class="alert alert-light" role="alert">
                     <h5 class="text-bold mb-2">Kunjungan Pasien Dengan Rujukan dari Faskes
@@ -23,13 +25,16 @@
                     <h5>Tanggal Rujukan : {{ $detailrujukan->response->rujukan->tglKunjungan }}</h5>
                     <h5 class="text-danger font-italic mt-2"> Rujukan dibuat {{ $selisih }} hari yang lalu, masa
                         berlaku rujukan adalah 90 hari ....</h5>
-                    @if ($selisih > 60)                        
+                    @if ($selisih > 60)
                         <div class="alert alert-warning mt-4 mb-4 font-italic" role="alert">
-                            <h3 class="text-bold"> @if(count($kunjunganKronis) > 0)
-                                Pasien Kronis ,@endif Pasien berpotensi PRB ( PRB BPJS adalah
+                            <h3 class="text-bold">
+                                @if (count($kunjunganKronis) > 0)
+                                    Pasien Kronis ,
+                                @endif Pasien berpotensi PRB ( PRB BPJS adalah
                                 Program Rujuk Balik yang memungkinkan pasien penyakit kronis stabil untuk melanjutkan
                                 pengobatan di Fasilitas Kesehatan Tingkat Pertama (FKTP) seperti puskesmas atau klinik.
-                                )</h3>
+                                )
+                            </h3>
                         </div>
                     @endif
                     </p>
@@ -114,8 +119,8 @@
                                                     <div class="col-md-3">
                                                         <div class="form-group form-check">
                                                             <input @if ($resume[0]->hipertensi == 1) checked @endif
-                                                                type="checkbox" class="form-check-input" id="hipertensi"
-                                                                name="hipertensi" value="1">
+                                                                type="checkbox" class="form-check-input"
+                                                                id="hipertensi" name="hipertensi" value="1">
                                                             <label class="form-check-label"
                                                                 for="exampleCheck1">Hipertensi</label>
                                                         </div>
@@ -962,7 +967,13 @@
                 <form action="" class="form_pemeriksaan_4">
                     <table class="table table-sm">
                         <tbody>
-                               <tr>
+                            <tr>
+                                <td class="text-bold font-italic">Tindakan Medis</td>
+                                <td colspan="3">
+                                    <textarea class="form-control" name="tindakanmedis">{{ $resume[0]->tindakanmedis }}</textarea>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td class="text-bold font-italic">Rencana Tindakan</td>
                                 <td colspan="3">
                                     <textarea class="form-control" name="rencanatindakan">
@@ -977,9 +988,9 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-bold font-italic">Tindakan Medis</td>
+                                <td class="text-bold font-italic">Tindakan Penunjang </td>
                                 <td colspan="3">
-                                    <textarea class="form-control" name="tindakanmedis">{{ $resume[0]->tindakanmedis }}</textarea>
+                                    <textarea class="form-control" name="tindakanpenunjang">{{ $resume[0]->tindakanpenunjang }}</textarea>
                                 </td>
                             </tr>
                         </tbody>
@@ -1559,8 +1570,7 @@
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="modalicare" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="modalicare" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -1694,25 +1704,25 @@
 
 <!-- Modal -->
 <div class="modal fade" id="modalcppt" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Catatan Perkembangan Pasien Terintegrasi</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="v_cppt">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Catatan Perkembangan Pasien Terintegrasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_cppt">
 
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
     </div>
-  </div>
 </div>
 <input hidden type="text" id="statuslihatcppt" value="0">
 <link rel="stylesheet" href="{{ asset('public/dist/css/datepicker.css') }}" rel="stylesheet">
@@ -1725,7 +1735,7 @@
         }).datepicker('update', new Date());
     });
 
-  $(".lihatcppt").click(function() {
+    $(".lihatcppt").click(function() {
         status = $('#statuslihatcppt').val()
         if (status == 0) {
             status = $('#statuslihatcppt').val(1)
@@ -1746,6 +1756,7 @@
             });
         }
     })
+
     function simpanhasil() {
         var canvas1 = document.getElementById("myCanvas1");
         var ctx1 = canvas1.getContext("2d");
@@ -2200,7 +2211,8 @@
         }
 
     });
- function showicare2() {
+
+    function showicare2() {
         var kodekunjungan = $('#kodekunjungan').val()
         $.ajax({
             type: 'post',
@@ -2215,6 +2227,7 @@
             }
         });
     }
+
     function addform() {
         var max_fields = 10;
         var wrapper = $(".formobatfarmasi2"); //Fields wrapper

@@ -5,7 +5,8 @@
         <button class="btn btn-warning lihatcppt" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
             data-target="#modalcppt"><i class="bi bi-info-circle ml-1 ml-1"></i> CPPT</button>
         <button hidden class="btn btn-success liathasil_lab2" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
-            data-target="#modalhasillab"><i class="bi bi-info-circle ml-1 ml-1"></i> Hasil laboratorium Spesial Order </button>
+            data-target="#modalhasillab"><i class="bi bi-info-circle ml-1 ml-1"></i> Hasil laboratorium Spesial Order
+        </button>
 
         {{-- <button class="btn btn-danger ml-2 lihathasilpenunjang_lab" nomorrm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
             data-target="#modalhasilpenunjang_lab"><i class="bi bi-eye mr-1"></i> Hasil Pemeriksaan Laboratorium</button>
@@ -17,30 +18,31 @@
         @endif --}}
     </div>
     <!-- Modal -->
-<div class="modal fade" id="modalhasillab" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Hasil Pemeriksaan Laboratorium</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="v_hasil_penunjang_lab">
-
+    <div class="modal fade" id="modalhasillab" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Hasil Pemeriksaan Laboratorium</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <div class="modal-body">
+                    <div class="v_hasil_penunjang_lab">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
     <div class="card-body table-responsive p-5" style="height: 757Px">
-             @if ($status_cek_rujukan == 1)
+        @if ($status_cek_rujukan == 1)
             <H3 class="mb-3">Pasien BPJS</H3>
-            <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalicare" onclick="showicare2()">Lihat Icare</button>
+            <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalicare"
+                onclick="showicare2()">Lihat Icare</button>
             @if ($jenisrujukan == 'FASKES 1')
                 <div class="alert alert-light" role="alert">
                     <h5 class="text-bold mb-2">Kunjungan Pasien Dengan Rujukan dari Faskes
@@ -51,13 +53,15 @@
                     <h5>Tanggal Rujukan : {{ $detailrujukan->response->rujukan->tglKunjungan }}</h5>
                     <h5 class="text-danger font-italic mt-2"> Rujukan dibuat {{ $selisih }} hari yang lalu, masa
                         berlaku rujukan adalah 90 hari ....</h5>
-                    @if ($selisih > 60)                        
+                    @if ($selisih > 60)
                         <div class="alert alert-warning mt-4 mb-4 font-italic" role="alert">
-                            <h3 class="text-bold"> @if(count($kunjunganKronis) > 0)
-                                Pasien Kronis ,@endif Pasien berpotensi PRB ( PRB BPJS adalah
+                            <h3 class="text-bold">
+                                @if (count($kunjunganKronis) > 0)
+                                    Pasien Kronis ,@endif Pasien berpotensi PRB ( PRB BPJS adalah
                                 Program Rujuk Balik yang memungkinkan pasien penyakit kronis stabil untuk melanjutkan
                                 pengobatan di Fasilitas Kesehatan Tingkat Pertama (FKTP) seperti puskesmas atau klinik.
-                                )</h3>
+                                )
+                            </h3>
                         </div>
                     @endif
                     </p>
@@ -150,7 +154,8 @@
                                                                 id="kencingmanis" name="kencingmanis" value="1"
                                                                 @if (count($last_assdok) > 0) @if ($last_assdok[0]->kencingmanis == '1') checked @endif
                                                                 @endif>
-                                                            <label class="form-check-label" for="exampleCheck1">Kencing
+                                                            <label class="form-check-label"
+                                                                for="exampleCheck1">Kencing
                                                                 Manis</label>
                                                         </div>
                                                     </div>
@@ -1186,8 +1191,9 @@
                 <button class="btn btn-danger ml-2 lihathasilpenunjang_lab" nomorrm="{{ $kunjungan[0]->no_rm }}"
                     data-toggle="modal" data-target="#hasil_lab_by_form_dokter"><i class="bi bi-eye mr-1"></i>
                     Hasil Laboratorium</button>
-                    <button class="btn btn-info liathasil_lab2" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
-                    data-target="#modalhasillab"><i class="bi bi-info-circle ml-1 ml-1"></i> Hasil laboratorium Spesial Order </button>
+                <button class="btn btn-info liathasil_lab2" rm="{{ $kunjungan[0]->no_rm }}" data-toggle="modal"
+                    data-target="#modalhasillab"><i class="bi bi-info-circle ml-1 ml-1"></i> Hasil laboratorium
+                    Spesial Order </button>
                 <button class="btn btn-danger ml-2 lihathasilpenunjang_rad" nomorrm="{{ $kunjungan[0]->no_rm }}"
                     data-toggle="modal" data-target="#modalhasilpenunjang_rad"><i class="bi bi-eye mr-1"></i>
                     Hasil Radiologi</button>
@@ -1213,6 +1219,14 @@
                     <table class="table table-sm">
                         <tbody>
                             <tr>
+                                <td class="text-bold font-italic">Tindakan Medis</td>
+                                <td colspan="3">
+                                    <textarea class="form-control" name="tindakanmedis">
+@if (count($last_assdok) > 0){{ $last_assdok[0]->tindakanmedis }} @endif
+</textarea>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td class="text-bold font-italic">Rencana Tindakan</td>
                                 <td colspan="3">
                                     <textarea class="form-control" name="rencanatindakan">
@@ -1229,36 +1243,35 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-bold font-italic">Tindakan Medis</td>
+                                <td class="text-bold font-italic">Tindakan Penunjang</td>
                                 <td colspan="3">
-                                    <textarea class="form-control" name="tindakanmedis">
-@if (count($last_assdok) > 0){{ $last_assdok[0]->tindakanmedis }} @endif
+                                    <textarea class="form-control" name="tindakanpenunjang">
+@if (count($last_assdok) > 0){{ $last_assdok[0]->tindakanpenunjang }} @endif
 </textarea>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </form>
-                  <div @if (auth()->user()->unit != '1012' && auth()->user()->unit != '1027' && auth()->user()->id != '220') hidden @endif class="col-md-12">
-                                        <div class="card">
-                                            <div class="card-header text-bold bg-dark">Hasil Expertisi</div>
-                                            <div class="card-body">
-                                                <textarea class="form-control" id="hasilexpertisi" name="hasilexpertisi" cols="30" rows="10"
-                                                    placeholder="Silahkan isi hasil expertisi ...">
+                <div @if (auth()->user()->unit != '1012' && auth()->user()->unit != '1027' && auth()->user()->id != '220') hidden @endif class="col-md-12">
+                    <div class="card">
+                        <div class="card-header text-bold bg-dark">Hasil Expertisi</div>
+                        <div class="card-body">
+                            <textarea class="form-control" id="hasilexpertisi" name="hasilexpertisi" cols="30" rows="10"
+                                placeholder="Silahkan isi hasil expertisi ...">
 @if (count($last_assdok) > 0){{ $last_assdok[0]->evaluasi }}@endif
 </textarea>
-                                            </div>
-                                        </div>
-                                    </div>
+                        </div>
+                    </div>
+                </div>
                 {{-- formfarmasi --}}
                 <div class="card">
-                    <div class="card-header bg-light">Order Farmasi 
-                        <button type="button"
-                            class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
-                            onclick="ambilresep()">Template resep</button>
-                        <button type="button"
-                            class="btn btn-success float-right mr-1 ml-1" data-toggle="modal" data-target="#modaltemplate"
-                            onclick="ambilriwayatresep()">Riwayat Resep Pasien</button></div>
+                    <div class="card-header bg-light">Order Farmasi
+                        <button type="button" class="btn btn-success float-right" data-toggle="modal"
+                            data-target="#modaltemplate" onclick="ambilresep()">Template resep</button>
+                        <button type="button" class="btn btn-success float-right mr-1 ml-1" data-toggle="modal"
+                            data-target="#modaltemplate" onclick="ambilriwayatresep()">Riwayat Resep Pasien</button>
+                    </div>
                     <div class="card-body">
                         @if ($selisih > 70)
                             <div class="alert alert-warning" role="alert">
@@ -1664,8 +1677,7 @@
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="modalicare" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="modalicare" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -1988,17 +2000,18 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="hasil_lab_by_form_dokter" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Hasil Laboratorium</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        {{-- <div class="row">
+<div class="modal fade" id="hasil_lab_by_form_dokter" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hasil Laboratorium</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{-- <div class="row">
             <div class="col-md-2">
                  <div class="form-group">
                     <label for="exampleInputEmail1">Jumlah data</label>
@@ -2010,16 +2023,16 @@
                 <button class="btn btn-success" style="margin-top:32px" onclick="tampilkanhasilnya()">Tampilkan</button>
             </div>
         </div> --}}
-        <div class="v_hasil_lab_by_dokter mt-2">
+                <div class="v_hasil_lab_by_dokter mt-2">
 
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
     </div>
-  </div>
 </div>
 
 <input hidden type="text" id="statuslihatcppt" value="0">
@@ -2032,28 +2045,31 @@
             todayHighlight: true,
         }).datepicker('update', new Date());
     });
+
     function tampilkanhasilnya() {
-            jlh = $('#jumlahdatahasil').val()
-            rm = $('#rm').val()
-            spinner = $('#loader')
-            spinner.show();
-            $.ajax({
-                type: 'post',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    jlh,rm
-                },
-                url: '<?= route('ambilhasillab_by_limit') ?>',
-                error: function(response){
-                    spinner.hide()
-                    alert('error')
-                },
-                success: function(response) {
-                    $('.v_hasil_lab_by_dokter').html(response);
-                    spinner.hide()
-                }
-            });
-        }
+        jlh = $('#jumlahdatahasil').val()
+        rm = $('#rm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                jlh,
+                rm
+            },
+            url: '<?= route('ambilhasillab_by_limit') ?>',
+            error: function(response) {
+                spinner.hide()
+                alert('error')
+            },
+            success: function(response) {
+                $('.v_hasil_lab_by_dokter').html(response);
+                spinner.hide()
+            }
+        });
+    }
+
     function simpanhasil() {
         var canvas1 = document.getElementById("myCanvas1");
         var ctx1 = canvas1.getContext("2d");
@@ -2185,6 +2201,7 @@
             }
         });
     })
+
     function ambilformiterasiobat() {
         var kodekunjungan = $('#kodekunjungan').val()
         $.ajax({
@@ -2268,6 +2285,7 @@
             }
         });
     })
+
     function batalisi() {
         rm = $('#nomorrm').val()
         formcatatanmedis(rm)
@@ -2416,6 +2434,7 @@
             }
         }
     });
+
     function showname() {
         a = $('#simpantemplate:checked').val()
         if (a == 'on') {
@@ -2424,6 +2443,7 @@
             $('#namaresep').attr('Hidden', true)
         }
     }
+
     function ambilresep() {
         spinner = $('#loader')
         spinner.show();
@@ -2444,6 +2464,7 @@
             }
         });
     }
+
     function ambilriwayatresep() {
         spinner = $('#loader')
         spinner.show();
@@ -2482,6 +2503,7 @@
             }
         });
     });
+
     function showMarkerArea(target) {
         const markerArea = new markerjs2.MarkerArea(target);
         markerArea.addEventListener("render", (event) => (target.src = event.dataUrl));
@@ -2492,6 +2514,7 @@
         ambilriwayatobat()
         ambilformiterasiobat()
     })
+
     function ambilriwayatobat() {
         spinner = $('#loader')
         spinner.show();
@@ -2511,6 +2534,7 @@
             }
         });
     }
+
     function resetgambar() {
         $.ajax({
             type: 'post',
@@ -2527,6 +2551,7 @@
             }
         });
     }
+
     function ambilgambar() {
         $.ajax({
             type: 'post',
@@ -2543,7 +2568,8 @@
             }
         });
     }
-        function showicare2() {
+
+    function showicare2() {
         var kodekunjungan = $('#kodekunjungan').val()
         $.ajax({
             type: 'post',
@@ -2558,6 +2584,7 @@
             }
         });
     }
+
     function addform() {
         var max_fields = 10;
         var wrapper = $(".formobatfarmasi2"); //Fields wrapper
@@ -2638,7 +2665,7 @@
             }
         });
     })
-     $(".liathasil_lab2").click(function() {
+    $(".liathasil_lab2").click(function() {
         spinner = $('#loader')
         spinner.show();
         nomorrm = $(this).attr('rm')

@@ -721,6 +721,12 @@
                 <form action="" class="form_pemeriksaan_4">
                     <table class="table table-sm">
                         <tbody>
+                              <tr>
+                                <td class="text-bold font-italic">Tindakan Medis</td>
+                                <td colspan="3">
+                                    <textarea class="form-control" name="tindakanmedis">@if (count($last_assdok) > 0){{ $last_assdok[0]->tindakanmedis }} @endif </textarea>
+                                </td>
+                            </tr>
                              <tr>
                                 <td class="text-bold font-italic">Rencana Tindakan</td>
                                 <td colspan="3">
@@ -734,11 +740,9 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-bold font-italic">Tindakan Medis</td>
+                                <td class="text-bold font-italic">Tindakan Penunjang</td>
                                 <td colspan="3">
-                                    <textarea class="form-control" name="tindakanmedis">
-@if (count($last_assdok) > 0){{ $last_assdok[0]->tindakanmedis }} @endif
-</textarea>
+                                    <textarea class="form-control" name="tindakanpenunjang">@if (count($last_assdok) > 0){{ $last_assdok[0]->tindakanterapi }} @endif</textarea>
                                 </td>
                             </tr>
                         </tbody>
