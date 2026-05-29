@@ -14,7 +14,7 @@
         @endif
     </div>
     <div class="card-body">
-         @if ($status_cek_rujukan == 1)
+         {{-- @if ($status_cek_rujukan == 1)
             <H3 class="mb-3">Pasien BPJS</H3>
             <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalicare" onclick="showicare2()">Lihat Icare</button>
             @if ($jenisrujukan == 'FASKES 1')
@@ -45,7 +45,73 @@
             @endif
         @else
             <H3 class="mb-3">Pasien UMUM</H3>
-        @endif
+        @endif --}}
+         <style>
+            .alert-blink-danger {
+                animation: pulse-danger 2s infinite;
+            }
+
+            .alert-blink-warning {
+                animation: pulse-warning 2s infinite;
+            }
+
+            @keyframes pulse-danger {
+
+                0%,
+                100% {
+                    background-color: #f8d7da;
+                    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+                }
+
+                50% {
+                    background-color: #f5b3b7;
+                    box-shadow: 0 0 12px rgba(220, 53, 69, 0.4);
+                }
+            }
+
+            @keyframes pulse-warning {
+
+                0%,
+                100% {
+                    background-color: #fff3cd;
+                }
+
+                50% {
+                    background-color: #ffe89e;
+                    box-shadow: 0 0 12px rgba(255, 193, 7, 0.4);
+                }
+            }
+        </style>
+        @php
+            // Menentukan class animasi berkedip secara otomatis
+            $blinkClass = '';
+            if (($alertClass ?? '') == 'alert-danger') {
+                $blinkClass = 'alert-blink-danger';
+            } elseif (($alertClass ?? '') == 'alert-warning') {
+                $blinkClass = 'alert-blink-warning';
+            }
+        @endphp
+        <div class="alert {{ $alertClass }} {{ $blinkClass }} alert-dismissible fade show p-3 mb-3 shadow-sm border-0"
+            role="alert" style="{{ $borderClass }} color: #212529;">
+            <div class="row align-items-top">
+                <div class="col-auto pr-0 pt-1">
+                    <i class="{{ $alertIcon }} fa-2x mx-2"></i>
+                </div>
+                <div class="col pl-3">
+                    <strong class="text-uppercase font-weight-bold d-block mb-2"
+                        style="letter-spacing: 1px; font-size: 0.9rem;">
+                        SISTEM MONITORING PROGRAM PRB & RUJUKAN BPJS
+                    </strong>
+                    <p class="mb-0 font-weight-normal text-justify" style="font-size: 1.1rem; line-height: 1.5;">
+                        {!! $pesan_rujukan !!}
+                    </p>
+                </div>
+            </div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+                style="color: inherit; opacity: 0.6; position: absolute; top: 15px; right: 15px;">
+                <span aria-hidden="true" style="font-size: 1.5rem;">&times;</span>
+            </button>
+        </div>
         @if ($kunjungan[0]->ref_kunjungan != '0')
             <div class="jumbotron mt-3">
                 <h1 class="display-4">Hello {{ auth()->user()->nama }} </h1><br>

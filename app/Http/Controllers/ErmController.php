@@ -985,6 +985,80 @@ class ErmController extends Controller
     public function formpemeriksaan_perawat(Request $request)
     {
         $kunjungan = DB::select('select *,fc_umur(no_rm) as umur from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
+        $nomor_rujukan = $kunjungan[0]->no_rujukan;
+       // 1. Inisialisasi nilai awal (Default fallback)
+        $rujukan = $nomor_rujukan; // Pastikan nama variabel seragam
+        $detailrujukan = '';
+        $selisih = 0;
+        $daterujukan = 0;
+        $status_cek_rujukan = 0;
+        $jenisrujukan = 'Tidak ditemukan no rujukan !';
+        // Variabel untuk kebutuhan komponen Alert di Blade
+        $alertClass = 'alert-info';
+        $alertIcon = 'fas fa-info-circle';
+        $borderClass = 'border-left: 6px solid #117a8b;';
+        $pesan_rujukan = 'Gagal memproses: Nomor rujukan kosong atau tidak valid.';
+        if (strlen($rujukan) > 5) {
+            $cekrujukan2 = substr($rujukan, 0, 8);            
+            if ($cekrujukan2 == '1018R001') {
+                $jenisrujukan = 'FASKES 2';
+                $status_cek_rujukan = 1;
+                $alertClass = 'alert-success'; // Hijau aman karena pasca rawat inap
+                $alertIcon = 'fas fa-check-circle';
+                $borderClass = 'border-left: 6px solid #28a745;';
+                $pesan_rujukan = "Pasien merupakan pasien pasca rawat inap (Faskes 2 Intern).";
+            } else {
+                $jenisrujukan = 'FASKES 1';
+                $v = new VclaimModel(); // Cukup deklarasi 1 kali di sini                
+                try {
+                    // Jalankan pencarian utama ke Faskes 1
+                    $res = $v->carirujukan_byno($rujukan);
+                    
+                    // Fallback: Jika di Faskes 1 tidak ada (bukan code 200), langsung lempar cari ke Faskes 2 / RS
+                    if ($res->metaData->code != 200) {
+                        $res = $v->carirujukanRS_byno_($rujukan);
+                        $jenisrujukan = 'FASKES 2 (RS)';
+                    }
+
+                    // JIKA SALAH SATU FASKES BERHASIL MENDAPATKAN DATA (CODE 200)
+                    if ($res->metaData->code == 200) {
+                        $detailrujukan = $res; // Simpan data response asli BPJS
+                        $tglkunjungan = $res->response->rujukan->tglKunjungan;
+                        
+                        // Logika Hitung Selisih Hari (Hanya ditulis 1 kali)
+                        $date1 = date_create($tglkunjungan);
+                        $date2 = date_create($this->get_date());
+                        $selisih = date_diff($date1, $date2)->days;
+                        
+                        $daterujukan = $tglkunjungan;
+                        $status_cek_rujukan = 1;
+                        $sisa_hari = 90 - $selisih;
+
+                        // --- LOGIKA DETERMINASI ALERT HARIAN BPJS ---
+                        if ($selisih >= 60) {
+                            // JIKA RUJUKAN SUDAH 60 HARI ATAU LEBIH (MERAH BERKEDIP)
+                            $alertClass = 'alert-danger';
+                            $alertIcon = 'fas fa-times-circle';
+                            $borderClass = 'border-left: 6px solid #dc3545;';
+                            $pesan_rujukan = "Masa berlaku rujukan Kritis! Sudah berjalan <strong>{$selisih} Hari</strong> (Sisa waktu {$sisa_hari} hari lagi). <br>
+                            ⚠️ <strong>REKOMENDASI PROGRAM BPJS:</strong> Pasien wajib dievaluasi! Jika kondisi klinis sudah STABIL, segera daftarkan sebagai peserta <strong>PRB (Program Rujuk Balik)</strong> ke Faskes 1. Jika BELUM LAYAK PRB, berikan alasan medis yang jelas pada berkas kontrol (misal: Dosis obat belum stabil / Butuh observasi spesialistik berkelanjutan).";
+                        } else {
+                            // JIKA RUJUKAN KURANG DARI 60 HARI (KUNING BERKEDIP)
+                            $alertClass = 'alert-warning';
+                            $alertIcon = 'fas fa-exclamation-triangle';
+                            $borderClass = 'border-left: 6px solid #ffc107;';
+                            $pesan_rujukan = "Rujukan Aktif Biasa. Berjalan <strong>{$selisih} Hari</strong> (Sisa masa berlaku {$sisa_hari} hari). <br>
+                            💡 <strong>EVALUASI KONDISI PASIEN:</strong> Persiapkan kestabilan kondisi pasien. Jika tujuan kunjungan hanya untuk mengambil obat rutin tanpa perubahan terapi, pertimbangkan opsi <strong>Iterasi Obat</strong> agar pasien dapat mengambil obat secara efektif tanpa memperpanjang antrean rujukan baru jika nanti masa berlakunya habis.";
+                        }
+                    } else {
+                        $pesan_rujukan = "Gagal memvalidasi data ke web service BPJS: " . $res->metaData->message;
+                    }
+                } catch (\Exception $e) {
+                    $pesan_rujukan = "Terjadi kesalahan sistem bridging: " . $e->getMessage();
+                }
+            }
+        }
+
         $resume = DB::select('SELECT * from erm_hasil_assesmen_keperawatan_rajal WHERE kode_kunjungan = ?', [$request->kodekunjungan]);
         $pasien = db::select('select date(tgl_lahir) as tgl_lahir from mt_pasien where no_rm = ?', [$kunjungan[0]->no_rm]);
         $toDate = Carbon::parse($this->get_date());
@@ -1008,7 +1082,11 @@ class ErmController extends Controller
                 'resume',
                 'usia_hari',
                 'usiatahun',
-                'p_konsul'
+                'p_konsul',
+                'pesan_rujukan',
+                'alertClass',
+                'alertIcon',
+                'borderClass'
             ]));
         } else {
             return view('ermperawat.formpemeriksaan', compact([
@@ -1016,7 +1094,11 @@ class ErmController extends Controller
                 'resume',
                 'usia_hari',
                 'usiatahun',
-                'p_konsul'
+                'p_konsul',
+                'pesan_rujukan',
+                'alertClass',
+                'alertIcon',
+                'borderClass'
             ]));
             // }
         }
@@ -1128,6 +1210,80 @@ class ErmController extends Controller
     public function formpemeriksaan_dokter(Request $request)
     {
         $kunjungan = DB::select('select *,fc_nama_px(no_rm) as nama_pasien,fc_nama_paramedis(ref_paramedis) AS dokter_kirim,fc_nama_unit1(ref_unit) AS poli_asal from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
+
+        $nomor_rujukan = $kunjungan[0]->no_rujukan;
+       // 1. Inisialisasi nilai awal (Default fallback)
+        $rujukan = $nomor_rujukan; // Pastikan nama variabel seragam
+        $detailrujukan = '';
+        $selisih = 0;
+        $daterujukan = 0;
+        $status_cek_rujukan = 0;
+        $jenisrujukan = 'Tidak ditemukan no rujukan !';
+        // Variabel untuk kebutuhan komponen Alert di Blade
+        $alertClass = 'alert-info';
+        $alertIcon = 'fas fa-info-circle';
+        $borderClass = 'border-left: 6px solid #117a8b;';
+        $pesan_rujukan = 'Gagal memproses: Nomor rujukan kosong atau tidak valid.';
+        if (strlen($rujukan) > 5) {
+            $cekrujukan2 = substr($rujukan, 0, 8);            
+            if ($cekrujukan2 == '1018R001') {
+                $jenisrujukan = 'FASKES 2';
+                $status_cek_rujukan = 1;
+                $alertClass = 'alert-success'; // Hijau aman karena pasca rawat inap
+                $alertIcon = 'fas fa-check-circle';
+                $borderClass = 'border-left: 6px solid #28a745;';
+                $pesan_rujukan = "Pasien merupakan pasien pasca rawat inap (Faskes 2 Intern).";
+            } else {
+                $jenisrujukan = 'FASKES 1';
+                $v = new VclaimModel(); // Cukup deklarasi 1 kali di sini                
+                try {
+                    // Jalankan pencarian utama ke Faskes 1
+                    $res = $v->carirujukan_byno($rujukan);
+                    
+                    // Fallback: Jika di Faskes 1 tidak ada (bukan code 200), langsung lempar cari ke Faskes 2 / RS
+                    if ($res->metaData->code != 200) {
+                        $res = $v->carirujukanRS_byno_($rujukan);
+                        $jenisrujukan = 'FASKES 2 (RS)';
+                    }
+
+                    // JIKA SALAH SATU FASKES BERHASIL MENDAPATKAN DATA (CODE 200)
+                    if ($res->metaData->code == 200) {
+                        $detailrujukan = $res; // Simpan data response asli BPJS
+                        $tglkunjungan = $res->response->rujukan->tglKunjungan;
+                        
+                        // Logika Hitung Selisih Hari (Hanya ditulis 1 kali)
+                        $date1 = date_create($tglkunjungan);
+                        $date2 = date_create($this->get_date());
+                        $selisih = date_diff($date1, $date2)->days;
+                        
+                        $daterujukan = $tglkunjungan;
+                        $status_cek_rujukan = 1;
+                        $sisa_hari = 90 - $selisih;
+
+                        // --- LOGIKA DETERMINASI ALERT HARIAN BPJS ---
+                        if ($selisih >= 60) {
+                            // JIKA RUJUKAN SUDAH 60 HARI ATAU LEBIH (MERAH BERKEDIP)
+                            $alertClass = 'alert-danger';
+                            $alertIcon = 'fas fa-times-circle';
+                            $borderClass = 'border-left: 6px solid #dc3545;';
+                            $pesan_rujukan = "Masa berlaku rujukan Kritis! Sudah berjalan <strong>{$selisih} Hari</strong> (Sisa waktu {$sisa_hari} hari lagi). <br>
+                            ⚠️ <strong>REKOMENDASI PROGRAM BPJS:</strong> Pasien wajib dievaluasi! Jika kondisi klinis sudah STABIL, segera daftarkan sebagai peserta <strong>PRB (Program Rujuk Balik)</strong> ke Faskes 1. Jika BELUM LAYAK PRB, berikan alasan medis yang jelas pada berkas kontrol (misal: Dosis obat belum stabil / Butuh observasi spesialistik berkelanjutan).";
+                        } else {
+                            // JIKA RUJUKAN KURANG DARI 60 HARI (KUNING BERKEDIP)
+                            $alertClass = 'alert-warning';
+                            $alertIcon = 'fas fa-exclamation-triangle';
+                            $borderClass = 'border-left: 6px solid #ffc107;';
+                            $pesan_rujukan = "Rujukan Aktif Biasa. Berjalan <strong>{$selisih} Hari</strong> (Sisa masa berlaku {$sisa_hari} hari). <br>
+                            💡 <strong>EVALUASI KONDISI PASIEN:</strong> Persiapkan kestabilan kondisi pasien. Jika tujuan kunjungan hanya untuk mengambil obat rutin tanpa perubahan terapi, pertimbangkan opsi <strong>Iterasi Obat</strong> agar pasien dapat mengambil obat secara efektif tanpa memperpanjang antrean rujukan baru jika nanti masa berlakunya habis.";
+                        }
+                    } else {
+                        $pesan_rujukan = "Gagal memvalidasi data ke web service BPJS: " . $res->metaData->message;
+                    }
+                } catch (\Exception $e) {
+                    $pesan_rujukan = "Terjadi kesalahan sistem bridging: " . $e->getMessage();
+                }
+            }
+        }
         $unitk = $kunjungan[0]->kode_unit;
         $rm = $kunjungan[0]->no_rm;
         $cek_konsul = db::select('select * from mt_surat_tindak_lanjut where no_rm = ? and unit_tujuan = ? and status_jawab = 0',[$rm,auth()->user()->unit]);
@@ -1251,7 +1407,11 @@ class ErmController extends Controller
                                 'jenisrujukan',
                                 'status_cek_rujukan',
                                 'detailrujukan',
-                                'rujukan'
+                                'rujukan',
+                                'alertClass',
+                                'alertIcon',
+                                'borderClass',
+                                'pesan_rujukan'
                             ]));
                         } else {
                             return view('ermdokter.new_formpemeriksaan_dokter_edit_2', compact([
@@ -1271,7 +1431,11 @@ class ErmController extends Controller
                                 'jenisrujukan',
                                 'status_cek_rujukan',
                                 'detailrujukan',
-                                'rujukan'
+                                'rujukan',
+                                'alertClass',
+                                'alertIcon',
+                                'borderClass',
+                                'pesan_rujukan'
                             ]));
                         }
                     }
@@ -1299,7 +1463,11 @@ class ErmController extends Controller
                             'jenisrujukan',
                             'status_cek_rujukan',
                             'detailrujukan',
-                            'rujukan'
+                            'rujukan',
+                            'alertClass',
+                            'alertIcon',
+                            'borderClass',
+                            'pesan_rujukan'
                         ]));
                     } else {
                         // return view('ermdokter.new_form_pemeriksaan_dokter', compact([
@@ -1330,7 +1498,11 @@ class ErmController extends Controller
                                 'jenisrujukan',
                                 'status_cek_rujukan',
                                 'detailrujukan',
-                                'rujukan'
+                                'rujukan',
+                                'alertClass',
+                                'alertIcon',
+                                'borderClass',
+                                'pesan_rujukan'
                             ]));
                         } else {
                             return view('ermdokter.new_form_pemeriksaan_dokter_2', compact([
@@ -1350,7 +1522,11 @@ class ErmController extends Controller
                                 'jenisrujukan',
                                 'status_cek_rujukan',
                                 'detailrujukan',
-                                'rujukan'
+                                'rujukan',
+                                'alertClass',
+                                'alertIcon',
+                                'borderClass',
+                                'pesan_rujukan'
                             ]));
                         }
                     }
@@ -1374,7 +1550,11 @@ class ErmController extends Controller
                     'jenisrujukan',
                     'status_cek_rujukan',
                     'detailrujukan',
-                    'rujukan'
+                    'rujukan',
+                    'alertClass',
+                    'alertIcon',
+                    'borderClass',
+                    'pesan_rujukan'
                 ]));
             } else {
                 return view('ermdokter.formpemeriksaan_dokter_fisio', compact([
@@ -1388,7 +1568,11 @@ class ErmController extends Controller
                     'jenisrujukan',
                     'status_cek_rujukan',
                     'detailrujukan',
-                    'rujukan'
+                    'rujukan',
+                    'alertClass',
+                    'alertIcon',
+                    'borderClass',
+                    'pesan_rujukan'
                 ]));
             }
         }

@@ -1,6 +1,74 @@
 <div class="card">
     <div class="card-header bg-info">Catatan Perkembangan Pasien Terintegrasi ( CPPT )</div>
     <div class="card-body">
+        <style>
+            .alert-blink-danger {
+                animation: pulse-danger 2s infinite;
+            }
+
+            .alert-blink-warning {
+                animation: pulse-warning 2s infinite;
+            }
+
+            @keyframes pulse-danger {
+
+                0%,
+                100% {
+                    background-color: #f8d7da;
+                    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+                }
+
+                50% {
+                    background-color: #f5b3b7;
+                    box-shadow: 0 0 12px rgba(220, 53, 69, 0.4);
+                }
+            }
+
+            @keyframes pulse-warning {
+
+                0%,
+                100% {
+                    background-color: #fff3cd;
+                }
+
+                50% {
+                    background-color: #ffe89e;
+                    box-shadow: 0 0 12px rgba(255, 193, 7, 0.4);
+                }
+            }
+        </style>
+
+        @php
+            // Menentukan class animasi berkedip secara otomatis
+            $blinkClass = '';
+            if (($alertClass ?? '') == 'alert-danger') {
+                $blinkClass = 'alert-blink-danger';
+            } elseif (($alertClass ?? '') == 'alert-warning') {
+                $blinkClass = 'alert-blink-warning';
+            }
+        @endphp
+
+        <div class="alert {{ $alertClass }} {{ $blinkClass }} alert-dismissible fade show p-3 mb-3 shadow-sm border-0"
+            role="alert" style="{{ $borderClass }} color: #212529;">
+            <div class="row align-items-top">
+                <div class="col-auto pr-0 pt-1">
+                    <i class="{{ $alertIcon }} fa-2x mx-2"></i>
+                </div>
+                <div class="col pl-3">
+                    <strong class="text-uppercase font-weight-bold d-block mb-2"
+                        style="letter-spacing: 1px; font-size: 0.9rem;">
+                        SISTEM MONITORING PROGRAM PRB & RUJUKAN BPJS
+                    </strong>
+                    <p class="mb-0 font-weight-normal text-justify" style="font-size: 1.1rem; line-height: 1.5;">
+                        {!! $pesan_rujukan !!}
+                    </p>
+                </div>
+            </div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+                style="color: inherit; opacity: 0.6; position: absolute; top: 15px; right: 15px;">
+                <span aria-hidden="true" style="font-size: 1.5rem;">&times;</span>
+            </button>
+        </div>
         <form action="" class="formpemeriksaanperawat">
             <input hidden type="text" name="kodekunjungan" class="form-control"
                 value="{{ $kunjungan[0]->kode_kunjungan }}">
@@ -267,123 +335,141 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <table @if ($usia_hari > 30)  hidden @endif class="table text-md">
+                            <table @if ($usia_hari > 30) hidden @endif class="table text-md">
                                 <thead>
                                     <th colspan="4" class="text-center bg-warning">Assesmen Nyeri</th>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                       <td colspan="2" class="bg-secondary">Metode NIPS ( Pasien bayi baru lahir
-                                           -30 hari )</td>
-                                   </tr>
-                                   <tr>
-                                       <td>Ekspresi wajah</td>
-                                       <td>
-                                           <div class="form-check form-check-inline">
-                                               <input class="form-check-input" type="radio"
-                                                   name="ekspresiwajah" id="ekspresiwajah" value="Rileks" @if ($resume[0]->ekspresiwajah == 'Rileks') checked @endif>
-                                               <label class="form-check-label" for="inlineRadio1">Rileks</label>
-                                           </div>
-                                           <div class="form-check form-check-inline">
-                                               <input class="form-check-input" type="radio"
-                                                   name="ekspresiwajah" id="ekspresiwajah" value="Meringis" @if ($resume[0]->ekspresiwajah == 'Meringis') checked @endif>
-                                               <label class="form-check-label" for="inlineRadio2">Meringis</label>
-                                           </div>
-                                       </td>
-                                   </tr>
-                                   <tr>
-                                       <td>Menangis</td>
-                                       <td>
-                                           <div class="form-check form-check-inline">
-                                               <input class="form-check-input" type="radio"
-                                                   name="Menangis" id="Menangis" value="Tidak menangis"  @if ($resume[0]->menangis == 'Tidak menangis') checked @endif>
-                                               <label class="form-check-label" for="inlineRadio1">Tidak menangis</label>
-                                           </div>
-                                           <div class="form-check form-check-inline">
-                                               <input class="form-check-input" type="radio"
-                                                   name="Menangis" id="Menangis" value="Meringis"  @if ($resume[0]->menangis == 'Meringis') checked @endif>
-                                               <label class="form-check-label" for="inlineRadio2">Meringis</label>
-                                           </div>
-                                           <div class="form-check form-check-inline">
-                                               <input class="form-check-input" type="radio"
-                                                   name="Menangis" id="Menangis" value="Menangis keras"  @if ($resume[0]->menangis == 'Menangis keras') checked @endif>
-                                               <label class="form-check-label" for="inlineRadio2">Menangis keras</label>
-                                           </div>
-                                       </td>
-                                   </tr>
-                                   <tr>
-                                       <td>Pola nafas</td>
-                                       <td>
-                                           <div class="form-check form-check-inline">
-                                               <input class="form-check-input" type="radio"
-                                                   name="polanafas" id="polanafas" value="Rileks"  @if ($resume[0]->polanafas == 'Rileks') checked @endif>
-                                               <label class="form-check-label" for="inlineRadio1">Rileks</label>
-                                           </div>
-                                           <div class="form-check form-check-inline">
-                                               <input class="form-check-input" type="radio"
-                                                   name="polanafas" id="polanafas" value="Perubahan pola nafas"  @if ($resume[0]->polanafas == 'Perubahan pola nafas') checked @endif>
-                                               <label class="form-check-label" for="inlineRadio2">Perubahan pola nafas</label>
-                                           </div>
-                                       </td>
-                                   </tr>
-                                   <tr>
-                                       <td>Lengan</td>
-                                       <td>
-                                           <div class="form-check form-check-inline">
-                                               <input class="form-check-input" type="radio"
-                                                   name="Lengan" id="Lengan" value="Rileks"  @if ($resume[0]->lengan == 'Rileks') checked @endif>
-                                               <label class="form-check-label" for="inlineRadio1">Rileks</label>
-                                           </div>
-                                           <div class="form-check form-check-inline">
-                                               <input class="form-check-input" type="radio"
-                                                   name="Lengan" id="Lengan" value="Fleksi"  @if ($resume[0]->lengan == 'Fleksi') checked @endif>
-                                               <label class="form-check-label" for="inlineRadio2">Fleksi</label>
-                                           </div>
-                                       </td>
-                                   </tr>
-                                   <tr>
-                                       <td>Kaki</td>
-                                       <td>
-                                           <div class="form-check form-check-inline">
-                                               <input class="form-check-input" type="radio"
-                                                   name="Kaki" id="Kaki" value="Rileks"  @if ($resume[0]->kaki == 'Rileks') checked @endif>
-                                               <label class="form-check-label" for="inlineRadio1">Rileks</label>
-                                           </div>
-                                           <div class="form-check form-check-inline">
-                                               <input class="form-check-input" type="radio"
-                                                   name="Kaki" id="Kaki" value="Fleksi"  @if ($resume[0]->kaki == 'Fleksi') checked @endif>
-                                               <label class="form-check-label" for="inlineRadio2">Fleksi</label>
-                                           </div>
-                                       </td>
-                                   </tr>
-                                   <tr>
-                                       <td>Keadaan terangsang</td>
-                                       <td>
-                                           <div class="form-check form-check-inline">
-                                               <input class="form-check-input" type="radio"
-                                                   name="Keadaan_terangsang" id="Keadaan_terangsang" value="-"  @if ($resume[0]->keadaanterangsang == '-') checked @endif>
-                                               <label class="form-check-label" for="inlineRadio2">-</label>
-                                           </div>
-                                           <div class="form-check form-check-inline">
-                                               <input class="form-check-input" type="radio"
-                                                   name="Keadaan_terangsang" id="Keadaan_terangsang" value="Tidur"  @if ($resume[0]->keadaanterangsang == 'Tidur') checked @endif>
-                                               <label class="form-check-label" for="inlineRadio1">Tidur</label>
-                                           </div>
-                                           <div class="form-check form-check-inline">
-                                               <input class="form-check-input" type="radio"
-                                                   name="Keadaan_terangsang" id="Keadaan_terangsang" value="Bangun"  @if ($resume[0]->keadaanterangsang == 'Bangun') checked @endif>
-                                               <label class="form-check-label" for="inlineRadio2">Bangun</label>
-                                           </div>
-                                           <div class="form-check form-check-inline">
-                                               <input class="form-check-input" type="radio"
-                                                   name="Keadaan_terangsang" id="Keadaan_terangsang" value="Rewel"  @if ($resume[0]->keadaanterangsang == 'Rewel') checked @endif>
-                                               <label class="form-check-label" for="inlineRadio2">Rewel</label>
-                                           </div>
+                                        <td colspan="2" class="bg-secondary">Metode NIPS ( Pasien bayi baru lahir
+                                            -30 hari )</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ekspresi wajah</td>
+                                        <td>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="ekspresiwajah"
+                                                    id="ekspresiwajah" value="Rileks"
+                                                    @if ($resume[0]->ekspresiwajah == 'Rileks') checked @endif>
+                                                <label class="form-check-label" for="inlineRadio1">Rileks</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="ekspresiwajah"
+                                                    id="ekspresiwajah" value="Meringis"
+                                                    @if ($resume[0]->ekspresiwajah == 'Meringis') checked @endif>
+                                                <label class="form-check-label" for="inlineRadio2">Meringis</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Menangis</td>
+                                        <td>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="Menangis"
+                                                    id="Menangis" value="Tidak menangis"
+                                                    @if ($resume[0]->menangis == 'Tidak menangis') checked @endif>
+                                                <label class="form-check-label" for="inlineRadio1">Tidak
+                                                    menangis</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="Menangis"
+                                                    id="Menangis" value="Meringis"
+                                                    @if ($resume[0]->menangis == 'Meringis') checked @endif>
+                                                <label class="form-check-label" for="inlineRadio2">Meringis</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="Menangis"
+                                                    id="Menangis" value="Menangis keras"
+                                                    @if ($resume[0]->menangis == 'Menangis keras') checked @endif>
+                                                <label class="form-check-label" for="inlineRadio2">Menangis
+                                                    keras</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pola nafas</td>
+                                        <td>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="polanafas"
+                                                    id="polanafas" value="Rileks"
+                                                    @if ($resume[0]->polanafas == 'Rileks') checked @endif>
+                                                <label class="form-check-label" for="inlineRadio1">Rileks</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="polanafas"
+                                                    id="polanafas" value="Perubahan pola nafas"
+                                                    @if ($resume[0]->polanafas == 'Perubahan pola nafas') checked @endif>
+                                                <label class="form-check-label" for="inlineRadio2">Perubahan pola
+                                                    nafas</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lengan</td>
+                                        <td>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="Lengan"
+                                                    id="Lengan" value="Rileks"
+                                                    @if ($resume[0]->lengan == 'Rileks') checked @endif>
+                                                <label class="form-check-label" for="inlineRadio1">Rileks</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="Lengan"
+                                                    id="Lengan" value="Fleksi"
+                                                    @if ($resume[0]->lengan == 'Fleksi') checked @endif>
+                                                <label class="form-check-label" for="inlineRadio2">Fleksi</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kaki</td>
+                                        <td>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="Kaki"
+                                                    id="Kaki" value="Rileks"
+                                                    @if ($resume[0]->kaki == 'Rileks') checked @endif>
+                                                <label class="form-check-label" for="inlineRadio1">Rileks</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="Kaki"
+                                                    id="Kaki" value="Fleksi"
+                                                    @if ($resume[0]->kaki == 'Fleksi') checked @endif>
+                                                <label class="form-check-label" for="inlineRadio2">Fleksi</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Keadaan terangsang</td>
+                                        <td>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                    name="Keadaan_terangsang" id="Keadaan_terangsang" value="-"
+                                                    @if ($resume[0]->keadaanterangsang == '-') checked @endif>
+                                                <label class="form-check-label" for="inlineRadio2">-</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                    name="Keadaan_terangsang" id="Keadaan_terangsang" value="Tidur"
+                                                    @if ($resume[0]->keadaanterangsang == 'Tidur') checked @endif>
+                                                <label class="form-check-label" for="inlineRadio1">Tidur</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                    name="Keadaan_terangsang" id="Keadaan_terangsang" value="Bangun"
+                                                    @if ($resume[0]->keadaanterangsang == 'Bangun') checked @endif>
+                                                <label class="form-check-label" for="inlineRadio2">Bangun</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                    name="Keadaan_terangsang" id="Keadaan_terangsang" value="Rewel"
+                                                    @if ($resume[0]->keadaanterangsang == 'Rewel') checked @endif>
+                                                <label class="form-check-label" for="inlineRadio2">Rewel</label>
+                                            </div>
 
-                                       </td>
-                                   </tr>
+                                        </td>
+                                    </tr>
 
-                               </tbody>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -478,13 +564,14 @@
                                         <td class="text-bold font-italic">Umur</td>
                                         <td>
                                             <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Umur pasien ..."
-                                                aria-label="Suhu tubuh pasien" name="usia" id="usia"
-                                                aria-describedby="basic-addon2" value="{{ $resume[0]->usia }}">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text" id="basic-addon2"></span>
+                                                <input type="text" class="form-control"
+                                                    placeholder="Umur pasien ..." aria-label="Suhu tubuh pasien"
+                                                    name="usia" id="usia" aria-describedby="basic-addon2"
+                                                    value="{{ $resume[0]->usia }}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" id="basic-addon2"></span>
+                                                </div>
                                             </div>
-                                        </div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -797,7 +884,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <table @if($usia_hari >= 4383) hidden @endif class="table">
+                            <table @if ($usia_hari >= 4383) hidden @endif class="table">
                                 <tr>
                                     <td colspan="2" class="bg-secondary">Assesmen Resiko Jatuh</td>
                                 </tr>
@@ -809,35 +896,40 @@
                                     <td>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="umur"
-                                                id="umur" value="Dibawah 3 tahun" @if ($resume[0]->umur == 'Dibawah 3 tahun') checked @endif>
+                                                id="umur" value="Dibawah 3 tahun"
+                                                @if ($resume[0]->umur == 'Dibawah 3 tahun') checked @endif>
                                             <label class="form-check-label" for="exampleRadios1">
                                                 Dibawah 3 tahun
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="umur"
-                                                id="umur" value="3 - 7 tahun" @if ($resume[0]->umur == '3 - 7 tahun') checked @endif>
+                                                id="umur" value="3 - 7 tahun"
+                                                @if ($resume[0]->umur == '3 - 7 tahun') checked @endif>
                                             <label class="form-check-label" for="exampleRadios2">
                                                 3 - 7 tahun
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="umur"
-                                                id="umur" value="7 - 13 tahun" @if ($resume[0]->umur == '7 - 13 tahun') checked @endif>
+                                                id="umur" value="7 - 13 tahun"
+                                                @if ($resume[0]->umur == '7 - 13 tahun') checked @endif>
                                             <label class="form-check-label" for="exampleRadios3">
                                                 7 - 13 tahun
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="umur"
-                                                id="umur" value="Lebih dari 13 tahun" @if ($resume[0]->umur == 'Tidak Lebih dari 13 tahun') checked @endif>
+                                                id="umur" value="Lebih dari 13 tahun"
+                                                @if ($resume[0]->umur == 'Tidak Lebih dari 13 tahun') checked @endif>
                                             <label class="form-check-label" for="exampleRadios3">
                                                 Lebih dari 13 tahun
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="umur"
-                                                id="umur" value="-" @if ($resume[0]->umur == '-') checked @endif>
+                                                id="umur" value="-"
+                                                @if ($resume[0]->umur == '-') checked @endif>
                                             <label class="form-check-label" for="exampleRadios3">
                                                 -
                                             </label>
@@ -849,21 +941,24 @@
                                     <td>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="jeniskelamin"
-                                                id="jeniskelamin" value="Laki - Laki" @if ($resume[0]->jeniskelamin == 'Laki - Laki') checked @endif>
+                                                id="jeniskelamin" value="Laki - Laki"
+                                                @if ($resume[0]->jeniskelamin == 'Laki - Laki') checked @endif>
                                             <label class="form-check-label" for="exampleRadios1">
                                                 Laki - Laki
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="jeniskelamin"
-                                                id="jeniskelamin" value="Perempuan" @if ($resume[0]->jeniskelamin == 'Perempuan') checked @endif>
+                                                id="jeniskelamin" value="Perempuan"
+                                                @if ($resume[0]->jeniskelamin == 'Perempuan') checked @endif>
                                             <label class="form-check-label" for="exampleRadios2">
                                                 Perempuan
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="jeniskelamin"
-                                                id="jeniskelamin" value="-" @if ($resume[0]->jeniskelamin == '-') checked @endif>
+                                                id="jeniskelamin" value="-"
+                                                @if ($resume[0]->jeniskelamin == '-') checked @endif>
                                             <label class="form-check-label" for="exampleRadios3">
                                                 -
                                             </label>
@@ -875,14 +970,19 @@
                                     <td>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="diagnosis"
-                                                id="diagnosis" value="Gangguan neurologis"  @if ($resume[0]->diagnosis == 'Gangguan neurologis') checked @endif>
+                                                id="diagnosis" value="Gangguan neurologis"
+                                                @if ($resume[0]->diagnosis == 'Gangguan neurologis') checked @endif>
                                             <label class="form-check-label" for="exampleRadios1">
                                                 Gangguan neurologis
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="diagnosis"
-                                                id="diagnosis" value="Perubahan dalam oksigenasi ( masalah saluran napas,dehidrasi,anemia,anorexia,sinkop,sakit kepala,dll )"  @if ($resume[0]->diagnosis == 'Perubahan dalam oksigenasi ( masalah saluran napas,dehidrasi,anemia,anorexia,sinkop,sakit kepala,dll )') checked @endif>
+                                                id="diagnosis"
+                                                value="Perubahan dalam oksigenasi ( masalah saluran napas,dehidrasi,anemia,anorexia,sinkop,sakit kepala,dll )"
+                                                @if (
+                                                    $resume[0]->diagnosis ==
+                                                        'Perubahan dalam oksigenasi ( masalah saluran napas,dehidrasi,anemia,anorexia,sinkop,sakit kepala,dll )') checked @endif>
                                             <label class="form-check-label" for="exampleRadios2">
                                                 Perubahan dalam oksigenasi ( masalah saluran
                                                 napas,dehidrasi,anemia,anorexia,sinkop,sakit kepala,dll )
@@ -890,21 +990,24 @@
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="diagnosis"
-                                                id="diagnosis" value="Kelainan psikis / perilaku"  @if ($resume[0]->diagnosis == 'Kelainan psikis / perilaku') checked @endif>
+                                                id="diagnosis" value="Kelainan psikis / perilaku"
+                                                @if ($resume[0]->diagnosis == 'Kelainan psikis / perilaku') checked @endif>
                                             <label class="form-check-label" for="exampleRadios3">
                                                 Kelainan psikis / perilaku
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="diagnosis"
-                                                id="diagnosis" value="Diagnosis lainnya"  @if ($resume[0]->diagnosis == 'Diagnosis lainnya') checked @endif>
+                                                id="diagnosis" value="Diagnosis lainnya"
+                                                @if ($resume[0]->diagnosis == 'Diagnosis lainnya') checked @endif>
                                             <label class="form-check-label" for="exampleRadios3">
                                                 Diagnosis lainnya
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="diagnosis"
-                                                id="diagnosis" value="-" @if ($resume[0]->diagnosis == '-') checked @endif>
+                                                id="diagnosis" value="-"
+                                                @if ($resume[0]->diagnosis == '-') checked @endif>
                                             <label class="form-check-label" for="exampleRadios3">
                                                 -
                                             </label>
@@ -916,28 +1019,32 @@
                                     <td>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="Gangguan_Kognitif"
-                                                id="Gangguan_Kognitif" value="Tidak menyadari keterbatasan diri" @if ($resume[0]->gangguankoginitf == 'Tidak menyadari keterbatasan diri') checked @endif>
+                                                id="Gangguan_Kognitif" value="Tidak menyadari keterbatasan diri"
+                                                @if ($resume[0]->gangguankoginitf == 'Tidak menyadari keterbatasan diri') checked @endif>
                                             <label class="form-check-label" for="exampleRadios1">
                                                 Tidak menyadari keterbatasan diri
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="Gangguan_Kognitif"
-                                                id="Gangguan_Kognitif" value="Lupa adanya keterbatasan" @if ($resume[0]->gangguankoginitf == 'Lupa adanya keterbatasan') checked @endif>
+                                                id="Gangguan_Kognitif" value="Lupa adanya keterbatasan"
+                                                @if ($resume[0]->gangguankoginitf == 'Lupa adanya keterbatasan') checked @endif>
                                             <label class="form-check-label" for="exampleRadios2">
                                                 Lupa adanya keterbatasan
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="Gangguan_Kognitif"
-                                                id="Gangguan_Kognitif" value="Orientasi baik terhadap diri sendiri" @if ($resume[0]->gangguankoginitf == 'Orientasi baik terhadap diri sendiri') checked @endif>
+                                                id="Gangguan_Kognitif" value="Orientasi baik terhadap diri sendiri"
+                                                @if ($resume[0]->gangguankoginitf == 'Orientasi baik terhadap diri sendiri') checked @endif>
                                             <label class="form-check-label" for="exampleRadios3">
                                                 Orientasi baik terhadap diri sendiri
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="Gangguan_Kognitif"
-                                                id="Gangguan_Kognitif" value="-" @if ($resume[0]->gangguankoginitf == '-') checked @endif>
+                                                id="Gangguan_Kognitif" value="-"
+                                                @if ($resume[0]->gangguankoginitf == '-') checked @endif>
                                             <label class="form-check-label" for="exampleRadios3">
                                                 -
                                             </label>
@@ -949,35 +1056,42 @@
                                     <td>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="Faktor_Lingkungan"
-                                                id="Faktor_Lingkungan" value="Riwayat jatuh dari tempat tidur saat bayi / anak" @if ($resume[0]->faktorlingkungan == 'Riwayat jatuh dari tempat tidur saat bayi / anak') checked @endif>
+                                                id="Faktor_Lingkungan"
+                                                value="Riwayat jatuh dari tempat tidur saat bayi / anak"
+                                                @if ($resume[0]->faktorlingkungan == 'Riwayat jatuh dari tempat tidur saat bayi / anak') checked @endif>
                                             <label class="form-check-label" for="exampleRadios1">
                                                 Riwayat jatuh dari tempat tidur saat bayi / anak
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="Faktor_Lingkungan"
-                                                id="Faktor_Lingkungan" value="Pasien menggunakan alat bantu atau box mebel" @if ($resume[0]->faktorlingkungan == 'Pasien menggunakan alat bantu atau box mebel') checked @endif>
+                                                id="Faktor_Lingkungan"
+                                                value="Pasien menggunakan alat bantu atau box mebel"
+                                                @if ($resume[0]->faktorlingkungan == 'Pasien menggunakan alat bantu atau box mebel') checked @endif>
                                             <label class="form-check-label" for="exampleRadios2">
                                                 Pasien menggunakan alat bantu atau box mebel
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="Faktor_Lingkungan"
-                                                id="Faktor_Lingkungan" value="Pasien diletakan ditempat tidur" @if ($resume[0]->faktorlingkungan == 'Pasien diletakan ditempat tidur') checked @endif>
+                                                id="Faktor_Lingkungan" value="Pasien diletakan ditempat tidur"
+                                                @if ($resume[0]->faktorlingkungan == 'Pasien diletakan ditempat tidur') checked @endif>
                                             <label class="form-check-label" for="exampleRadios3">
                                                 Pasien diletakan ditempat tidur
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="Faktor_Lingkungan"
-                                                id="Faktor_Lingkungan" value="Diluar ruang rawat" @if ($resume[0]->faktorlingkungan == 'Diluar ruang rawat') checked @endif>
+                                                id="Faktor_Lingkungan" value="Diluar ruang rawat"
+                                                @if ($resume[0]->faktorlingkungan == 'Diluar ruang rawat') checked @endif>
                                             <label class="form-check-label" for="exampleRadios3">
                                                 Diluar ruang rawat
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="Faktor_Lingkungan"
-                                                id="Faktor_Lingkungan" value="-" @if ($resume[0]->faktorlingkungan == '-') checked @endif>
+                                                id="Faktor_Lingkungan" value="-"
+                                                @if ($resume[0]->faktorlingkungan == '-') checked @endif>
                                             <label class="form-check-label" for="exampleRadios3">
                                                 -
                                             </label>
@@ -989,28 +1103,33 @@
                                     <td>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="respon_thd_op"
-                                                id="respon_thd_op" value="Dalam 24 Jam" @if ($resume[0]->responterhadapoperasi == 'Dalam 24 Jam') checked @endif>
+                                                id="respon_thd_op" value="Dalam 24 Jam"
+                                                @if ($resume[0]->responterhadapoperasi == 'Dalam 24 Jam') checked @endif>
                                             <label class="form-check-label" for="exampleRadios1">
                                                 Dalam 24 Jam
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="respon_thd_op"
-                                                id="respon_thd_op" value="Dalam 48 jam" @if ($resume[0]->responterhadapoperasi == 'Dalam 48 jam') checked @endif>
+                                                id="respon_thd_op" value="Dalam 48 jam"
+                                                @if ($resume[0]->responterhadapoperasi == 'Dalam 48 jam') checked @endif>
                                             <label class="form-check-label" for="exampleRadios2">
                                                 Dalam 48 jam
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="respon_thd_op"
-                                                id="respon_thd_op" value="> 48 Jam" @if ($resume[0]->responterhadapoperasi == '> 48 Jam') checked @endif>
+                                                id="respon_thd_op" value="> 48 Jam" @if ($resume[0]->responterhadapoperasi == '> 48 Jam')
+                                            checked
+                                            @endif>
                                             <label class="form-check-label" for="exampleRadios3">
                                                 > 48 Jam
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="respon_thd_op"
-                                                id="respon_thd_op" value="-" @if ($resume[0]->responterhadapoperasi == '-') checked @endif>
+                                                id="respon_thd_op" value="-"
+                                                @if ($resume[0]->responterhadapoperasi == '-') checked @endif>
                                             <label class="form-check-label" for="exampleRadios3">
                                                 -
                                             </label>
@@ -1022,7 +1141,11 @@
                                     <td>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="Penggunaan_Obat"
-                                                id="Penggunaan_Obat" value="Bermacam obat yang digunakan : obat sedative ( Kecuali pasien icu,yang menggunakan sedasi dan paralisis ),hipnotik,barbiturate,fenotiazen, antidepresan,laksatif/diuretik,narkotik."  @if ($resume[0]->penggunaanobat == 'Bermacam obat yang digunakan : obat sedative ( Kecuali pasien icu,yang menggunakan sedasi dan paralisis ),hipnotik,barbiturate,fenotiazen, antidepresan,laksatif/diuretik,narkotik.') checked @endif>
+                                                id="Penggunaan_Obat"
+                                                value="Bermacam obat yang digunakan : obat sedative ( Kecuali pasien icu,yang menggunakan sedasi dan paralisis ),hipnotik,barbiturate,fenotiazen, antidepresan,laksatif/diuretik,narkotik."
+                                                @if (
+                                                    $resume[0]->penggunaanobat ==
+                                                        'Bermacam obat yang digunakan : obat sedative ( Kecuali pasien icu,yang menggunakan sedasi dan paralisis ),hipnotik,barbiturate,fenotiazen, antidepresan,laksatif/diuretik,narkotik.') checked @endif>
                                             <label class="form-check-label" for="exampleRadios1">
                                                 Bermacam obat yang digunakan : obat sedative ( Kecuali pasien icu,
                                                 yang menggunakan sedasi dan paralisis ),hipnotik,barbiturate,
@@ -1031,21 +1154,24 @@
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="Penggunaan_Obat"
-                                                id="Penggunaan_Obat" value="Penggunaan salah satu obat diatas"  @if ($resume[0]->penggunaanobat == 'Penggunaan salah satu obat diatas') checked @endif>
+                                                id="Penggunaan_Obat" value="Penggunaan salah satu obat diatas"
+                                                @if ($resume[0]->penggunaanobat == 'Penggunaan salah satu obat diatas') checked @endif>
                                             <label class="form-check-label" for="exampleRadios2">
                                                 Penggunaan salah satu obat diatas
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="Penggunaan_Obat"
-                                                id="Penggunaan_Obat" value="penggunaan obat lainnya"  @if ($resume[0]->penggunaanobat == 'penggunaan obat lainnya') checked @endif>
+                                                id="Penggunaan_Obat" value="penggunaan obat lainnya"
+                                                @if ($resume[0]->penggunaanobat == 'penggunaan obat lainnya') checked @endif>
                                             <label class="form-check-label" for="exampleRadios3">
                                                 penggunaan obat lainnya
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="Penggunaan_Obat"
-                                                id="Penggunaan_Obat" value="-" @if ($resume[0]->penggunaanobat == '-') checked @endif>
+                                                id="Penggunaan_Obat" value="-"
+                                                @if ($resume[0]->penggunaanobat == '-') checked @endif>
                                             <label class="form-check-label" for="exampleRadios3">
                                                 -
                                             </label>
@@ -1053,7 +1179,7 @@
                                     </td>
                                 </tr>
                             </table>
-                            <table @if($usia_hari >= 4383) hidden @endif class="table">
+                            <table @if ($usia_hari >= 4383) hidden @endif class="table">
                                 <tr>
                                     <td colspan="2" class="bg-secondary">Skrining Gizi</td>
                                 </tr>
@@ -1065,13 +1191,15 @@
                                     <td>Apakah Pasien tampak kurus ? </td>
                                     <td>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio"
-                                                name="anaktampakkurus" id="anaktampakkurus" value="Ya" @if ($resume[0]->anaktampakkurus == 'Ya') checked @endif>
+                                            <input class="form-check-input" type="radio" name="anaktampakkurus"
+                                                id="anaktampakkurus" value="Ya"
+                                                @if ($resume[0]->anaktampakkurus == 'Ya') checked @endif>
                                             <label class="form-check-label" for="inlineRadio1">Ya</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio"
-                                                name="anaktampakkurus" id="anaktampakkurus" value="Tidak" @if ($resume[0]->anaktampakkurus == 'Tidak') checked @endif>
+                                            <input class="form-check-input" type="radio" name="anaktampakkurus"
+                                                id="anaktampakkurus" value="Tidak"
+                                                @if ($resume[0]->anaktampakkurus == 'Tidak') checked @endif>
                                             <label class="form-check-label" for="inlineRadio2">Tidak</label>
                                         </div>
                                     </td>
@@ -1083,12 +1211,14 @@
                                     <td>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio"
-                                                name="adapenurunanbbanak" id="adapenurunanbbanak" value="Ya" @if ($resume[0]->adapenurunanbbanak == 'Ya') checked @endif>
+                                                name="adapenurunanbbanak" id="adapenurunanbbanak" value="Ya"
+                                                @if ($resume[0]->adapenurunanbbanak == 'Ya') checked @endif>
                                             <label class="form-check-label" for="inlineRadio1">Ya</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio"
-                                                name="adapenurunanbbanak" id="adapenurunanbbanak" value="Tidak" @if ($resume[0]->adapenurunanbbanak == 'Tidak') checked @endif>
+                                                name="adapenurunanbbanak" id="adapenurunanbbanak" value="Tidak"
+                                                @if ($resume[0]->adapenurunanbbanak == 'Tidak') checked @endif>
                                             <label class="form-check-label" for="inlineRadio2">Tidak</label>
                                         </div>
                                     </td>
@@ -1101,13 +1231,15 @@
                                     </td>
                                     <td>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio"
-                                                name="anakadadiare" id="anakadadiare" value="Ya" @if ($resume[0]->anakadadiare == 'Ya') checked @endif>
+                                            <input class="form-check-input" type="radio" name="anakadadiare"
+                                                id="anakadadiare" value="Ya"
+                                                @if ($resume[0]->anakadadiare == 'Ya') checked @endif>
                                             <label class="form-check-label" for="inlineRadio1">Ya</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio"
-                                                name="anakadadiare" id="anakadadiare" value="Tidak"  @if ($resume[0]->anakadadiare == 'Tidak') checked @endif>
+                                            <input class="form-check-input" type="radio" name="anakadadiare"
+                                                id="anakadadiare" value="Tidak"
+                                                @if ($resume[0]->anakadadiare == 'Tidak') checked @endif>
                                             <label class="form-check-label" for="inlineRadio2">Tidak</label>
                                         </div>
                                     </td>
@@ -1118,12 +1250,14 @@
                                     <td>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio"
-                                                name="faktormalnutrisianak" id="faktormalnutrisianak" value="Ya"  @if ($resume[0]->faktormalnutrisianak == 'Ya') checked @endif>
+                                                name="faktormalnutrisianak" id="faktormalnutrisianak"
+                                                value="Ya" @if ($resume[0]->faktormalnutrisianak == 'Ya') checked @endif>
                                             <label class="form-check-label" for="inlineRadio1">Ya</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio"
-                                                name="faktormalnutrisianak" id="faktormalnutrisianak" value="Tidak"  @if ($resume[0]->faktormalnutrisianak == 'Tidak') checked @endif>
+                                                name="faktormalnutrisianak" id="faktormalnutrisianak"
+                                                value="Tidak" @if ($resume[0]->faktormalnutrisianak == 'Tidak') checked @endif>
                                             <label class="form-check-label" for="inlineRadio2">Tidak</label>
                                         </div>
                                     </td>
@@ -1145,8 +1279,8 @@
                                                 @if ($resume[0]->diagnosakhusus == 'Tidak Ada') checked @endif>
                                             <label class="form-check-label" for="inlineRadio1">Tidak Ada
                                             </label>
-                                            <input class="form-check-input ml-2" type="radio" name="diagnosakhusus"
-                                                id="diagnosakhusus" value="Ada"
+                                            <input class="form-check-input ml-2" type="radio"
+                                                name="diagnosakhusus" id="diagnosakhusus" value="Ada"
                                                 @if ($resume[0]->diagnosakhusus == 'Ada') checked @endif>
                                             <label class="form-check-label" for="inlineRadio1"> Ada
                                             </label>
