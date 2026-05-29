@@ -68,17 +68,20 @@
                             </li>
                         @endif
                         <li class="nav-item" id="pemeriksaan" @if (auth()->user()->unit == '1046') hidden @endif>
+                            <a href="#" class="nav-link" onclick="update_formpemeriksaandokter()">
+                                <i class="fas fa-inbox mr-2"></i>Catatan Perkembangan Pasien Terintegrasi ( CPPT 2 )
+                            </a>
+                        </li>
+                        <li hidden class="nav-item" id="pemeriksaan" @if (auth()->user()->unit == '1046') hidden @endif>
                             <a href="#" class="nav-link" onclick="formpemeriksaandokter()">
                                 <i class="fas fa-inbox mr-2"></i>Catatan Perkembangan Pasien Terintegrasi ( CPPT )
                             </a>
                         </li>
-                        {{-- @if (auth()->user()->unit == 1014) --}}
-                            <li class="nav-item">
-                                <a href="#" class="nav-link" onclick="laporanoperasi()">
-                                    <i class="fas fa-filter mr-2"></i> Laporan Operasi
-                                </a>
-                            </li>
-                        {{-- @endif --}}
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" onclick="laporanoperasi()">
+                                <i class="fas fa-filter mr-2"></i> Laporan Operasi
+                            </a>
+                        </li>
                         @if (auth()->user()->unit == '1046')
                             <li class="nav-item" id="pemeriksaan">
                                 <a href="#" class="nav-link" onclick="pengkajiannyeri()">
@@ -326,6 +329,29 @@
         });
     }
 
+    function update_formpemeriksaandokter() {
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('update_formpemeriksaan_dokter') ?>',
+            error: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            },
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
     function formpemeriksaandokter() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()

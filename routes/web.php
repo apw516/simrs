@@ -20,6 +20,7 @@ use App\Http\Controllers\newMasterController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\JasaMedisController;
 use App\Http\Controllers\CasemixController;
+use App\Http\Controllers\UpdateERMcontroller;
 
 Route::post('/updateruangan2', [SimrsController::class, 'updateruangan2'])->name('updateruangan2');
 Route::get('/index_bridging_bed', [SimrsController::class, 'index_bridging_bed'])->middleware('auth')->name('index_bridging_bed');
@@ -863,8 +864,15 @@ Route::get('/cetakcppt/{nosep}', [PdfController::class, 'cetakcppt']);
 Route::get('/cetaksuratpengantar/{id}', [PdfController::class, 'cetaksuratpengantar']);
 
 
+
+
+
 Route::get('/index_merger_berkas', [CasemixController::class, 'index_merger_berkas'])->name('index_merger_berkas');
 Route::post('/caridatakunjungan_casemix', [CasemixController::class, 'caridatakunjungan_casemix'])->name('caridatakunjungan_casemix');
 Route::get('/downloadberkas/{kode_kunjungan}', [CasemixController::class, 'downloadberkas'])->name('downloadberkas');
   Route::post('/ambilriwayatcatatanhemodialisa', [ErmController::class, 'ambilriwayatcatatanhemodialisa'])
         ->name('ambilriwayatcatatanhemodialisa'); //sidebar
+
+
+
+Route::post('/update_formpemeriksaan_dokter', [UpdateERMcontroller::class, 'form_pemeriksaan_dokter'])->name('update_formpemeriksaan_dokter');
