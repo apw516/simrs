@@ -424,7 +424,6 @@ class PdfController extends Controller
             $arrayBaru3 = [];
             $arrayBaru4 = [];
         }
-
         $dompdf = Pdf::loadView('pdf.catatan_hemodialisa', compact([
            'mt_pasien','header','datah','arrayBaru','arrayBaru2','arrayBaru3','arrayBaru4','jenis'
         ]));

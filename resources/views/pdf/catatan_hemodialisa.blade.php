@@ -557,7 +557,42 @@
                                                 <td>{{ $dd->nama_pic }}</td>
                                             </tr>
                                         @endforeach
-
+                                        @php
+                                            // 1. Filter data yang sesuai dengan idheader terlebih dahulu
+                                            $filteredData = array_filter($arrayBaru3, function ($val) use ($header) {
+                                                return $val->idheader == $header->id;
+                                            });
+                                            $totalData3 = count($filteredData);
+                                            $isFirst = true; // Penanda baris pertama
+                                        @endphp
+                                        @foreach ($arrayBaru3 as $dd)
+                                            @if ($dd->idheader == $header->id)
+                                                <tr>
+                                                    @if ($isFirst)
+                                                        <td rowspan="{{ $totalData3 }}"
+                                                            class="align-middle text-center">
+                                                            POST-HD
+                                                        </td>
+                                                        @php $isFirst = false; @endphp {{-- Set ke false agar tidak muncul di baris berikutnya --}}
+                                                    @endif
+                                                    <td>{{ $dd->jam }}</td>
+                                                    <td>{{ $dd->qb }}</td>
+                                                    <td>{{ $dd->ufrate }}</td>
+                                                    <td>{{ $dd->tekanandarah }}</td>
+                                                    <td>{{ $dd->frekuensinadi }}</td>
+                                                    <td>{{ $dd->suhu }}</td>
+                                                    <td>{{ $dd->resep }}</td>
+                                                    <td>{{ $dd->intake_nacl }}</td>
+                                                    <td>{{ $dd->intake_dextrose }}</td>
+                                                    <td>{{ $dd->intake_makanan_minuman }}</td>
+                                                    <td>{{ $dd->intake_lainlain }}</td>
+                                                    <td>{{ $dd->output }}</td>
+                                                    <td>{{ $dd->keteranganlain }}</td>
+                                                    <td>{{ $dd->nama_pic }}</td>
+                                                 
+                                                </tr>
+                                            @endif
+                                        @endforeach
                                         {{-- FOOTER: SUMMARY --}}
                                         @php
                                             $lastData = collect($arrayBaru3)->where('idheader', $header->id)->last();
@@ -938,7 +973,7 @@
                                         </td>
 
                                         <!-- Akses 5: Femoralis -->
-                                        <td>                                                                                        <input type="checkbox" @if ($header->cateterdoublelumenfemoralis == 1) checked @endif>
+                                        <td> <input type="checkbox" @if ($header->cateterdoublelumenfemoralis == 1) checked @endif>
                                             <span>Cateter Double Lumen Femoralis</span>
                                         </td>
                                     </tr>
@@ -962,7 +997,7 @@
                                     <br>
                                     <br>
                                     <br>
-                                   
+
                                     {{ strtoupper($header->akses_vaskuler_oleh) }}
                                     {{-- </h5> --}}
                                 </p>
