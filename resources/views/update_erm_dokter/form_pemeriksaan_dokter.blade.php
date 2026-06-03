@@ -226,20 +226,30 @@
                                             <td class="text-bold font-italic">Riwayat Alergi</td>
                                             <td colspan="3">
                                                 <div class="row">
+                                                    @php
+                                                        // Ambil nilai dari database, jika null atau kosong set default ke
+                                                        $nilai_alergi =
+                                                            $asesmen_terakhir &&
+                                                            !empty($asesmen_terakhir->riwayat_alergi)
+                                                                ? $asesmen_terakhir->riwayat_alergi
+                                                                : 'Tidak Ada';
+                                                    @endphp
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input ml-2 mr-3" type="radio"
-                                                            name="alergi" id="alergi" value="Tidak Ada">
+                                                            name="alergi" id="alergi" value="Tidak Ada"
+                                                            {{ $nilai_alergi == 'Tidak Ada' ? 'checked' : '' }}>
                                                         <label class="form-check-label" for="inlineRadio1">Tidak
                                                             Ada</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input mr-3" type="radio"
-                                                            name="alergi" id="alergi" value="Ada">
+                                                            name="alergi" id="alergi" value="Ada"
+                                                            {{ $nilai_alergi == 'Ada' ? 'checked' : '' }}>
                                                         <label class="form-check-label" for="inlineRadio2">Ada</label>
                                                         <div class="form-group form-check">
                                                             <input class="form-control" id="ketalergi"
                                                                 name="ketalergi" placeholder="keterangan alergi ..."
-                                                                value="{{ $asesmen_terakhir ? $asesmen_terakhir->keterangan_alergi : '' }}">
+                                                                value="{{ trim($asesmen_terakhir ? $asesmen_terakhir->keterangan_alergi : '') }}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -266,7 +276,7 @@
                         value="{{ $kunjungan[0]->kode_unit }}">
                     <input hidden type="text" name="nomorrm" class="form-control"
                         value="{{ $kunjungan[0]->no_rm }}">
-                    <input hidden type="text" name="idasskep" class="form-control" value="">
+                    <input hidden type="text" name="idasskep" class="form-control" value="{{ $asesmen_perawat ? $asesmen_perawat->id : '' }}">
                     <table class="table">
                         <tr hidden>
                             <td class="text-bold font-italic">Tanggal Kunjungan</td>
@@ -279,15 +289,22 @@
                         <tr>
                             <td class="text-bold font-italic">Sumber Data</td>
                             <td colspan="3">
+                                @php
+                                    $sumber_data =
+                                        $asesmen_perawat && !empty($asesmen_perawat->sumberdataperiksa)
+                                            ? $asesmen_perawat->sumberdataperiksa
+                                            : 'Pasien Sendiri';
+                                @endphp
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="sumberdata" id="sumberdata"
-                                        value="Pasien Sendiri">
+                                        value="Pasien Sendiri"
+                                        {{ $sumber_data == 'Pasien Sendiri' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="inlineRadio1">Pasien Sendiri /
                                         Autoanamase</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="sumberdata" id="sumberdata"
-                                        value="Keluarga">
+                                        value="Keluarga" {{ $sumber_data == 'Keluarga' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="inlineRadio2">Keluarga / Alloanamnesa</label>
                                 </div>
                             </td>
@@ -330,7 +347,8 @@
                                         <input type="text" class="form-control"
                                             placeholder="Frekuensi nadi pasien ..." id="frekuensinadi"
                                             name="frekuensinadi" aria-label="Recipient's username"
-                                            aria-describedby="basic-addon2" value="{{ $asesmen_perawat ? $asesmen_perawat->frekuensinadi : '' }}">
+                                            aria-describedby="basic-addon2"
+                                            value="{{ $asesmen_perawat ? $asesmen_perawat->frekuensinadi : '' }}">
                                         <div class="input-group-append">
                                             <span class="input-group-text" id="basic-addon2">x/menit</span>
                                         </div>
@@ -344,7 +362,8 @@
                                         <input type="text" class="form-control"
                                             placeholder="Frekuensi Nafas Pasien ..." name="frekuensinafas"
                                             id="frekuensinafas" aria-label="Recipient's username"
-                                            aria-describedby="basic-addon2" value="{{ $asesmen_perawat ? $asesmen_perawat->frekuensinapas : '' }}">
+                                            aria-describedby="basic-addon2"
+                                            value="{{ $asesmen_perawat ? $asesmen_perawat->frekuensinapas : '' }}">
                                         <div class="input-group-append">
                                             <span class="input-group-text" id="basic-addon2">x/menit</span>
                                         </div>
@@ -381,7 +400,8 @@
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="Umur pasien ..."
                                             aria-label="Suhu tubuh pasien" name="tinggibadan" id="tinggibadan"
-                                            aria-describedby="basic-addon2" value="{{ $asesmen_perawat ? $asesmen_perawat->tinggibadan : '' }}">
+                                            aria-describedby="basic-addon2"
+                                            value="{{ $asesmen_perawat ? $asesmen_perawat->tinggibadan : '' }}">
                                         <div class="input-group-append">
                                             <span class="input-group-text" id="basic-addon2"></span>
                                         </div>
@@ -406,7 +426,8 @@
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="Umur pasien ..."
                                             aria-label="Suhu tubuh pasien" name="usia" id="usia"
-                                            aria-describedby="basic-addon2" value="{{ $asesmen_perawat ? $asesmen_perawat->usia : '' }}">
+                                            aria-describedby="basic-addon2"
+                                            value="{{ $asesmen_perawat ? $asesmen_perawat->usia : '' }}">
                                         <div class="input-group-append">
                                             <span class="input-group-text" id="basic-addon2"></span>
                                         </div>
@@ -589,51 +610,71 @@
                                 class="btn btn-success float-right riwayatkonsul" data-toggle="modal"
                                 data-target="#modalriwayatkonsul">Riwayat Konsul</button></div>
                         <div class="card-body">
+                            @php
+                                // Ambil nilai tindak lanjut dari database, jika null atau kosong set default ke 'PASIEN DIPULANGKAN'
+                                $tindak_lanjut =
+                                    $asesmen_terakhir && !empty($asesmen_terakhir->tindak_lanjut)
+                                        ? $asesmen_terakhir->tindak_lanjut
+                                        : 'PASIEN DIPULANGKAN';
+                            @endphp
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                                    id="pilihtindaklanjut" value="KONSUL KE POLI LAIN">
-                                <label class="form-check-label" for="inlineRadio1">KONSUL KE POLI LAIN</label>
+                                    id="tl_konsul" value="KONSUL KE POLI LAIN"
+                                    {{ $tindak_lanjut == 'KONSUL KE POLI LAIN' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="tl_konsul">KONSUL KE POLI LAIN</label>
                             </div>
+
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                                    id="pilihtindaklanjut" value="KONTROL">
-                                <label class="form-check-label" for="inlineRadio2">KONTROL</label>
+                                    id="tl_kontrol" value="KONTROL"
+                                    {{ $tindak_lanjut == 'KONTROL' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="tl_kontrol">KONTROL</label>
                             </div>
+
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                                    id="pilihtindaklanjut" value="RUJUK INTERNAL">
-                                <label class="form-check-label" for="inlineRadio2">RUJUK INTERNAL</label>
+                                    id="tl_rujuk_int" value="RUJUK INTERNAL"
+                                    {{ $tindak_lanjut == 'RUJUK INTERNAL' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="tl_rujuk_int">RUJUK INTERNAL</label>
                             </div>
+
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                                    id="pilihtindaklanjut" value="PASIEN DIPULANGKAN">
-                                <label class="form-check-label" for="inlineRadio2">PULANG</label>
+                                    id="tl_pulang" value="PASIEN DIPULANGKAN"
+                                    {{ $tindak_lanjut == 'PASIEN DIPULANGKAN' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="tl_pulang">PULANG</label>
                             </div>
+
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                                    id="pilihtindaklanjut" value="RUJUK KELUAR">
-                                <label class="form-check-label" for="inlineRadio2">RUJUK KELUAR</label>
+                                    id="tl_rujuk_out" value="RUJUK KELUAR"
+                                    {{ $tindak_lanjut == 'RUJUK KELUAR' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="tl_rujuk_out">RUJUK KELUAR</label>
                             </div>
+
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                                    id="pilihtindaklanjut" value="RUJUK RAWAT INAP">
-                                <label class="form-check-label" for="inlineRadio2">RAWAT INAP</label>
+                                    id="tl_rawat_inap" value="RUJUK RAWAT INAP"
+                                    {{ $tindak_lanjut == 'RUJUK RAWAT INAP' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="tl_rawat_inap">RAWAT INAP</label>
                             </div>
+
                             <div class="form-check form-check-inline mb-2">
                                 <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                                    id="pilihtindaklanjut" value="PASIEN MENINGGAL">
-                                <label class="form-check-label" for="inlineRadio2">PASIEN MENINGGAL</label>
+                                    id="tl_meninggal" value="PASIEN MENINGGAL"
+                                    {{ $tindak_lanjut == 'PASIEN MENINGGAL' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="tl_meninggal">PASIEN MENINGGAL</label>
                             </div>
                             <div class="form-group mt-2">
                                 <label for="exampleInputEmail1">Keterangan</label>
                                 <textarea type="text" class="form-control" id="keterangantindaklanjut" name="keterangantindaklanjut"
-                                    aria-describedby="emailHelp">{{ $asesmen_terakhir ? $asesmen_terakhir->statusgeneralis : '' }}</textarea>
+                                    aria-describedby="emailHelp">{{ $asesmen_terakhir ? $asesmen_terakhir->keterangan_tindak_lanjut : '' }}</textarea>
                             </div>
                         </div>
                     </div>
                 </form>
                 {{-- formtindakan --}}
-                <div class="accordion" id="accordionExample">
+                <div hidden class="accordion" id="accordionExample">
                     <div class="card">
                         <div class="card-header bg-danger" id="headingOne">
                             <h2 class="mb-0">
@@ -726,13 +767,13 @@
                                                 <th>Nama tindakan</th>
                                             </thead>
                                             <tbody>
-                                                {{-- @foreach ($layanan_lab as $t)
+                                                @foreach ($layanan_lab as $t)
                                                     <tr class="pilihlayanan" namatindakan="{{ $t->Tindakan }}"
                                                         tarif="{{ $t->tarif }}" kode="{{ $t->kode }}"
                                                         id="{{ $t->kode }}">
                                                         <td>{{ $t->Tindakan }}</td>
                                                     </tr>
-                                                @endforeach --}}
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -797,13 +838,13 @@
                                                 <th>Nama tindakan</th>
                                             </thead>
                                             <tbody>
-                                                {{-- @foreach ($layanan_rad as $t)
+                                                @foreach ($layanan_rad as $t)
                                                     <tr class="pilihlayanan" namatindakan="{{ $t->Tindakan }}"
                                                         tarif="{{ $t->tarif }}" kode="{{ $t->kode }}"
                                                         id="{{ $t->kode }}">
                                                         <td>{{ $t->Tindakan }}</td>
                                                     </tr>
-                                                @endforeach --}}
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -962,7 +1003,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="modaltemplate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -985,7 +1025,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="modalriwayatkonsul" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -1123,6 +1162,21 @@
             todayHighlight: true,
         }).datepicker('update', new Date());
     });
+    function simpanhasil() {
+        Swal.fire({
+            title: "Anda yakin ?",
+            text: "Pastikan data sudah diisi dengan benar !",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, Simpan !"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                simpanhasil2()
+            }
+        });
+    }
 
     function tampilkanhasilnya() {
         jlh = $('#jumlahdatahasil').val()
@@ -1148,14 +1202,7 @@
         });
     }
 
-    function simpanhasil() {
-        var canvas1 = document.getElementById("myCanvas1");
-        var ctx1 = canvas1.getContext("2d");
-        var img1 = document.getElementById("gambarnya1");
-        ctx1.drawImage(img1, 10, 10);
-        var dataUrl1 = canvas1.toDataURL();
-        $('#gambarcoret').val(dataUrl1)
-        gambar = $('#gambarcoret').val()
+    function simpanhasil2() {
         var data1 = $('.form_pemeriksaan_1').serializeArray();
         var data2 = $('.form_pemeriksaan_2').serializeArray();
         var data3 = $('.form_pemeriksaan_3').serializeArray();
@@ -1166,19 +1213,11 @@
         var formobat_farmasi = $('.formobat_farmasi').serializeArray();
         var formobatfarmasi2 = $('.arrayobat').serializeArray();
         var datatindaklanjut = $('.formtindaklanjut').serializeArray();
-        var formpemeriksaankhusus = $('.formpemeriksaankhusus').serializeArray();
-        var formtelingakanan = $('.formtelingakanan').serializeArray();
-        var formtelingakiri = $('.formtelingakiri').serializeArray();
-        var formanjurantelinga = $('.formanjurantelinga').serializeArray();
-        var formhidungkanan = $('.formhidungkanan').serializeArray();
-        var formhidungkiri = $('.formhidungkiri').serializeArray();
-        var formkesimpulanhidung = $('.formkesimpulanhidung').serializeArray();
         var simpantemplate = $('#simpantemplate:checked').val()
         var namaresep = $('#namaresep').val()
         var kodekunjungan = $('#kodekunjungan').val()
         var pasieniter = $('#iterasipilih:checked').val()
         var jumlahiter = $('#jumlahiterasi').val()
-        var selisih = $('#selisih').val()
         var hasilexpertisi = $('#hasilexpertisi').val()
         spinner = $('#loader')
         spinner.show();
@@ -1196,25 +1235,16 @@
                 datatindaklanjut: JSON.stringify(datatindaklanjut),
                 formobat_farmasi: JSON.stringify(formobat_farmasi),
                 formobatfarmasi2: JSON.stringify(formobatfarmasi2),
-                formpemeriksaankhusus: JSON.stringify(formpemeriksaankhusus),
                 simpantemplate,
-                selisih,
                 namaresep,
                 kodekunjungan,
-                gambar,
-                formtelingakanan: JSON.stringify(formtelingakanan),
-                formtelingakiri: JSON.stringify(formtelingakiri),
-                formanjurantelinga: JSON.stringify(formanjurantelinga),
-                formhidungkanan: JSON.stringify(formhidungkanan),
-                formhidungkiri: JSON.stringify(formhidungkiri),
-                formkesimpulanhidung: JSON.stringify(formkesimpulanhidung),
                 formorder_lab: JSON.stringify(formorder_lab),
                 formtindakan_rad: JSON.stringify(formtindakan_rad),
                 hasilexpertisi,
                 pasieniter,
                 jumlahiter
             },
-            url: '<?= route('simpanpemeriksaandokter_2') ?>',
+            url: '<?= route('simpanhasilpemeriksaandokter') ?>',
             error: function(data) {
                 spinner.hide()
                 Swal.fire({
@@ -1245,41 +1275,6 @@
             }
         });
     }
-    $(".lihatcppt").click(function() {
-        status = $('#statuslihatcppt').val()
-        if (status == 0) {
-            status = $('#statuslihatcppt').val(1)
-            rm = $(this).attr('rm')
-            spinner = $('#loader')
-            spinner.show();
-            $.ajax({
-                type: 'post',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    rm
-                },
-                url: '<?= route('lihatcppt_pasien') ?>',
-                success: function(response) {
-                    $('.v_cppt').html(response);
-                    spinner.hide()
-                }
-            });
-        }
-    })
-    $(".riwayatkonsul").click(function() {
-        $.ajax({
-            type: 'post',
-            data: {
-                _token: "{{ csrf_token() }}"
-            },
-            url: '<?= route('riwayatkonsul') ?>',
-            success: function(response) {
-                $('.view_riwayat_konsul').html(response);
-                spinner.hide()
-            }
-        });
-    })
-
     function ambilformiterasiobat() {
         var kodekunjungan = $('#kodekunjungan').val()
         $.ajax({
@@ -1295,75 +1290,6 @@
             }
         });
     }
-    $(".lihathasilpenunjang_lab").click(function() {
-        spinner = $('#loader')
-        spinner.show();
-        nomorrm = $(this).attr('nomorrm')
-        $.ajax({
-            type: 'post',
-            data: {
-                _token: "{{ csrf_token() }}",
-                nomorrm
-            },
-            url: '<?= route('lihathasilpenunjang_lab_dokter') ?>',
-            success: function(response) {
-                $('.v_hasil_lab_by_dokter').html(response);
-                spinner.hide()
-            }
-        });
-    })
-    $(".lihathasilpenunjang_rad").click(function() {
-        spinner = $('#loader')
-        spinner.show();
-        nomorrm = $(this).attr('nomorrm')
-        $.ajax({
-            type: 'post',
-            data: {
-                _token: "{{ csrf_token() }}",
-                nomorrm
-            },
-            url: '<?= route('lihathasilpenunjang_rad') ?>',
-            success: function(response) {
-                $('.v_hasil_penunjang_rad').html(response);
-                spinner.hide()
-            }
-        });
-    })
-    $(".lihathasilpenunjang_pa").click(function() {
-        spinner = $('#loader')
-        spinner.show();
-        nomorrm = $(this).attr('nomorrm')
-        $.ajax({
-            type: 'post',
-            data: {
-                _token: "{{ csrf_token() }}",
-                nomorrm
-            },
-            url: '<?= route('lihathasilpenunjang_pa') ?>',
-            success: function(response) {
-                $('.v_hasil_penunjang_pa').html(response);
-                spinner.hide()
-            }
-        });
-    })
-    $(".liatsumarilis").click(function() {
-        spinner = $('#loader')
-        spinner.show();
-        nomorrm = $(this).attr('nomorrm')
-        $.ajax({
-            type: 'post',
-            data: {
-                _token: "{{ csrf_token() }}",
-                nomorrm
-            },
-            url: '<?= route('hasilsumarilis') ?>',
-            success: function(response) {
-                $('.v_sumarilis').html(response);
-                spinner.hide()
-            }
-        });
-    })
-
     function batalisi() {
         rm = $('#nomorrm').val()
         formcatatanmedis(rm)
@@ -1512,7 +1438,6 @@
             }
         }
     });
-
     function showname() {
         a = $('#simpantemplate:checked').val()
         if (a == 'on') {
@@ -1521,7 +1446,6 @@
             $('#namaresep').attr('Hidden', true)
         }
     }
-
     function ambilresep() {
         spinner = $('#loader')
         spinner.show();
@@ -1592,7 +1516,6 @@
         ambilriwayatobat()
         ambilformiterasiobat()
     })
-
     function ambilriwayatobat() {
         spinner = $('#loader')
         spinner.show();
@@ -1612,7 +1535,6 @@
             }
         });
     }
-
     function resetgambar() {
         $.ajax({
             type: 'post',
@@ -1629,7 +1551,6 @@
             }
         });
     }
-
     function ambilgambar() {
         $.ajax({
             type: 'post',
@@ -1646,7 +1567,6 @@
             }
         });
     }
-
     function showicare2() {
         var kodekunjungan = $('#kodekunjungan').val()
         $.ajax({
@@ -1662,7 +1582,6 @@
             }
         });
     }
-
     function addform() {
         var max_fields = 10;
         var wrapper = $(".formobatfarmasi2"); //Fields wrapper

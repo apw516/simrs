@@ -876,3 +876,4 @@ Route::get('/downloadberkas/{kode_kunjungan}', [CasemixController::class, 'downl
 
 
 Route::post('/update_formpemeriksaan_dokter', [UpdateERMcontroller::class, 'form_pemeriksaan_dokter'])->name('update_formpemeriksaan_dokter');
+Route::post('/simpanhasilpemeriksaandokter', [UpdateERMcontroller::class, 'simpanpemeriksaandokter'])->name('simpanhasilpemeriksaandokter');

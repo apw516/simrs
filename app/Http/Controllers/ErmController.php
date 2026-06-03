@@ -2970,6 +2970,7 @@ class ErmController extends Controller
                 ts_header_iter::whereRaw('id = ?', array($cek['0']->id))->delete();
             }
         }
+
         $id_asskep = $dataSet_1['idasskep'];
         $diagnosakerja = preg_replace("/[^A-Za-z]/", "", $dataSet_3['diagnosakerja']);
         $cekdiagnosa =  strlen($diagnosakerja);
@@ -3189,7 +3190,6 @@ class ErmController extends Controller
                         $arrayindex_tindakan[] = $dataSet;
                     }
                 }
-
                 try {
                     //dummy
                     $kode_unit = $kunjungan[0]->kode_unit;
