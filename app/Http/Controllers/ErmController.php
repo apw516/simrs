@@ -5574,6 +5574,7 @@ class ErmController extends Controller
         WHERE c.kode_kunjungan = ? and c.status_kunjungan != 8 order  by c.kode_kunjungan desc limit 1', [$kodekunjungan]);
 
         $assesmendd = db::connection('mysql')->select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
+        $resume_ttd = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and status_file = ? and status_code = ?',[$kodekunjungan,1,200]);
         return view('ermtemplate.hasil_pemeriksaan_medis', compact([
             'assesmen_dokter',
             'datakonsul',
@@ -5587,7 +5588,8 @@ class ErmController extends Controller
             'kodekunjungan',
             'orderfarmasi',
             'order_penunjang',
-            'assesmendd'
+            'assesmendd',
+            'resume_ttd'
         ]));
     }
     public function simpanttdperawat(Request $request)
