@@ -3,73 +3,84 @@
     <div class="card-body">
         @foreach ($assesmen_dokter as $cp)
             @if ($cp->unit_k != '1028')
-            @if($cp->kode_unit == '1046')
-                <table class="table table-sm table-bordered table-striped">
-                    <tr>
-                        <td>1. Lamanya nyeri ( hari / bulan / tahunan)</td>
-                        <td>: {{ $cp->lamanyeri }}</td>
-                    </tr>
-                    <tr>
-                        <td>2. Bagaimana kwalitas nyeri sekarang ?</td>
-                        <td>: {{ $cp->kualitasnyeri }}</td>
-                    </tr>
-                    <tr>
-                        <td>3. Dalam satu bulan terakhir bagaimana kwalitas nyeri ?</td>
-                        <td>: {{ $cp->kualitasnyerisatubulan }}</td>
-                    </tr>
-                    <tr>
-                        <td>4. Tandai Gambaran nyeri anda</td>
-                        <td>
+                @if ($cp->kode_unit == '1046')
+                    <table class="table table-sm table-bordered table-striped">
+                        <tr>
+                            <td>1. Lamanya nyeri ( hari / bulan / tahunan)</td>
+                            <td>: {{ $cp->lamanyeri }}</td>
+                        </tr>
+                        <tr>
+                            <td>2. Bagaimana kwalitas nyeri sekarang ?</td>
+                            <td>: {{ $cp->kualitasnyeri }}</td>
+                        </tr>
+                        <tr>
+                            <td>3. Dalam satu bulan terakhir bagaimana kwalitas nyeri ?</td>
+                            <td>: {{ $cp->kualitasnyerisatubulan }}</td>
+                        </tr>
+                        <tr>
+                            <td>4. Tandai Gambaran nyeri anda</td>
+                            <td>
                                 A. Tetap nyeri kadang agak meningkat
-                            <input disabled readonly class="form-check-input mr-1 ml-1" type="checkbox" value="1" id="gambar1" name="gambar1" @if($cp->gambar1 == 1) checked @endif>
-                            <img width="10%" src="{{ asset('public/img/nyeri1.png') }}" alt="" class="mr-5 ml-4">
+                                <input disabled readonly class="form-check-input mr-1 ml-1" type="checkbox" value="1"
+                                    id="gambar1" name="gambar1" @if ($cp->gambar1 == 1) checked @endif>
+                                <img width="10%" src="{{ asset('public/img/nyeri1.png') }}" alt=""
+                                    class="mr-5 ml-4">
                                 <br>B. Tetap nyeri kadang sangat nyeri
-                            <input disabled readonly class="form-check-input mr-1 ml-1" type="checkbox" value="1" id="gambar1" name="gambar1" @if($cp->gambar2 == 1) checked @endif>
-                            <img width="10%" src="{{ asset('public/img/nyeri2.png') }}" alt="" class="mr-5 ml-4">
+                                <input disabled readonly class="form-check-input mr-1 ml-1" type="checkbox"
+                                    value="1" id="gambar1" name="gambar1"
+                                    @if ($cp->gambar2 == 1) checked @endif>
+                                <img width="10%" src="{{ asset('public/img/nyeri2.png') }}" alt=""
+                                    class="mr-5 ml-4">
                                 <br>C. Nyeri dengan episode tanpa nyeri
-                            <input  disabled readonlyclass="form-check-input mr-1 ml-1" type="checkbox" value="1" id="gambar1" name="gambar1" @if($cp->gambar3 == 1) checked @endif>
-                            <img width="10%" src="{{ asset('public/img/nyeri3.png') }}" alt="" class="mr-5 ml-4">
+                                <input disabled readonlyclass="form-check-input mr-1 ml-1" type="checkbox"
+                                    value="1" id="gambar1" name="gambar1"
+                                    @if ($cp->gambar3 == 1) checked @endif>
+                                <img width="10%" src="{{ asset('public/img/nyeri3.png') }}" alt=""
+                                    class="mr-5 ml-4">
                                 <br>D. Mendadak lebih nyeri, dengan episode nyeri diantaranya
-                            <input disabled readonly class="form-check-input mr-1 ml-1" type="checkbox" value="1" id="gambar1" name="gambar1" @if($cp->gambar4 == 1) checked @endif>
-                            <img width="10%" src="{{ asset('public/img/nyeri4.png') }}" alt="" class="mr-5 ml-4">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>5. Apakah nyeri menyebar ke bagian tubuh yang lain ?</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Keterangan</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Obat obatan</td>
-                        <td>
-                            <div class="card">
-                                <div class="card-header text-bold bg-secondary">Order yang dikirim dokter</div>
-                                <div class="card-body">
-                                    <table class="table table-sm">
-                                        <thead>
-                                            <th>Nama Obat</th>
-                                            <th>qty</th>
-                                            <th>Aturan Pakai</th>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($orderfarmasi as $t)
-                                                <tr>
-                                                    <td>{{ $t->kode_barang }}
-                                                    </td>
-                                                    <td>{{ $t->jumlah_layanan }}
-                                                    </td>
-                                                    <td>{{ $t->aturan_pakai }}
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                <input disabled readonly class="form-check-input mr-1 ml-1" type="checkbox"
+                                    value="1" id="gambar1" name="gambar1"
+                                    @if ($cp->gambar4 == 1) checked @endif>
+                                <img width="10%" src="{{ asset('public/img/nyeri4.png') }}" alt=""
+                                    class="mr-5 ml-4">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5. Apakah nyeri menyebar ke bagian tubuh yang lain ?</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Keterangan</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Obat obatan</td>
+                            <td>
+                                <div class="card">
+                                    <div class="card-header text-bold bg-secondary">Order yang dikirim dokter</div>
+                                    <div class="card-body">
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <th>Nama Obat</th>
+                                                <th>qty</th>
+                                                <th>Aturan Pakai</th>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($orderfarmasi as $t)
+                                                    <tr>
+                                                        <td>{{ $t->kode_barang }}
+                                                        </td>
+                                                        <td>{{ $t->jumlah_layanan }}
+                                                        </td>
+                                                        <td>{{ $t->aturan_pakai }}
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div>
-                            {{-- <div class="card">
+                                {{-- <div class="card">
                                 <div class="card-header text-bold bg-secondary">Obat yang dilayani</div>
                                 <div class="card-body">
                                     <table class="table table-sm">
@@ -95,97 +106,97 @@
                                     </table>
                                 </div>
                             </div> --}}
-                        </td>
-                    </tr>
-                </table>
+                            </td>
+                        </tr>
+                    </table>
                 @else
-                <table class="table table-sm table-bordered table-striped">
-                    <tr>
-                        <td>Sumber Data</td>
-                        <td>{{ $cp->sumber_data }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Keluhan Utama</td>
-                        <td>{{ $cp->keluhan_pasien }}</td>
-                    </tr>
-                    <tr>
-                        <td>Riwayat Penyakit Dahulu</td>
-                        <td>{{ $cp->riwayat_kehamilan_pasien_wanita }}
-                            <br>
-                            {{ $cp->riwyat_kelahiran_pasien_anak }}
-                            <br>
-                            {{ $cp->riwyat_penyakit_sekarang }}
-                            <br>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Riwayat Alergi</td>
-                        <td>{{ $cp->riwayat_alergi }} |
-                            {{ $cp->keterangan_alergi }} </td>
-                    </tr>
-                    <tr>
-                        <td>Riwayat Obat yang diminum</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Kesadaran</td>
-                        <td colspan="3">{{ $cp->kesadaran }}</td>
-                    </tr>
-                    <tr>
-                        <td>Pemeriksaan Fisik ( O )</td>
-                        <td>{{ $cp->pemeriksaan_fisik }}</td>
-                    </tr>
-                    <tr>
-                        <td>Diagnosis ( A ) <br></td>
-                    </tr>
-                    <tr>
-                        <td>Diagnosa Utama</td>
-                        <td>{{ $cp->diagnosakerja }}<br>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Diagnosa Sekunder</td>
-                        <td>{{ $cp->diagnosabanding }}<br>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Tindakan</td>
-                        <td>
-                            {{ $cp->tindakanmedis }}<br>
-                            @foreach ($tindakan as $t)
-                                @if ($t->kode_kunjungan == $cp->id_kunjungan)
-                                    {{ $t->NAMA_TARIF }}<br>
-                                @endif
-                            @endforeach
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Rencana Tindakan ( P )</td>
-                        <td>{{ $cp->renjana_tindakan }}</td>
-                    </tr>
-                    <tr>
-                        <td>Rencana Terapi ( P )</td>
-                        <td>{{ $cp->rencanakerja }}</td>
-                    </tr>
-                    <tr>
-                        <td>Tindak Lanjut</td>
-                        <td>{{ $cp->tindak_lanjut }}<br>
-                            {{ $cp->keterangan_tindak_lanjut }} <br><br>
-                            @foreach ($datakonsul as $dk)
-                                @if ($dk->kode_kunjungan == $cp->id_kunjungan)
-                                    @if ($dk->jenis == 'KONSUL')
-                                        KONSUL KE POLI {{ $dk->poli_konsul }} <br>
-                                        {{ $dk->catatan }} <br><br><br>
-                                        JAWABAN KONSUL <br>
-                                        {{ $dk->dokter_penerima_2 }} <br><br>
-                                        {{ $dk->jawaban_konsul }}
-                                    @else
-                                        RUJUK POLI LAIN ( {{ $dk->poli_konsul }})
+                    <table class="table table-sm table-bordered table-striped">
+                        <tr>
+                            <td>Sumber Data</td>
+                            <td>{{ $cp->sumber_data }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Keluhan Utama</td>
+                            <td>{{ $cp->keluhan_pasien }}</td>
+                        </tr>
+                        <tr>
+                            <td>Riwayat Penyakit Dahulu</td>
+                            <td>{{ $cp->riwayat_kehamilan_pasien_wanita }}
+                                <br>
+                                {{ $cp->riwyat_kelahiran_pasien_anak }}
+                                <br>
+                                {{ $cp->riwyat_penyakit_sekarang }}
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Riwayat Alergi</td>
+                            <td>{{ $cp->riwayat_alergi }} |
+                                {{ $cp->keterangan_alergi }} </td>
+                        </tr>
+                        <tr>
+                            <td>Riwayat Obat yang diminum</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Kesadaran</td>
+                            <td colspan="3">{{ $cp->kesadaran }}</td>
+                        </tr>
+                        <tr>
+                            <td>Pemeriksaan Fisik ( O )</td>
+                            <td>{{ $cp->pemeriksaan_fisik }}</td>
+                        </tr>
+                        <tr>
+                            <td>Diagnosis ( A ) <br></td>
+                        </tr>
+                        <tr>
+                            <td>Diagnosa Utama</td>
+                            <td>{{ $cp->diagnosakerja }}<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Diagnosa Sekunder</td>
+                            <td>{{ $cp->diagnosabanding }}<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tindakan</td>
+                            <td>
+                                {{ $cp->tindakanmedis }}<br>
+                                @foreach ($tindakan as $t)
+                                    @if ($t->kode_kunjungan == $cp->id_kunjungan)
+                                        {{ $t->NAMA_TARIF }}<br>
                                     @endif
-                                @endif
-                            @endforeach
-                            {{-- <div class="btn-group mb-3" role="group" aria-label="Basic example">
+                                @endforeach
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Rencana Tindakan ( P )</td>
+                            <td>{{ $cp->renjana_tindakan }}</td>
+                        </tr>
+                        <tr>
+                            <td>Rencana Terapi ( P )</td>
+                            <td>{{ $cp->rencanakerja }}</td>
+                        </tr>
+                        <tr>
+                            <td>Tindak Lanjut</td>
+                            <td>{{ $cp->tindak_lanjut }}<br>
+                                {{ $cp->keterangan_tindak_lanjut }} <br><br>
+                                @foreach ($datakonsul as $dk)
+                                    @if ($dk->kode_kunjungan == $cp->id_kunjungan)
+                                        @if ($dk->jenis == 'KONSUL')
+                                            KONSUL KE POLI {{ $dk->poli_konsul }} <br>
+                                            {{ $dk->catatan }} <br><br><br>
+                                            JAWABAN KONSUL <br>
+                                            {{ $dk->dokter_penerima_2 }} <br><br>
+                                            {{ $dk->jawaban_konsul }}
+                                        @else
+                                            RUJUK POLI LAIN ( {{ $dk->poli_konsul }})
+                                        @endif
+                                    @endif
+                                @endforeach
+                                {{-- <div class="btn-group mb-3" role="group" aria-label="Basic example">
                                 <button type="button" class="btn btn-secondary" onclick="goto_suratkontrol()"><i
                                         class="bi bi-plus mr-1 ml-1"></i> Buat Surat Kontrol</button>
                                 <button type="button" class="btn btn-secondary" data-toggle="modal"
@@ -201,43 +212,43 @@
                                     data-target="#modalrujukrawatinap"><i class="bi bi-plus mr-1 ml-1"></i> Rawat Inap
                                 </button>
                             </div> --}}
-                            <div class="v_riwayat_surat_rujin">
+                                <div class="v_riwayat_surat_rujin">
 
-                            </div>
-                        </td>
-                    </tr>
-                    {{-- <tr>
+                                </div>
+                            </td>
+                        </tr>
+                        {{-- <tr>
                     <td>Pemeriksaan Penunjang</td>
                     <td>{{ $cp->evaluasi }}</td>
                     </tr> --}}
-                    <tr>
-                        <td>Obat obatan</td>
-                        <td>
-                            <div class="card">
-                                <div class="card-header text-bold bg-secondary">Order yang dikirim dokter</div>
-                                <div class="card-body">
-                                    <table class="table table-sm">
-                                        <thead>
-                                            <th>Nama Obat</th>
-                                            <th>qty</th>
-                                            <th>Aturan Pakai</th>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($orderfarmasi as $t)
-                                                <tr>
-                                                    <td>{{ $t->kode_barang }}
-                                                    </td>
-                                                    <td>{{ $t->jumlah_layanan }}
-                                                    </td>
-                                                    <td>{{ $t->aturan_pakai }}
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                        <tr>
+                            <td>Obat obatan</td>
+                            <td>
+                                <div class="card">
+                                    <div class="card-header text-bold bg-secondary">Order yang dikirim dokter</div>
+                                    <div class="card-body">
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <th>Nama Obat</th>
+                                                <th>qty</th>
+                                                <th>Aturan Pakai</th>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($orderfarmasi as $t)
+                                                    <tr>
+                                                        <td>{{ $t->kode_barang }}
+                                                        </td>
+                                                        <td>{{ $t->jumlah_layanan }}
+                                                        </td>
+                                                        <td>{{ $t->aturan_pakai }}
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div>
-                            {{-- <div class="card">
+                                {{-- <div class="card">
                                 <div class="card-header text-bold bg-secondary">Obat yang dilayani</div>
                                 <div class="card-body">
                                     <table class="table table-sm">
@@ -263,12 +274,12 @@
                                     </table>
                                 </div>
                             </div> --}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Pemeriksaan Penunjang</td>
-                        <td>
-                            {{-- <div class="btn-group mb-4" role="group" aria-label="Basic example">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Pemeriksaan Penunjang</td>
+                            <td>
+                                {{-- <div class="btn-group mb-4" role="group" aria-label="Basic example">
                                 <button kodekunjungan="{{ $cp->id_kunjungan }}" type="button"
                                     class="btn btn-info btn-sm lihathasillab" data-toggle="modal"
                                     data-target="#modalhasillab"><i class="bi bi-eye mr-1 ml-1"></i> Hasil
@@ -281,31 +292,31 @@
                                     class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalhasilpa"><i
                                         class="bi bi-eye mr-1 ml-1"></i> Hasil Laboratorium Patologi Anatomi</button>
                             </div><br> --}}
-                            @if ($cp->kode_unit == '1012' || $cp->kode_unit == '1027')
-                                Hasil Expertisi : <br>
-                                {{ $cp->evaluasi }}
-                                <br>
-                            @endif
-                            <div class="card">
-                                <div class="card-header  text-bold bg-secondary">Order yang dikirim</div>
-                                <div class="card-body">
-                                    <table class="table table-sm table-bordered">
-                                        <thead>
-                                            <th>Nama Unit</th>
-                                            <th>Nama Layanan</th>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($order_penunjang as $d)
-                                                <tr>
-                                                    <td>{{ $d->nama_unit }}</td>
-                                                    <td>{{ $d->NAMA_TARIF }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                @if ($cp->kode_unit == '1012' || $cp->kode_unit == '1027')
+                                    Hasil Expertisi : <br>
+                                    {{ $cp->evaluasi }}
+                                    <br>
+                                @endif
+                                <div class="card">
+                                    <div class="card-header  text-bold bg-secondary">Order yang dikirim</div>
+                                    <div class="card-body">
+                                        <table class="table table-sm table-bordered">
+                                            <thead>
+                                                <th>Nama Unit</th>
+                                                <th>Nama Layanan</th>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($order_penunjang as $d)
+                                                    <tr>
+                                                        <td>{{ $d->nama_unit }}</td>
+                                                        <td>{{ $d->NAMA_TARIF }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div>
-                            {{-- <div class="card">
+                                {{-- <div class="card">
                                 <div class="card-header text-bold bg-secondary">Order yang dilayani</div>
                                 <div class="card-body">
                                     <table class="table table-sm">
@@ -328,49 +339,49 @@
                                     </table>
                                 </div>
                             </div> --}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Jawaban Konsul Ke poli lain</td>
-                        <td>{{ $cp->keterangan_tindak_lanjut_2 }} <br><br>
-                            @foreach ($datakonsul as $dk)
-                                @if ($dk->kode_kunjungan_2 == $cp->id_kunjungan)
-                                    @if ($dk->jenis == 'KONSUL')
-                                        KONSUL DARI POLI {{ $dk->poli_pengirim }} <br>
-                                        {{ $dk->catatan }} <br><br><br>
-                                        JAWABAN KONSUL <br>
-                                        {{ $dk->jawaban_konsul }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Jawaban Konsul Ke poli lain</td>
+                            <td>{{ $cp->keterangan_tindak_lanjut_2 }} <br><br>
+                                @foreach ($datakonsul as $dk)
+                                    @if ($dk->kode_kunjungan_2 == $cp->id_kunjungan)
+                                        @if ($dk->jenis == 'KONSUL')
+                                            KONSUL DARI POLI {{ $dk->poli_pengirim }} <br>
+                                            {{ $dk->catatan }} <br><br><br>
+                                            JAWABAN KONSUL <br>
+                                            {{ $dk->jawaban_konsul }}
+                                        @endif
                                     @endif
-                                @endif
-                            @endforeach
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Hasil Pemeriksaan Khusus</td>
-                        <td>
-                            {{-- <div class="card">
+                                @endforeach
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hasil Pemeriksaan Khusus</td>
+                            <td>
+                                {{-- <div class="card">
                                                                     <div class="card-header bg-danger">Hasil Pemeriksaan khusus
                                                                     </div>
                                                                     <div class="card-body"> --}}
-                            {{ $cp->pemeriksaan_khusus }} <br><br>
-                            {{ $cp->pemeriksaan_khusus_2 }}<br><br>
-                            <img width="80%"src="{{ $cp->gambar_1 }}" alt=""><br><br>
-                            {{-- <img src="{{ $k->gambar_2 }}" alt=""><br><br> --}}
-                            {{-- </div>
+                                {{ $cp->pemeriksaan_khusus }} <br><br>
+                                {{ $cp->pemeriksaan_khusus_2 }}<br><br>
+                                <img width="80%"src="{{ $cp->gambar_1 }}" alt=""><br><br>
+                                {{-- <img src="{{ $k->gambar_2 }}" alt=""><br><br> --}}
+                                {{-- </div>
                                                                 </div> --}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Tanggal Periksa</td>
-                        <td>{{ $cp->tgl_pemeriksaan }}</td>
-                    </tr>
-                    <tr>
-                        <td>Dokter pemeriksa</td>
-                        <td>{{ $cp->nama_dokter }}</td>
-                    </tr>
-                </table>
-            @endif
-            @else               
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tanggal Periksa</td>
+                            <td>{{ $cp->tgl_pemeriksaan }}</td>
+                        </tr>
+                        <tr>
+                            <td>Dokter pemeriksa</td>
+                            <td>{{ $cp->nama_dokter }}</td>
+                        </tr>
+                    </table>
+                @endif
+            @else
                 <table class="table table-sm">
                     <tr>
                         <td>
@@ -764,13 +775,34 @@
                     </div>
                 @endif
             @else
+                @if (count($resume_ttd) > 0)
+                    <div class="alert alert-warning font-italic mt-5" role="alert">
+                        Resume medis sudah ditanda tangan menggunakan tanda tangan elektronik !
+                        <button class="badge btn-info btn-sm lihatberkas" idberkas="{{ $resume_ttd[0]->response }}"><i
+                                class="bi bi-printer mr-1 ml-1"></i> lihat
+                            berkas</button>
+                        @if ($cp->iddokter == auth()->user()->id)
+                            <button class="badge btn-info mr-1 ml-2 simpantandatangan" data-toggle="modal"
+                                data-target="#modallogintte">Tanda Tangan Ulang</button>
+                        @endif
+                    </div>
+                @else
+                    <div class="alert alert-danger font-italic mt-5" role="alert">
+                        Resume medis belum ditanda tangan menggunakan tanda tangan elektronik !
+                        @if ($cp->iddokter == auth()->user()->id)
+                            <button class="badge btn-info mr-1 ml-2 simpantandatangan" data-toggle="modal"
+                                data-target="#modallogintte">Tanda Tangan</button>
+                        @endif
+                    </div>
+                @endif
                 <button class="btn btn-danger float-right mt-4" onclick="ambildatapasien()">Kembali</button>
             @endif
         @endif
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="modalkonsulantarpoli" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalkonsulantarpoli" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
