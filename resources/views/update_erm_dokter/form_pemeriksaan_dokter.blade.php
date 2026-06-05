@@ -88,21 +88,6 @@
                 <span aria-hidden="true" style="font-size: 1.5rem;">&times;</span>
             </button>
         </div>
-        {{-- @if ($kunjungan[0]->ref_kunjungan != '0')
-            <div class="jumbotron mt-3">
-                <h1 class="display-4">Hello {{ auth()->user()->nama }} </h1><br>
-                <p class="lead">Dokter Pengirim : {{ $kunjungan[0]->dokter_kirim }}</p>
-                <p class="lead">Poliklinik Pengirim : {{ $kunjungan[0]->poli_asal }}</p>
-                <p class="lead">Mohon Konsul</p>
-                <p class="lead">Pasien dengan : <br>RM {{ $kunjungan[0]->no_rm }} |
-                    {{ $kunjungan[0]->nama_pasien }} | {{ $kunjungan[0]->diagx }} <br><br>
-                    Keterangan <br>
-                    @if (count($ref_resume) > 0)
-                        {{ $ref_resume[0]->keterangan_tindak_lanjut }}@endif
-                </p>
-                <hr class="my-4">
-            </div>
-        @endif --}}
         <div class="card">
             <div class="card-header text-bold bg-success">+ SUBJECT ( S )</div>
             <div class="card-body">
@@ -276,7 +261,8 @@
                         value="{{ $kunjungan[0]->kode_unit }}">
                     <input hidden type="text" name="nomorrm" class="form-control"
                         value="{{ $kunjungan[0]->no_rm }}">
-                    <input hidden type="text" name="idasskep" class="form-control" value="{{ $asesmen_perawat ? $asesmen_perawat->id : '' }}">
+                    <input hidden type="text" name="idasskep" class="form-control"
+                        value="{{ $asesmen_perawat ? $asesmen_perawat->id : '' }}">
                     <table class="table">
                         <tr hidden>
                             <td class="text-bold font-italic">Tanggal Kunjungan</td>
@@ -471,7 +457,7 @@
                     </table>
                 </form>
                 {{-- formpemeriksaankhusus --}}
-                <div class="card">
+                <div class="card" @if(auth()->user()->unit != '1014') hidden @endif>
                     <div class="card-header bg-danger" id="headingTwo2">
                         <h2 class="mb-0">
                             <button class="btn btn-block text-left text-light collapsed" type="button"
@@ -484,7 +470,242 @@
                     <div id="collapseTwo2" class="collapse" aria-labelledby="headingTwo2"
                         data-parent="#accordionExample">
                         <div class="card-body">
-                            Under Maintenance
+                            @if (!empty($hasil_ro) && isset($hasil_ro[0]))
+                                @php
+                                    $data_mata = $hasil_ro[0]; // Ambil baris pertama object
+                                @endphp
+                                @php
+                                    $a = explode('|', $hasil_ro[0]->catatanpemeriksaanlain);
+                                    $b = explode('|', $hasil_ro[0]->palpebra);
+                                    $c = explode('|', $hasil_ro[0]->konjungtiva);
+                                    $d = explode('|', $hasil_ro[0]->kornea);
+                                    $e = explode('|', $hasil_ro[0]->bilikmatadepan);
+                                    $f = explode('|', $hasil_ro[0]->pupil);
+                                    $g = explode('|', $hasil_ro[0]->iris);
+                                    $h = explode('|', $hasil_ro[0]->lensa);
+                                    $i = explode('|', $hasil_ro[0]->funduskopi);
+                                    $j = explode('|', $hasil_ro[0]->status_oftamologis_khusus);
+                                    $k = explode('|', $hasil_ro[0]->masalahmedis);
+                                    $l = explode('|', $hasil_ro[0]->prognosis);
+                                    $m = explode('|', $hasil_ro[0]->tekananintraokular);
+                                @endphp
+                                <form action="" class="formpemeriksaankhusus">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-header bg-light">Hasil Pemeriksaan RO</div>
+                                                <div class="card-body">
+                                                    <textarea class="form-control" rows="8" id="hasilpemeriksaanro" name="hasilpemeriksaanro">{{ trim($data_mata->tajampenglihatandekat ?? '-') }}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                             <div class="col-md-6">
+                                            <div class="card">
+                                                <div class="card-header bg-danger">Mata Kiri</div>
+                                                <div class="card-body">
+                                                    <table class="table table-sm">
+                                                        <tr>
+                                                            <td colspan="4">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <div class="gambarmatakanan">
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Tekanan Intra Okular</td>
+                                                            <td colspan="3">
+                                                                <textarea class="form-control" id="tekanan_intra_okular" name="tekanan_intra_okular">{{ $m[0] }}</textarea>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Catatan Pemeriksaan Lainnya</td>
+                                                            <td colspan="3">
+                                                                <textarea class="form-control" name="catatan_pemeriksaan_lainnya" id="catatan_pemerikssaan_lainnya">{{ $a[0] }}</textarea>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Palpebra</td>
+                                                            <td colspan="3"><input class="form-control"
+                                                                    value="{{ $b[0] }}" id="palpebra"
+                                                                    name="palpebra"></input></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Konjungtiva</td>
+                                                            <td colspan="3"><input class="form-control"
+                                                                    value="{{ $c[0] }}" id="konjungtiva"
+                                                                    name="konjungtiva"></input>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Kornea</td>
+                                                            <td colspan="3"><input class="form-control"
+                                                                    value="{{ $d[0] }}" name="kornea"
+                                                                    id="kornea"></input></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Bilik Mata Depan</td>
+                                                            <td colspan="3"><input class="form-control"
+                                                                    value="{{ $e[0] }}"
+                                                                    name="bilik_mata_depan"
+                                                                    id="bilik_mata_depan"></input>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Pupil</td>
+                                                            <td colspan="3"><input class="form-control"
+                                                                    value="{{ $f[0] }}" id="pupil"
+                                                                    name="pupil"></input></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Iris</td>
+                                                            <td colspan="3"><input class="form-control"
+                                                                    value="{{ $g[0] }}" name="iris"
+                                                                    id="iris"></input></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Lensa</td>
+                                                            <td colspan="3"><input class="form-control"
+                                                                    value="{{ $h[0] }}" name="lensa"
+                                                                    id="lensa"></input></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Funduskopi</td>
+                                                            <td colspan="3"><input class="form-control"
+                                                                    value="{{ $i[0] }}" name="funduskopi"
+                                                                    id="funduskopi"></input>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Status Oftalmologis Khusus</td>
+                                                            <td colspan="3">
+                                                                <textarea class="form-control" name="oftamologis" id="oftamologis">{{ $j[0] }}</textarea>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Masalah Medis</td>
+                                                            <td colspan="3">
+                                                                <textarea class="form-control" name="masalahmedis" id="masalahmedis">{{ $k[0] }}</textarea>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Prognosis</td>
+                                                            <td colspan="3">
+                                                                <textarea class="form-control" name="prognosis" id="prognosis">{{ $l[0] }}</textarea>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card">
+                                                <div class="card-header bg-danger">Mata Kanan</div>
+                                                <div class="card-body">
+                                                    <table class="table table-sm">
+                                                        <tr>
+                                                            <td>Tekanan Intra Okular</td>
+                                                            <td colspan="3">
+                                                                <textarea class="form-control" id="kiri_tekanan_intra_okular" name="kiri_tekanan_intra_okular">{{ $m[1] ?? '' }}</textarea>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Catatan Pemeriksaan Lainnya</td>
+                                                            <td colspan="3">
+                                                                <textarea class="form-control" name="kiri_catatan_pemeriksaan_lainnya" id="kiri_catatan_pemerikssaan_lainnya">{{ $a[1] ?? '' }}</textarea>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Palpebra</td>
+                                                            <td colspan="3"><input class="form-control"
+                                                                    value="{{ $b[1] ?? '' }}" id="kiri_palpebra"
+                                                                    name="kiri_palpebra"></input>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Konjungtiva</td>
+                                                            <td colspan="3"><input class="form-control"
+                                                                    value="{{ $c[1] ?? '' }}" id="kiri_konjungtiva"
+                                                                    name="kiri_konjungtiva"></input>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Kornea</td>
+                                                            <td colspan="3"><input class="form-control"
+                                                                    value="{{ $d[1] ?? '' }}" name="kiri_kornea"
+                                                                    id="kiri_kornea"></input></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Bilik Mata Depan</td>
+                                                            <td colspan="3"><input class="form-control"
+                                                                    value="{{ $e[1] ?? '' }}"
+                                                                    name="kiri_bilik_mata_depan"
+                                                                    id="kiri_bilik_mata_depan"></input></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Pupil</td>
+                                                            <td colspan="3"><input class="form-control"
+                                                                    value="{{ $f[1] ?? '' }}" id="kiri_pupil"
+                                                                    name="kiri_pupil"></input></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Iris</td>
+                                                            <td colspan="3"><input class="form-control"
+                                                                    value="{{ $g[1] ?? '' }}" name="kiri_iris"
+                                                                    id="kiri_iris"></input></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Lensa</td>
+                                                            <td colspan="3"><input class="form-control"
+                                                                    value="{{ $h[1] ?? '' }}" name="kiri_lensa"
+                                                                    id="kiri_lensa"></input></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Funduskopi</td>
+                                                            <td colspan="3"><input class="form-control"
+                                                                    value="{{ $i[1] ?? '' }}"
+                                                                    name="kiri_funduskopi"
+                                                                    id="kiri_funduskopi"></input>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Status Oftalmologis Khusus</td>
+                                                            <td colspan="3">
+                                                                <textarea class="form-control" value="" name="kiri_oftamologis" id="kiri_oftamologis">{{ $j[1] ?? '' }}</textarea>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Masalah Medis</td>
+                                                            <td colspan="3">
+                                                                <textarea class="form-control" value="" name="kiri_masalahmedis" id="kiri_masalahmedis">{{ $k[1] ?? '' }}</textarea>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Prognosis</td>
+                                                            <td colspan="3">
+                                                                <textarea class="form-control" value="" name="kiri_prognosis" id="kiri_prognosis">{{ $l[1] ?? '' }}</textarea>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>                                   
+                                    </div>
+                                </form>
+                            @else
+                                <div class="text-center py-5 my-2">
+                                    <div class="text-muted mb-3">
+                                        <i class="bi bi-eye-slash text-secondary opacity-50"
+                                            style="font-size: 3rem;"></i>
+                                    </div>
+                                    <h6 class="fw-bold text-secondary mb-1">Belum Ada Pemeriksaan Spesifik Mata</h6>
+                                    <p class="text-muted small mb-0">Petugas RO atau Perawat belum menginputkan hasil
+                                        pemeriksaan penunjang mata untuk kunjungan ini.</p>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -560,7 +781,7 @@
                 </form>
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header text-bold bg-dark">Hasil Expertisi</div>
+                        <div class="card-header text-bold bg-dark">FORMULIR HASIL EKSPERTISI MEDIS</div>
                         <div class="card-body">
                             <textarea class="form-control" id="hasilexpertisi" name="hasilexpertisi" cols="30" rows="10"
                                 placeholder="Silahkan isi hasil expertisi ...">{{ $asesmen_terakhir ? $asesmen_terakhir->evaluasi : '' }}</textarea>
@@ -610,6 +831,73 @@
                                 class="btn btn-success float-right riwayatkonsul" data-toggle="modal"
                                 data-target="#modalriwayatkonsul">Riwayat Konsul</button></div>
                         <div class="card-body">
+                            <style>
+                                .alert-blink-danger {
+                                    animation: pulse-danger 2s infinite;
+                                }
+
+                                .alert-blink-warning {
+                                    animation: pulse-warning 2s infinite;
+                                }
+
+                                @keyframes pulse-danger {
+
+                                    0%,
+                                    100% {
+                                        background-color: #f8d7da;
+                                        box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+                                    }
+
+                                    50% {
+                                        background-color: #f5b3b7;
+                                        box-shadow: 0 0 12px rgba(220, 53, 69, 0.4);
+                                    }
+                                }
+
+                                @keyframes pulse-warning {
+
+                                    0%,
+                                    100% {
+                                        background-color: #fff3cd;
+                                    }
+
+                                    50% {
+                                        background-color: #ffe89e;
+                                        box-shadow: 0 0 12px rgba(255, 193, 7, 0.4);
+                                    }
+                                }
+                            </style>
+                            @php
+                                // Menentukan class animasi berkedip secara otomatis
+                                $blinkClass = '';
+                                if (($alertClass ?? '') == 'alert-danger') {
+                                    $blinkClass = 'alert-blink-danger';
+                                } elseif (($alertClass ?? '') == 'alert-warning') {
+                                    $blinkClass = 'alert-blink-warning';
+                                }
+                            @endphp
+                            <div class="alert {{ $alertClass }} {{ $blinkClass }} alert-dismissible fade show p-3 mb-3 shadow-sm border-0"
+                                role="alert" style="{{ $borderClass }} color: #212529;">
+                                <div class="row align-items-top">
+                                    <div class="col-auto pr-0 pt-1">
+                                        <i class="{{ $alertIcon }} fa-2x mx-2"></i>
+                                    </div>
+                                    <div class="col pl-3">
+                                        <strong class="text-uppercase font-weight-bold d-block mb-2"
+                                            style="letter-spacing: 1px; font-size: 0.9rem;">
+                                            SISTEM MONITORING PROGRAM PRB & RUJUKAN BPJS
+                                        </strong>
+                                        <p class="mb-0 font-weight-normal text-justify"
+                                            style="font-size: 1.1rem; line-height: 1.5;">
+                                            {!! $pesan_rujukan !!}
+                                        </p>
+                                    </div>
+                                </div>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+                                    style="color: inherit; opacity: 0.6; position: absolute; top: 15px; right: 15px;">
+                                    <span aria-hidden="true" style="font-size: 1.5rem;">&times;</span>
+                                </button>
+                            </div>
                             @php
                                 // Ambil nilai tindak lanjut dari database, jika null atau kosong set default ke 'PASIEN DIPULANGKAN'
                                 $tindak_lanjut =
@@ -623,42 +911,36 @@
                                     {{ $tindak_lanjut == 'KONSUL KE POLI LAIN' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="tl_konsul">KONSUL KE POLI LAIN</label>
                             </div>
-
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="pilihtindaklanjut"
                                     id="tl_kontrol" value="KONTROL"
                                     {{ $tindak_lanjut == 'KONTROL' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="tl_kontrol">KONTROL</label>
                             </div>
-
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="pilihtindaklanjut"
                                     id="tl_rujuk_int" value="RUJUK INTERNAL"
                                     {{ $tindak_lanjut == 'RUJUK INTERNAL' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="tl_rujuk_int">RUJUK INTERNAL</label>
                             </div>
-
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="pilihtindaklanjut"
                                     id="tl_pulang" value="PASIEN DIPULANGKAN"
                                     {{ $tindak_lanjut == 'PASIEN DIPULANGKAN' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="tl_pulang">PULANG</label>
                             </div>
-
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="pilihtindaklanjut"
                                     id="tl_rujuk_out" value="RUJUK KELUAR"
                                     {{ $tindak_lanjut == 'RUJUK KELUAR' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="tl_rujuk_out">RUJUK KELUAR</label>
                             </div>
-
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="pilihtindaklanjut"
                                     id="tl_rawat_inap" value="RUJUK RAWAT INAP"
                                     {{ $tindak_lanjut == 'RUJUK RAWAT INAP' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="tl_rawat_inap">RAWAT INAP</label>
                             </div>
-
                             <div class="form-check form-check-inline mb-2">
                                 <input class="form-check-input" type="radio" name="pilihtindaklanjut"
                                     id="tl_meninggal" value="PASIEN MENINGGAL"
@@ -1004,7 +1286,8 @@
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="modaltemplate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modaltemplate" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -1049,7 +1332,8 @@
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="modalscan_rm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalscan_rm" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -1070,7 +1354,8 @@
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="modalberkasluar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalberkasluar" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -1162,6 +1447,7 @@
             todayHighlight: true,
         }).datepicker('update', new Date());
     });
+
     function simpanhasil() {
         Swal.fire({
             title: "Anda yakin ?",
@@ -1207,6 +1493,7 @@
         var data2 = $('.form_pemeriksaan_2').serializeArray();
         var data3 = $('.form_pemeriksaan_3').serializeArray();
         var data4 = $('.form_pemeriksaan_4').serializeArray();
+        var data5 = $('.formpemeriksaankhusus').serializeArray();
         var formorder_lab = $('.formorder_lab').serializeArray();
         var formtindakan_rad = $('.formtindakan_rad').serializeArray();
         var datatindakan = $('.formtindakan').serializeArray();
@@ -1231,6 +1518,7 @@
                 data2: JSON.stringify(data2),
                 data3: JSON.stringify(data3),
                 data4: JSON.stringify(data4),
+                data5: JSON.stringify(data5),
                 datatindakan: JSON.stringify(datatindakan),
                 datatindaklanjut: JSON.stringify(datatindaklanjut),
                 formobat_farmasi: JSON.stringify(formobat_farmasi),
@@ -1270,11 +1558,12 @@
                         text: data.message,
                         footer: ''
                     })
-                    resume()
+                    resume2()
                 }
             }
         });
     }
+
     function ambilformiterasiobat() {
         var kodekunjungan = $('#kodekunjungan').val()
         $.ajax({
@@ -1290,6 +1579,7 @@
             }
         });
     }
+
     function batalisi() {
         rm = $('#nomorrm').val()
         formcatatanmedis(rm)
@@ -1438,6 +1728,7 @@
             }
         }
     });
+
     function showname() {
         a = $('#simpantemplate:checked').val()
         if (a == 'on') {
@@ -1446,6 +1737,7 @@
             $('#namaresep').attr('Hidden', true)
         }
     }
+
     function ambilresep() {
         spinner = $('#loader')
         spinner.show();
@@ -1516,6 +1808,7 @@
         ambilriwayatobat()
         ambilformiterasiobat()
     })
+
     function ambilriwayatobat() {
         spinner = $('#loader')
         spinner.show();
@@ -1535,6 +1828,7 @@
             }
         });
     }
+
     function resetgambar() {
         $.ajax({
             type: 'post',
@@ -1551,6 +1845,7 @@
             }
         });
     }
+
     function ambilgambar() {
         $.ajax({
             type: 'post',
@@ -1567,6 +1862,7 @@
             }
         });
     }
+
     function showicare2() {
         var kodekunjungan = $('#kodekunjungan').val()
         $.ajax({
@@ -1582,6 +1878,7 @@
             }
         });
     }
+
     function addform() {
         var max_fields = 10;
         var wrapper = $(".formobatfarmasi2"); //Fields wrapper
@@ -1603,7 +1900,7 @@
                 nama +
                 '" name="namaobat" value=""><input hidden readonly type="" class="form-control form-control-sm" id="" name="kodebarang" value="""></div><div class="form-group col-md-2"><label for="inputPassword4">Aturan Pakai</label><input type="" class="form-control form-control-sm" id="' +
                 aturan +
-                '" name="aturanpakai" value=""></div><div class="form-group col-md-1"><label for="inputPassword4">Jumlah</label><input type="" class="form-control form-control-sm" id="" name="jumlah" value="0"></div><div class="form-group col-md-1"><label for="inputPassword4">Signa</label><input type="" class="form-control form-control-sm" id="" name="signa" value="0"></div><div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type="" class="form-control form-control-sm" id="" name="keterangan" value=""></div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i></div>'
+                '" name="aturanpakai" value=""></div><div class="form-group col-md-1"><label for="inputPassword4">Jumlah</label><input type="" class="form-control form-control-sm" id="" name="jumlah" value="0"></div><div class="form-group col-md-1"><label for="inputPassword4">Signa</label><input type="" class="form-control form-control-sm" id="" name="signa" value="0"><input hidden type="" class="form-control form-control-sm" id="" name="kode_kunjungan" value="0"></div><div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type="" class="form-control form-control-sm" id="" name="keterangan" value=""></div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i></div>'
             );
             $(wrapper).on("click", ".remove_field", function(e) { //user click on remove
                 kode = $(this).attr('kode2')

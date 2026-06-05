@@ -545,6 +545,10 @@
                 kodekunjungan
             },
             url: '<?= route('resumepasien_dokter2') ?>',
+            error: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            },
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()

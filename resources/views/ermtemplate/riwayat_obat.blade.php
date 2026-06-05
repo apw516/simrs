@@ -9,7 +9,7 @@
      <div class="form-group col-md-1"><label for="inputPassword4">Jumlah</label><input type=""
              class="form-control form-control-sm" id="" name="jumlah" value="{{ $r->jumlah_layanan }}"></div>
      <div class="form-group col-md-1"><label for="inputPassword4">Signa</label><input type=""
-             class="form-control form-control-sm" id="" name="signa" value="{{ $r->signa }}"><input type=""
+             class="form-control form-control-sm" id="" name="signa" value="{{ $r->signa }}"><input hidden type=""
              class="form-control form-control-sm" id="" name="kode_kunjungan" value="{{ $r->kode_kunjungan }}"></div>
      <div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type=""
              class="form-control form-control-sm" id="" name="keterangan" value="{{ $r->keterangan }}"></div><i

@@ -4929,6 +4929,7 @@ class ErmController extends Controller
                 ts_header_iter::whereRaw('id = ?', array($cek['0']->id))->delete();
             }
         }
+
         if (count($cek) > 0) {
             assesmenawaldokter::whereRaw('id_pasien = ? and kode_unit = ? and id_kunjungan = ?', array($dataSet['nomorrm'],  $dataSet['unit'], $dataSet['kodekunjungan']))->update($assdok);
             $id_assesmen = $cek[0]->id;
@@ -4936,6 +4937,8 @@ class ErmController extends Controller
             $erm_assesmen = assesmenawaldokter::create($assdok);
             $id_assesmen = $erm_assesmen->id;
         }
+
+        
         $diagnosakerja = $dataSet['diagnosismedis'];
         if (count($dataobat) > 1) {
             $simpantemplate = $request->simpantemplate;
@@ -5548,16 +5551,27 @@ class ErmController extends Controller
         $ts_kunjungan = db::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
         $kode_paramedis = $ts_kunjungan[0]->kode_paramedis;
         $mt_paramedis = db::select('select * from mt_paramedis where kode_paramedis = ?', [$kode_paramedis]);
+        
+        $orderfarmasi = db::select('SELECT kode_barang,aturan_pakai,jumlah_layanan 
+        FROM ts_layanan_header_order a 
+        JOIN ts_layanan_detail_order b ON a.id = b.row_id_header 
+        WHERE a.kode_kunjungan = ? 
+        and  a.kode_unit > ? 
+        and a.status_layanan != 3', [$kodekunjungan, '4000']);
 
-        $orderfarmasi = db::select('SELECT kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.kode_kunjungan = ? and  kode_unit > ?', [$kodekunjungan, '4000']);
-
+        
         $order_penunjang = db::select('SELECT fc_nama_unit1(a.`kode_unit`)AS nama_unit,a.kode_unit,SUBSTR(kode_tarif_detail,1,6) AS kode_tarif_header,c.`NAMA_TARIF` FROM ts_layanan_header_order a
         INNER JOIN ts_layanan_detail_order b ON a.id = b.`row_id_header`
         INNER JOIN mt_tarif_header c ON SUBSTR(b.kode_tarif_detail,1,6) = c.`KODE_TARIF_HEADER`
         WHERE a.`kode_kunjungan` = ? AND a.`kode_unit` < ?', [$kodekunjungan, '4000']);
 
-        $assesmen_dokter = DB::connection('mysql')->select('SELECT *,a.id as idasskep,b.versi as versidk,date(a.tanggalkunjungan) as tglk,a.kode_unit as unitpoli ,fc_nama_unit1(a.kode_unit) as nama_unit,b.pic as iddokter FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b on a.kode_kunjungan = b.id_kunjungan LEFT OUTER JOIN ts_kunjungan c on a.kode_kunjungan = c.kode_kunjungan
-             WHERE a.kode_kunjungan = ? and c.status_kunjungan != 8 order  by a.id desc limit 1', [$kodekunjungan]);
+        // $assesmen_dokter = DB::connection('mysql')->select('SELECT *,a.id as idasskep,b.versi as versidk,date(a.tanggalkunjungan) as tglk,a.kode_unit as unitpoli ,fc_nama_unit1(a.kode_unit) as nama_unit,b.pic as iddokter FROM erm_hasil_assesmen_keperawatan_rajal a LEFT OUTER JOIN assesmen_dokters b on a.kode_kunjungan = b.id_kunjungan LEFT OUTER JOIN ts_kunjungan c on a.kode_kunjungan = c.kode_kunjungan
+        // WHERE a.kode_kunjungan = ? and c.status_kunjungan != 8 order  by a.id desc limit 1', [$kodekunjungan]);
+      
+        $assesmen_dokter = DB::connection('mysql')->select('SELECT *,a.id as idasskep,b.versi as versidk,date(a.tanggalkunjungan) as tglk,c.kode_unit as unit_k,a.kode_unit as unitpoli ,fc_nama_unit1(a.kode_unit) as nama_unit,b.pic as iddokter FROM ts_kunjungan c 
+        LEFT OUTER JOIN assesmen_dokters b on c.kode_kunjungan = b.id_kunjungan 
+        LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal a on c.kode_kunjungan = a.kode_kunjungan
+        WHERE c.kode_kunjungan = ? and c.status_kunjungan != 8 order  by c.kode_kunjungan desc limit 1', [$kodekunjungan]);
 
         $assesmendd = db::connection('mysql')->select('select * from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
         return view('ermtemplate.hasil_pemeriksaan_medis', compact([
@@ -8401,7 +8415,6 @@ class ErmController extends Controller
         // dd($riwayatobat);
         // $last_assdok = DB::select('SELECT * FROM assesmen_dokters
         // WHERE id = (SELECT MAX(id) FROM assesmen_dokters WHERE id_pasien = ? AND kode_unit = ? ) AND id_pasien = ? AND kode_unit = ?', [$kunjungan[0]->no_rm, $unit, $kunjungan[0]->no_rm, $unit]);
-
         if (count($riwayatobat) > 0) {
             // $riwayatobat = db::select('SELECT * FROM ts_layanan_header_order AS a
             // LEFT OUTER JOIN ts_layanan_detail_order b ON a.`id` = b.row_id_header WHERE LEFT(a.kode_layanan_header,3) = ? AND a.kode_kunjungan = ?', ['ORF', $last_assdok[0]->id_kunjungan]);

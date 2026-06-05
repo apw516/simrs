@@ -2,7 +2,7 @@
     <div class="card-header bg-info">Hasil Pemeriksaan Medis</div>
     <div class="card-body">
         @foreach ($assesmen_dokter as $cp)
-            @if ($cp->kode_unit != '1028')
+            @if ($cp->unit_k != '1028')
             @if($cp->kode_unit == '1046')
                 <table class="table table-sm table-bordered table-striped">
                     <tr>
