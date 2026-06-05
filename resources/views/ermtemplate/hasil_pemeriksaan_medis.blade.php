@@ -946,6 +946,197 @@ Diagnosa sekunder: {{ $assesmen_dokter[0]->diagnosabanding }}
         </div>
     </div>
 </div>
+<div class="modal fade" id="modallogintte" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Masukan password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_login_tte">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="simpantandatangan_bsre()">Simpan Tanda
+                    Tangan</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function simpantandatangan() {
+        kodekunjungan = $('#kodekunjungan').val()
+        Swal.fire({
+            icon: 'warning',
+            title: 'Anda yakin data sudah benar ?',
+            showDenyButton: true,
+            confirmButtonText: 'Ya',
+            denyButtonText: `Cek lagi ...`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                spinner = $('#loader')
+                spinner.show();
+                $.ajax({
+                    async: true,
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        kodekunjungan: kodekunjungan,
+                        // signature
+                    },
+                    url: '<?= route('simpanttddokter') ?>',
+                    error: function(data) {
+                        spinner.hide()
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                            footer: 'ermwaled2023'
+                        })
+                    },
+                    success: function(data) {
+                        spinner.hide()
+                        if (data.kode == '502') {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops',
+                                text: data.message,
+                                footer: 'ermwaled2023'
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'OK',
+                                text: data.message,
+                                footer: 'ermwaled2023'
+                            })
+                            resume2()
+                        }
+                    }
+                });
+            }
+        })
+
+    }
+
+    function simpantandatangan_bsre() {
+        kodekunjungan = $('#kodekunjungan').val()
+        nik = $('#nik').val()
+        password = $('#password').val()
+        Swal.fire({
+            icon: 'warning',
+            title: 'Anda yakin data sudah benar ?',
+            showDenyButton: true,
+            confirmButtonText: 'Ya',
+            denyButtonText: `Cek lagi ...`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                spinner = $('#loader')
+                spinner.show();
+                $.ajax({
+                    async: true,
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        kodekunjungan,
+                        nik,
+                        password
+                    },
+                    url: '<?= route('simpantandatanganbsre') ?>',
+                    error: function(data) {
+                        spinner.hide()
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Ooops....',
+                            text: 'Sepertinya ada masalah......',
+                            footer: ''
+                        })
+                    },
+                    success: function(data) {
+                        spinner.hide()
+                        if (data.kode == 500) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oopss...',
+                                text: data.message,
+                                footer: ''
+                            })
+                        } else {
+                            $('#modallogintte').modal('toggle');
+                            resume2()
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'OK',
+                                text: data.message,
+                                footer: ''
+                            })
+                            Swal.fire({
+                                title: "Hasil pemeriksaan berhasil ditanda tangan ...",
+                                text: "Klik cetak jika anda ingin mencetak berkas yang ditanda tangan ...",
+                                icon: "success",
+                                showCancelButton: true,
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "Ya, cetak"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.open('cetak_dokumen_tte/' + data.id);
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        })
+
+    }
+
+    $(".lihatberkas").on('click', function(event) {
+        id = $(this).attr('idberkas')
+        window.open('cetak_dokumen_tte/' + id)
+    })
+    $(".simpantandatangan").on('click', function(event) {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+            },
+            url: '<?= route('ambil_form_login_tte') ?>',
+            success: function(response) {
+                spinner.hide()
+                $('.v_login_tte').html(response);
+            }
+        });
+    });
+
+    function showmodalttd() {
+        $('#modallogintte').modal('show');
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+            },
+            url: '<?= route('ambil_form_login_tte') ?>',
+            success: function(response) {
+                spinner.hide()
+                $('.v_login_tte').html(response);
+            }
+        });
+    }
+</script>
+
 <input hidden name="kodekunjungan" id="kodekunjungan" type="text" value="{{ $kodekunjungan }}">
 {{-- <script>
     function simpandatakonsul() {
