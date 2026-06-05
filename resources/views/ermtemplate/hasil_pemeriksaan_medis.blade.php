@@ -748,7 +748,7 @@
 
             </div>
         @else
-            @if ($cp->signature == '')
+            @if ($assesmendd[0]->signature == '')
                 @if ($cp->iddokter == auth()->user()->id || $cp->iddokter == '')
                     {{-- <button class="btn btn-success float-right" onclick="simpantandatangan()">Simpan</button> --}}
                     <div class="jumbotron">

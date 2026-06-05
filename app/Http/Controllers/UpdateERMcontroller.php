@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\assesmenawaldokter;
 use App\Models\assesmenawalperawat;
 use App\Models\di_diagnosa;
+use App\Models\erm_mata_kanan_kiri;
 use App\Models\templateresep;
 use App\Models\templateresep_detail;
 use App\Models\ts_header_iter;
@@ -21,6 +22,19 @@ class UpdateERMcontroller extends Controller
     public function form_pemeriksaan_dokter(Request $request)
     {
         $kunjungan = DB::select('select *,fc_nama_px(no_rm) as nama_pasien,fc_nama_paramedis(ref_paramedis) AS dokter_kirim,fc_nama_unit1(ref_unit) AS poli_asal from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
+        //cek konsul
+        $ref_kunjungan = $kunjungan[0]->ref_kunjungan;
+        $poli_pengirim_konsul = DB::table('ts_kunjungan as a')
+            ->select([
+                'a.*',
+                DB::raw('fc_nama_px(a.no_rm) as nama_pasien'),
+                DB::raw('fc_NAMA_PARAMEDIS1(a.kode_paramedis) as nama_dokter'),
+                DB::raw('fc_nama_unit1(a.kode_unit) as nama_unit')
+            ])
+            ->where('a.kode_kunjungan', $ref_kunjungan)
+            ->get();
+        $catatan_konsul = db::table('assesmen_dokters as a')->select('tindak_lanjut', 'keterangan_tindak_lanjut', 'diagnosakerja')->where('id_kunjungan', $ref_kunjungan)->get();
+        //end cek konsul
         $nomor_rujukan = $kunjungan[0]->no_rujukan;
         $rujukan = $nomor_rujukan;
         $detailrujukan = '';
@@ -114,7 +128,9 @@ class UpdateERMcontroller extends Controller
                 'asesmen_perawat',
                 'layanan_rad',
                 'layanan_lab',
-                'hasil_ro'
+                'hasil_ro',
+                'poli_pengirim_konsul',
+                'catatan_konsul'
             ]));
         } else {
             return view('update_erm_dokter.form_pemeriksaan_dokter', compact([
@@ -127,7 +143,9 @@ class UpdateERMcontroller extends Controller
                 'asesmen_perawat',
                 'layanan_rad',
                 'layanan_lab',
-                'hasil_ro'
+                'hasil_ro',
+                'poli_pengirim_konsul',
+                'catatan_konsul'
             ]));
         }
     }
@@ -146,6 +164,7 @@ class UpdateERMcontroller extends Controller
             $data3 = json_decode($_POST['data3'], true);
             $data4 = json_decode($_POST['data4'], true);
             $data5 = json_decode($_POST['data5'], true);
+            $jawabankonsul = json_decode($_POST['jawabankonsul'], true);
             $formorder_lab = json_decode($_POST['formorder_lab'], true);
             $formtindakan_rad = json_decode($_POST['formtindakan_rad'], true);
             $datatindakan = json_decode($_POST['datatindakan'], true);
@@ -189,6 +208,11 @@ class UpdateERMcontroller extends Controller
                 $index =  $nama['name'];
                 $value =  $nama['value'];
                 $dataSet_5[$index] = $value;
+            }
+            foreach ($jawabankonsul as $nama) {
+                $index =  $nama['name'];
+                $value =  $nama['value'];
+                $dataSet_jawabankonsul[$index] = $value;
             }
             if ($pasieniter == 1) {
                 if ($jumlahiter == '') {
@@ -352,7 +376,7 @@ class UpdateERMcontroller extends Controller
                 'keluhan_pasien' => trim($dataSet_1['keluhanutama']),
                 'tindak_lanjut' => $dataSet_tindaklanjut['pilihtindaklanjut'],
                 'keterangan_tindak_lanjut' => trim($dataSet_tindaklanjut['keterangantindaklanjut'] . ' ' . $keterangan_iter),
-                // 'keterangan_tindak_lanjut_2' => trim($dataSet_3['jawabankonsul']),
+                'keterangan_tindak_lanjut_2' => trim($dataSet_jawabankonsul['isi_jawaban_konsul']),
                 'umur' => $dataSet_2['usia'],
                 'tgl_entry' => $this->get_now(),
                 'status' => '0',
@@ -391,10 +415,22 @@ class UpdateERMcontroller extends Controller
                     'prognosis' => $dataSet_5['prognosis'] . '|' . $dataSet_5['kiri_prognosis'],
                     'id_asskep' =>  $id_asskep
                 ];
+                erm_mata_kanan_kiri::updateOrCreate(
+                    ['kode_kunjungan' => $request->kodekunjungan],
+                    $datamata
+                );
             }
             $diagnosakerja = $dataSet_4['rencanakerja'];
             $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$dataSet_1['kodekunjungan']]);
             $kodekunjungan = $kunjungan[0]->kode_kunjungan;
+            $ref_kunjungan = $kunjungan[0]->ref_kunjungan;
+            if ($ref_kunjungan != '' || $ref_kunjungan != '0') {
+                $datajawab = [
+                    'jawaban_konsul' => trim($dataSet_jawabankonsul['isi_jawaban_konsul']),
+                    'dokter_jawab' => auth()->user()->nama
+                ];
+                assesmenawaldokter::where('id_kunjungan', $ref_kunjungan)->update($datajawab);
+            }
             if (count($formobatfarmasi2) > 1) {
                 $simpantemplate = $request->simpantemplate;
                 // $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
@@ -497,7 +533,7 @@ class UpdateERMcontroller extends Controller
                         'status_order' => '0',
                         'id_assdok' => $id_assesmen
                     ];
-                    // $ts_layanan_header = ts_layanan_header_order::create($data_layanan_header);
+                    $ts_layanan_header = ts_layanan_header_order::create($data_layanan_header);
                     $cekorder = 0;
                     foreach ($arrayindex_far as $d) {
                         if ($d['kode_kunjungan'] != $kodekunjungan) {
@@ -535,6 +571,8 @@ class UpdateERMcontroller extends Controller
                                 ->update(['status_layanan' => 1]);
                         }
                     } else {
+                        ts_layanan_header_order::where('id', $ts_layanan_header->id)
+                            ->delete();
                     }
                 } catch (\Exception $e) {
                     $back = [
@@ -730,6 +768,7 @@ class UpdateERMcontroller extends Controller
         DB::beginTransaction();
         try {
             $pasieniter = $request->pasieniter;
+            $got = $request->got;
             $jumlahiter = $request->jumlahiter;
             $keterangan_iter = '';
             if ($pasieniter == 1) {
@@ -742,6 +781,12 @@ class UpdateERMcontroller extends Controller
             $datatindaklanjut = json_decode($_POST['datatindaklanjut'], true);
             $formobat_farmasi = json_decode($_POST['formobat_farmasi'], true);
             $formobatfarmasi2 = json_decode($_POST['formobatfarmasi2'], true);
+            $jawabankonsul = json_decode($_POST['jawabankonsul'], true);
+            foreach ($jawabankonsul as $nama) {
+                $index =  $nama['name'];
+                $value =  $nama['value'];
+                $dataSet_jawabankonsul[$index] = $value;
+            }
             if (count($datatindaklanjut) == 1) {
                 $data = [
                     'kode' => 500,
@@ -786,11 +831,12 @@ class UpdateERMcontroller extends Controller
                 'evaluasi' => $dataSet_1['evaluasi'],
                 'riwayatlain' => $dataSet_1['supekpenyakit'],
                 'ket_riwayatlain' => $dataSet_1['keterangansuspek'],
-                // 'keluhan_pasien' => $dataSet_1['keluhanutama'],
+                'keluhan_pasien' => $dataSet_1['keluhanutama'],
                 'tindak_lanjut' => $dataSet_tindaklanjut['pilihtindaklanjut'],
                 'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'] . ' ' . $keterangan_iter,
-                // 'keterangan_tindak_lanjut_2' => trim($dataSet['jawabankonsul']),
-                'status' => '0'
+                'keterangan_tindak_lanjut_2' => trim($dataSet_jawabankonsul['isi_jawaban_konsul']),
+                'status' => '0',
+                'keterangan5' => $got
             ];
             if ($pasieniter == 1) {
                 if ($jumlahiter == '') {
@@ -831,7 +877,14 @@ class UpdateERMcontroller extends Controller
             $jumlahiter = $request->jumlahiter;
             $simpantemplate = $request->simpantemplate;
             $kodekunjungan = $request->kodekunjungan;
-
+            $ref_kunjungan = $kunjungan[0]->ref_kunjungan;
+            if ($ref_kunjungan != '' || $ref_kunjungan != '0') {
+                $datajawab = [
+                    'jawaban_konsul' => trim($dataSet_jawabankonsul['isi_jawaban_konsul']),
+                    'dokter_jawab' => auth()->user()->nama
+                ];
+                assesmenawaldokter::where('id_kunjungan', $ref_kunjungan)->update($datajawab);
+            }
             if (count($formobatfarmasi2) > 1) {
                 $simpantemplate = $request->simpantemplate;
                 // $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
@@ -971,6 +1024,8 @@ class UpdateERMcontroller extends Controller
                             ->update(['status_layanan' => 1]);
                     }
                 } else {
+                    ts_layanan_header_order::where('id', $ts_layanan_header->id)
+                        ->delete();
                 }
             }
             $di_diagnosa = [

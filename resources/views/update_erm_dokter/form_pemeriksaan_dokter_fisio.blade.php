@@ -67,6 +67,80 @@
                 <span aria-hidden="true" style="font-size: 1.5rem;">&times;</span>
             </button>
         </div>
+        @if (count($poli_pengirim_konsul) > 0)
+            <div class="card border-info border-start border-4 shadow-sm rounded-3 mb-4 bg-info-subtle">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-start">
+                        <div class="text-info me-4 mt-1">
+                            <i class="bi bi-arrow-left-right fs-1"
+                                style="filter: drop-shadow(0px 2px 4px rgba(13, 202, 240, 0.2));margin-right:20px"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-center mb-1">
+                                <h4 class="fw-bold text-dark mb-0" style="letter-spacing: -0.5px;">
+                                    Pasien Konsul
+                                </h4>
+                            </div>
+                            <p class="text-secondary mb-3 fs-6" style="line-height: 1.5;">
+                                Pasien ini dikirim untuk dilakukan tata laksana/pemeriksaan lebih lanjut di unit
+                                Anda, dikirim langsung oleh:
+                                <span
+                                    class="fw-bold text-dark bg-white border border-info-subtle px-2 py-0.5 rounded text-uppercase"
+                                    style="font-size: 0.95rem;">
+                                    <i class="bi bi-door-open-fill text-info me-1"></i>
+                                    {{ $poli_pengirim_konsul[0]->nama_unit ?? $poli_pengirim_konsul }}
+                                </span>
+                            </p>
+
+                            <div class="row g-3 bg-white bg-opacity-75 rounded-3 p-3 border border-info-subtle mx-0">
+                                <div class="col-md-6 border-end-md">
+                                    <small class="text-muted d-block text-uppercase fw-bold style-label-konsul">Dokter
+                                        Pengirim</small>
+                                    <span class="text-dark fw-semibold">
+                                        <i class="bi bi-person-badge text-secondary me-1"></i>
+                                        {{ $poli_pengirim_konsul[0]->nama_dokter }}
+                                    </span>
+                                </div>
+                                <div class="col-md-6 ps-md-3">
+                                    @if (count($catatan_konsul) > 0)
+                                        <small
+                                            class="text-muted d-block text-uppercase fw-bold style-label-konsul">Alasan
+                                            / Catatan Konsul</small>
+                                        <span class="text-dark fw-medium text-break italic">
+                                            "diagnosa kerja : {{ $catatan_konsul[0]->diagnosakerja }} <br> Tindak
+                                            lanjut : {{ $catatan_konsul[0]->tindak_lanjut }} /
+                                            {{ $catatan_konsul[0]->keterangan_tindak_lanjut }}"
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <style>
+                .bg-info-subtle {
+                    background-color: #e0f7fa !important;
+                    /* Biru muda tenang khas indikator info medis */
+                }
+
+                .style-label-konsul {
+                    font-size: 0.65rem;
+                    letter-spacing: 0.5px;
+                    margin-bottom: 3px;
+                }
+
+                .italic {
+                    font-style: italic;
+                }
+
+                @media (min-width: 768px) {
+                    .border-end-md {
+                        border-right: 1px solid #dee2e6 !important;
+                    }
+                }
+            </style>
+        @endif
         <form class="formpemeriksaan_fisio">
             <input hidden type="text" name="kodekunjungan" id="kodekunjungan" class="form-control"
                 value="{{ $kunjungan[0]->kode_kunjungan }}">
@@ -87,7 +161,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Tekanan darah pasien ..."
                                     aria-label="Recipient's username" id="tekanandarah" name="tekanandarah"
-                                    aria-describedby="basic-addon2" value="">
+                                    aria-describedby="basic-addon2" value="{{ $asesmen_terakhir ? $asesmen_terakhir->tekanan_darah : '' }}">
                                 <div class="input-group-append">
                                     <span class="input-group-text" id="basic-addon2">mmHg</span>
                                 </div>
@@ -98,7 +172,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Frekuensi nadi pasien ..."
                                     id="frekuensinadi" name="frekuensinadi" aria-label="Recipient's username"
-                                    aria-describedby="basic-addon2" value="">
+                                    aria-describedby="basic-addon2" value="{{ $asesmen_terakhir ? $asesmen_terakhir->frekuensi_nadi : '' }}">
                                 <div class="input-group-append">
                                     <span class="input-group-text" id="basic-addon2">x/menit</span>
                                 </div>
@@ -111,7 +185,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Frekuensi Nafas Pasien ..."
                                     name="frekuensinafas" id="frekuensinafas" aria-label="Recipient's username"
-                                    aria-describedby="basic-addon2" value="">
+                                    aria-describedby="basic-addon2" value="{{ $asesmen_terakhir ? $asesmen_terakhir->frekuensi_nafas : '' }}">
                                 <div class="input-group-append">
                                     <span class="input-group-text" id="basic-addon2">x/menit</span>
                                 </div>
@@ -122,7 +196,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Suhu tubuh pasien ..."
                                     aria-label="Suhu tubuh pasien" name="suhutubuh" id="suhutubuh"
-                                    aria-describedby="basic-addon2" value="">
+                                    aria-describedby="basic-addon2" value="{{ $asesmen_terakhir ? $asesmen_terakhir->suhu_tubuh : '' }}">
                                 <div class="input-group-append">
                                     <span class="input-group-text" id="basic-addon2">°C</span>
                                 </div>
@@ -135,7 +209,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Berat badan Pasien ..."
                                     name="beratbadan" id="beratbadan" aria-label="Recipient's username"
-                                    aria-describedby="basic-addon2" value="">
+                                    aria-describedby="basic-addon2" value="{{ $asesmen_terakhir ? $asesmen_terakhir->beratbadan : '' }}">
                                 <div class="input-group-append">
                                     <span class="input-group-text" id="basic-addon2">kg</span>
                                 </div>
@@ -146,7 +220,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Umur pasien ..."
                                     aria-label="Suhu tubuh pasien" name="usia" id="usia"
-                                    aria-describedby="basic-addon2" value="">
+                                    aria-describedby="basic-addon2" value="{{ $asesmen_terakhir ? $asesmen_terakhir->umur : '' }}">
                                 <div class="input-group-append">
                                     <span class="input-group-text" id="basic-addon2"></span>
                                 </div>
@@ -156,7 +230,7 @@
                     <tr>
                         <td class="text-bold font-italic">Keluhan Utama</td>
                         <td colspan="3">
-                            <textarea class="form-control" id="keluhanutama" name="keluhanutama" placeholder="Ketik keluhan pasien ..."></textarea>
+                            <textarea class="form-control" id="keluhanutama" name="keluhanutama" placeholder="Ketik keluhan pasien ...">{{ $asesmen_terakhir ? $asesmen_terakhir->keluhan_pasien : '' }}</textarea>
                         </td>
                     </tr>
                 </tbody>
@@ -363,6 +437,68 @@
                 </div>
             </div>
         </form>
+        <form @if (count($poli_pengirim_konsul) == 0) hidden @endif action="" class="jawabankonsul">
+            <style>
+                .shadow-xs {
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+                }
+
+                .bg-opacity-10 {
+                    background-color: rgba(255, 193, 7, 0.1) !important;
+                }
+
+                .me-1\.5 {
+                    margin-right: 0.35rem !important;
+                }
+
+                .me-3 {
+                    margin-right: 1rem !important;
+                }
+
+                .rounded-3 {
+                    border-radius: 0.5rem !important;
+                }
+            </style>
+            <div
+                class="alert alert-warning border-start border-warning border-4 rounded-3 p-4 mb-4 bg-warning bg-opacity-10 shadow-sm animate__animated animate__fadeIn">
+                <div class="d-flex align-items-start">
+                    <div class="text-warning me-3 mt-1">
+                        <i
+                            class="fas fa-exclamation-triangle fa-2x animate__animated animate__flash animate__infinite animate__slower"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold text-dark mb-1" style="letter-spacing: -0.3px;">
+                            PENGINGAT: Silahkan isi lembar jawaban konsul ...
+                        </h5>
+                        <p class="text-secondary mb-0" style="font-size: 0.95rem; line-height: 1.5;">
+                            Pasien ini merupakan pasien konsulan internal. Mohon pastikan Dokter Spesialis
+                            (DPJP) memberikan catatan ekspertisi, rekomendasi tindakan, atau advis terapi
+                            pada kolom di bawah ini sebelum menyelesaikan pelayanan kunjungan.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-body p-4">
+                    <div class="form-group mb-0">
+                        <label for="isi_jawaban_konsul" class="fw-bold text-dark mb-2 fs-5">
+                            <i class="fas fa-file-medical text-primary me-2"></i>Isi Jawaban Konsul Medis
+                            <span class="text-danger">*</span>
+                        </label>
+                        <textarea class="form-control border-secondary-subtle rounded-3 p-3 shadow-xs" id="isi_jawaban_konsul"
+                            name="isi_jawaban_konsul" rows="6"
+                            placeholder="Tuliskan temuan klinis, diagnosis penunjang, saran tindakan, atau rencana terapi untuk poliklinik pengirim di sini..."
+                            required style="font-size: 1.05rem; line-height: 1.6; min-height: 150px;">{{ $asesmen_terakhir ? $asesmen_terakhir->keterangan_tindak_lanjut_2 : '' }}</textarea>
+
+                        <div class="d-flex align-items-center text-muted mt-2 small">
+                            <i class="fas fa-info-circle me-1.5"></i>
+                            <span>Catatan jawaban ini wajib diisi dan akan otomatis terintegrasi ke dalam
+                                berkas <strong>Resume Medis Rawat Jalan</strong> pasien.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
         {{-- formtindakan --}}
         <div class="card">
             <div class="card-header bg-light">Order Farmasi <button type="button"
@@ -397,7 +533,7 @@
                 <div class="form-group">
                     <label for="exampleFormControlTextarea1" style="font-size:18px">Goal of treatment</label>
                     <textarea class="form-control" id="got" name="got" rows="6"
-                        placeholder="Sillahkan isi disini ...."></textarea>
+                        placeholder="Sillahkan isi disini ....">{{ $asesmen_terakhir ? $asesmen_terakhir->keterangan5 : '' }}</textarea>
                 </div>
             </div>
         </div>
@@ -715,6 +851,7 @@
 
     function simpanhasil2() {
         var datapemeriksaan = $('.formpemeriksaan_fisio').serializeArray();
+        var jawabankonsul = $('.jawabankonsul').serializeArray();
         var formorder_lab = $('.formorder_lab').serializeArray();
         var formtindakan_rad = $('.formtindakan_rad').serializeArray();
         var datatindakan = $('.formtindakan').serializeArray();
@@ -727,6 +864,7 @@
         var pasieniter = $('#iterasipilih:checked').val()
         var jumlahiter = $('#jumlahiterasi').val()
         var hasilexpertisi = $('#hasilexpertisi').val()
+        var got = $('#got').val()
         spinner = $('#loader')
         spinner.show();
         $.ajax({
@@ -736,6 +874,7 @@
             data: {
                 _token: "{{ csrf_token() }}",
                 data1: JSON.stringify(datapemeriksaan),
+                jawabankonsul: JSON.stringify(jawabankonsul),
                 datatindakan: JSON.stringify(datatindakan),
                 datatindaklanjut: JSON.stringify(datatindaklanjut),
                 formobat_farmasi: JSON.stringify(formobat_farmasi),
@@ -747,7 +886,8 @@
                 formtindakan_rad: JSON.stringify(formtindakan_rad),
                 hasilexpertisi,
                 pasieniter,
-                jumlahiter
+                jumlahiter,
+                got
             },
             url: '<?= route('simpanhasilpemeriksaandokterfisio') ?>',
             error: function(data) {
