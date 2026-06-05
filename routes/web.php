@@ -865,7 +865,8 @@ Route::get('/cetakcppt/{nosep}', [PdfController::class, 'cetakcppt']);
 Route::get('/cetaksuratpengantar/{id}', [PdfController::class, 'cetaksuratpengantar']);
 Route::post('/simpantandatanganbsre', [Pdf2Controller::class, 'simpantandatanganbsre'])->name('simpantandatanganbsre');
 Route::post('/ambil_form_login_tte', [Pdf2Controller::class, 'form_login_tte'])->name('ambil_form_login_tte');
-
+Route::get('/cetak_dokumen_tte/{kodekunjungan}', [Pdf2Controller::class, 'cetak_dokumen_tte']);
+Route::get('/cetak_dokumen_tte_v2/{kodekunjungan}', [Pdf2Controller::class, 'cetak_dokumen_tte_v2']);
 
 
 
