@@ -21,6 +21,7 @@ use App\Http\Controllers\PdfController;
 use App\Http\Controllers\JasaMedisController;
 use App\Http\Controllers\CasemixController;
 use App\Http\Controllers\UpdateERMcontroller;
+use App\Http\Controllers\Pdf2Controller;
 
 Route::post('/updateruangan2', [SimrsController::class, 'updateruangan2'])->name('updateruangan2');
 Route::get('/index_bridging_bed', [SimrsController::class, 'index_bridging_bed'])->middleware('auth')->name('index_bridging_bed');
@@ -862,7 +863,7 @@ Route::get('/cetaksep_v/{nosep}', [PdfController::class, 'cetaksep']);
 Route::get('/cetaksep_v22/{nosep}', [PdfController::class, 'cetaksep22']);
 Route::get('/cetakcppt/{nosep}', [PdfController::class, 'cetakcppt']);
 Route::get('/cetaksuratpengantar/{id}', [PdfController::class, 'cetaksuratpengantar']);
-Route::post('/simpantandatanganbsre', [PdfController::class, 'simpantandatanganbsre'])->name('simpantandatanganbsre');
+Route::post('/simpantandatanganbsre', [Pdf2Controller::class, 'simpantandatanganbsre'])->name('simpantandatanganbsre');
 
 
 
