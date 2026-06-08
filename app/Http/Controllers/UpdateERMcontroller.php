@@ -836,6 +836,7 @@ class UpdateERMcontroller extends Controller
                 'keterangan_tindak_lanjut' => $dataSet_tindaklanjut['keterangantindaklanjut'] . ' ' . $keterangan_iter,
                 'keterangan_tindak_lanjut_2' => trim($dataSet_jawabankonsul['isi_jawaban_konsul']),
                 'status' => '0',
+                'signature' => '',
                 'keterangan5' => $got
             ];
             if ($pasieniter == 1) {

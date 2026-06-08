@@ -279,19 +279,6 @@
                         <tr>
                             <td>Pemeriksaan Penunjang</td>
                             <td>
-                                {{-- <div class="btn-group mb-4" role="group" aria-label="Basic example">
-                                <button kodekunjungan="{{ $cp->id_kunjungan }}" type="button"
-                                    class="btn btn-info btn-sm lihathasillab" data-toggle="modal"
-                                    data-target="#modalhasillab"><i class="bi bi-eye mr-1 ml-1"></i> Hasil
-                                    Laboratorium</button>
-                                <button kodekunjungan="{{ $cp->id_kunjungan }}" type="button"
-                                    class="btn btn-info btn-sm lihathasilrad" data-toggle="modal"
-                                    data-target="#modalhasilrad"><i class="bi bi-eye mr-1 ml-1"></i> Hasil
-                                    Radiologi</button>
-                                <button kodekunjungan="{{ $cp->id_kunjungan }}" type="button"
-                                    class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalhasilpa"><i
-                                        class="bi bi-eye mr-1 ml-1"></i> Hasil Laboratorium Patologi Anatomi</button>
-                            </div><br> --}}
                                 @if ($cp->kode_unit == '1012' || $cp->kode_unit == '1027')
                                     Hasil Expertisi : <br>
                                     {{ $cp->evaluasi }}
@@ -316,29 +303,6 @@
                                         </table>
                                     </div>
                                 </div>
-                                {{-- <div class="card">
-                                <div class="card-header text-bold bg-secondary">Order yang dilayani</div>
-                                <div class="card-body">
-                                    <table class="table table-sm">
-                                        <thead>
-                                            <th>Unit</th>
-                                            <th>Nama Pemeriksaan</th>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($penunjang as $p)
-                                                @if ($p->kode_kunjungan == $cp->id_kunjungan)
-                                                    <tr>
-                                                        <td>{{ $p->nama_unit }}
-                                                        </td>
-                                                        <td>{{ $p->NAMA_TARIF }}
-                                                        </td>
-                                                    </tr>
-                                                @endif
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div> --}}
                             </td>
                         </tr>
                         <tr>
@@ -359,16 +323,8 @@
                         <tr>
                             <td>Hasil Pemeriksaan Khusus</td>
                             <td>
-                                {{-- <div class="card">
-                                                                    <div class="card-header bg-danger">Hasil Pemeriksaan khusus
-                                                                    </div>
-                                                                    <div class="card-body"> --}}
                                 {{ $cp->pemeriksaan_khusus }} <br><br>
                                 {{ $cp->pemeriksaan_khusus_2 }}<br><br>
-                                <img width="80%"src="{{ $cp->gambar_1 }}" alt=""><br><br>
-                                {{-- <img src="{{ $k->gambar_2 }}" alt=""><br><br> --}}
-                                {{-- </div>
-                                                                </div> --}}
                             </td>
                         </tr>
                         <tr>
@@ -461,32 +417,6 @@
                                                     </table>
                                                 </div>
                                             </div>
-                                            {{-- <div class="card">
-                                                <div class="card-header text-bold bg-secondary">Order yang dilayani
-                                                </div>
-                                                <div class="card-body">
-                                                    <table class="table table-sm">
-                                                        <thead>
-                                                            <th>Unit</th>
-                                                            <th>Nama Pemeriksaan</th>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach ($penunjang as $p)
-                                                                @if ($p->kode_kunjungan == $cp->id_kunjungan)
-                                                                    @if ($p->kode_unit != '3009' && $p->kode_unit != '3010')
-                                                                        <tr>
-                                                                            <td>{{ $p->nama_unit }}
-                                                                            </td>
-                                                                            <td>{{ $p->NAMA_TARIF }}
-                                                                            </td>
-                                                                        </tr>
-                                                                    @endif
-                                                                @endif
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div> --}}
                                         </td>
                                     </tr>
                                     <tr>
@@ -729,45 +659,13 @@
             <br>
             <br>
             Dokter Belum mengisi hasil pemeriksaan ... <br><br>
-            {{-- @if (count($datakonsul) > 0)
-                @if ($datakonsul[0]->jenis == 'RUJIN')
-                    RUJUK INTERNAL KE :
-                @else
-                    KONSUL KE :
-                @endif {{ $datakonsul[0]->poli_konsul }} <br>
-                Catatan : {{ $datakonsul[0]->catatan }}
-            @endif --}}
             <br>
-            <br>
-            {{-- <div class="btn-group mb-3" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-secondary" onclick="goto_suratkontrol()"><i
-                        class="bi bi-plus mr-1 ml-1"></i> Buat Surat Kontrol</button>
-                <button type="button" class="btn btn-secondary" data-toggle="modal"
-                    data-target="#modalkonsulantarpoli"><i class="bi bi-plus mr-1 ml-1"></i> Konsul
-                    antar poli</button>
-                <button type="button" class="btn btn-secondary" data-toggle="modal"
-                    data-target="#modalrujukinternal"><i class="bi bi-plus mr-1 ml-1"></i> Rujuk
-                    Internal </button>
-                <button type="button" class="btn btn-secondary" data-toggle="modal"
-                    data-target="#modalrujukkeluar"><i class="bi bi-plus mr-1 ml-1"></i> Rujuk Keluar
-                </button>
-                <button type="button" class="btn btn-secondary" data-toggle="modal"
-                    data-target="#modalrujukrawatinap"><i class="bi bi-plus mr-1 ml-1"></i> Rawat Inap
-                </button>
-            </div> --}}
-            <div class="v_riwayat_surat_rujin">
-
-            </div>
         @else
-            @if ($assesmendd[0]->signature == '')
+            {{-- @if ($assesmendd[0]->signature == '')
                 @if ($cp->iddokter == auth()->user()->id || $cp->iddokter == '')
-                    {{-- <button class="btn btn-success float-right" onclick="simpantandatangan()">Simpan</button> --}}
                     <div class="jumbotron">
                         <h1 class="display-2 mb-3">Terima Kasih !</h1>
                         <p class="lead">Anda telah mengisi form assesmen medis rawat jalan ... </p>
-                        {{-- <p class="lead">Tindak lanjut pasien <br>
-                            {{ $resume[0]->tindak_lanjut }} | keterangan : {{ $resume[0]->keterangan_tindak_lanjut }}
-                        </p> --}}
                         <hr class="my-4">
                         <p>Pastikan data sudah terisi dengan benar.</p>
                         <a class="btn btn-success btn-lg" href="#" role="button"
@@ -796,7 +694,140 @@
                     </div>
                 @endif
                 <button class="btn btn-danger float-right mt-4" onclick="ambildatapasien()">Kembali</button>
+            @endif --}}
+            {{-- PROTEKSI UTAMA: CEK APAKAH SIGNATURE KOSONG --}}
+            @if ($assesmendd[0]->signature == '')
+                @if ($cp->iddokter == auth()->user()->id || empty($cp->iddokter))
+                    <!-- ================================================================== -->
+                    <!--  TAMPILAN 1: SUKSES ISI ASESMEN & AJAKAN SIMPAN/TTD                -->
+                    <!-- ================================================================== -->
+                    <div class="card border-0 shadow-sm rounded-3 mb-4 bg-light text-center">
+                        <div class="card-body p-5">
+                            <!-- Ikon Centang Sukses -->
+                            <div class="text-success mb-3">
+                                <i class="bi bi-check-circle-fill" style="font-size: 4rem;"></i>
+                            </div>
+
+                            <h2 class="fw-bold text-dark mb-2">Terima Kasih, Dok!</h2>
+                            <p class="text-secondary mx-auto mb-4 fs-5" style="max-width: 550px;">
+                                Anda telah menyelesaikan pengisian <span class="fw-semibold text-primary">Formulir
+                                    Asesmen Medis Rawat Jalan</span> untuk pasien ini.
+                            </p>
+
+                            <hr class="my-4 opacity-50" style="max-width: 400px; margin: 0 auto;">
+
+                            <p class="text-muted small mb-4"><i class="bi bi-info-circle me-1"></i> Mohon pastikan
+                                kembali seluruh diagnosis dan advis medis sudah terisi dengan benar.</p>
+
+                            <!-- Tombol Aksi Utama -->
+                            <button type="button" class="btn btn-success btn-lg px-5 py-2.5 rounded-pill shadow-xs"
+                                onclick="simpantandatangan2()">
+                                <i class="bi bi-cloud-arrow-up-fill me-2"></i>Simpan & berikan TTE
+                            </button>
+                        </div>
+                    </div>
+                @endif
+            @else
+                <!-- ================================================================== -->
+                <!--  TAMPILAN 2: STATUS VERIFIKASI TANDA TANGAN ELEKTRONIK (TTE)       -->
+                <!-- ================================================================== -->
+                @if (count($resume_ttd) > 0)
+                    <!-- STATUS: SUDAH TTE (ALERT KUNING-EMAS / SUKSES TERVERIFIKASI) -->
+                    <div
+                        class="card border-start border-warning border-4 shadow-sm rounded-3 mb-3 bg-warning bg-opacity-10">
+                        <div class="card-body p-4 d-flex align-items-center justify-content-between flex-wrap g-3">
+                            <div class="d-flex align-items-center">
+                                <div class="text-warning me-3">
+                                    <i class="bi bi-shield-check fs-1"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold text-dark mb-1">Resume Medis Sudah Terverifikasi TTE</h6>
+                                    <span class="text-secondary small d-block">Berkas rekam medis ini telah
+                                        ditandatangani secara sah menggunakan Tanda Tangan Elektronik.</span>
+                                </div>
+                            </div>
+
+                            <!-- Aksi Tombol -->
+                            <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
+                                <button class="btn btn-outline-primary btn-sm rounded-2 lihatberkas"
+                                    idberkas="{{ $resume_ttd[0]->response }}">
+                                    <i class="bi bi-printer-fill me-1"></i> Lihat Berkas
+                                </button>
+                                @if ($cp->iddokter == auth()->user()->id)
+                                    <button
+                                        class="btn btn-warning btn-sm rounded-2 text-dark fw-semibold simpantandatangan">
+                                        <i class="bi bi-arrow-counterclockwise me-1"></i> Tanda Tangan Ulang
+                                    </button>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <!-- STATUS: BELUM TTE (ALERT MERAH PERINGATAN) -->
+                    <div
+                        class="card border-start border-danger border-4 shadow-sm rounded-3 mb-3 bg-danger bg-opacity-10">
+                        <div class="card-body p-4 d-flex align-items-center justify-content-between flex-wrap g-3">
+                            <div class="d-flex align-items-center">
+                                <div class="text-danger me-3">
+                                    <i class="bi bi-shield-exclamation fs-1"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold text-danger mb-1">Resume Medis Belum Ditandatangani Elektronik
+                                        (TTE)</h6>
+                                    <span class="text-secondary small d-block">Dokumen resume belum sah secara hukum
+                                        digital sebelum DPJP membubuhkan TTE.</span>
+                                </div>
+                            </div>
+
+                            <!-- Aksi Tombol -->
+                            @if ($cp->iddokter == auth()->user()->id)
+                                <div class="mt-2 mt-md-0">
+                                    <button class="btn btn-danger btn-sm rounded-2 px-3 fw-semibold simpantandatangan">
+                                        <i class="bi bi-pen-fill me-1"></i> Sematkan TTE Sekarang
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                @endif
+
+                <!-- Tombol Kembali yang Diletakkan di Posisi yang Tepat -->
+                <div class="d-flex justify-content-end mt-4">
+                    <button class="btn btn-secondary px-4 shadow-xs" onclick="ambildatapasien()">
+                        <i class="bi bi-arrow-left me-2"></i>Kembali ke Daftar Pasien
+                    </button>
+                </div>
             @endif
+            <!-- Style Pembantu Kelas Bootstrap 5 (Jika diperlukan fallback) -->
+            <style>
+                .rounded-3 {
+                    border-radius: 0.5rem !important;
+                }
+
+                .shadow-xs {
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+                }
+
+                .bg-warning.bg-opacity-10 {
+                    background-color: rgba(255, 193, 7, 0.08) !important;
+                }
+
+                .bg-danger.bg-opacity-10 {
+                    background-color: rgba(220, 53, 69, 0.08) !important;
+                }
+
+                .gap-2 {
+                    gap: 0.5rem !important;
+                }
+
+                .me-2 {
+                    margin-right: 0.5rem !important;
+                }
+
+                .me-3 {
+                    margin-right: 1rem !important;
+                }
+            </style>
         @endif
     </div>
 </div>
@@ -836,12 +867,12 @@
                     <div class="form-group">
                         <label for="exampleInputPassword1">Catatan Konsul</label>
                         <textarea rows="10px" type="password" class="form-control" id="catatankonsul" name="catatankonsul">
-@if (count($assesmen_dokter) > 0)
+                        @if (count($assesmen_dokter) > 0)
 Keluhan : {{ $assesmen_dokter[0]->keluhan_pasien }}
-Diagnosa : {{ $assesmen_dokter[0]->diagnosakerja }}
-Diagnosa sekunder: {{ $assesmen_dokter[0]->diagnosabanding }}
+                        Diagnosa : {{ $assesmen_dokter[0]->diagnosakerja }}
+                        Diagnosa sekunder: {{ $assesmen_dokter[0]->diagnosabanding }}
 @endif
-</textarea>
+                        </textarea>
                     </div>
                 </form>
             </div>
@@ -888,12 +919,12 @@ Diagnosa sekunder: {{ $assesmen_dokter[0]->diagnosabanding }}
                     <div class="form-group">
                         <label for="exampleInputPassword1">Catatan Rujuk Internal</label>
                         <textarea rows="10px" type="password" class="form-control" id="catatanrujin" name="catatanrujin">
-@if (count($assesmen_dokter) > 0)
+                        @if (count($assesmen_dokter) > 0)
 Keluhan : {{ $assesmen_dokter[0]->keluhan_pasien }}
-Diagnosa : {{ $assesmen_dokter[0]->diagnosakerja }}
-Diagnosa sekunder: {{ $assesmen_dokter[0]->diagnosabanding }}
+                        Diagnosa : {{ $assesmen_dokter[0]->diagnosakerja }}
+                        Diagnosa sekunder: {{ $assesmen_dokter[0]->diagnosabanding }}
 @endif
-</textarea>
+                        </textarea>
                     </div>
                 </form>
             </div>
@@ -969,7 +1000,64 @@ Diagnosa sekunder: {{ $assesmen_dokter[0]->diagnosabanding }}
         </div>
     </div>
 </div>
+<input hidden name="kodekunjungan" id="kodekunjungan" type="text" value="{{ $kodekunjungan }}">
 <script>
+    function simpantandatangan2() {
+        kodekunjungan = $('#kodekunjungan').val()
+        Swal.fire({
+            icon: 'warning',
+            title: 'Anda yakin data sudah benar ?',
+            text: 'Berkas akan disimpan dan ditanda tangan secara elektronik ...',
+            showDenyButton: true,
+            confirmButtonText: 'Ya',
+            denyButtonText: `Cek lagi ...`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                spinner = $('#loader')
+                spinner.show();
+                $.ajax({
+                    async: true,
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        kodekunjungan: kodekunjungan,
+                        // signature
+                    },
+                    url: '<?= route('simpanttddokter2') ?>',
+                    error: function(data) {
+                        spinner.hide()
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                            footer: 'ermwaled2023'
+                        })
+                    },
+                    success: function(data) {
+                        spinner.hide()
+                        if (data.kode == '502') {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops',
+                                text: data.message,
+                                footer: 'ermwaled2023'
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'OK',
+                                text: data.message,
+                                footer: 'ermwaled2023'
+                            })
+                            resume2()
+                        }
+                    }
+                });
+            }
+        })
+    }
+
     function simpantandatangan() {
         kodekunjungan = $('#kodekunjungan').val()
         Swal.fire({
@@ -1023,7 +1111,6 @@ Diagnosa sekunder: {{ $assesmen_dokter[0]->diagnosabanding }}
                 });
             }
         })
-
     }
 
     function simpantandatangan_bsre() {
@@ -1070,7 +1157,6 @@ Diagnosa sekunder: {{ $assesmen_dokter[0]->diagnosabanding }}
                                 footer: ''
                             })
                         } else {
-                            $('#modallogintte').modal('toggle');
                             resume2()
                             Swal.fire({
                                 icon: 'success',
@@ -1098,12 +1184,26 @@ Diagnosa sekunder: {{ $assesmen_dokter[0]->diagnosabanding }}
         })
 
     }
-
     $(".lihatberkas").on('click', function(event) {
         id = $(this).attr('idberkas')
         window.open('cetak_dokumen_tte/' + id)
     })
     $(".simpantandatangan").on('click', function(event) {
+        kodekunjungan = $('#kodekunjungan').val()
+        Swal.fire({
+            icon: 'warning',
+            title: 'Anda yakin data sudah benar ?',
+            text: 'Berkas akan disimpan dan ditanda tangan secara elektronik ...',
+            showDenyButton: true,
+            confirmButtonText: 'Ya',
+            denyButtonText: `Cek lagi ...`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                simpantandatangan_bsre()
+            }
+        })
+    });
+    $(".simpantandatangan2").on('click', function(event) {
         spinner = $('#loader')
         spinner.show();
         $.ajax({
@@ -1134,190 +1234,5 @@ Diagnosa sekunder: {{ $assesmen_dokter[0]->diagnosabanding }}
                 $('.v_login_tte').html(response);
             }
         });
-    }
-</script>
-
-<input hidden name="kodekunjungan" id="kodekunjungan" type="text" value="{{ $kodekunjungan }}">
-{{-- <script>
-    function simpandatakonsul() {
-        spinner = $('#loader')
-        spinner.show();
-        var data = $('.formsuratkonsul').serializeArray();
-        kodekunjungan = $('#kodekunjungan').val()
-        $.ajax({
-            async: true,
-            type: 'post',
-            dataType: 'json',
-            data: {
-                _token: "{{ csrf_token() }}",
-                data: JSON.stringify(data),
-                kodekunjungan
-            },
-            url: '<?= route('simpankonsulantarpoli') ?>',
-            error: function(data) {
-                spinner.hide()
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ooops....',
-                    text: 'Sepertinya ada masalah......',
-                    footer: ''
-                })
-            },
-            success: function(data) {
-                spinner.hide()
-                if (data.kode == 500) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oopss...',
-                        text: data.message,
-                        footer: ''
-                    })
-                } else {
-                    ambilriwayatsuratrujin(kodekunjungan)
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'OK',
-                        text: data.message,
-                        footer: ''
-                    })
-                }
-            }
-        });
-    }
-
-    function simpandatarujin() {
-        spinner = $('#loader')
-        spinner.show();
-        var data = $('.formsuratrujukinternal').serializeArray();
-        kodekunjungan = $('#kodekunjungan').val()
-        $.ajax({
-            async: true,
-            type: 'post',
-            dataType: 'json',
-            data: {
-                _token: "{{ csrf_token() }}",
-                data: JSON.stringify(data),
-                kodekunjungan
-            },
-            url: '<?= route('simpanrujukinternal') ?>',
-            error: function(data) {
-                spinner.hide()
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ooops....',
-                    text: 'Sepertinya ada masalah......',
-                    footer: ''
-                })
-            },
-            success: function(data) {
-                spinner.hide()
-                if (data.kode == 500) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oopss...',
-                        text: data.message,
-                        footer: ''
-                    })
-                } else {
-                    ambilriwayatsuratrujin(kodekunjungan)
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'OK',
-                        text: data.message,
-                        footer: ''
-                    })
-                }
-            }
-        });
-    }
-    $(document).ready(function() {
-        kodekunjungan = $('#kodekunjungan').val()
-        ambilriwayatsuratrujin(kodekunjungan)
-    })
-
-    function ambilriwayatsuratrujin(kodekunjungan) {
-        kodekunjungan = $('#kodekunjungan').val()
-        spinner = $('#loader')
-        spinner.show();
-        $.ajax({
-            type: 'post',
-            data: {
-                _token: "{{ csrf_token() }}",
-                kodekunjungan
-            },
-            url: '<?= route('ambilriwayatsuratrujin') ?>',
-            success: function(response) {
-                $('.v_riwayat_surat_rujin').html(response);
-                spinner.hide()
-            }
-        });
-    }
-</script> --}}
-<script>
-    function simpantandatangan() {
-        kodekunjungan = $('#kodekunjungan').val()
-        // var canvas = document.getElementById("the_canvas");
-        // var dataUrl = canvas.toDataURL();
-        // if (dataUrl ==
-        //     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV4AAABkCAYAAADOvVhlAAADOklEQVR4Xu3UwQkAAAgDMbv/0m5xr7hAIcjtHAECBAikAkvXjBEgQIDACa8nIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECAivHyBAgEAsILwxuDkCBAgIrx8gQIBALCC8Mbg5AgQICK8fIECAQCwgvDG4OQIECDweoABlt2MJjgAAAABJRU5ErkJggg=='
-        // ) {
-        //     dataUrl = ''
-        // }
-        // document.getElementById("signature").value = dataUrl;
-        // signature = $('#signature').val()
-        Swal.fire({
-            icon: 'warning',
-            title: 'Anda yakin data sudah benar ?',
-            showDenyButton: true,
-            confirmButtonText: 'Ya',
-            denyButtonText: `Cek lagi ...`,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                spinner = $('#loader')
-                spinner.show();
-                $.ajax({
-                    async: true,
-                    type: 'post',
-                    dataType: 'json',
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        kodekunjungan: kodekunjungan,
-                        // signature
-                    },
-                    url: '<?= route('simpanttddokter') ?>',
-                    error: function(data) {
-                        spinner.hide()
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Something went wrong!',
-                            footer: 'ermwaled2023'
-                        })
-                    },
-                    success: function(data) {
-                        spinner.hide()
-                        if (data.kode == '502') {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops',
-                                text: data.message,
-                                footer: 'ermwaled2023'
-                            })
-                        } else {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'OK',
-                                text: data.message,
-                                footer: 'ermwaled2023'
-                            })
-                            ambildatapasien()
-                        }
-                    }
-                });
-            } else if (result.isDenied) {
-                resume()
-            }
-        })
-
     }
 </script>

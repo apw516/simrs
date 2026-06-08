@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\assesmenawaldokter;
 use App\Models\Model_log_tte;
 use Barryvdh\DomPDF\Facade\Pdf; // If you added the facade alias
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\ModelBSRE;
+use App\Models\ts_layanan_header_order;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Response;
@@ -15,6 +17,178 @@ use phpseclib3\Net\SFTP;
 
 class Pdf2Controller extends Controller
 {
+    public function simpanttddokter(Request $request)
+    {
+        $data = [
+            // 'tanggalassemen' => $this->get_now(),
+            'status' => '1',
+            'signature' => 'SUDAH VALIDASI'
+        ];
+        $data2 = [
+            // 'tanggalassemen' => $this->get_now(),
+            'status_order' => '1',
+        ];
+        assesmenawaldokter::whereRaw('id_kunjungan = ?', array($request->kodekunjungan))->update($data);
+        ts_layanan_header_order::whereRaw('kode_kunjungan = ? and status_order = ?', array($request->kodekunjungan, 0))->update($data2);
+        $send = $this->sendtte($request->kodekunjungan);
+        $data = [
+            'kode' => 200,
+            'message' => 'Data berhasil disimpan !'
+        ];
+        echo json_encode($data);
+        die;
+    }
+    public function sendtte($kodekunjungan)
+    {
+        DB::beginTransaction();
+        try {
+            $nik = '1234567890123452';
+            $password = 'Bsre2025.#!';
+            $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+            $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
+            $data = ['title' => 'My PDF Document', 'content' => 'This is some content for the PDF.', $mt_pasien];
+            $assesmen = db::select('select *,date(tgl_pemeriksaan) as tglk2 ,versi as versidk from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
+            $tindakan = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+            ,c.`kode_tarif_detail`,d.`NAMA_TARIF`
+            FROM ts_kunjungan a
+            INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+            INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+            INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER`
+            WHERE SUBSTR(b.`kode_unit`,1,1) = 1
+            AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
+            AND a.kode_kunjungan = ?", [$kodekunjungan]);
+
+            $farmasi = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+            ,c.`kode_tarif_detail`,d.`nama_barang`,C.`jumlah_layanan`,C.`aturan_pakai`
+            FROM ts_kunjungan a
+            INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+            INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+            INNER JOIN mt_barang d ON c.`kode_barang` = d.`kode_barang`
+            WHERE SUBSTR(b.`kode_unit`,1,1) = 4
+            AND a.kode_kunjungan = ?", [$kodekunjungan]);
+
+            $penunjang = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+            ,c.`kode_tarif_detail`,d.`NAMA_TARIF`,b.kode_unit
+            FROM ts_kunjungan a
+            INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+            INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+            INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER`
+            WHERE SUBSTR(b.`kode_unit`,1,1) = 3
+            AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
+            AND a.kode_kunjungan = ?", [$kodekunjungan]);
+            $orderfarmasi = db::select('SELECT kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.kode_kunjungan = ? and  kode_unit > ?', [$kodekunjungan, '4000']);
+            $order_penunjang = db::select('SELECT fc_nama_unit1(a.`kode_unit`)AS nama_unit,a.kode_unit,SUBSTR(kode_tarif_detail,1,6) AS kode_tarif_header,c.`NAMA_TARIF` FROM ts_layanan_header_order a
+        INNER JOIN ts_layanan_detail_order b ON a.id = b.`row_id_header`
+        INNER JOIN mt_tarif_header c ON SUBSTR(b.kode_tarif_detail,1,6) = c.`KODE_TARIF_HEADER`
+        WHERE a.`kode_kunjungan` = ? AND a.`kode_unit` < ?', [$kodekunjungan, '4000']);
+            $today = Carbon::now()->isoFormat('D MMMM Y');
+            if (count($assesmen) > 0) {
+                $tglll =  $assesmen[0]->tglk2;
+                $carbonDate = Carbon::parse($tglll);
+                $tglperiksa = $carbonDate->isoFormat('dddd, D MMMM Y');
+            } else {
+                $tglperiksa = Carbon::now()->isoFormat('dddd, D MMMM Y');
+            }
+            $cek2 = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and status_code = ?', [$kodekunjungan, 200]);
+            $hitung = count($cek2);
+            $cetakanke = $hitung + 1;
+            $mt_paramedis = db::select('select * from mt_paramedis where kode_paramedis = ?', [auth()->user()->kode_paramedis]);
+            $pdf = Pdf::loadView('pdf.document', compact([
+                'data',
+                'tglperiksa',
+                'mt_pasien',
+                'ts_kunjungan',
+                'assesmen',
+                'tindakan',
+                'farmasi',
+                'penunjang',
+                'orderfarmasi',
+                'order_penunjang',
+                'mt_paramedis',
+                'today',
+                'cetakanke'
+            ]));
+            $pdf->set_option("isPhpEnabled", true);
+            $pdf->setPaper('Letter', 'portrait');
+            $d = $pdf->output();
+            $name = $kodekunjungan . '.pdf';
+            $pdf->save(Storage::disk('shared', $name)->put($name, $d));
+            $save_report = [
+                'kode_kunjungan' => $kodekunjungan,
+                'status' => 0
+            ];
+            $idreport = Model_log_tte::create($save_report);
+            $data2 = [
+                'nik' => $nik,
+                'passphrase' => $password,
+                'tampilan' => 'visible',
+                'halaman' => '',
+                'page' => '',
+                'image' => 'false',
+                'linkQR' => 'https://siramah.rsudwaled.com/tte/dr-erwin',
+                'width' => '80',
+                'height' => '60',
+                'reason' => '',
+                'location' => 'Tanda Tangan',
+                'text' => '',
+                'tag_koordinat' => '#',
+            ];
+            $v = new ModelBSRE();
+            $DD = $v->send_pdf_kosong($data2, $kodekunjungan);
+            if ($DD['code'] == 200) {
+                $id_dokumen = $DD['messagee'];
+                $name2 = $id_dokumen . '.pdf';
+                $DD2 = $v->downloadpdf($id_dokumen, $kodekunjungan);
+                $urlfile = '\\\\192.168.2.14\\erm\\resume_medis_rawat_jalan/';
+                $cek = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and status = 1', [$kodekunjungan]);
+                if (count($cek) > 0) {
+                    Model_log_tte::whereRaw('kode_kunjungan = ?', array($kodekunjungan))->update(['status_file' => 0, 'status' => 2]);
+                }
+                $save_report = [
+                    'status_code' => $DD['code'],
+                    'response' => $DD['messagee'],
+                    'kode_kunjungan' => $kodekunjungan,
+                    'tgl_kirim' => $this->get_now(),
+                    'file' => $urlfile . $name2,
+                    'cetakan_ke' => $cetakanke,
+                    'status_file' => 1,
+                    'status' => 1
+                ];
+                Model_log_tte::whereRaw('id = ?', array($idreport->id))->update($save_report);
+                $kinan = $this->verifikasi_berkas2($idreport->id);
+                // $kinan2 = Model_log_tte::create($save_report);
+                DB::commit();
+                $data1 = [
+                    'kode' => 200,
+                    'message' => 'Berkas berhasil ditanda tangan !',
+                    'id' => $id_dokumen
+                ];
+                return $data1;
+            } else {
+                $save_report = [
+                    'status_code' => $DD['code'],
+                    'response' => $DD['messagee'],
+                    'kode_kunjungan' => $kodekunjungan,
+                    'tgl_kirim' => $this->get_now(),
+                    'status_file' => 0,
+                    'status' => 3
+                ];
+                Model_log_tte::whereRaw('id = ?', array($idreport->id))->update($save_report);
+                DB::commit();
+                $data = [
+                    'kode' => 500,
+                    'message' => 'Berkas gagal ditanda tangan ! ' . $DD['messagee']
+                ];
+                return $data;
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $data2 = [
+                'message' => 'gagal'
+            ];
+            return  $data;
+        }
+    }
     public function generatePDF()
     {
         // Example data to pass to the view
@@ -239,8 +413,8 @@ class Pdf2Controller extends Controller
     public function simpantandatanganbsre(Request $request)
     {
         $kodekunjungan = $request->kodekunjungan;
-        $nik = $request->nik;
-        $password = $request->password;
+        $nik = '1234567890123452';
+        $password = 'Bsre2025.#!';
 
         $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
@@ -371,7 +545,6 @@ class Pdf2Controller extends Controller
             echo json_encode($data1);
             die;
         } else {
-
             $save_report = [
                 'status_code' => $DD['code'],
                 'response' => $DD['messagee'],
