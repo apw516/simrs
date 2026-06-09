@@ -742,7 +742,7 @@
                             <tr>
                                 <td class="text-bold font-italic">Tindakan Penunjang</td>
                                 <td colspan="3">
-                                    <textarea class="form-control" name="tindakanpenunjang">@if (count($last_assdok) > 0){{ $last_assdok[0]->tindakanterapi }} @endif</textarea>
+                                    <textarea class="form-control" name="tindakanpenunjang">@if (count($last_assdok) > 0){{ $last_assdok[0]->tindakanpenunjang }} @endif</textarea>
                                 </td>
                             </tr>
                         </tbody>
