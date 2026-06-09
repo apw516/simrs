@@ -42,8 +42,8 @@ class Pdf2Controller extends Controller
     {
         DB::beginTransaction();
         try {
-            $nik = '1234567890123452';
-            $password = 'Bsre2025.#!';
+            $nik = auth()->user()->nip;
+            $password = auth()->user()->password_t;
             $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
             $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
             $data = ['title' => 'My PDF Document', 'content' => 'This is some content for the PDF.', $mt_pasien];
@@ -413,9 +413,8 @@ class Pdf2Controller extends Controller
     public function simpantandatanganbsre(Request $request)
     {
         $kodekunjungan = $request->kodekunjungan;
-        $nik = '1234567890123452';
-        $password = 'Bsre2025.#!';
-
+        $nik = auth()->user()->nip;
+        $password = auth()->user()->password_t;
         $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
         $data = ['title' => 'My PDF Document', 'content' => 'This is some content for the PDF.', $mt_pasien];
@@ -569,6 +568,22 @@ class Pdf2Controller extends Controller
         $time = $dt->toTimeString();
         $now = $date . ' ' . $time;
         return $now;
+    }
+    public function cetakresumettd($kodekunjungan)
+    {
+        $d = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and status_code = ?', [$kodekunjungan, '200']);
+        if (empty($d)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Berkas TTE tidak ditemukan atau belum diverifikasi.'
+            ], 404);
+        }
+
+        // Jika ada, proses file
+        return Response::make(file_get_contents($d[0]->file), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $d[0]->response . '"'
+        ]);
     }
     public function cetak_dokumen_tte($kodekunjungan)
     {

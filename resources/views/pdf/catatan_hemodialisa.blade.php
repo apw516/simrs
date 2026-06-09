@@ -18,8 +18,8 @@
     <style>
         @page {
             margin: 30px;
-            margin-top: 50px;
-            margin-bottom: 150px;
+            margin-top: 0px;
+            margin-bottom: 0px;
             /* Adjust this value as needed */
         }
 
@@ -557,7 +557,42 @@
                                                 <td>{{ $dd->nama_pic }}</td>
                                             </tr>
                                         @endforeach
+                                        @php
+                                            // 1. Filter data yang sesuai dengan idheader terlebih dahulu
+                                            $filteredData = array_filter($arrayBaru3, function ($val) use ($header) {
+                                                return $val->idheader == $header->id;
+                                            });
+                                            $totalData3 = count($filteredData);
+                                            $isFirst = true; // Penanda baris pertama
+                                        @endphp
+                                        @foreach ($arrayBaru3 as $dd)
+                                            @if ($dd->idheader == $header->id)
+                                                <tr>
+                                                    @if ($isFirst)
+                                                        <td rowspan="{{ $totalData3 }}"
+                                                            class="align-middle text-center">
+                                                            POST-HD
+                                                        </td>
+                                                        @php $isFirst = false; @endphp {{-- Set ke false agar tidak muncul di baris berikutnya --}}
+                                                    @endif
+                                                    <td>{{ $dd->jam }}</td>
+                                                    <td>{{ $dd->qb }}</td>
+                                                    <td>{{ $dd->ufrate }}</td>
+                                                    <td>{{ $dd->tekanandarah }}</td>
+                                                    <td>{{ $dd->frekuensinadi }}</td>
+                                                    <td>{{ $dd->suhu }}</td>
+                                                    <td>{{ $dd->resep }}</td>
+                                                    <td>{{ $dd->intake_nacl }}</td>
+                                                    <td>{{ $dd->intake_dextrose }}</td>
+                                                    <td>{{ $dd->intake_makanan_minuman }}</td>
+                                                    <td>{{ $dd->intake_lainlain }}</td>
+                                                    <td>{{ $dd->output }}</td>
+                                                    <td>{{ $dd->keteranganlain }}</td>
+                                                    <td>{{ $dd->nama_pic }}</td>
 
+                                                </tr>
+                                            @endif
+                                        @endforeach
                                         {{-- FOOTER: SUMMARY --}}
                                         @php
                                             $lastData = collect($arrayBaru3)->where('idheader', $header->id)->last();
@@ -887,7 +922,6 @@
                                         border-collapse: collapse;
                                         margin-bottom: 10px;
                                     }
-
                                     .access-table td {
                                         vertical-align: top;
                                         font-size: 11px;
@@ -895,7 +929,6 @@
                                         /* Membagi 5 kolom sama rata */
                                         padding: 5px;
                                     }
-
                                     /* Styling Checkbox Custom untuk PDF */
                                     .checkbox-box {
                                         display: inline-block;
@@ -938,7 +971,7 @@
                                         </td>
 
                                         <!-- Akses 5: Femoralis -->
-                                        <td>                                                                                        <input type="checkbox" @if ($header->cateterdoublelumenfemoralis == 1) checked @endif>
+                                        <td> <input type="checkbox" @if ($header->cateterdoublelumenfemoralis == 1) checked @endif>
                                             <span>Cateter Double Lumen Femoralis</span>
                                         </td>
                                     </tr>
@@ -962,7 +995,7 @@
                                     <br>
                                     <br>
                                     <br>
-                                   
+
                                     {{ strtoupper($header->akses_vaskuler_oleh) }}
                                     {{-- </h5> --}}
                                 </p>
@@ -983,22 +1016,32 @@
         </div>
     </div>
     <script type="text/php">
-        if ( isset($pdf) ) {
-            // OLD
-            $font = Font_Metrics::get_font("helvetica", "bold");
-            $pdf->page_text(72, 18, "halaman ke {PAGE_NUM} dari {PAGE_COUNT}", $font, 6, array(255,0,0));
-            v.0.7.0 and greater
-            $x = 72;
-            $y = 763;
-            $text = "halaman ke {PAGE_NUM} dari {PAGE_COUNT}";
-            $font = $fontMetrics->get_font("helvetica", "bold");
-            $size = 6;
-            $color = array(0,0,0);
-            $word_space = 0.0;  //  default
-            $char_space = 0.0;  //  default
-            $angle = 0.0;   //  default
-            $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
-        }
+      if (isset($pdf)) {
+    // Ambil object fontMetrics yang digunakan oleh instance dompdf saat ini
+    $font = $fontMetrics->get_font("helvetica", "normal");
+    
+    // Ukuran Font nomor halaman diperkecil agar rapi di margin tipis
+    $size = 7; 
+    
+    // Warna teks (Abu-abu gelap profesional, tidak kaku hitam pekat)
+    $color = array(0.3, 0.3, 0.3); 
+    
+    $text = "Halaman {PAGE_NUM} dari {PAGE_COUNT}";
+    
+    // Koordinat penempatan pada kertas A4 Portrait dengan margin rapat:
+    $x = 20;   // Sejajar dengan margin kiri CSS (20px)
+    $y = 822;  // Sangat rapat di bagian bawah kertas (Tinggi A4 = 842)
+    
+    $word_space = 0.0;  
+    $char_space = 0.0;  
+    $angle = 0.0;       
+    
+    // Eksekusi cetak text halaman di semua lembar
+    $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
+}
+
+
+        
     </script>
 </body>
 
