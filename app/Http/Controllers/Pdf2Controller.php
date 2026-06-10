@@ -183,7 +183,7 @@ class Pdf2Controller extends Controller
         ];
         assesmenawaldokter::whereRaw('id_kunjungan = ?', array($request->kodekunjungan))->update($data);
         ts_layanan_header_order::whereRaw('kode_kunjungan = ? and status_order = ?', array($request->kodekunjungan, 0))->update($data2);
-        $send = $this->sendtte($request->kodekunjungan);
+        // $send = $this->sendtte($request->kodekunjungan);
         $data = [
             'kode' => 200,
             'message' => 'Data berhasil disimpan !'
@@ -197,7 +197,8 @@ class Pdf2Controller extends Controller
         try {
             // $nik = auth()->user()->nip;
             // $password = auth()->user()->password_t;
-            $nik = '1234567890123452';
+            // $nik = '1234567890123452';
+            $nik='';
             $password = 'Bsre2025.#!';
             $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
             $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
