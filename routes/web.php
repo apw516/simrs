@@ -869,7 +869,9 @@ Route::post('/ambil_form_login_tte', [Pdf2Controller::class, 'form_login_tte'])-
 Route::get('/cetak_dokumen_tte/{kodekunjungan}', [Pdf2Controller::class, 'cetak_dokumen_tte']);
 Route::get('/cetak_dokumen_tte_v2/{kodekunjungan}', [Pdf2Controller::class, 'cetak_dokumen_tte_v2']);
 Route::post('/simpanttddokter2', [Pdf2Controller::class, 'simpanttddokter'])->name('simpanttddokter2');
+Route::post('/tandatangancatatanhd', [Pdf2Controller::class, 'tandatangancatatanhd'])->name('tandatangancatatanhd');
 Route::get('/cetakresumettd/{kodekunjungan}', [Pdf2Controller::class, 'cetakresumettd']);
+Route::get('/cetakcatatanhd/{kodekunjungan}', [Pdf2Controller::class, 'cetakcatatanhd']);
 
 
 

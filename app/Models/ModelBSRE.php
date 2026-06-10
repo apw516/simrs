@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Storage;
 class ModelBSRE extends Model
 {
     use HasFactory;
-    // public $baseUrl = 'https://dev.esign-service.cirebonkab.go.id/api/sign/'; dev
+    public $baseUrl = 'https://dev.esign-service.cirebonkab.go.id/api/sign/';
 
-    public $baseUrl = 'https://esign-service.cirebonkab.go.id/api/sign/';
+    // public $baseUrl = 'https://esign-service.cirebonkab.go.id/api/sign/';
 
     public static function header()
     {
@@ -28,11 +28,13 @@ class ModelBSRE extends Model
     }
     public  function cek_status_user($nik)
     {
-        $url = 'https://esign-service.cirebonkab.go.id/api/user/status/' . $nik;
+        $url = 'https://dev.esign-service.cirebonkab.go.id/api/user/status/' . $nik;
         $username = 'rsudwaled';
         $client = new Client();
-        $username = 'siramah';
-        $password = '$uiS7^hMA%2w';
+        // $username = 'siramah';
+        // $password = '$uiS7^hMA%2w';
+        $username = 'rsudwaled';
+        $password = 'uwP*aHN2';
         try {
             $response = $client->get($url, [
                 'auth' => [$username, $password],
@@ -68,9 +70,81 @@ class ModelBSRE extends Model
             }
         }
     }
+    public function send_pdf_kosong2($data2, $kodekunjungan)
+    {
+        $url = 'https://dev.esign-service.cirebonkab.go.id/api/sign/pdf';
+        $url_ttd = auth()->user()->image_ttd;
+        $client = new Client();
+        // $file1 = fopen(storage_path('app/downloaded_pdfs/' . $kodekunjungan . '.pdf'), 'r');
+        $urlfile = '\\\\192.168.2.14\\erm\\resume_medis_rawat_jalan/';
+        $file1 = fopen(($urlfile . 'CATATAN_HD_'.$kodekunjungan . '.pdf'), 'r');
+        // dd($file1);
+        $file2 = fopen($url_ttd, 'r');
+        $multipart = [
+            [
+                'name'     => 'file', // Name of the form field for the first file
+                // 'contents' => fopen(storage_path('app/downloaded_pdfs/' . $kodekunjungan . '.pdf'), 'r'),
+                'contents' => fopen(($urlfile . 'CATATAN_HD_'.$kodekunjungan . '.pdf'), 'r'),
+                'filename' => 'TST.pdf', // Optional: original filename
+            ],
+            [
+                'name'     => 'imageTTD', // Name of the form field for the second file
+                'contents' => fopen($url_ttd, 'r'),
+                'filename' => 'ttd.png', // Optional: original filename
+            ],
+        ];
+        // dd($multipart);
+        foreach ($data2 as $key => $value) {
+            $multipart[] = [
+                'name'     => $key,
+                'contents' => $value,
+            ];
+        }
+        // $username = 'siramah';
+        // $password = '$uiS7^hMA%2w';
+        $username = 'rsudwaled';
+        $password = 'uwP*aHN2';
+        try {
+            $response = $client->post($url, [
+                'multipart' => $multipart,
+                'auth'      => [$username, $password], // Basic Auth
+                'headers'   => [
+                    'Authorization' => 'Basic cnN1ZHdhbGVkOnV3UCphSE4y',
+                    'Cache-Control' => 'no-cache',
+                    'Postman-Token' => '<calculated when request is sent>',
+                ],
+            ]);
+
+            $code = $response->getStatusCode();
+            if ($code == 200) {
+                $id = $response->getHeader('id_dokumen');
+                $message = $id[0];
+            } else {
+                $message = $response->getBody();
+            }
+            $data =
+                [
+                    'code' => $code,
+                    'messagee' => $message
+                ];
+            return $data;
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            if ($e->hasResponse()) {
+                $errorBody = $e->getResponse()->getBody()->getContents();
+                $code = $e->getCode();
+                $message = $errorBody;
+                $data =
+                    [
+                        'code' => $code,
+                        'messagee' => $message
+                    ];
+                return $data;
+            }
+        }
+    }
     public function send_pdf_kosong($data2, $kodekunjungan)
     {
-        $url = 'https://esign-service.cirebonkab.go.id/api/sign/pdf';
+        $url = 'https://dev.esign-service.cirebonkab.go.id/api/sign/pdf';
         $url_ttd = auth()->user()->image_ttd;
         $client = new Client();
         // $file1 = fopen(storage_path('app/downloaded_pdfs/' . $kodekunjungan . '.pdf'), 'r');
@@ -98,10 +172,10 @@ class ModelBSRE extends Model
                 'contents' => $value,
             ];
         }
-        $username = 'siramah';
-        $password = '$uiS7^hMA%2w';
-        // $username = 'rsudwaled';
-        // $password = 'uwP*aHN2';
+        // $username = 'siramah';
+        // $password = '$uiS7^hMA%2w';
+        $username = 'rsudwaled';
+        $password = 'uwP*aHN2';
         try {
             $response = $client->post($url, [
                 'multipart' => $multipart,
@@ -142,13 +216,13 @@ class ModelBSRE extends Model
     }
     public function downloadpdf($id_dokumen, $kodekunjungan)
     {
-        $url = 'https://esign-service.cirebonkab.go.id/api/sign/download/' . $id_dokumen;
+        $url = 'https://dev.esign-service.cirebonkab.go.id/api/sign/download/' . $id_dokumen;
         $client = new Client();
         $pdfPath = Storage::disk('shared')->path($id_dokumen . '.pdf'); // Define the local path
-        // $username = 'rsudwaled';
-        // $password = 'uwP*aHN2';
-        $username = 'siramah';
-        $password = '$uiS7^hMA%2w';
+        $username = 'rsudwaled';
+        $password = 'uwP*aHN2';
+        // $username = 'siramah';
+        // $password = '$uiS7^hMA%2w';
         try {
             $response = $client->get($url, [
                 'auth'      => [$username, $password], // Basic Auth
@@ -189,7 +263,7 @@ class ModelBSRE extends Model
     }
     public function send_verifikasi($file, $id)
     {
-        $url = 'https://esign-service.cirebonkab.go.id/api/sign/verify';
+        $url = 'https://dev.esign-service.cirebonkab.go.id/api/sign/verify';
         $client = new Client();
         // $file1 = fopen(storage_path('app/downloaded_pdfs/' . $kodekunjungan . '.pdf'), 'r');
         $urlfile = '\\\\193.193.193.203\\erm\\resume_medis_rawat_jalan/';

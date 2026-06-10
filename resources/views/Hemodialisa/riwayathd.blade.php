@@ -14,11 +14,89 @@
                             <br>
                         </div>
                         <div class="card-body">
+                            <style>
+                                /* Desain Custom Badge Modern */
+                                .status-tte {
+                                    padding: 0.5rem 0.8rem;
+                                    border-radius: 8px;
+                                    font-weight: 600;
+                                    font-size: 0.85rem;
+                                    display: inline-flex;
+                                    align-items: center;
+                                    letter-spacing: 0.3px;
+                                }
+
+                                .status-not-signed {
+                                    background-color: #fff5f5;
+                                    color: #e03131;
+                                    border: 1px solid #ffc9c9;
+                                }
+
+                                .status-signed {
+                                    background-color: #ebfbee;
+                                    color: #099268;
+                                    border: 1px solid #b2f2bb;
+                                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+                                }
+
+                                .pulse-red {
+                                    animation: pulse-animation 2s infinite;
+                                }
+
+                                @keyframes pulse-animation {
+                                    0% {
+                                        opacity: 1;
+                                    }
+
+                                    50% {
+                                        opacity: 0.6;
+                                    }
+
+                                    100% {
+                                        opacity: 1;
+                                    }
+                                }
+                            </style>
+                            @if (empty($item->id_tte))
+                                <div class="status-tte status-not-signed pulse-red">
+                                    <i class="fas fa-exclamation-circle mr-2"></i>
+                                    <span>BELUM DI-TTE</span>
+                                </div>
+                                <br>
+                                <br>
+                                {{-- @if ($item->pic == auth()->user()->id)  --}}
+                                <button class="btn btn-success ttesekarang"
+                                    kode_kunjungan="{{ $item->kode_kunjungan }}"><i
+                                        class="bi bi-pen-fill mr-1 ml-1"></i>
+                                    Tanda Tangan</button> <br>
+                                {{-- @endif --}}
+                            @else
+                                <div class="status-tte status-signed">
+                                    <div class="d-flex flex-column align-items-start">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-shield-check mr-2" style="font-size: 1.1rem;"></i>
+                                            <span>TERVERIFIKASI BSRE</span>
+                                        </div>
+                                        <small style="font-size: 0.7rem; opacity: 0.8; margin-left: 1.6rem;">
+                                            Dokumen Sah Secara Elektronik
+                                        </small>
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                                <button class="btn btn-success ttesekarang"
+                                    kode_kunjungan="{{ $item->kode_kunjungan }}"><i
+                                        class="bi bi-pen-fill mr-1 ml-1"></i>
+                                    Tanda Tangan Ulang</button> <br>
+                            @endif
+                            <br>
+                            <br>
                             <button class="btn btn-danger mb-2 hapusheader" idheader="{{ $item->id }}"><i
                                     class="bi bi-trash3"></i></button>
-                            <button class="btn btn-warning mb-2 ambilformeditheadercatatanhd" idheader="{{ $item->id }}"><i
-                                    class="bi bi-pencil-square"></i></button>
-                            <button class="btn btn-success mb-2 cetakanhd" onclick="cetakcatatanhd({{$item->id}})"><i class="bi bi-printer"></i></button>
+                            <button class="btn btn-warning mb-2 ambilformeditheadercatatanhd"
+                                idheader="{{ $item->id }}"><i class="bi bi-pencil-square"></i></button>
+                            <button class="btn btn-success mb-2 cetakanhd"
+                                onclick="cetakcatatanhd({{ $item->kode_kunjungan }})"><i class="bi bi-printer"></i></button>
                             <table class="table">
                                 <tr>
                                     <td colspan="2">Preskripsi HD :
@@ -107,7 +185,8 @@
                                                     ml/menit</label>
                                             </div>
                                             <div class="col-md-4">
-                                                <label for="exampleInputEmail1">UF GOAL : {{ $item->ufgoal }} ml</label>
+                                                <label for="exampleInputEmail1">UF GOAL : {{ $item->ufgoal }}
+                                                    ml</label>
                                             </div>
                                         </div>
                                     </td>
@@ -381,35 +460,35 @@
                                         @endforeach
                                         @foreach ($arrayBaru3 as $dd)
                                             @if ($dd->idheader == $item->id)
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td colspan="4">Jumlah : {{ $dd->jmlhintake }}</td>
-                                                <td>Jumlah : {{ $dd->jmlhuf }}</td>
-                                                <td>Balance : {{ $dd->balance }}</td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td colspan="5">Total UF : {{ $dd->totaluf }} ml</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td colspan="4">Jumlah : {{ $dd->jmlhintake }}</td>
+                                                    <td>Jumlah : {{ $dd->jmlhuf }}</td>
+                                                    <td>Balance : {{ $dd->balance }}</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td colspan="5">Total UF : {{ $dd->totaluf }} ml</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
                                             @endif
                                         @endforeach
                                     </tbody>
@@ -1411,6 +1490,7 @@
             }
         });
     }
+
     function simpanakses() {
         Swal.fire({
             title: "Anda yakin ?",
@@ -1621,6 +1701,7 @@
             }
         });
     }
+
     function simpanposthdfinal() {
         spinner = $('#loader')
         spinner.show();
@@ -1844,6 +1925,91 @@
             }
         });
     })
+    $(".ttesekarang").on('click', function(event) {
+        let kode_kunjungan = $(this).attr('kode_kunjungan');
+        Swal.fire({
+            title: "Sematkan Tanda Tangan?",
+            text: "Dokumen catatan HD ini akan ditandatangani secara elektronik!",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#28a745", // Warna hijau (sukses/aman)
+            cancelButtonColor: "#6c757d", // Warna abu-abu (batal)
+            confirmButtonText: "<i class='fas fa-pen mr-1'></i> Ya, Tanda Tangan",
+            cancelButtonText: "Kembali"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Konfirmasi tahap kedua: Pengingat hukum/medis bahwa data akan DIKUNCI
+                Swal.fire({
+                    title: "PENTING: Kunci & Sahkan Dokumen?",
+                    html: `Menandatangani berkas ini akan <b>mengunci permanen</b> data:<br>
+                   <span class="text-danger">Pre-HD, Intra-HD, dan Post-HD</span>.<br><br>
+                   Pastikan seluruh asuhan keperawatan dan medis telah sesuai.`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#28a745",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya, Kunci & TTD",
+                    cancelButtonText: "Cek Lagi"
+                }).then((secondResult) => {
+                    if (secondResult.isConfirmed) {
+                        // Panggil fungsi eksekusi simpan/TTE Anda di sini
+                        simpantandatangan(kode_kunjungan);
+                    } else {
+                        Swal.fire({
+                            title: "Batal Menandatangani",
+                            text: "Silakan periksa kembali data pemeriksaan pasien jika diperlukan.",
+                            icon: "info",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                });
+            }
+        });
+    })
+
+    function simpantandatangan(kode) {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            async: true,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kode
+            },
+            url: '<?= route('tandatangancatatanhd') ?>',
+            error: function(data) {
+                spinner.hide()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ooops....',
+                    text: 'Sepertinya ada masalah......',
+                    footer: ''
+                })
+            },
+            success: function(data) {
+                spinner.hide()
+                if (data.kode == 500) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oopss...',
+                        text: data.message,
+                        footer: ''
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'OK',
+                        text: data.message,
+                        footer: ''
+                    })
+                    formcatatanhemodialisis()
+                }
+            }
+        });
+    }
     $(".hapusprehd").on('click', function(event) {
         idpre = $(this).attr('idpre')
         Swal.fire({
@@ -1909,7 +2075,7 @@
             type: 'post',
             data: {
                 _token: "{{ csrf_token() }}",
-               idheader
+                idheader
             },
             url: '<?= route('ambilformedithd') ?>',
             success: function(response) {
@@ -1920,8 +2086,14 @@
     })
 
     function cetakcatatanhd(id) {
-        window.open('cetakcatatanhemodialisa/' + id);
+        kode_kunjungan = id
+        window.open('cetakcatatanhd/' + kode_kunjungan);
     }
+    $(".cetakresumettd").on('click', function(event) {
+        kode_kunjungan = $(this).attr('kodekunjungan')
+        window.open('cetakresumettd/' + kode_kunjungan);
+    })
+
     function hapusheader(id) {
         spinner = $('#loader')
         spinner.show();
@@ -2065,7 +2237,8 @@
 
         // 2. Membuat Select, Checkbox, Radio, dan Tombol menjadi Disabled
         // Catatan: Select tidak bisa 'readonly', harus 'disabled'
-        modal.find('select, input[type="checkbox"], input[type="radio"], button').not('.cetakanhd').attr('disabled', true);
+        modal.find('select, input[type="checkbox"], input[type="radio"], button').not('.cetakanhd').attr('disabled',
+            true);
 
         // 3. Khusus tombol 'Close' di footer agar tetap bisa diklik untuk menutup modal
         modal.find('.modal-footer .btn-secondary, .btn-close').attr('disabled', false);

@@ -17,6 +17,159 @@ use phpseclib3\Net\SFTP;
 
 class Pdf2Controller extends Controller
 {
+    public function tandatangancatatanhd(Request $request)
+    {
+        DB::beginTransaction();
+        $kodekunjungan = $request->kode;
+
+        $header = db::table('ts_header_catatan_hemodialisis')->where('kode_kunjungan', $kodekunjungan)->get()->first();
+        $rm = $header->no_rm;
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$rm]);
+
+        // dd($rm);
+        // if(!!$request->jenis){
+        $jenis = 1;
+        // }else{
+        //     $jenis = 0;
+        // }
+        $kode_kunjungan = $header->kode_kunjungan;
+        $datah = db::select('select * from ts_header_catatan_hemodialisis where kode_kunjungan = ? ORDER BY id DESC', [$kodekunjungan]);
+        // Ambil semua ID header terlebih dahulu
+        $ids = collect($datah)->pluck('id')->toArray();
+        // dd($datah);
+        if (!empty($ids)) {
+            // Gunakan WHERE IN untuk mengambil semua data sekaligus
+            $placeholder = implode(',', array_fill(0, count($ids), '?'));
+            $arrayBaru = db::select("select * from ts_catatan_pre_hemodialisa where idheader IN ($placeholder) and jenis = 1 ORDER BY id asc", $ids);
+            $arrayBaru2 = db::select("select * from ts_catatan_pre_hemodialisa where idheader IN ($placeholder) and jenis = 2 ORDER BY id asc", $ids);
+            $arrayBaru3 = db::select("select * from ts_catatan_pre_hemodialisa where idheader IN ($placeholder) and jenis = 3 ORDER BY id asc", $ids);
+            $arrayBaru4 = db::select("select * from ts_catatan_penyulit_hemodialisa where idheader IN ($placeholder) ORDER BY id asc", $ids);
+        } else {
+            $arrayBaru = [];
+            $arrayBaru2 = [];
+            $arrayBaru3 = [];
+            $arrayBaru4 = [];
+        }
+        $cek2 = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and status_code = ? and jenis_dokumen = ?', [$kodekunjungan, 200, 'CATATAN HD']);
+        $hitung = count($cek2);
+        $cetakanke = $hitung + 1;
+        $pdf = Pdf::loadView('pdf.catatan_hemodialisa', compact([
+            'mt_pasien',
+            'header',
+            'datah',
+            'arrayBaru',
+            'arrayBaru2',
+            'arrayBaru3',
+            'arrayBaru4',
+            'jenis'
+        ]));
+        // $dompdf->setPaper('A4', 'portrait'); // 'A4' for paper size, 'portrait' or 'landscape' for orientation
+        // // Render the HTML as PDF
+        // $dompdf->render();
+        // $namaberkas = 'HD ';
+
+
+        // $pdf = Pdf::loadView('pdf.document', compact([
+        //     'data',
+        //     'tglperiksa',
+        //     'mt_pasien',
+        //     'ts_kunjungan',
+        //     'assesmen',
+        //     'tindakan',
+        //     'farmasi',
+        //     'penunjang',
+        //     'orderfarmasi',
+        //     'order_penunjang',
+        //     'mt_paramedis',
+        //     'today',
+        //     'cetakanke'
+        // ]));
+        $pdf->set_option("isPhpEnabled", true);
+        $pdf->setPaper('Letter', 'portrait');
+        $d = $pdf->output();
+        $name = 'CATATAN_HD_' . $kodekunjungan . '.pdf';
+        $pdf->save(Storage::disk('shared', $name)->put($name, $d));
+        $search_criteria = [
+            'kode_kunjungan' => $kodekunjungan,
+            'jenis_dokumen'  => 'CATATAN HD'
+        ];
+
+        $save_report = [
+            'status' => 0
+            // Anda bisa menambahkan field lain di sini yang nilainya ingin di-update
+        ];
+
+        // Jika kombinasi kode_kunjungan & jenis_dokumen ADA -> Update status menjadi 0
+        // Jika TIDAK ADA -> Buat data baru dengan semua field di atas
+        $idreport = Model_log_tte::updateOrCreate($search_criteria, $save_report);
+
+
+        $nik = '1234567890123452';
+        $password = 'Bsre2025.#!';
+        $data2 = [
+            'nik' => $nik,
+            'passphrase' => $password,
+            'tampilan' => 'visible',
+            'halaman' => '',
+            'page' => '',
+            'image' => 'false',
+            'linkQR' => 'https://siramah.rsudwaled.com/tte/dr-erwin',
+            'width' => '80',
+            'height' => '60',
+            'reason' => '',
+            'location' => 'Tanda Tangan',
+            'text' => '',
+            'tag_koordinat' => '#',
+        ];
+        $v = new ModelBSRE();
+        $DD = $v->send_pdf_kosong2($data2, $kodekunjungan);
+        if ($DD['code'] == 200) {
+            $id_dokumen = $DD['messagee'];
+            $name2 = $id_dokumen . '.pdf';
+            $DD2 = $v->downloadpdf($id_dokumen, $kodekunjungan);
+            $urlfile = '\\\\192.168.2.14\\erm\\resume_medis_rawat_jalan/';
+            $cek = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and status = 1 and jenis_dokumen = ?', [$kodekunjungan,'CATATAN HD']);
+            if (count($cek) > 0) {
+                Model_log_tte::whereRaw('id = ?', $cek[0]->id)->update(['status_file' => 0, 'status' => 2]);
+            }
+            $save_report = [
+                'status_code' => $DD['code'],
+                'response' => $DD['messagee'],
+                'kode_kunjungan' => $kodekunjungan,
+                'tgl_kirim' => $this->get_now(),
+                'file' => $urlfile . $name2,
+                'cetakan_ke' => $cetakanke,
+                'status_file' => 1,
+                'status' => 1
+            ];
+            Model_log_tte::whereRaw('id = ?', array($idreport->id))->update($save_report);
+            $kinan = $this->verifikasi_berkas2($idreport->id);
+            // $kinan2 = Model_log_tte::create($save_report);
+            DB::commit();
+            $data1 = [
+                'kode' => 200,
+                'message' => 'Berkas berhasil ditanda tangan !',
+                'id' => $id_dokumen
+            ];
+            return $data1;
+        } else {
+            $save_report = [
+                'status_code' => $DD['code'],
+                'response' => $DD['messagee'],
+                'kode_kunjungan' => $kodekunjungan,
+                'tgl_kirim' => $this->get_now(),
+                'status_file' => 0,
+                'status' => 3
+            ];
+            Model_log_tte::whereRaw('id = ?', array($idreport->id))->update($save_report);
+            DB::commit();
+            $data = [
+                'kode' => 500,
+                'message' => 'Berkas gagal ditanda tangan ! ' . $DD['messagee']
+            ];
+            return $data;
+        }
+    }
     public function simpanttddokter(Request $request)
     {
         $data = [
@@ -42,8 +195,10 @@ class Pdf2Controller extends Controller
     {
         DB::beginTransaction();
         try {
-            $nik = auth()->user()->nip;
-            $password = auth()->user()->password_t;
+            // $nik = auth()->user()->nip;
+            // $password = auth()->user()->password_t;
+            $nik = '1234567890123452';
+            $password = 'Bsre2025.#!';
             $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
             $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
             $data = ['title' => 'My PDF Document', 'content' => 'This is some content for the PDF.', $mt_pasien];
@@ -413,8 +568,10 @@ class Pdf2Controller extends Controller
     public function simpantandatanganbsre(Request $request)
     {
         $kodekunjungan = $request->kodekunjungan;
-        $nik = auth()->user()->nip;
-        $password = auth()->user()->password_t;
+        // $nik = auth()->user()->nip;
+        // $password = auth()->user()->password_t;
+        $nik = '1234567890123452';
+        $password = 'Bsre2025.#!';
         $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
         $data = ['title' => 'My PDF Document', 'content' => 'This is some content for the PDF.', $mt_pasien];
@@ -568,6 +725,22 @@ class Pdf2Controller extends Controller
         $time = $dt->toTimeString();
         $now = $date . ' ' . $time;
         return $now;
+    }
+    public function cetakcatatanhd($kodekunjungan)
+    {
+        $d = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and status_code = ? and jenis_dokumen = ?', [$kodekunjungan, '200', 'CATATAN HD']);
+        if (empty($d)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Berkas TTE tidak ditemukan atau belum diverifikasi.'
+            ], 404);
+        }
+
+        // Jika ada, proses file
+        return Response::make(file_get_contents($d[0]->file), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $d[0]->response . '"'
+        ]);
     }
     public function cetakresumettd($kodekunjungan)
     {

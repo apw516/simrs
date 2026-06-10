@@ -144,7 +144,7 @@
             </tr>
             <tr>
                 <td colspan="2" class="text-center text-bold bg-success">
-                    FORMULIR HASIL PEMERIKSAAN RAWAT JALAN
+                    Resume Medis Rawat Jalan
                 </td>
             </tr>
             <tr>

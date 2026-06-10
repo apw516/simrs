@@ -9815,7 +9815,25 @@ class ErmController extends Controller
             $jenis = 0;
         }
         $kode_kunjungan = $request->kode_kunjungan;
-        $datah = db::select('select * from ts_header_catatan_hemodialisis where no_rm = ? ORDER BY id DESC', [$rm]);
+        $datah = DB::select('
+            SELECT 
+                a.*, 
+                b.id AS id_tte, 
+                b.status_code,
+                b.file,
+                -- Menggunakan CASE WHEN di SQL untuk membuat status teks otomatis (Opsional)
+                CASE 
+                    WHEN b.id IS NULL THEN "Belum di-TTE"
+                    ELSE "Sudah di-TTE"
+                END as status_tte
+            FROM ts_header_catatan_hemodialisis a 
+            LEFT OUTER JOIN log_ttd_elektronik b 
+                ON a.kode_kunjungan = b.kode_kunjungan 
+                AND b.jenis_dokumen = ?
+                AND b.status_code = ? -- Memastikan hanya mengambil TTE yang sukses (200)
+            WHERE a.no_rm = ? 
+            ORDER BY a.id DESC
+        ', ['CATATAN HD', '200', $rm]);
         // Ambil semua ID header terlebih dahulu
         $ids = collect($datah)->pluck('id')->toArray();
         if (!empty($ids)) {

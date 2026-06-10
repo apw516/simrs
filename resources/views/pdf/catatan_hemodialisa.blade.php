@@ -922,6 +922,7 @@
                                         border-collapse: collapse;
                                         margin-bottom: 10px;
                                     }
+
                                     .access-table td {
                                         vertical-align: top;
                                         font-size: 11px;
@@ -929,6 +930,7 @@
                                         /* Membagi 5 kolom sama rata */
                                         padding: 5px;
                                     }
+
                                     /* Styling Checkbox Custom untuk PDF */
                                     .checkbox-box {
                                         display: inline-block;
@@ -993,9 +995,10 @@
                                     <br>Nama dan tanda tangan perawat yang bertugas :
                                     <br>
                                     <br>
-                                    <br>
-                                    <br>
-
+                                    #
+                                    <br>                                    
+                                    <br>                                    
+                                    <br>                                    
                                     {{ strtoupper($header->akses_vaskuler_oleh) }}
                                     {{-- </h5> --}}
                                 </p>
@@ -1006,13 +1009,17 @@
             </div>
             <footer>
                 <div class="text-xxxs font-italic" id="footer">
-                    {{-- <img class="mr-1 ml-1 mt-2" width="8%" src="{{ public_path('../public/img/logobsre.png') }}"
-                    alt=""> *Dokumen ini telah ditanda tangani secara elektronik menggunakan sertifikat elektronik
+                    {{-- <div class="text-xxxs font-italic" id="footer"> --}}
+                    <img class="mr-1 ml-1 mt-2" width="4%" src="{{ public_path('../public/img/logobsre.png') }}"
+                        alt=""> *Dokumen ini telah
+                    ditanda tangani secara elektronik menggunakan sertifikat elektronik
                     yang
-                    telah diterbitkan oleh Balai Besar Sertifikasi ( BSrE ), Badan Siber dan Sandi Negara.(
-                    cetakan..,ke-{{ $cetakanke }}) --}}
-                </div>
+                    telah diterbitkan oleh Balai Besar Sertifikasi ( BSrE ), Badan Siber dan Sandi Negara.
+                    {{-- (
+                        cetakan..,ke-{{ $cetakanke }}) --}}
+                    {{-- </div> --}}
             </footer>
+
         </div>
     </div>
     <script type="text/php">

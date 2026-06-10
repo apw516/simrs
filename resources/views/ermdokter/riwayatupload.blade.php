@@ -9,6 +9,7 @@
         </thead>
         <tbody>
             @foreach ($cek as $d)
+            {{ url('../../files/' . $d->gambar) }}
                 <tr class="klikklik2" url="{{ url('../../files/' . $d->gambar) }}" id="{{$d->id}}">
                     <td>{{ $d->nama }}</td>
                     <td><img width="50%" src="{{ url('../../files/' . $d->gambar) }}" alt="" class="mr-3">
