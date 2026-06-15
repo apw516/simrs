@@ -10,12 +10,16 @@ use App\Models\templateresep;
 use App\Models\templateresep_detail;
 use App\Models\ts_header_iter;
 use App\Models\ts_kunjungan;
+use App\Models\ts_layanan_detail_dummy;
 use App\Models\ts_layanan_detail_order;
+use App\Models\ts_layanan_header_dummy;
 use App\Models\ts_layanan_header_order;
 use Illuminate\Support\Facades\DB;
 use App\Models\VclaimModel;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class UpdateERMcontroller extends Controller
 {
@@ -116,6 +120,9 @@ class UpdateERMcontroller extends Controller
             ->first();
         $layanan_rad = DB::select("CALL SP_CARI_TARIF_PELAYANAN_RAD_ORDER('1','','3')");
         $layanan_lab = DB::select("CALL SP_CARI_TARIF_PELAYANAN_LAB_ORDER('1','','3')");
+        $layanan = '';
+        $unit = auth()->user()->unit;
+        $layanan = $this->carilayanan(3, $layanan, $unit);
         $hasil_ro = DB::select('select * from erm_mata_kanan_kiri where kode_kunjungan = ? ', [$request->kodekunjungan]);
         if (auth()->user()->unit == '1028') {
             return view('update_erm_dokter.form_pemeriksaan_dokter_fisio', compact([
@@ -130,7 +137,8 @@ class UpdateERMcontroller extends Controller
                 'layanan_lab',
                 'hasil_ro',
                 'poli_pengirim_konsul',
-                'catatan_konsul'
+                'catatan_konsul',
+                'layanan'
             ]));
         } else {
             return view('update_erm_dokter.form_pemeriksaan_dokter', compact([
@@ -145,7 +153,8 @@ class UpdateERMcontroller extends Controller
                 'layanan_lab',
                 'hasil_ro',
                 'poli_pengirim_konsul',
-                'catatan_konsul'
+                'catatan_konsul',
+                'layanan'
             ]));
         }
     }
@@ -430,6 +439,114 @@ class UpdateERMcontroller extends Controller
                     'dokter_jawab' => auth()->user()->nama
                 ];
                 assesmenawaldokter::where('id_kunjungan', $ref_kunjungan)->update($datajawab);
+            }
+            if (count($datatindakan) > 0) {
+                $dt = Carbon::now()->timezone('Asia/Jakarta');
+                $date = $dt->toDateString();
+                $time = $dt->toTimeString();
+                $now = $date . ' ' . $time;
+                $cek_layanan_header = count(DB::connection('mysql4')->SELECT('select id from ts_layanan_header where kode_kunjungan = ?', [$dataSet_1['kodekunjungan']]));
+                $kodekunjungan = $request->kodekunjungan;
+                $penjamin = $kunjungan[0]->kode_penjamin;
+                $kode_unit = $kunjungan[0]->kode_unit;
+                //jika dokter faris
+                if (auth()->user()->id == '220') {
+                    $kode_unit = '3012';
+                } //1
+                $unit = DB::select('select * from mt_unit where kode_unit = ?', [$kode_unit]);
+                $prefix_kunjungan = $unit[0]->prefix_unit;
+                foreach ($datatindakan as $namatindakan) {
+                    $index = $namatindakan['name'];
+                    $value = $namatindakan['value'];
+                    $dataSet[$index] = $value;
+                    if ($index == 'cyto') {
+                        $arrayindex_tindakan[] = $dataSet;
+                    }
+                }
+                try {
+                    //dummy
+                    $kode_unit = $kunjungan[0]->kode_unit;
+                    //jika dokter faris
+                    if (auth()->user()->id == '220') {
+                        $kode_unit = '3012';
+                    } //1
+                    $r = DB::connection('mysql4')->select("CALL GET_NOMOR_LAYANAN_HEADER('$kode_unit')");
+                    $kode_layanan_header = $r[0]->no_trx_layanan;
+                    if ($kode_layanan_header == "") {
+                        $year = date('y');
+                        $kode_layanan_header = $unit[0]['prefix_unit'] . $year . date('m') . date('d') . '000001';
+                        //dummy
+                        DB::connection('mysql4')->select('insert into mt_nomor_trx (tgl,no_trx_layanan,unit) values (?,?,?)', [date('Y-m-d h:i:s'), $kode_layanan_header, $kode_unit]);
+                    }
+                    $data_layanan_header = [
+                        'kode_layanan_header' => $kode_layanan_header,
+                        'tgl_entry' =>   $now,
+                        'kode_kunjungan' => $kunjungan[0]->kode_kunjungan,
+                        'kode_unit' => $kode_unit,
+                        'kode_tipe_transaksi' => 2,
+                        'pic' => auth()->user()->id,
+                        'status_layanan' => '3',
+                        'status_retur' => 'OPN',
+                        'status_pembayaran' => 'OPN'
+                    ];
+                    //data yg diinsert ke ts_layanan_header
+                    //simpan ke layanan header
+                    //dummy
+                    $ts_layanan_header = ts_layanan_header_dummy::create($data_layanan_header);
+                    $grand_total_tarif = 0;
+                    foreach ($arrayindex_tindakan as $d) {
+                        if ($penjamin == 'P01') {
+                            $tagihanpenjamin = 0;
+                            $tagihanpribadi = $d['tarif'] * $d['qty'];
+                        } else {
+                            $tagihanpenjamin = $d['tarif'] * $d['qty'];
+                            $tagihanpribadi = 0;
+                        }
+                        $total_tarif = $d['tarif'] * $d['qty'];
+                        $id_detail = $this->createLayanandetail();
+                        $save_detail = [
+                            'id_layanan_detail' => $id_detail,
+                            'kode_layanan_header' => $kode_layanan_header,
+                            'kode_tarif_detail' => $d['kodelayanan'],
+                            'total_tarif' => $d['tarif'],
+                            'jumlah_layanan' => $d['qty'],
+                            'diskon_layanan' => $d['disc'],
+                            'total_layanan' => $total_tarif,
+                            'grantotal_layanan' => $total_tarif,
+                            'kode_dokter1' => auth()->user()->kode_paramedis,
+                            'status_layanan_detail' => 'OPN',
+                            'tgl_layanan_detail' => $now,
+                            'tagihan_penjamin' => $tagihanpenjamin,
+                            'tagihan_pribadi' => $tagihanpribadi,
+                            'tgl_layanan_detail_2' => $now,
+                            'row_id_header' => $ts_layanan_header->id
+                        ];
+                        $ts_layanan_detail = ts_layanan_detail_dummy::create($save_detail);
+                        $grand_total_tarif = $grand_total_tarif + $total_tarif;
+                    }
+                    if ($penjamin == 'P01') {
+                        //dummy
+                        ts_layanan_header_dummy::where('id', $ts_layanan_header->id)
+                            ->update(['status_layanan' => 1, 'total_layanan' => $grand_total_tarif, 'tagihan_pribadi' => $grand_total_tarif]);
+                    } else {
+                        //dummy
+                        ts_layanan_header_dummy::where('id', $ts_layanan_header->id)
+                            ->update(['status_layanan' => 1, 'total_layanan' => $grand_total_tarif, 'tagihan_penjamin' => $grand_total_tarif]);
+                    }
+                    $data = [
+                        'status' => 0,
+                        'signature' => ''
+
+                    ];
+                    assesmenawaldokter::whereRaw('id_kunjungan = ?', array($kodekunjungan))->update($data);
+                } catch (\Exception $e) {
+                    $back = [
+                        'kode' => 500,
+                        'message' => $e->getMessage()
+                    ];
+                    echo json_encode($back);
+                    die;
+                }
             }
             if (count($formobatfarmasi2) > 1) {
                 $simpantemplate = $request->simpantemplate;
@@ -1116,5 +1233,310 @@ class UpdateERMcontroller extends Controller
         }
         date_default_timezone_set('Asia/Jakarta');
         return 'DET' . date('ymd') . $kd;
+    }
+    public function carilayanan($kelas, $nama, $unit)
+    {
+        $layanan = DB::select("CALL SP_PANGGIL_TARIF_TINDAKAN_RS_2('$kelas','$nama','$unit')");
+        return $layanan;
+    }
+    public function ambilhasillab(Request $request)
+    {
+        $rm = $request->nomorrm;
+
+        // Query counter kunjungan (tetap dipertahankan sesuai kode Anda)
+        $ts_kunjungan = db::select('select counter from ts_kunjungan where no_rm = ? and status_kunjungan != 8 ORDER BY kode_kunjungan DESC limit 8', [$rm]);
+
+        // Panggil Stored Procedure hasil lab umum/non-spesial
+        $hasil_lab = db::select("CALL LIHAT_HASIL_LAB_XXX(?)", [$rm]);
+
+        if (empty($hasil_lab)) {
+            return response()->json(['status' => 'empty', 'message' => 'Tidak ada data hasil lab untuk RM ini.']);
+        }
+
+        $berhasil = 0;
+        $gagal = 0;
+        $list_file = [];
+
+        if (count($hasil_lab) > 0) {
+            foreach ($hasil_lab as $c) {
+                $urlDokumen = $c->link;
+                $no_rm = $c->no_rm;
+                $kodeKunjungan = $c->kode_kunjungan;
+                $kode_layanan = $c->KODE;
+                $noLab = $c->KODE ?? uniqid(); // Gunakan nomor lab sebagai nama file agar unik
+                $namaFile = $noLab . '.pdf';
+
+                if (!$urlDokumen) {
+                    $gagal++;
+                    continue;
+                }
+
+                try {
+                    // --- KONDISI 1: JIKA FILE SUDAH PERNAH DIDOWNLOAD (ADA DI DISK) ---
+                    if (Storage::disk('LAB_1')->exists($namaFile)) {
+                        $urlFileTersimpan = '\\\\192.168.2.14\\erm\\hasil_lab_1/' . $namaFile;
+
+                        // Pastikan log databasenya aman/sinkron
+                        \DB::table('ts_hasil_lab_dokumen_lab')->updateOrInsert(
+                            [
+                                'kode_kunjungan' => $kodeKunjungan,
+                                'no_lab'         => $noLab,
+                            ],
+                            [
+                                'no_rm'          => $no_rm,
+                                'url_file'       => $urlFileTersimpan,
+                                'nama_file'      => $namaFile,
+                                'updated_at'     => now(),
+                                'keterangan'     => 'NON - SPESIAL ORDER'
+                            ]
+                        );
+
+                        $berhasil++;
+                        $list_file[] = Storage::disk('LAB_1')->path($namaFile);
+                        continue; // LANGSUNG LANJUT KE LOOPING BERIKUTNYA (TANPA HIT API DOWNLOAD)
+                    }
+
+                    // --- KONDISI 2: JIKA FILE BELUM ADA, JALANKAN PROSES DOWNLOAD ---
+                    $response = Http::timeout(10)->get($urlDokumen);
+
+                    if ($response->successful()) {
+                        $fileContent = $response->body();
+
+                        try {
+                            // Simpan file fisik ke disk LAB_1
+                            $simpan = Storage::disk('LAB_1')->put($namaFile, $fileContent);
+
+                            if ($simpan) {
+                                $berhasil++;
+                                $urlFileTersimpan = '\\\\192.168.2.14\\erm\\hasil_lab_1/' . $namaFile;
+
+                                \DB::table('ts_hasil_lab_dokumen_lab')->updateOrInsert(
+                                    [
+                                        'kode_kunjungan' => $kodeKunjungan,
+                                        'no_lab'         => $noLab,
+                                    ],
+                                    [
+                                        'no_rm'          => $no_rm,
+                                        'url_file'       => $urlFileTersimpan,
+                                        'nama_file'      => $namaFile,
+                                        'updated_at'     => now(),
+                                        'keterangan'     => 'NON - SPESIAL ORDER'
+                                    ]
+                                );
+
+                                $list_file[] = Storage::disk('LAB_1')->path($namaFile);
+                            } else {
+                                $gagal++;
+                            }
+                        } catch (\Exception $e) {
+                            $gagal++;
+                            \Log::error("Gagal menulis file ke disk LAB_1 untuk No Lab " . $noLab . ": " . $e->getMessage());
+                        }
+                    } else {
+                        $gagal++;
+                    }
+                } catch (\Exception $e) {
+                    $gagal++;
+                    \Log::error("Gagal memproses/mendownload hasil lab " . $noLab . ": " . $e->getMessage());
+                }
+            }
+        }
+
+        // Ambil semua data rekaman berkas untuk dikirim ke view Blade
+        $datahasil = db::select('select * from ts_hasil_lab_dokumen_lab where no_rm = ? and keterangan = ? ORDER BY kode_kunjungan desc', [$rm, 'NON - SPESIAL ORDER']);
+
+        return view('update_erm_dokter.view_hasil_lab', compact([
+            'datahasil'
+        ]));
+    }
+    public function ambilhasillabspesial(Request $request)
+    {
+        $rm = $request->nomorrm;
+
+        // Mengambil data counter kunjungan (tidak merusak query bawaan Anda)
+        $ts_kunjungan = db::select('select counter from ts_kunjungan where no_rm = ? and status_kunjungan != 8 ORDER BY kode_kunjungan DESC limit 8', [$rm]);
+
+        // Panggil Stored Procedure hasil lab spesial
+        $hasil_lab = db::select("CALL LIHAT_HASIL_LAB_SPESIAL(?)", [$rm]);
+
+        if (empty($hasil_lab)) {
+            return response()->json(['status' => 'empty', 'message' => 'Tidak ada data hasil lab untuk RM ini.']);
+        }
+
+        $berhasil = 0;
+        $gagal = 0;
+        $list_file = [];
+
+        foreach ($hasil_lab as $c) {
+            $urlDokumen = $c->link;
+            $no_rm = $c->no_rm;
+            $kodeKunjungan = $c->kode_kunjungan;
+            $noLab = $c->KODE ?? uniqid(); // Gunakan nomor lab sebagai nama file agar unik
+            $namaFile = $noLab . '.pdf';
+
+            if (!$urlDokumen) {
+                $gagal++;
+                continue;
+            }
+
+            try {
+                // --- TRIK UTAMA: CEK APAKAH FILE FISIK SUDAH ADA DI STORAGE ---
+                if (Storage::disk('LAB_2')->exists($namaFile)) {
+                    // Jika file sudah ada, skip download! Langsung pastikan DB ter-update/insert aman
+                    $urlFileTersimpan = '\\\\192.168.2.14\\erm\\hasil_lab_2/' . $namaFile;
+
+                    \DB::table('ts_hasil_lab_dokumen_lab_spesial')->updateOrInsert(
+                        ['kode_kunjungan' => $kodeKunjungan, 'no_lab' => $noLab],
+                        [
+                            'no_rm'      => $no_rm,
+                            'url_file'   => $urlFileTersimpan,
+                            'nama_file'  => $namaFile,
+                            'updated_at' => now(),
+                            'keterangan' => 'SPESIAL ORDER'
+                        ]
+                    );
+
+                    $berhasil++;
+                    $list_file[] = Storage::disk('LAB_2')->path($namaFile);
+                    continue; // Lanjutkan ke looping item lab berikutnya tanpa mendownload!
+                }
+
+                // --- JIKA FILE BELUM ADA, BARU JALANKAN PROSES DOWNLOAD ---
+                $response = Http::timeout(10)->get($urlDokumen);
+
+                if ($response->successful()) {
+                    $fileContent = $response->body();
+
+                    try {
+                        $simpan = Storage::disk('LAB_2')->put($namaFile, $fileContent);
+
+                        if ($simpan) {
+                            $berhasil++;
+                            $urlFileTersimpan = '\\\\192.168.2.14\\erm\\hasil_lab_2/' . $namaFile;
+
+                            \DB::table('ts_hasil_lab_dokumen_lab_spesial')->updateOrInsert(
+                                ['kode_kunjungan' => $kodeKunjungan, 'no_lab' => $noLab],
+                                [
+                                    'no_rm'      => $no_rm,
+                                    'url_file'   => $urlFileTersimpan,
+                                    'nama_file'  => $namaFile,
+                                    'updated_at' => now(),
+                                    'keterangan' => 'SPESIAL ORDER'
+                                ]
+                            );
+
+                            $list_file[] = Storage::disk('LAB_2')->path($namaFile);
+                        } else {
+                            $gagal++;
+                        }
+                    } catch (\Exception $e) {
+                        $gagal++;
+                        \Log::error("Gagal menulis file ke disk LAB_2 untuk No Lab " . $noLab . ": " . $e->getMessage());
+                    }
+                } else {
+                    $gagal++;
+                }
+            } catch (\Exception $e) {
+                $gagal++;
+                \Log::error("Gagal memproses/mendownload hasil lab " . $noLab . ": " . $e->getMessage());
+            }
+        }
+
+        // Ambil data gabungan hasil untuk dikirim ke view Blade
+        $datahasil = db::select('select * from ts_hasil_lab_dokumen_lab_spesial where no_rm = ? and keterangan = ? ORDER BY kode_kunjungan desc', [$rm, 'SPESIAL ORDER']);
+
+        return view('update_erm_dokter.view_hasil_lab_spesial', compact([
+            'datahasil'
+        ]));
+    }
+    public function bukaPdfLokal($namaFile)
+    {
+        // 1. Pastikan file ada di dalam disk LAB_1
+        if (!Storage::disk('LAB_1')->exists($namaFile)) {
+            return response("<p style='font-family:sans-serif; text-align:center; margin-top:50px; color:red;'>
+                            <strong>Berkas Tidak Ditemukan:</strong> File PDF " . $namaFile . " tidak ada di folder arsip lab.</p>", 404);
+        }
+
+        try {
+            // 2. Ambil mentahan konten file dari folder sharing
+            $fileContent = Storage::disk('LAB_1')->get($namaFile);
+
+            // 3. Stream langsung ke browser sebagai PDF resmi (First-Party)
+            return response($fileContent, 200)
+                ->header('Content-Type', 'application/pdf')
+                ->header('Content-Length', strlen($fileContent))
+                ->header('Content-Disposition', 'inline; filename="' . $namaFile . '"')
+                ->header('Cache-Control', 'no-cache, no-store, must-revalidate');
+        } catch (\Exception $e) {
+            return response("Gagal membaca file dari server storage: " . $e->getMessage(), 500);
+        }
+    }
+    public function bukaPdfLokal2($namaFile)
+    {
+        // 1. Pastikan file ada di dalam disk LAB_1
+        if (!Storage::disk('LAB_2')->exists($namaFile)) {
+            return response("<p style='font-family:sans-serif; text-align:center; margin-top:50px; color:red;'>
+                            <strong>Berkas Tidak Ditemukan:</strong> File PDF " . $namaFile . " tidak ada di folder arsip lab.</p>", 404);
+        }
+
+        try {
+            // 2. Ambil mentahan konten file dari folder sharing
+            $fileContent = Storage::disk('LAB_2')->get($namaFile);
+
+            // 3. Stream langsung ke browser sebagai PDF resmi (First-Party)
+            return response($fileContent, 200)
+                ->header('Content-Type', 'application/pdf')
+                ->header('Content-Length', strlen($fileContent))
+                ->header('Content-Disposition', 'inline; filename="' . $namaFile . '"')
+                ->header('Cache-Control', 'no-cache, no-store, must-revalidate');
+        } catch (\Exception $e) {
+            return response("Gagal membaca file dari server storage: " . $e->getMessage(), 500);
+        }
+    }
+    public function liathasilpenunjangradiologi(Request $request)
+    {
+        $nomorrm = $request->nomorrm;
+        $data = db::connection('mysql6')->select('select * from order_table where PID = ? ORDER BY ID DESC', [$nomorrm]);
+        return view('update_erm_dokter.hasil_radiologi', compact([
+            'data'
+        ]));
+    }
+    public function lihatberkasscanrm(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $rmEnamDigit = substr($rm, -6);
+        $cek = DB::select('
+            select * from jkn_scan_file_rm 
+            where RIGHT(norm, 6) = ?
+        ', [$rmEnamDigit]);
+        return view('update_erm_dokter.hasil_scan_berkas_rm',compact([
+            'cek'
+        ]));
+    }
+    public function lihatriwayatsumarilispasien(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $cek = db::select('select * from ts_hasil_sumarilis where no_rm = ? order by id desc',[$rm]);
+        return view('update_erm_dokter.hasil_sumarilis',compact([
+            'cek'
+        ]));
+    }
+    public function lihatberkaslain(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $cek = DB::select('select * from erm_upload_gambar where no_rm = ? order by id DESC', [$rm]);
+        $url = "http://192.168.2.45/files/";
+        return view('update_erm_dokter.scan_berkas_luar',compact([
+            'cek','url'
+        ]));
+    }
+    public function lihatcatatanHD(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $cek = DB::select('select * from erm_upload_gambar where no_rm = ? order by id DESC', [$rm]);
+        $url = "http://192.168.2.45/files/";
+        return view('update_erm_dokter.scan_berkas_luar',compact([
+            'cek','url'
+        ]));
     }
 }

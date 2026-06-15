@@ -3,7 +3,7 @@
         max-width: 80% !important;
     }
 </style>
-<div class="container-fluid">
+<div class="container-fluid"> asdad
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -12,22 +12,9 @@
                     @foreach ($hasil_lab as $c)
                         <iframe src="{{ $c->link }}"
                             width="100%" height="1000px"></iframe>
-                        {{-- <iframe src="//192.168.2.74/smartlab_waled/his/his_report?hisno={{ $c->kode_layanan_header }}"
-                            width="100%" height="1000px"></iframe> --}}
-                    @endforeach
-                    {{-- <div class="input-group mb-3">
-                        <input type="text" class="form-control col-md-3"
-                            placeholder="Masukan jumlah hasil yang ingin ditampilkan ..."
-                            aria-label="Recipient's username" aria-describedby="button-addon2" id="jumlahdata2">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button" id="button-addon2"
-                                onclick="tampilkanhasillab()">Tampilkan</button>
-                        </div>
-                    </div> --}}
+                     
+                    @endforeach                   
                 </div>
-                {{-- <div class="v_hasil_lab_2">
-
-                </div> --}}
             </div>
         </div>
     </div>

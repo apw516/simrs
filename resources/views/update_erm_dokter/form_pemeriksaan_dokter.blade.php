@@ -1,24 +1,41 @@
 <div class="card">
-    <div class="card-header bg-info">CPPT</div>
-    <!-- Modal -->
-    <div class="modal fade" id="modalhasillab" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Hasil Pemeriksaan Laboratorium</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="v_hasil_penunjang_lab">
-
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
+    <div class="card-header bg-light">
+        <h3>Form Pemeriksaan</h3>
+        <br>
+        <div class="btn-group mb-3" role="group" aria-label="Basic outlined example">
+            <button type="button" nomorrm="{{ $kunjungan[0]->no_rm }}" class="btn btn-warning btn-outline-dark"
+                onclick="showmodalpenunjanglab()" data-toggle="modal" data-target="#modalhasillab"><i
+                    class="bi bi-clipboard-data"></i> Hasil
+                Pemeriksaan
+                Laboratorium</button>
+            <button type="button" class="btn btn-warning btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
+                onclick="showmodalpenunjanglabspesial()" data-toggle="modal" data-target="#modalhasillab"><i
+                    class="bi bi-clipboard-data"></i> Hasil Laboratorium Spesial
+                Order</button>
+            <button type="button" class="btn btn-warning btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
+                onclick="showmodalpenunjangRAD()" data-toggle="modal" data-target="#modalhasilpenunjang_rad"><i
+                    class="bi bi-clipboard-data"></i> Hasil
+                Pemeriksaan
+                Radiologi</button>
+            <button type="button" class="btn btn-warning btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
+                onclick="showmodalpenunjangPA()" data-toggle="modal" data-target="#modalhasilpenunjang_pa"><i
+                    class="bi bi-clipboard-data"></i> Hasil
+                Pemeriksaan PA</button>
+            <button type="button" class="btn btn-warning btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
+                onclick="showmodalberkasrm()" data-toggle="modal" data-target="#modalscan_rm"><i
+                    class="bi bi-clipboard-data"></i> Berkas
+                Rekamedis</button>
+            <button type="button" class="btn btn-warning btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
+                onclick="showmodalriwayatsumarilis()" data-toggle="modal" data-target="#modalsumarilis"><i
+                    class="bi bi-clipboard-data"></i>
+                SUMARILIS</button>
+            <button type="button" class="btn btn-warning btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
+                onclick="showmodalscanberkaslain()" data-toggle="modal" data-target="#modalberkaslain"><i
+                    class="bi bi-clipboard-data"></i> Berkas
+                Lain</button>
+            <button type="button" class="btn btn-warning btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
+                onclick="showmodalcatatanhemodialisa()" data-toggle="modal" data-target="#modalcatatanhemodialisa"><i
+                    class="bi bi-clipboard-data"></i> Catatan Hemodialisa</button>
         </div>
     </div>
     <div class="card-body table-responsive p-5" style="height: 757Px">
@@ -185,7 +202,8 @@
                                     <div class="card-body bg-light">
                                         <table>
                                             <tr>
-                                                <td class="text-bold font-italic">Riwayat Kehamilan (bagi pasien wanita)
+                                                <td class="text-bold font-italic">Riwayat Kehamilan (bagi pasien
+                                                    wanita)
                                                 </td>
                                                 <td colspan="3">
                                                     <textarea name="riwayatkehamilan" cols="10" rows="4" class="form-control">{{ $asesmen_terakhir ? $asesmen_terakhir->riwayat_kehamilan_pasien_wanita : '' }}</textarea>
@@ -918,48 +936,50 @@
                         </div>
                     </div>
                     {{-- formtindaknlanjut --}}
+                    <style>
+                        .alert-blink-danger {
+                            animation: pulse-danger 2s infinite;
+                        }
+
+                        .alert-blink-warning {
+                            animation: pulse-warning 2s infinite;
+                        }
+
+                        @keyframes pulse-danger {
+
+                            0%,
+                            100% {
+                                background-color: #f8d7da;
+                                box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+                            }
+
+                            50% {
+                                background-color: #f5b3b7;
+                                box-shadow: 0 0 12px rgba(220, 53, 69, 0.4);
+                            }
+                        }
+
+                        @keyframes pulse-warning {
+
+                            0%,
+                            100% {
+                                background-color: #fff3cd;
+                            }
+
+                            50% {
+                                background-color: #ffe89e;
+                                box-shadow: 0 0 12px rgba(255, 193, 7, 0.4);
+                            }
+                        }
+                    </style>
                     <form action="" class="formtindaklanjut">
                         <div class="card">
-                            <div class="card-header bg-light">Tindak Lanjut <button type="button"
+                            <div class="card-header bg-light">Tindak Lanjut
+                                {{-- <button type="button"
                                     class="btn btn-success float-right riwayatkonsul" data-toggle="modal"
-                                    data-target="#modalriwayatkonsul">Riwayat Konsul</button></div>
+                                    data-target="#modalriwayatkonsul">Riwayat Konsul</button> --}}
+                            </div>
                             <div class="card-body">
-                                <style>
-                                    .alert-blink-danger {
-                                        animation: pulse-danger 2s infinite;
-                                    }
-
-                                    .alert-blink-warning {
-                                        animation: pulse-warning 2s infinite;
-                                    }
-
-                                    @keyframes pulse-danger {
-
-                                        0%,
-                                        100% {
-                                            background-color: #f8d7da;
-                                            box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
-                                        }
-
-                                        50% {
-                                            background-color: #f5b3b7;
-                                            box-shadow: 0 0 12px rgba(220, 53, 69, 0.4);
-                                        }
-                                    }
-
-                                    @keyframes pulse-warning {
-
-                                        0%,
-                                        100% {
-                                            background-color: #fff3cd;
-                                        }
-
-                                        50% {
-                                            background-color: #ffe89e;
-                                            box-shadow: 0 0 12px rgba(255, 193, 7, 0.4);
-                                        }
-                                    }
-                                </style>
                                 @php
                                     // Menentukan class animasi berkedip secara otomatis
                                     $blinkClass = '';
@@ -1113,7 +1133,7 @@
                     </form>
 
                     {{-- formtindakan --}}
-                    <div hidden class="accordion" id="accordionExample">
+                    <div class="accordion" id="accordionExample">
                         <div class="card">
                             <div class="card-header bg-danger" id="headingOne">
                                 <h2 class="mb-0">
@@ -1135,13 +1155,13 @@
                                                     <th>Nama tindakan</th>
                                                 </thead>
                                                 <tbody>
-                                                    {{-- @foreach ($layanan as $t)
-                                                    <tr class="pilihlayanan" namatindakan="{{ $t->Tindakan }}"
-                                                        tarif="{{ $t->tarif }}" kode="{{ $t->kode }}"
-                                                        id="{{ $t->kode }}">
-                                                        <td>{{ $t->Tindakan }}</td>
-                                                    </tr>
-                                                @endforeach --}}
+                                                    @foreach ($layanan as $t)
+                                                        <tr class="pilihlayanan" namatindakan="{{ $t->Tindakan }}"
+                                                            tarif="{{ $t->tarif }}" kode="{{ $t->kode }}"
+                                                            id="{{ $t->kode }}">
+                                                            <td>{{ $t->Tindakan }}</td>
+                                                        </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
@@ -1373,8 +1393,50 @@
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="modalsumarilis" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+<div class="modal fade" id="modalcatatanhemodialisa" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Catatan Hemodialisa</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="v_catatan_hd">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalhasillab" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Hasil Pemeriksaan Laboratorium</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="v_hasil_lab_baru">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalsumarilis" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">SUMARILIS</h5>
@@ -1394,31 +1456,9 @@
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="modalhasilpenunjang_lab" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Hasil Pemeriksaan Laboratorium</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="v_hasil_penunjang_lab">
-
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Modal -->
 <div class="modal fade" id="modalhasilpenunjang_rad" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Hasil Pemeriksaan Radiologi</h5>
@@ -1549,7 +1589,7 @@
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="modalberkasluar" tabindex="-1" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="modalberkaslain" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -1636,6 +1676,174 @@
 <link rel="stylesheet" href="{{ asset('public/dist/css/datepicker.css') }}" rel="stylesheet">
 <script src="{{ asset('public/dist/js/bootstrap-datepicker.js') }}"></script>
 <script>
+    function showmodalpenunjanglab() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm
+            },
+            url: '<?= route('ambilhasillab') ?>',
+            error: function(response) {
+                spinner.hide()
+            },
+            success: function(response) {
+                $('.v_hasil_lab_baru').html(response);
+                spinner.hide()
+            }
+        });
+    }
+
+    function showmodalpenunjanglabspesial() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm
+            },
+            url: '<?= route('ambilhasillabspesial') ?>',
+            error: function(response) {
+                spinner.hide()
+            },
+            success: function(response) {
+                $('.v_hasil_lab_baru').html(response);
+                spinner.hide()
+            }
+        });
+    }
+
+    function showmodalpenunjangPA() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm
+            },
+            url: '<?= route('lihathasilpenunjang_pa') ?>',
+            error: function(response) {
+                spinner.hide()
+            },
+            success: function(response) {
+                $('.v_hasil_penunjang_pa').html(response);
+                spinner.hide()
+            }
+        });
+    }
+
+    function showmodalpenunjangRAD() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm
+            },
+            url: '<?= route('liathasilpenunjangradiologi') ?>',
+            error: function(response) {
+                spinner.hide()
+            },
+            success: function(response) {
+                $('.v_hasil_penunjang_rad').html(response);
+                spinner.hide()
+            }
+        });
+    }
+
+    function showmodalberkasrm() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm
+            },
+            url: '<?= route('lihatberkasscanrm') ?>',
+            error: function(response) {
+                spinner.hide()
+            },
+            success: function(response) {
+                $('.vrm_lama').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    function showmodalriwayatsumarilis() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm
+            },
+            url: '<?= route('lihatriwayatsumarilispasien') ?>',
+            error: function(response) {
+                spinner.hide()
+            },
+            success: function(response) {
+                $('.v_sumarilis').html(response);
+                spinner.hide()
+            }
+        });
+    }
+
+    function showmodalscanberkaslain() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm
+            },
+            url: '<?= route('lihatberkaslain') ?>',
+            error: function(response) {
+                spinner.hide()
+            },
+            success: function(response) {
+                $('.vberkasluar').html(response);
+                spinner.hide()
+            }
+        });
+    }
+
+    function showmodalcatatanhemodialisa() {
+        spinner = $('#loader')
+        spinner.show();
+        rm = $(this).attr('nomorrm')
+        jenis = '1'
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm,
+                jenis
+            },
+            url: '<?= route('ambilriwayatcatatanhemodialisa') ?>',
+            error: function(response) {
+                spinner.hide()
+            },
+            success: function(response) {
+                $('.v_catatan_hd').html(response);
+                spinner.hide()
+            }
+        });
+    }
     $(function() {
         $(".datepicker").datepicker({
             autoclose: true,

@@ -14,7 +14,6 @@ class ModelBSRE extends Model
 {
     use HasFactory;
     public $baseUrl = 'https://dev.esign-service.cirebonkab.go.id/api/sign/';
-
     // public $baseUrl = 'https://esign-service.cirebonkab.go.id/api/sign/';
 
     public static function header()
@@ -114,7 +113,6 @@ class ModelBSRE extends Model
                     'Postman-Token' => '<calculated when request is sent>',
                 ],
             ]);
-
             $code = $response->getStatusCode();
             if ($code == 200) {
                 $id = $response->getHeader('id_dokumen');

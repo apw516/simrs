@@ -887,3 +887,12 @@ Route::get('/downloadberkas/{kode_kunjungan}', [CasemixController::class, 'downl
 Route::post('/update_formpemeriksaan_dokter', [UpdateERMcontroller::class, 'form_pemeriksaan_dokter'])->name('update_formpemeriksaan_dokter');
 Route::post('/simpanhasilpemeriksaandokter', [UpdateERMcontroller::class, 'simpanpemeriksaandokter'])->name('simpanhasilpemeriksaandokter');
 Route::post('/simpanhasilpemeriksaandokterfisio', [UpdateERMcontroller::class, 'simpanhasilpemeriksaandokterfisio'])->name('simpanhasilpemeriksaandokterfisio');
+Route::post('/ambilhasillab', [UpdateERMcontroller::class, 'ambilhasillab'])->name('ambilhasillab');
+Route::post('/ambilhasillabspesial', [UpdateERMcontroller::class, 'ambilhasillabspesial'])->name('ambilhasillabspesial');
+Route::get('lab/buka-pdf/{nama_file}', [UpdateERMcontroller::class, 'bukaPdfLokal'])->name('buka.pdf.lokal');
+Route::get('lab/buka-pdf2/{nama_file}', [UpdateERMcontroller::class, 'bukaPdfLokal2'])->name('buka.pdf.lokal2');
+Route::post('/liathasilpenunjangradiologi', [UpdateERMcontroller::class, 'liathasilpenunjangradiologi'])->name('liathasilpenunjangradiologi');
+Route::post('/lihatberkasscanrm', [UpdateERMcontroller::class, 'lihatberkasscanrm'])->name('lihatberkasscanrm');
+Route::post('/lihatriwayatsumarilispasien', [UpdateERMcontroller::class, 'lihatriwayatsumarilispasien'])->name('lihatriwayatsumarilispasien');
+Route::post('/lihatberkaslain', [UpdateERMcontroller::class, 'lihatberkaslain'])->name('lihatberkaslain');
+Route::post('/lihatcatatanHD', [UpdateERMcontroller::class, 'lihatcatatanHD'])->name('lihatcatatanHD');

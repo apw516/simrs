@@ -8583,7 +8583,6 @@ class ErmController extends Controller
         //         }
         //     }
         // }
-        // DD($hasil_lab);
         return view('ermtemplate.view_hasil_penunjang_lab', compact([
             'hasil_lab',
             'rm'

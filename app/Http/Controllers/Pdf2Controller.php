@@ -63,27 +63,6 @@ class Pdf2Controller extends Controller
             'arrayBaru4',
             'jenis'
         ]));
-        // $dompdf->setPaper('A4', 'portrait'); // 'A4' for paper size, 'portrait' or 'landscape' for orientation
-        // // Render the HTML as PDF
-        // $dompdf->render();
-        // $namaberkas = 'HD ';
-
-
-        // $pdf = Pdf::loadView('pdf.document', compact([
-        //     'data',
-        //     'tglperiksa',
-        //     'mt_pasien',
-        //     'ts_kunjungan',
-        //     'assesmen',
-        //     'tindakan',
-        //     'farmasi',
-        //     'penunjang',
-        //     'orderfarmasi',
-        //     'order_penunjang',
-        //     'mt_paramedis',
-        //     'today',
-        //     'cetakanke'
-        // ]));
         $pdf->set_option("isPhpEnabled", true);
         $pdf->setPaper('Letter', 'portrait');
         $d = $pdf->output();
@@ -102,8 +81,6 @@ class Pdf2Controller extends Controller
         // Jika kombinasi kode_kunjungan & jenis_dokumen ADA -> Update status menjadi 0
         // Jika TIDAK ADA -> Buat data baru dengan semua field di atas
         $idreport = Model_log_tte::updateOrCreate($search_criteria, $save_report);
-
-
         $nik = '1234567890123452';
         $password = 'Bsre2025.#!';
         $data2 = [
