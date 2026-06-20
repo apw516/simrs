@@ -362,6 +362,7 @@ class ErmController extends Controller
                 ,c.`namapemeriksa`
                 ,b.`id` AS idassdok
                 ,c.id AS idasskep
+                ,b.pic
                 FROM ts_kunjungan a 
                 LEFT OUTER JOIN assesmen_dokters b ON a.`kode_kunjungan` = b.`id_kunjungan`
                 LEFT OUTER JOIN `erm_hasil_assesmen_keperawatan_rajal` c ON a.`kode_kunjungan` = c.`kode_kunjungan`
@@ -433,6 +434,7 @@ class ErmController extends Controller
                 ,c.`namapemeriksa`
                 ,b.`id` AS idassdok
                 ,c.id AS idasskep
+                ,b.pic
                 FROM ts_kunjungan a 
                 LEFT OUTER JOIN assesmen_dokters b ON a.`kode_kunjungan` = b.`id_kunjungan`
                 LEFT OUTER JOIN `erm_hasil_assesmen_keperawatan_rajal` c ON a.`kode_kunjungan` = c.`kode_kunjungan`
@@ -1702,10 +1704,11 @@ class ErmController extends Controller
                 echo json_encode($data);
                 die;
             }
-            if (empty($dataSet['pasienmengeluhnyeri'])) {
-                $skalanyeri = 0;
+           $keluhan = $dataSet['pasienmengeluhnyeri'] ?? '';
+            if (empty($keluhan)) {
+                $skalanyeri = 'Tidak Ada';
             } else {
-                $skalanyeri = 1;
+                $skalanyeri = $keluhan;
             }
             $data = [
                 'counter' => $dataSet['counter'],
@@ -1720,6 +1723,8 @@ class ErmController extends Controller
                 'frekuensinapas' => $dataSet['frekuensinafas'],
                 'suhutubuh' => $dataSet['suhutubuh'],
                 'beratbadan' => $dataSet['beratbadan'],
+                'tinggibadan' => $dataSet['tinggibadan'],
+                'imt' => $dataSet['imt'],
                 'Riwayatpsikologi' => $dataSet['riwayatpsikologis'],
                 'keterangan_riwayat_psikolog' => $dataSet['keteranganriwayatpsikologislainnya'],
                 'penggunaanalatbantu' => $dataSet['alatbantu'],

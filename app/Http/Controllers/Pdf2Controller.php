@@ -81,8 +81,10 @@ class Pdf2Controller extends Controller
         // Jika kombinasi kode_kunjungan & jenis_dokumen ADA -> Update status menjadi 0
         // Jika TIDAK ADA -> Buat data baru dengan semua field di atas
         $idreport = Model_log_tte::updateOrCreate($search_criteria, $save_report);
-        $nik = '1234567890123452';
-        $password = 'Bsre2025.#!';
+        // $nik = '1234567890123452';
+        $nik = '3209330506940001';
+        // $password = 'Bsre2025.#!';
+        $password = 'Kinan221122!!!';
         $data2 = [
             'nik' => $nik,
             'passphrase' => $password,
@@ -546,10 +548,13 @@ class Pdf2Controller extends Controller
     public function simpantandatanganbsre(Request $request)
     {
         $kodekunjungan = $request->kodekunjungan;
+        // dd('ok');
         // $nik = auth()->user()->nip;
         // $password = auth()->user()->password_t;
-        $nik = '1234567890123452';
-        $password = 'Bsre2025.#!';
+        // $nik = '1234567890123452';
+        $nik = '3209330506940001';
+        // $password = 'Bsre2025.#!';
+        $password = 'Kinan221122!!!';
         $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
         $data = ['title' => 'My PDF Document', 'content' => 'This is some content for the PDF.', $mt_pasien];

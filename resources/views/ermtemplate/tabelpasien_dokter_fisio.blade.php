@@ -11,7 +11,7 @@
     <tbody>
         @foreach ($pasienpoli as $p)
             <tr class="pilihpasien" rm="{{ $p->no_rm }}" kodekunjungan="{{ $p->kode_kunjungan }}"
-                pic="">
+                pic="{{ $p->pic}}">
                 <td>{{ $p->tgl_masuk }}</td>
                 <td>{{ $p->no_rm }}</td>
                 <td>{{ $p->nama_pasien }} @if($p->ref_kunjungan != 0 || $p->ref_kunjungan != NULL )| <button class="badge badge-warning">PASIEN KONSUL </button>@endif</td>

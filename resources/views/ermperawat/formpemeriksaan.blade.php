@@ -523,8 +523,35 @@
                                             </div>
                                         </td>
                                     </tr>
+                                       <tr>
+                                        <td class="text-bold font-italic">Tinggi badan </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control"
+                                                    placeholder="Tinggi Badan Pasien ..." name="tinggibadan"
+                                                    id="tinggibadan" aria-label="Recipient's username"
+                                                    aria-describedby="basic-addon2"
+                                                     @if (count($p_konsul) > 0) value="{{ $p_konsul[0]->tinggibadan }}" @endif>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" id="basic-addon2"></span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-bold font-italic">IMT</td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control"
+                                                    placeholder="IMT pasien ..." aria-label="IMT pasien"
+                                                    name="imt" id="imt" aria-describedby="basic-addon2"
+                                                     @if (count($p_konsul) > 0) value="{{ $p_konsul[0]->imt }}" @endif>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" id="basic-addon2"></span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
                                     <tr>
-                                        <td class="text-bold font-italic">Berat Badan / Tinggi Badan / IMT</td>
+                                        <td class="text-bold font-italic">Berat Badan</td>
                                         <td>
                                             <div class="input-group">
                                                 <input type="text" class="form-control"

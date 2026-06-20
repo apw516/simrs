@@ -488,7 +488,7 @@
                                     <td class="text-bold font-italic">Tinggi Badan</td>
                                     <td>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Umur pasien ..."
+                                            <input type="text" class="form-control" placeholder="Tinggi badan pasien ..."
                                                 aria-label="Suhu tubuh pasien" name="tinggibadan" id="tinggibadan"
                                                 aria-describedby="basic-addon2"
                                                 value="{{ $asesmen_perawat ? $asesmen_perawat->tinggibadan : '' }}">
@@ -503,7 +503,7 @@
                                     <td>
                                         <div class="input-group">
                                             <input type="text" class="form-control"
-                                                placeholder="Berat badan Pasien ..." name="imt" id="imt"
+                                                placeholder="IMT Pasien ..." name="imt" id="imt"
                                                 aria-label="Recipient's username" aria-describedby="basic-addon2"
                                                 value="{{ $asesmen_perawat ? $asesmen_perawat->imt : '' }}">
                                             <div class="input-group-append">
@@ -888,7 +888,7 @@
                             </tbody>
                         </table>
                     </form>
-                    <div class="col-md-12">
+                    <div @if(auth()->user()->unit != '1012' || auth()->user()->unit != '1027' || auth()->user()->unit != '1032') hidden @endif class="col-md-12">
                         <div class="card">
                             <div class="card-header text-bold bg-dark">FORMULIR HASIL EKSPERTISI MEDIS</div>
                             <div class="card-body">

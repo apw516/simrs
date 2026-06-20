@@ -313,13 +313,13 @@
                                                 <input class="form-check-input" type="radio"
                                                     name="pasienmengeluhnyeri" id="pasienmengeluhnyeri"
                                                     value="Tidak Ada"
-                                                    @if ($resume[0]->Keluhannyeri == 'Tidak Ada') checked @endif>
+                                                    @if ($resume[0]->Keluhannyeri == 'Tidak Ada' || $resume[0]->Keluhannyeri == '0' ) checked @endif>
                                                 <label class="form-check-label" for="inlineRadio1">Tidak Ada</label>
                                             </div>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio"
                                                     name="pasienmengeluhnyeri" id="pasienmengeluhnyeri"
-                                                    value="Ada" @if ($resume[0]->Keluhannyeri == 'Ada') checked @endif>
+                                                    value="Ada" @if ($resume[0]->Keluhannyeri == 'Ada' || $resume[0]->Keluhannyeri == '1' ) checked @endif>
                                                 <label class="form-check-label" for="inlineRadio2">Ada</label>
                                             </div>
                                         </td>
@@ -548,7 +548,34 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-bold font-italic">Berat badan / Tinggi Badan / IMT</td>
+                                        <td class="text-bold font-italic">Tinggi badan </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control"
+                                                    placeholder="Tinggi Badan Pasien ..." name="tinggibadan"
+                                                    id="tinggibadan" aria-label="Recipient's username"
+                                                    aria-describedby="basic-addon2"
+                                                    value="{{ $resume[0]->tinggibadan }}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" id="basic-addon2"></span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-bold font-italic">IMT</td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control"
+                                                    placeholder="IMT pasien ..." aria-label="IMT pasien"
+                                                    name="imt" id="imt" aria-describedby="basic-addon2"
+                                                    value="{{ $resume[0]->imt }}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" id="basic-addon2"></span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-bold font-italic">Berat badan </td>
                                         <td>
                                             <div class="input-group">
                                                 <input type="text" class="form-control"

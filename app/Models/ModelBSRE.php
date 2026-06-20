@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Storage;
 class ModelBSRE extends Model
 {
     use HasFactory;
-    public $baseUrl = 'https://dev.esign-service.cirebonkab.go.id/api/sign/';
-    // public $baseUrl = 'https://esign-service.cirebonkab.go.id/api/sign/';
+    // public $baseUrl = 'https://dev.esign-service.cirebonkab.go.id/api/sign/';
+    public $baseUrl = 'https://esign-service.cirebonkab.go.id/api/sign/';
 
     public static function header()
     {
@@ -27,13 +27,13 @@ class ModelBSRE extends Model
     }
     public  function cek_status_user($nik)
     {
-        $url = 'https://dev.esign-service.cirebonkab.go.id/api/user/status/' . $nik;
+        $url = 'https://esign-service.cirebonkab.go.id/api/user/status/' . $nik;
         $username = 'rsudwaled';
         $client = new Client();
-        // $username = 'siramah';
-        // $password = '$uiS7^hMA%2w';
-        $username = 'rsudwaled';
-        $password = 'uwP*aHN2';
+        $username = 'siramah';
+        $password = '$uiS7^hMA%2w';
+        // $username = 'rsudwaled';
+        // $password = 'uwP*aHN2';
         try {
             $response = $client->get($url, [
                 'auth' => [$username, $password],
@@ -71,7 +71,7 @@ class ModelBSRE extends Model
     }
     public function send_pdf_kosong2($data2, $kodekunjungan)
     {
-        $url = 'https://dev.esign-service.cirebonkab.go.id/api/sign/pdf';
+        $url = 'https://esign-service.cirebonkab.go.id/api/sign/pdf';
         $url_ttd = auth()->user()->image_ttd;
         $client = new Client();
         // $file1 = fopen(storage_path('app/downloaded_pdfs/' . $kodekunjungan . '.pdf'), 'r');
@@ -99,10 +99,10 @@ class ModelBSRE extends Model
                 'contents' => $value,
             ];
         }
-        // $username = 'siramah';
-        // $password = '$uiS7^hMA%2w';
-        $username = 'rsudwaled';
-        $password = 'uwP*aHN2';
+        $username = 'siramah';
+        $password = '$uiS7^hMA%2w';
+        // $username = 'rsudwaled';
+        // $password = 'uwP*aHN2';
         try {
             $response = $client->post($url, [
                 'multipart' => $multipart,
@@ -142,7 +142,7 @@ class ModelBSRE extends Model
     }
     public function send_pdf_kosong($data2, $kodekunjungan)
     {
-        $url = 'https://dev.esign-service.cirebonkab.go.id/api/sign/pdf';
+        $url = 'https://esign-service.cirebonkab.go.id/api/sign/pdf';
         $url_ttd = auth()->user()->image_ttd;
         $client = new Client();
         // $file1 = fopen(storage_path('app/downloaded_pdfs/' . $kodekunjungan . '.pdf'), 'r');
@@ -170,10 +170,10 @@ class ModelBSRE extends Model
                 'contents' => $value,
             ];
         }
-        // $username = 'siramah';
-        // $password = '$uiS7^hMA%2w';
-        $username = 'rsudwaled';
-        $password = 'uwP*aHN2';
+        $username = 'siramah';
+        $password = '$uiS7^hMA%2w';
+        // $username = 'rsudwaled';
+        // $password = 'uwP*aHN2';
         try {
             $response = $client->post($url, [
                 'multipart' => $multipart,
@@ -214,13 +214,13 @@ class ModelBSRE extends Model
     }
     public function downloadpdf($id_dokumen, $kodekunjungan)
     {
-        $url = 'https://dev.esign-service.cirebonkab.go.id/api/sign/download/' . $id_dokumen;
+        $url = 'https://esign-service.cirebonkab.go.id/api/sign/download/' . $id_dokumen;
         $client = new Client();
         $pdfPath = Storage::disk('shared')->path($id_dokumen . '.pdf'); // Define the local path
-        $username = 'rsudwaled';
-        $password = 'uwP*aHN2';
-        // $username = 'siramah';
-        // $password = '$uiS7^hMA%2w';
+        // $username = 'rsudwaled';
+        // $password = 'uwP*aHN2';
+        $username = 'siramah';
+        $password = '$uiS7^hMA%2w';
         try {
             $response = $client->get($url, [
                 'auth'      => [$username, $password], // Basic Auth
@@ -261,7 +261,7 @@ class ModelBSRE extends Model
     }
     public function send_verifikasi($file, $id)
     {
-        $url = 'https://dev.esign-service.cirebonkab.go.id/api/sign/verify';
+        $url = 'https://esign-service.cirebonkab.go.id/api/sign/verify';
         $client = new Client();
         // $file1 = fopen(storage_path('app/downloaded_pdfs/' . $kodekunjungan . '.pdf'), 'r');
         $urlfile = '\\\\193.193.193.203\\erm\\resume_medis_rawat_jalan/';
