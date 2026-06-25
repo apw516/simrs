@@ -270,7 +270,7 @@ class Pdf2Controller extends Controller
                 'halaman' => '',
                 'page' => '',
                 'image' => 'false',
-                'linkQR' => 'https://siramah.rsudwaled.com/tte/dr-erwin',
+                'linkQR' => "https://siramah.rsudwaled.com/filetandatangan?id=" . $idreport->id,
                 'width' => '80',
                 'height' => '60',
                 'reason' => '',
@@ -302,6 +302,13 @@ class Pdf2Controller extends Controller
                 Model_log_tte::whereRaw('id = ?', array($idreport->id))->update($save_report);
                 $kinan = $this->verifikasi_berkas2($idreport->id);
                 // $kinan2 = Model_log_tte::create($save_report);
+                $datawebsiramah = [
+                    'id_dokumen' => $idreport->id,
+                    'nama_user' => auth()->user()->nama,
+                    'tanggal_verifikasi' => $this->get_now(),
+                    'jabatan' => "Dokter",
+                ];
+                $DD = $v->sendpdftosiramah($datawebsiramah);
                 DB::commit();
                 $data1 = [
                     'kode' => 200,
