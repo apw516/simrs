@@ -14,12 +14,14 @@ use App\Models\ts_layanan_detail_dummy;
 use App\Models\ts_layanan_detail_order;
 use App\Models\ts_layanan_header_dummy;
 use App\Models\ts_layanan_header_order;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Models\VclaimModel;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
 
 class UpdateERMcontroller extends Controller
 {
@@ -1509,15 +1511,15 @@ class UpdateERMcontroller extends Controller
             select * from jkn_scan_file_rm 
             where RIGHT(norm, 6) = ?
         ', [$rmEnamDigit]);
-        return view('update_erm_dokter.hasil_scan_berkas_rm',compact([
+        return view('update_erm_dokter.hasil_scan_berkas_rm', compact([
             'cek'
         ]));
     }
     public function lihatriwayatsumarilispasien(Request $request)
     {
         $rm = $request->nomorrm;
-        $cek = db::select('select * from ts_hasil_sumarilis where no_rm = ? order by id desc',[$rm]);
-        return view('update_erm_dokter.hasil_sumarilis',compact([
+        $cek = db::select('select * from ts_hasil_sumarilis where no_rm = ? order by id desc', [$rm]);
+        return view('update_erm_dokter.hasil_sumarilis', compact([
             'cek'
         ]));
     }
@@ -1526,8 +1528,9 @@ class UpdateERMcontroller extends Controller
         $rm = $request->nomorrm;
         $cek = DB::select('select * from erm_upload_gambar where no_rm = ? order by id DESC', [$rm]);
         $url = "http://192.168.2.45/files/";
-        return view('update_erm_dokter.scan_berkas_luar',compact([
-            'cek','url'
+        return view('update_erm_dokter.scan_berkas_luar', compact([
+            'cek',
+            'url'
         ]));
     }
     public function lihatcatatanHD(Request $request)
@@ -1535,8 +1538,65 @@ class UpdateERMcontroller extends Controller
         $rm = $request->nomorrm;
         $cek = DB::select('select * from erm_upload_gambar where no_rm = ? order by id DESC', [$rm]);
         $url = "http://192.168.2.45/files/";
-        return view('update_erm_dokter.scan_berkas_luar',compact([
-            'cek','url'
+        return view('update_erm_dokter.scan_berkas_luar', compact([
+            'cek',
+            'url'
         ]));
+    }
+    public function viewPanduanTte(Request $request)
+    {
+        $namaFile = 'panduan.pdf';
+
+        // 2. Tentukan jalur lokasi penyimpanan file secara aman
+        // Direkomendasikan disimpan di folder: storage/app/public/dokumen/
+        $path = storage_path('app/public/' . $namaFile);
+
+        // 3. Validasi: Jika file fisik tidak ditemukan di server, berikan return eror estetik
+        if (!file_exists($path)) {
+            abort(404, 'Berkas dokumen panduan PDF tidak ditemukan di server. Silahkan hubungi IT SIMRS.');
+        }
+
+        // 4. Ambil tipe konten file (MIME Type)
+        $contentType = mime_content_type($path);
+
+        // 5. Kembalikan respons file agar langsung di-render oleh PDF Viewer bawaan Browser
+        return Response::file($path, [
+            'Content-Type' => $contentType,
+            'Content-Disposition' => 'inline; filename="' . $namaFile . '"',
+            'Cache-Control' => 'no-cache, no-store, must-revalidate',
+            'Pragma' => 'no-cache',
+            'Expires' => '0',
+        ]);
+    }
+    public function simpanaktivasitte(Request $request)
+    {
+        $data = json_decode($_POST['data'], true);
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $arraydata[$index] = $value;
+        }
+        $acc = $arraydata['setuju_simpan'] ?? '';
+        if (empty($acc)) {
+            // Kondisi jika index 'setuju_simpan' tidak ditemukan atau nilainya kosong
+            $persetujuan = 0;
+            $passwordtte = 0;
+        } else {
+            $persetujuan = 1;
+            $passwordtte = $arraydata['password_tte'];
+        }
+        $data_tte = [
+            'status_tte' => 1,
+            'nik' => $arraydata['nik'],
+            'password_tte' => $passwordtte,
+            'persetujuan_simpan' => $persetujuan,
+        ];
+        User::where('id', auth()->user()->id)->update($data_tte);
+        $data = [
+            'kode' => 200,
+            'message' => 'Data berhasil disimpan !'
+        ];
+        echo json_encode($data);
+        die;
     }
 }

@@ -76,14 +76,14 @@ class ModelBSRE extends Model
         $client = new Client();
         // $file1 = fopen(storage_path('app/downloaded_pdfs/' . $kodekunjungan . '.pdf'), 'r');
         $urlfile = '\\\\192.168.2.14\\erm\\resume_medis_rawat_jalan/';
-        $file1 = fopen(($urlfile . 'CATATAN_HD_'.$kodekunjungan . '.pdf'), 'r');
+        $file1 = fopen(($urlfile . 'CATATAN_HD_' . $kodekunjungan . '.pdf'), 'r');
         // dd($file1);
         $file2 = fopen($url_ttd, 'r');
         $multipart = [
             [
                 'name'     => 'file', // Name of the form field for the first file
                 // 'contents' => fopen(storage_path('app/downloaded_pdfs/' . $kodekunjungan . '.pdf'), 'r'),
-                'contents' => fopen(($urlfile . 'CATATAN_HD_'.$kodekunjungan . '.pdf'), 'r'),
+                'contents' => fopen(($urlfile . 'CATATAN_HD_' . $kodekunjungan . '.pdf'), 'r'),
                 'filename' => 'TST.pdf', // Optional: original filename
             ],
             [
@@ -325,6 +325,43 @@ class ModelBSRE extends Model
                     ];
                 return $data;
             }
+        }
+    }
+    public function sendpdftosiramah($DATA)
+    {
+        $client = new Client();
+        try {
+            $url = "https://siramah.rsudwaled.com/api/simpanfilette";
+
+            $response = $client->request('POST', $url, [
+                'headers' => [
+                    'Authorization' => 'Basic cnN1ZHdhbGVkOnV3UCphSE4y',
+                    'Cache-Control' => 'no-cache',
+                    // 'Content-Type'  => 'application/json', // Otomatis diset oleh opsi 'json' di bawah
+                ],
+                // REKOMENDASI: Gunakan opsi 'json', Guzzle akan otomatis melakukan json_encode 
+                // dan mengirimkan header Content-Type: application/json
+                'json' => $DATA
+            ]);
+
+            // Mengambil body response dan mengubahnya menjadi Object/Array PHP
+            $result = json_decode($response->getBody()->getContents());
+
+            // Berhasil dikirim, silakan proses $result di sini
+            return response()->json([
+                'status'  => 'success',
+                'message' => 'Data berhasil dikirim',
+                'data'    => $result
+            ]);
+        } catch (RequestException $e) {
+            // Menangani error jika API tujuan down, timeout, atau return status 4xx/5xx
+            $errorResponse = $e->hasResponse() ? json_decode($e->getResponse()->getBody()->getContents()) : null;
+
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Gagal mengirim data ke API: ' . $e->getMessage(),
+                'details' => $errorResponse
+            ], $e->hasResponse() ? $e->getResponse()->getStatusCode() : 500);
         }
     }
 }

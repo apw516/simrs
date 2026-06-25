@@ -720,10 +720,16 @@
                                 kembali seluruh diagnosis dan advis medis sudah terisi dengan benar.</p>
 
                             <!-- Tombol Aksi Utama -->
+                            @if(auth()->user()->persetujuan_simpan == 1)
                             <button type="button" class="btn btn-success btn-lg px-5 py-2.5 rounded-pill shadow-xs"
                                 onclick="simpantandatangan2()">
                                 <i class="bi bi-cloud-arrow-up-fill me-2"></i>Simpan & berikan TTE
                             </button>
+                            @else
+                            <button type="button" class="btn btn-success btn-lg px-5 py-2.5 rounded-pill shadow-xs"
+                                onclick="simpantandatangan2()">
+                                <i class="bi bi-cloud-arrow-up-fill me-2"></i>Simpan </button>
+                            @endif
                         </div>
                     </div>
                 @endif
@@ -754,10 +760,20 @@
                                     <i class="bi bi-printer-fill me-1"></i> Lihat Berkas
                                 </button>
                                 @if ($cp->iddokter == auth()->user()->id)
-                                    <button
-                                        class="btn btn-warning btn-sm rounded-2 text-dark fw-semibold simpantandatangan">
-                                        <i class="bi bi-arrow-counterclockwise me-1"></i> Tanda Tangan Ulang
-                                    </button>
+                                    @if (auth()->user()->persetujuan_simpan == 1)
+                                        <button
+                                            class="btn btn-warning btn-sm rounded-2 text-dark fw-semibold simpantandatangan">
+                                            <i class="bi bi-arrow-counterclockwise me-1"></i> Tanda Tangan Ulang
+                                        </button>
+                                    @else
+                                        <div class="mt-2 mt-md-0">
+                                            <button
+                                                class="btn btn-warning btn-sm rounded-2 text-dark fw-semibold"
+                                                data-toggle="modal" data-target="#modallogintte">
+                                                <i class="bi bi-arrow-counterclockwise me-1"></i> Tanda Tangan Ulang
+                                            </button>
+                                        </div>
+                                    @endif
                                 @endif
                             </div>
                         </div>
@@ -781,12 +797,182 @@
 
                             <!-- Aksi Tombol -->
                             @if ($cp->iddokter == auth()->user()->id)
+                                @if (auth()->user()->status_tte == 0 || auth()->user()->status_tte == 'NULL' || empty(auth()->user()->status_tte))
+                                    {{-- <div class="alert alert-light border-0 shadow-sm d-flex align-items-start p-3 rounded-3 mb-3 mt-4"
+                                        role="alert">
+                                        <div class="bg-warning-subtle text-warning rounded-circle p-2 me-3 d-flex align-items-center justify-content-center"
+                                            style="width: 45px; height: 45px; min-width: 45px;">
+                                            <i class="bi bi-exclamation-triangle-fill fs-4"></i>
+                                        </div>
+                                        <div class="flex-grow-1 me-2">
+                                            <h6 class="alert-heading fw-bold text-dark mb-1"
+                                                style="font-size: 0.95rem;">
+                                                Aktivasi Tanda Tangan Elektronik (TTE) Diperlukan
+                                            </h6>
+                                            <p class="text-secondary mb-0 small lh-base">
+                                                Anda belum melakukan aktivasi akun TTE pada profil dokter Anda. Dokumen
+                                                resume medis ini
+                                                <strong class="text-danger">belum sah secara hukum digital</strong>
+                                                sebelum DPJP menyematkan sertifikat sertifikasi TTE resmi.
+                                            </p>
+                                            <a href="javascript:void(0)" id="bukaPanduanTte"
+                                                class="btn btn-sm btn-link text-warning fw-bold p-0 mt-2 text-decoration-none small">
+                                                <i class="bi bi-arrow-right-short fs-5 align-middle"></i> Panduan
+                                                Aktivasi TTE Akun Anda (klik disini ...)
+                                            </a>
+                                            <br>                                           
+                                            <a
+                                                cass="btn btn-sm btn-link text-warning fw-bold p-0 mt-2 text-decoration-none small">
+                                                <i class="bi bi-arrow-right-short fs-5 align-middle"></i> akun email <br> username : {{ auth()->user()->user_tte }}
+                                                <br> password : {{ auth()->user()->password_t }}
+                                            </a><br>
+                                             <a href="javascript:void(0)" id="loginemail"
+                                                class="btn btn-sm btn-link text-warning fw-bold p-0 mt-2 text-decoration-none small">
+                                                <i class="bi bi-arrow-right-short fs-5 align-middle"></i> Login email
+                                                cirebonkab.go.id
+                                            </a>
+                                        </div>
+                                    </div> --}}
+                                    <div class="alert alert-light border-0 shadow-sm d-flex align-items-start p-3 rounded-3 mb-3 mt-4"
+                                        role="alert">
+                                        <div class="bg-warning-subtle text-warning rounded-circle p-2 me-3 d-flex align-items-center justify-content-center"
+                                            style="width: 45px; height: 45px; min-width: 45px;">
+                                            <i class="bi bi-exclamation-triangle-fill fs-4"></i>
+                                        </div>
+
+                                        <div class="flex-grow-1 me-2 w-100">
+                                            <h6 class="alert-heading fw-bold text-dark mb-1"
+                                                style="font-size: 0.95rem;">
+                                                Aktivasi Tanda Tangan Elektronik (TTE) Diperlukan
+                                            </h6>
+                                            <p class="text-secondary mb-3 small lh-base">
+                                                Anda belum mengaktifkan fitur integrasi TTE pada profil DPJP Anda.
+                                                Dokumen rekam medis ini
+                                                <strong class="text-danger">belum sah secara hukum digital</strong>
+                                                sebelum ditandatangani secara elektronik.
+                                            </p>
+
+                                            <div class="mb-3 d-flex gap-3 flex-wrap">
+                                                <a href="javascript:void(0)" id="bukaPanduanTte"
+                                                    class="btn btn-sm btn-link text-warning fw-bold p-0 text-decoration-none small">
+                                                    <i class="bi bi-file-earmark-pdf-fill me-1"></i> Panduan TTE (Klik
+                                                    Disini)
+                                                </a>
+                                                <a href="javascript:void(0)" id="loginemail"
+                                                    class="btn btn-sm btn-link text-primary fw-bold p-0 text-decoration-none small">
+                                                    <i class="bi bi-box-arrow-up-right me-1"></i> Buka Webmail
+                                                    Cirebonkab
+                                                </a>
+                                            </div>
+
+                                            <div class="bg-light rounded-3 p-2.5 mb-3 border border-light-subtle"
+                                                style="max-width: 360px;">
+                                                <small class="text-muted d-block fw-bold mb-1"
+                                                    style="font-size: 0.72rem; text-uppercase: tracking-wider;">
+                                                    <i class="bi bi-envelope-fill me-1"></i> Akun Email Verifikasi
+                                                    BSRE:
+                                                </small>
+                                                <div class="d-flex justify-content-between align-items-center mb-1"
+                                                    style="font-size: 0.85rem;">
+                                                    <span class="text-secondary">Username:</span>
+                                                    <span
+                                                        class="badge bg-dark-subtle text-dark font-monospace">{{ auth()->user()->user_tte }}</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between align-items-center"
+                                                    style="font-size: 0.85rem;">
+                                                    <span class="text-secondary">Password:</span>
+                                                    <span
+                                                        class="badge bg-dark-subtle text-dark font-monospace">{{ auth()->user()->password_t }}</span>
+                                                </div>
+                                            </div>
+
+                                            <hr class="border-light-subtle my-3">
+
+                                            <form id="formAktivasiTte" class="mt-2 formaktivasitte"
+                                                style="max-width: 450px;">
+                                                @csrf
+                                                <h6 class="fw-bold text-dark mb-2" style="font-size: 0.85rem;"><i
+                                                        class="bi bi-shield-lock-fill text-secondary me-1"></i> Form
+                                                    Aktivasi & Verifikasi DPJP</h6>
+                                                <div class="mb-2">
+                                                    <label class="form-label small text-secondary mb-1 fw-semibold">NIK
+                                                        (Nomor Induk Kependudukan) <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" name="nik" id="inputNik"
+                                                        class="form-control form-control-sm rounded-2"
+                                                        placeholder="Masukkan 16 digit NIK" required maxlength="16">
+                                                </div>
+
+                                                <div class="form-check form-switch mb-2 mt-2">
+                                                    <input class="form-check-input cur-pointer" type="checkbox"
+                                                        role="switch" id="ingatPassphrase" name="setuju_simpan"
+                                                        value="1" checked>
+                                                    <label
+                                                        class="form-check-label small text-dark fw-semibold cur-pointer"
+                                                        voids for="ingatPassphrase">
+                                                        Simpan Passphrase secara aman di sistem
+                                                    </label>
+                                                    <small class="text-muted d-block" style="font-size: 0.75rem;">Jika
+                                                        aktif, Anda tidak perlu mengetik PIN/Password setiap kali
+                                                        menandatangani resep/resume.</small>
+                                                </div>
+
+                                                <div class="mb-3" id="groupPassphrase">
+                                                    <label
+                                                        class="form-label small text-secondary mb-1 fw-semibold">Passphrase
+                                                        / Password TTE BSRE <span class="text-danger">*</span></label>
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="password" name="password_tte"
+                                                            id="inputPassphrase" class="form-control rounded-start-2"
+                                                            placeholder="Masukkan password keamanan TTE Anda">
+                                                        <button class="btn btn-outline-secondary" type="button"
+                                                            id="togglePasswordSec"><i
+                                                                class="bi bi-eye-fill"></i></button>
+                                                    </div>
+                                                </div>
+                                                <button type="button"
+                                                    class="btn btn-warning btn-sm w-100 rounded-2 fw-bold py-2 shadow-sm text-dark"
+                                                    id="btnSimpanAktivasi" onclick="simpanaktivasitte()">
+                                                    <i class="bi bi-check-circle-fill me-1"></i> Verifikasi & Aktifkan
+                                                    TTE Saya
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                @else
+                                    @if (auth()->user()->persetujuan_simpan == 1)
+                                        <div class="mt-2 mt-md-0">
+                                            <button
+                                                class="btn btn-primary btn-sm rounded-2 px-3 py-2 fw-bold shadow-sm simpantandatangan">
+                                                <i class="bi bi-shield-check-fill me-1"></i> Sematkan TTE Sekarang
+                                            </button>
+                                        </div>
+                                    @else
+                                        <div class="mt-2 mt-md-0">
+                                            <button
+                                                class="btn btn-primary btn-sm rounded-2 px-3 py-2 fw-bold shadow-sm"
+                                                data-toggle="modal" data-target="#modallogintte">
+                                                <i class="bi bi-shield-check-fill me-1"></i> Sematkan TTE Sekarang
+                                            </button>
+                                        </div>
+                                    @endif
+                                @endif
+                            @endif
+                            {{-- @if ($cp->iddokter == auth()->user()->id)
+                                @if (auth()->user()->status_tte == 0 || auth()->user()->status_tte == 'NULL')
+                                <div>
+                                    <h6 class="fw-bold text-danger mb-1">Anda Belum melakukan aktivasi akun tanda tangan elektronik anda ...</h6>
+                                    <span class="text-secondary small d-block">Dokumen resume belum sah secara hukum
+                                        digital sebelum DPJP membubuhkan TTE.</span>
+                                </div>
+                                @else
                                 <div class="mt-2 mt-md-0">
                                     <button class="btn btn-danger btn-sm rounded-2 px-3 fw-semibold simpantandatangan">
                                         <i class="bi bi-pen-fill me-1"></i> Sematkan TTE Sekarang
                                     </button>
                                 </div>
-                            @endif
+                                @endif
+                            @endif --}}
                         </div>
                     </div>
                 @endif
@@ -982,19 +1168,35 @@ Keluhan : {{ $assesmen_dokter[0]->keluhan_pasien }}
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Masukan password</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Masukan NIK & Password</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="v_login_tte">
-
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">NIK</label>
+                            <input type="email" class="form-control" id="niktte" name="niktte"
+                                aria-describedby="emailHelp"
+                                placeholder="Masukan nomor kartu identitas anda ( KTP ) ...">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Password</label>
+                            <input type="password" class="form-control" id="passwordtte" name="passwordtte"
+                                placeholder="Masukan password tanda tangan elektronik anda ...">
+                        </div>
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="simpaninfo">
+                            <label class="form-check-label" for="exampleCheck1">Simpan NIK & Password</label>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="simpantandatangan_bsre()">Simpan Tanda
+                <button type="button" class="btn btn-primary" onclick="simpantandatangan_bsre_manual()">Simpan Tanda
                     Tangan</button>
             </div>
         </div>
@@ -1111,6 +1313,81 @@ Keluhan : {{ $assesmen_dokter[0]->keluhan_pasien }}
                 });
             }
         })
+    }
+
+    function simpantandatangan_bsre_manual() {
+        kodekunjungan = $('#kodekunjungan').val()
+        nik = $('#niktte').val()
+        password = $('#passwordtte').val()
+        simpaninfo = $('#simpaninfo:checked').val()
+        Swal.fire({
+            icon: 'warning',
+            title: 'Anda yakin data sudah benar ?',
+            showDenyButton: true,
+            confirmButtonText: 'Ya',
+            denyButtonText: `Cek lagi ...`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                spinner = $('#loader')
+                spinner.show();
+                $.ajax({
+                    async: true,
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        kodekunjungan,
+                        nik,
+                        password,
+                        simpaninfo
+                    },
+                    url: '<?= route('simpantandatanganbsre_manual') ?>',
+                    error: function(data) {
+                        spinner.hide()
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Ooops....',
+                            text: 'Sepertinya ada masalah......',
+                            footer: ''
+                        })
+                    },
+                    success: function(data) {
+                        spinner.hide()
+                        if (data.kode == 500) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oopss...',
+                                text: data.message,
+                                footer: ''
+                            })
+                        } else {
+                            resume2()
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'OK',
+                                text: data.message,
+                                footer: ''
+                            })
+                            $('#modallogintte').modal('hide');
+                            Swal.fire({
+                                title: "Hasil pemeriksaan berhasil ditanda tangan ...",
+                                text: "Klik cetak jika anda ingin mencetak berkas yang ditanda tangan ...",
+                                icon: "success",
+                                showCancelButton: true,
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "Ya, cetak"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.open('cetak_dokumen_tte/' + data.id);
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        })
+
     }
 
     function simpantandatangan_bsre() {
@@ -1234,5 +1511,102 @@ Keluhan : {{ $assesmen_dokter[0]->keluhan_pasien }}
                 $('.v_login_tte').html(response);
             }
         });
+    }
+    $(document).ready(function() {
+        $('#bukaPanduanTte').on('click', function(e) {
+            e.preventDefault();
+
+            // Tampilkan loader mini jika diperlukan
+            let spinner = $('#loader');
+
+            // Contoh jika Anda ingin mengambil link secara dinamis atau mencatat log via AJAX
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('log.buka.panduan') }}', // Sesuaikan route jika ada, atau hapus block ajax ini jika langsung buka url
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    jenis_panduan: 'tte_dokter'
+                },
+                success: function(response) {
+                    // Jalur URL target halaman baru
+                    let urlPanduan = "{{ url('/panduan/aktivasi-tte') }}";
+
+                    // Perintah utama membuka tab baru di browser
+                    window.open(urlPanduan, '_blank', 'noopener,noreferrer');
+                },
+                error: function() {
+                    // Backup jika ajax error, tetap buka halaman panduan
+                    window.open("{{ url('/panduan/aktivasi-tte') }}", '_blank');
+                }
+            });
+        });
+        $('#loginemail').on('click', function(e) {
+            e.preventDefault();
+            // Tampilkan loader mini jika diperlukan
+            let spinner = $('#loader');
+            // Contoh jika Anda ingin mengambil link secara dinamis atau mencatat log via AJAX
+
+            // Jalur URL target halaman baru
+            let urlPanduan = "https://mail.cirebonkab.go.id/mail/";
+
+            // Perintah utama membuka tab baru di browser
+            window.open(urlPanduan, '_blank', 'noopener,noreferrer');
+
+        });
+    });
+
+    function simpanaktivasitte() {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Anda yakin data sudah benar ?',
+            showDenyButton: true,
+            confirmButtonText: 'Ya',
+            denyButtonText: `Cek lagi ...`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                spinner = $('#loader')
+                spinner.show();
+                var data = $('.formaktivasitte').serializeArray();
+                $.ajax({
+                    async: true,
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        data: JSON.stringify(data),
+                        // signature
+                    },
+                    url: '<?= route('simpanaktivasitte') ?>',
+                    error: function(data) {
+                        spinner.hide()
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                            footer: 'ermwaled2023'
+                        })
+                    },
+                    success: function(data) {
+                        spinner.hide()
+                        if (data.kode == '502') {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops',
+                                text: data.message,
+                                footer: 'ermwaled2023'
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'OK',
+                                text: data.message,
+                                footer: 'ermwaled2023'
+                            })
+                            resume2()
+                        }
+                    }
+                });
+            }
+        })
     }
 </script>

@@ -865,6 +865,7 @@ Route::get('/cetaksep_v22/{nosep}', [PdfController::class, 'cetaksep22']);
 Route::get('/cetakcppt/{nosep}', [PdfController::class, 'cetakcppt']);
 Route::get('/cetaksuratpengantar/{id}', [PdfController::class, 'cetaksuratpengantar']);
 Route::post('/simpantandatanganbsre', [Pdf2Controller::class, 'simpantandatanganbsre'])->name('simpantandatanganbsre');
+Route::post('/simpantandatanganbsre_manual', [Pdf2Controller::class, 'simpantandatanganbsre_manual'])->name('simpantandatanganbsre_manual');
 Route::post('/ambil_form_login_tte', [Pdf2Controller::class, 'form_login_tte'])->name('ambil_form_login_tte');
 Route::get('/cetak_dokumen_tte/{kodekunjungan}', [Pdf2Controller::class, 'cetak_dokumen_tte']);
 Route::get('/cetak_dokumen_tte_v2/{kodekunjungan}', [Pdf2Controller::class, 'cetak_dokumen_tte_v2']);
@@ -896,3 +897,7 @@ Route::post('/lihatberkasscanrm', [UpdateERMcontroller::class, 'lihatberkasscanr
 Route::post('/lihatriwayatsumarilispasien', [UpdateERMcontroller::class, 'lihatriwayatsumarilispasien'])->name('lihatriwayatsumarilispasien');
 Route::post('/lihatberkaslain', [UpdateERMcontroller::class, 'lihatberkaslain'])->name('lihatberkaslain');
 Route::post('/lihatcatatanHD', [UpdateERMcontroller::class, 'lihatcatatanHD'])->name('lihatcatatanHD');
+Route::get('/panduan/aktivasi-tte', [UpdateERMcontroller::class, 'viewPanduanTte'])->name('panduan.tte');
+Route::get('log.buka.panduan', [UpdateERMcontroller::class, 'viewPanduanTte'])->name('log.buka.panduan');
+
+Route::post('/simpanaktivasitte', [UpdateERMcontroller::class, 'simpanaktivasitte'])->name('simpanaktivasitte');

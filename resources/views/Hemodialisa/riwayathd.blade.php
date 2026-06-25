@@ -65,7 +65,7 @@
                                 <br>
                                 <br>
                                 {{-- @if ($item->pic == auth()->user()->id)  --}}
-                                <button class="btn btn-success ttesekarang"
+                                <button @if($item->pic != auth()->user()->id) disabled @endif class="btn btn-success ttesekarang"
                                     kode_kunjungan="{{ $item->kode_kunjungan }}"><i
                                         class="bi bi-pen-fill mr-1 ml-1"></i>
                                     Tanda Tangan</button> <br>
@@ -84,7 +84,7 @@
                                 </div>
                                 <br>
                                 <br>
-                                <button class="btn btn-success ttesekarang"
+                                <button @if($item->pic != auth()->user()->id) disabled @endif class="btn btn-success ttesekarang"
                                     kode_kunjungan="{{ $item->kode_kunjungan }}"><i
                                         class="bi bi-pen-fill mr-1 ml-1"></i>
                                     Tanda Tangan Ulang</button> <br>
