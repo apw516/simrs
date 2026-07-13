@@ -157,6 +157,92 @@ class PdfController extends Controller
         // Or save the PDF to a file
         // $pdf->save(storage_path('app/public/document.pdf'));
     }
+    // public function cetakresumedokterblank($kodekunjungan)
+    // {
+    //     // Example data to pass to the view
+    //     $kodekunjungan = $kodekunjungan;
+    //     $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+    //     $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
+    //     $data = ['title' => 'My PDF Document', 'content' => 'This is some content for the PDF.', $mt_pasien];
+    //     $assesmen = db::select('select *,date(tgl_pemeriksaan) as tglk2 ,versi as versidk from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
+    //     $tindakan = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+    //         ,c.`kode_tarif_detail`,d.`NAMA_TARIF`
+    //         FROM ts_kunjungan a
+    //         INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+    //         INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+    //         INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER`
+    //         WHERE SUBSTR(b.`kode_unit`,1,1) = 1
+    //         AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
+    //         AND a.kode_kunjungan = ?", [$kodekunjungan]);
+    //     $farmasi = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+    //         ,c.`kode_tarif_detail`,d.`nama_barang`,C.`jumlah_layanan`,C.`aturan_pakai`
+    //         FROM ts_kunjungan a
+    //         INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+    //         INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+    //         INNER JOIN mt_barang d ON c.`kode_barang` = d.`kode_barang`
+    //         WHERE SUBSTR(b.`kode_unit`,1,1) = 4
+    //         AND a.kode_kunjungan = ?", [$kodekunjungan]);
+    //     $penunjang = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+    //         ,c.`kode_tarif_detail`,d.`NAMA_TARIF`,b.kode_unit
+    //         FROM ts_kunjungan a
+    //         INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+    //         INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+    //         INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER`
+    //         WHERE SUBSTR(b.`kode_unit`,1,1) = 3
+    //         AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
+    //         AND a.kode_kunjungan = ?", [$kodekunjungan]);
+    //     $orderfarmasi = db::select('SELECT kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.kode_kunjungan = ? and  kode_unit > ?', [$kodekunjungan, '4000']);
+    //     $order_penunjang = db::select('SELECT fc_nama_unit1(a.`kode_unit`)AS nama_unit,a.kode_unit,SUBSTR(kode_tarif_detail,1,6) AS kode_tarif_header,c.`NAMA_TARIF` FROM ts_layanan_header_order a
+    //     INNER JOIN ts_layanan_detail_order b ON a.id = b.`row_id_header`
+    //     INNER JOIN mt_tarif_header c ON SUBSTR(b.kode_tarif_detail,1,6) = c.`KODE_TARIF_HEADER`
+    //     WHERE a.`kode_kunjungan` = ? AND a.`kode_unit` < ?', [$kodekunjungan, '4000']);
+    //     $today = Carbon::now()->isoFormat('D MMMM Y');
+    //     if (count($assesmen) > 0) {
+    //         $tglll =  $assesmen[0]->tgl_kunjungan;
+    //         $carbonDate = Carbon::parse($tglll);
+    //         $tglperiksa = $carbonDate->isoFormat('dddd, D MMMM Y');
+    //     } else {
+    //         $tglperiksa = Carbon::now()->isoFormat('dddd, D MMMM Y');
+    //     }
+    //     $cek2 = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and status_code = ?', [$kodekunjungan, 200]);
+    //     $hitung = count($cek2);
+    //     $cetakanke = $hitung + 1;
+    //     if (strlen($ts_kunjungan[0]->kode_paramedis) < 2) {
+    //         $kode_par = $ts_kunjungan[0]->ref_paramedis;
+    //         if (count($assesmen) > 0) {
+    //             $pic = $assesmen[0]->pic;
+    //             $user = db::select('select * from user a where a.id = ?', [$pic]);
+    //             $kode_par = $user[0]->kode_paramedis;
+    //         } else {
+    //             $kode_par = '';
+    //         }
+    //     } else {
+    //         $kode_par = $ts_kunjungan[0]->kode_paramedis;
+    //     }
+    //     $mt_paramedis = db::select('select * from mt_paramedis where kode_paramedis = ?', [$kode_par]);
+    //     $pdf = Pdf::loadView('pdf.document_blank', compact([
+    //         'data',
+    //         'tglperiksa',
+    //         'mt_pasien',
+    //         'ts_kunjungan',
+    //         'assesmen',
+    //         'tindakan',
+    //         'farmasi',
+    //         'penunjang',
+    //         'orderfarmasi',
+    //         'order_penunjang',
+    //         'mt_paramedis',
+    //         'today',
+    //         'cetakanke'
+    //     ]));
+    //     return $pdf->stream('document.pdf');
+
+    //     // $pdf->set_option("isPhpEnabled", true);
+    //     // $pdf->setPaper('Letter', 'portrait');
+    //     // $d = $pdf->output();
+    //     // $name = $kodekunjungan . '.pdf';
+    //     // $pdf->save(Storage::disk('shared', $name)->put($name, $d));
+    // }
     public function cetakresumedokterblank($kodekunjungan)
     {
         // Example data to pass to the view
@@ -165,6 +251,8 @@ class PdfController extends Controller
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
         $data = ['title' => 'My PDF Document', 'content' => 'This is some content for the PDF.', $mt_pasien];
         $assesmen = db::select('select *,date(tgl_pemeriksaan) as tglk2 ,versi as versidk from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
+        $asskep = db::select('select *,date(tanggalperiksa) as tglk2  from erm_hasil_assesmen_keperawatan_rajal where kode_kunjungan = ?', [$kodekunjungan]);
+
         $tindakan = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
             ,c.`kode_tarif_detail`,d.`NAMA_TARIF`
             FROM ts_kunjungan a
@@ -220,7 +308,19 @@ class PdfController extends Controller
             $kode_par = $ts_kunjungan[0]->kode_paramedis;
         }
         $mt_paramedis = db::select('select * from mt_paramedis where kode_paramedis = ?', [$kode_par]);
-        $pdf = Pdf::loadView('pdf.document_blank', compact([
+
+        if (count($assesmen) > 0) {
+            $tglll =  $assesmen[0]->tgl_kunjungan;
+            $carbonDate = Carbon::parse($tglll);
+            // $tglperiksa = $carbonDate->isoFormat('dddd, D MMMM Y');
+            $tglperiksa = $carbonDate->isoFormat('dddd, D MMMM Y HH:mm:ss');
+            $tglperiksa2 = $carbonDate->addMinutes(60)->isoFormat('dddd, D MMMM Y HH:mm:ss');
+        } else {
+            // $tglperiksa = Carbon::now()->isoFormat('dddd, D MMMM Y');
+            $tglperiksa = Carbon::now()->isoFormat('dddd, D MMMM Y HH:mm:ss');
+            $tglperiksa2 = Carbon::now()->addMinutes(60)->isoFormat('dddd, D MMMM Y HH:mm:ss');
+        }
+        $pdf = Pdf::loadView('pdf.document_assesmen_medis', compact([
             'data',
             'tglperiksa',
             'mt_pasien',
@@ -233,9 +333,13 @@ class PdfController extends Controller
             'order_penunjang',
             'mt_paramedis',
             'today',
-            'cetakanke'
+            'cetakanke',
+            'tglperiksa',
+            'tglperiksa2',
+            'asskep'
         ]));
-        return $pdf->stream('document.pdf');
+        $nama = $mt_pasien[0]->nama_px;
+        return $pdf->stream($nama.'.pdf');
 
         // $pdf->set_option("isPhpEnabled", true);
         // $pdf->setPaper('Letter', 'portrait');
@@ -320,18 +424,50 @@ class PdfController extends Controller
         if (count($assesmen) > 0) {
             $tglll =  $assesmen[0]->tanggalkunjungan;
             $carbonDate = Carbon::parse($tglll);
-            $tglperiksa = $carbonDate->isoFormat('dddd, D MMMM Y');
+            // $tglperiksa = $carbonDate->isoFormat('dddd, D MMMM Y');
+            $tglperiksa = $carbonDate->isoFormat('dddd, D MMMM Y HH:mm:ss');
+            $tglperiksa2 = $carbonDate->addMinutes(30)->isoFormat('dddd, D MMMM Y HH:mm:ss');
         } else {
-            $tglperiksa = Carbon::now()->isoFormat('dddd, D MMMM Y');
+            // $tglperiksa = Carbon::now()->isoFormat('dddd, D MMMM Y');
+            $tglperiksa = Carbon::now()->isoFormat('dddd, D MMMM Y HH:mm:ss');
+            $tglperiksa2 = Carbon::now()->addMinutes(30)->isoFormat('dddd, D MMMM Y HH:mm:ss');
         }
-        $pdf = Pdf::loadView('pdf.document_blank_perawat', compact([
+        // $pdf = Pdf::loadView('pdf.document_blank_perawat', compact([
+        //     'mt_pasien',
+        //     'ts_kunjungan',
+        //     'tglperiksa',
+        //     'assesmen'
+        // ]));
+        $toDate = Carbon::parse($this->get_date());
+        $fromDate = Carbon::parse($mt_pasien[0]->tgl_lahirs);
+        $usiatahun = $toDate->diff($fromDate)->y;
+        $usia_hari = $toDate->diffInDays($fromDate);
+        $pdf = Pdf::loadView('pdf.cetakan_assesmen_perawat', compact([
             'mt_pasien',
             'ts_kunjungan',
             'tglperiksa',
-            'assesmen'
+            'assesmen',
+            'tglperiksa2',
+            'usiatahun',
+            'usia_hari'
         ]));
-        return $pdf->download('document.pdf');
+        // return $pdf->download('document.pdf');
         return $pdf->stream('document.pdf');
+    }
+    // public function get_now()
+    // {
+    //     $dt = Carbon::now()->timezone('Asia/Jakarta');
+    //     $date = $dt->toDateString();
+    //     $time = $dt->toTimeString();
+    //     $now = $date . ' ' . $time;
+    //     return $now;
+    // }
+    public function get_date()
+    {
+        $dt = Carbon::now()->timezone('Asia/Jakarta');
+        $date = $dt->toDateString();
+        $now = $date;
+        return $now;
     }
     public function cetaklaporanoperasi($kodekunjungan)
     {
@@ -341,15 +477,18 @@ class PdfController extends Controller
         if (count($data) > 0) {
             $user = db::select('select * from user where id = ?', [$data[0]->pic]);
             $username = $user[0]->nama;
+            $nip = $user[0]->nip;
         } else {
             $username = '';
+            $nip = '';
         }
         $kode_unit = $ts_kunjungan[0]->kode_unit;
         $dompdf = Pdf::loadView('pdf.laporan_operasi', compact([
             'data',
             'mt_pasien',
             'username',
-            'kode_unit'
+            'kode_unit',
+            'nip'
         ]));
         $dompdf->setPaper('A4', 'portrait'); // 'A4' for paper size, 'portrait' or 'landscape' for orientation
 
@@ -396,13 +535,13 @@ class PdfController extends Controller
     }
     public function cetakcatatanhemodialisa($id)
     {
-        $header = db::table('ts_header_catatan_hemodialisis')->where('id',$id)->get()->first();
+        $header = db::table('ts_header_catatan_hemodialisis')->where('id', $id)->get()->first();
         $rm = $header->no_rm;
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$rm]);
 
         // dd($rm);
         // if(!!$request->jenis){
-            $jenis = 1;
+        $jenis = 1;
         // }else{
         //     $jenis = 0;
         // }
@@ -426,12 +565,19 @@ class PdfController extends Controller
         }
 
         $dompdf = Pdf::loadView('pdf.catatan_hemodialisa', compact([
-           'mt_pasien','header','datah','arrayBaru','arrayBaru2','arrayBaru3','arrayBaru4','jenis'
+            'mt_pasien',
+            'header',
+            'datah',
+            'arrayBaru',
+            'arrayBaru2',
+            'arrayBaru3',
+            'arrayBaru4',
+            'jenis'
         ]));
         $dompdf->setPaper('A4', 'portrait'); // 'A4' for paper size, 'portrait' or 'landscape' for orientation
         // Render the HTML as PDF
         $dompdf->render();
         $namaberkas = 'HD ';
-        return $dompdf->stream($namaberkas. $mt_pasien[0]->nama_px . ".pdf", array("Attachment" => false));
+        return $dompdf->stream($namaberkas . $mt_pasien[0]->nama_px . ".pdf", array("Attachment" => false));
     }
 }

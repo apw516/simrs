@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="card-header bg-info">
+    <div class="card-header bg-light">
         <h3>Form Pemeriksaan</h3>
         <br>
         <div class="btn-group mb-3" role="group" aria-label="Basic outlined example">
@@ -36,6 +36,11 @@
             <button type="button" class="btn btn-warning btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
                 onclick="showmodalcatatanhemodialisa()" data-toggle="modal" data-target="#modalcatatanhemodialisa"><i
                     class="bi bi-clipboard-data"></i> Catatan Hemodialisa</button>
+        </div>
+        <div class="btn-group mb-3 mt-4" role="group" aria-label="Basic outlined example">
+            <button type="button" nomorrm="{{ $kunjungan[0]->no_rm }}"
+                class="btn btn-success btn-outline-dark text-light" onclick="ambildatakunjungan()" data-toggle="modal"
+                data-target="#modalcppt"><i class="bi bi-clipboard-data"></i> Data Pemeriksaan Sebelumnya</button>
         </div>
     </div>
     <div class="card-body table-responsive p-5" style="height: 757Px">
@@ -1564,5 +1569,23 @@
             }
         });
     })
+
+    function ambildatakunjungan() {
+        rm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm
+            },
+            url: '<?= route('ambilcatatanmedis_pasien_xx') ?>',
+            success: function(response) {
+                $('.v_cppt').html(response);
+                spinner.hide()
+            }
+        });
+    }
 </script>
 <script src="{{ asset('public/marker/markerjs2.js') }}"></script>

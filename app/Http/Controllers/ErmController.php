@@ -178,10 +178,24 @@ class ErmController extends Controller
         } else {
             $username = '';
         }
+        $laporan_op = db::table('laporan_operasi_poli_mata')->where('kode_kunjungan',$kodekunjungan)->first();
+        $pengkajian = db::table('erm_pengkajian_pra_bedah')->where('kode_kunjungan',$kodekunjungan)->first();
+        $katarak = db::table('laporan_operasi_katarak')->where('kode_kunjungan',$kodekunjungan)->first();
+        $glaukoma = db::table('laporan_operasi_katarak_glaukoma')->where('kode_kunjungan',$kodekunjungan)->first();
+        $trabec = db::table('laporan_operasi_trabecuektomi')->where('kode_kunjungan',$kodekunjungan)->first();
+        $pter = db::table('laporan_operasi_pterygium')->where('kode_kunjungan',$kodekunjungan)->first();
+        $inj = db::table('laporan_operasi_injeksi_intra_vitreal')->where('kode_kunjungan',$kodekunjungan)->first();
         return view('ermdokter.form_laporan_operasi_mata', compact([
             'date',
             'cek',
-            'username'
+            'username',
+            'pengkajian',
+            'laporan_op',
+            'katarak',
+            'glaukoma',
+            'trabec',
+            'pter',
+            'inj'
         ]));
     }
     public function simpanhasiloperasi(Request $request)
@@ -205,6 +219,450 @@ class ErmController extends Controller
         } else {
             laporan_operasi_poli_mata::create($dataSet);
         }
+        $data = [
+            'kode' => 200,
+            'message' => 'Data Berhasil disimpan ...'
+        ];
+        echo json_encode($data);
+    }
+    public function simpandataopkatarak(Request $request)
+    {
+        $data = json_decode($_POST['data1'], true);
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $aa[$index] = $value;
+        }
+        $kodekunjungan = $request->kodekunjungan;
+        $anestesi_nu = (isset($aa['anestesi_nu']) && $aa['anestesi_nu']) ? 1 : 0;
+        $anestesi_retrobular = (isset($aa['anestesi_retrobular']) && $aa['anestesi_retrobular']) ? 1 : 0;
+        $anestesi_peribular = (isset($aa['anestesi_peribular']) && $aa['anestesi_peribular']) ? 1 : 0;
+        $anestesi_topikal = (isset($aa['anestesi_topikal']) && $aa['anestesi_topikal']) ? 1 : 0;
+        $anestesi_subtenon = (isset($aa['anestesi_subtenon']) && $aa['anestesi_subtenon']) ? 1 : 0;
+        $anestesi_subkonjungtiva = (isset($aa['anestesi_subkonjungtiva']) && $aa['anestesi_subkonjungtiva']) ? 1 : 0;
+
+
+        $insisi_sklera = (isset($aa['insisi_sklera']) && $aa['insisi_sklera']) ? 1 : 0;
+        $insisi_kornea = (isset($aa['insisi_kornea']) && $aa['insisi_kornea']) ? 1 : 0;
+        $lokasi_superior = (isset($aa['lokasi_superior']) && $aa['lokasi_superior']) ? 1 : 0;
+        $lokasi_temporal = (isset($aa['lokasi_temporal']) && $aa['lokasi_temporal']) ? 1 : 0;
+
+
+        $teknik_sics = (isset($aa['teknik_sics']) && $aa['teknik_sics']) ? 1 : 0;
+        $teknik_phaco = (isset($aa['teknik_phaco']) && $aa['teknik_phaco']) ? 1 : 0;
+        $teknik_aspirasi = (isset($aa['teknik_aspirasi']) && $aa['teknik_aspirasi']) ? 1 : 0;
+        $teknik_icce = (isset($aa['teknik_icce']) && $aa['teknik_icce']) ? 1 : 0;
+        $teknik_ecce = (isset($aa['teknik_ecce']) && $aa['teknik_ecce']) ? 1 : 0;
+
+
+        $iol_bmd = (isset($aa['iol_bmd']) && $aa['iol_bmd']) ? 1 : 0;
+        $iol_bmb = (isset($aa['iol_bmb']) && $aa['iol_bmb']) ? 1 : 0;
+        $iol_sulkus = (isset($aa['iol_sulkus']) && $aa['iol_sulkus']) ? 1 : 0;
+        $iol_fiksasi_sklera = (isset($aa['iol_fiksasi_sklera']) && $aa['iol_fiksasi_sklera']) ? 1 : 0;
+        $iol_fiksasi_iris = (isset($aa['iol_fiksasi_iris']) && $aa['iol_fiksasi_iris']) ? 1 : 0;
+        $iol_afakia = (isset($aa['iol_afakia']) && $aa['iol_afakia']) ? 1 : 0;
+
+        $hidrasi_side_port = (isset($aa['hidrasi_side_port']) && $aa['hidrasi_side_port']) ? 1 : 0;
+        $hidrasi_main_port = (isset($aa['hidrasi_main_port']) && $aa['hidrasi_main_port']) ? 1 : 0;
+
+
+        $inj_steroid = (isset($aa['inj_steroid']) && $aa['inj_steroid']) ? 1 : 0;
+        $inj_intrakameral = (isset($aa['inj_intrakameral']) && $aa['inj_intrakameral']) ? 1 : 0;
+
+
+        $tambahan_vitrektomi = (isset($aa['tambahan_vitrektomi']) && $aa['tambahan_vitrektomi']) ? 1 : 0;
+        $tambahan_sinekiolisis = (isset($aa['tambahan_sinekiolisis']) && $aa['tambahan_sinekiolisis']) ? 1 : 0;
+        $tambahan_kapsulotomi = (isset($aa['tambahan_kapsulotomi']) && $aa['tambahan_kapsulotomi']) ? 1 : 0;
+        $tambahan_jahitan_iris = (isset($aa['tambahan_jahitan_iris']) && $aa['tambahan_jahitan_iris']) ? 1 : 0;
+        $datasave = [
+            'kode_kunjungan' => $kodekunjungan,
+            'tanggal_operasi' => $aa['tanggal_operasi'],
+            'jam_mulai' => $aa['jam_mulai'],
+            'jam_selesai' => $aa['jam_selesai'],
+            'ahli_bedah' => $aa['ahli_bedah'],
+            'ahli_anestesi' => $aa['ahli_anestesi'],
+            'nama_asisten' => $aa['nama_asisten'],
+            'nama_perawat' => $aa['nama_perawat'],
+            'anestesi' => $anestesi_nu.'|'.$anestesi_retrobular.'|'.$anestesi_peribular.'|'.$anestesi_topikal.'|'.$anestesi_subtenon.'|'.$anestesi_subkonjungtiva,
+            'visus_pre_ops' => $aa['visus_pre_ops'],
+            'diagnosa_pre_ops' => $aa['diagnosa_pre_ops'],
+            'diagnosa_post_ops' => $aa['diagnosa_post_ops'],
+            'macam_operasi' => $aa['macam_operasi'],
+            'komplikasi' => $aa['komplikasi'],
+            'insisi' => $insisi_sklera.'|'.$insisi_kornea.'|'.$lokasi_superior.'|'.$lokasi_temporal.'|'.$aa['ukuran_insisi'],
+            'hidrodiseksi' =>  $aa['hidrodiseksi'],
+            'hidrodelineasi' =>  $aa['hidrodelineasi'],
+            'teknik_ekstraksi_nukleus' => $teknik_sics.'|'.$teknik_phaco.'|'.$teknik_aspirasi.'|'.$teknik_icce.'|'.$teknik_ecce,
+            'pemasangan_lensa_intraocular' => $iol_bmd.'|'.$iol_bmb.'|'.$iol_sulkus.'|'.$iol_fiksasi_sklera.'|'.$iol_fiksasi_iris.'|'.$iol_afakia,
+            'hidrasi' => $hidrasi_side_port.'|'.$hidrasi_main_port,
+            'jahitan' => $aa['jahitan'] .'|'.$aa['jumlah_jahitan'],
+            'injeksi_antibiotik' => $inj_steroid.'|'.$inj_intrakameral,
+            'tindakan_tambahan' => $tambahan_vitrektomi.'|'.$tambahan_sinekiolisis.'|'.$tambahan_kapsulotomi.'|'.$tambahan_jahitan_iris.'|'.$aa['jumlah_jahitan_iris'],
+            'kode_paramedis' => auth()->user()->kode_paramedis,
+            'is_rajal' => '1',
+            'pic' => auth()->user()->id,
+            'tgl_entry' => $this->get_now()
+        ];
+        DB::table('laporan_operasi_katarak')->updateOrInsert(['kode_kunjungan' => $datasave['kode_kunjungan']], $datasave);
+        $data = [
+            'kode' => 200,
+            'message' => 'Data Berhasil disimpan ...'
+        ];
+        echo json_encode($data);
+    }
+    public function simpandataopkatarakglaukoma(Request $request)
+    {
+        $data = json_decode($_POST['data1'], true);
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $aa[$index] = $value;
+        }
+        $kodekunjungan = $request->kodekunjungan;
+
+        $NU = (isset($aa['NU']) && $aa['NU']) ? 1 : 0;
+        $RETROBULAR = (isset($aa['RETROBULAR']) && $aa['RETROBULAR']) ? 1 : 0;
+        $peribular = (isset($aa['peribular']) && $aa['peribular']) ? 1 : 0;
+        $topikal = (isset($aa['topikal']) && $aa['topikal']) ? 1 : 0;
+        $subteneon = (isset($aa['subteneon']) && $aa['subteneon']) ? 1 : 0;
+        $subkonjungtiva = (isset($aa['subkonjungtiva']) && $aa['subkonjungtiva']) ? 1 : 0;
+
+        //anestesis
+        $anestesis_retrobuller = (isset($aa['anestesis_retrobuller']) && $aa['anestesis_retrobuller']) ? 1 : 0;
+        $anestesi_peribuller = (isset($aa['anestesi_peribuller']) && $aa['anestesi_peribuller']) ? 1 : 0;
+        $anestesis_topikal = (isset($aa['anestesis_topikal']) && $aa['anestesis_topikal']) ? 1 : 0;
+        $anestesis_subtenon = (isset($aa['anestesis_subtenon']) && $aa['anestesis_subtenon']) ? 1 : 0;
+        $anestesis_lodocain = (isset($aa['anestesis_lodocain']) && $aa['anestesis_lodocain']) ? 1 : 0;
+        $anestesis_marcain = (isset($aa['anestesis_marcain']) && $aa['anestesis_marcain']) ? 1 : 0;
+        $anestesis_lainnya = (isset($aa['anestesis_lainnya']) && $aa['anestesis_lainnya']) ? 1 : 0;
+
+
+
+
+        $akinese_obrien = (isset($aa['akinese_obrien']) && $aa['akinese_obrien']) ? 1 : 0;
+        $akinese_vanlint = (isset($aa['akinese_vanlint']) && $aa['akinese_vanlint']) ? 1 : 0;
+        $akinese_lainnya = (isset($aa['akinese_lainnya']) && $aa['akinese_lainnya']) ? 1 : 0;
+
+        $akineses = $akinese_obrien.'|'.$akinese_vanlint.'|'.$akinese_lainnya;
+
+        $basis_formiks = (isset($aa['basis_formiks']) && $aa['basis_formiks']) ? 1 : 0;
+        $basis_limbus = (isset($aa['basis_limbus']) && $aa['basis_limbus']) ? 1 : 0;
+        $flap_konjungtiva = $basis_formiks.'|'.$basis_limbus;
+
+        $superonasal = (isset($aa['superonasal']) && $aa['superonasal']) ? 1 : 0;
+        $superior = (isset($aa['superior']) && $aa['superior']) ? 1 : 0;
+        $Superotemporal = (isset($aa['Superotemporal']) && $aa['Superotemporal']) ? 1 : 0;
+        $lokasi_lainnya = (isset($aa['lokasi_lainnya']) && $aa['lokasi_lainnya']) ? 1 : 0;
+        $lokasi = $superonasal.'|'. $superior.'|'. $Superotemporal.'|'. $lokasi_lainnya;
+
+        $goniotomi = (isset($aa['goniotomi']) && $aa['goniotomi']) ? 1 : 0;
+        $Trabekulektomi = (isset($aa['Trabekulektomi']) && $aa['Trabekulektomi']) ? 1 : 0;
+        $TripleProsedur = (isset($aa['TripleProsedur']) && $aa['TripleProsedur']) ? 1 : 0;
+        $glaukomalainnya = (isset($aa['glaukomalainnya']) && $aa['glaukomalainnya']) ? 1 : 0;
+        $glaukoma = $goniotomi.'|'. $Trabekulektomi.'|'. $TripleProsedur.'|'. $glaukomalainnya;
+
+        $Kornea = (isset($aa['Kornea']) && $aa['Kornea']) ? 1 : 0;
+        $insisi_Limbus = (isset($aa['insisi_Limbus']) && $aa['insisi_Limbus']) ? 1 : 0;
+        $insisi_sklera = (isset($aa['insisi_sklera']) && $aa['insisi_sklera']) ? 1 : 0;
+        $insisi_skleratunnel = (isset($aa['insisi_skleratunnel']) && $aa['insisi_skleratunnel']) ? 1 : 0;
+        $insisi_sideport = (isset($aa['insisi_sideport']) && $aa['insisi_sideport']) ? 1 : 0;
+        $jenis_insisi = $Kornea.'|'. $insisi_Limbus.'|'. $insisi_sklera.'|'. $insisi_skleratunnel.'|'.$insisi_sideport;
+
+
+
+        $Jarum = (isset($aa['Jarum']) && $aa['Jarum']) ? 1 : 0;
+        $Crescent = (isset($aa['Crescent']) && $aa['Crescent']) ? 1 : 0;
+        $Diamond = (isset($aa['Diamond']) && $aa['Diamond']) ? 1 : 0;
+        $alat = $Jarum.'|'.$Crescent.'|'.$Diamond;
+
+
+        $CanOponer = (isset($aa['CanOponer']) && $aa['CanOponer']) ? 1 : 0;
+        $Envelope = (isset($aa['Envelope']) && $aa['Envelope']) ? 1 : 0;
+        $CCC = (isset($aa['CCC']) && $aa['CCC']) ? 1 : 0;
+        $Capsulectomy = $CanOponer.'|'.$Envelope.'|'.$CCC;
+
+
+        $ICCE = (isset($aa['ICCE']) && $aa['ICCE']) ? 1 : 0;
+        $ECCE = (isset($aa['ECCE']) && $aa['ECCE']) ? 1 : 0;
+        $SICE = (isset($aa['SICE']) && $aa['SICE']) ? 1 : 0;
+        $PHACO = (isset($aa['PHACO']) && $aa['PHACO']) ? 1 : 0;
+        $ekstraksi_Lain = (isset($aa['ekstraksi_Lain']) && $aa['ekstraksi_Lain']) ? 1 : 0;
+        $ekstraksi_lensa = $ICCE.'|'.$ECCE.'|'.$SICE.'|'.$PHACO.'|'.$ekstraksi_Lain;
+
+        $Shincter = (isset($aa['Shincter']) && $aa['Shincter']) ? 1 : 0;
+        $Sinechiolysisis = (isset($aa['Sinechiolysisis']) && $aa['Sinechiolysisis']) ? 1 : 0;
+        $Virektomi = (isset($aa['Virektomi']) && $aa['Virektomi']) ? 1 : 0;
+        $Jahitaniris = (isset($aa['Jahitaniris']) && $aa['Jahitaniris']) ? 1 : 0;
+        $tindakantambahan = $Shincter.'|'.$Sinechiolysisis.'|'.$Virektomi.'|'.$Jahitaniris;
+
+
+        $RL = (isset($aa['RL']) && $aa['RL']) ? 1 : 0;
+        $BSS = (isset($aa['BSS']) && $aa['BSS']) ? 1 : 0;
+        $irigasi_lain = (isset($aa['irigasi_lain']) && $aa['irigasi_lain']) ? 1 : 0;
+        $cairanirigasi = $RL.'|'.$BSS.'|'.$irigasi_lain;
+
+        $BMB = (isset($aa['BMB']) && $aa['BMB']) ? 1 : 0;
+        $BMD = (isset($aa['BMD']) && $aa['BMD']) ? 1 : 0;
+        $diputar = (isset($aa['diputar']) && $aa['diputar']) ? 1 : 0;
+        $tidakdiputar = (isset($aa['tidakdiputar']) && $aa['tidakdiputar']) ? 1 : 0;
+        $horisontal = (isset($aa['horisontal']) && $aa['horisontal']) ? 1 : 0;
+        $loop = (isset($aa['loop']) && $aa['loop']) ? 1 : 0;
+        $cloop = (isset($aa['cloop']) && $aa['cloop']) ? 1 : 0;
+        $dilipat = (isset($aa['dilipat']) && $aa['dilipat']) ? 1 : 0;
+        $sulvus = (isset($aa['sulvus']) && $aa['sulvus']) ? 1 : 0;
+        $dalamdiluarkantung = (isset($aa['dalamdiluarkantung']) && $aa['dalamdiluarkantung']) ? 1 : 0;
+        
+        $LIO = $BMB.'|'.$BMD.'|'.$diputar.'|'.$tidakdiputar.'|'.$horisontal.'|'.$loop.'|'.$cloop.'|'.$dilipat.'|'.$sulvus.'|'.$dalamdiluarkantung;
+
+
+        $Vertikal = (isset($aa['Vertikal']) && $aa['Vertikal']) ? 1 : 0;
+        $fiksasi_Horisontal = (isset($aa['fiksasi_Horisontal']) && $aa['fiksasi_Horisontal']) ? 1 : 0;
+        $fiksasi_lio = $Vertikal.'|'.$fiksasi_Horisontal;
+
+        $survisc = (isset($aa['survisc']) && $aa['survisc']) ? 1 : 0;
+        $Starvisc = (isset($aa['Starvisc']) && $aa['Starvisc']) ? 1 : 0;
+        $Rohtovisc = (isset($aa['Rohtovisc']) && $aa['Rohtovisc']) ? 1 : 0;
+        $Catgel = (isset($aa['Catgel']) && $aa['Catgel']) ? 1 : 0;
+        $IMD = (isset($aa['IMD']) && $aa['IMD']) ? 1 : 0;
+        $cairan_Viscoelastik = $survisc.'|'.$Starvisc.'|'.$Rohtovisc.'|'.$Catgel.'|'.$IMD;
+
+
+
+        $benangVicryl = (isset($aa['benangVicryl']) && $aa['benangVicryl']) ? 1 : 0;
+        $benangnylon = (isset($aa['benangnylon']) && $aa['benangnylon']) ? 1 : 0;
+        $benang = $benangVicryl.'|'.$benangnylon;
+
+        $komplikasi_ada = (isset($aa['komplikasi_ada']) && $aa['komplikasi_ada']) ? 1 : 0;
+        $komplikasi_tidakada = (isset($aa['komplikasi_tidakada']) && $aa['komplikasi_tidakada']) ? 1 : 0;
+        $Prolaps = (isset($aa['Prolaps']) && $aa['Prolaps']) ? 1 : 0;
+        $Perdarahan = (isset($aa['Perdarahan']) && $aa['Perdarahan']) ? 1 : 0;
+        $komplikasi_lain = (isset($aa['komplikasi_lain']) && $aa['komplikasi_lain']) ? 1 : 0;   
+
+        $komplikasi = $komplikasi_ada.'|'.$komplikasi_tidakada.'|'.$Prolaps.'|'.$Perdarahan.'|'.$komplikasi_lain;
+        $datasave = [
+            'kode_kunjungan' => $kodekunjungan,
+            'tanggal_operasi' => $aa['tanggaloperasi'],
+            'jam_mulai' => $aa['jammulaioperasi'],
+            'jam_selesai' => $aa['jamselesai'],
+            'ahli_bedah' => $aa['namaahlibedah'],
+            'ahli_anestesi' => $aa['namaahlianestesi'],
+            'nama_asisten' => $aa['namaasisten'],
+            'nama_perawat' => $aa['namaperawat'],
+            'anestesi' => $NU.'|'.$RETROBULAR.'|'.$peribular.'|'.$topikal.'|'.$subteneon.'|'.$subkonjungtiva,
+            'visus_pre_ops' => $aa['visuspreop'],
+            'diagnosa_pre_ops' => $aa['diagnosasebelumoperasi'],
+            'diagnosa_post_ops' => $aa['diagnosapaskaoperasi'],
+            'macam_operasi' => $aa['macamoperasi'],
+            'komplikasi' => $aa['komplikasi'],
+            'Anestesis' => $anestesis_retrobuller.'|'.$anestesi_peribuller.'|'.$anestesis_topikal.'|'.$anestesis_subtenon.'|'.$anestesis_lodocain.'|'.$anestesis_marcain.'|'.$anestesis_lainnya,
+            'Akinese' =>  $akineses,
+            'flapkonjungtiva' =>  $flap_konjungtiva,
+            'lokasi' => $lokasi,
+            'flapsklera' =>$aa['flap_sklera'],
+            'glaukoma' => $glaukoma,
+            'jenis_insisi' => $jenis_insisi,
+            'alat' => $alat,
+            'Capsulectomy' => $Capsulectomy,
+            'ekstraksi_lensa' => $ekstraksi_lensa,
+            'tindakan_tambahan' =>$tindakantambahan,
+            'cairan_irigasi' => $cairanirigasi,
+            'LIO' => $LIO,
+            'Fiksasi_LIO' => $fiksasi_lio,
+            'Viscoelastik' => $cairan_Viscoelastik,
+            'Benang' => $benang,
+            'OD_PRA_BEDAH' => $aa['OD_PRA_BEDAH'],
+            'OS_PRA_BEDAH' => $aa['OS_PRA_BEDAH'],
+            'komplikasi_2' => $komplikasi,
+            'kode_paramedis' => auth()->user()->kode_paramedis,
+            'is_rajal' => '1',
+            'pic' => auth()->user()->id,
+            'tgl_entry' => $this->get_now()
+        ];
+        
+        DB::table('laporan_operasi_katarak_glaukoma')->updateOrInsert(['kode_kunjungan' => $datasave['kode_kunjungan']],$datasave);
+        $data = [
+            'kode' => 200,
+            'message' => 'Data Berhasil disimpan ...'
+        ];
+        echo json_encode($data);
+    }
+    public function simpanoptrabeculektomi(Request $request){
+        $data = json_decode($_POST['data1'], true);
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $aa[$index] = $value;
+        }
+        $kodekunjungan = $request->kodekunjungan;
+        $Fornix = (isset($aa['Fornix']) && $aa['Fornix']) ? 1 : 0;
+        $limbal = (isset($aa['Limbal']) && $aa['Limbal']) ? 1 : 0;
+        $peritomi_basis = $Fornix.'|'.$limbal;
+        $Subkonjungtiva = (isset($aa['Subkonjungtiva']) && $aa['Subkonjungtiva']) ? 1 : 0;
+        $Topikal = (isset($aa['Topikal']) && $aa['Topikal']) ? 1 : 0;
+        $antibiotik = $Subkonjungtiva.'|'.$Topikal;
+        $datasave = [
+                    'kode_kunjungan' => $kodekunjungan,
+                    'tanggal_operasi' => $aa['tgloperasi'],
+                    'jam_mulai' => $aa['jamoperasimulai'],
+                    'jam_selesai' => $aa['jamoperasiselesai'],
+                    'ahli_bedah' => $aa['ahlibedah'],
+                    'ahli_anestesi' => $aa['ahlianestesi'],
+                    'nama_asisten' => $aa['asisten'],
+                    'tindakan' => $aa['tindakan'],
+                    'diagnosa_pre_ops' => $aa['diagnosasebelum'],
+                    'diagnosa_post_ops' => $aa['diagnosapaska'],
+                    'periotomi_basis' => $peritomi_basis,
+                    'Serelalflap' => $aa['Serelalflap'],
+                    'selerotomy' => $aa['selerotomy'],
+                    'banyakjahitan' => $aa['banyakjahitan'],
+                    'namabenang' => $aa['namabenang'],
+                    'jlhjaitankonjungtiva' => $aa['jlhjaitankonjungtiva'],
+                    'namabenangkonjungtiva' => $aa['namabenangkonjungtiva'],
+                    'antibiotik' => $antibiotik,   
+                    'kode_paramedis' => auth()->user()->kode_paramedis,
+                    'is_rajal' => '1',               
+                    'pic' => auth()->user()->id,
+                    'tgl_entry' => $this->get_now()
+                ];
+                
+        DB::table('laporan_operasi_trabecuektomi')->updateOrInsert(['kode_kunjungan' => $datasave['kode_kunjungan']],$datasave);
+        $data = [
+            'kode' => 200,
+            'message' => 'Data Berhasil disimpan ...'
+        ];
+        echo json_encode($data);
+    }
+    public function simpanoppterygium(Request $request){
+        $data = json_decode($_POST['data1'], true);
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $aa[$index] = $value;
+        }
+        // dd($aa);
+        $kodekunjungan = $request->kodekunjungan;
+        $NU = (isset($aa['NU']) && $aa['NU']) ? 1 : 0;
+        $RETROBULAR = (isset($aa['RETROBULAR']) && $aa['RETROBULAR']) ? 1 : 0;
+        $Peribular = (isset($aa['Peribular']) && $aa['Peribular']) ? 1 : 0;
+        $Topikal = (isset($aa['Topikal']) && $aa['Topikal']) ? 1 : 0;
+        $Subtenon = (isset($aa['Subtenon']) && $aa['Subtenon']) ? 1 : 0;
+        $Subkonjungtiva = (isset($aa['Subkonjungtiva']) && $aa['Subkonjungtiva']) ? 1 : 0;
+        $tindakan = $NU.'|'.$RETROBULAR.'|'.$Peribular.'|'.$Topikal.'|'.$Subtenon.'|'.$Subkonjungtiva;
+        $datasave = [
+                    'kode_kunjungan' => $kodekunjungan,
+                    'tanggal_operasi' => $aa['tgloperasi'],
+                    'jam_mulai' => $aa['jamoperasi'],
+                    'jam_selesai' => $aa['jamoperasiselesai'],
+                    'ahli_bedah' => $aa['ahlibedah'],
+                    'ahli_anestesi' => $aa['ahlianestesi'],
+                    'nama_asisten' => $aa['asisten'],
+                    'tindakan' => $tindakan,
+                    'diagnosa_pre_ops' => $aa['diagnosasebelum'],
+                    'diagnosa_post_ops' => $aa['diagnosapaska'],
+                    'macamoperasi' => $aa['macamoperasi'],
+                    'jaringaneksisi' => $aa['jaringaneksisi'],
+                    'komplikasi' => $aa['komplikasi'],
+                    'pemeriksaanpa' => $aa['pemeriksaanpa'],
+                    'jumlah_darah_yang_keluar' => $aa['jumlah_darah_yang_keluar'],
+                    'banyakjahitan' => $aa['banyakjahitan'],
+                    'namabenang' => $aa['namabenang'],     
+                    'kode_paramedis' => auth()->user()->kode_paramedis,
+                    'is_rajal' => '1',         
+                    'pic' => auth()->user()->id,
+                    'tgl_entry' => $this->get_now()
+                ];
+        DB::table('laporan_operasi_pterygium')->updateOrInsert(['kode_kunjungan' => $datasave['kode_kunjungan']],$datasave);
+        $data = [
+            'kode' => 200,
+            'message' => 'Data Berhasil disimpan ...'
+        ];
+        echo json_encode($data);
+    }
+    public function simpanopinjeksi(Request $request){
+        $data = json_decode($_POST['data1'], true);
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $aa[$index] = $value;
+        }
+        $kodekunjungan = $request->kodekunjungan;
+        $injeksiantibiotik = (isset($aa['injeksiantibiotik']) && $aa['injeksiantibiotik']) ? 1 : 0;
+        $injeksiantivegp = (isset($aa['injeksiantivegp']) && $aa['injeksiantivegp']) ? 1 : 0;
+        $Avastine = (isset($aa['Avastine']) && $aa['Avastine']) ? 1 : 0;
+        $Patizra = (isset($aa['Patizra']) && $aa['Patizra']) ? 1 : 0;
+        $Eylea = (isset($aa['Eylea']) && $aa['Eylea']) ? 1 : 0;
+        $other1 = (isset($aa['4mm']) && $aa['4mm']) ? 1 : 0;
+        $other2 = (isset($aa['3mm']) && $aa['3mm']) ? 1 : 0;
+        $tindakan = $injeksiantibiotik.'|'.$injeksiantivegp.'|'.$Avastine.'|'.$Patizra.'|'.$Eylea.'|'.$other1.'|'.$other2;
+        $datasave = [
+                    'kode_kunjungan' => $kodekunjungan,
+                    'tanggal_operasi' => $aa['tgloperasi'],
+                    'jam_mulai' => $aa['jamoperasi'],
+                    'jam_selesai' => $aa['jamselesai'],
+                    'ahli_bedah' => $aa['ahlibedah'],
+                    'ahli_anestesi' => $aa['ahlianestesi'],
+                    'nama_asisten' => $aa['asisten'],
+                    'jenis_anestesi' => $aa['jenisanestesi'],
+                    'diagnosa_pre_ops' => $aa['diagnosasebelum'],
+                    'diagnosa_post_ops' => $aa['diagnosapaska'],
+                    'tindakan' => $tindakan,
+                    'jumlah_injeksiantivegf' => $aa['jumlah_injeksiantivegf'],
+                    'jumlah_injeksiantibiotik' => $aa['jumlah_injeksiantibiotik'],     
+                    'kode_paramedis' => auth()->user()->kode_paramedis,
+                    'is_rajal' => '1',
+                    'pic' => auth()->user()->id,
+                    'tgl_entry' => $this->get_now()
+                ];
+        DB::table('laporan_operasi_injeksi_intra_vitreal')->updateOrInsert(['kode_kunjungan' => $datasave['kode_kunjungan']],$datasave);
+        $data = [
+            'kode' => 200,
+            'message' => 'Data Berhasil disimpan ...'
+        ];
+        echo json_encode($data);
+    }
+    public function simpandatapraop(Request $request)
+    {
+        $data = json_decode($_POST['data1'], true);
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $dataSet[$index] = $value;
+        }
+        $kodekunjungan = $request->kodekunjungan;
+        // dd($dataSet);
+        $WB = (isset($dataSet['WB']) && $dataSet['WB']) ? 1 : 0;
+        $PRC = (isset($dataSet['PRC']) && $dataSet['PRC']) ? 1 : 0;
+        $TC = (isset($dataSet['TC']) && $dataSet['TC']) ? 1 : 0;
+        $FFP = (isset($dataSet['FFP']) && $dataSet['FFP']) ? 1 : 0;
+        $persiapandarah_lain = (isset($dataSet['persiapandarah_lain']) && $dataSet['persiapandarah_lain']) ? 1 : 0;
+        $data_save = [
+            'kode_kunjungan' => $request->kodekunjungan,
+            'diagnosa_pra_bedah' => $dataSet['diagnosaprabedah'],
+            'rencana_tindakan_operasi' => $dataSet['diagnosaprabedah'],
+            'GCS' => $dataSet['GCS_E'] .'|'. $dataSet['GCS_V'].'|'.$dataSet['GCS_M'],
+            'TTV' => $dataSet['tekanandarah'] .'|'. $dataSet['respirasi'].'|'.$dataSet['frekuensinadi'].'|'.$dataSet['suhutubuh'],
+            'skala_nyeri' => $dataSet['NRS'] .'|'. $dataSet['FLACCS'].'|'.$dataSet['CPOT'],
+            'status_lokalis' =>  $dataSet['statuslokalis'],
+            'jadwal_operasi' =>  $dataSet['jadwaloperasi'],
+            'tanggal_operasi' =>  $dataSet['tanggaloperasi'],
+            'jam_operasi' =>  $dataSet['jamoperasi'],
+            'hasi_radiologi' =>$dataSet['pemerikssaanradiologi'],
+            'persiapan_darah' =>$dataSet['persiapandarah'],
+            'WB' => $WB .'|'. $dataSet['WB_bag'].'|'.$dataSet['WB_SIAP'].'|'.$dataSet['WB_STANDBY'],
+            'PRC' => $PRC .'|'. $dataSet['PRC_BAG'].'|'.$dataSet['PRC_SIAP'].'|'.$dataSet['PRC_STANDBY'],
+            'TC' => $TC .'|'. $dataSet['TC_BAG'].'|'.$dataSet['TC_SIAP'].'|'.$dataSet['TC_STANDBY'],
+            'FFP' => $FFP .'|'. $dataSet['FFP_BAG'].'|'.$dataSet['FFP_SIAP'].'|'.$dataSet['FFP_STANDBY'],
+            'Lainnya' => $persiapandarah_lain .'|'. $dataSet['keterangan_persiapandarah_lain'],
+            'persiapan_implant' => $dataSet['persiapanimpan'],
+            'merk' => $dataSet['merkimplan'],
+            'nama_1' => $dataSet['nama_1'],
+            'nama_2' => $dataSet['nama_2'],
+            'nomor_1' => $dataSet['nomor_1'],
+            'nomor_2' => $dataSet['nomor_2'],
+            'pic' => auth()->user()->id,
+            'tgl_entry' => $this->get_now()
+        ];
+        DB::table('erm_pengkajian_pra_bedah')->updateOrInsert(['kode_kunjungan' => $data_save['kode_kunjungan']], $data_save);
         $data = [
             'kode' => 200,
             'message' => 'Data Berhasil disimpan ...'
@@ -236,11 +694,6 @@ class ErmController extends Controller
             ]));
         } else {
             if (auth()->user()->unit == '1028') {
-                // $pasienpoli = DB::select('SELECT IFNULL(d.nomorantrean, TIME(a.`tgl_masuk`)) AS antrian,d.`nomorantrean`,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.ref_kunjungan,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,(SELECT COUNT(id) FROM erm_hasil_assesmen_keperawatan_rajal b WHERE b.kode_kunjungan = a.`kode_kunjungan`) AS cek ,(SELECT COUNT(id) FROM assesmen_dokters b WHERE b.id_kunjungan = a.`kode_kunjungan`) AS cek2 FROM ts_kunjungan a LEFT OUTER JOIN jkn_antrian d ON a.`kode_kunjungan` = d.`kode_kunjungan`
-                //  WHERE a.status_kunjungan = ? AND DATE(a.tgl_masuk) = CURDATE() AND a.`kode_unit` = ?', [
-                //     '1',
-                //     auth()->user()->unit
-                // ]);
                 $pasienpoli = db::select('SELECT a.`ref_kunjungan`
                 ,a.`kode_kunjungan`
                 ,d.nomorantrean as antrian
@@ -254,10 +707,12 @@ class ErmController extends Controller
                 ,c.`namapemeriksa`
                 ,b.`id` AS idassdok
                 ,c.id AS idasskep
+                ,date(e.tgl_lahir) as tgl_lahir
                 FROM ts_kunjungan a 
                 LEFT OUTER JOIN assesmen_dokters b ON a.`kode_kunjungan` = b.`id_kunjungan`
                 LEFT OUTER JOIN `erm_hasil_assesmen_keperawatan_rajal` c ON a.`kode_kunjungan` = c.`kode_kunjungan`
                 LEFT OUTER JOIN jkn_antrian d ON a.kode_kunjungan = d.kode_kunjungan
+                INNER JOIN mt_pasien e ON b.id_pasien = e.no_rm
                 WHERE DATE(a.`tgl_masuk`) BETWEEN ? AND ?
                 AND a.`kode_unit` = ? AND a.status_kunjungan != ?
                 ',[$this->get_date(),$this->get_date(),'1028',8]);
@@ -269,7 +724,9 @@ class ErmController extends Controller
                 if ($unit == '3012') {
                     $unit = '1006'; //1
                 }
-                $pasienpoli = DB::select('SELECT IFNULL(d.nomorantrean, TIME(a.`tgl_masuk`)) AS antrian,d.`nomorantrean`,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,b.namapemeriksa,a.ref_kunjungan,c.nama_dokter,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan LEFT OUTER JOIN jkn_antrian d ON a.`kode_kunjungan` = d.`kode_kunjungan`
+                $pasienpoli = DB::select('SELECT IFNULL(d.nomorantrean, TIME(a.`tgl_masuk`)) AS antrian,d.`nomorantrean`,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,b.namapemeriksa,a.ref_kunjungan,c.nama_dokter,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok,date(e.tgl_lahir) as tgl_lahir
+                FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan LEFT OUTER JOIN jkn_antrian d ON a.`kode_kunjungan` = d.`kode_kunjungan`
+                INNER JOIN mt_pasien e ON b.no_rm = e.no_rm
                  WHERE a.status_kunjungan = ? AND DATE(a.tgl_masuk) = CURDATE() AND a.`kode_unit` = ? ORDER BY a.kode_kunjungan ASC', [
                     '1',
                     $unit
@@ -290,13 +747,6 @@ class ErmController extends Controller
             ]));
         } else {
             if (auth()->user()->unit == '1028') {
-            //     $pasienpoli = DB::select('SELECT IFNULL(d.nomorantrean, TIME(a.`tgl_masuk`)) AS antrian,d.`nomorantrean`,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.ref_kunjungan,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,(SELECT COUNT(id) FROM erm_hasil_assesmen_keperawatan_rajal b WHERE b.kode_kunjungan = a.`kode_kunjungan`) AS cek ,(SELECT COUNT(id) FROM assesmen_dokters b WHERE b.id_kunjungan = a.`kode_kunjungan`) AS cek2 FROM ts_kunjungan a LEFT OUTER JOIN jkn_antrian d ON a.`kode_kunjungan` = d.`kode_kunjungan`
-            //    WHERE a.`kode_unit` = ? AND DATE(a.tgl_masuk) BETWEEN ? AND ? AND status_kunjungan != ?', [
-            //         auth()->user()->unit,
-            //         $request->tgl_awal,
-            //         $request->tgl_akhir,
-            //         '8'
-            //     ]);
               $pasienpoli = db::select('SELECT a.`ref_kunjungan`
                 ,a.`kode_kunjungan`
                 ,d.nomorantrean as antrian
@@ -310,10 +760,12 @@ class ErmController extends Controller
                 ,c.`namapemeriksa`
                 ,b.`id` AS idassdok
                 ,c.id AS idasskep
+                ,date(e.tgl_lahir) as tgl_lahir
                 FROM ts_kunjungan a 
                 LEFT OUTER JOIN assesmen_dokters b ON a.`kode_kunjungan` = b.`id_kunjungan`
                 LEFT OUTER JOIN `erm_hasil_assesmen_keperawatan_rajal` c ON a.`kode_kunjungan` = c.`kode_kunjungan`
                 LEFT OUTER JOIN jkn_antrian d ON a.kode_kunjungan = d.kode_kunjungan
+                INNER JOIN mt_pasien e ON b.id_pasien = e.no_rm
                 WHERE DATE(a.`tgl_masuk`) BETWEEN ? AND ?
                 AND a.`kode_unit` = ? AND a.status_kunjungan != ?
                 ',[$request->tgl_awal,$request->tgl_akhir,'1028',8]);
@@ -325,7 +777,8 @@ class ErmController extends Controller
                 if ($unit == '3012') {
                     $unit = '1006'; //1
                 }
-                $pasienpoli = DB::select('SELECT IFNULL(d.nomorantrean, TIME(a.`tgl_masuk`)) AS antrian,d.`nomorantrean`,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.ref_kunjungan,b.namapemeriksa,c.nama_dokter,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan LEFT OUTER JOIN jkn_antrian d ON a.`kode_kunjungan` = d.`kode_kunjungan`
+                $pasienpoli = DB::select('SELECT IFNULL(d.nomorantrean, TIME(a.`tgl_masuk`)) AS antrian,d.`nomorantrean`,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.ref_kunjungan,b.namapemeriksa,c.nama_dokter,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok,date(e.tgl_lahir) as tgl_lahir FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan LEFT OUTER JOIN jkn_antrian d ON a.`kode_kunjungan` = d.`kode_kunjungan`
+                INNER JOIN mt_pasien e ON b.no_rm = e.no_rm
                  WHERE a.`kode_unit` = ? AND DATE(a.tgl_masuk) BETWEEN ? AND ? AND status_kunjungan != ? ORDER BY a.kode_kunjungan ASC', [
                     $unit,
                     $request->tgl_awal,
@@ -833,6 +1286,49 @@ class ErmController extends Controller
         $penunjang = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit,c.`kode_tarif_detail`,d.`NAMA_TARIF`,b.kode_unit FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header` INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER` WHERE SUBSTR(b.`kode_unit`,1,1) = 3 AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883') AND a.no_rm = ?", [$rm]);
         $suratkonsul = db::select('select *,fc_NAMA_UNIT1(unit_asal) as unit_asal,fc_NAMA_UNIT1(unit_tujuan) as unit_tujuan,fc_NAMA_PARAMEDIS1(dok_kirim) as dok_kirim,fc_NAMA_PARAMEDIS1(dokter_jawab) as dokter_jawab from mt_surat_tindak_lanjut where no_rm = ?',[$rm]);
         return view('ermtemplate.form_catatan_medis_baru', compact([
+            'kunjungan',
+            'rm',
+            'tindakan',
+            'orderfarmasi',
+            'farmasi',
+            'order_penunjang',
+            'penunjang',
+            'suratkonsul'
+        ]));
+    }
+    public function ambilcatatanmedis_pasien_xx(Request $request)
+    {
+        $rm = $request->rm;
+        // $kunjungan = DB::select('SELECT *,fc_nama_unit1(a.ref_unit) as nama_ref_unit,b.kode_unit,c.kode_unit as kode_unit_dokter,a.kode_kunjungan as kodek,a.no_rm as no_rm_k,b.id as id_1, c.id as id_2,b.signature as signature_perawat,c.signature as signature_dokter,b.keluhanutama as keluhan_perawat,a.tgl_masuk,a.counter,fc_nama_unit1(a.kode_unit) AS nama_unit FROM ts_kunjungan a
+        // LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`kode_kunjungan` = b.kode_kunjungan
+        // LEFT OUTER JOIN assesmen_dokters c ON a.`kode_kunjungan` = c.`id_kunjungan` where a.no_rm = ? and a.status_kunjungan != ? ORDER BY a.kode_kunjungan desc LIMIT 6', [$request->rm, 8]);
+        $kunjungan = DB::select('SELECT
+        b.*
+        ,c.*
+        ,fc_nama_unit1(a.ref_unit) AS nama_ref_unit
+        ,b.kode_unit,c.kode_unit AS kode_unit_dokter
+        ,a.kode_kunjungan AS kodek
+        ,a.no_rm AS no_rm_k
+        ,a.ref_kunjungan
+        ,b.id AS id_1
+        ,c.id AS id_2
+        ,b.signature AS signature_perawat
+        ,c.signature AS signature_dokter
+        ,b.keluhanutama AS keluhan_perawat
+        ,a.tgl_masuk,a.counter
+        ,c.versi as versidk
+        ,fc_nama_unit1(a.kode_unit) AS nama_unit FROM ts_kunjungan a
+        LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`kode_kunjungan` = b.kode_kunjungan AND b.`kode_unit` = a.`kode_unit`
+        LEFT OUTER JOIN assesmen_dokters c ON a.`kode_kunjungan` = c.`id_kunjungan` AND c.`kode_unit` = a.`kode_unit`
+        WHERE a.no_rm = ? AND a.status_kunjungan NOT IN(8,11) ORDER BY a.kode_kunjungan DESC LIMIT 10', [$request->rm]);
+        //sebelumnya menggunakan file form_catatan_medis
+        $tindakan = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit,c.`kode_tarif_detail`,d.`NAMA_TARIF` FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header` INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER` WHERE SUBSTR(b.`kode_unit`,1,1) = 1 AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883') AND a.no_rm = ?", [$rm]);
+        $orderfarmasi = db::select('SELECT kode_kunjungan,a.keterangan as keteranganresep,kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.no_rm = ? and  kode_unit > ?', [$rm, '4000']);
+        $farmasi = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit,c.`kode_tarif_detail`,d.`nama_barang`,C.`jumlah_layanan`,C.`aturan_pakai` FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header` INNER JOIN mt_barang d ON c.`kode_barang` = d.`kode_barang` WHERE SUBSTR(b.`kode_unit`,1,1) = 4 AND a.no_rm = ?", [$rm]);
+        $order_penunjang = db::select('SELECT a.kode_kunjungan,fc_nama_unit1(a.`kode_unit`)AS nama_unit,a.kode_unit,SUBSTR(kode_tarif_detail,1,6) AS kode_tarif_header,c.`NAMA_TARIF` FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.`row_id_header` INNER JOIN mt_tarif_header c ON SUBSTR(b.kode_tarif_detail,1,6) = c.`KODE_TARIF_HEADER` WHERE a.`no_rm` = ? AND a.`kode_unit` < ?', [$rm, '4000']);
+        $penunjang = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit,c.`kode_tarif_detail`,d.`NAMA_TARIF`,b.kode_unit FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header` INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER` WHERE SUBSTR(b.`kode_unit`,1,1) = 3 AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883') AND a.no_rm = ?", [$rm]);
+        $suratkonsul = db::select('select *,fc_NAMA_UNIT1(unit_asal) as unit_asal,fc_NAMA_UNIT1(unit_tujuan) as unit_tujuan,fc_NAMA_PARAMEDIS1(dok_kirim) as dok_kirim,fc_NAMA_PARAMEDIS1(dokter_jawab) as dokter_jawab from mt_surat_tindak_lanjut where no_rm = ?',[$rm]);
+        return view('ermtemplate.form_catatan_medis_xxx', compact([
             'kunjungan',
             'rm',
             'tindakan',
@@ -1655,6 +2151,32 @@ class ErmController extends Controller
             $value =  $nama['value'];
             $dataSet[$index] = $value;
         }
+        if (empty($dataSet['pendampinganpasien'])) {
+            $pendampinganpasien = 0;
+        }else{
+            $pendampinganpasien = 1;
+        }
+
+        if (empty($dataSet['edukasipasien1'])) {
+            $edukasipasien1 = 0;
+        }else{
+            $edukasipasien1 = 1;
+        }
+        if (empty($dataSet['edukasipasien2'])) {
+            $edukasipasien2 = 0;
+        }else{
+            $edukasipasien2 = 1;
+        }
+        if (empty($dataSet['edukasipasien3'])) {
+            $edukasipasien3 = 0;
+        }else{
+            $edukasipasien3 = 1;
+        }
+        if (empty($dataSet['edukasipasien4'])) {
+            $edukasipasien4 = 0;
+        }else{
+            $edukasipasien4 = 1;
+        }
         if (auth()->user()->unit != '1028') {
             if ($dataSet['keluhanutama'] == '') {
                 $data = [
@@ -1771,6 +2293,11 @@ class ErmController extends Controller
                 'anakadadiare' => $dataSet['anakadadiare'],
                 'faktormalnutrisianak' => $dataSet['faktormalnutrisianak'],
                 'usia' => $dataSet['usia'],
+                'pendampinganpasien' => $pendampinganpasien,
+                'edukasipasien1' => $edukasipasien1,
+                'edukasipasien2' => $edukasipasien2,
+                'edukasipasien3' => $edukasipasien3,
+                'edukasipasien4' => $edukasipasien4,
             ];
         }
         try {

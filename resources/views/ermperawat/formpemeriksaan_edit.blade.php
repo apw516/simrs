@@ -1372,6 +1372,53 @@
                                             id="diagnosakeperawatan">{{ $resume[0]->diagnosakeperawatan }}</textarea>
                                     </td>
                                 </tr>
+                                  <tr>
+                                    <td>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input"
+                                                id="pendampinganpasien" name="pendampinganpasien" @if($resume[0]->pendampinganpasien == 1) checked @endif>
+                                            <label class="form-check-label text-bold"
+                                                for="exampleCheck1">Pendampingan : Memberikan pendampingan khusus atau
+                                                menyediakan alat bantu jalan ( Kursi Roda / Tongkat ) bagi yang
+                                                membutuhkan </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>Edukasi Pasien Dan Keluarga </h5><br>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="edukasipasien1"
+                                                name="edukasipasien1" @if($resume[0]->edukasipasien1 == 1) checked @endif>
+                                            <label class="form-check-label text-bold"
+                                                for="exampleCheck1">Mengajarkan cara penggunaan alat bantu dan
+                                                mengunci rem kursi roda</label>
+                                        </div>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="edukasipasien2"
+                                                name="edukasipasien2" @if($resume[0]->edukasipasien2 == 1) checked @endif>
+                                            <label class="form-check-label text-bold" for="exampleCheck1">Memastikan
+                                                alas kaki yang digunakan aman, nyaman dan tidak licin</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>Manajemen Lingkunan </h5><br>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="edukasipasien3"
+                                                name="edukasipasien3" @if($resume[0]->edukasipasien3 == 1) checked @endif>
+                                            <label class="form-check-label text-bold"
+                                                for="exampleCheck1">Membantu memindahkan pasien ke area tunggu yang aman, dekat dengan pos perawat ( nurse station )</label>
+                                        </div>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="edukasipasien4"
+                                                name="edukasipasien4" @if($resume[0]->edukasipasien4 == 1) checked @endif>
+                                            <label class="form-check-label text-bold" for="exampleCheck1">Memastikan
+                                                pencahayaan ruang poli cukup dan lantai tidak basah</label>
+                                        </div>
+                                    </td>
+                                </tr>
                             </table>
                         </div>
                     </div>

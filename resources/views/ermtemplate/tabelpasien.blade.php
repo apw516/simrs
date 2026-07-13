@@ -4,6 +4,7 @@
         <th>Antrian</th>
         <th>Nomor RM</th>
         <th>Nama Pasien</th>
+        <th>Umur</th>
         <th>Unit</th>
         <th>Penjamin</th>
         <th>Assemen Keperawatan</th>
@@ -15,7 +16,20 @@
                 <td>{{ $p->tgl_masuk }}</td>
                 <td>{{ $p->antrian }}</td>
                 <td>{{ $p->no_rm }}</td>
-                <td>{{ $p->nama_pasien }} @if($p->ref_kunjungan != 0 || $p->ref_kunjungan != NULL )| <button class="badge badge-warning">PASIEN KONSUL </button>@endif</td>
+                <td>{{ $p->nama_pasien }} @if ($p->ref_kunjungan != 0 || $p->ref_kunjungan != null)
+                        | <button class="badge badge-warning">PASIEN KONSUL </button>
+                    @endif
+                </td>
+                <td>
+                    @php
+                        $birthDate = \Carbon\Carbon::parse($p->tgl_lahir);
+                        $now = \Carbon\Carbon::now();
+                        $years = $birthDate->diffInYears($now);
+                        $months = $birthDate->diffInMonths($now->copy()->subYears($years));
+                        $days = $birthDate->diffInDays($now->copy()->subYears($years)->subMonths($months));
+                    @endphp
+                  {{ $years }} Tahun, {{ $months }} Bulan, {{ $days }} Hari
+                </td>
                 <td>{{ $p->nama_unit }}</td>
                 <td>{{ $p->nama_penjamin }}</td>
                 <td>
@@ -52,7 +66,7 @@
             "autoWidth": true,
             "pageLength": 10,
             "searching": true,
-            "ordering":false
+            "ordering": false
         })
     });
     $('#tablepasienpoli').on('click', '.pilihpasien', function() {

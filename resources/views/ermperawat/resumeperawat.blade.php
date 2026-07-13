@@ -2,263 +2,321 @@
     <div class="card-header bg-info">Resume</div>
     <div class="card-body">
         @if (count($resume) > 0)
-        <div class="card">
-            <div class="card-header text-bold text-lg" style="background-color: rgba(110, 245, 137, 0.745)"><i class="bi bi-plus-lg text-bold mr-3"></i> ( S ) SUBJECTIVE</div>
-            <div class="card-body">
-                <table class="table table-sm table-bordered">
-                    <tr>
-                        <td class="text-bold">Sumber Data</td>
-                        <td class="font-italic">{{ $resume[0]->sumberdataperiksa }}</td>
-                    </tr>
-                    <tr>
-                        <td class="text-bold">Keluhan Utama</td>
-                        <td class="font-italic">{{ $resume[0]->keluhanutama }}</td>
-                    </tr>
-                    <tr>
-                        <td class="text-bold">Umur</td>
-                        <td class="font-italic">{{ $resume[0]->usia }} tahun</td>
-                    </tr>
-                </table>
-                <table class="table text-sm">
-                    <thead>
-                        <th colspan="4" class="text-center bg-warning">Status Fungsional</th>
-                    </thead>
-                    <tbody>
+            <div class="card">
+                <div class="card-header text-bold text-lg" style="background-color: rgba(110, 245, 137, 0.745)"><i
+                        class="bi bi-plus-lg text-bold mr-3"></i> ( S ) SUBJECTIVE</div>
+                <div class="card-body">
+                    <table class="table table-sm table-bordered">
                         <tr>
-                            <td class="text-bold font-italic">Penggunaan Alat Bantu</td>
-                            <td colspan="3" class="text-bold">
-                                {{ $resume[0]->penggunaanalatbantu }}
-                            </td>
+                            <td class="text-bold">Sumber Data</td>
+                            <td class="font-italic">{{ $resume[0]->sumberdataperiksa }}</td>
                         </tr>
                         <tr>
-                            <td class="text-bold font-italic"></td>
-                            <td colspan="3" class="text-bold">
-                                {{ $resume[0]->keterangan_alat_bantu }}
-                            </td>
+                            <td class="text-bold">Keluhan Utama</td>
+                            <td class="font-italic">{{ $resume[0]->keluhanutama }}</td>
                         </tr>
                         <tr>
-                            <td class="text-bold font-italic">Cacat Tubuh</td>
-                            <td colspan="3" class="text-bold">
-                                {{ $resume[0]->cacattubuh }}
-                            </td>
+                            <td class="text-bold">Umur</td>
+                            <td class="font-italic">{{ $resume[0]->usia }} tahun</td>
                         </tr>
-                        <tr>
-                            <td class="text-bold font-italic"></td>
-                            <td colspan="3" class="text-bold">
-                                {{ $resume[0]->keterangancacattubuh }}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table class="table text-sm">
-                    <thead>
-                        <th colspan="4" class="text-center bg-warning">Assesmen Nyeri</th>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="text-bold font-italic">Pasien Mengeluh Nyeri </td>
-                            <td colspan="3" class="text-bold">
-                                {{ $resume[0]->Keluhannyeri }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-bold font-italic"></td>
-                            <td colspan="3" class="text-bold">
-                                Skala Nyeri Pasien : {{ $resume[0]->skalenyeripasien }}
+                    </table>
+                    <table class="table text-sm">
+                        <thead>
+                            <th colspan="4" class="text-center bg-warning">Status Fungsional</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-bold font-italic">Penggunaan Alat Bantu</td>
+                                <td colspan="3" class="text-bold">
+                                    {{ $resume[0]->penggunaanalatbantu }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold font-italic"></td>
+                                <td colspan="3" class="text-bold">
+                                    {{ $resume[0]->keterangan_alat_bantu }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold font-italic">Cacat Tubuh</td>
+                                <td colspan="3" class="text-bold">
+                                    {{ $resume[0]->cacattubuh }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold font-italic"></td>
+                                <td colspan="3" class="text-bold">
+                                    {{ $resume[0]->keterangancacattubuh }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table text-sm">
+                        <thead>
+                            <th colspan="4" class="text-center bg-warning">Assesmen Nyeri</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-bold font-italic">Pasien Mengeluh Nyeri </td>
+                                <td colspan="3" class="text-bold">
+                                    {{ $resume[0]->Keluhannyeri }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold font-italic"></td>
+                                <td colspan="3" class="text-bold">
+                                    Skala Nyeri Pasien : {{ $resume[0]->skalenyeripasien }}
 
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-        <div class="card">
-            <div class="card-header text-bold text-lg" style="background-color: rgba(110, 245, 137, 0.745)"><i class="bi bi-plus-lg text-bold mr-3"></i> ( O ) OBJECTIVE</div>
-            <div class="card-body">
+            <div class="card">
+                <div class="card-header text-bold text-lg" style="background-color: rgba(110, 245, 137, 0.745)"><i
+                        class="bi bi-plus-lg text-bold mr-3"></i> ( O ) OBJECTIVE</div>
+                <div class="card-body">
 
-                <table class="table text-sm">
-                    <thead>
-                        <th colspan="4" class="text-center bg-warning">Tanda - Tanda Vital</th>
-                    </thead>
-                    <tbody>
+                    <table class="table text-sm">
+                        <thead>
+                            <th colspan="4" class="text-center bg-warning">Tanda - Tanda Vital</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-bold font-italic">Tekanan Darah</td>
+                                <td class="text-bold">
+                                    {{ $resume[0]->tekanandarah }} mmHg
+                                </td>
+                                <td class="text-bold font-italic">Frekuensi Nadi</td>
+                                <td class="text-bold">
+                                    {{ $resume[0]->frekuensinadi }} x/menit
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold font-italic">Frekuensi Nafas</td>
+                                <td class="text-bold">
+                                    {{ $resume[0]->frekuensinapas }} x/menit
+                                </td>
+                                <td class="text-bold font-italic">Suhu</td>
+                                <td class="text-bold">
+                                    {{ $resume[0]->suhutubuh }} °C
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold font-italic">Riwayat Psikologis</td>
+                                <td colspan="" class="text-bold">
+                                    {{ $resume[0]->Riwayatpsikologi }}
+                                </td>
+                                <td class="text-bold font-italic">Berat Badan / Tinggi Badan / IMT</td>
+                                <td colspan="" class="text-bold">
+                                    {{ $resume[0]->beratbadan }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold font-italic"></td>
+                                <td colspan="3" class="text-bold">
+                                    {{ $resume[0]->keterangan_riwayat_psikolog }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="table">
+                        <thead>
+                            <th colspan="4" class="text-center bg-warning">Assesmen Resiko Jatuh</th>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-secondary">
+                                <td colspan="4" class="text-center text-bold font-italic">Metode Up and Go</td>
+                            </tr>
+                            <tr>
+                                <td>Faktor Resiko</td>
+                                <td>Skala</td>
+                            </tr>
+                            <tr>
+                                <td>a</td>
+                                <td>Perhatikan cara berjalan pasien saat akan duduk dikursi. Apakah pasien tampak tidak
+                                    seimbang
+                                    (
+                                    sempoyongan / limbung ) ?</td>
+                            </tr>
+                            <tr>
+                                <td>b</td>
+                                <td>Apakah pasien memegang pinggiran kursi atau meja atau benda lain sebagai penopang
+                                    saat akan
+                                    duduk ?</td>
+                            </tr>
+                            <tr class="bg-light">
+                                <td colspan="4" class="text-center text-bold font-italic">Hasil</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="text-bold">
+                                    <div class="form-check form-check-inline">
+                                        {{ $resume[0]->resikojatuh }}
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table">
+                        <thead>
+                            <th colspan="4" class="text-center bg-warning">Skrinning Gizi</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="4" class="text-center text-bold font-italic bg-secondary">Metode
+                                    Malnutrition
+                                    Screnning Tools ( Pasien Dewasa )</td>
+                            </tr>
+                            <tr class="bg-light text-bold font-italic">
+                                <td colspan="3">1. Apakah pasien mengalami penurunan berat badan yang tidak
+                                    diinginkan dalam
+                                    6
+                                    bulan terakhir ?
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold">{{ $resume[0]->Skrininggizi }} <p class="float-right">
+                                        {{ $resume[0]->beratskrininggizi }}
+                                </td>
+                            </tr>
+                            <tr class="bg-light text-bold font-italic">
+                                <td colspan="4">2. Apakah asupan makanan berkurang karena berkurangnya nafsu makan
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="text-bold">
+                                    {{ $resume[0]->status_asupanmkanan }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table">
                         <tr>
-                            <td class="text-bold font-italic">Tekanan Darah</td>
-                            <td class="text-bold">
-                                {{ $resume[0]->tekanandarah }} mmHg
-                            </td>
-                            <td class="text-bold font-italic">Frekuensi Nadi</td>
-                            <td class="text-bold">
-                                {{ $resume[0]->frekuensinadi }} x/menit
-                            </td>
+                            <td class="bg-light text-bold font-italic" colspan="4">3. Pasien dengan diagnosa khusus :
+                                Penyakit DM / Ginjal / Hati / Paru / Stroke /
+                                Kanker / Penurunan
+                                imunitas geriatri, lain lain...</td>
                         </tr>
                         <tr>
-                            <td class="text-bold font-italic">Frekuensi Nafas</td>
-                            <td class="text-bold">
-                                {{ $resume[0]->frekuensinapas }} x/menit
-                            </td>
-                            <td class="text-bold font-italic">Suhu</td>
-                            <td class="text-bold">
-                                {{ $resume[0]->suhutubuh }} °C
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-bold font-italic">Riwayat Psikologis</td>
-                            <td colspan="" class="text-bold">
-                                {{ $resume[0]->Riwayatpsikologi }}
-                            </td>
-                            <td class="text-bold font-italic">Berat Badan / Tinggi Badan / IMT</td>
-                            <td colspan="" class="text-bold">
-                                {{ $resume[0]->beratbadan }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-bold font-italic"></td>
                             <td colspan="3" class="text-bold">
-                                {{ $resume[0]->keterangan_riwayat_psikolog }}
+                                {{ $resume[0]->diagnosakhusus }} <p class="float-right">
+                                    {{ $resume[0]->penyakitlainpasien }}
                             </td>
                         </tr>
-                    </tbody>
-                </table>
-
-                <table class="table">
-                    <thead>
-                        <th colspan="4" class="text-center bg-warning">Assesmen Resiko Jatuh</th>
-                    </thead>
-                    <tbody>
-                        <tr class="bg-secondary">
-                            <td colspan="4" class="text-center text-bold font-italic">Metode Up and Go</td>
+                    </table>
+                    <table class="table">
+                        <tr>
+                            <td class="bg-light text-bold font-italic" colspan="4">4. Bila skor >= 2, pasien beresiko
+                                malnutrisi dilakukan pengkajian lanjut oleh ahli gizi</td>
                         </tr>
                         <tr>
-                            <td>Faktor Resiko</td>
-                            <td>Skala</td>
+                            <td class="text-bold">
+                                {{ $resume[0]->resikomalnutrisi }} <p class="float-right">
+                                    {{ $resume[0]->tglpengkajianlanjutgizi }}
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header text-bold text-lg" style="background-color: rgba(110, 245, 137, 0.745)"><i
+                        class="bi bi-plus-lg text-bold mr-3"></i> ( A ) ASSESMENT</div>
+                <div class="card-body">
+                    <table class="table">
+                        <tr>
+                            <td colspan="4" class="text-center bg-info">Diagnosa Keperawatan/Kebidanan</td>
                         </tr>
                         <tr>
-                            <td>a</td>
-                            <td>Perhatikan cara berjalan pasien saat akan duduk dikursi. Apakah pasien tampak tidak seimbang
-                                (
-                                sempoyongan / limbung ) ?</td>
+                            <td class="text-bold">
+                                {{ $resume[0]->diagnosakeperawatan }}
+                            </td>
                         </tr>
                         <tr>
-                            <td>b</td>
-                            <td>Apakah pasien memegang pinggiran kursi atau meja atau benda lain sebagai penopang saat akan
-                                duduk ?</td>
-                        </tr>
-                        <tr class="bg-light">
-                            <td colspan="4" class="text-center text-bold font-italic">Hasil</td>
-                        </tr>
-                        <tr>
-                            <td colspan="4" class="text-bold">
-                                <div class="form-check form-check-inline">
-                                    {{ $resume[0]->resikojatuh }}
+                            <td>
+                                <div class="form-group form-check">
+                                    <input onclick="return false;" type="checkbox" class="form-check-input" id="pendampinganpasien"
+                                        name="pendampinganpasien" @if ($resume[0]->pendampinganpasien == 1) checked @endif>
+                                    <label class="form-check-label text-bold" for="exampleCheck1">Pendampingan :
+                                        Memberikan pendampingan khusus atau
+                                        menyediakan alat bantu jalan ( Kursi Roda / Tongkat ) bagi yang
+                                        membutuhkan </label>
                                 </div>
                             </td>
                         </tr>
-                    </tbody>
-                </table>
-                <table class="table">
-                    <thead>
-                        <th colspan="4" class="text-center bg-warning">Skrinning Gizi</th>
-                    </thead>
-                    <tbody>
                         <tr>
-                            <td colspan="4" class="text-center text-bold font-italic bg-secondary">Metode Malnutrition
-                                Screnning Tools ( Pasien Dewasa )</td>
-                        </tr>
-                        <tr class="bg-light text-bold font-italic">
-                            <td colspan="3">1. Apakah pasien mengalami penurunan berat badan yang tidak diinginkan dalam
-                                6
-                                bulan terakhir ?
+                            <td>
+                                <h5>Edukasi Pasien Dan Keluarga </h5><br>
+                                <div class="form-group form-check">
+                                    <input onclick="return false;" type="checkbox" class="form-check-input" id="edukasipasien1"
+                                        name="edukasipasien1" @if ($resume[0]->edukasipasien1 == 1) checked @endif>
+                                    <label class="form-check-label text-bold" for="exampleCheck1">Mengajarkan cara
+                                        penggunaan alat bantu dan
+                                        mengunci rem kursi roda</label>
+                                </div>
+                                <div class="form-group form-check">
+                                    <input onclick="return false;" type="checkbox" class="form-check-input" id="edukasipasien2"
+                                        name="edukasipasien2" @if ($resume[0]->edukasipasien2 == 1) checked @endif>
+                                    <label class="form-check-label text-bold" for="exampleCheck1">Memastikan
+                                        alas kaki yang digunakan aman, nyaman dan tidak licin</label>
+                                </div>
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-bold">{{ $resume[0]->Skrininggizi }} <p class="float-right">
-                                    {{ $resume[0]->beratskrininggizi }}
+                            <td>
+                                <h5>Manajemen Lingkunan </h5><br>
+                                <div class="form-group form-check">
+                                    <input onclick="return false;" type="checkbox" class="form-check-input" id="edukasipasien3"
+                                        name="edukasipasien3" @if ($resume[0]->edukasipasien3 == 1) checked @endif>
+                                    <label class="form-check-label text-bold" for="exampleCheck1">Membantu memindahkan
+                                        pasien ke area tunggu yang aman, dekat dengan pos perawat ( nurse station
+                                        )</label>
+                                </div>
+                                <div class="form-group form-check">
+                                    <input onclick="return false;" type="checkbox" class="form-check-input" id="edukasipasien4"
+                                        name="edukasipasien4" @if ($resume[0]->edukasipasien4 == 1) checked @endif>
+                                    <label class="form-check-label text-bold" for="exampleCheck1">Memastikan
+                                        pencahayaan ruang poli cukup dan lantai tidak basah</label>
+                                </div>
                             </td>
                         </tr>
-                        <tr class="bg-light text-bold font-italic">
-                            <td colspan="4">2. Apakah asupan makanan berkurang karena berkurangnya nafsu makan</td>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header text-bold text-lg" style="background-color: rgba(110, 245, 137, 0.745)"><i
+                        class="bi bi-plus-lg text-bold mr-3"></i> ( P ) PLANNING </div>
+                <div class="card-body">
+                    <table class="table">
+                        <tr>
+                            <td colspan="4" class="text-center bg-info">Rencana Keperawatan/Kebidanan</td>
                         </tr>
                         <tr>
-                            <td colspan="3" class="text-bold">
-                                {{ $resume[0]->status_asupanmkanan }}
+                            <td class="text-bold">
+                                {{ $resume[0]->rencanakeperawatan }}
                             </td>
                         </tr>
-                    </tbody>
-                </table>
-                <table class="table">
-                    <tr>
-                        <td class="bg-light text-bold font-italic" colspan="4">3. Pasien dengan diagnosa khusus :
-                            Penyakit DM / Ginjal / Hati / Paru / Stroke /
-                            Kanker / Penurunan
-                            imunitas geriatri, lain lain...</td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" class="text-bold">
-                            {{ $resume[0]->diagnosakhusus }} <p class="float-right"> {{ $resume[0]->penyakitlainpasien }}
-                        </td>
-                    </tr>
-                </table>
-                <table class="table">
-                    <tr>
-                        <td class="bg-light text-bold font-italic" colspan="4">4. Bila skor >= 2, pasien beresiko
-                            malnutrisi dilakukan pengkajian lanjut oleh ahli gizi</td>
-                    </tr>
-                    <tr>
-                        <td class="text-bold">
-                            {{ $resume[0]->resikomalnutrisi }} <p class="float-right">
-                                {{ $resume[0]->tglpengkajianlanjutgizi }}
-                            </p>
-                        </td>
-                    </tr>
-                </table>
+                        <tr>
+                            <td colspan="4" class="text-center bg-info">Tindakan Keperawatan/Kebidanan</td>
+                        </tr>
+                        <tr>
+                            <td class="text-bold">
+                                {{ $resume[0]->tindakankeperawatan }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" class="text-center bg-info">Evaluasi Keperawatan/Kebidanan</td>
+                        </tr>
+                        <tr>
+                            <td class="text-bold">
+                                {{ $resume[0]->evaluasikeperawatan }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
-        </div>
-        <div class="card">
-            <div class="card-header text-bold text-lg" style="background-color: rgba(110, 245, 137, 0.745)"><i class="bi bi-plus-lg text-bold mr-3"></i> ( A ) ASSESMENT</div>
-            <div class="card-body">
-                <table class="table">
-                    <tr>
-                        <td colspan="4" class="text-center bg-info">Diagnosa Keperawatan/Kebidanan</td>
-                    </tr>
-                    <tr>
-                        <td class="text-bold">
-                            {{ $resume[0]->diagnosakeperawatan }}
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header text-bold text-lg" style="background-color: rgba(110, 245, 137, 0.745)"><i class="bi bi-plus-lg text-bold mr-3"></i> ( P ) PLANNING </div>
-            <div class="card-body">
-                <table class="table">
-                    <tr>
-                        <td colspan="4" class="text-center bg-info">Rencana Keperawatan/Kebidanan</td>
-                    </tr>
-                    <tr>
-                        <td class="text-bold">
-                            {{ $resume[0]->rencanakeperawatan }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4" class="text-center bg-info">Tindakan Keperawatan/Kebidanan</td>
-                    </tr>
-                    <tr>
-                        <td class="text-bold">
-                            {{ $resume[0]->tindakankeperawatan }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4" class="text-center bg-info">Evaluasi Keperawatan/Kebidanan</td>
-                    </tr>
-                    <tr>
-                        <td class="text-bold">
-                            {{ $resume[0]->evaluasikeperawatan }}
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
 
 
             {{-- <table class="table mt-4">

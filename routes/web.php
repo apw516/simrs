@@ -41,6 +41,8 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('bedmonitoring', [BedmonitoringController::class, 'index'])->name('bedmonitoring');
 Route::post('/ambilcatatanmedis_pasien', [ErmController::class, 'ambilcatatanmedis_pasien'])
     ->name('ambilcatatanmedis_pasien'); //sidebar
+Route::post('/ambilcatatanmedis_pasien_xx', [ErmController::class, 'ambilcatatanmedis_pasien_xx'])
+    ->name('ambilcatatanmedis_pasien_xx'); //sidebar
 Route::post('/ambilcatatanmedis_pasien2', [ErmController::class, 'ambilcatatanmedis_pasien2'])
     ->name('ambilcatatanmedis_pasien2'); //sidebar
 Route::get('cetakresume/{kodekunjungan}', [ErmController::class, 'cetakresume']); //formpasien_bpjs
@@ -847,6 +849,12 @@ Route::post('formlaporanoperasimata', [ErmController::class, 'formlaporanoperasi
 Route::post('simpansurkon', [ErmController::class, 'simpansurkon'])->name('simpansurkon'); //formpasien_bpjs
 Route::post('simpanrujin', [ErmController::class, 'simpanrujin'])->name('simpanrujin'); //formpasien_bpjs
 Route::post('simpanhasiloperasi', [ErmController::class, 'simpanhasiloperasi'])->name('simpanhasiloperasi'); //formpasien_bpjs
+Route::post('simpandatapraop', [ErmController::class, 'simpandatapraop'])->name('simpandatapraop'); //formpasien_bpjs
+Route::post('simpandataopkatarak', [ErmController::class, 'simpandataopkatarak'])->name('simpandataopkatarak'); //formpasien_bpjs
+Route::post('simpandataopkatarakglaukoma', [ErmController::class, 'simpandataopkatarakglaukoma'])->name('simpandataopkatarakglaukoma'); //formpasien_bpjs
+Route::post('simpanoptrabeculektomi', [ErmController::class, 'simpanoptrabeculektomi'])->name('simpanoptrabeculektomi'); //formpasien_bpjs
+Route::post('simpanoppterygium', [ErmController::class, 'simpanoppterygium'])->name('simpanoppterygium'); //formpasien_bpjs
+Route::post('simpanopinjeksi', [ErmController::class, 'simpanopinjeksi'])->name('simpanopinjeksi'); //formpasien_bpjs
 Route::get('datakunjunganpasienfarmasi', [FarmasiController::class, 'datakunjunganpasienfarmasi'])->name('datakunjunganpasienfarmasi'); //formpasien_bpjs
 Route::post('cari_data_kunjungan', [FarmasiController::class, 'cari_data_kunjungan'])->name('cari_data_kunjungan'); //formpasien_bpjs
 Route::get('mergerpdf/{kodekunjungan}', [FarmasiController::class, 'mergerpdf']); //formpasien_bpjs

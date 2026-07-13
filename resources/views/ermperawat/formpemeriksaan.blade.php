@@ -523,7 +523,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                       <tr>
+                                    <tr>
                                         <td class="text-bold font-italic">Tinggi badan </td>
                                         <td>
                                             <div class="input-group">
@@ -531,7 +531,7 @@
                                                     placeholder="Tinggi Badan Pasien ..." name="tinggibadan"
                                                     id="tinggibadan" aria-label="Recipient's username"
                                                     aria-describedby="basic-addon2"
-                                                     @if (count($p_konsul) > 0) value="{{ $p_konsul[0]->tinggibadan }}" @endif>
+                                                    @if (count($p_konsul) > 0) value="{{ $p_konsul[0]->tinggibadan }}" @endif>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" id="basic-addon2"></span>
                                                 </div>
@@ -543,7 +543,7 @@
                                                 <input type="text" class="form-control"
                                                     placeholder="IMT pasien ..." aria-label="IMT pasien"
                                                     name="imt" id="imt" aria-describedby="basic-addon2"
-                                                     @if (count($p_konsul) > 0) value="{{ $p_konsul[0]->imt }}" @endif>
+                                                    @if (count($p_konsul) > 0) value="{{ $p_konsul[0]->imt }}" @endif>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" id="basic-addon2"></span>
                                                 </div>
@@ -1315,6 +1315,53 @@
                                             id="diagnosakeperawatan">
 @if (count($p_konsul) > 0) {{ $p_konsul[0]->diagnosakeperawatan }}@endif
 </textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input"
+                                                id="pendampinganpasien" name="pendampinganpasien">
+                                            <label class="form-check-label text-bold"
+                                                for="exampleCheck1">Pendampingan : Memberikan pendampingan khusus atau
+                                                menyediakan alat bantu jalan ( Kursi Roda / Tongkat ) bagi yang
+                                                membutuhkan </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>Edukasi Pasien Dan Keluarga </h5><br>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="edukasipasien1"
+                                                name="edukasipasien1">
+                                            <label class="form-check-label text-bold"
+                                                for="exampleCheck1">Mengajarkan cara penggunaan alat bantu dan
+                                                mengunci rem kursi roda</label>
+                                        </div>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="edukasipasien2"
+                                                name="edukasipasien2">
+                                            <label class="form-check-label text-bold" for="exampleCheck1">Memastikan
+                                                alas kaki yang digunakan aman, nyaman dan tidak licin</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>Manajemen Lingkunan </h5><br>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="edukasipasien3"
+                                                name="edukasipasien3">
+                                            <label class="form-check-label text-bold"
+                                                for="exampleCheck1">Membantu memindahkan pasien ke area tunggu yang aman, dekat dengan pos perawat ( nurse station )</label>
+                                        </div>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="edukasipasien4"
+                                                name="edukasipasien4">
+                                            <label class="form-check-label text-bold" for="exampleCheck1">Memastikan
+                                                pencahayaan ruang poli cukup dan lantai tidak basah</label>
+                                        </div>
                                     </td>
                                 </tr>
                             </table>

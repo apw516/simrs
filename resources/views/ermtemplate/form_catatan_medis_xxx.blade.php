@@ -1,24 +1,5 @@
 <div class="card">
-    <div class="card-header bg-info">Catatan Medis Pasien</div>
     <div class="card-body">
-        <button class="btn btn-warning mb-2 scanrm_liat" rm="{{ $rm }}" data-toggle="modal"
-            data-target="#modalscan_rm"><i class="bi bi-journal-text"></i> BERKAS RM SCAN</button>
-        <button class="btn btn-danger mb-2 liatberkasluar" rm="{{ $rm }}" data-toggle="modal"
-            data-target="#modalberkasluar"><i class="bi bi-journal-text"></i> BERKAS LAIN</button>
-        <button class="btn btn-info mb-2 liathasil_lab" nomorrm="{{ $rm }}" data-toggle="modal"
-            data-target="#modalhasillab"><i class="bi bi-journal-text"></i> Hasil laboratorium</button>
-        <button class="btn btn-info mb-2 liathasil_lab2" nomorrm="{{ $rm }}" data-toggle="modal"
-            data-target="#modalhasillab"><i class="bi bi-journal-text"></i> Hasil laboratorium Spesial Order</button>
-        <button class="btn btn-info mb-2 liathasil_rad" nomorrm="{{ $rm }}" data-toggle="modal"
-            data-target="#modalhasilrad"><i class="bi bi-journal-text"></i> Hasil Radiologi</button>
-        <button class="btn btn-info mb-2 liathasil_pa" nomorrm="{{ $rm }}" data-toggle="modal"
-            data-target="#modalhasilpa"><i class="bi bi-journal-text"></i> Hasil Lab PA</button>
-        <button class="btn btn-info mb-2 liathasil_pa" nomorrm="{{ $rm }}" data-toggle="modal"
-            data-target="#modalsuratkonsul"><i class="bi bi-journal-text"></i> Riwayat Konsul / Rujuk Internal</button>
-        <button class="btn btn-danger mb-2 lihat_catatan_hd" nomorrm="{{ $rm }}" data-toggle="modal"
-            data-target="#modalcatatanhemodialisa"><i class="bi bi-journal-text"></i> Catatan Hemodialisa </button>
-        <button class="btn btn-info mb-2 lihat_catatan_prmj" nomorrm="{{ $rm }}" data-toggle="modal"
-            data-target="#modalprmj"><i class="bi bi-journal-text"></i> Profil Ringkas Medis Rawat Jalan </button>
         <div class="accordion" id="accordionExample">
             @php
                 $urutan = 1;

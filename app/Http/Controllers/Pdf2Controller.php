@@ -83,7 +83,7 @@ class Pdf2Controller extends Controller
         $idreport = Model_log_tte::updateOrCreate($search_criteria, $save_report);
         $nik = auth()->user()->nik;
         // $nik = '3209330506940001';
-        $password = auth()->user()->password_tte;
+        $password = trim(auth()->user()->password_tte);
         // $password = 'Kinan221122!!!';
 
         $data2 = [
@@ -571,7 +571,7 @@ class Pdf2Controller extends Controller
         // $nik = '1234567890123452';
         // $nik = '3209330506940001';
         $nik = auth()->user()->nik;
-        $password = auth()->user()->password_tte;
+        $password = trim(auth()->user()->password_tte);
         // $password = 'Bsre2025.#!';
         // $password = 'Kinan221122!!!';
         $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
@@ -931,7 +931,7 @@ class Pdf2Controller extends Controller
     }
     public function cetakresumettd($kodekunjungan)
     {
-        $d = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and status_code = ?', [$kodekunjungan, '200']);
+        $d = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and status_code = ? order by id DESC', [$kodekunjungan, '200']);
         if (empty($d)) {
             return response()->json([
                 'status' => 'error',

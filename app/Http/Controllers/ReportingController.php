@@ -250,7 +250,7 @@ class ReportingController extends Controller
             $cppt = DB::connection('mysql')->select('SELECT *,a.id AS idasskep,b.versi AS versidk,DATE(c.tgl_masuk) AS tglk,a.kode_unit AS unitpoli ,fc_nama_unit1(a.kode_unit) AS nama_unit ,c.kode_kunjungan,a.kode_kunjungan as kode_kunjungan_asskep,b.id_kunjungan as kode_kunjungan_assdok
             FROM ts_kunjungan c LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal a ON c.kode_kunjungan = a.`kode_kunjungan`
             LEFT OUTER JOIN assesmen_dokters b ON a.kode_kunjungan = b.id_kunjungan
-            WHERE a.no_rm = ? AND c.status_kunjungan != 8 AND a.jenis_berkas = ? ORDER  BY c.kode_kunjungan DESC', [$rm, 0]);
+            WHERE a.no_rm = ? AND c.status_kunjungan != 8 AND a.jenis_berkas = ? ORDER  BY c.kode_kunjungan ASC', [$rm, 0]);
         }
         $rm = $request->rm;
         $rm2 = $rm;
