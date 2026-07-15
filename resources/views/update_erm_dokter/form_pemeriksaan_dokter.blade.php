@@ -35,12 +35,12 @@
                 Lain</button>
             <button type="button" class="btn btn-warning btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
                 onclick="showmodalcatatanhemodialisa()" data-toggle="modal" data-target="#modalcatatanhemodialisa"><i
-                    class="bi bi-clipboard-data"></i> Catatan Hemodialisa</button>           
+                    class="bi bi-clipboard-data"></i> Catatan Hemodialisa</button>
         </div>
         <div class="btn-group mb-3 mt-4" role="group" aria-label="Basic outlined example">
-            <button type="button" nomorrm="{{ $kunjungan[0]->no_rm }}" class="btn btn-success btn-outline-dark text-light"
-                onclick="ambildatakunjungan()" data-toggle="modal" data-target="#modalcppt"><i
-                    class="bi bi-clipboard-data"></i> Data Pemeriksaan Sebelumnya</button>
+            <button type="button" nomorrm="{{ $kunjungan[0]->no_rm }}"
+                class="btn btn-success btn-outline-dark text-light" onclick="ambildatakunjungan()" data-toggle="modal"
+                data-target="#modalcppt"><i class="bi bi-clipboard-data"></i> Data Pemeriksaan Sebelumnya</button>
         </div>
     </div>
     <div class="card-body table-responsive p-5" style="height: 757Px">
@@ -493,9 +493,9 @@
                                     <td class="text-bold font-italic">Tinggi Badan</td>
                                     <td>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Tinggi badan pasien ..."
-                                                aria-label="Suhu tubuh pasien" name="tinggibadan" id="tinggibadan"
-                                                aria-describedby="basic-addon2"
+                                            <input type="text" class="form-control"
+                                                placeholder="Tinggi badan pasien ..." aria-label="Suhu tubuh pasien"
+                                                name="tinggibadan" id="tinggibadan" aria-describedby="basic-addon2"
                                                 value="{{ $asesmen_perawat ? $asesmen_perawat->tinggibadan : '' }}">
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="basic-addon2"></span>
@@ -507,9 +507,9 @@
                                     <td class="text-bold font-italic">IMT</td>
                                     <td>
                                         <div class="input-group">
-                                            <input type="text" class="form-control"
-                                                placeholder="IMT Pasien ..." name="imt" id="imt"
-                                                aria-label="Recipient's username" aria-describedby="basic-addon2"
+                                            <input type="text" class="form-control" placeholder="IMT Pasien ..."
+                                                name="imt" id="imt" aria-label="Recipient's username"
+                                                aria-describedby="basic-addon2"
                                                 value="{{ $asesmen_perawat ? $asesmen_perawat->imt : '' }}">
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="basic-addon2"></span>
@@ -893,7 +893,7 @@
                             </tbody>
                         </table>
                     </form>
-                    <div @if(auth()->user()->unit != '1012' || auth()->user()->unit != '1027' || auth()->user()->unit != '1032') hidden @endif class="col-md-12">
+                    <div @if (auth()->user()->unit != '1012' || auth()->user()->unit != '1027' || auth()->user()->unit != '1032') hidden @endif class="col-md-12">
                         <div class="card">
                             <div class="card-header text-bold bg-dark">FORMULIR HASIL EKSPERTISI MEDIS</div>
                             <div class="card-body">
@@ -904,6 +904,139 @@
                     </div>
                     {{-- formfarmasi --}}
                     <div class="card">
+                        <div class="card-header bg-light">Order Farmasi v.2</div>
+                        <div class="card-body">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-primary text-white">
+                                    <h6 class="mb-0"><i class="bi bi-cart-check me-2"></i>Daftar Obat Dipilih
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card bg-light border mb-3">
+                                        <div class="card-body">
+                                            <div class="row g-3 align-items-start">
+                                                <div class="col-md-12">
+                                                    <label class="form-label fw-bold small d-block">Jenis Resep
+                                                        BPJS</label>
+                                                    <div class="d-flex align-items-center gap-3">
+                                                        <div>
+                                                            <div class="form-check form-check-inline mt-1">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="is_iterasi_bpjs" id="is_iterasi_bpjs"
+                                                                    value="0" checked>
+                                                                <label class="form-check-label small"
+                                                                    for="bpjs_non_iterasi">Non-Iterasi</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline mt-1">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="is_iterasi_bpjs" id="is_iterasi_bpjs"
+                                                                    value="1">
+                                                                <label
+                                                                    class="form-check-label small fw-bold text-primary"
+                                                                    for="bpjs_iterasi">
+                                                                    <i class="bi bi-arrow-repeat"></i> Iterasi BPJS
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        {{-- <div id="wrapper_jumlah_iterasi">
+                                                            <div class="input-group input-group-sm">
+                                                                <span
+                                                                    class="input-group-text bg-white small">Iter</span>
+                                                                <input type="number" class="form-control text-center"
+                                                                    id="jumlah_iterasi" name="jumlah_iterasi"
+                                                                    value="1" min="1" max="5">
+                                                                <span class="input-group-text bg-white small">x</span>
+                                                            </div>
+                                                        </div> --}}
+                                                    </div>
+
+                                                    <div class="mt-2 text-muted" style="font-size: 0.78rem;"
+                                                        id="info_iterasi_bpjs">
+                                                        <i class="bi bi-info-circle me-1"></i>
+                                                        <strong>Resep Iterasi:</strong> Resep pengulangan untuk pasien
+                                                        kronis (PRB) agar obat dapat diambil berkala tanpa perlu minta
+                                                        resep baru ke dokter/faskes tingkat lanjut tiap bulan.
+                                                    </div>
+                                                </div>
+                                                  <div class="col-md-12">
+                                                    <label for="nama_resep" class="form-label fw-bold small">Jumlah Iterasi</label>
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        id="jumlah_iterasi" name="jumlah_iterasi"
+                                                        placeholder="Contoh: 1" required>
+                                                </div>
+                                                <div class="col-md-12 text-end align-self-end mt-5">
+                                                    <div class="form-check text-start mb-2">
+                                                        <input class="form-check-input" type="checkbox"
+                                                            id="is_simpan_template" name="is_simpan_template"
+                                                            value="1">
+                                                        <label class="form-check-label small fw-bold text-secondary"
+                                                            for="is_simpan_template">
+                                                            <i class="bi bi-bookmark-plus me-1"></i>Simpan sebagai
+                                                            Template
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <label for="nama_resep" class="form-label fw-bold small">Nama /
+                                                        Judul Resep</label>
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        id="nama_resep" name="nama_resep"
+                                                        placeholder="Contoh: Resep Hipertensi / Pulv Batuk" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="btn-group mb-2" role="group" aria-label="Basic example">
+                                        <button type="button" class="btn btn-secondary" data-toggle="modal"
+                                            data-target="#modalcariobat"><i class="bi bi-search"></i>Cari Obat</button>
+                                        <button type="button" class="btn btn-secondary"><i
+                                                class="bi bi-plus-circle"></i>
+                                            Obat Racik</button>
+                                        <button type="button" class="btn btn-warning" data-toggle="modal"
+                                            data-target="#modalriwayatorderhariini" onclick="ambilriwayatorderhariini()"><i
+                                                class="bi bi-plus-circle"></i>
+                                            Riwayat Order Hari ini</button>
+                                    </div>
+                                    <div class="btn-group mb-2" role="group" aria-label="Basic example">
+                                        <button type="button" class="btn btn-info" data-toggle="modal"
+                                            data-target="#modalriwayatreseppasien" onclick="riwayatresep_pasien()"><i class="bi bi-search"></i> Riwayat Resep Pasien</button>
+                                        <button type="button" class="btn btn-secondary" data-toggle="modal"
+                                            data-target="#modalcariobat"><i class="bi bi-search"></i> Template Resep</button>
+                                        <button type="button" class="btn btn-secondary" data-toggle="modal"
+                                            data-target="#modalcariobat"><i class="bi bi-search"></i> Template Racikan</button>
+                                    </div>
+                                    <form action="" method="POST" class="arrayobat">
+                                        @csrf
+                                        <div class="table-responsive mb-3">
+                                            <table class="table table-bordered align-middle" id="table-array-obat">
+                                                <thead class="table-dark text-center">
+                                                    <tr>
+                                                        <th>Nama Obat</th>
+                                                        <th style="width: 100px;">Hari</th>
+                                                        <th style="width: 90px;">Signa 1</th>
+                                                        <th style="width: 90px;"></th>
+                                                        <th style="width: 90px;">Signa 2</th>
+                                                        <th style="width: 100px;">Jumlah</th>
+                                                        <th style="width: 180px;">Catatan</th>
+                                                        <th style="width: 50px;" class="text-center"><i
+                                                                class="bi bi-trash"></i></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="wrapper-obat-terpilih">
+                                                    <tr id="empty-row">
+                                                        <td colspan="8" class="text-center text-muted py-3">
+                                                            <em>Belum ada obat yang dipilih.</em>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div hidden class="card">
                         <div class="card-header bg-light">Order Farmasi
                             <button type="button" class="btn btn-success float-right" data-toggle="modal"
                                 data-target="#modaltemplate" onclick="ambilresep()">Template resep</button>
@@ -919,7 +1052,7 @@
                             </div>
                             <input hidden type="text" id="selisih" value="">
                             <input hidden type="text" value="" id="jumlahform">
-                            <form action="" method="post" class="arrayobat">
+                            <form action="" method="post" class="arrayobat12">
                                 <div class="formobatfarmasi2">
 
                                 </div>
@@ -1136,7 +1269,6 @@
                             </div>
                         </div>
                     </form>
-
                     {{-- formtindakan --}}
                     <div class="accordion" id="accordionExample">
                         <div class="card">
@@ -1218,8 +1350,8 @@
                                             <div class="form-group">
                                                 <label for="exampleFormControlSelect1">Tanggal Pemeriksaan
                                                     Penunjang</label>
-                                                <input type="date" id="tanggalperiksapenunjang" value="03/06/2023"
-                                                    class="form-control">
+                                                <input type="date" id="tanggalperiksapenunjang"
+                                                    value="03/06/2023" class="form-control">
                                             </div>
                                         </div>
                                     </div>
@@ -1289,8 +1421,8 @@
                                             <div class="form-group">
                                                 <label for="exampleFormControlSelect1">Tanggal Pemeriksaan
                                                     Penunjang</label>
-                                                <input type="date" id="tanggalperiksapenunjang" value="03/06/2023"
-                                                    class="form-control">
+                                                <input type="date" id="tanggalperiksapenunjang"
+                                                    value="03/06/2023" class="form-control">
                                             </div>
                                         </div>
                                     </div>
@@ -1303,9 +1435,10 @@
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($layanan_rad as $t)
-                                                        <tr class="pilihlayanan" namatindakan="{{ $t->Tindakan }}"
-                                                            tarif="{{ $t->tarif }}" kode="{{ $t->kode }}"
-                                                            id="{{ $t->kode }}">
+                                                        <tr class="pilihlayanan"
+                                                            namatindakan="{{ $t->Tindakan }}"
+                                                            tarif="{{ $t->tarif }}"
+                                                            kode="{{ $t->kode }}" id="{{ $t->kode }}">
                                                             <td>{{ $t->Tindakan }}</td>
                                                         </tr>
                                                     @endforeach
@@ -1615,6 +1748,115 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalcariobat" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Silahkan Cari Obat</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card shadow-sm my-4">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table id="table-stok-obat"
+                                class="table table-striped table-hover table-bordered align-middle w-100">
+                                <thead class="table-dark text-center">
+                                    <tr>
+                                        <th style="width: 50px;">No</th>
+                                        <th>Nama Barang</th>
+                                        <th>Nama Generik</th>
+                                        <th>Stok</th>
+                                        <th style="width: 80px;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($stokBarang as $index => $item)
+                                        <tr>
+                                            <td class="text-center">{{ $index + 1 }}</td>
+                                            <td>
+                                                <span class="fw-bold d-block">{{ $item->nama_barang }}</span>
+                                                <small class="text-muted">{{ $item->kode_barang }}</small>
+                                            </td>
+                                            <td>{{ $item->nama_generik ?? '-' }}</td>
+                                            <td class="text-end fw-bold text-success">
+                                                {{ number_format($item->stok_saat_ini, 0, ',', '.') }}
+                                            </td>
+                                            <td class="text-center">
+                                                <button type="button" class="btn btn-sm btn-primary btn-pilih-obat"
+                                                    data-kode="{{ $item->kode_barang }}"
+                                                    data-nama="{{ $item->nama_barang }}"
+                                                    data-stok="{{ $item->stok_saat_ini }}">
+                                                    <i class="bi bi-plus-lg"></i> Pilih
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted py-4">
+                                                <em>Tidak ada data stok barang yang ditemukan.</em>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalriwayatreseppasien" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Riwayat Resep Pasien</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_r_r_p">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalriwayatorderhariini" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Riwayat Order Obat Hari ini</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_r_r_o">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
     .modal-xl {
         max-width: 80%;
@@ -1785,6 +2027,7 @@
             }
         });
     }
+
     function showmodalriwayatsumarilis() {
         spinner = $('#loader')
         spinner.show();
@@ -1915,6 +2158,10 @@
         var pasieniter = $('#iterasipilih:checked').val()
         var jumlahiter = $('#jumlahiterasi').val()
         var hasilexpertisi = $('#hasilexpertisi').val()
+        var is_iterasi_bpjs = $('#is_iterasi_bpjs').val()
+        var jumlah_iterasi = $('#jumlah_iterasi').val()
+        var is_simpan_template = $('#is_simpan_template:checked').val()
+        var nama_resep = $('#nama_resep').val()
         spinner = $('#loader')
         spinner.show();
         $.ajax({
@@ -1940,7 +2187,11 @@
                 formtindakan_rad: JSON.stringify(formtindakan_rad),
                 hasilexpertisi,
                 pasieniter,
-                jumlahiter
+                jumlahiter,
+                is_iterasi_bpjs,
+                jumlah_iterasi,
+                is_simpan_template,
+                nama_resep
             },
             url: '<?= route('simpanhasilpemeriksaandokter') ?>',
             error: function(data) {
@@ -2272,7 +2523,6 @@
             }
         });
     }
-
     function showicare2() {
         var kodekunjungan = $('#kodekunjungan').val()
         $.ajax({
@@ -2386,7 +2636,8 @@
             }
         });
     })
-     function ambildatakunjungan() {
+
+    function ambildatakunjungan() {
         rm = $('#nomorrm').val()
         spinner = $('#loader')
         spinner.show();
@@ -2403,6 +2654,166 @@
             }
         });
     }
+    $(document).ready(function() {
+        // 1. Inisialisasi DataTables
+        var tableObat = $('#table-stok-obat').DataTable({
+            "pageLength": 10,
+            "language": {
+                "search": "Cari Obat:",
+                "lengthMenu": "Tampilkan _MENU_ data",
+                "zeroRecords": "Obat tidak ditemukan",
+                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ obat",
+                "infoEmpty": "Tidak ada data",
+                "paginate": {
+                    "first": "Awal",
+                    "last": "Akhir",
+                    "next": "›",
+                    "previous": "‹"
+                }
+            }
+        });
+        // 2. Event Listener Klik Tombol 'Pilih'
+        $('#table-stok-obat').on('click', '.btn-pilih-obat', function() {
+            var kodeBarang = $(this).data('kode');
+            var namaBarang = $(this).data('nama');
+            var maxStok = parseInt($(this).data('stok'));
 
+            // Cek apakah obat sudah ada di dalam form .arrayobat
+            var existingRow = $('#row-obat-' + kodeBarang);
+
+            if (existingRow.length > 0) {
+                // Jika sudah ada, tambahkan nilainya (+1)
+                var inputQty = existingRow.find('.input-qty');
+                var currentQty = parseInt(inputQty.val());
+
+                if (currentQty < maxStok) {
+                    inputQty.val(currentQty + 1);
+                } else {
+                    alert('Jumlah melebihi stok yang tersedia (' + maxStok + ')');
+                }
+            } else {
+                // Hapus pesan "Belum ada obat"
+                $('#empty-row').hide();
+
+                // Tambahkan baris input baru ke dalam form
+                var htmlRow = `
+                <tr id="row-obat-${kodeBarang}">
+                    <td>
+                        <span class="fw-bold d-block">${namaBarang}</span>
+                        <small class="text-muted">${kodeBarang}</small>
+                        <input type="hidden" name="kode_barang" value="${kodeBarang}">
+                    </td>
+                    <td>
+                        <input type="number" 
+                               name="jumlahhari" 
+                               class="form-control form-control-sm text-center input-qty" 
+                               value="1" 
+                               min="1" 
+                               max="" 
+                               required>
+                    </td>
+                    <td>
+                        <input type="number" 
+                               name="signa1" 
+                               class="form-control form-control-sm text-center input-qty" 
+                               value="1" 
+                               min="1" 
+                               max="" 
+                               required>
+                    </td>
+                    <td class="text-center px-0 fw-bold">x</td>
+                    <td>
+                        <input type="number" 
+                               name="signa2" 
+                               class="form-control form-control-sm text-center input-qty" 
+                               value="1" 
+                               min="1" 
+                               max="" 
+                               required>
+                    </td>
+                    <td>
+                        <input type="number" 
+                               name="jumlahobat" 
+                               class="form-control form-control-sm text-center input-qty" 
+                               value="1" 
+                               min="1" 
+                               max="${maxStok}" 
+                               required>
+                    </td>
+                    <td>
+                        <textarea name="catatan" class="form-control form-control-sm text-center" placeholder="contoh : Sesudah Makan / Sebelum Makan" rows="3px"></textarea>
+                    </td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-sm btn-outline-danger btn-hapus-obat">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+                $('#wrapper-obat-terpilih').append(htmlRow);
+            }
+            checkSubmitButton();
+        });
+        // 3. Event Listener Hapus Baris Obat dari Form
+        $('#wrapper-obat-terpilih').on('click', '.btn-hapus-obat', function() {
+            $(this).closest('tr').remove();
+            // Jika tidak ada item tersisa, tampilkan kembali placeholder
+            if ($('#wrapper-obat-terpilih tr').length === 1) {
+                $('#empty-row').show();
+            }
+            checkSubmitButton();
+        });
+        // 4. Function Cek Status Tombol Submit
+        function checkSubmitButton() {
+            var totalItem = $('#wrapper-obat-terpilih tr').not('#empty-row').length;
+            if (totalItem > 0) {
+                $('#btn-submit-obat').prop('disabled', false);
+            } else {
+                $('#btn-submit-obat').prop('disabled', true);
+            }
+        }
+    });
+    function riwayatresep_pasien()
+    {
+        rm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm
+            },
+            url: '<?= route('ambildatariwayatreseppasien') ?>',
+            error: function(response) {
+                spinner.hide()
+            },
+            success: function(response) {
+                $('.v_r_r_p').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    function ambilriwayatorderhariini()
+    {
+        var kodekunjungan = $('#kodekunjungan').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('ambilriwayatorderobathariini') ?>',
+            error: function(response) {
+                spinner.hide()
+            },
+            success: function(response) {
+                $('.v_r_r_o').html(response);
+                spinner.hide()
+            }
+        });
+    }
 </script>
 <script src="{{ asset('public/marker/markerjs2.js') }}"></script>
