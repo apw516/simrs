@@ -2469,7 +2469,7 @@
             </div>
         </div>
     </div>
-    <div @if (auth()->user()->unit != '1014') hidden @endif class="card">
+    <div  class="card">
         <div class="card-header" id="headingSix">
             <h2 class="mb-0">
                 <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center"
@@ -2544,11 +2544,11 @@
                                         aria-describedby="emailHelp" value="{{ $pter->nama_asisten ?? '' }}">
                                 </div>
                             </div>
-                            <div hidden class="col-md-12">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Nama Perawat</label>
                                     <input type="email" class="form-control" name="perawat"
-                                        aria-describedby="emailHelp" value="">
+                                        aria-describedby="emailHelp" value="{{ $pter->nama_perawat ?? '' }}">
                                 </div>
                             </div>
                             <div class="col-md-12">
