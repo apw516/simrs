@@ -2469,7 +2469,7 @@
             </div>
         </div>
     </div>
-    <div  class="card">
+    <div @if (auth()->user()->unit != '1014') hidden @endif class="card">
         <div class="card-header" id="headingSix">
             <h2 class="mb-0">
                 <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center"
