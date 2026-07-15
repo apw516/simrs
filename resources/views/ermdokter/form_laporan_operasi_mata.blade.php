@@ -2544,11 +2544,11 @@
                                         aria-describedby="emailHelp" value="{{ $pter->nama_asisten ?? '' }}">
                                 </div>
                             </div>
-                            <div hidden class="col-md-12">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Nama Perawat</label>
                                     <input type="email" class="form-control" name="perawat"
-                                        aria-describedby="emailHelp" value="">
+                                        aria-describedby="emailHelp" value="{{ $pter->nama_perawat ?? '' }}">
                                 </div>
                             </div>
                             <div class="col-md-12">

@@ -556,6 +556,7 @@ class ErmController extends Controller
                     'ahli_bedah' => $aa['ahlibedah'],
                     'ahli_anestesi' => $aa['ahlianestesi'],
                     'nama_asisten' => $aa['asisten'],
+                    'nama_perawat' => $aa['perawat'],
                     'tindakan' => $tindakan,
                     'diagnosa_pre_ops' => $aa['diagnosasebelum'],
                     'diagnosa_post_ops' => $aa['diagnosapaska'],
