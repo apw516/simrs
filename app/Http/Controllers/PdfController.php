@@ -475,4 +475,11 @@ class PdfController extends Controller
         $namaberkas = 'HD ';
         return $dompdf->stream($namaberkas . $mt_pasien[0]->nama_px . ".pdf", array("Attachment" => false));
     }
+      public function get_date()
+    {
+        $dt = Carbon::now()->timezone('Asia/Jakarta');
+        $date = $dt->toDateString();
+        $now = $date;
+        return $now;
+    }
 }
