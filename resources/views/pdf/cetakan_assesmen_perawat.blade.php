@@ -91,6 +91,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="isi-surat">
         <table class="mb-2" style="width: 100%">
@@ -234,7 +235,6 @@
                             {{ $years }} Tahun, {{ $months }} Bulan, {{ $days }} Hari
                         </td>
                     </tr>
-
                     <tr>
                         <td style="font-weight: bold; background-color: #f8f9fa; padding: 5px 8px;">Riwayat Psikologis
                         </td>
@@ -242,7 +242,6 @@
                         <td style="font-weight: bold; background-color: #f8f9fa; padding: 5px 8px;">Keterangan</td>
                         <td style="padding: 5px 8px;">{{ $k->keterangan_riwayat_psikolog }}</td>
                     </tr>
-
                     <tr>
                         <td colspan="4"
                             style="background-color: #e9ecef; font-weight: bold; text-align: center; text-transform: uppercase; letter-spacing: 0.5px; padding: 6px;">
@@ -1167,6 +1166,7 @@
     </tr>
     </table>
 @else
+
     @endif
     @endforeach
     </div>
