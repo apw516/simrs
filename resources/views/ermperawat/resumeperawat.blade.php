@@ -75,7 +75,6 @@
         <div class="card">
             <div class="card-header text-bold text-lg" style="background-color: rgba(110, 245, 137, 0.745)"><i class="bi bi-plus-lg text-bold mr-3"></i> ( O ) OBJECTIVE</div>
             <div class="card-body">
-
                 <table class="table text-sm">
                     <thead>
                         <th colspan="4" class="text-center bg-warning">Tanda - Tanda Vital</th>
@@ -259,40 +258,6 @@
                 </table>
             </div>
         </div>
-
-
-            {{-- <table class="table mt-4">
-                <thead>
-                    <th>Nama Perawat</th>
-                    <th>Tanda Tangan</th>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="text-bold text-md">{{ auth()->user()->nama }}</td>
-                        <td>
-                            @if ($resume[0]->signature == '')
-                                <div id="signature-pad">
-                                    <div
-                                        style="border:solid 1px teal; width:360px;height:110px;padding:3px;position:relative;">
-                                        <div id="note" onmouseover="my_function();">tulis tanda tangan didalam
-                                            box ...
-                                        </div>
-                                        <canvas id="the_canvas" width="350px" height="100px"></canvas>
-                                    </div>
-                                    <div style="margin:10px;">
-                                        <input hidden type="" id="signature" name="signature">
-                                        <button type="button" id="clear_btn" class="btn btn-danger"
-                                            data-action="clear"><span class="glyphicon glyphicon-remove"></span>
-                                            Clear</button>
-                                    </div>
-                                </div>
-                            @else
-                                <img src="{{ $resume[0]->signature }}" alt="">
-                            @endif
-                        </td>
-                    </tr>
-                </tbody>
-            </table> --}}
             @if ($resume[0]->signature == '')
                 <div class="jumbotron">
                     <h1 class="display-4">HALLO, {{ auth()->user()->nama }} !</h1>
