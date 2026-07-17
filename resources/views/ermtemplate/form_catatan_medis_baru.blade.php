@@ -49,6 +49,9 @@
                         <div class="card-body">
                             <div class="row mb-4 justify-content-end">
                                 <div class="btn-group mr-2" role="group" aria-label="First group">
+                                    <button type="button" class="btn btn-primary cetakresumeperawatbaru"
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}" kodekunjungan="{{ $k->kodek }}"><i
+                                            class="bi bi-printer mr-2"></i>Assesmen Keperawatan</button>
                                     <button type="button" class="btn btn-secondary lihathasil_ex"
                                         kodekunjungan="{{ $k->kodek }}" data-toggle="modal"
                                         data-target="#modalhasil_ex"><i class="bi bi-eye mr-2"></i>
@@ -61,7 +64,7 @@
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"><i
                                             class="bi bi-printer mr-2"></i>Assesmen Keperawatan</button> --}}
 
-                                    <button type="button" class="btn btn-secondary cetakresumeperawatbaru"
+                                    <button hidden type="button" class="btn btn-secondary cetakresumeperawatbaru"
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}" kodekunjungan="{{ $k->kodek }}"><i
                                             class="bi bi-printer mr-2"></i>Assesmen Keperawatan</button>
                                     <button hidden type="button" class="btn btn-secondary cetakresumedok"
