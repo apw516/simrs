@@ -73,6 +73,15 @@
     </div>
 </div>
 <script>
+    $(function() {
+        $("#tabel-order-farmasi").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            // "autoWidth": true,
+            "pageLength": 3,
+            "searching": true
+        })
+    });
     $(document).ready(function() {
         // Event listener untuk tombol Batal/Retur
         $(document).on('click', '.btn-batal-order', function() {

@@ -34,34 +34,33 @@
     </tbody>
 </table>
 <script>
-
     $(function() {
-            $("#tabelorder").DataTable({
-                "responsive": true,
-                "lengthChange": false,
-                // "autoWidth": true,
-                "pageLength": 10,
-                "searching": true,
-                "order": [
-                    [1, "desc"]
-                ]
-            })
+        $("#tabelorder").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            // "autoWidth": true,
+            "pageLength": 10,
+            "searching": true,
+            "order": [
+                [1, "desc"]
+            ]
+        })
+    });
+    $('#tabelorder').on('click', '.btndetail', function() {
+        id = $(this).attr('id')
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                id
+            },
+            url: '<?= route('ambildetailorder') ?>',
+            success: function(response) {
+                $('.vdetail_order').html(response);
+                spinner.hide();
+            }
         });
-        $('#tabelorder').on('click', '.btndetail', function() {
-            id = $(this).attr('id')
-            spinner = $('#loader')
-            spinner.show();
-            $.ajax({
-                type: 'post',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    id
-                },
-                url: '<?= route('ambildetailorder') ?>',
-                success: function(response) {
-                    $('.vdetail_order').html(response);
-                    spinner.hide();
-                }
-            });
-        });
+    });
 </script>
