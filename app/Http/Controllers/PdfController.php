@@ -320,6 +320,40 @@ class PdfController extends Controller
         if (count($assesmen) > 0) {
             $tglll =  $assesmen[0]->tanggalkunjungan;
             $carbonDate = Carbon::parse($tglll);
+            // $tglperiksa = $carbonDate->isoFormat('dddd, D MMMM Y');
+            $tglperiksa = $carbonDate->isoFormat('dddd, D MMMM Y HH:mm:ss');
+            $tglperiksa2 = $carbonDate->addMinutes(30)->isoFormat('dddd, D MMMM Y HH:mm:ss');
+        } else {
+            // $tglperiksa = Carbon::now()->isoFormat('dddd, D MMMM Y');
+            $tglperiksa = Carbon::now()->isoFormat('dddd, D MMMM Y HH:mm:ss');
+            $tglperiksa2 = Carbon::now()->addMinutes(30)->isoFormat('dddd, D MMMM Y HH:mm:ss');
+        }
+        $toDate = Carbon::parse($this->get_date());
+        $fromDate = Carbon::parse($mt_pasien[0]->tgl_lahirs);
+        $usiatahun = $toDate->diff($fromDate)->y;
+        $usia_hari = $toDate->diffInDays($fromDate);
+        $pdf = Pdf::loadView('pdf.cetakan_assesmen_perawat', compact([
+            'mt_pasien',
+            'ts_kunjungan',
+            'tglperiksa',
+            'assesmen',
+            'tglperiksa2',
+            'usiatahun',
+            'usia_hari'
+        ]));
+        // return $pdf->download('document.pdf');
+        return $pdf->stream('document.pdf');
+    }
+    public function cetakresumeblank_perawatxxx($kodekunjungan)
+    {
+        $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
+        $data = ['title' => 'My PDF Document', 'content' => 'This is some content for the PDF.', $mt_pasien];
+        $assesmen = db::select('select *,date(tanggalperiksa) as tglk2  from erm_hasil_assesmen_keperawatan_rajal where kode_kunjungan = ?', [$kodekunjungan]);
+        $today = Carbon::now()->isoFormat('D MMMM Y');
+        if (count($assesmen) > 0) {
+            $tglll =  $assesmen[0]->tanggalkunjungan;
+            $carbonDate = Carbon::parse($tglll);
             $tglperiksa = $carbonDate->isoFormat('dddd, D MMMM Y');
         } else {
             $tglperiksa = Carbon::now()->isoFormat('dddd, D MMMM Y');
@@ -396,13 +430,13 @@ class PdfController extends Controller
     }
     public function cetakcatatanhemodialisa($id)
     {
-        $header = db::table('ts_header_catatan_hemodialisis')->where('id',$id)->get()->first();
+        $header = db::table('ts_header_catatan_hemodialisis')->where('id', $id)->get()->first();
         $rm = $header->no_rm;
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$rm]);
 
         // dd($rm);
         // if(!!$request->jenis){
-            $jenis = 1;
+        $jenis = 1;
         // }else{
         //     $jenis = 0;
         // }
@@ -426,12 +460,19 @@ class PdfController extends Controller
         }
         // dd($arrayBaru4);
         $dompdf = Pdf::loadView('pdf.catatan_hemodialisa', compact([
-           'mt_pasien','header','datah','arrayBaru','arrayBaru2','arrayBaru3','arrayBaru4','jenis'
+            'mt_pasien',
+            'header',
+            'datah',
+            'arrayBaru',
+            'arrayBaru2',
+            'arrayBaru3',
+            'arrayBaru4',
+            'jenis'
         ]));
         $dompdf->setPaper('A4', 'portrait'); // 'A4' for paper size, 'portrait' or 'landscape' for orientation
         // Render the HTML as PDF
         $dompdf->render();
         $namaberkas = 'HD ';
-        return $dompdf->stream($namaberkas. $mt_pasien[0]->nama_px . ".pdf", array("Attachment" => false));
+        return $dompdf->stream($namaberkas . $mt_pasien[0]->nama_px . ".pdf", array("Attachment" => false));
     }
 }
