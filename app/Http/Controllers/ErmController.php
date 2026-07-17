@@ -8542,7 +8542,32 @@ class ErmController extends Controller
             $value =  $nama['value'];
             $dataSet[$index] = $value;
         }
+        if (empty($dataSet['pendampinganpasien'])) {
+            $pendampinganpasien = 0;
+        }else{
+            $pendampinganpasien = 1;
+        }
 
+        if (empty($dataSet['edukasipasien1'])) {
+            $edukasipasien1 = 0;
+        }else{
+            $edukasipasien1 = 1;
+        }
+        if (empty($dataSet['edukasipasien2'])) {
+            $edukasipasien2 = 0;
+        }else{
+            $edukasipasien2 = 1;
+        }
+        if (empty($dataSet['edukasipasien3'])) {
+            $edukasipasien3 = 0;
+        }else{
+            $edukasipasien3 = 1;
+        }
+        if (empty($dataSet['edukasipasien4'])) {
+            $edukasipasien4 = 0;
+        }else{
+            $edukasipasien4 = 1;
+        }
         if (empty($dataSet['nyeri'])) {
             $nyeri = 0;
         } else {
