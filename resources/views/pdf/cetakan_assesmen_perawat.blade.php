@@ -91,18 +91,28 @@
         }
     </style>
 </head>
+
 <body>
     <div class="isi-surat">
         <table class="mb-2" style="width: 100%">
             <tr>
                 <td>
-                    <p class="float-right text-bold mb-0" style="font-size: 11px; font-weight: bold;">RM. 07.02-RJ/25
+                    <p class="float-right text-bold mb-0" style="font-size: 11px; font-weight: bold;">
+                        @if($ts_kunjungan[0]->kode_unit == '1029')
+                        RM.02.03-RJ/22
+                        @elseif($ts_kunjungan[0]->kode_unit == '3007')
+                        RM.02.04.1-RJ/22
+                        @else
+                        @if ($usiatahun < 18 ) RM.02.02.1-RJ/Rev.02/19 
+                        @elseif($usiatahun >= 18 ) RM.02.01-RJ/Rev.02/19 
+                        @endif
+                        @endif
                     </p>
                 </td>
             </tr>
         </table>
         <table class="table table-sm table-bordered text-bold font-italic align-middle"
-            style="width: 100%; border-collapse: collapse; margin-top: 0;">
+            style="width: 100%; border-collapse: collapse; margin-top: 10;">
             <tr>
                 <td style="width: 45%; padding: 10px; text-align: center; vertical-align: middle;">
                     <img src="{{ public_path('../public/img/logo_rs.png') }}" class="logo"
@@ -651,63 +661,77 @@
                                 </div>
                             </td>
                         </tr>
-                          <tr>
-        <td style="background-color: #f8f9fa; padding: 5px 8px; vertical-align: top;">
-            Pendampingan</td>
-        <td colspan="3" style="padding: 8px 12px;">
-            <div style="display: block; margin-bottom: 2px;">
-                <input type="checkbox" style="margin-right: 5px; transform: scale(1.1); vertical-align: middle;"
-                    id="pendampinganpasien" name="pendampinganpasien"
-                    @if ($k->pendampinganpasien == 1) checked @endif>
-                <label style="font-weight: bold; display: inline; vertical-align: middle;"
-                    for="pendampinganpasien">Memberikan pendampingan khusus atau menyediakan alat bantu
-                    jalan
-                    (Kursi Roda / Tongkat)
-                    bagi yang membutuhkan.
-                </label>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td style="font-weight: bold; background-color: #f8f9fa; padding: 5px 8px; vertical-align: top;">
-            Edukasi Pasien & Keluarga</td>
-        <td colspan="3" style="padding: 8px 12px;">
-            <div style="margin-bottom: 5px;">
-                <input type="checkbox" style="margin-right: 5px; transform: scale(1.1); vertical-align: middle;"
-                    id="edukasipasien1" name="edukasipasien1" @if ($k->edukasipasien1 == 1) checked @endif>
-                <label style="font-weight: normal; display: inline; vertical-align: middle;"
-                    for="edukasipasien1">Mengajarkan cara penggunaan alat bantu dan mengunci rem kursi
-                    roda.</label>
-            </div>
-            <div>
-                <input type="checkbox" style="margin-right: 5px; transform: scale(1.1); vertical-align: middle;"
-                    id="edukasipasien2" name="edukasipasien2" @if ($k->edukasipasien2 == 1) checked @endif>
-                <label style="font-weight: normal; display: inline; vertical-align: middle;"
-                    for="edukasipasien2">Memastikan alas kaki yang digunakan aman, nyaman dan tidak
-                    licin.</label>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td style="font-weight: bold; background-color: #f8f9fa; padding: 5px 8px; vertical-align: top;">
-            Manajemen Lingkungan</td>
-        <td colspan="3" style="padding: 8px 12px;">
-            <div style="margin-bottom: 5px;">
-                <input type="checkbox" style="margin-right: 5px; transform: scale(1.1); vertical-align: middle;"
-                    id="edukasipasien3" name="edukasipasien3" @if ($k->edukasipasien3 == 1) checked @endif>
-                <label style="font-weight: normal; display: inline; vertical-align: middle;"
-                    for="edukasipasien3">Membantu memindahkan pasien ke area tunggu yang aman, dekat
-                    dengan pos perawat (*nurse station*).</label>
-            </div>
-            <div>
-                <input type="checkbox" style="margin-right: 5px; transform: scale(1.1); vertical-align: middle;"
-                    id="edukasipasien4" name="edukasipasien4" @if ($k->edukasipasien4 == 1) checked @endif>
-                <label style="font-weight: normal; display: inline; vertical-align: middle;"
-                    for="edukasipasien4">Memastikan pencahayaan ruang poli cukup dan lantai tidak
-                    basah.</label>
-            </div>
-        </td>
-    </tr>
+                        <tr>
+                            <td style="background-color: #f8f9fa; padding: 5px 8px; vertical-align: top;">
+                                Pendampingan</td>
+                            <td colspan="3" style="padding: 8px 12px;">
+                                <div style="display: block; margin-bottom: 2px;">
+                                    <input type="checkbox"
+                                        style="margin-right: 5px; transform: scale(1.1); vertical-align: middle;"
+                                        id="pendampinganpasien" name="pendampinganpasien"
+                                        @if ($k->pendampinganpasien == 1) checked @endif>
+                                    <label style="font-weight: bold; display: inline; vertical-align: middle;"
+                                        for="pendampinganpasien">Memberikan pendampingan khusus atau menyediakan alat
+                                        bantu
+                                        jalan
+                                        (Kursi Roda / Tongkat)
+                                        bagi yang membutuhkan.
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                style="font-weight: bold; background-color: #f8f9fa; padding: 5px 8px; vertical-align: top;">
+                                Edukasi Pasien & Keluarga</td>
+                            <td colspan="3" style="padding: 8px 12px;">
+                                <div style="margin-bottom: 5px;">
+                                    <input type="checkbox"
+                                        style="margin-right: 5px; transform: scale(1.1); vertical-align: middle;"
+                                        id="edukasipasien1" name="edukasipasien1"
+                                        @if ($k->edukasipasien1 == 1) checked @endif>
+                                    <label style="font-weight: normal; display: inline; vertical-align: middle;"
+                                        for="edukasipasien1">Mengajarkan cara penggunaan alat bantu dan mengunci rem
+                                        kursi
+                                        roda.</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox"
+                                        style="margin-right: 5px; transform: scale(1.1); vertical-align: middle;"
+                                        id="edukasipasien2" name="edukasipasien2"
+                                        @if ($k->edukasipasien2 == 1) checked @endif>
+                                    <label style="font-weight: normal; display: inline; vertical-align: middle;"
+                                        for="edukasipasien2">Memastikan alas kaki yang digunakan aman, nyaman dan tidak
+                                        licin.</label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                style="font-weight: bold; background-color: #f8f9fa; padding: 5px 8px; vertical-align: top;">
+                                Manajemen Lingkungan</td>
+                            <td colspan="3" style="padding: 8px 12px;">
+                                <div style="margin-bottom: 5px;">
+                                    <input type="checkbox"
+                                        style="margin-right: 5px; transform: scale(1.1); vertical-align: middle;"
+                                        id="edukasipasien3" name="edukasipasien3"
+                                        @if ($k->edukasipasien3 == 1) checked @endif>
+                                    <label style="font-weight: normal; display: inline; vertical-align: middle;"
+                                        for="edukasipasien3">Membantu memindahkan pasien ke area tunggu yang aman,
+                                        dekat
+                                        dengan pos perawat (*nurse station*).</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox"
+                                        style="margin-right: 5px; transform: scale(1.1); vertical-align: middle;"
+                                        id="edukasipasien4" name="edukasipasien4"
+                                        @if ($k->edukasipasien4 == 1) checked @endif>
+                                    <label style="font-weight: normal; display: inline; vertical-align: middle;"
+                                        for="edukasipasien4">Memastikan pencahayaan ruang poli cukup dan lantai tidak
+                                        basah.</label>
+                                </div>
+                            </td>
+                        </tr>
                     @else
                         <tr>
                             <td colspan="4" class="bg-light">Metode Humpty Dumpty</td>
@@ -982,7 +1006,7 @@
             </div>
         </td>
     </tr>
-     <tr>
+    <tr>
         <td style="background-color: #f8f9fa; padding: 5px 8px; vertical-align: top;">
             Pendampingan</td>
         <td colspan="3" style="padding: 8px 12px;">
@@ -1165,7 +1189,7 @@
             Keperawatan</td>
         <td colspan="3" style="padding: 5px 8px; white-space: pre-line;">
             {{ $k->diagnosakeperawatan }}</td>
-    </tr>   
+    </tr>
     <tr>
         <td style="font-weight: bold; background-color: #f8f9fa; padding: 5px 8px;">Rencana Keperawatan
         </td>
@@ -1223,6 +1247,49 @@
     </tr>
     </table>
 @else
+    <table class="table table-sm table-bordered align-middle"
+        style="width: 100%; border-collapse: collapse; font-size: 11px; color: #000; margin-top: 15px;">
+        <tr>
+            <td colspan="2">
+                Hasil Pemeriksaan ( {{ $k->keterangan_cppt }} ): <br> {{ $k->tindakankeperawatan }}
+            </td>
+        </tr>
+        <tr>
+            <td
+                style="font-weight: bold; padding: 10px 8px; vertical-align: bottom; border-right: none;">
+                <div style="font-size: 10px; font-weight: normal; color: #666; line-height: 1.3; font-style: italic;">
+                    *Dokumen Asuhan Keperawatan ini disahkan secara elektronik<br>
+                    melalui Sistem Informasi Manajemen Rumah Sakit.
+                </div>
+            </td>
+            <td colspan="3"
+                style="height: 190px;padding: 10px 8px; vertical-align: middle; border-left: none; text-align: right;">
+                <table
+                    style="width: 200px; text-align: center; font-size: 13px; font-style: normal; display: inline-table; float: right; border: none; background: transparent;">
+                    <tr>
+                        <td style="padding-bottom: 8px; border: none;">
+                            <strong>Pemeriksa (Perawat),</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px 0; border: none; text-align: center;">
+                            <div
+                                style="width: 90px; height: 90px; border: 1px dashed #ccc; margin: 0 auto; text-align: center; line-height: 90px; background-color: #fff;">
+                                <span
+                                    style="font-size: 9px; color: #aaa; font-weight: normal; display: inline-block; vertical-align: middle;">[
+                                    TTE / QR CODE ]</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 8px; line-height: 1.3; border: none; text-transform: uppercase;">
+                            <u><strong>{{ $k->namapemeriksa }}</strong></u>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
     @endif
     @endforeach
     </div>

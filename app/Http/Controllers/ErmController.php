@@ -1130,6 +1130,31 @@ class ErmController extends Controller
         $kunjungan = DB::select('select *,fc_nama_px(no_rm) as nama_pasien,fc_nama_paramedis(ref_paramedis) AS dokter_kirim,fc_nama_unit1(ref_unit) AS poli_asal from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
         $unitk = $kunjungan[0]->kode_unit;
         $rm = $kunjungan[0]->no_rm;
+
+        $kunjunganDiagnosa = DB::table('di_pasien_diagnosa')
+        ->select([
+            'no_rm',
+            'diag_utama',
+            'diag_utama_desc',
+            'input_date',
+            DB::raw('fc_nama_unit1(kode_unit) as nama_unit'),
+            DB::raw('fc_NAMA_PARAMEDIS1(kode_paramedis) as nama_dokter')
+        ])
+        ->where('no_rm', $rm)
+        ->whereIn('no_rm', function ($query) use ($rm) {
+            $query->select('no_rm')
+                ->from('di_pasien_diagnosa')
+                ->where('no_rm', $rm)
+                ->where('input_date', '>=', DB::raw('DATE_SUB(NOW(), INTERVAL 3 MONTH)'))
+                ->groupBy('no_rm')
+                ->havingRaw('COUNT(DISTINCT diag_utama) >= 3');
+        })
+        ->where('input_date', '>=', DB::raw('DATE_SUB(NOW(), INTERVAL 3 MONTH)'))
+        ->orderBy('input_date', 'desc')
+        ->get()
+        ->unique('diag_utama') // Menyaring data di memori Laravel, hanya menyisakan baris pertama dari diagnosa yang sama
+        ->values();            // Mengatur ulang index array collection agar berurutan kembali (0, 1, 2, dst)
+
         $cek_konsul = db::select('select * from mt_surat_tindak_lanjut where no_rm = ? and unit_tujuan = ? and status_jawab = 0',[$rm,auth()->user()->unit]);
         $kunjunganKronis = DB::select('select * from ts_kunjungan where no_rm = ? and kode_unit = ? and catatan = ?', [$rm, $unitk, 'KRONIS']);
         $rujukan = $kunjungan[0]->no_rujukan;
@@ -1251,7 +1276,8 @@ class ErmController extends Controller
                                 'jenisrujukan',
                                 'status_cek_rujukan',
                                 'detailrujukan',
-                                'rujukan'
+                                'rujukan',
+                                'kunjunganDiagnosa'
                             ]));
                         } else {
                             return view('ermdokter.new_formpemeriksaan_dokter_edit_2', compact([
@@ -1271,7 +1297,8 @@ class ErmController extends Controller
                                 'jenisrujukan',
                                 'status_cek_rujukan',
                                 'detailrujukan',
-                                'rujukan'
+                                'rujukan',
+                                'kunjunganDiagnosa'
                             ]));
                         }
                     }
@@ -1302,16 +1329,6 @@ class ErmController extends Controller
                             'rujukan'
                         ]));
                     } else {
-                        // return view('ermdokter.new_form_pemeriksaan_dokter', compact([
-                        //     'kunjungan',
-                        //     'resume_perawat',
-                        //     'layanan',
-                        //     'last_assdok',
-                        //     'first_assdok',
-                        //     'penyakit',
-                        //     'hasil_ro',
-                        //     'ref_resume'
-                        // ]));
                         if ($unit == '1014') {
                             return view('ermdokter.form_pemeriksaan_dokter_mata', compact([
                                 'kunjungan',
@@ -1330,7 +1347,8 @@ class ErmController extends Controller
                                 'jenisrujukan',
                                 'status_cek_rujukan',
                                 'detailrujukan',
-                                'rujukan'
+                                'rujukan',
+                                'kunjunganDiagnosa'
                             ]));
                         } else {
                             return view('ermdokter.new_form_pemeriksaan_dokter_2', compact([
@@ -1350,7 +1368,8 @@ class ErmController extends Controller
                                 'jenisrujukan',
                                 'status_cek_rujukan',
                                 'detailrujukan',
-                                'rujukan'
+                                'rujukan',
+                                'kunjunganDiagnosa'
                             ]));
                         }
                     }

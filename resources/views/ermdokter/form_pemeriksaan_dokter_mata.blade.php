@@ -14,6 +14,35 @@
         @endif --}}
     </div>
     <div class="card-body table-responsive p-5" style="height: 757Px">
+        @if(count($kunjunganDiagnosa) > 0)
+            <div class="alert alert-light alert-dismissible fade show my-3 shadow-sm" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+                    <div>
+                        <strong>Peringatan Medis! Pasien memiliki 3 diagnosa berbeda dalam 3 bulan terakhir</strong> 
+                    </div>
+                </div>
+                <table class="table table-sm mt-2">
+                    <thead>
+                        <th>Tanggal</th>
+                        <th>Unit</th>
+                        <th>Dokter</th>
+                        <th>Diagnosa</th>
+                    </thead>
+                    <tbody>
+                        @foreach($kunjunganDiagnosa as $d)
+                            <tr>
+                                <td>{{ $d->input_date}}</td>
+                                <td>{{ $d->nama_unit}}</td>
+                                <td>{{ $d->nama_dokter}}</td>
+                                <td>{{ $d->diag_utama}} , {{ $d->diag_utama_desc}}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <h5>Silahkan isi form Profil Ringkas Medis Rawat Jalan setelah mengisi form hasil pemeriksaan medis ...</h5> 
+            </div>
+        @endif
          @if ($status_cek_rujukan == 1)
             <H3 class="mb-3">Pasien BPJS</H3>
             <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalicare" onclick="showicare2()">Lihat Icare</button>
