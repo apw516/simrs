@@ -775,6 +775,57 @@
                                             </div>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="form-group form-check">
+                                                <input type="checkbox" class="form-check-input"
+                                                    id="pendampinganpasien" name="pendampinganpasien">
+                                                <label class="form-check-label text-bold"
+                                                    for="exampleCheck1">Pendampingan : Memberikan pendampingan khusus
+                                                    atau
+                                                    menyediakan alat bantu jalan ( Kursi Roda / Tongkat ) bagi yang
+                                                    membutuhkan </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h5>Edukasi Pasien Dan Keluarga </h5><br>
+                                            <div class="form-group form-check">
+                                                <input type="checkbox" class="form-check-input" id="edukasipasien1"
+                                                    name="edukasipasien1">
+                                                <label class="form-check-label text-bold"
+                                                    for="exampleCheck1">Mengajarkan cara penggunaan alat bantu dan
+                                                    mengunci rem kursi roda</label>
+                                            </div>
+                                            <div class="form-group form-check">
+                                                <input type="checkbox" class="form-check-input" id="edukasipasien2"
+                                                    name="edukasipasien2">
+                                                <label class="form-check-label text-bold"
+                                                    for="exampleCheck1">Memastikan
+                                                    alas kaki yang digunakan aman, nyaman dan tidak licin</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h5>Manajemen Lingkunan </h5><br>
+                                            <div class="form-group form-check">
+                                                <input type="checkbox" class="form-check-input" id="edukasipasien3"
+                                                    name="edukasipasien3">
+                                                <label class="form-check-label text-bold" for="exampleCheck1">Membantu
+                                                    memindahkan pasien ke area tunggu yang aman, dekat dengan pos
+                                                    perawat ( nurse station )</label>
+                                            </div>
+                                            <div class="form-group form-check">
+                                                <input type="checkbox" class="form-check-input" id="edukasipasien4"
+                                                    name="edukasipasien4">
+                                                <label class="form-check-label text-bold"
+                                                    for="exampleCheck1">Memastikan
+                                                    pencahayaan ruang poli cukup dan lantai tidak basah</label>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                             <table @if ($usia_hari < 4383) hidden @endif class="table">
@@ -1081,8 +1132,9 @@
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Faktor_Lingkungan"
-                                                id="Faktor_Lingkungan" value="-" checked>
+                                            <input class="form-check-input" type="radio"
+                                                name="Faktor_Lingkungan" id="Faktor_Lingkungan" value="-"
+                                                checked>
                                             <label class="form-check-label" for="exampleRadios3">
                                                 -
                                             </label>
@@ -1155,6 +1207,54 @@
                                             <label class="form-check-label" for="exampleRadios3">
                                                 -
                                             </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input"
+                                                id="pendampinganpasien" name="pendampinganpasien">
+                                            <label class="form-check-label text-bold"
+                                                for="exampleCheck1">Pendampingan : Memberikan pendampingan khusus atau
+                                                menyediakan alat bantu jalan ( Kursi Roda / Tongkat ) bagi yang
+                                                membutuhkan </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>Edukasi Pasien Dan Keluarga </h5><br>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="edukasipasien1"
+                                                name="edukasipasien1">
+                                            <label class="form-check-label text-bold"
+                                                for="exampleCheck1">Mengajarkan cara penggunaan alat bantu dan
+                                                mengunci rem kursi roda</label>
+                                        </div>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="edukasipasien2"
+                                                name="edukasipasien2">
+                                            <label class="form-check-label text-bold" for="exampleCheck1">Memastikan
+                                                alas kaki yang digunakan aman, nyaman dan tidak licin</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>Manajemen Lingkunan </h5><br>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="edukasipasien3"
+                                                name="edukasipasien3">
+                                            <label class="form-check-label text-bold" for="exampleCheck1">Membantu
+                                                memindahkan pasien ke area tunggu yang aman, dekat dengan pos perawat (
+                                                nurse station )</label>
+                                        </div>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="edukasipasien4"
+                                                name="edukasipasien4">
+                                            <label class="form-check-label text-bold" for="exampleCheck1">Memastikan
+                                                pencahayaan ruang poli cukup dan lantai tidak basah</label>
                                         </div>
                                     </td>
                                 </tr>
@@ -1315,53 +1415,6 @@
                                             id="diagnosakeperawatan">
 @if (count($p_konsul) > 0) {{ $p_konsul[0]->diagnosakeperawatan }}@endif
 </textarea>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-group form-check">
-                                            <input type="checkbox" class="form-check-input"
-                                                id="pendampinganpasien" name="pendampinganpasien">
-                                            <label class="form-check-label text-bold"
-                                                for="exampleCheck1">Pendampingan : Memberikan pendampingan khusus atau
-                                                menyediakan alat bantu jalan ( Kursi Roda / Tongkat ) bagi yang
-                                                membutuhkan </label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h5>Edukasi Pasien Dan Keluarga </h5><br>
-                                        <div class="form-group form-check">
-                                            <input type="checkbox" class="form-check-input" id="edukasipasien1"
-                                                name="edukasipasien1">
-                                            <label class="form-check-label text-bold"
-                                                for="exampleCheck1">Mengajarkan cara penggunaan alat bantu dan
-                                                mengunci rem kursi roda</label>
-                                        </div>
-                                        <div class="form-group form-check">
-                                            <input type="checkbox" class="form-check-input" id="edukasipasien2"
-                                                name="edukasipasien2">
-                                            <label class="form-check-label text-bold" for="exampleCheck1">Memastikan
-                                                alas kaki yang digunakan aman, nyaman dan tidak licin</label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h5>Manajemen Lingkunan </h5><br>
-                                        <div class="form-group form-check">
-                                            <input type="checkbox" class="form-check-input" id="edukasipasien3"
-                                                name="edukasipasien3">
-                                            <label class="form-check-label text-bold"
-                                                for="exampleCheck1">Membantu memindahkan pasien ke area tunggu yang aman, dekat dengan pos perawat ( nurse station )</label>
-                                        </div>
-                                        <div class="form-group form-check">
-                                            <input type="checkbox" class="form-check-input" id="edukasipasien4"
-                                                name="edukasipasien4">
-                                            <label class="form-check-label text-bold" for="exampleCheck1">Memastikan
-                                                pencahayaan ruang poli cukup dan lantai tidak basah</label>
-                                        </div>
                                     </td>
                                 </tr>
                             </table>

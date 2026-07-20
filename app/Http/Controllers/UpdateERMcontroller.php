@@ -101,6 +101,29 @@ class UpdateERMcontroller extends Controller
             }
         }
         $no_rm = $kunjungan[0]->no_rm;
+        $kunjunganDiagnosa = DB::table('di_pasien_diagnosa')
+            ->select([
+                'no_rm',
+                'diag_utama',
+                'diag_utama_desc',
+                'input_date',
+                DB::raw('fc_nama_unit1(kode_unit) as nama_unit'),
+                DB::raw('fc_NAMA_PARAMEDIS1(kode_paramedis) as nama_dokter')
+            ])
+            ->where('no_rm', $no_rm)
+            ->whereIn('no_rm', function ($query) use ($no_rm) {
+                $query->select('no_rm')
+                    ->from('di_pasien_diagnosa')
+                    ->where('no_rm', $no_rm)
+                    ->where('input_date', '>=', DB::raw('DATE_SUB(NOW(), INTERVAL 3 MONTH)'))
+                    ->groupBy('no_rm')
+                    ->havingRaw('COUNT(DISTINCT diag_utama) >= 3');
+            })
+            ->where('input_date', '>=', DB::raw('DATE_SUB(NOW(), INTERVAL 3 MONTH)'))
+            ->orderBy('input_date', 'desc')
+            ->get()
+            ->unique('diag_utama') // Menyaring data di memori Laravel, hanya menyisakan baris pertama dari diagnosa yang sama
+            ->values();            // Mengatur ulang index array collection agar berurutan kembali (0, 1, 2, dst)
         $kode_unit = $kunjungan[0]->kode_unit;
         $asesmen_terakhir = DB::table('assesmen_dokters as b')
             ->join('ts_kunjungan as a', 'b.id_kunjungan', '=', 'a.kode_kunjungan')
@@ -164,7 +187,8 @@ class UpdateERMcontroller extends Controller
                 'hasil_ro',
                 'poli_pengirim_konsul',
                 'catatan_konsul',
-                'layanan'
+                'layanan',
+                'kunjunganDiagnosa'
             ]));
         } else {
             return view('update_erm_dokter.form_pemeriksaan_dokter', compact([
@@ -181,7 +205,8 @@ class UpdateERMcontroller extends Controller
                 'poli_pengirim_konsul',
                 'catatan_konsul',
                 'layanan',
-                'stokBarang'
+                'stokBarang',
+                'kunjunganDiagnosa'
             ]));
         }
     }

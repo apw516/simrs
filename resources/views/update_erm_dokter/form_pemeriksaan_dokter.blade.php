@@ -89,6 +89,61 @@
                 $blinkClass = 'alert-blink-warning';
             }
         @endphp
+        @if (count($kunjunganDiagnosa) > 0)
+            <div class="alert alert-warning border-0 shadow-sm p-4 mb-4 rounded-3" role="alert"
+                style="background-color: #fff9e6; border-left: 5px solid #ffc107 !important;">
+                <!-- Header Alert -->
+                <div class="d-flex align-items-start mb-3">
+                    <div class="bg-warning text-dark rounded-circle p-2 d-inline-flex me-3 shadow-sm">
+                        <i class="bi bi-exclamation-triangle-fill fs-5 lh-1"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h6 class="alert-heading fw-bold text-dark mb-1">Peringatan Riwayat Medis Kompleks</h6>
+                        <p class="text-secondary small mb-0">Pasien mendapati minimal 3 jenis diagnosa berbeda dalam
+                            kurun waktu 3 bulan terakhir.</p>
+                    </div>
+                </div>
+
+                <hr class="text-warning opacity-25 my-3">
+
+                <!-- Konten Diagnosa Simpel -->
+                <div class="row g-3">
+                    @foreach ($kunjunganDiagnosa as $d)
+                        <div class="col-md-4">
+                            <div class="bg-white p-3 rounded-3 border border-light shadow-sm h-100">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="badge bg-light text-secondary border small">
+                                        {{ \Carbon\Carbon::parse($d->input_date)->translatedFormat('d M Y') }}
+                                    </span>
+                                    <span class="text-muted small fw-medium"
+                                        title="Unit Pelayanan">{{ $d->nama_unit }}</span>
+                                </div>
+                                <div class="fw-bold text-dark mb-1" title="Kode Diagnosa">
+                                    <span class="text-danger font-monospace">{{ $d->diag_utama }}</span>
+                                </div>
+                                <div class="text-secondary small text-truncate-2" title="Deskripsi">
+                                    {{ $d->diag_utama_desc }}
+                                </div>
+                                <div class="text-muted text-end mt-2 pt-2 border-top style-italic (small)"
+                                    style="font-size: 0.75rem;">
+                                    dr. {{ $d->nama_dokter }}
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <!-- Catatan Aksi Petugas -->
+                <div
+                    class="d-flex align-items-center bg-white rounded-3 p-3 mt-3 border border-warning border-opacity-25 shadow-xs">
+                    <i class="bi bi-info-circle text-warning me-2 fs-5"></i>
+                    <span class="text-dark small fw-medium">
+                        <strong>Tindakan Lanjut:</strong> Silakan lengkapi form <strong>Profil Ringkas Medis Rawat Jalan
+                            (PRMRJ)</strong> setelah mengisi hasil pemeriksaan medis saat ini.
+                    </span>
+                </div>
+            </div>
+        @endif
         @if ($asesmen_perawat)
             <div class="alert {{ $alertClass }} {{ $blinkClass }} alert-dismissible fade show p-3 mb-3 shadow-sm border-0"
                 role="alert" style="{{ $borderClass }} color: #212529;">
@@ -958,8 +1013,9 @@
                                                         resep baru ke dokter/faskes tingkat lanjut tiap bulan.
                                                     </div>
                                                 </div>
-                                                  <div class="col-md-12">
-                                                    <label for="nama_resep" class="form-label fw-bold small">Jumlah Iterasi</label>
+                                                <div class="col-md-12">
+                                                    <label for="nama_resep" class="form-label fw-bold small">Jumlah
+                                                        Iterasi</label>
                                                     <input type="text" class="form-control form-control-sm"
                                                         id="jumlah_iterasi" name="jumlah_iterasi"
                                                         placeholder="Contoh: 1" required>
@@ -988,22 +1044,26 @@
                                     </div>
                                     <div class="btn-group mb-2" role="group" aria-label="Basic example">
                                         <button type="button" class="btn btn-secondary" data-toggle="modal"
-                                            data-target="#modalcariobat"><i class="bi bi-search"></i>Cari Obat</button>
+                                            data-target="#modalcariobat"><i class="bi bi-search"></i>Cari
+                                            Obat</button>
                                         <button type="button" class="btn btn-secondary"><i
                                                 class="bi bi-plus-circle"></i>
                                             Obat Racik</button>
                                         <button type="button" class="btn btn-warning" data-toggle="modal"
-                                            data-target="#modalriwayatorderhariini" onclick="ambilriwayatorderhariini()"><i
-                                                class="bi bi-plus-circle"></i>
+                                            data-target="#modalriwayatorderhariini"
+                                            onclick="ambilriwayatorderhariini()"><i class="bi bi-plus-circle"></i>
                                             Riwayat Order Hari ini</button>
                                     </div>
                                     <div class="btn-group mb-2" role="group" aria-label="Basic example">
                                         <button type="button" class="btn btn-info" data-toggle="modal"
-                                            data-target="#modalriwayatreseppasien" onclick="riwayatresep_pasien()"><i class="bi bi-search"></i> Riwayat Resep Pasien</button>
+                                            data-target="#modalriwayatreseppasien" onclick="riwayatresep_pasien()"><i
+                                                class="bi bi-search"></i> Riwayat Resep Pasien</button>
                                         <button type="button" class="btn btn-secondary" data-toggle="modal"
-                                            data-target="#modalcariobat"><i class="bi bi-search"></i> Template Resep</button>
+                                            data-target="#modalcariobat"><i class="bi bi-search"></i> Template
+                                            Resep</button>
                                         <button type="button" class="btn btn-secondary" data-toggle="modal"
-                                            data-target="#modalcariobat"><i class="bi bi-search"></i> Template Racikan</button>
+                                            data-target="#modalcariobat"><i class="bi bi-search"></i> Template
+                                            Racikan</button>
                                     </div>
                                     <form action="" method="POST" class="arrayobat">
                                         @csrf
@@ -1364,9 +1424,10 @@
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($layanan_lab as $t)
-                                                        <tr class="pilihlayanan" namatindakan="{{ $t->Tindakan }}"
-                                                            tarif="{{ $t->tarif }}" kode="{{ $t->kode }}"
-                                                            id="{{ $t->kode }}">
+                                                        <tr class="pilihlayanan"
+                                                            namatindakan="{{ $t->Tindakan }}"
+                                                            tarif="{{ $t->tarif }}"
+                                                            kode="{{ $t->kode }}" id="{{ $t->kode }}">
                                                             <td>{{ $t->Tindakan }}</td>
                                                         </tr>
                                                     @endforeach
@@ -2523,6 +2584,7 @@
             }
         });
     }
+
     function showicare2() {
         var kodekunjungan = $('#kodekunjungan').val()
         $.ajax({
@@ -2773,8 +2835,8 @@
             }
         }
     });
-    function riwayatresep_pasien()
-    {
+
+    function riwayatresep_pasien() {
         rm = $('#nomorrm').val()
         spinner = $('#loader')
         spinner.show();
@@ -2794,8 +2856,8 @@
             }
         });
     }
-    function ambilriwayatorderhariini()
-    {
+
+    function ambilriwayatorderhariini() {
         var kodekunjungan = $('#kodekunjungan').val()
         spinner = $('#loader')
         spinner.show();
