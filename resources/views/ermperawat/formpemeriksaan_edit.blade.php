@@ -313,13 +313,13 @@
                                                 <input class="form-check-input" type="radio"
                                                     name="pasienmengeluhnyeri" id="pasienmengeluhnyeri"
                                                     value="Tidak Ada"
-                                                    @if ($resume[0]->Keluhannyeri == 'Tidak Ada' || $resume[0]->Keluhannyeri == '0' ) checked @endif>
+                                                    @if ($resume[0]->Keluhannyeri == 'Tidak Ada' || $resume[0]->Keluhannyeri == '0') checked @endif>
                                                 <label class="form-check-label" for="inlineRadio1">Tidak Ada</label>
                                             </div>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio"
                                                     name="pasienmengeluhnyeri" id="pasienmengeluhnyeri"
-                                                    value="Ada" @if ($resume[0]->Keluhannyeri == 'Ada' || $resume[0]->Keluhannyeri == '1' ) checked @endif>
+                                                    value="Ada" @if ($resume[0]->Keluhannyeri == 'Ada' || $resume[0]->Keluhannyeri == '1') checked @endif>
                                                 <label class="form-check-label" for="inlineRadio2">Ada</label>
                                             </div>
                                         </td>
@@ -781,6 +781,59 @@
                                             </div>
                                         </td>
                                     </tr>
+                                     <tr>
+                                    <td>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input"
+                                                id="pendampinganpasien" name="pendampinganpasien"
+                                                @if ($resume[0]->pendampinganpasien == 1) checked @endif>
+                                            <label class="form-check-label text-bold"
+                                                for="exampleCheck1">Pendampingan : Memberikan pendampingan khusus atau
+                                                menyediakan alat bantu jalan ( Kursi Roda / Tongkat ) bagi yang
+                                                membutuhkan </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>Edukasi Pasien Dan Keluarga </h5><br>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="edukasipasien1"
+                                                name="edukasipasien1"
+                                                @if ($resume[0]->edukasipasien1 == 1) checked @endif>
+                                            <label class="form-check-label text-bold"
+                                                for="exampleCheck1">Mengajarkan cara penggunaan alat bantu dan
+                                                mengunci rem kursi roda</label>
+                                        </div>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="edukasipasien2"
+                                                name="edukasipasien2"
+                                                @if ($resume[0]->edukasipasien2 == 1) checked @endif>
+                                            <label class="form-check-label text-bold" for="exampleCheck1">Memastikan
+                                                alas kaki yang digunakan aman, nyaman dan tidak licin</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>Manajemen Lingkunan </h5><br>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="edukasipasien3"
+                                                name="edukasipasien3"
+                                                @if ($resume[0]->edukasipasien3 == 1) checked @endif>
+                                            <label class="form-check-label text-bold" for="exampleCheck1">Membantu
+                                                memindahkan pasien ke area tunggu yang aman, dekat dengan pos perawat (
+                                                nurse station )</label>
+                                        </div>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="edukasipasien4"
+                                                name="edukasipasien4"
+                                                @if ($resume[0]->edukasipasien4 == 1) checked @endif>
+                                            <label class="form-check-label text-bold" for="exampleCheck1">Memastikan
+                                                pencahayaan ruang poli cukup dan lantai tidak basah</label>
+                                        </div>
+                                    </td>
+                                </tr>
                                 </tbody>
                             </table>
                             <table @if ($usia_hari < 4383) hidden @endif class="table">
@@ -1205,6 +1258,59 @@
                                         </div>
                                     </td>
                                 </tr>
+                                 <tr>
+                                    <td>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input"
+                                                id="pendampinganpasien" name="pendampinganpasien"
+                                                @if ($resume[0]->pendampinganpasien == 1) checked @endif>
+                                            <label class="form-check-label text-bold"
+                                                for="exampleCheck1">Pendampingan : Memberikan pendampingan khusus atau
+                                                menyediakan alat bantu jalan ( Kursi Roda / Tongkat ) bagi yang
+                                                membutuhkan </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>Edukasi Pasien Dan Keluarga </h5><br>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="edukasipasien1"
+                                                name="edukasipasien1"
+                                                @if ($resume[0]->edukasipasien1 == 1) checked @endif>
+                                            <label class="form-check-label text-bold"
+                                                for="exampleCheck1">Mengajarkan cara penggunaan alat bantu dan
+                                                mengunci rem kursi roda</label>
+                                        </div>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="edukasipasien2"
+                                                name="edukasipasien2"
+                                                @if ($resume[0]->edukasipasien2 == 1) checked @endif>
+                                            <label class="form-check-label text-bold" for="exampleCheck1">Memastikan
+                                                alas kaki yang digunakan aman, nyaman dan tidak licin</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>Manajemen Lingkunan </h5><br>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="edukasipasien3"
+                                                name="edukasipasien3"
+                                                @if ($resume[0]->edukasipasien3 == 1) checked @endif>
+                                            <label class="form-check-label text-bold" for="exampleCheck1">Membantu
+                                                memindahkan pasien ke area tunggu yang aman, dekat dengan pos perawat (
+                                                nurse station )</label>
+                                        </div>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="edukasipasien4"
+                                                name="edukasipasien4"
+                                                @if ($resume[0]->edukasipasien4 == 1) checked @endif>
+                                            <label class="form-check-label text-bold" for="exampleCheck1">Memastikan
+                                                pencahayaan ruang poli cukup dan lantai tidak basah</label>
+                                        </div>
+                                    </td>
+                                </tr>
                             </table>
                             <table @if ($usia_hari >= 4383) hidden @endif class="table">
                                 <tr>
@@ -1371,54 +1477,7 @@
                                         <textarea class="form-control" placeholder="Masukan diagnosa keperawatan ..." name="diagnosakeperawatan"
                                             id="diagnosakeperawatan">{{ $resume[0]->diagnosakeperawatan }}</textarea>
                                     </td>
-                                </tr>
-                                  <tr>
-                                    <td>
-                                        <div class="form-group form-check">
-                                            <input type="checkbox" class="form-check-input"
-                                                id="pendampinganpasien" name="pendampinganpasien" @if($resume[0]->pendampinganpasien == 1) checked @endif>
-                                            <label class="form-check-label text-bold"
-                                                for="exampleCheck1">Pendampingan : Memberikan pendampingan khusus atau
-                                                menyediakan alat bantu jalan ( Kursi Roda / Tongkat ) bagi yang
-                                                membutuhkan </label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h5>Edukasi Pasien Dan Keluarga </h5><br>
-                                        <div class="form-group form-check">
-                                            <input type="checkbox" class="form-check-input" id="edukasipasien1"
-                                                name="edukasipasien1" @if($resume[0]->edukasipasien1 == 1) checked @endif>
-                                            <label class="form-check-label text-bold"
-                                                for="exampleCheck1">Mengajarkan cara penggunaan alat bantu dan
-                                                mengunci rem kursi roda</label>
-                                        </div>
-                                        <div class="form-group form-check">
-                                            <input type="checkbox" class="form-check-input" id="edukasipasien2"
-                                                name="edukasipasien2" @if($resume[0]->edukasipasien2 == 1) checked @endif>
-                                            <label class="form-check-label text-bold" for="exampleCheck1">Memastikan
-                                                alas kaki yang digunakan aman, nyaman dan tidak licin</label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h5>Manajemen Lingkunan </h5><br>
-                                        <div class="form-group form-check">
-                                            <input type="checkbox" class="form-check-input" id="edukasipasien3"
-                                                name="edukasipasien3" @if($resume[0]->edukasipasien3 == 1) checked @endif>
-                                            <label class="form-check-label text-bold"
-                                                for="exampleCheck1">Membantu memindahkan pasien ke area tunggu yang aman, dekat dengan pos perawat ( nurse station )</label>
-                                        </div>
-                                        <div class="form-group form-check">
-                                            <input type="checkbox" class="form-check-input" id="edukasipasien4"
-                                                name="edukasipasien4" @if($resume[0]->edukasipasien4 == 1) checked @endif>
-                                            <label class="form-check-label text-bold" for="exampleCheck1">Memastikan
-                                                pencahayaan ruang poli cukup dan lantai tidak basah</label>
-                                        </div>
-                                    </td>
-                                </tr>
+                                </tr>                               
                             </table>
                         </div>
                     </div>
