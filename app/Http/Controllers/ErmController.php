@@ -713,7 +713,7 @@ class ErmController extends Controller
                 LEFT OUTER JOIN assesmen_dokters b ON a.`kode_kunjungan` = b.`id_kunjungan`
                 LEFT OUTER JOIN `erm_hasil_assesmen_keperawatan_rajal` c ON a.`kode_kunjungan` = c.`kode_kunjungan`
                 LEFT OUTER JOIN jkn_antrian d ON a.kode_kunjungan = d.kode_kunjungan
-                INNER JOIN mt_pasien e ON b.id_pasien = e.no_rm
+                INNER JOIN mt_pasien e ON a.no_rm = e.no_rm
                 WHERE DATE(a.`tgl_masuk`) BETWEEN ? AND ?
                 AND a.`kode_unit` = ? AND a.status_kunjungan != ?
                 ',[$this->get_date(),$this->get_date(),'1028',8]);
@@ -766,7 +766,7 @@ class ErmController extends Controller
                 LEFT OUTER JOIN assesmen_dokters b ON a.`kode_kunjungan` = b.`id_kunjungan`
                 LEFT OUTER JOIN `erm_hasil_assesmen_keperawatan_rajal` c ON a.`kode_kunjungan` = c.`kode_kunjungan`
                 LEFT OUTER JOIN jkn_antrian d ON a.kode_kunjungan = d.kode_kunjungan
-                INNER JOIN mt_pasien e ON b.id_pasien = e.no_rm
+                INNER JOIN mt_pasien e ON a.no_rm = e.no_rm
                 WHERE DATE(a.`tgl_masuk`) BETWEEN ? AND ?
                 AND a.`kode_unit` = ? AND a.status_kunjungan != ?
                 ',[$request->tgl_awal,$request->tgl_akhir,'1028',8]);
