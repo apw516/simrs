@@ -1217,6 +1217,25 @@ class UpdateERMcontroller extends Controller
         date_default_timezone_set('Asia/Jakarta');
         return 'OR' . $kode . date('ymd') . $kd;
     }
+    public function createLayanandetail()
+    {
+        //dummy
+        $q = DB::connection('mysql4')->select('SELECT id,id_layanan_detail,RIGHT(id_layanan_detail,6) AS kd_max  FROM ts_layanan_detail
+        WHERE DATE(tgl_layanan_detail) = CURDATE()
+        ORDER BY id DESC
+        LIMIT 1');
+        $kd = "";
+        if (count($q) > 0) {
+            foreach ($q as $k) {
+                $tmp = ((int) $k->kd_max) + 1;
+                $kd = sprintf("%06s", $tmp);
+            }
+        } else {
+            $kd = "000001";
+        }
+        date_default_timezone_set('Asia/Jakarta');
+        return 'DET' . date('ymd') . $kd;
+    }
     public function createLayanandetailOrder()
     {
         //dummy
