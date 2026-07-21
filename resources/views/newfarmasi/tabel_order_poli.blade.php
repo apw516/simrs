@@ -71,7 +71,6 @@
                 </div>
             </div>
         `).show();
-
             // 2. Sembunyikan view utama/pertama (misalnya .v_pertama)
             $('.v_awal').hide();
             $('.v_kedua').removeAttr('hidden',true)

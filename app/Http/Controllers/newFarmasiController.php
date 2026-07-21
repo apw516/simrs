@@ -167,4 +167,31 @@ class newFarmasiController extends FarmasiController
             'stokBarang'
         ]));
     }
+    public function simpandatapelayananobat(Request $request)
+    {
+        $dataobat = json_decode($_POST['dataobat'], true);
+        $kode_kunjungan = $request->kode_kunjungan;
+        dd($kode_kunjungan);
+        $simpantemplate = $request->is_simpan_template;
+        $nama_resep = $request->nama_resep;
+        $tgl_resep = $request->tgl_resep;
+        $tgl_pelayanan = $request->tgl_pelayanan;
+        $iterasi_tidak = $request->iterasi_tidak;
+        $iterasi_ya = $request->iterasi_ya;
+        $jumlah_iterasi = $request->jumlah_iterasi;
+        if ($jumlah_iterasi > 0) {
+            $iterasi = $iterasi_ya;
+        } else {
+            $iterasi = $iterasi_tidak;
+        }
+        foreach ($dataobat as $nama) {
+            $index = $nama['name'];
+            $value = $nama['value'];
+            $dataSet[$index] = $value;
+            if ($index == 'catatan') {
+                $arrayindex_far[] = $dataSet;
+            }
+        }
+        dd($arrayindex_far);
+    }
 }

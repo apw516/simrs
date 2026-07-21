@@ -918,3 +918,4 @@ Route::get('/index_order_resep', [newFarmasiController::class, 'index_order_rese
 Route::get('/order.poli.get_data', [newFarmasiController::class, 'getDataOrderPoli'])->name('order.poli.get_data');
 Route::get('/order.farmasi.detail', [newFarmasiController::class, 'getDetailOrder'])->name('order.farmasi.detail');
 Route::post('/ambilstokobatfarmasi', [newFarmasiController::class, 'ambilstokobatfarmasi'])->name('ambilstokobatfarmasi');
+Route::post('/simpandatapelayananobat', [newFarmasiController::class, 'simpandatapelayananobat'])->name('simpandatapelayananobat');

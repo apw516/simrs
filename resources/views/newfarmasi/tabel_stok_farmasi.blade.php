@@ -55,14 +55,12 @@
         })
     });
     $(document).ready(function() {
-
         // Fungsi Re-Index Nomor Urut di Tabel Order
         function reindexTableOrder() {
             $('#tbody-edit-order tr:visible').each(function(index) {
                 $(this).find('.row-number').text(index + 1);
             });
         }
-
         // Event Handler saat Tombol "Pilih" di Tabel Stok Diklik
         $(document).on('click', '.btn-pilih-obat', function() {
             var kodeBarang = $(this).data('kode');
@@ -70,7 +68,6 @@
             var stokBarang = $(this).data('stok');
             var aturanpakai = $(this).data('aturan');
             var sediaan = $(this).data('sediaan');
-
             // Validasi jika stok habis (opsional)
             if (parseInt(stokBarang) <= 0) {
                 Swal.fire('Stok Kosong!', 'Stok obat ini tidak mencukupi.', 'warning');
@@ -112,8 +109,8 @@
                     <td class="text-center row-number"></td>
                     <td class="text-center">
                         <code>${kodeBarang}</code>
-                        <input type="hidden" name="kode_barang[]" value="${kodeBarang}">
-                        <input type="hidden" name="id_detail[]" value="">
+                        <input type="hidden" name="kode_barang" value="${kodeBarang}">
+                        <input type="hidden" name="id_detail" value="">
                     </td>
                     <td>
                         <span class="fw-bold d-block text-dark">${namaBarang}</span>
@@ -123,13 +120,13 @@
                         <code>${stokBarang} ${sediaan}</code>
                     </td>
                     <td>
-                        <select class="form-control">
+                        <select class="form-control" name="jenis_resep">
                             <option value="0">Non Racikan</option>
                             <option value="1">Racikan</option>
                         </select>
                     </td>
                     <td>
-                        <select class="form-control">
+                        <select class="form-control" name="jenis_obat">
                             <option value="0">Obat Reguler</option>
                             <option value="1">Obat PRB</option>
                             <option value="2">Obat Kronis</option>
@@ -137,20 +134,20 @@
                         </select>
                     </td>
                     <td>
-                        <input type="number" name="jumlah_hari[]" class="form-control form-control-sm text-center input-hari" value="3" min="1" required>
+                        <input type="number" name="jumlah_hari" class="form-control form-control-sm text-center input-hari" value="3" min="1" required>
                     </td>
                     <td>
                         <div class="input-group input-group-sm">
-                            <input type="number" name="signa_1[]" class="form-control text-center input-signa1" value="3" min="1" required>
+                            <input type="number" name="signa_1" class="form-control text-center input-signa1" value="3" min="1" required>
                             <span class="input-group-text px-1">x</span>
-                            <input type="number" name="signa_2[]" class="form-control text-center input-signa2" value="1" min="1" required>
+                            <input type="number" name="signa_2" class="form-control text-center input-signa2" value="1" min="1" required>
                         </div>
                     </td>
                     <td>
-                        <input type="number" name="jumlah_obat[]" class="form-control form-control-sm text-center input-jumlah fw-bold text-success" value="10" min="1" max="${stokBarang}" required>
+                        <input type="number" name="jumlah_obat" class="form-control form-control-sm text-center input-jumlah fw-bold text-success" value="10" min="1" max="${stokBarang}" required>
                     </td>
                     <td>
-                        <input type="text" name="catatan[]" class="form-control form-control-sm" placeholder="Aturan pakai / Catatan" value="${aturanpakai}">
+                        <input type="text" name="catatan" class="form-control form-control-sm" placeholder="Aturan pakai / Catatan" value="${aturanpakai}">
                     </td>
                     <td class="text-center">
                         <button type="button" class="btn btn-sm btn-outline-danger btn-hapus-row-order" title="Batalkan / Hapus Obat">

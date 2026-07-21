@@ -1,5 +1,5 @@
-    <input type="hidden" name="id_header" value="{{ $orderHeader->id ?? '' }}">
-    <input type="hidden" name="kode_kunjungan" value="{{ $orderHeader->kode_kunjungan ?? '' }}">
+    <input type="hidden" id="id_header_order" name="id_header" value="{{ $orderHeader->id ?? '' }}">
+    <input type="hidden" id="kode_kunjungan" name="kode_kunjungan" value="{{ $orderHeader->kode_kunjungan ?? '' }}">
     <div class="card shadow-sm border-0">
         <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
             <h6 class="mb-0 fw-bold"><i class="bi bi-pencil-square me-2"></i>Edit / Detail Order Farmasi</h6>
@@ -62,14 +62,14 @@
                         <label class="form-label small fw-bold text-dark d-block">Jenis Resep</label>
                         <div class="form-check form-check-inline mt-1">
                             <input class="form-check-input radio-iterasi" type="radio" name="jenis_iterasi"
-                                id="iterasi_non" value="0"
+                                id="iterasi_tidak" value="0"
                                 {{ ($orderHeader->iterasi ?? 0) == 0 ? 'checked' : '' }}>
                             <label class="form-check-label small" for="iterasi_non">Non - Iterasi</label>
                         </div>
                         <div class="form-check form-check-inline mt-1">
                             <input class="form-check-input radio-iterasi" type="radio" name="jenis_iterasi"
                                 id="iterasi_ya" value="1"
-                                {{ ($orderHeader->iterasi ?? 0) == 1 ? 'checked' : '' }}>
+                                {{ ($orderHeader->iterasi ?? 1) == 1 ? 'checked' : '' }}>
                             <label class="form-check-label small" for="iterasi_ya">Iterasi</label>
                         </div>
                     </div>
@@ -94,24 +94,25 @@
             <button class="btn btn-warning mb-2 float-right"><i class="bi bi-plus-circle me-1"></i> Buat Obat
                 Racik</button>
             <div class="table-responsive">
-                <table class="table table-sm table-striped table-bordered align-middle" id="tabel-edit-detail-order">
-                    <thead class="table-dark text-center small">
-                        <tr>
-                            <th style="width: 40px;">No</th>
-                            <th style="width: 100px;">Kode</th>
-                            <th>Nama Obat / Barang</th>
-                            <th style="width: 150px;">Stok Tersedia</th>
-                            <th style="width: 150px;">Jenis Resep</th>
-                            <th style="width: 150px;">Jenis Obat</th>
-                            <th style="width: 90px;">Hari</th>
-                            <th style="width: 130px;">Signa / Aturan</th>
-                            <th style="width: 90px;">Jumlah</th>
-                            <th>Catatan</th>
-                            <th style="width: 60px;">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody-edit-order">
-                        <form id="form-update-order-farmasi" class="formobat">
+                <form id="form-update-order-farmasi" class="formobat">
+                    <table class="table table-sm table-striped table-bordered align-middle"
+                        id="tabel-edit-detail-order">
+                        <thead class="table-dark text-center small">
+                            <tr>
+                                <th style="width: 40px;">No</th>
+                                <th style="width: 100px;">Kode</th>
+                                <th>Nama Obat / Barang</th>
+                                <th style="width: 150px;">Stok Tersedia</th>
+                                <th style="width: 150px;">Jenis Resep</th>
+                                <th style="width: 150px;">Jenis Obat</th>
+                                <th style="width: 90px;">Hari</th>
+                                <th style="width: 130px;">Signa / Aturan</th>
+                                <th style="width: 90px;">Jumlah</th>
+                                <th>Catatan</th>
+                                <th style="width: 60px;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-edit-order">
                             @forelse($orderDetail as $index => $item)
                                 <tr id="row-edit-{{ $item->kode_barang }}">
                                     <td class="text-center row-number">{{ $index + 1 }}</td>
@@ -181,9 +182,9 @@
                                         order ini.</td>
                                 </tr>
                             @endforelse
-                        </form>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </form>
             </div>
         </div>
         <div class="card-footer d-flex justify-content-between align-items-center bg-white">
@@ -196,7 +197,6 @@
             </button>
         </div>
     </div>
-    <!-- Modal -->
     <div class="modal fade" id="modaltambahobat" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -271,13 +271,16 @@
         }
 
         function save() {
-            var data = $('.formobat').serializeArray();
+            var dataobat = $('.formobat').serializeArray();
             var is_simpan_template = $('#is_simpan_template:checked').val()
             var nama_resep = $('#nama_resep').val()
             tgl_resep = $('#tgl_resep').val()
             tgl_pelayanan = $('#tgl_pelayanan').val()
-            jenis_iterasi = $('#jenis_iterasi').val()
+            iterasi_tidak = $('#iterasi_tidak').val()
+            iterasi_ya = $('#iterasi_ya').val()
             jumlah_iterasi = $('#jumlah_iterasi').val()
+            id_order_header = $('#id_header_order').val()
+            kode_kunjungan = $('#kode_kunjungan').val()
             spinner = $('#loader')
             spinner.show();
             $.ajax({
@@ -286,12 +289,18 @@
                 dataType: 'json',
                 data: {
                     _token: "{{ csrf_token() }}",
-                    data: JSON.stringify(data),
-                    jumlah_iterasi,
+                    dataobat: JSON.stringify(dataobat),
                     is_simpan_template,
-                    nama_resep
+                    nama_resep,
+                    tgl_resep,
+                    tgl_pelayanan,
+                    iterasi_tidak,
+                    iterasi_ya,
+                    jumlah_iterasi,
+                    id_order_header,
+                    kode_kunjungan
                 },
-                url: '<?= route('simpanhasilpemeriksaandokter') ?>',
+                url: '<?= route('simpandatapelayananobat') ?>',
                 error: function(data) {
                     spinner.hide()
                     Swal.fire({
@@ -317,7 +326,7 @@
                             text: data.message,
                             footer: ''
                         })
-                        resume2()
+                        location.reload()
                     }
                 }
             });
