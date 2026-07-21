@@ -702,6 +702,7 @@ class UpdateERMcontroller extends Controller
                     die;
                 }
             }
+            $now = $this->get_now();
             if (count($formorder_lab) > 1) {
                 foreach ($formorder_lab as $namatindakan) {
                     $index = $namatindakan['name'];
