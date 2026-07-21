@@ -893,7 +893,7 @@
                             </tbody>
                         </table>
                     </form>
-                    <div @if(auth()->user()->unit != '1012' || auth()->user()->unit != '1027' || auth()->user()->unit != '1032') hidden @endif class="col-md-12">
+                    <div class="col-md-12">
                         <div class="card">
                             <div class="card-header text-bold bg-dark">FORMULIR HASIL EKSPERTISI MEDIS</div>
                             <div class="card-body">
