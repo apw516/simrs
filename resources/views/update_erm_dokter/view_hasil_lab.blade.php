@@ -5,7 +5,7 @@
                 <div class="card-header fw-bold text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.5px;">
                     <i class="fas fa-microscope text-primary mr-2"></i> Hasil Pemeriksaan Laboratorium
                 </div>
-                <div class="card-body p-2"> adaa
+                <div class="card-body p-2">
                     @foreach ($datahasil as $c)
                         <div class="mb-4 border rounded shadow-sm">
                             <div

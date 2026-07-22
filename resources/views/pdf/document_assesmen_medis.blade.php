@@ -305,11 +305,15 @@
                                 </tr>
                                 <tr>
                                     <td style="padding: 5px 0; border: none; text-align: center;">
-                                        <div
+                                        {{-- <div
                                             style="width: 90px; height: 90px; border: 1px dashed #ccc; margin: 0 auto; text-align: center; line-height: 90px;">
                                             <span
                                                 style="font-size: 9px; color: #aaa; font-weight: normal; display: inline-block; vertical-align: middle;">[
                                                 TTE / QR CODE ]</span>
+                                        </div> --}}
+                                        <div style="width: 90px; height: 90px; margin: 0 auto; text-align: center;">
+                                            <img src="data:image/svg+xml;base64,{{ $qrcode }}"
+                                                style="width: 90px; height: 90px; display: block;" alt="QR Code TTE">
                                         </div>
                                     </td>
                                 </tr>
@@ -470,11 +474,15 @@
                                 </tr>
                                 <tr>
                                     <td style="padding: 5px 0; border: none; text-align: center;">
-                                        <div
+                                        {{-- <div
                                             style="width: 90px; height: 90px; border: 1px dashed #ccc; margin: 0 auto; text-align: center; line-height: 90px; background-color: #fff;">
                                             <span
                                                 style="font-size: 9px; color: #aaa; font-weight: normal; display: inline-block; vertical-align: middle;">[
                                                 TTE / QR CODE ]</span>
+                                        </div> --}}
+                                         <div style="width: 90px; height: 90px; margin: 0 auto; text-align: center;">
+                                            <img src="data:image/svg+xml;base64,{{ $qrcode }}"
+                                                style="width: 90px; height: 90px; display: block;" alt="QR Code TTE">
                                         </div>
                                     </td>
                                 </tr>

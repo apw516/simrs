@@ -235,7 +235,6 @@
                             {{ $years }} Tahun, {{ $months }} Bulan, {{ $days }} Hari
                         </td>
                     </tr>
-
                     <tr>
                         <td style="font-weight: bold; background-color: #f8f9fa; padding: 5px 8px;">Riwayat Psikologis
                         </td>
@@ -243,7 +242,6 @@
                         <td style="font-weight: bold; background-color: #f8f9fa; padding: 5px 8px;">Keterangan</td>
                         <td style="padding: 5px 8px;">{{ $k->keterangan_riwayat_psikolog }}</td>
                     </tr>
-
                     <tr>
                         <td colspan="4"
                             style="background-color: #e9ecef; font-weight: bold; text-align: center; text-transform: uppercase; letter-spacing: 0.5px; padding: 6px;">
@@ -1221,11 +1219,15 @@
                 </tr>
                 <tr>
                     <td style="padding: 5px 0; border: none; text-align: center;">
-                        <div
+                        {{-- <div
                             style="width: 90px; height: 90px; border: 1px dashed #ccc; margin: 0 auto; text-align: center; line-height: 90px; background-color: #fff;">
                             <span
                                 style="font-size: 9px; color: #aaa; font-weight: normal; display: inline-block; vertical-align: middle;">[
                                 TTE / QR CODE ]</span>
+                        </div> --}}
+                        <div style="width: 90px; height: 90px; margin: 0 auto; text-align: center;">
+                            <img src="data:image/svg+xml;base64,{{ $qrcode }}"
+                                style="width: 90px; height: 90px; display: block;" alt="QR Code TTE">
                         </div>
                     </td>
                 </tr>
