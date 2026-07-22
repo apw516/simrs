@@ -105,7 +105,7 @@
                                         unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
                                             class="bi bi-printer mr-2"></i>Assesmen
                                         Medis </button>
-                                    <button type="button" class="btn btn-secondary cetakresumettd"
+                                    <button type="button" class="btn btn-secondary cetakresumetanpattd"
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
                                         unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
                                             class="bi bi-printer mr-2"></i>Assesmen

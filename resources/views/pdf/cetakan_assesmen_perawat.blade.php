@@ -121,7 +121,6 @@
                         Telp.(0231)661126 Email: brsud.waled@gmail.com
                     </div>
                 </td>
-
                 <td style="width: 55%; padding: 8px; vertical-align: middle;">
                     <table style="width: 100%; font-size: 11px; border: none;">
                         <tr>
@@ -1241,6 +1240,54 @@
     </tr>
     </table>
 @else
+    <table class="table table-sm table-bordered align-middle"
+        style="width: 100%; border-collapse: collapse; font-size: 11px; color: #000; margin-top: 15px;">
+        <tr>
+            <td style="width: 25%; padding: 5px 8px; font-weight: bold; background-color: #f8f9fa;">Hasil Pemeriksaan
+            </td>
+            <td colspan="3" style="padding: 5px 8px;">{{ $k->keterangan_cppt }} <br>{{ $k->tindakankeperawatan }}
+            </td>
+        </tr>
+        <tr>
+            <td
+                style="font-weight: bold; background-color: #f8f9fa; padding: 10px 8px; vertical-align: bottom; border-right: none;">
+                <div style="font-size: 10px; font-weight: normal; color: #666; line-height: 1.3; font-style: italic;">
+                    *Dokumen Asuhan Keperawatan ini disahkan secara elektronik<br>
+                    melalui Sistem Informasi Manajemen Rumah Sakit.
+                </div>
+            </td>
+            <td colspan="3"
+                style="height: 190px;padding: 10px 8px; vertical-align: middle; border-left: none; text-align: right;">
+                <table
+                    style="width: 200px; text-align: center; font-size: 13px; font-style: normal; display: inline-table; float: right; border: none; background: transparent;">
+                    <tr>
+                        <td style="padding-bottom: 8px; border: none;">
+                            <strong>Pemeriksa (Perawat),</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px 0; border: none; text-align: center;">
+                            {{-- <div
+                            style="width: 90px; height: 90px; border: 1px dashed #ccc; margin: 0 auto; text-align: center; line-height: 90px; background-color: #fff;">
+                            <span
+                                style="font-size: 9px; color: #aaa; font-weight: normal; display: inline-block; vertical-align: middle;">[
+                                TTE / QR CODE ]</span>
+                        </div> --}}
+                            <div style="width: 90px; height: 90px; margin: 0 auto; text-align: center;">
+                                <img src="data:image/svg+xml;base64,{{ $qrcode }}"
+                                    style="width: 90px; height: 90px; display: block;" alt="QR Code TTE">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 8px; line-height: 1.3; border: none; text-transform: uppercase;">
+                            <u><strong>{{ $k->namapemeriksa }}</strong></u>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
     @endif
     @endforeach
     </div>
