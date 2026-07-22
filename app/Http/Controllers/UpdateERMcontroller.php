@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 
-class UpdateERMcontroller extends Controller
+class UpdateERMcontroller extends ErmController
 {
     public function form_pemeriksaan_dokter(Request $request)
     {
