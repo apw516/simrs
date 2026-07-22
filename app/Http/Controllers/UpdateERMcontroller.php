@@ -1264,21 +1264,16 @@ class UpdateERMcontroller extends Controller
     public function ambilhasillab(Request $request)
     {
         $rm = $request->nomorrm;
-
         // Query counter kunjungan (tetap dipertahankan sesuai kode Anda)
         $ts_kunjungan = db::select('select counter from ts_kunjungan where no_rm = ? and status_kunjungan != 8 ORDER BY kode_kunjungan DESC limit 8', [$rm]);
-
         // Panggil Stored Procedure hasil lab umum/non-spesial
         $hasil_lab = db::select("CALL LIHAT_HASIL_LAB_XXX(?)", [$rm]);
-
         if (empty($hasil_lab)) {
             return response()->json(['status' => 'empty', 'message' => 'Tidak ada data hasil lab untuk RM ini.']);
         }
-
         $berhasil = 0;
         $gagal = 0;
         $list_file = [];
-
         if (count($hasil_lab) > 0) {
             foreach ($hasil_lab as $c) {
                 $urlDokumen = $c->link;
