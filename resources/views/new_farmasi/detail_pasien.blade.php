@@ -228,10 +228,6 @@
     [aria-expanded="false"] .toggle-icon {
         transform: rotate(-90deg);
     }
-</style>
-
-<!-- CSS Tambahan untuk Efek Rotasi Panah -->
-<style>
     .transition-icon {
         transition: transform 0.3s ease;
     }
@@ -241,3 +237,124 @@
         transform: rotate(-90deg);
     }
 </style>
+<script>
+    $(document).ready(function() {
+        // 1. Inisialisasi DataTables
+        var tableObat = $('#table-stok-obat').DataTable({
+            "pageLength": 10,
+            "language": {
+                "search": "Cari Obat:",
+                "lengthMenu": "Tampilkan _MENU_ data",
+                "zeroRecords": "Obat tidak ditemukan",
+                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ obat",
+                "infoEmpty": "Tidak ada data",
+                "paginate": {
+                    "first": "Awal",
+                    "last": "Akhir",
+                    "next": "›",
+                    "previous": "‹"
+                }
+            }
+        });
+        // 2. Event Listener Klik Tombol 'Pilih'
+        $('#table-stok-obat').on('click', '.btn-pilih-obat', function() {
+            var kodeBarang = $(this).data('kode');
+            var namaBarang = $(this).data('nama');
+            var maxStok = parseInt($(this).data('stok'));
+
+            // Cek apakah obat sudah ada di dalam form .arrayobat
+            var existingRow = $('#row-obat-' + kodeBarang);
+
+            if (existingRow.length > 0) {
+                // Jika sudah ada, tambahkan nilainya (+1)
+                var inputQty = existingRow.find('.input-qty');
+                var currentQty = parseInt(inputQty.val());
+
+                if (currentQty < maxStok) {
+                    inputQty.val(currentQty + 1);
+                } else {
+                    alert('Jumlah melebihi stok yang tersedia (' + maxStok + ')');
+                }
+            } else {
+                // Hapus pesan "Belum ada obat"
+                $('#empty-row').hide();
+
+                // Tambahkan baris input baru ke dalam form
+                var htmlRow = `
+                <tr id="row-obat-${kodeBarang}">
+                    <td>
+                        <span class="fw-bold d-block">${namaBarang}</span>
+                        <small class="text-muted">${kodeBarang}</small>
+                        <input type="hidden" name="kode_barang" value="${kodeBarang}">
+                    </td>
+                    <td>
+                        <input type="number" 
+                               name="jumlahhari" 
+                               class="form-control form-control-sm text-center input-qty" 
+                               value="1" 
+                               min="1" 
+                               max="" 
+                               required>
+                    </td>
+                    <td>
+                        <input type="number" 
+                               name="signa1" 
+                               class="form-control form-control-sm text-center input-qty" 
+                               value="1" 
+                               min="1" 
+                               max="" 
+                               required>
+                    </td>
+                    <td class="text-center px-0 fw-bold">x</td>
+                    <td>
+                        <input type="number" 
+                               name="signa2" 
+                               class="form-control form-control-sm text-center input-qty" 
+                               value="1" 
+                               min="1" 
+                               max="" 
+                               required>
+                    </td>
+                    <td>
+                        <input type="number" 
+                               name="jumlahobat" 
+                               class="form-control form-control-sm text-center input-qty" 
+                               value="1" 
+                               min="1" 
+                               max="${maxStok}" 
+                               required>
+                    </td>
+                    <td>
+                        <textarea name="catatan" class="form-control form-control-sm text-center" placeholder="contoh : Sesudah Makan / Sebelum Makan" rows="3px"></textarea>
+                    </td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-sm btn-outline-danger btn-hapus-obat">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+                $('#wrapper-obat-terpilih').append(htmlRow);
+            }
+            checkSubmitButton();
+        });
+        // 3. Event Listener Hapus Baris Obat dari Form
+        $('#wrapper-obat-terpilih').on('click', '.btn-hapus-obat', function() {
+            $(this).closest('tr').remove();
+            // Jika tidak ada item tersisa, tampilkan kembali placeholder
+            if ($('#wrapper-obat-terpilih tr').length === 1) {
+                $('#empty-row').show();
+            }
+            checkSubmitButton();
+        });
+        // 4. Function Cek Status Tombol Submit
+        function checkSubmitButton() {
+            var totalItem = $('#wrapper-obat-terpilih tr').not('#empty-row').length;
+            if (totalItem > 0) {
+                $('#btn-submit-obat').prop('disabled', false);
+            } else {
+                $('#btn-submit-obat').prop('disabled', true);
+            }
+        }
+    });
+</script>
