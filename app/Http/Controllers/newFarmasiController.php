@@ -39,7 +39,12 @@ class newFarmasiController extends FarmasiController
         foreach ($bypoli as $d) {
             array_push($jml, $d->jml);
         }
-
+        $kodeUnit = '4002';
+        // 1. Buat Subquery terlebih dahulu
+        $subQuery = DB::table('ti_kartu_stok')
+            ->select('kode_unit', 'kode_barang', DB::raw('MAX(no) AS max_id'))
+            ->where('kode_unit', $kodeUnit)
+            ->groupBy('kode_unit', 'kode_barang');
         $stokBarang = DB::table('ti_kartu_stok as k')
             ->joinSub($subQuery, 'last_trans', function ($join) {
                 $join->on('k.no', '=', 'last_trans.max_id');
