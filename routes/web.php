@@ -915,3 +915,4 @@ Route::post('/simpanaktivasitte', [UpdateERMcontroller::class, 'simpanaktivasitt
 Route::get('index_depo_obat', [newFarmasiController::class, 'index_depo_obat'])->name('index_depo_obat');
 Route::post('ambildatakunjungandepo', [newFarmasiController::class, 'ambildatakunjungandepo'])->name('ambildatakunjungandepo');
 Route::post('ambildetailkunjunganpasiendepo', [newFarmasiController::class, 'ambildetailkunjunganpasiendepo'])->name('ambildetailkunjunganpasiendepo');
+Route::post('simpandataresepobatpasien', [newFarmasiController::class, 'simpandataresepobatpasien'])->name('simpandataresepobatpasien');

@@ -129,6 +129,7 @@
         <i class="fas fa-list-ol mr-2"></i>Daftar Obat Terpilih
     </h6>
     <div class="table-responsive">
+        <form action="" method="POST" class="arrayobat">
         <table class="table table-bordered table-striped table-hover align-middle">
             <thead class="thead-light">
                 <tr>
@@ -156,6 +157,7 @@
                 </tr>
             </tbody>
         </table>
+        </form>
     </div>
 
     <!-- Tombol Submit -->
@@ -406,7 +408,7 @@
     }
 
     function save() {
-        var data1 = $('.form_obat').serializeArray();
+        var data1 = $('.arrayobat').serializeArray();
         spinner = $('#loader')
         spinner.show();
         $.ajax({
@@ -415,9 +417,9 @@
             dataType: 'json',
             data: {
                 _token: "{{ csrf_token() }}",
-                data1: JSON.stringify(data1)
+                data_obat: JSON.stringify(data1)
             },
-            url: '<?= route('simpanhasilpemeriksaandokter') ?>',
+            url: '<?= route('simpandataresepobatpasien') ?>',
             error: function(data) {
                 spinner.hide()
                 Swal.fire({
@@ -443,7 +445,6 @@
                         text: data.message,
                         footer: ''
                     })
-                    resume2()
                 }
             }
         });

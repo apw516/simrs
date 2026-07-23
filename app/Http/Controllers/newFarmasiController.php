@@ -109,4 +109,17 @@ class newFarmasiController extends FarmasiController
             'stokBarang'
         ]));
     }
+    public function simpandataresepobatpasien(Request $request)
+    {
+        $data_obat = json_decode($_POST['data_obat'], true);
+        foreach ($data_obat as $nama) {
+            $index = $nama['name'];
+            $value = $nama['value'];
+            $dataSet[$index] = $value;
+            if ($index == 'catatan') {
+                $arrayobat[] = $dataSet;
+            }
+        }
+        dd($arrayobat);
+    }
 }
