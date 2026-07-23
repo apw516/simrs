@@ -399,13 +399,53 @@
             cancelButtonColor: "#d33",
             confirmButtonText: "Ya, Simpan resep !"
         }).then((result) => {
-            if (result.isConfirmed){
+            if (result.isConfirmed) {
                 save()
             }
         });
     }
-    function save()
-    {
-        alert('ok')
+
+    function save() {
+        var data1 = $('.form_obat').serializeArray();
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            async: true,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                _token: "{{ csrf_token() }}",
+                data1: JSON.stringify(data1)
+            },
+            url: '<?= route('simpanhasilpemeriksaandokter') ?>',
+            error: function(data) {
+                spinner.hide()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ooops....',
+                    text: 'Sepertinya ada masalah......',
+                    footer: ''
+                })
+            },
+            success: function(data) {
+                spinner.hide()
+                if (data.kode == 500) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oopss...',
+                        text: data.message,
+                        footer: ''
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'OK',
+                        text: data.message,
+                        footer: ''
+                    })
+                    resume2()
+                }
+            }
+        });
     }
 </script>
