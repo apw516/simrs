@@ -168,7 +168,49 @@
                 </button>
             </div>
             <div class="modal-body">
-                ...
+                <div class="table-responsive">
+                    <table id="table-stok-obat"
+                        class="table table-striped table-hover table-bordered align-middle w-100">
+                        <thead class="table-dark text-center">
+                            <tr>
+                                <th style="width: 50px;">No</th>
+                                <th>Nama Barang</th>
+                                <th>Nama Generik</th>
+                                <th>Stok</th>
+                                <th style="width: 80px;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($stokBarang as $index => $item)
+                                <tr>
+                                    <td class="text-center">{{ $index + 1 }}</td>
+                                    <td>
+                                        <span class="fw-bold d-block">{{ $item->nama_barang }}</span>
+                                        <small class="text-muted">{{ $item->kode_barang }}</small>
+                                    </td>
+                                    <td>{{ $item->nama_generik ?? '-' }}</td>
+                                    <td class="text-end fw-bold text-success">
+                                        {{ number_format($item->stok_saat_ini, 0, ',', '.') }}
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm btn-primary btn-pilih-obat"
+                                            data-kode="{{ $item->kode_barang }}"
+                                            data-nama="{{ $item->nama_barang }}"
+                                            data-stok="{{ $item->stok_saat_ini }}">
+                                            <i class="bi bi-plus-lg"></i> Pilih
+                                        </button>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">
+                                        <em>Tidak ada data stok barang yang ditemukan.</em>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

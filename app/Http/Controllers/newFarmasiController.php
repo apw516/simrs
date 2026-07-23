@@ -39,32 +39,10 @@ class newFarmasiController extends FarmasiController
         foreach ($bypoli as $d) {
             array_push($jml, $d->jml);
         }
-        $kodeUnit = '4002';
-        // 1. Buat Subquery terlebih dahulu
-        $subQuery = DB::table('ti_kartu_stok')
-            ->select('kode_unit', 'kode_barang', DB::raw('MAX(no) AS max_id'))
-            ->where('kode_unit', $kodeUnit)
-            ->groupBy('kode_unit', 'kode_barang');
-        $stokBarang = DB::table('ti_kartu_stok as k')
-            ->joinSub($subQuery, 'last_trans', function ($join) {
-                $join->on('k.no', '=', 'last_trans.max_id');
-            })
-            ->join('mt_barang as b', 'k.kode_barang', '=', 'b.kode_barang')
-            ->where('k.kode_unit', $kodeUnit)
-            ->where('k.stok_current', '>', 0)
-            ->select([
-                'b.kode_barang',
-                'b.nama_barang',
-                'b.nama_generik',
-                'k.kode_unit',
-                'k.stok_current as stok_saat_ini',
-                'k.tgl_stok as tanggal_transaksi_terakhir',
-            ])
-            ->get();
         return view('new_farmasi.index_depo_obat', compact([
             'title',
             'sidebar',
-            'sidebar_m'
+            'sidebar_m',
         ]));
     }
     public function ambildatakunjungandepo(Request $request)
@@ -103,10 +81,32 @@ class newFarmasiController extends FarmasiController
         $kode_kunjungan = $request->kodekunjungan;
         $data_kunjungan = db::select('select *,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin from ts_kunjungan where kode_kunjungan = ?', [$kode_kunjungan]);
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx from mt_pasien where no_rm = ?', [$data_kunjungan[0]->no_rm]);
-
+        $kodeUnit = '4002';
+        // 1. Buat Subquery terlebih dahulu
+        $subQuery = DB::table('ti_kartu_stok')
+            ->select('kode_unit', 'kode_barang', DB::raw('MAX(no) AS max_id'))
+            ->where('kode_unit', $kodeUnit)
+            ->groupBy('kode_unit', 'kode_barang');
+        $stokBarang = DB::table('ti_kartu_stok as k')
+            ->joinSub($subQuery, 'last_trans', function ($join) {
+                $join->on('k.no', '=', 'last_trans.max_id');
+            })
+            ->join('mt_barang as b', 'k.kode_barang', '=', 'b.kode_barang')
+            ->where('k.kode_unit', $kodeUnit)
+            ->where('k.stok_current', '>', 0)
+            ->select([
+                'b.kode_barang',
+                'b.nama_barang',
+                'b.nama_generik',
+                'k.kode_unit',
+                'k.stok_current as stok_saat_ini',
+                'k.tgl_stok as tanggal_transaksi_terakhir',
+            ])
+            ->get();
         return view('new_farmasi.detail_pasien', compact([
             'data_kunjungan',
-            'mt_pasien'
+            'mt_pasien',
+            'stokBarang'
         ]));
     }
 }
