@@ -132,28 +132,37 @@
         <table class="table table-bordered table-striped table-hover align-middle">
             <thead class="thead-light">
                 <tr>
-                    <th style="width: 50px;">No</th>
-                    <th>Nama Obat</th>
-                    <th style="width: 100px;">Jenis Resep</th>
-                    <th style="width: 100px;">Jenis Obat</th>
-                    <th style="width: 100px;">Iterasi</th>
-                    <th style="width: 100px;">Jlh Iterasi</th>
-                    <th>Jumlah hari</th>
-                    <th>Signa 1</th>
-                    <th>Signa 2</th>
-                    <th>Catatan</th>
-                    <th style="width: 80px;" class="text-center">Aksi</th>
+                    <th style="width: 40px;" class="text-center">No</th>
+                    <th style="min-width: 90px;">Nama Obat</th>
+                    <th style="width: 180px;">Jenis Resep</th>
+                    <th style="width: 180px;">Jenis Obat</th>
+                    <th style="width: 90px;">Iterasi</th>
+                    <th style="width: 80px;">Jlh Iter</th>
+                    <th style="width: 90px;">Jlh Hari</th>
+                    <th style="width: 120px;">Signa 1</th>
+                    <th style="width: 80px;"></th>
+                    <th style="width: 140px;">Signa 2</th>
+                    <th style="width: 100px;">Total Qty</th>
+                    <th style="min-width: 120px;">Catatan</th>
+                    <th style="width: 60px;" class="text-center">Aksi</th>
                 </tr>
             </thead>
-            <tbody>
-
+            <tbody id="wrapper-obat-terpilih">
+                <!-- Row Default Saat Kosong -->
+                <tr id="empty-row">
+                    <td colspan="12" class="text-center text-muted font-italic py-3">
+                        Belum ada obat yang dipilih. Klik tombol "Pilih" pada tabel obat.
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
-    <!-- Tombol Simpan Akhir -->
-    <div class="d-flex justify-content-end mt-4">
-        <button type="submit" class="btn btn-primary px-4 font-weight-bold">
-            <i class="fas fa-save mr-2"></i>Simpan Resep Obat
+
+    <!-- Tombol Submit -->
+    <div class="d-flex justify-content-end mt-3 mb-4">
+        <button type="button" id="btn-submit-obat" class="btn btn-primary px-4 font-weight-bold"
+            onclick="simpanresep()">
+            <i class="fas fa-save mr-2"></i>Simpan Resep
         </button>
     </div>
 </div>
@@ -228,6 +237,7 @@
     [aria-expanded="false"] .toggle-icon {
         transform: rotate(-90deg);
     }
+
     .transition-icon {
         transition: transform 0.3s ease;
     }
@@ -256,19 +266,20 @@
                 }
             }
         });
+
         // 2. Event Listener Klik Tombol 'Pilih'
         $('#table-stok-obat').on('click', '.btn-pilih-obat', function() {
             var kodeBarang = $(this).data('kode');
             var namaBarang = $(this).data('nama');
-            var maxStok = parseInt($(this).data('stok'));
+            var maxStok = parseInt($(this).data('stok')) || 999;
 
-            // Cek apakah obat sudah ada di dalam form .arrayobat
+            // Cek apakah obat sudah ada di dalam tabel terpilih
             var existingRow = $('#row-obat-' + kodeBarang);
 
             if (existingRow.length > 0) {
-                // Jika sudah ada, tambahkan nilainya (+1)
-                var inputQty = existingRow.find('.input-qty');
-                var currentQty = parseInt(inputQty.val());
+                // Jika obat sudah ada, tambahkan nilai 'jumlahobat' (+1)
+                var inputQty = existingRow.find('.input-jumlah-obat');
+                var currentQty = parseInt(inputQty.val()) || 0;
 
                 if (currentQty < maxStok) {
                     inputQty.val(currentQty + 1);
@@ -276,78 +287,98 @@
                     alert('Jumlah melebihi stok yang tersedia (' + maxStok + ')');
                 }
             } else {
-                // Hapus pesan "Belum ada obat"
+                // Hapus pesan "Belum ada obat" (empty-row)
                 $('#empty-row').hide();
 
-                // Tambahkan baris input baru ke dalam form
+                // Hitung nomor urut baris
+                var noUrut = $('#wrapper-obat-terpilih tr').not('#empty-row').length + 1;
+
+                // Generate HTML Baris Baru sesuai <th> Tabel
                 var htmlRow = `
                 <tr id="row-obat-${kodeBarang}">
+                    <td class="text-center nomor-urut">${noUrut}</td>
                     <td>
-                        <span class="fw-bold d-block">${namaBarang}</span>
+                        <span class="font-weight-bold d-block">${namaBarang}</span>
                         <small class="text-muted">${kodeBarang}</small>
                         <input type="hidden" name="kode_barang" value="${kodeBarang}">
                     </td>
                     <td>
-                        <input type="number" 
-                               name="jumlahhari" 
-                               class="form-control form-control-sm text-center input-qty" 
-                               value="1" 
-                               min="1" 
-                               max="" 
-                               required>
+                        <select name="jenis_resep" class="form-control form-control-sm">
+                            <option value="R/">R/ (Non-Racik)</option>
+                            <option value="Racikan">Racikan</option>
+                        </select>
                     </td>
                     <td>
-                        <input type="number" 
-                               name="signa1" 
-                               class="form-control form-control-sm text-center input-qty" 
-                               value="1" 
-                               min="1" 
-                               max="" 
-                               required>
-                    </td>
-                    <td class="text-center px-0 fw-bold">x</td>
-                    <td>
-                        <input type="number" 
-                               name="signa2" 
-                               class="form-control form-control-sm text-center input-qty" 
-                               value="1" 
-                               min="1" 
-                               max="" 
-                               required>
+                        <select name="jenis_obat" class="form-control form-control-sm">
+                            <option value="Reguler">Reguler</option>
+                            <option value="Kronis">Kronis</option>
+                            <option value="PRB">PRB</option>
+                            <option value="Kemoterapi">Kempoterapi</option>
+                        </select>
                     </td>
                     <td>
-                        <input type="number" 
-                               name="jumlahobat" 
-                               class="form-control form-control-sm text-center input-qty" 
-                               value="1" 
-                               min="1" 
-                               max="${maxStok}" 
-                               required>
+                        <select name="iterasi" class="form-control form-control-sm text-center">
+                            <option value="0">Tidak</option>
+                            <option value="1">Ya</option>
+                        </select>
                     </td>
                     <td>
-                        <textarea name="catatan" class="form-control form-control-sm text-center" placeholder="contoh : Sesudah Makan / Sebelum Makan" rows="3px"></textarea>
+                        <input type="number" name="jlh_iterasi" class="form-control form-control-sm text-center" value="0" min="0">
+                    </td>
+                    <td>
+                        <input type="number" name="jumlahhari" class="form-control form-control-sm text-center" value="1" min="1" required>
+                    </td>
+                    <td>
+                        <input type="number" name="signa1" class="form-control form-control-sm text-center" value="3" min="1" required>
+                    </td>
+                    <td  class="text-center align-middle font-weight-bold">
+                        <span class="mr-1">x</span>
+                    </td>
+                    <td>
+                            <input type="number" name="signa2" class="form-control form-control-sm text-center" value="1" min="1" required>
+                    </td>
+                    <td>
+                        <input type="number" name="jumlahobat" class="form-control form-control-sm text-center input-jumlah-obat" value="1" min="1" max="${maxStok}" required>
+                    </td>
+                    <td>
+                        <input type="text" name="catatan" class="form-control form-control-sm" placeholder="Contoh: Ssh Makan">
                     </td>
                     <td class="text-center">
                         <button type="button" class="btn btn-sm btn-outline-danger btn-hapus-obat">
-                            <i class="bi bi-x-lg"></i>
+                            <i class="fas fa-times"></i>
                         </button>
                     </td>
                 </tr>
             `;
+
                 $('#wrapper-obat-terpilih').append(htmlRow);
             }
+
+            updateNomorUrut();
             checkSubmitButton();
         });
-        // 3. Event Listener Hapus Baris Obat dari Form
+
+        // 3. Event Listener Hapus Baris Obat
         $('#wrapper-obat-terpilih').on('click', '.btn-hapus-obat', function() {
             $(this).closest('tr').remove();
-            // Jika tidak ada item tersisa, tampilkan kembali placeholder
-            if ($('#wrapper-obat-terpilih tr').length === 1) {
+
+            // Jika tabel kosong, tampilkan kembali row empty
+            if ($('#wrapper-obat-terpilih tr').not('#empty-row').length === 0) {
                 $('#empty-row').show();
             }
+
+            updateNomorUrut();
             checkSubmitButton();
         });
-        // 4. Function Cek Status Tombol Submit
+
+        // Helper: Update Nomor Urut Baris secara Dinamis
+        function updateNomorUrut() {
+            $('#wrapper-obat-terpilih tr').not('#empty-row').each(function(index) {
+                $(this).find('.nomor-urut').text(index + 1);
+            });
+        }
+
+        // Helper: Enable / Disable Tombol Simpan
         function checkSubmitButton() {
             var totalItem = $('#wrapper-obat-terpilih tr').not('#empty-row').length;
             if (totalItem > 0) {
@@ -357,4 +388,24 @@
             }
         }
     });
+
+    function simpanresep() {
+        Swal.fire({
+            title: "Anda yakin ?",
+            text: "Pastikan data sudah terisi dengan benar!",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, Simpan resep !"
+        }).then((result) => {
+            if (result.isConfirmed){
+                save()
+            }
+        });
+    }
+    function save()
+    {
+        alert('ok')
+    }
 </script>
