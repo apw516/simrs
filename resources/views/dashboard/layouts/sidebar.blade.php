@@ -564,6 +564,15 @@
                   @if (auth()->user()->hak_akses == 6)
                       <li class="nav-header">FARMASI</li>
                       <li class="nav-item">
+                          <a href="{{ route('index_depo_obat') }}"
+                              class="nav-link @if ($sidebar == 'indexdepo') active @endif">
+                              <i class="nav-icon fas fa-th"></i>
+                              <p>
+                                  Depo Obat
+                              </p>
+                          </a>
+                      </li>
+                      <li class="nav-item">
                           <a href="{{ route('index_layanan_resep') }}"
                               class="nav-link @if ($sidebar == 'farmasi_1') active @endif">
                               <i class="nav-icon fas fa-th"></i>

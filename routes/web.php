@@ -909,3 +909,9 @@ Route::get('/panduan/aktivasi-tte', [UpdateERMcontroller::class, 'viewPanduanTte
 Route::get('log.buka.panduan', [UpdateERMcontroller::class, 'viewPanduanTte'])->name('log.buka.panduan');
 
 Route::post('/simpanaktivasitte', [UpdateERMcontroller::class, 'simpanaktivasitte'])->name('simpanaktivasitte');
+
+
+
+Route::get('index_depo_obat', [newFarmasiController::class, 'index_depo_obat'])->name('index_depo_obat');
+Route::post('ambildatakunjungandepo', [newFarmasiController::class, 'ambildatakunjungandepo'])->name('ambildatakunjungandepo');
+Route::post('ambildetailkunjunganpasiendepo', [newFarmasiController::class, 'ambildetailkunjunganpasiendepo'])->name('ambildetailkunjunganpasiendepo');
