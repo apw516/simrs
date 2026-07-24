@@ -65,8 +65,8 @@
                                 <br>
                                 <br>
                                 {{-- @if ($item->pic == auth()->user()->id)  --}}
-                                <button @if($item->pic != auth()->user()->id) disabled @endif class="btn btn-success ttesekarang"
-                                    kode_kunjungan="{{ $item->kode_kunjungan }}"><i
+                                <button @if ($item->pic != auth()->user()->id) disabled @endif
+                                    class="btn btn-success ttesekarang" kode_kunjungan="{{ $item->kode_kunjungan }}"><i
                                         class="bi bi-pen-fill mr-1 ml-1"></i>
                                     Tanda Tangan</button> <br>
                                 {{-- @endif --}}
@@ -84,8 +84,8 @@
                                 </div>
                                 <br>
                                 <br>
-                                <button @if($item->pic != auth()->user()->id) disabled @endif class="btn btn-success ttesekarang"
-                                    kode_kunjungan="{{ $item->kode_kunjungan }}"><i
+                                <button @if ($item->pic != auth()->user()->id) disabled @endif
+                                    class="btn btn-success ttesekarang" kode_kunjungan="{{ $item->kode_kunjungan }}"><i
                                         class="bi bi-pen-fill mr-1 ml-1"></i>
                                     Tanda Tangan Ulang</button> <br>
                             @endif
@@ -96,7 +96,10 @@
                             <button class="btn btn-warning mb-2 ambilformeditheadercatatanhd"
                                 idheader="{{ $item->id }}"><i class="bi bi-pencil-square"></i></button>
                             <button class="btn btn-success mb-2 cetakanhd"
-                                onclick="cetakcatatanhd({{ $item->kode_kunjungan }})"><i class="bi bi-printer"></i></button>
+                                onclick="cetakcatatanhd({{ $item->kode_kunjungan }})"><i
+                                    class="bi bi-printer"></i></button>
+                            <button class="btn btn-warning mb-2 cetakanhd"
+                                onclick="cetakcatatanhd2({{ $item->id }})"><i class="bi bi-printer"></i></button>
                             <table class="table">
                                 <tr>
                                     <td colspan="2">Preskripsi HD :
@@ -2088,6 +2091,11 @@
     function cetakcatatanhd(id) {
         kode_kunjungan = id
         window.open('cetakcatatanhd/' + kode_kunjungan);
+    }
+
+    function cetakcatatanhd2(id) {
+        idheader = id
+        window.open('cetakcatatanhemodialisa/' + idheader);
     }
     $(".cetakresumettd").on('click', function(event) {
         kode_kunjungan = $(this).attr('kodekunjungan')
