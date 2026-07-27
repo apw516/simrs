@@ -88,31 +88,36 @@
         </h6>
     </div>
     <div class="card-body p-4">
-        <form action="" method="POST" id="formInputObat">
-            @csrf
+        <form action="" method="POST" id="formInputObat" class="formInputObat">
             <!-- Hidden Input untuk menangkap No RM / Kunjungan -->
             <input type="hidden" name="no_rm" value="{{ $data_kunjungan[0]->no_rm ?? '' }}">
-
+            <input type="hidden" name="kode_kunjungan" value="{{ $data_kunjungan[0]->kode_kunjungan ?? '' }}">
+            <input type="hidden" name="kode_penjamin" value="{{ $data_kunjungan[0]->kode_penjamin ?? '' }}">
             <div class="row">
                 <!-- Select Nama Obat -->
                 <div class="col-md-3 mb-3">
+                    <label class="font-weight-bold small text-muted">Penjamin</label>
+                    <input readonly type="text" name="nama_penjamin" class="form-control" placeholder="0" min="1"
+                        value="{{ $data_kunjungan[0]->nama_penjamin }}">
+                </div>
+                <div class="col-md-3 mb-3">
                     <label class="font-weight-bold small text-muted">NO SEP KUNJUNGAN</label>
-                    <input type="text" name="no_sep" class="form-control" placeholder="0" min="1"
+                    <input readonly type="text" name="no_sep" class="form-control" placeholder="0" min="1"
                         value="{{ $data_kunjungan[0]->no_sep }}">
                 </div>
-
                 <!-- Jumlah / Qty -->
                 <div class="col-md-2 mb-3">
                     <label class="font-weight-bold small text-muted">Tanggal Resep</label>
-                    <input type="date" name="jumlah" class="form-control" placeholder="0" min="1" required>
+                    <input type="date" name="tgl_resep" class="form-control" placeholder="0" min="1" value="{{ request('tgl_awal', date('Y-m-d')) }}">
                 </div>
                 <div class="col-md-2 mb-3">
                     <label class="font-weight-bold small text-muted">Tanggal Pelayanan Resep</label>
-                    <input type="date" name="jumlah" class="form-control" placeholder="0" min="1" required>
+                    <input type="date" name="tgl_pel_resep" class="form-control" placeholder="0" min="1" value="{{ request('tgl_awal', date('Y-m-d')) }}">
                 </div>
                 <div class="col-md-2 mb-3">
                     <label class="font-weight-bold small text-muted">Dokter</label>
-                    <input type="text" name="jumlah" class="form-control" placeholder="0" min="1" required>
+                    <input readonly type="text" name="nama_dokter" class="form-control" placeholder="0" min="1" value="{{ $dokter[0]->nama_paramedis}}">
+                    <input hidden type="text" name="kode_paramedis" class="form-control" placeholder="0" min="1" value="{{ $dokter[0]->kode_dokter_jkn}}">
                 </div>
             </div>
             <!-- Tombol Tambah ke Daftar -->
@@ -135,6 +140,7 @@
                 <tr>
                     <th style="width: 40px;" class="text-center">No</th>
                     <th style="min-width: 90px;">Nama Obat</th>
+                    <th style="width: 180px;">Stok</th>
                     <th style="width: 180px;">Jenis Resep</th>
                     <th style="width: 180px;">Jenis Obat</th>
                     <th style="width: 90px;">Iterasi</th>
@@ -305,6 +311,9 @@
                         <input type="hidden" name="kode_barang" value="${kodeBarang}">
                     </td>
                     <td>
+                        <input type="number" name="stok" class="form-control form-control-sm text-center" value="${maxStok}" min="0">
+                    </td>
+                    <td>
                         <select name="jenis_resep" class="form-control form-control-sm">
                             <option value="R/">R/ (Non-Racik)</option>
                             <option value="Racikan">Racikan</option>
@@ -409,6 +418,7 @@
 
     function save() {
         var data1 = $('.arrayobat').serializeArray();
+        var data2 = $('.formInputObat').serializeArray();
         spinner = $('#loader')
         spinner.show();
         $.ajax({
@@ -417,7 +427,8 @@
             dataType: 'json',
             data: {
                 _token: "{{ csrf_token() }}",
-                data_obat: JSON.stringify(data1)
+                data_obat: JSON.stringify(data1),
+                data_header_obat: JSON.stringify(data2),
             },
             url: '<?= route('simpandataresepobatpasien') ?>',
             error: function(data) {

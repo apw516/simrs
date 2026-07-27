@@ -81,6 +81,8 @@ class newFarmasiController extends FarmasiController
         $kode_kunjungan = $request->kodekunjungan;
         $data_kunjungan = db::select('select *,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin from ts_kunjungan where kode_kunjungan = ?', [$kode_kunjungan]);
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx from mt_pasien where no_rm = ?', [$data_kunjungan[0]->no_rm]);
+        $kode_paramedis = $data_kunjungan[0]->kode_paramedis;
+        $dokter = db::select('select * from mt_paramedis where kode_paramedis = ?', [$kode_paramedis]);
         $kodeUnit = '4002';
         // 1. Buat Subquery terlebih dahulu
         $subQuery = DB::table('ti_kartu_stok')
@@ -106,12 +108,19 @@ class newFarmasiController extends FarmasiController
         return view('new_farmasi.detail_pasien', compact([
             'data_kunjungan',
             'mt_pasien',
-            'stokBarang'
+            'stokBarang',
+            'dokter'
         ]));
     }
     public function simpandataresepobatpasien(Request $request)
     {
         $data_obat = json_decode($_POST['data_obat'], true);
+        $data_header_obat = json_decode($_POST['data_header_obat'], true);
+        foreach ($data_header_obat as $nama) {
+            $index = $nama['name'];
+            $value = $nama['value'];
+            $dataheader[$index] = $value;
+        }
         foreach ($data_obat as $nama) {
             $index = $nama['name'];
             $value = $nama['value'];
@@ -120,6 +129,73 @@ class newFarmasiController extends FarmasiController
                 $arrayobat[] = $dataSet;
             }
         }
-        dd($arrayobat);
+        $kode_unit_pelayanan = auth()->user()->unit;
+        $kode_kunjungan = $dataheader['kode_kunjungan'];
+        $data_kunjungan = db::select('select *,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kode_kunjungan]);
+        $collection = collect($arrayobat);
+        $dataTerpisah = $collection->groupBy('jenis_obat');
+        $obatreguler = $dataTerpisah->get('Reguler', []);
+        $obatkronis = $dataTerpisah->get('Kronis', []);
+        $obatkemo = $dataTerpisah->get('Kemoterapi', []);
+        $obatprb = $dataTerpisah->get('PRB', []);
+        if (count($dataTerpisah->get('Reguler', [])) > 0) {
+            // Panggil fungsi terpisah untuk memproses resep reguler
+            $this->prosesResepReguler($dataTerpisah->get('Reguler'), $data_kunjungan, $kode_unit_pelayanan);
+        }
+    }
+    public function prosesResepReguler($dataobat, $data_kunjungan, $kode_unit_pelayanan)
+    {
+        $r = DB::connection('mysql7')->select("CALL GET_NOMOR_LAYANAN_HEADER('$kode_unit_pelayanan')");
+        $PENJAMIN = $data_kunjungan[0]->kode_penjamin;
+        $kode_kunjungan = $data_kunjungan[0]->kode_kunjungan;
+        $unit = db::select('select * from mt_unit where kode_unit =?', [$kode_unit_pelayanan]);
+        $jsf = DB::select('select * from mt_jasa_farmasi');
+        if ($PENJAMIN == 'P01') {
+            $kat_resep = 'Resep Tunai';
+            $tipe_tx = '1';
+        } else {
+            $kat_resep = 'Resep Kredit';
+            $tipe_tx = '2';
+        }
+        $kode_layanan_header = $r[0]->no_trx_layanan;
+        if ($kode_layanan_header == "") {
+            $year = date('y');
+            $kode_layanan_header = $unit[0]->prefix_unit . $year . date('m') . date('d') . '000001';
+            DB::connection('mysql7')->insert(
+                'INSERT INTO mt_nomor_trx (tgl, no_trx_layanan, unit) VALUES (?, ?, ?)',
+                [date('Y-m-d H:i:s'), $kode_layanan_header, $kode_unit_pelayanan]
+            );
+        }
+        $cek_resep_ke = db::select('select id from ts_layanan_header where kode_kunjungan = ? and kode_unit = ? and status_layanan != 3', [$kode_kunjungan, $kode_unit_pelayanan]);
+        if (count($cek_resep_ke) == 0) {
+            $urutan = 1;
+        } else {
+            $s =  count($cek_resep_ke);
+            $urutan = $s + 1;
+        }
+        $data_layanan_header = [
+            'kode_layanan_header' => $kode_layanan_header,
+            'tgl_entry' => $this->get_now(),
+            'kode_kunjungan' => $kode_kunjungan,
+            'kode_unit' => auth()->user()->unit,
+            'kode_tipe_transaksi' => $tipe_tx,
+            'pic' => auth()->user()->id,
+            'status_layanan' => '3',
+            'keterangan' => 'Resep Ke :' . $urutan,
+            'total_layanan' => '0',
+            // 'status_retur' => '0',
+            'kode_penjaminx' => $data_kunjungan[0]->kode_penjamin,
+            'tagihan_pribadi' => 0,
+            'tagihan_penjamin' => 0,
+            'status_pembayaran' => 'OPN',
+            'dok_kirim' => $data_kunjungan[0]->kode_paramedis,
+            'unit_pengirim' => $data_kunjungan[0]->kode_unit . ' | ' . $data_kunjungan[0]->nama_unit,
+            'diagnosa' => $data_kunjungan[0]->diagx,
+        ];
+        // $idBaru = DB::connection('mysql7')->table('ts_layanan_header')->insertGetId($data_layanan_header);
+        $now = $this->get_now();
+        $totalheader = 0;
+        
+
     }
 }
