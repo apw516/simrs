@@ -743,7 +743,6 @@
                         <div class="text-success mb-3">
                             <i class="bi bi-check-circle-fill" style="font-size: 4rem;"></i>
                         </div>
-
                         <h2 class="fw-bold text-dark mb-2">Data assesmen berhasil disimpan !</h2>
                         <p class="text-secondary mx-auto mb-4 fs-5" style="max-width: 550px;">
                             Anda telah menyelesaikan pengisian <span class="fw-semibold text-primary">Formulir
@@ -798,7 +797,8 @@
                         class="card border-start border-danger border-4 shadow-sm rounded-3 mb-3 bg-danger bg-opacity-10">
                         <div class="card-body p-4 d-flex align-items-center justify-content-between flex-wrap g-3">
                             <div class="row">
-                                <div class="col-md-12">
+                                {{-- status ini ditutup sementara --}}
+                                {{-- <div class="col-md-12">
                                     <div class="d-flex align-items-center">
                                         <div class="text-danger me-3">
                                             <i class="bi bi-shield-exclamation fs-1"></i>
@@ -810,7 +810,7 @@
                                                 digital sebelum DPJP membubuhkan TTE.</span>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-md-12">
                                     @if ($cp->iddokter == auth()->user()->id)
                                         @if (auth()->user()->status_tte == 0 || auth()->user()->status_tte == 'NULL' || empty(auth()->user()->status_tte))
@@ -861,16 +861,18 @@
                                                         Aktivasi Tanda Tangan Elektronik (TTE) Diperlukan
                                                     </h6>
                                                     <p class="text-secondary mb-3 small lh-base">
-                                                        Anda belum mengaktifkan fitur integrasi TTE pada profil DPJP Anda.
+                                                        Anda belum mengaktifkan fitur integrasi TTE pada profil DPJP
+                                                        Anda.
                                                         Dokumen rekam medis ini
-                                                        <strong class="text-danger">belum sah secara hukum digital</strong>
+                                                        <strong class="text-danger">belum sah secara hukum
+                                                            digital</strong>
                                                         sebelum ditandatangani secara elektronik.
                                                     </p>
-        
                                                     <div class="mb-3 d-flex gap-3 flex-wrap">
                                                         <a href="javascript:void(0)" id="bukaPanduanTte"
                                                             class="btn btn-sm btn-link text-warning fw-bold p-0 text-decoration-none small">
-                                                            <i class="bi bi-file-earmark-pdf-fill me-1"></i> Panduan TTE (Klik
+                                                            <i class="bi bi-file-earmark-pdf-fill me-1"></i> Panduan
+                                                            TTE (Klik
                                                             Disini)
                                                         </a>
                                                         <a href="javascript:void(0)" id="loginemail"
@@ -879,12 +881,13 @@
                                                             Cirebonkab
                                                         </a>
                                                     </div>
-        
+
                                                     <div class="bg-light rounded-3 p-2.5 mb-3 border border-light-subtle"
                                                         style="max-width: 360px;">
                                                         <small class="text-muted d-block fw-bold mb-1"
                                                             style="font-size: 0.72rem; text-uppercase: tracking-wider;">
-                                                            <i class="bi bi-envelope-fill me-1"></i> Akun Email Verifikasi
+                                                            <i class="bi bi-envelope-fill me-1"></i> Akun Email
+                                                            Verifikasi
                                                             BSRE:
                                                         </small>
                                                         <div class="d-flex justify-content-between align-items-center mb-1"
@@ -900,55 +903,64 @@
                                                                 class="badge bg-dark-subtle text-dark font-monospace">{{ auth()->user()->password_t }}</span>
                                                         </div>
                                                     </div>
-        
+
                                                     <hr class="border-light-subtle my-3">
-        
+
                                                     <form id="formAktivasiTte" class="mt-2 formaktivasitte"
                                                         style="max-width: 450px;">
                                                         @csrf
-                                                        <h6 class="fw-bold text-dark mb-2" style="font-size: 0.85rem;"><i
-                                                                class="bi bi-shield-lock-fill text-secondary me-1"></i> Form
+                                                        <h6 class="fw-bold text-dark mb-2"
+                                                            style="font-size: 0.85rem;"><i
+                                                                class="bi bi-shield-lock-fill text-secondary me-1"></i>
+                                                            Form
                                                             Aktivasi & Verifikasi DPJP</h6>
                                                         <div class="mb-2">
-                                                            <label class="form-label small text-secondary mb-1 fw-semibold">NIK
+                                                            <label
+                                                                class="form-label small text-secondary mb-1 fw-semibold">NIK
                                                                 (Nomor Induk Kependudukan) <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" name="nik" id="inputNik"
                                                                 class="form-control form-control-sm rounded-2"
-                                                                placeholder="Masukkan 16 digit NIK" required maxlength="16">
+                                                                placeholder="Masukkan 16 digit NIK" required
+                                                                maxlength="16">
                                                         </div>
-        
+
                                                         <div class="form-check form-switch mb-2 mt-2">
-                                                            <input class="form-check-input cur-pointer" type="checkbox"
-                                                                role="switch" id="ingatPassphrase" name="setuju_simpan"
-                                                                value="1" checked>
+                                                            <input class="form-check-input cur-pointer"
+                                                                type="checkbox" role="switch" id="ingatPassphrase"
+                                                                name="setuju_simpan" value="1" checked>
                                                             <label
                                                                 class="form-check-label small text-dark fw-semibold cur-pointer"
                                                                 voids for="ingatPassphrase">
                                                                 Simpan Passphrase secara aman di sistem
                                                             </label>
-                                                            <small class="text-muted d-block" style="font-size: 0.75rem;">Jika
-                                                                aktif, Anda tidak perlu mengetik PIN/Password setiap kali
+                                                            <small class="text-muted d-block"
+                                                                style="font-size: 0.75rem;">Jika
+                                                                aktif, Anda tidak perlu mengetik PIN/Password setiap
+                                                                kali
                                                                 menandatangani resep/resume.</small>
                                                         </div>
-        
+
                                                         <div class="mb-3" id="groupPassphrase">
                                                             <label
                                                                 class="form-label small text-secondary mb-1 fw-semibold">Passphrase
-                                                                / Password TTE BSRE <span class="text-danger">*</span></label>
+                                                                / Password TTE BSRE <span
+                                                                    class="text-danger">*</span></label>
                                                             <div class="input-group input-group-sm">
                                                                 <input type="password" name="password_tte"
-                                                                    id="inputPassphrase" class="form-control rounded-start-2"
+                                                                    id="inputPassphrase"
+                                                                    class="form-control rounded-start-2"
                                                                     placeholder="Masukkan password keamanan TTE Anda">
-                                                                <button class="btn btn-outline-secondary" type="button"
-                                                                    id="togglePasswordSec"><i
+                                                                <button class="btn btn-outline-secondary"
+                                                                    type="button" id="togglePasswordSec"><i
                                                                         class="bi bi-eye-fill"></i></button>
                                                             </div>
                                                         </div>
                                                         <button type="button"
                                                             class="btn btn-warning btn-sm w-100 rounded-2 fw-bold py-2 shadow-sm text-dark"
                                                             id="btnSimpanAktivasi" onclick="simpanaktivasitte()">
-                                                            <i class="bi bi-check-circle-fill me-1"></i> Verifikasi & Aktifkan
+                                                            <i class="bi bi-check-circle-fill me-1"></i> Verifikasi &
+                                                            Aktifkan
                                                             TTE Saya
                                                         </button>
                                                     </form>
@@ -956,18 +968,32 @@
                                             </div>
                                         @else
                                             @if (auth()->user()->persetujuan_simpan == 1)
-                                                <div class="mt-2 mt-md-0">
+                                                {{-- <div class="mt-2 mt-md-0">
                                                     <button
                                                         class="btn btn-primary btn-sm rounded-2 px-3 py-2 fw-bold shadow-sm simpantandatangan">
                                                         <i class="bi bi-shield-check-fill me-1"></i> Sematkan TTE Sekarang
                                                     </button>
+                                                </div> --}}
+                                                <div class="d-flex align-items-center">
+                                                    <div class="text-warning me-3">
+                                                        <i class="bi bi-shield-check fs-1"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="fw-bold text-dark mb-1">Resume Medis Sudah
+                                                            Terverifikasi TTE</h6>
+                                                        <span class="text-secondary small d-block">Berkas rekam medis
+                                                            ini telah
+                                                            ditandatangani secara sah menggunakan Tanda Tangan
+                                                            Elektronik.</span>
+                                                    </div>
                                                 </div>
                                             @else
                                                 <div class="mt-2 mt-md-0">
                                                     <button
                                                         class="btn btn-primary btn-sm rounded-2 px-3 py-2 fw-bold shadow-sm"
                                                         data-toggle="modal" data-target="#modallogintte">
-                                                        <i class="bi bi-shield-check-fill me-1"></i> Sematkan TTE Sekarang
+                                                        <i class="bi bi-shield-check-fill me-1"></i> Sematkan TTE
+                                                        Sekarang
                                                     </button>
                                                 </div>
                                             @endif
