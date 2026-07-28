@@ -346,7 +346,7 @@ class ModelBSRE extends Model
 
             // Mengambil body response dan mengubahnya menjadi Object/Array PHP
             $result = json_decode($response->getBody()->getContents());
-
+            // dd($result);
             // Berhasil dikirim, silakan proses $result di sini
             return response()->json([
                 'status'  => 'success',

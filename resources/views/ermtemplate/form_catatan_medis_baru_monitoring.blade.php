@@ -110,6 +110,15 @@
                                         unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
                                             class="bi bi-printer mr-2"></i>Assesmen
                                         Medis </button>
+                                    @if ($k->ref_kunjungan != 0)
+                                        <button type="button" class="btn btn-secondary cetaklembarkonsul"
+                                            kodekunjungan="{{ $k->kodek }}"><i class="bi bi-eye mr-2"></i>Lembar
+                                            Konsul</button>
+                                    @endif
+                                    <button type="button" class="btn btn-secondary cetakhasilexpertisipoli"
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                        kodekunjungan="{{ $k->kodek }}" unit="{{ $k->kode_unit }}"><i
+                                            class="bi bi-printer mr-2"></i>Hasil Expertisi Poli</button>
                                     {{-- @if ($k->kode_unit == 1014) --}}
                                     <button type="button" class="btn btn-secondary laporanoperasi"
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
@@ -1790,4 +1799,12 @@
         iddokumen = $(this).attr('iddokumen')
         window.open('cetaksuratpengantar/' + iddokumen)
     });
+    $(".cetaklembarkonsul").on('click', function(event) {
+        kode_kunjungan = $(this).attr('kodekunjungan')
+        window.open('cetaklembarkonsul/' + kode_kunjungan);
+    })
+    $(".cetakhasilexpertisipoli").on('click', function(event) {
+        kode_kunjungan = $(this).attr('kodekunjungan')
+        window.open('cetakhasilexpertisipoli/' + kode_kunjungan);
+    })
 </script>

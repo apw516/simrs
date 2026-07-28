@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use phpseclib3\Net\SFTP;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class Pdf2Controller extends Controller
 {
@@ -911,6 +912,101 @@ class Pdf2Controller extends Controller
         $time = $dt->toTimeString();
         $now = $date . ' ' . $time;
         return $now;
+    }
+    public function cetakhasilexpertisipoli($kodekunjungan)
+    {
+        $kunjungan = db::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+        $assesmen = db::select('select *,fc_nama_unit1(kode_unit) as unit_konsul from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$kunjungan[0]->no_rm]);
+        $cek2 = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and jenis_dokumen = ?', [$kodekunjungan, 'EXPERTISI OBGYN']);
+        if (count($cek2) > 0) {
+            $t = count($cek2) + 1;
+            $nama = 'EXO' . $t;
+        } else {
+            $savee = [
+                'kode_kunjungan' => $kodekunjungan,
+                'status_code' => '200',
+                'tgl_kirim' => $this->get_now(),
+                'jenis_dokumen' => 'CATATAN KONSUL',
+            ];
+            db::table('log_ttd_elektronik')->insert($savee);
+            $nama = 'EXO' . '1';
+        }
+        $jawabkonsulan = [
+            'id_dokumen' => $nama . $kodekunjungan,
+            'nama_user' => $assesmen[0]->nama_dokter,
+            'tanggal_verifikasi' => $assesmen[0]->tgl_pemeriksaan,
+            'jabatan' => "Dokter",
+        ];
+        $v = new ModelBSRE();
+        $DD = $v->sendpdftosiramah($jawabkonsulan);
+        $url1 = "https://siramah.rsudwaled.com/filetandatangan?id=" . $nama . $kodekunjungan;
+        // $url = 'adadad';
+        $qrjawab = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url1));
+        $pdf = Pdf::loadView('pdf.cetak_expertisi_poli', compact([
+            'assesmen',
+            'mt_pasien',
+            'qrjawab'
+        ]));
+        $nama = $mt_pasien[0]->nama_px;
+        return $pdf->stream($nama . '.pdf');
+    }
+    public function cetaklembarkonsul($kodekunjungan)
+    {
+        $kunjungan = db::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+        $refkunjungan = $kunjungan[0]->ref_kunjungan;
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$kunjungan[0]->no_rm]);
+
+        $assesmen_konsul = db::select('select * from assesmen_dokters where id_kunjungan = ?', [$refkunjungan]);
+        $assesmen_jawab = db::select('select *,fc_nama_unit1(kode_unit) as unit_konsul from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
+        if (count($assesmen_konsul) > 0) {
+            $tanggal_konsul =  $assesmen_konsul[0]->tgl_kunjungan;
+            $tanggal_jawab =  $assesmen_jawab[0]->tgl_kunjungan;
+            $carbonDate = Carbon::parse($tanggal_konsul);
+            $carbonDate2 = Carbon::parse($tanggal_jawab);
+            $tanggal_konsul_fix = $carbonDate->isoFormat('dddd, D MMMM Y');
+            $tanggal_jawab_fix = $carbonDate2->isoFormat('dddd, D MMMM Y');
+        } else {
+            $tanggal_konsul_fix = Carbon::now()->isoFormat('dddd, D MMMM Y');
+            $tanggal_jawab_fix = Carbon::now()->isoFormat('dddd, D MMMM Y');
+        }
+        $cek2 = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and jenis_dokumen = ?', [$kodekunjungan, 'CATATAN KONSUL']);
+        if (count($cek2) > 0) {
+            $t = count($cek2) + 1;
+            $nama = 'ck' . $t;
+        } else {
+            $savee = [
+                'kode_kunjungan' => $kodekunjungan,
+                'status_code' => '200',
+                'tgl_kirim' => $this->get_now(),
+                'jenis_dokumen' => 'CATATAN KONSUL',
+            ];
+            db::table('log_ttd_elektronik')->insert($savee);
+            $nama = 'ck' . '1';
+        }
+        $jawabkonsulan = [
+            'id_dokumen' => $nama . $kodekunjungan,
+            'nama_user' => $assesmen_jawab[0]->nama_dokter . ' & ' . $assesmen_konsul[0]->nama_dokter,
+            'tanggal_verifikasi' => $tanggal_jawab,
+            'jabatan' => "Dokter",
+        ];
+        $v = new ModelBSRE();
+        $DD = $v->sendpdftosiramah($jawabkonsulan);
+        $url1 = "https://siramah.rsudwaled.com/filetandatangan?id=" . $nama . $kodekunjungan;
+        // $url = 'adadad';
+        $qrjawab = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url1));
+        $qrkonsul = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url1));
+        $pdf = Pdf::loadView('pdf.cetakan_lembar_konsul', compact([
+            'tanggal_jawab_fix',
+            'tanggal_konsul_fix',
+            'mt_pasien',
+            'assesmen_jawab',
+            'assesmen_konsul',
+            'qrjawab',
+            'qrkonsul',
+        ]));
+        $nama = $mt_pasien[0]->nama_px;
+        return $pdf->stream($nama . '.pdf');
     }
     public function cetakcatatanhd($kodekunjungan)
     {

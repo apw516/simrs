@@ -881,6 +881,8 @@ Route::post('/simpanttddokter2', [Pdf2Controller::class, 'simpanttddokter'])->na
 Route::post('/tandatangancatatanhd', [Pdf2Controller::class, 'tandatangancatatanhd'])->name('tandatangancatatanhd');
 Route::get('/cetakresumettd/{kodekunjungan}', [Pdf2Controller::class, 'cetakresumettd']);
 Route::get('/cetakcatatanhd/{kodekunjungan}', [Pdf2Controller::class, 'cetakcatatanhd']);
+Route::get('/cetaklembarkonsul/{kodekunjungan}', [Pdf2Controller::class, 'cetaklembarkonsul']);
+Route::get('/cetakhasilexpertisipoli/{kodekunjungan}', [Pdf2Controller::class, 'cetakhasilexpertisipoli']);
 
 
 
