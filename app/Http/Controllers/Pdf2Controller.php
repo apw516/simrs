@@ -170,9 +170,9 @@ class Pdf2Controller extends Controller
         ];
         assesmenawaldokter::whereRaw('id_kunjungan = ?', array($request->kodekunjungan))->update($data);
         ts_layanan_header_order::whereRaw('kode_kunjungan = ? and status_order = ?', array($request->kodekunjungan, 0))->update($data2);
-        if (auth()->user()->persetujuan_simpan == 1) {
-            $send = $this->sendtte($request->kodekunjungan);
-        }
+        // if (auth()->user()->persetujuan_simpan == 1) {
+        //     $send = $this->sendtte($request->kodekunjungan);
+        // }
         $data = [
             'kode' => 200,
             'message' => 'Data berhasil disimpan !'
@@ -612,7 +612,6 @@ class Pdf2Controller extends Controller
         INNER JOIN mt_tarif_header c ON SUBSTR(b.kode_tarif_detail,1,6) = c.`KODE_TARIF_HEADER`
         WHERE a.`kode_kunjungan` = ? AND a.`kode_unit` < ?', [$kodekunjungan, '4000']);
         $today = Carbon::now()->isoFormat('D MMMM Y');
-
         if (count($assesmen) > 0) {
             $tglll =  $assesmen[0]->tglk2;
             $carbonDate = Carbon::parse($tglll);
