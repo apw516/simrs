@@ -146,10 +146,10 @@
                     <th style="width: 90px;">Iterasi</th>
                     <th style="width: 80px;">Jlh Iter</th>
                     <th style="width: 90px;">Jlh Hari</th>
+                    <th style="width: 100px;">Dosis Minum</th>
                     <th style="width: 120px;">Signa 1</th>
                     <th style="width: 80px;"></th>
                     <th style="width: 140px;">Signa 2</th>
-                    <th style="width: 100px;">Total Qty</th>
                     <th style="min-width: 120px;">Catatan</th>
                     <th style="width: 60px;" class="text-center">Aksi</th>
                 </tr>
@@ -315,7 +315,7 @@
                     </td>
                     <td>
                         <select name="jenis_resep" class="form-control form-control-sm">
-                            <option value="R/">R/ (Non-Racik)</option>
+                            <option value="NonRacikan">(Non-Racik)</option>
                             <option value="Racikan">Racikan</option>
                         </select>
                     </td>
@@ -340,6 +340,9 @@
                         <input type="number" name="jumlahhari" class="form-control form-control-sm text-center" value="1" min="1" required>
                     </td>
                     <td>
+                        <input type="number" name="jumlahobat" class="form-control form-control-sm text-center input-jumlah-obat" value="1" min="1" max="${maxStok}" required>
+                    </td>
+                    <td>
                         <input type="number" name="signa1" class="form-control form-control-sm text-center" value="3" min="1" required>
                     </td>
                     <td  class="text-center align-middle font-weight-bold">
@@ -347,9 +350,6 @@
                     </td>
                     <td>
                             <input type="number" name="signa2" class="form-control form-control-sm text-center" value="1" min="1" required>
-                    </td>
-                    <td>
-                        <input type="number" name="jumlahobat" class="form-control form-control-sm text-center input-jumlah-obat" value="1" min="1" max="${maxStok}" required>
                     </td>
                     <td>
                         <input type="text" name="catatan" class="form-control form-control-sm" placeholder="Contoh: Ssh Makan">
