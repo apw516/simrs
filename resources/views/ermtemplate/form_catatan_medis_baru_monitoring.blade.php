@@ -124,6 +124,11 @@
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
                                         unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
                                             class="bi bi-printer mr-2"></i>Laporan Operasi </button>
+                                    <button type="button" class="btn btn-secondary ambildataberkasscan"
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"
+                                        data-toggle="modal" data-target="#modalberkasyangdiscan"><i
+                                            class="bi bi-printer mr-2"></i>Berkas yang discan </button>
                                     {{-- @endif --}}
 
                                 </div>
@@ -1256,6 +1261,28 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalberkasyangdiscan" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Berkas yang discan ...</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_berkas_scan">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="modalriwayatorderfarmasi" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -1806,5 +1833,26 @@
     $(".cetakhasilexpertisipoli").on('click', function(event) {
         kode_kunjungan = $(this).attr('kodekunjungan')
         window.open('cetakhasilexpertisipoli/' + kode_kunjungan);
+    })
+    $(".ambildataberkasscan").on('click', function(event) {
+        kodekunjungan = $(this).attr('kodekunjungan')
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('v_berkas_scan_kunjungan') ?>',
+            error: function(data) {
+                spinner.hide();
+                alert('error')
+            },
+            success: function(response) {
+                spinner.hide();
+                $('.v_berkas_scan').html(response);
+            }
+        });
     })
 </script>

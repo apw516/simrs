@@ -25,6 +25,14 @@ use Illuminate\Support\Facades\Response;
 
 class UpdateERMcontroller extends Controller
 {
+    public function formassesmenbundir(Request $request)
+    {
+        $kunjungan = DB::select('select *,fc_nama_px(no_rm) as nama_pasien,fc_nama_paramedis(ref_paramedis) AS dokter_kirim,fc_nama_unit1(ref_unit) AS poli_asal from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
+        $rm = $request->nomorrm;
+        return view('update_erm_dokter.form_assesmen_bundir', compact([
+            'kunjungan','rm'
+        ]));
+    }
     public function form_pemeriksaan_dokter(Request $request)
     {
         $kunjungan = DB::select('select *,fc_nama_px(no_rm) as nama_pasien,fc_nama_paramedis(ref_paramedis) AS dokter_kirim,fc_nama_unit1(ref_unit) AS poli_asal from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
@@ -1184,6 +1192,14 @@ class UpdateERMcontroller extends Controller
             die;
         }
     }
+    public function v_berkas_scan_kunjungan(Request $request)
+    {
+        $kode_kunjungan = $request->kodekunjungan;
+        $data_file = db::select('select * from erm_upload_gambar where kodekunjungan = ?', [$kode_kunjungan]);
+        return view('ermtemplate.v_berkas_scan_by_kunjungan', compact([
+            'data_file'
+        ]));
+    }
     public function get_now()
     {
         $dt = Carbon::now()->timezone('Asia/Jakarta');
@@ -1542,7 +1558,7 @@ class UpdateERMcontroller extends Controller
     {
         $rm = $request->nomorrm;
         $cek = DB::select('select * from erm_upload_gambar where no_rm = ? order by id DESC', [$rm]);
-        $url = "http://192.168.2.45/files/";
+        $url = "https://192.168.2.45/files/";
         return view('update_erm_dokter.scan_berkas_luar', compact([
             'cek',
             'url'
