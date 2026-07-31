@@ -30,7 +30,8 @@ class UpdateERMcontroller extends Controller
         $kunjungan = DB::select('select *,fc_nama_px(no_rm) as nama_pasien,fc_nama_paramedis(ref_paramedis) AS dokter_kirim,fc_nama_unit1(ref_unit) AS poli_asal from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
         $rm = $request->nomorrm;
         return view('update_erm_dokter.form_assesmen_bundir', compact([
-            'kunjungan','rm'
+            'kunjungan',
+            'rm'
         ]));
     }
     public function form_pemeriksaan_dokter(Request $request)
@@ -190,6 +191,8 @@ class UpdateERMcontroller extends Controller
             $datatindaklanjut = json_decode($_POST['datatindaklanjut'], true);
             $formobat_farmasi = json_decode($_POST['formobat_farmasi'], true);
             $formobatfarmasi2 = json_decode($_POST['formobatfarmasi2'], true);
+         
+           
             if (count($datatindaklanjut) == 1) {
                 $data = [
                     'kode' => 500,
@@ -662,6 +665,7 @@ class UpdateERMcontroller extends Controller
                     ];
                     $ts_layanan_header = ts_layanan_header_order::create($data_layanan_header);
                     $cekorder = 0;
+                    $racikan = 0;
                     foreach ($arrayindex_far as $d) {
                         if ($d['kode_kunjungan'] != $kodekunjungan) {
                             $id_detail = $this->createLayanandetailOrder();
@@ -680,22 +684,31 @@ class UpdateERMcontroller extends Controller
                                 'status_layanan_detail' => 'OPN',
                                 'tgl_layanan_detail' => $now,
                                 'tgl_layanan_detail_2' => $now,
+                                'kategori_resep' => $d['jenisresep'],
                                 'row_id_header' => $ts_layanan_header->id,
                                 'id_assdok' => $id_assesmen
                             ];
                             $ts_layanan_detail = ts_layanan_detail_order::create($save_detail);
                             $cekorder = $cekorder + 1;
+                            if ($d['jenisresep'] == 'RACIKAN') {
+                                $racikan = $racikan + 1;
+                            }
                         }
+                    }
+                    if($racikan > 0){
+                        $jenisantrian = 'RACIKAN';
+                    }else{
+                        $jenisantrian = 'NON - RACIKAN';
                     }
                     if ($cekorder > 0) {
                         if ($penjamin == 'P01') {
                             //dummy
                             ts_layanan_header_order::where('id', $ts_layanan_header->id)
-                                ->update(['status_layanan' => 1]);
+                                ->update(['status_layanan' => 1,'jenis_antrian' => $jenisantrian]);
                         } else {
                             //dummy
                             ts_layanan_header_order::where('id', $ts_layanan_header->id)
-                                ->update(['status_layanan' => 1]);
+                                ->update(['status_layanan' => 1,'jenis_antrian' => $jenisantrian]);
                         }
                     } else {
                         ts_layanan_header_order::where('id', $ts_layanan_header->id)
