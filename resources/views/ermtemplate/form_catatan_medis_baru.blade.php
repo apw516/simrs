@@ -72,9 +72,10 @@
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
                                         unit="{{ $k->kode_unit }}"><i class="bi bi-printer mr-2"></i>Assesmen
                                         Medis</button>
-                                    <button  type="button" class="btn btn-secondary cetakhasilexpertisipoli"
-                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}" kodekunjungan="{{ $k->kodek }}"
-                                        unit="{{ $k->kode_unit }}"><i class="bi bi-printer mr-2"></i>Hasil Expertisi Poli</button>
+                                    <button type="button" class="btn btn-secondary cetakhasilexpertisipoli"
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                        kodekunjungan="{{ $k->kodek }}" unit="{{ $k->kode_unit }}"><i
+                                            class="bi bi-printer mr-2"></i>Hasil Expertisi Poli</button>
                                     <button type="button" class="btn btn-secondary lihathasil_ex"
                                         kodekunjungan="{{ $k->kodek }}" data-toggle="modal"
                                         data-target="#modalhasil_ex"><i class="bi bi-eye mr-2"></i>
@@ -98,8 +99,8 @@
                                             class="bi bi-printer mr-2"></i>Laporan Operasi </button>
                                     <button type="button" class="btn btn-secondary ambildataberkasscan"
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
-                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}" data-toggle="modal"
-                                        data-target="#modalberkasyangdiscan"><i
+                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"
+                                        data-toggle="modal" data-target="#modalberkasyangdiscan"><i
                                             class="bi bi-printer mr-2"></i>Berkas yang discan </button>
                                     {{-- @endif --}}
                                 </div>
@@ -1053,6 +1054,195 @@
                                                         <tr>
                                                             <td>Hasil Pemeriksaan Khusus</td>
                                                             <td>
+                                                                @foreach ($datamata as $mm)
+                                                                    @if ($mm->kode_kunjungan == $k->kode_kunjungan)
+                                                                        @php
+                                                                            $a = explode(
+                                                                                '|',
+                                                                                $mm->catatanpemeriksaanlain ?? '',
+                                                                            );
+                                                                            $b = explode('|', $mm->palpebra ?? '');
+                                                                            $c = explode('|', $mm->konjungtiva ?? '');
+                                                                            $d = explode('|', $mm->kornea ?? '');
+                                                                            $e = explode(
+                                                                                '|',
+                                                                                $mm->bilikmatadepan ?? '',
+                                                                            );
+                                                                            $f = explode('|', $mm->pupil ?? '');
+                                                                            $g = explode('|', $mm->iris ?? '');
+                                                                            $h = explode('|', $mm->lensa ?? '');
+                                                                            $i = explode('|', $mm->funduskopi ?? '');
+                                                                            $j = explode(
+                                                                                '|',
+                                                                                $mm->status_oftamologis_khusus ?? '',
+                                                                            );
+                                                                            $kk = explode('|', $mm->masalahmedis ?? '');
+                                                                            $l = explode('|', $mm->prognosis ?? '');
+                                                                            $m = explode(
+                                                                                '|',
+                                                                                $mm->tekananintraokular ?? '',
+                                                                            );
+                                                                        @endphp
+
+                                                                        <div class="card mb-3 border-secondary text-sm"
+                                                                            style="font-size: 0.85rem;">
+                                                                            <div
+                                                                                class="card-header bg-light py-1 px-3 d-flex justify-content-between align-items-center fw-bold">
+                                                                                <span><i class="fas fa-eye me-1"></i>
+                                                                                    Hasil Pemeriksaan Mata (RO)</span>
+                                                                                <span
+                                                                                    class="badge bg-info text-dark">Tajam
+                                                                                    Penglihatan Dekat:
+                                                                                    {{ $mm->tajampenglihatandekat ?? '-' }}</span>
+                                                                            </div>
+
+                                                                            <div class="card-body p-2">
+                                                                                <!-- Table Perbandingan Mata Kiri & Kanan -->
+                                                                                <table
+                                                                                    class="table table-bordered table-sm mb-2 align-middle">
+                                                                                    <thead
+                                                                                        class="table-light text-center">
+                                                                                        <tr>
+                                                                                            <th style="width: 30%;">
+                                                                                                Pemeriksaan</th>
+                                                                                            <th style="width: 35%;"
+                                                                                                class="text-primary">
+                                                                                                Mata Kiri (OD)</th>
+                                                                                            <th style="width: 35%;"
+                                                                                                class="text-danger">
+                                                                                                Mata Kanan (OS)</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr>
+                                                                                            <td
+                                                                                                class="fw-bold bg-light">
+                                                                                                Tekanan Intra Okular
+                                                                                            </td>
+                                                                                            <td>{{ $m[0] ?? '-' }}
+                                                                                            </td>
+                                                                                            <td>{{ $m[1] ?? '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td
+                                                                                                class="fw-bold bg-light">
+                                                                                                Palpebra</td>
+                                                                                            <td>{{ $b[0] ?? '-' }}
+                                                                                            </td>
+                                                                                            <td>{{ $b[1] ?? '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td
+                                                                                                class="fw-bold bg-light">
+                                                                                                Konjungtiva</td>
+                                                                                            <td>{{ $c[0] ?? '-' }}
+                                                                                            </td>
+                                                                                            <td>{{ $c[1] ?? '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td
+                                                                                                class="fw-bold bg-light">
+                                                                                                Kornea</td>
+                                                                                            <td>{{ $d[0] ?? '-' }}
+                                                                                            </td>
+                                                                                            <td>{{ $d[1] ?? '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td
+                                                                                                class="fw-bold bg-light">
+                                                                                                Bilik Mata Depan</td>
+                                                                                            <td>{{ $e[0] ?? '-' }}
+                                                                                            </td>
+                                                                                            <td>{{ $e[1] ?? '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td
+                                                                                                class="fw-bold bg-light">
+                                                                                                Pupil</td>
+                                                                                            <td>{{ $f[0] ?? '-' }}
+                                                                                            </td>
+                                                                                            <td>{{ $f[1] ?? '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td
+                                                                                                class="fw-bold bg-light">
+                                                                                                Iris</td>
+                                                                                            <td>{{ $g[0] ?? '-' }}
+                                                                                            </td>
+                                                                                            <td>{{ $g[1] ?? '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td
+                                                                                                class="fw-bold bg-light">
+                                                                                                Lensa</td>
+                                                                                            <td>{{ $h[0] ?? '-' }}
+                                                                                            </td>
+                                                                                            <td>{{ $h[1] ?? '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td
+                                                                                                class="fw-bold bg-light">
+                                                                                                Funduskopi</td>
+                                                                                            <td>{{ $i[0] ?? '-' }}
+                                                                                            </td>
+                                                                                            <td>{{ $i[1] ?? '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td
+                                                                                                class="fw-bold bg-light">
+                                                                                                Catatan Pemeriksaan Lain
+                                                                                            </td>
+                                                                                            <td>{{ $a[0] ?? '-' }}
+                                                                                            </td>
+                                                                                            <td>{{ $a[1] ?? '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+
+                                                                                <!-- Catatan Tambahan Khusus / Resume -->
+                                                                                <div class="row g-2 mt-1">
+                                                                                    <div class="col-md-4">
+                                                                                        <div
+                                                                                            class="p-2 border rounded bg-light">
+                                                                                            <strong
+                                                                                                class="d-block text-muted small">Status
+                                                                                                Oftalmologis
+                                                                                                Khusus:</strong>
+                                                                                            <span>{{ $j[0] ?? '-' }}</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-4">
+                                                                                        <div
+                                                                                            class="p-2 border rounded bg-light">
+                                                                                            <strong
+                                                                                                class="d-block text-muted small">Masalah
+                                                                                                Medis:</strong>
+                                                                                            <span>{{ $kk[0] ?? '-' }}</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-4">
+                                                                                        <div
+                                                                                            class="p-2 border rounded bg-light">
+                                                                                            <strong
+                                                                                                class="d-block text-muted small">Prognosis:</strong>
+                                                                                            <span>{{ $l[0] ?? '-' }}</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
+                                                                @endforeach
                                                                 {{-- <div class="card">
                                                                     <div class="card-header bg-danger">Hasil Pemeriksaan khusus
                                                                     </div>
@@ -1401,7 +1591,8 @@
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="modalberkasyangdiscan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalberkasyangdiscan" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
