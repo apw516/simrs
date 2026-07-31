@@ -67,6 +67,13 @@
                                 </a>
                             </li>
                         @endif
+                        @if (auth()->user()->unit == '1009')
+                            <li hidden class="nav-item" id="pemeriksaan">
+                                <a href="#" class="nav-link" onclick="assesmenbundir()">
+                                    <i class="fas fa-inbox mr-2"></i>Asesmen Khusus Resiko Bunuh Diri ( Inpatient Suicide/Self-Harm Assesment)
+                                </a>
+                            </li>
+                        @endif
                         <li class="nav-item" id="pemeriksaan" @if (auth()->user()->unit == '1046') hidden @endif>
                             <a href="#" class="nav-link" onclick="update_formpemeriksaandokter()">
                                 <i class="fas fa-inbox mr-2"></i>Catatan Perkembangan Pasien Terintegrasi ( CPPT 2 )
@@ -346,6 +353,25 @@
                 $('.slide3').html(response);
                 spinner.hide()
             },
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+    function assesmenbundir() {
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('formassesmenbundir') ?>',
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()

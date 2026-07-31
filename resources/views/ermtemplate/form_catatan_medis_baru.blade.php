@@ -30,8 +30,8 @@
                         <h2 class="mb-0">
                             <button class="btn btn-link btn-block text-left text-dark text-bold" type="button"
                                 data-toggle="collapse"
-                                data-target="#collapse{{ $k->kode_kunjungan }}{{ $urutan }}" aria-expanded="true"
-                                aria-controls="collapseOne">
+                                data-target="#collapse{{ $k->kode_kunjungan }}{{ $urutan }}"
+                                aria-expanded="true" aria-controls="collapseOne">
                                 Kunjungan Ke - {{ $k->counter }} | {{ $k->nama_unit }} @if ($k->kode_unit == '1028')
                                     | {{ $k->keterangan_cppt }}
                                     @endif @if ($k->ref_kunjungan != 0)
@@ -50,20 +50,32 @@
                             <div class="row mb-4 justify-content-end">
                                 <div class="btn-group mr-2" role="group" aria-label="First group">
                                     <button type="button" class="btn btn-primary cetakresumeperawatbaru"
-                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}" kodekunjungan="{{ $k->kodek }}"><i
-                                            class="bi bi-printer mr-2"></i>Assesmen Keperawatan</button>
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                        kodekunjungan="{{ $k->kodek }}"><i class="bi bi-printer mr-2"></i>Assesmen
+                                        Keperawatan</button>
                                     <button type="button" class="btn btn-primary cetakresumetanpattd"
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
-                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i class="bi bi-printer mr-2"></i>Assesmen
+                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
+                                            class="bi bi-printer mr-2"></i>Assesmen
                                         Medis </button>
                                     <button type="button" class="btn btn-secondary cetakresumettd"
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
-                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i class="bi bi-printer mr-2"></i>Resume
+                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
+                                            class="bi bi-printer mr-2"></i>Resume
                                         Medis </button>
+                                    @if ($k->ref_kunjungan != 0)
+                                        <button type="button" class="btn btn-secondary cetaklembarkonsul"
+                                            kodekunjungan="{{ $k->kodek }}"><i class="bi bi-eye mr-2"></i>Lembar
+                                            Konsul</button>
+                                    @endif
                                     <button hidden type="button" class="btn btn-secondary cetakresumedok"
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
                                         unit="{{ $k->kode_unit }}"><i class="bi bi-printer mr-2"></i>Assesmen
                                         Medis</button>
+                                    <button type="button" class="btn btn-secondary cetakhasilexpertisipoli"
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                        kodekunjungan="{{ $k->kodek }}" unit="{{ $k->kode_unit }}"><i
+                                            class="bi bi-printer mr-2"></i>Hasil Expertisi Poli</button>
                                     <button type="button" class="btn btn-secondary lihathasil_ex"
                                         kodekunjungan="{{ $k->kodek }}" data-toggle="modal"
                                         data-target="#modalhasil_ex"><i class="bi bi-eye mr-2"></i>
@@ -77,12 +89,19 @@
                                             class="bi bi-printer mr-2"></i>Assesmen Keperawatan</button> --}}
                                     <button hidden type="button" class="btn btn-secondary cetakresumetanpattd"
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
-                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i class="bi bi-printer mr-2"></i>Assesmen
-                                        Medis </button>                                  
-                                    {{-- @if($k->kode_unit == 1014) --}}
+                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
+                                            class="bi bi-printer mr-2"></i>Assesmen
+                                        Medis </button>
+                                    {{-- @if ($k->kode_unit == 1014) --}}
                                     <button type="button" class="btn btn-secondary laporanoperasi"
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
-                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i class="bi bi-printer mr-2"></i>Laporan Operasi </button>
+                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
+                                            class="bi bi-printer mr-2"></i>Laporan Operasi </button>
+                                    <button type="button" class="btn btn-secondary ambildataberkasscan"
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"
+                                        data-toggle="modal" data-target="#modalberkasyangdiscan"><i
+                                            class="bi bi-printer mr-2"></i>Berkas yang discan </button>
                                     {{-- @endif --}}
                                 </div>
                             </div>
@@ -113,7 +132,8 @@
                                                             <td>{{ $k->frekuensinadi }} x/menit</td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="text-bold font-italic">Berat Badan / Tinggi Badan
+                                                            <td class="text-bold font-italic">Berat Badan / Tinggi
+                                                                Badan
                                                                 / IMT</td>
                                                             <td colspan="3">{{ $k->beratbadan }}</td>
                                                         </tr>
@@ -134,9 +154,11 @@
                                                                 Fungsional</td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="text-bold font-italic">Penggunaan Alat Bantu</td>
+                                                            <td class="text-bold font-italic">Penggunaan Alat Bantu
+                                                            </td>
                                                             <td>{{ $k->penggunaanalatbantu }}</td>
-                                                            <td class="text-bold font-italic">Keterangan Alat Bantu</td>
+                                                            <td class="text-bold font-italic">Keterangan Alat Bantu
+                                                            </td>
                                                             <td>{{ $k->keterangan_alat_bantu }}</td>
                                                         </tr>
                                                         <tr>
@@ -1032,16 +1054,206 @@
                                                         <tr>
                                                             <td>Hasil Pemeriksaan Khusus</td>
                                                             <td>
-                                                                 {{-- <div class="card">
+                                                                @foreach ($datamata as $mm)
+                                                                    @if ($mm->kode_kunjungan == $k->kode_kunjungan)
+                                                                        @php
+                                                                            $a = explode(
+                                                                                '|',
+                                                                                $mm->catatanpemeriksaanlain ?? '',
+                                                                            );
+                                                                            $b = explode('|', $mm->palpebra ?? '');
+                                                                            $c = explode('|', $mm->konjungtiva ?? '');
+                                                                            $d = explode('|', $mm->kornea ?? '');
+                                                                            $e = explode(
+                                                                                '|',
+                                                                                $mm->bilikmatadepan ?? '',
+                                                                            );
+                                                                            $f = explode('|', $mm->pupil ?? '');
+                                                                            $g = explode('|', $mm->iris ?? '');
+                                                                            $h = explode('|', $mm->lensa ?? '');
+                                                                            $i = explode('|', $mm->funduskopi ?? '');
+                                                                            $j = explode(
+                                                                                '|',
+                                                                                $mm->status_oftamologis_khusus ?? '',
+                                                                            );
+                                                                            $kk = explode('|', $mm->masalahmedis ?? '');
+                                                                            $l = explode('|', $mm->prognosis ?? '');
+                                                                            $m = explode(
+                                                                                '|',
+                                                                                $mm->tekananintraokular ?? '',
+                                                                            );
+                                                                        @endphp
+
+                                                                        <div class="card mb-3 border-secondary text-sm"
+                                                                            style="font-size: 0.85rem;">
+                                                                            <div
+                                                                                class="card-header bg-light py-1 px-3 d-flex justify-content-between align-items-center fw-bold">
+                                                                                <span><i class="fas fa-eye me-1"></i>
+                                                                                    Hasil Pemeriksaan Mata (RO)</span>
+                                                                                <span
+                                                                                    class="badge bg-info text-dark">Tajam
+                                                                                    Penglihatan Dekat:
+                                                                                    {{ $mm->tajampenglihatandekat ?? '-' }}</span>
+                                                                            </div>
+
+                                                                            <div class="card-body p-2">
+                                                                                <!-- Table Perbandingan Mata Kiri & Kanan -->
+                                                                                <table
+                                                                                    class="table table-bordered table-sm mb-2 align-middle">
+                                                                                    <thead
+                                                                                        class="table-light text-center">
+                                                                                        <tr>
+                                                                                            <th style="width: 30%;">
+                                                                                                Pemeriksaan</th>
+                                                                                            <th style="width: 35%;"
+                                                                                                class="text-primary">
+                                                                                                Mata Kiri (OD)</th>
+                                                                                            <th style="width: 35%;"
+                                                                                                class="text-danger">
+                                                                                                Mata Kanan (OS)</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr>
+                                                                                            <td
+                                                                                                class="fw-bold bg-light">
+                                                                                                Tekanan Intra Okular
+                                                                                            </td>
+                                                                                            <td>{{ $m[0] ?? '-' }}
+                                                                                            </td>
+                                                                                            <td>{{ $m[1] ?? '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td
+                                                                                                class="fw-bold bg-light">
+                                                                                                Palpebra</td>
+                                                                                            <td>{{ $b[0] ?? '-' }}
+                                                                                            </td>
+                                                                                            <td>{{ $b[1] ?? '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td
+                                                                                                class="fw-bold bg-light">
+                                                                                                Konjungtiva</td>
+                                                                                            <td>{{ $c[0] ?? '-' }}
+                                                                                            </td>
+                                                                                            <td>{{ $c[1] ?? '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td
+                                                                                                class="fw-bold bg-light">
+                                                                                                Kornea</td>
+                                                                                            <td>{{ $d[0] ?? '-' }}
+                                                                                            </td>
+                                                                                            <td>{{ $d[1] ?? '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td
+                                                                                                class="fw-bold bg-light">
+                                                                                                Bilik Mata Depan</td>
+                                                                                            <td>{{ $e[0] ?? '-' }}
+                                                                                            </td>
+                                                                                            <td>{{ $e[1] ?? '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td
+                                                                                                class="fw-bold bg-light">
+                                                                                                Pupil</td>
+                                                                                            <td>{{ $f[0] ?? '-' }}
+                                                                                            </td>
+                                                                                            <td>{{ $f[1] ?? '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td
+                                                                                                class="fw-bold bg-light">
+                                                                                                Iris</td>
+                                                                                            <td>{{ $g[0] ?? '-' }}
+                                                                                            </td>
+                                                                                            <td>{{ $g[1] ?? '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td
+                                                                                                class="fw-bold bg-light">
+                                                                                                Lensa</td>
+                                                                                            <td>{{ $h[0] ?? '-' }}
+                                                                                            </td>
+                                                                                            <td>{{ $h[1] ?? '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td
+                                                                                                class="fw-bold bg-light">
+                                                                                                Funduskopi</td>
+                                                                                            <td>{{ $i[0] ?? '-' }}
+                                                                                            </td>
+                                                                                            <td>{{ $i[1] ?? '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td
+                                                                                                class="fw-bold bg-light">
+                                                                                                Catatan Pemeriksaan Lain
+                                                                                            </td>
+                                                                                            <td>{{ $a[0] ?? '-' }}
+                                                                                            </td>
+                                                                                            <td>{{ $a[1] ?? '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+
+                                                                                <!-- Catatan Tambahan Khusus / Resume -->
+                                                                                <div class="row g-2 mt-1">
+                                                                                    <div class="col-md-4">
+                                                                                        <div
+                                                                                            class="p-2 border rounded bg-light">
+                                                                                            <strong
+                                                                                                class="d-block text-muted small">Status
+                                                                                                Oftalmologis
+                                                                                                Khusus:</strong>
+                                                                                            <span>{{ $j[0] ?? '-' }}</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-4">
+                                                                                        <div
+                                                                                            class="p-2 border rounded bg-light">
+                                                                                            <strong
+                                                                                                class="d-block text-muted small">Masalah
+                                                                                                Medis:</strong>
+                                                                                            <span>{{ $kk[0] ?? '-' }}</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-4">
+                                                                                        <div
+                                                                                            class="p-2 border rounded bg-light">
+                                                                                            <strong
+                                                                                                class="d-block text-muted small">Prognosis:</strong>
+                                                                                            <span>{{ $l[0] ?? '-' }}</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
+                                                                @endforeach
+                                                                {{-- <div class="card">
                                                                     <div class="card-header bg-danger">Hasil Pemeriksaan khusus
                                                                     </div>
                                                                     <div class="card-body"> --}}
-                                                                        {{ $k->pemeriksaan_khusus }} <br><br>
-                                                                        {{ $k->pemeriksaan_khusus_2 }}<br><br>
-                                                                        <img width="80%"src="{{ $k->gambar_1 }}"
-                                                                            alt=""><br><br>
-                                                                        <img src="{{ $k->gambar_2 }}" alt=""><br><br>
-                                                                    {{-- </div>
+                                                                {{ $k->pemeriksaan_khusus }} <br><br>
+                                                                {{ $k->pemeriksaan_khusus_2 }}<br><br>
+                                                                <img width="80%"src="{{ $k->gambar_1 }}"
+                                                                    alt=""><br><br>
+                                                                <img src="{{ $k->gambar_2 }}"
+                                                                    alt=""><br><br>
+                                                                {{-- </div>
                                                                 </div> --}}
                                                             </td>
                                                         </tr>
@@ -1086,34 +1298,35 @@
                 </button>
             </div>
             <div class="modal-body">
-               <table class="table table-sm table-bordered">
-                <thead>
-                    <th>Tanggal</th>
-                    <th>Unit Asal</th>
-                    <th>Dokter Pengirim</th>
-                    <th>Unit Tujuan</th>
-                    <th>Dokter Penerima</th>
-                    <th>Keterangan</th>
-                    <th>Jawaban</th>
-                    <th></th>
-                </thead>
-                <tbody>
-                    @foreach ($suratkonsul as $d )
-                        <tr>
-                            <td>{{ $d->tanggal_surat}}</td>
-                            <td>{{ $d->unit_asal}}</td>
-                            <td>{{ $d->dok_kirim}}</td>
-                            <td>{{ $d->unit_tujuan}}</td>
-                            <td>{{ $d->dokter_jawab}}</td>
-                            <td>{{ $d->keterangan_klinis}} <br> {{ $d->keterangan}}</td>
-                            <td>{{ $d->jawaban}}</td>
-                            <td>
-                                <button class="btn btn-success cetakdokumen" iddokumen="{{ $d->id }}">Cetak</button>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-               </table>
+                <table class="table table-sm table-bordered">
+                    <thead>
+                        <th>Tanggal</th>
+                        <th>Unit Asal</th>
+                        <th>Dokter Pengirim</th>
+                        <th>Unit Tujuan</th>
+                        <th>Dokter Penerima</th>
+                        <th>Keterangan</th>
+                        <th>Jawaban</th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        @foreach ($suratkonsul as $d)
+                            <tr>
+                                <td>{{ $d->tanggal_surat }}</td>
+                                <td>{{ $d->unit_asal }}</td>
+                                <td>{{ $d->dok_kirim }}</td>
+                                <td>{{ $d->unit_tujuan }}</td>
+                                <td>{{ $d->dokter_jawab }}</td>
+                                <td>{{ $d->keterangan_klinis }} <br> {{ $d->keterangan }}</td>
+                                <td>{{ $d->jawaban }}</td>
+                                <td>
+                                    <button class="btn btn-success cetakdokumen"
+                                        iddokumen="{{ $d->id }}">Cetak</button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -1378,7 +1591,30 @@
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="modalcatatanhemodialisa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalberkasyangdiscan" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Berkas yang discan ...</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_berkas_scan">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalcatatanhemodialisa" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" style="max-width: 95%; margin: 1.75rem auto;">
         <div class="modal-content">
             <div class="modal-header">
@@ -1528,6 +1764,14 @@
         kode_kunjungan = $(this).attr('kodekunjungan')
         window.open('cetakresumettd/' + kode_kunjungan);
     })
+    $(".cetaklembarkonsul").on('click', function(event) {
+        kode_kunjungan = $(this).attr('kodekunjungan')
+        window.open('cetaklembarkonsul/' + kode_kunjungan);
+    })
+    $(".cetakhasilexpertisipoli").on('click', function(event) {
+        kode_kunjungan = $(this).attr('kodekunjungan')
+        window.open('cetakhasilexpertisipoli/' + kode_kunjungan);
+    })
     $(".laporanoperasi").on('click', function(event) {
         kode_kunjungan = $(this).attr('kodekunjungan')
         window.open('cetaklaporanoperasi/' + kode_kunjungan);
@@ -1554,6 +1798,27 @@
             success: function(response) {
                 spinner.hide();
                 $('.vhlab').html(response);
+            }
+        });
+    })
+    $(".ambildataberkasscan").on('click', function(event) {
+        kodekunjungan = $(this).attr('kodekunjungan')
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('v_berkas_scan_kunjungan') ?>',
+            error: function(data) {
+                spinner.hide();
+                alert('error')
+            },
+            success: function(response) {
+                spinner.hide();
+                $('.v_berkas_scan').html(response);
             }
         });
     })
@@ -1728,7 +1993,7 @@
     })
 </script>
 <script>
-     $(".cetakdokumen").on('click', function(event) {
+    $(".cetakdokumen").on('click', function(event) {
         iddokumen = $(this).attr('iddokumen')
         window.open('cetaksuratpengantar/' + iddokumen)
     });

@@ -881,6 +881,8 @@ Route::post('/simpanttddokter2', [Pdf2Controller::class, 'simpanttddokter'])->na
 Route::post('/tandatangancatatanhd', [Pdf2Controller::class, 'tandatangancatatanhd'])->name('tandatangancatatanhd');
 Route::get('/cetakresumettd/{kodekunjungan}', [Pdf2Controller::class, 'cetakresumettd']);
 Route::get('/cetakcatatanhd/{kodekunjungan}', [Pdf2Controller::class, 'cetakcatatanhd']);
+Route::get('/cetaklembarkonsul/{kodekunjungan}', [Pdf2Controller::class, 'cetaklembarkonsul']);
+Route::get('/cetakhasilexpertisipoli/{kodekunjungan}', [Pdf2Controller::class, 'cetakhasilexpertisipoli']);
 
 
 
@@ -909,6 +911,10 @@ Route::get('/panduan/aktivasi-tte', [UpdateERMcontroller::class, 'viewPanduanTte
 Route::get('log.buka.panduan', [UpdateERMcontroller::class, 'viewPanduanTte'])->name('log.buka.panduan');
 
 Route::post('/simpanaktivasitte', [UpdateERMcontroller::class, 'simpanaktivasitte'])->name('simpanaktivasitte');
+
+Route::post('/formassesmenbundir', [UpdateERMcontroller::class, 'formassesmenbundir'])->name('formassesmenbundir');
+Route::post('/v_berkas_scan_kunjungan', [UpdateERMcontroller::class, 'v_berkas_scan_kunjungan'])->name('v_berkas_scan_kunjungan');
+
 
 
 
