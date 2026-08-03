@@ -68,7 +68,7 @@
                             </li>
                         @endif
                         @if (auth()->user()->unit == '1009')
-                            <li hidden class="nav-item" id="pemeriksaan">
+                            <li class="nav-item" id="pemeriksaan">
                                 <a href="#" class="nav-link" onclick="assesmenbundir()">
                                     <i class="fas fa-inbox mr-2"></i>Asesmen Khusus Resiko Bunuh Diri ( Inpatient Suicide/Self-Harm Assesment)
                                 </a>

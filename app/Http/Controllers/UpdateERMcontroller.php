@@ -29,9 +29,14 @@ class UpdateERMcontroller extends Controller
     {
         $kunjungan = DB::select('select *,fc_nama_px(no_rm) as nama_pasien,fc_nama_paramedis(ref_paramedis) AS dokter_kirim,fc_nama_unit1(ref_unit) AS poli_asal from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
         $rm = $request->nomorrm;
+        $asesmen = DB::table('erm_assesmen_risiko_bunuh_diri')
+            ->where('nomor_rm', $rm)
+            ->orderByDesc('id')
+            ->first();
         return view('update_erm_dokter.form_assesmen_bundir', compact([
             'kunjungan',
-            'rm'
+            'rm',
+            'asesmen'
         ]));
     }
     public function form_pemeriksaan_dokter(Request $request)
@@ -191,8 +196,8 @@ class UpdateERMcontroller extends Controller
             $datatindaklanjut = json_decode($_POST['datatindaklanjut'], true);
             $formobat_farmasi = json_decode($_POST['formobat_farmasi'], true);
             $formobatfarmasi2 = json_decode($_POST['formobatfarmasi2'], true);
-         
-           
+
+
             if (count($datatindaklanjut) == 1) {
                 $data = [
                     'kode' => 500,
@@ -695,20 +700,20 @@ class UpdateERMcontroller extends Controller
                             }
                         }
                     }
-                    if($racikan > 0){
+                    if ($racikan > 0) {
                         $jenisantrian = 'RACIKAN';
-                    }else{
+                    } else {
                         $jenisantrian = 'NON - RACIKAN';
                     }
                     if ($cekorder > 0) {
                         if ($penjamin == 'P01') {
                             //dummy
                             ts_layanan_header_order::where('id', $ts_layanan_header->id)
-                                ->update(['status_layanan' => 1,'jenis_antrian' => $jenisantrian]);
+                                ->update(['status_layanan' => 1, 'jenis_antrian' => $jenisantrian]);
                         } else {
                             //dummy
                             ts_layanan_header_order::where('id', $ts_layanan_header->id)
-                                ->update(['status_layanan' => 1,'jenis_antrian' => $jenisantrian]);
+                                ->update(['status_layanan' => 1, 'jenis_antrian' => $jenisantrian]);
                         }
                     } else {
                         ts_layanan_header_order::where('id', $ts_layanan_header->id)
@@ -1642,5 +1647,28 @@ class UpdateERMcontroller extends Controller
         ];
         echo json_encode($data);
         die;
+    }
+    public function storeassbun(Request $request)
+    {
+        $data = json_decode($_POST['dataisi'], true);
+        foreach ($data as $nama) {
+            $index =  $nama['name'];
+            $value =  $nama['value'];
+            $arraydata[$index] = $value;
+        }
+        $attributes = [
+            'kode_kunjungan' => $arraydata['kode_kunjungan'] ?? null
+        ];
+        $arraydata['tgl_entry'] = $this->get_now();
+        DB::table('erm_assesmen_risiko_bunuh_diri')->updateOrInsert(
+            $attributes, // Parameter 1: Kriteria pencarian
+            $arraydata   // Parameter 2: Data yang akan di-insert atau di-update
+        );
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Data Asesmen Risiko Bunuh Diri berhasil disimpan secara Server-Side!',
+            'data'    => '',
+            // 'html' => $html // Opsional jika update tabel tanpa reload
+        ], 200);
     }
 }

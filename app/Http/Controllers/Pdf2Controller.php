@@ -913,6 +913,94 @@ class Pdf2Controller extends Controller
         $now = $date . ' ' . $time;
         return $now;
     }
+    public function cetakresumebunuhdiri2($nomor_rm)
+    {
+        // $assesmen = db::select('select * from erm_assesmen_risiko_bunuh_diri where id = ?', [$kode_assesmen]);
+        $assesmen = DB::table('erm_assesmen_risiko_bunuh_diri')
+            ->where('nomor_rm', $nomor_rm)
+            ->orderByDesc('id')
+            ->first();
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$assesmen->nomor_rm]);
+        $assesmen2 = db::select('select *,fc_nama_unit1(kode_unit) as unit_konsul from assesmen_dokters where id_kunjungan = ?', [$assesmen->kode_kunjungan]);
+        $cek2 = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and jenis_dokumen = ?', [$assesmen->kode_kunjungan, 'ASSESMEN BUNUH DIRI']);
+        $kodekunjungan = $assesmen->kode_kunjungan;
+        if (count($cek2) > 0) {
+            $t = count($cek2) + 1;
+            $nama = 'ASSESMEN_BNHDR' . $t;
+        } else {
+            $savee = [
+                'kode_kunjungan' => $kodekunjungan,
+                'status_code' => '200',
+                'tgl_kirim' => $this->get_now(),
+                'jenis_dokumen' => 'ASSESMEN BUNUH DIRI',
+            ];
+            db::table('log_ttd_elektronik')->insert($savee);
+            $nama = 'ASSESMEN_BNHDR' . '1';
+        }
+        $jawabkonsulan = [
+            'id_dokumen' => $nama . $kodekunjungan,
+            'nama_user' => $assesmen2[0]->nama_dokter,
+            'tanggal_verifikasi' => $assesmen->tgl_entry,
+            'jabatan' => "Dokter",
+        ];
+        $v = new ModelBSRE();
+        $DD = $v->sendpdftosiramah($jawabkonsulan);
+        $url1 = "https://siramah.rsudwaled.com/filetandatangan?id=" . $nama . $kodekunjungan;
+        // $url = 'adadad';
+        $qrjawab = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url1));
+        $pdf = Pdf::loadView('pdf.cetak_assesemen_bunuh_diri', compact([
+            'assesmen',
+            'assesmen2',
+            'mt_pasien',
+            'qrjawab'
+        ]));
+        $nama = $mt_pasien[0]->nama_px;
+        return $pdf->stream($nama . '.pdf');
+    }
+    public function cetakresumebunuhdiri($kode_assesmen)
+    {
+        // $assesmen = db::select('select * from erm_assesmen_risiko_bunuh_diri where id = ?', [$kode_assesmen]);
+        $assesmen = DB::table('erm_assesmen_risiko_bunuh_diri')
+            ->where('id', $kode_assesmen)
+            ->orderByDesc('id')
+            ->first();
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$assesmen->nomor_rm]);
+        $assesmen2 = db::select('select *,fc_nama_unit1(kode_unit) as unit_konsul from assesmen_dokters where id_kunjungan = ?', [$assesmen->kode_kunjungan]);
+        $cek2 = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and jenis_dokumen = ?', [$assesmen->kode_kunjungan, 'ASSESMEN BUNUH DIRI']);
+        $kodekunjungan = $assesmen->kode_kunjungan;
+        if (count($cek2) > 0) {
+            $t = count($cek2) + 1;
+            $nama = 'ASSESMEN_BNHDR' . $t;
+        } else {
+            $savee = [
+                'kode_kunjungan' => $kodekunjungan,
+                'status_code' => '200',
+                'tgl_kirim' => $this->get_now(),
+                'jenis_dokumen' => 'ASSESMEN BUNUH DIRI',
+            ];
+            db::table('log_ttd_elektronik')->insert($savee);
+            $nama = 'ASSESMEN_BNHDR' . '1';
+        }
+        $jawabkonsulan = [
+            'id_dokumen' => $nama . $kodekunjungan,
+            'nama_user' => $assesmen2[0]->nama_dokter,
+            'tanggal_verifikasi' => $assesmen->tgl_entry,
+            'jabatan' => "Dokter",
+        ];
+        $v = new ModelBSRE();
+        $DD = $v->sendpdftosiramah($jawabkonsulan);
+        $url1 = "https://siramah.rsudwaled.com/filetandatangan?id=" . $nama . $kodekunjungan;
+        // $url = 'adadad';
+        $qrjawab = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url1));
+        $pdf = Pdf::loadView('pdf.cetak_assesemen_bunuh_diri', compact([
+            'assesmen',
+            'assesmen2',
+            'mt_pasien',
+            'qrjawab'
+        ]));
+        $nama = $mt_pasien[0]->nama_px;
+        return $pdf->stream($nama . '.pdf');
+    }
     public function cetakhasilexpertisipoli($kodekunjungan)
     {
         $kunjungan = db::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);

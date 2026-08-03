@@ -110,6 +110,11 @@
                                         unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
                                             class="bi bi-printer mr-2"></i>Assesmen
                                         Medis </button>
+                                    @if ($k->kode_unit == '1009')
+                                        <button type="button" class="btn btn-secondary cetakassemenbunuhdiri"
+                                            nomor_rm="{{ $k->no_rm_k }}"><i class="bi bi-eye mr-2"></i>Asesmen
+                                            khusus risiko bunuh diri</button>
+                                    @endif
                                     @if ($k->ref_kunjungan != 0)
                                         <button type="button" class="btn btn-secondary cetaklembarkonsul"
                                             kodekunjungan="{{ $k->kodek }}"><i class="bi bi-eye mr-2"></i>Lembar
@@ -1886,6 +1891,10 @@
                 $('.vrm_lama').html(response);
             }
         });
+    })
+    $(".cetakassemenbunuhdiri").on('click', function(event) {
+        nomor_rm = $(this).attr('nomor_rm')
+        window.open('cetakresumebunuhdiri2/' + nomor_rm);
     })
     $(".liatberkasluar").on('click', function(event) {
         rm = $(this).attr('rm')
