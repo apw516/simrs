@@ -1989,7 +1989,6 @@
             }
         });
     }
-
     function batalisi() {
         rm = $('#nomorrm').val()
         formcatatanmedis(rm)
@@ -2138,7 +2137,6 @@
             }
         }
     });
-
     function showname() {
         a = $('#simpantemplate:checked').val()
         if (a == 'on') {
@@ -2147,7 +2145,6 @@
             $('#namaresep').attr('Hidden', true)
         }
     }
-
     function ambilresep() {
         spinner = $('#loader')
         spinner.show();
@@ -2168,7 +2165,6 @@
             }
         });
     }
-
     function ambilriwayatresep() {
         spinner = $('#loader')
         spinner.show();
@@ -2207,7 +2203,6 @@
             }
         });
     });
-
     function showMarkerArea(target) {
         const markerArea = new markerjs2.MarkerArea(target);
         markerArea.addEventListener("render", (event) => (target.src = event.dataUrl));
@@ -2218,7 +2213,6 @@
         ambilriwayatobat()
         ambilformiterasiobat()
     })
-
     function ambilriwayatobat() {
         spinner = $('#loader')
         spinner.show();
@@ -2238,7 +2232,6 @@
             }
         });
     }
-
     function resetgambar() {
         $.ajax({
             type: 'post',
@@ -2255,7 +2248,6 @@
             }
         });
     }
-
     function ambilgambar() {
         $.ajax({
             type: 'post',
@@ -2272,7 +2264,6 @@
             }
         });
     }
-
     function showicare2() {
         var kodekunjungan = $('#kodekunjungan').val()
         $.ajax({
@@ -2288,7 +2279,6 @@
             }
         });
     }
-
     function addform() {
         var max_fields = 10;
         var wrapper = $(".formobatfarmasi2"); //Fields wrapper
@@ -2403,6 +2393,5 @@
             }
         });
     }
-
 </script>
 <script src="{{ asset('public/marker/markerjs2.js') }}"></script>

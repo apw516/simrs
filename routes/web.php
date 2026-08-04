@@ -883,6 +883,8 @@ Route::get('/cetakresumettd/{kodekunjungan}', [Pdf2Controller::class, 'cetakresu
 Route::get('/cetakcatatanhd/{kodekunjungan}', [Pdf2Controller::class, 'cetakcatatanhd']);
 Route::get('/cetaklembarkonsul/{kodekunjungan}', [Pdf2Controller::class, 'cetaklembarkonsul']);
 Route::get('/cetakhasilexpertisipoli/{kodekunjungan}', [Pdf2Controller::class, 'cetakhasilexpertisipoli']);
+Route::get('/cetakresumebunuhdiri/{kodekunjungan}', [Pdf2Controller::class, 'cetakresumebunuhdiri']);
+Route::get('/cetakresumebunuhdiri2/{kodekunjungan}', [Pdf2Controller::class, 'cetakresumebunuhdiri2']);
 
 
 
@@ -914,7 +916,7 @@ Route::post('/simpanaktivasitte', [UpdateERMcontroller::class, 'simpanaktivasitt
 
 Route::post('/formassesmenbundir', [UpdateERMcontroller::class, 'formassesmenbundir'])->name('formassesmenbundir');
 Route::post('/v_berkas_scan_kunjungan', [UpdateERMcontroller::class, 'v_berkas_scan_kunjungan'])->name('v_berkas_scan_kunjungan');
-
+Route::post('/asesmen-bunuh-diri/store', [UpdateERMcontroller::class, 'storeassbun'])->name('asesmen-bunuh-diri.store');
 
 
 
