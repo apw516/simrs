@@ -91,14 +91,15 @@
         <form action="" method="POST" id="formInputObat" class="formInputObat">
             <!-- Hidden Input untuk menangkap No RM / Kunjungan -->
             <input type="hidden" name="no_rm" value="{{ $data_kunjungan[0]->no_rm ?? '' }}">
-            <input type="hidden" name="kode_kunjungan" value="{{ $data_kunjungan[0]->kode_kunjungan ?? '' }}">
+            <input type="hidden" id="kode_kunjungan" name="kode_kunjungan"
+                value="{{ $data_kunjungan[0]->kode_kunjungan ?? '' }}">
             <input type="hidden" name="kode_penjamin" value="{{ $data_kunjungan[0]->kode_penjamin ?? '' }}">
             <div class="row">
                 <!-- Select Nama Obat -->
                 <div class="col-md-3 mb-3">
                     <label class="font-weight-bold small text-muted">Penjamin</label>
-                    <input readonly type="text" name="nama_penjamin" class="form-control" placeholder="0" min="1"
-                        value="{{ $data_kunjungan[0]->nama_penjamin }}">
+                    <input readonly type="text" name="nama_penjamin" class="form-control" placeholder="0"
+                        min="1" value="{{ $data_kunjungan[0]->nama_penjamin }}">
                 </div>
                 <div class="col-md-3 mb-3">
                     <label class="font-weight-bold small text-muted">NO SEP KUNJUNGAN</label>
@@ -108,25 +109,44 @@
                 <!-- Jumlah / Qty -->
                 <div class="col-md-2 mb-3">
                     <label class="font-weight-bold small text-muted">Tanggal Resep</label>
-                    <input type="date" name="tgl_resep" class="form-control" placeholder="0" min="1" value="{{ request('tgl_awal', date('Y-m-d')) }}">
+                    <input type="date" name="tgl_resep" class="form-control" placeholder="0" min="1"
+                        value="{{ request('tgl_awal', date('Y-m-d')) }}">
                 </div>
                 <div class="col-md-2 mb-3">
                     <label class="font-weight-bold small text-muted">Tanggal Pelayanan Resep</label>
-                    <input type="date" name="tgl_pel_resep" class="form-control" placeholder="0" min="1" value="{{ request('tgl_awal', date('Y-m-d')) }}">
+                    <input type="date" name="tgl_pel_resep" class="form-control" placeholder="0" min="1"
+                        value="{{ request('tgl_awal', date('Y-m-d')) }}">
                 </div>
                 <div class="col-md-2 mb-3">
                     <label class="font-weight-bold small text-muted">Dokter</label>
-                    <input readonly type="text" name="nama_dokter" class="form-control" placeholder="0" min="1" value="{{ $dokter[0]->nama_paramedis}}">
-                    <input hidden type="text" name="kode_paramedis" class="form-control" placeholder="0" min="1" value="{{ $dokter[0]->kode_dokter_jkn}}">
+                    <input readonly type="text" name="nama_dokter" class="form-control" placeholder="0"
+                        min="1" value="{{ $dokter[0]->nama_paramedis }}">
+                    <input hidden type="text" name="kode_paramedis" class="form-control" placeholder="0"
+                        min="1" value="{{ $dokter[0]->kode_dokter_jkn }}">
                 </div>
             </div>
-            <!-- Tombol Tambah ke Daftar -->
-            <div class="col-md-2 mb-3 d-flex align-items-end">
-                <button type="button" class="btn btn-success btn-block font-weight-bold" data-toggle="modal"
-                    data-target="#modalpilihobat">
-                    <i class="fas fa-plus mr-1"></i> Pilih Obat
-                </button>
+            <div class="row">
+                <div class="col-md-2 mb-3 d-flex align-items-end">
+                    <button type="button" class="btn btn-success btn-block font-weight-bold" data-toggle="modal"
+                        data-target="#modalpilihobat">
+                        <i class="fas fa-plus mr-1"></i> Pilih Obat
+                    </button>
+                </div>
+                <div class="col-md-2 mb-3 d-flex align-items-end">
+                    <button type="button" class="btn btn-success btn-block font-weight-bold ambilobatracik"
+                        data-toggle="modal" data-target="#modalobatracikan">
+                        <i class="fas fa-plus mr-1"></i> Pilih Obat Racik
+                    </button>
+                </div>
+                <div class="col-md-2 mb-3 d-flex align-items-end">
+                    <button type="button" class="btn btn-warning btn-block font-weight-bold" data-toggle="modal"
+                        data-target="#modalbuatobatracik">
+                        <i class="fas fa-plus mr-1"></i> Buat Obat Racik
+                    </button>
+                </div>
+
             </div>
+            <!-- Tombol Tambah ke Daftar -->
     </div>
     </form>
     <hr class="my-4">
@@ -135,34 +155,34 @@
     </h6>
     <div class="table-responsive">
         <form action="" method="POST" class="arrayobat">
-        <table class="table table-bordered table-striped table-hover align-middle">
-            <thead class="thead-light">
-                <tr>
-                    <th style="width: 40px;" class="text-center">No</th>
-                    <th style="min-width: 90px;">Nama Obat</th>
-                    <th style="width: 180px;">Stok</th>
-                    <th style="width: 180px;">Jenis Resep</th>
-                    <th style="width: 180px;">Jenis Obat</th>
-                    <th style="width: 90px;">Iterasi</th>
-                    <th style="width: 80px;">Jlh Iter</th>
-                    <th style="width: 90px;">Jlh Hari</th>
-                    <th style="width: 100px;">Dosis Minum</th>
-                    <th style="width: 120px;">Signa 1</th>
-                    <th style="width: 80px;"></th>
-                    <th style="width: 140px;">Signa 2</th>
-                    <th style="min-width: 120px;">Catatan</th>
-                    <th style="width: 60px;" class="text-center">Aksi</th>
-                </tr>
-            </thead>
-            <tbody id="wrapper-obat-terpilih">
-                <!-- Row Default Saat Kosong -->
-                <tr id="empty-row">
-                    <td colspan="12" class="text-center text-muted font-italic py-3">
-                        Belum ada obat yang dipilih. Klik tombol "Pilih" pada tabel obat.
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+            <table class="table table-bordered table-striped table-hover align-middle">
+                <thead class="thead-light">
+                    <tr>
+                        <th style="width: 40px;" class="text-center">No</th>
+                        <th style="min-width: 90px;">Nama Obat</th>
+                        <th style="width: 180px;">Stok</th>
+                        <th style="width: 180px;">Jenis Resep</th>
+                        <th style="width: 180px;">Jenis Obat</th>
+                        <th style="width: 90px;">Iterasi</th>
+                        <th style="width: 80px;">Jlh Iter</th>
+                        <th style="width: 190px;">Jlh Hari & Obat</th>
+                        <th style="width: 100px;">Dosis Minum</th>
+                        <th style="width: 120px;">Signa 1</th>
+                        <th style="width: 80px;"></th>
+                        <th style="width: 140px;">Signa 2</th>
+                        <th style="min-width: 120px;">Catatan</th>
+                        <th style="width: 60px;" class="text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="wrapper-obat-terpilih">
+                    <!-- Row Default Saat Kosong -->
+                    <tr id="empty-row" class="empty-row">
+                        <td colspan="12" class="text-center text-muted font-italic py-3">
+                            Belum ada obat yang dipilih. Klik tombol "Pilih" pada tabel obat.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </form>
     </div>
 
@@ -172,6 +192,184 @@
             onclick="simpanresep()">
             <i class="fas fa-save mr-2"></i>Simpan Resep
         </button>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalbuatobatracik" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Silahkan Pilih Komponen Obat Racik</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-header">Header Racikan</div>
+                    <div class="card-body">
+                        <form action="" class="form_header_racikan">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Nama
+                                            Racikan</label>
+                                        <input type="text" class="form-control" id="namaracikan"
+                                            name="namaracikan" placeholder="Ketik nama racikan ...">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Tipe
+                                            Racikan</label><br>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="tiperacikan"
+                                                id="tiperacikan" value="1" checked>
+                                            <label class="form-check-label" for="radioDefault1">
+                                                Non - Powder
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="tiperacikan"
+                                                id="tiperacikan2" value="2">
+                                            <label class="form-check-label" for="radioDefault2">
+                                                Powder
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Pilih sediaan</label>
+                                    <select class="form-select" aria-label="Default select example" name="sediaan"
+                                        id="sediaan">
+                                        <option value="0">Silahkan Pilih Sediaan</option>
+                                        <option value="1">Kapsul</option>
+                                        <option value="2">Kertas Perkamen</option>
+                                        <option value="3">Pot Salep</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">QTY
+                                            Racikan</label>
+                                        <input type="text" class="form-control" id="qtyracikan" name="qtyracikan"
+                                            placeholder="Ketik qty racikan ..." value="0">
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Aturan
+                                            Pakai</label>
+                                        <textarea type="text" class="form-control" id="aturanpakai" name="aturanpakai"
+                                            placeholder="masukan aturan pakai ..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">Silahkan Pilih Komponen</div>
+                    <div class="card-body">
+                        <div class="input-group mb-1">
+                            <input type="text" class="form-control" placeholder="Masukan nama obat ..."
+                                aria-label="Recipient’s username" aria-describedby="basic-addon2"
+                                id="input_pencarian_nama_komponen">
+                            <span class="btn btn-success input-group-text" id="tombol_cari_komponen"><i
+                                    class="bi bi-search"></i> Cari
+                                Obat</span>
+                        </div>
+                        <table id="tabel_barang2" class="table table-bordered table-hover mt-1"
+                            style="font-size:12px">
+                            <thead>
+                                <tr>
+                                    <th>Tgl Stok</th>
+                                    <th>Nama Barang</th>
+                                    <th>Satuan</th>
+                                    <th>Stok tersisa</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-body">
+                        <form action="" class="form_komponen">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Nama
+                                            Barang</label>
+                                        <input readonly type="text" class="form-control" id="komponen_namabarang"
+                                            name="komponen_namabarang" placeholder="nama barang ...">
+                                        <input hidden readonly type="text" class="form-control"
+                                            id="komponen_kodebarang" name="komponen_kodebarang"
+                                            placeholder="kode barang ...">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Satuan</label>
+                                        <input readonly type="text" class="form-control"
+                                            id="komponen_satuanbarang" name="komponen_satuanbarang"
+                                            placeholder="satuan barang ...">
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Stok</label>
+                                        <input readonly type="text" class="form-control" id="komponen_stokbarang"
+                                            name="komponen_stokbarang" placeholder="stok barang ...">
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Dosis</label>
+                                        <input value="0" type="text" class="form-control"
+                                            id="komponen_dosis" name="komponen_dosis" placeholder="dosis awal ...">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Dosis
+                                            Racik</label>
+                                        <input value="0" type="text" class="form-control"
+                                            name="komponen_dosisracik" id="komponen_dosisracik"
+                                            placeholder="nama barang ...">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-success tombolproses" id="tombolproses"
+                                        style="margin-top:32px" onclick="prosesracikan()"><i
+                                            class="bi bi-bullseye"></i> Proses</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="container">
+                            <div class="card-header bg-warning">List Komponen obat yang sudah dipilih</div>
+                            <div class="card-body">
+                                <form action="" class="formdatakomponen">
+                                    <div class="v_list_komponen"></div>
+                                </form>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-success" onclick="simpanobatracikan()"><i
+                                        class="bi bi-floppy"></i> Simpan</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
     </div>
 </div>
 <!-- Modal -->
@@ -236,6 +434,28 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modalobatracikan" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Silahkan Pilih Obat Racik</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_t_racikan">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Stylings & Helper Rotasi Collapse Icon -->
 <style>
     .transition-icon {
@@ -256,8 +476,105 @@
     }
 </style>
 <script>
+    var table2 = $('#tabel_barang2').DataTable({
+        processing: true,
+        serverSide: true,
+        searching: false,
+        pageLength: 4, // Menampilkan 4 data per halaman
+        lengthMenu: [4, 6, 8], // Opsi jumlah data yang
+        ajax: {
+            url: "{{ route('ambildatastokdepo') }}",
+            type: 'GET',
+            // --- TAMBAHKAN BAGIAN INI ---
+            data: function(d) {
+                d.keyword = $('#input_pencarian_nama_komponen')
+                    .val(); // Ambil nilai dari input form
+                // d.kode_unit = $('#input_kode_unit').val(); // Contoh jika ada parameter lain
+            }
+            // -----------------------------
+        },
+        deferLoading: 0, // Menginstruksikan DataTables bahwa data di server belum dimuat
+        language: {
+            processing: '<div class="loading-container">' +
+                '<img src="{{ asset('public/img/fb.gif') }}" width="80">' +
+                '<p>Sedang mengambil data...</p>' +
+                '</div>'
+        },
+        columns: [{
+                data: 'tgl_stok',
+                name: 'tgl_stok'
+            },
+            {
+                data: 'nama_barang',
+                name: 'nama_barang'
+            },
+            {
+                data: 'satuan',
+                name: 'satuan'
+            },
+            {
+                data: 'stok_current',
+                name: 'stok_current'
+            },
+            {
+                data: null, // Kolom ini tidak terikat data langsung
+                orderable: false,
+                searchable: false,
+                render: function(data, type, row) {
+                    // row adalah objek data untuk baris tersebut
+                    return '<button class="btn btn-success btn-sm pilihkomponen" ' +
+                        'data-kode_barang="' + row.kode_barang + '" ' +
+                        'data-nama_barang="' + row.nama_barang + '" ' +
+                        'data-stok_barang="' + row.stok_current + '" ' +
+                        'data-satuan_barang="' + row.satuan + '" ' +
+                        // Tambahkan atribut lain yang dibutuhkan di sini
+                        '><i class="bi bi-layer-backward"></i></button>';
+                }
+            }
+        ]
+    });
+    $('body').off('click', '.pilihkomponen').on('click', '.pilihkomponen', function(event) {
+        event.preventDefault();
+
+        var kode_barang = $(this).data('kode_barang');
+        var nama_barang = $(this).data('nama_barang');
+        var stok_barang = $(this).data('stok_barang');
+        var satuan_barang = $(this).data('satuan_barang');
+        $('#komponen_namabarang').val(nama_barang)
+        $('#komponen_kodebarang').val(kode_barang)
+        $('#komponen_satuanbarang').val(satuan_barang)
+        $('#komponen_stokbarang').val(stok_barang)
+        $('#komponen_dosis').val(0)
+        $('#komponen_dosisracik').val(0)
+        komponen_dosis
+        komponen_dosisracik
+        Swal.fire({
+            title: nama_barang + " Berhasil dipilih",
+            icon: "success",
+            timer: 1500,
+            showConfirmButton: false
+        });
+        $('#tombolproses').focus();
+    });
     $(document).ready(function() {
         // 1. Inisialisasi DataTables
+
+        var tableObat = $('#table-stok-komponen-obat').DataTable({
+            "pageLength": 5,
+            "language": {
+                "search": "Cari Obat:",
+                "lengthMenu": "Tampilkan _MENU_ data",
+                "zeroRecords": "Obat tidak ditemukan",
+                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ obat",
+                "infoEmpty": "Tidak ada data",
+                "paginate": {
+                    "first": "Awal",
+                    "last": "Akhir",
+                    "next": "›",
+                    "previous": "‹"
+                }
+            }
+        });
         var tableObat = $('#table-stok-obat').DataTable({
             "pageLength": 10,
             "language": {
@@ -337,7 +654,7 @@
                         <input type="number" name="jlh_iterasi" class="form-control form-control-sm text-center" value="0" min="0">
                     </td>
                     <td>
-                        <input type="number" name="jumlahhari" class="form-control form-control-sm text-center" value="1" min="1" required>
+                           <div class="row"><div class="col-md-6"> <input type="number" name="jumlahhari" class="form-control form-control-sm text-center" value="1" min="1" required></div> <div class="col-md-6"><input type="number" name="qtyobat" class="form-control form-control-sm text-center" value="1" min="1" required></div> </div>
                     </td>
                     <td>
                         <input type="number" name="jumlahobat" class="form-control form-control-sm text-center input-jumlah-obat" value="1" min="1" max="${maxStok}" required>
@@ -364,7 +681,6 @@
 
                 $('#wrapper-obat-terpilih').append(htmlRow);
             }
-
             updateNomorUrut();
             checkSubmitButton();
         });
@@ -456,8 +772,201 @@
                         text: data.message,
                         footer: ''
                     })
+                    location.reload()
                 }
             }
         });
     }
+    $('#tombol_cari_komponen').click(function() {
+        $('#tabel_barang2').DataTable().ajax.reload(); // Reload tabel dengan parameter baru
+    });
+
+    function prosesracikan() {
+        spinner = $('#loader')
+        spinner.show();
+        var dataheader = $('.form_header_racikan').serializeArray();
+        var datakomponen = $('.form_komponen').serializeArray();
+        kode_kunjungan = $('#kode_kunjungan').val()
+        $.ajax({
+            async: true,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                _token: "{{ csrf_token() }}",
+                dataheader: JSON.stringify(dataheader),
+                datakomponen: JSON.stringify(datakomponen),
+                kode_kunjungan
+            },
+            url: '<?= route('proseskomponenracik') ?>',
+            error: function(data) {
+                spinner.hide()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ooops....',
+                    text: 'Sepertinya ada masalah......',
+                    footer: ''
+                })
+            },
+            success: function(response) {
+                spinner.hide()
+                if (response.status === 'error') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ups!',
+                        text: response.message,
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "success",
+                        title: response.message,
+                        text: "Silahkan cek dosis racik dan stoknya ...",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    let newRow = `
+                        <div class="row mb-2 item-obat border p-2">
+                        <div class="col-sm-3">
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Nama Barang</label>
+                                <input type="email" class="form-control" id="list_nama_barang" name="list_nama_barang" aria-describedby="emailHelp" value="${response.data.nama_barang}">
+                                <input hidden type="email" class="form-control" id="list_kode_barang" name="list_kode_barang" aria-describedby="emailHelp" value="${response.data.kode_barang}">
+                            </div>
+                        </div>
+                            <div class="col-sm-2">
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1" class="form-label">Satuan</label>
+                                    <input type="email" class="form-control" id="list_satuan_barang" name="list_satuan_barang" aria-describedby="emailHelp" value="${response.data.satuan_barang}">
+                                </div>
+                            </div>
+                            <div class="col-sm-1">
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1" class="form-label">Stok</label>
+                                    <input type="email" class="form-control" id="list_stok_current_barang" name="list_stok_current_barang" aria-describedby="emailHelp" value="${response.data.stok_current}">
+                                </div>
+                            </div>
+                            <div class="col-sm-1">
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1" class="form-label">QTY</label>
+                                    <input type="email" class="form-control" id="list_qty_barang" name="list_qty_barang" aria-describedby="emailHelp" value="${response.data.jumlah}">
+                                </div>
+                            </div>
+                            <div class="col-sm-1">
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1" class="form-label">Dosis</label>
+                                    <input readonly type="email" class="form-control" id="list_dosis_barang" name="list_dosis_barang" aria-describedby="emailHelp" value="${response.data.dosis_awal}">
+                                </div>
+                            </div>
+                            <div class="col-sm-1">
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1" class="form-label">Racik</label>
+                                    <input readonly type="email" class="form-control" id="list_dosis_racik_barang" name="list_dosis_racik_barang" aria-describedby="emailHelp" value="${response.data.dosis_racik}">
+                                </div>
+                            </div>
+                        <div class="col-1 text-end">
+                            <button type="button" class="btn btn-danger btn-sm btn-hapus"><i class="bi bi-x-circle"></i></button>
+                        </div>
+                        </div>`;
+                    $('.v_list_komponen').append(newRow);
+                }
+            }
+        });
+    }
+
+    function simpanobatracikan() {
+        Swal.fire({
+            title: "Anda yakin ?",
+            text: "Data racikan akan disimpan ...",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, simpan"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Pastikan data racikan sudah dibuat dengan benar",
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: "Ya, simpan data racikan",
+                    denyButtonText: `Batal`
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        simpandata()
+                    } else if (result.isDenied) {
+                        Swal.fire("Changes are not saved", "", "info");
+                    }
+                });
+            }
+        });
+    }
+
+    function spinner_on() {
+        spinner.show();
+    }
+
+    function spinner_off() {
+        spinner.hide();
+    }
+
+    function simpandata() {
+        kode_kunjungan = $('#kode_kunjungan').val()
+        var dataheader = $('.form_header_racikan').serializeArray();
+        var datakomponen = $('.formdatakomponen').serializeArray();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kode_kunjungan,
+                dataheader: JSON.stringify(dataheader),
+                datakomponen: JSON.stringify(datakomponen)
+            },
+            url: '<?= route('simpanobatracikan') ?>',
+            error: function(response) {
+                spinner_off()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ups!',
+                    text: response.message,
+                });
+            },
+            success: function(response) {
+                spinner_off()
+                if (response.kode == '500') {
+                    // Kondisi jika validasi gagal atau ada error sistem
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ups!',
+                        text: response.message,
+                    });
+                } else {
+                    $('#modalbuatracikan').modal('toggle')
+                    $('.modal-backdrop').remove();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'OK!',
+                        text: response.message,
+                    });
+                    clearFormByClass('vv');
+                }
+            }
+        });
+    }
+    $(".ambilobatracik").on('click', function(event) {
+        spinner_on()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}"
+            },
+            url: '<?= route('ambillistobatracikan') ?>',
+            error: function(response) {
+                spinner_off()
+                alert('error')
+            },
+            success: function(response) {
+                spinner_off()
+                $('.v_t_racikan').html(response);
+            }
+        });
+    });
 </script>

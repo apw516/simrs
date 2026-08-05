@@ -573,6 +573,15 @@
                           </a>
                       </li>
                       <li class="nav-item">
+                          <a href="{{ route('index_riwayat_pelayanan_obat_depo') }}"
+                              class="nav-link @if ($sidebar == 'index_riwayat_pelayanan_depo') active @endif">
+                              <i class="nav-icon fas fa-th"></i>
+                              <p>
+                                  Riwayat Pelayanan Obat
+                              </p>
+                          </a>
+                      </li>
+                      {{-- <li class="nav-item">
                           <a href="{{ route('index_layanan_resep') }}"
                               class="nav-link @if ($sidebar == 'farmasi_1') active @endif">
                               <i class="nav-icon fas fa-th"></i>
@@ -607,7 +616,7 @@
                                   Kartu Stok
                               </p>
                           </a>
-                      </li>
+                      </li> --}}
                   @endif
                   @if (auth()->user()->nama == 'agyl' ||
                           auth()->user()->hak_akses == '1' ||
