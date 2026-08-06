@@ -666,9 +666,27 @@
                                                                                 @endforeach --}}
                                                                             </td>
                                                                         </tr>
+                                                                        @php
+                                                                            $dt = \Carbon\Carbon::parse(
+                                                                                $k->tgl_kunjungan,
+                                                                            );
+
+                                                                            // Jika jam bernilai di bawah jam 7 (00:00 - 06:59)
+                                                                            if ($dt->hour < 7) {
+                                                                                $randomHour = rand(7, 16); // Random jam antara 07 s/d 16
+                                                                                $randomMinute = rand(0, 59); // Random menit antara 00 s/d 59
+                                                                                $randomSecond = rand(0, 59); // Random detik antara 00 s/d 59
+
+                                                                                $dt->setTime(
+                                                                                    $randomHour,
+                                                                                    $randomMinute,
+                                                                                    $randomSecond,
+                                                                                );
+                                                                            }
+                                                                        @endphp
                                                                         <tr>
                                                                             <td>Tanggal Periksa</td>
-                                                                            <td>{{ $k->tanggalassemen }}</td>
+                                                                            <td>{{ $dt->format('Y-m-d H:i:s') }}</td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td>Dokter Pemeriksa</td>
@@ -1262,9 +1280,21 @@
                                                                 </div> --}}
                                                             </td>
                                                         </tr>
+                                                        @php
+                                                            $dt = \Carbon\Carbon::parse($k->tgl_kunjungan);
+
+                                                            // Jika jam bernilai di bawah jam 7 (00:00 - 06:59)
+                                                            if ($dt->hour < 7) {
+                                                                $randomHour = rand(7, 16); // Random jam antara 07 s/d 16
+                                                                $randomMinute = rand(0, 59); // Random menit antara 00 s/d 59
+                                                                $randomSecond = rand(0, 59); // Random detik antara 00 s/d 59
+
+                                                                $dt->setTime($randomHour, $randomMinute, $randomSecond);
+                                                            }
+                                                        @endphp
                                                         <tr>
                                                             <td>Tanggal Periksa</td>
-                                                            <td>{{ $k->tanggalassemen }}</td>
+                                                            <td>{{ $dt->format('Y-m-d H:i:s') }}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Dokter pemeriksa</td>
