@@ -581,6 +581,24 @@
                               </p>
                           </a>
                       </li>
+                      <li class="nav-item">
+                          <a href="{{ route('index_log_kartu_stok') }}"
+                              class="nav-link @if ($sidebar == 'index_log_kartu_stok') active @endif">
+                              <i class="nav-icon fas fa-th"></i>
+                              <p>
+                                  Log Kartu Stok
+                              </p>
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a href="{{ route('index_mapping_barang') }}"
+                              class="nav-link @if ($sidebar == 'index_mapping_barang') active @endif">
+                              <i class="nav-icon fas fa-th"></i>
+                              <p>
+                                  Mapping Master Barang
+                              </p>
+                          </a>
+                      </li>
                       {{-- <li class="nav-item">
                           <a href="{{ route('index_layanan_resep') }}"
                               class="nav-link @if ($sidebar == 'farmasi_1') active @endif">

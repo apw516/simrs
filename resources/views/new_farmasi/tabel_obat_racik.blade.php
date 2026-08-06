@@ -20,7 +20,8 @@
                 <td>
                     <button class="btn btn-success btn-sm pilihracikan" idtemplate="{{ $d->id }}"><i
                             class="bi bi-box-arrow-down"></i></button>
-                    <button class="btn btn-danger btn-sm hapusracikan" nama="{{ $d->namaracikan}}" isi="{{ $d->keterangan_detail}}" idtemplate="{{ $d->id }}" data-bs-dismiss="modal"><i
+                    <button class="btn btn-danger btn-sm hapusracikan" nama="{{ $d->namaracikan }}"
+                        isi="{{ $d->keterangan_detail }}" idtemplate="{{ $d->id }}" data-bs-dismiss="modal"><i
                             class="bi bi-trash3"></i></button>
                 </td>
             </tr>
@@ -55,10 +56,13 @@
             success: function(response) {
                 spinner_off()
                 $('#wrapper-obat-terpilih').append(response.html);
+                $('#empty-row').hide();
+                updateNomorUrut();
+                checkSubmitButton();
             }
         });
     })
-     $('#wrapper-obat-terpilih').on("click", ".remove_field", function(e) {
+    $('#wrapper-obat-terpilih').on("click", ".remove_field", function(e) {
         e.preventDefault();
         $(this).closest('.row').remove();
     });
@@ -77,7 +81,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire({
-                    title: "Hapus data racikan ? " + nama + " Keterangan ( " + isi +" ) " ,
+                    title: "Hapus data racikan ? " + nama + " Keterangan ( " + isi + " ) ",
                     showDenyButton: false,
                     showCancelButton: true,
                     confirmButtonText: "Hapus",
@@ -104,18 +108,31 @@
                 alert('error')
             },
             success: function(response) {
-                spinner_off()                
-                if(response.kode == 200){
+                spinner_off()
+                if (response.kode == 200) {
                     Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "data berhasil dihapus ...",
-                    showConfirmButton: false,
-                    timer: 1500
+                        position: "top-end",
+                        icon: "success",
+                        title: "data berhasil dihapus ...",
+                        showConfirmButton: false,
+                        timer: 1500
                     });
-                }else{
+                } else {
 
                 }
             }
         });
     }
+    function updateNomorUrut() {
+    $('#wrapper-obat-terpilih tr').not('#empty-row').each(function(index) {
+           $(this).find('.nomor-urut').text(index + 1);
+       });
+    }
+      function checkSubmitButton() {
+            var totalItem = $('#wrapper-obat-terpilih tr').not('#empty-row').length;
+            if (totalItem > 0) {
+                $('#btn-submit-obat').prop('disabled', false);
+            } else {
+                $('#btn-submit-obat').prop('disabled', true);
+            }
+        }

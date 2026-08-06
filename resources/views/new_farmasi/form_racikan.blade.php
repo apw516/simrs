@@ -36,9 +36,9 @@
         </td>
         <td>
             <div class="row">
-                <div class="col-md-6"> <input type="number" name="jumlahhari"
+                <div hidden class="col-md-6"> <input type="number" name="jumlahhari"
                         class="form-control form-control-sm text-center" value="1" min="1" required></div>
-                <div class="col-md-6"><input type="number" name="qtyobat"
+                <div class="col-md-12"><input type="number" name="qtyobat"
                         class="form-control form-control-sm text-center" value="{{ $row->qtyracikan }}" min="1"
                         required></div>
             </div>

@@ -165,7 +165,7 @@
                         <th style="width: 180px;">Jenis Obat</th>
                         <th style="width: 90px;">Iterasi</th>
                         <th style="width: 80px;">Jlh Iter</th>
-                        <th style="width: 190px;">Jlh Hari & Obat</th>
+                        <th style="width: 190px;">Jlh Obat</th>
                         <th style="width: 100px;">Dosis Minum</th>
                         <th style="width: 120px;">Signa 1</th>
                         <th style="width: 80px;"></th>
@@ -654,7 +654,7 @@
                         <input type="number" name="jlh_iterasi" class="form-control form-control-sm text-center" value="0" min="0">
                     </td>
                     <td>
-                           <div class="row"><div class="col-md-6"> <input type="number" name="jumlahhari" class="form-control form-control-sm text-center" value="1" min="1" required></div> <div class="col-md-6"><input type="number" name="qtyobat" class="form-control form-control-sm text-center" value="1" min="1" required></div> </div>
+                           <div class="row"><div class="col-md-6"> <input hidden type="number" name="jumlahhari" class="form-control form-control-sm text-center" value="1" min="1" required></div> <div class="col-md-12"><input type="number" name="qtyobat" class="form-control form-control-sm text-center" value="1" min="1" required></div> </div>
                     </td>
                     <td>
                         <input type="number" name="jumlahobat" class="form-control form-control-sm text-center input-jumlah-obat" value="1" min="1" max="${maxStok}" required>

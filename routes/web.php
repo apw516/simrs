@@ -893,7 +893,7 @@ Route::get('/index_merger_berkas', [CasemixController::class, 'index_merger_berk
 Route::post('/caridatakunjungan_casemix', [CasemixController::class, 'caridatakunjungan_casemix'])->name('caridatakunjungan_casemix');
 Route::get('/downloadberkas/{kode_kunjungan}', [CasemixController::class, 'downloadberkas'])->name('downloadberkas');
 Route::post('/ambilriwayatcatatanhemodialisa', [ErmController::class, 'ambilriwayatcatatanhemodialisa'])
-        ->name('ambilriwayatcatatanhemodialisa'); //sidebar
+    ->name('ambilriwayatcatatanhemodialisa'); //sidebar
 
 
 
@@ -920,6 +920,8 @@ Route::post('/asesmen-bunuh-diri/store', [UpdateERMcontroller::class, 'storeassb
 
 
 
+Route::get('index_mapping_barang', [newFarmasiController::class, 'index_mapping_barang'])->name('index_mapping_barang');
+Route::get('index_log_kartu_stok', [newFarmasiController::class, 'index_log_kartu_stok'])->name('index_log_kartu_stok');
 Route::get('index_riwayat_pelayanan_obat_depo', [newFarmasiController::class, 'index_riwayat_pelayanan_obat_depo'])->name('index_riwayat_pelayanan_obat_depo');
 Route::get('index_depo_obat', [newFarmasiController::class, 'index_depo_obat'])->name('index_depo_obat');
 Route::post('ambildatakunjungandepo', [newFarmasiController::class, 'ambildatakunjungandepo'])->name('ambildatakunjungandepo');
@@ -933,3 +935,8 @@ Route::post('simpanobatracikan', [newFarmasiController::class, 'simpanobatracika
 Route::post('ambillistobatracikan', [newFarmasiController::class, 'ambillistobatracikan'])->name('ambillistobatracikan');
 Route::post('/ambilobatracik', [newFarmasiController::class, 'ambilobatracik'])->middleware('auth')->name('ambilobatracik');
 Route::post('/hapusracikan', [newFarmasiController::class, 'hapusracikan'])->middleware('auth')->name('hapusracikan');
+Route::get('/kartu-stok/data', [newFarmasiController::class, 'getDatastok'])->name('kartu-stok.data');
+Route::get('/ambilbarangbpjs', [newFarmasiController::class, 'ambilbarangbpjs'])->name('ambilbarangbpjs');
+Route::get('/ambilbarangmappingdepo', [newFarmasiController::class, 'ambilbarangmappingdepo'])->middleware('auth')->name('ambilbarangmappingdepo');
+Route::post('/simpanmappingobatdaridepo', [newFarmasiController::class, 'simpanmappingbaru'])->middleware('auth')->name('simpanmappingobatdaridepo');
+
