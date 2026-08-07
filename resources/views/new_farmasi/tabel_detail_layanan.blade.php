@@ -167,7 +167,7 @@
                                         <th>Hari</th>
                                         <th>Jumlah</th>
                                         <th>Harga</th>
-                                        <th>Subtotal</th>
+                                        {{-- <th>Subtotal</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -182,8 +182,8 @@
                                             <td class="text-center">{{ (float) $obat->hari }} Hari</td>
                                             <td class="text-center">{{ (float) $obat->jumlah }}</td>
                                             <td class="text-end">Rp {{ number_format($obat->harga, 0, ',', '.') }}</td>
-                                            <td class="text-end font-weight-bold">Rp
-                                                {{ number_format($obat->jumlah * $obat->harga, 0, ',', '.') }}</td>
+                                            {{-- <td class="text-end font-weight-bold">Rp
+                                                {{ number_format($obat->jumlah * $obat->harga, 0, ',', '.') }}</td> --}}
                                         </tr>
                                     @endforeach
                                 </tbody>

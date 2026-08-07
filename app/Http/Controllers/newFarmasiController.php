@@ -325,15 +325,13 @@ class newFarmasiController extends FarmasiController
                 if (empty($mt_barang)) {
                     throw new \Exception("Master barang dengan kode " . $a['kode_barang'] . " tidak ditemukan!");
                 }
-
                 // $jumlahHari = $a['jumlahhari'];
                 // $frekuensi  = $a['signa1'];
                 // $dosis      = $a['jumlahobat'];
                 // $totalObat  = $jumlahHari * ($frekuensi * $dosis);
-
                 $totalObat = (float) ($a['qtyobat'] ?? 0); // Misal: 10 tablet
                 $frekuensi = (float) ($a['signa1'] ?? 0);          // Misal: 3
-                $dosis     = (float) ($a['jumlahobat'] ?? 1);     // Misal: 1
+                $dosis     = (float) ($a['signa2'] ?? 1);     // Misal: 1
                 $pemakaianSehari = $frekuensi * $dosis;
                 if ($pemakaianSehari > 0) {
                     // Hasilnya misal 10 / 3 = 3.33 hari (atau gunakan floor/round sesuai kebutuhan)
@@ -341,8 +339,6 @@ class newFarmasiController extends FarmasiController
                 } else {
                     $jumlahHari = 0;
                 }
-
-
                 $stokTerakhir = DB::connection('mysql7')->table('ti_kartu_stok')
                     ->where('kode_unit', auth()->user()->unit)
                     ->where('kode_barang', $a['kode_barang'])
@@ -465,10 +461,17 @@ class newFarmasiController extends FarmasiController
                     if (empty($mt_barang)) {
                         throw new \Exception("Master barang dengan kode " . $a['kode_barang'] . " tidak ditemukan!");
                     }
-                    $jumlahHari = $a['jumlahhari'];
+                    // $jumlahHari = $a['jumlahhari'];
                     $totalObat = $or->qty_barang;
                     $frekuensi  = $a['signa1'];
-                    $dosis      = $a['jumlahobat'];
+                    $dosis      = $a['signa2'];
+                    $pemakaianSehari = $frekuensi * $dosis;
+                    if ($pemakaianSehari > 0) {
+                        // Hasilnya misal 10 / 3 = 3.33 hari (atau gunakan floor/round sesuai kebutuhan)
+                        $jumlahHari = $totalObat / $pemakaianSehari;
+                    } else {
+                        $jumlahHari = 0;
+                    }
                     // $totalObat  = $jumlahHari * ($frekuensi * $dosis);
                     $stokTerakhir = DB::connection('mysql7')->table('ti_kartu_stok')
                         ->where('kode_unit', auth()->user()->unit)
@@ -697,7 +700,7 @@ class newFarmasiController extends FarmasiController
 
                 $totalObat = (float) ($a['qtyobat'] ?? 0); // Misal: 10 tablet
                 $frekuensi = (float) ($a['signa1'] ?? 0);          // Misal: 3
-                $dosis     = (float) ($a['jumlahobat'] ?? 1);     // Misal: 1
+                $dosis     = (float) ($a['signa2'] ?? 1);     // Misal: 1
                 $pemakaianSehari = $frekuensi * $dosis;
                 if ($pemakaianSehari > 0) {
                     // Hasilnya misal 10 / 3 = 3.33 hari (atau gunakan floor/round sesuai kebutuhan)
@@ -710,7 +713,6 @@ class newFarmasiController extends FarmasiController
                 $mt_barang = db::select('select * from mt_barang where kode_barang = ?', [$kode_barang]);
                 $kode_barang_bpjs = $mt_barang[0]->kode_obat_bpjs;
                 $mt_barang_bpjs = db::select('select * from apt_online_ref_dpho where kodeobat = ?', [$kode_barang_bpjs]);
-
                 if (count($mt_barang_bpjs) == 0) {
                     $v->hapus_resep([
                         "nosjp" => $sep_apotek,
@@ -781,7 +783,7 @@ class newFarmasiController extends FarmasiController
                     }
                     $totalObat = (float) ($a['qtyobat'] ?? 0); // Misal: 10 tablet
                     $frekuensi = (float) ($a['signa1'] ?? 0);          // Misal: 3
-                    $dosis     = (float) ($a['jumlahobat'] ?? 1);     // Misal: 1
+                    $dosis     = (float) ($a['signa2'] ?? 1);     // Misal: 1
                     $pemakaianSehari = $frekuensi * $dosis;
                     if ($pemakaianSehari > 0) {
                         // Hasilnya misal 10 / 3 = 3.33 hari (atau gunakan floor/round sesuai kebutuhan)
@@ -799,7 +801,7 @@ class newFarmasiController extends FarmasiController
                             "SIGNA1OBT" => $a['signa1'],
                             "SIGNA2OBT" => $a['signa2'],
                             "PERMINTAAN" => $ddr->qty_barang,
-                            "JMLOBT" => $ddr->qty_barang,
+                            "JMLOBT" => $a['qtyobat'],
                             "JHO" => $jumlahHari,
                             "CatKhsObt" => $a['catatan']
                         ];
@@ -2532,22 +2534,7 @@ class newFarmasiController extends FarmasiController
         if ($kode_penjamin != 'P01') {
             $get_barang = db::select('select kode_obat_bpjs from master_barang_x_master_obat_bpjs where kode_barang = ?', [$dataKomponen['komponen_kodebarang']]);
             if (count($get_barang) == 0) {
-                // $response = [
-                //     'status' => 'error',
-                //     'message' => 'PASIEN BPJS , Obat ' . $dataKomponen['komponen_namabarang'] . ' Belum mempunyai kode barang BPJS untuk keperluan briding apotek online, silahkan lakukan mapping master barang  ...',
-                //     'data' => [
-                //         'nama_barang' => $dataKomponen['komponen_namabarang'] ?? 'Tanpa Nama',
-                //         'kode_barang' => $dataKomponen['komponen_kodebarang'] ?? 'Tanpa Nama',
-                //         'satuan_barang' => $dataKomponen['komponen_satuanbarang'] ?? 'Tanpa Nama',
-                //         'dosis_awal' => $dataKomponen['komponen_dosis'] ?? 'Tanpa Nama',
-                //         'dosis_racik' => $dataKomponen['komponen_dosisracik'] ?? 'Tanpa Nama',
-                //         'jumlah' => $kebutuhan ?? 0,
-                //         'stok_current' => 0,
-                //         // Tambahkan field lain yang ingin ditampilkan di view
-                //     ]
-                // ];
-                // return response()->json($response);
-                // die;
+
             }
         }
         $stok = DB::table('ti_kartu_stok')
@@ -2558,8 +2545,9 @@ class newFarmasiController extends FarmasiController
         $dosis_diminta = $dataKomponen['komponen_dosisracik'];
         $jumlah_racikan = $dataHeader['qtyracikan'];
         $stok_mg = $dataKomponen['komponen_dosis'];
-        $ss = ($dosis_diminta * $jumlah_racikan) / $stok_mg;
+        $ss = ($dosis_diminta / $stok_mg) * $jumlah_racikan;
         $kebutuhan = round($ss * 2) / 2;
+        $lamahari = $jumlah_racikan / ($dataHeader['signa1racikan'] * $dataHeader['signa2racikan']);
         $sisa_stok = $stok - $kebutuhan;
         if (!$sisa_stok || $sisa_stok < 0) {
             $response = [
@@ -2582,6 +2570,7 @@ class newFarmasiController extends FarmasiController
                 'message' => 'Obat berhasil ditambahkan ke daftar!',
                 'data' => [
                     'nama_barang' => $dataKomponen['komponen_namabarang'] ?? 'Tanpa Nama',
+                    'lama_hari' => $lamahari ?? 0,
                     'kode_barang' => $dataKomponen['komponen_kodebarang'] ?? 'Tanpa Nama',
                     'satuan_barang' => $dataKomponen['komponen_satuanbarang'] ?? 'Tanpa Nama',
                     'dosis_awal' => $dataKomponen['komponen_dosis'] ?? 'Tanpa Nama',
@@ -2687,7 +2676,9 @@ class newFarmasiController extends FarmasiController
                 'unit_layanan' => auth()->user()->unit ?? null,
                 'unit_kirim'   => $data_kunjungan->kode_unit ?? null,
                 'dok_kirim'    => $data_kunjungan->kode_paramedis ?? null,
-                'pic'          => auth()->id()
+                'pic'          => auth()->id(),
+                'signa1'       =>$dataHeader['signa1racikan'],
+                'signa2'       =>$dataHeader['signa2racikan']
             ];
 
             $h = model_template_racikan::create($headerData);
@@ -2710,6 +2701,7 @@ class newFarmasiController extends FarmasiController
                     'kode_barang'        => $d['list_kode_barang'],
                     'qty_barang'         => $d['list_qty_barang'],
                     'dosis_awal'         => $d['list_dosis_barang'],
+                    'qty_hari'         => $d['list_qty_hari'],
                     'dosis_racik'        => $d['list_dosis_racik_barang'],
                 ];
 

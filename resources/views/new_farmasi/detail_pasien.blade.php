@@ -166,7 +166,7 @@
                         <th style="width: 90px;">Iterasi</th>
                         <th style="width: 80px;">Jlh Iter</th>
                         <th style="width: 190px;">Jlh Obat</th>
-                        <th style="width: 100px;">Dosis Minum</th>
+                        <th hidden style="width: 100px;">Dosis Minum</th>
                         <th style="width: 120px;">Signa 1</th>
                         <th style="width: 80px;"></th>
                         <th style="width: 140px;">Signa 2</th>
@@ -259,10 +259,23 @@
                                             placeholder="Ketik qty racikan ..." value="0">
                                     </div>
                                 </div>
+                                <div class="col-md-3">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Signa 1</label>
+                                        <input type="text" class="form-control" id="signa1racikan"
+                                            name="signa1racikan" placeholder="masukan signa 1 ...">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Signa 2</label>
+                                        <input type="text" class="form-control" id="signa2racikan"
+                                            name="signa2racikan" placeholder="masukan signa 2 ...">
+                                    </div>
+                                </div>
                                 <div class="col-md-5">
                                     <div class="mb-3">
-                                        <label for="exampleFormControlInput1" class="form-label">Aturan
-                                            Pakai</label>
+                                        <label for="exampleFormControlInput1" class="form-label">Catatan</label>
                                         <textarea type="text" class="form-control" id="aturanpakai" name="aturanpakai"
                                             placeholder="masukan aturan pakai ..."></textarea>
                                     </div>
@@ -354,7 +367,7 @@
                             <div class="card-header bg-warning">List Komponen obat yang sudah dipilih</div>
                             <div class="card-body">
                                 <form action="" class="formdatakomponen">
-                                    <div class="v_list_komponen"></div>
+                                    <div class="v_list_komponen" id="v_list_komponen"></div>
                                 </form>
                             </div>
                             <div class="card-footer">
@@ -367,7 +380,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -429,7 +441,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -451,7 +462,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -535,7 +545,6 @@
     });
     $('body').off('click', '.pilihkomponen').on('click', '.pilihkomponen', function(event) {
         event.preventDefault();
-
         var kode_barang = $(this).data('kode_barang');
         var nama_barang = $(this).data('nama_barang');
         var stok_barang = $(this).data('stok_barang');
@@ -628,10 +637,10 @@
                         <input type="hidden" name="kode_barang" value="${kodeBarang}">
                     </td>
                     <td>
-                        <input type="number" name="stok" class="form-control form-control-sm text-center" value="${maxStok}" min="0">
+                        <input readonly type="number" name="stok" class="form-control form-control-sm text-center" value="${maxStok}" min="0">
                     </td>
                     <td>
-                        <select name="jenis_resep" class="form-control form-control-sm">
+                        <select readonly name="jenis_resep" class="form-control form-control-sm">
                             <option value="NonRacikan">(Non-Racik)</option>
                             <option value="Racikan">Racikan</option>
                         </select>
@@ -656,8 +665,8 @@
                     <td>
                            <div class="row"><div class="col-md-6"> <input hidden type="number" name="jumlahhari" class="form-control form-control-sm text-center" value="1" min="1" required></div> <div class="col-md-12"><input type="number" name="qtyobat" class="form-control form-control-sm text-center" value="1" min="1" required></div> </div>
                     </td>
-                    <td>
-                        <input type="number" name="jumlahobat" class="form-control form-control-sm text-center input-jumlah-obat" value="1" min="1" max="${maxStok}" required>
+                    <td hidden>
+                        <input hidden type="number" name="jumlahobat" class="form-control form-control-sm text-center input-jumlah-obat" value="1" min="1" max="${maxStok}" required>
                     </td>
                     <td>
                         <input type="number" name="signa1" class="form-control form-control-sm text-center" value="3" min="1" required>
@@ -832,7 +841,7 @@
                                 <input hidden type="email" class="form-control" id="list_kode_barang" name="list_kode_barang" aria-describedby="emailHelp" value="${response.data.kode_barang}">
                             </div>
                         </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-1">
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Satuan</label>
                                     <input type="email" class="form-control" id="list_satuan_barang" name="list_satuan_barang" aria-describedby="emailHelp" value="${response.data.satuan_barang}">
@@ -846,8 +855,14 @@
                             </div>
                             <div class="col-sm-1">
                                 <div class="mb-3">
-                                    <label for="exampleInputEmail1" class="form-label">QTY</label>
+                                    <label for="exampleInputEmail1" class="form-label">qty obat</label>
                                     <input type="email" class="form-control" id="list_qty_barang" name="list_qty_barang" aria-describedby="emailHelp" value="${response.data.jumlah}">
+                                </div>
+                            </div>
+                            <div class="col-sm-1">
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1" class="form-label">qty hari</label>
+                                    <input type="email" class="form-control" id="list_qty_hari" name="list_qty_hari" aria-describedby="emailHelp" value="${response.data.lama_hari}">
                                 </div>
                             </div>
                             <div class="col-sm-1">
@@ -863,7 +878,7 @@
                                 </div>
                             </div>
                         <div class="col-1 text-end">
-                            <button type="button" class="btn btn-danger btn-sm btn-hapus"><i class="bi bi-x-circle"></i></button>
+                            <button type="button" class="btn btn-danger btn-sm btn-hapus-racik"><i class="bi bi-x-circle"></i></button>
                         </div>
                         </div>`;
                     $('.v_list_komponen').append(newRow);
@@ -871,6 +886,15 @@
             }
         });
     }
+    $(document).ready(function() {
+
+        // Event listener untuk menghapus baris komponen racikan
+        $(document).on('click', '.btn-hapus-racik', function() {
+            // Menghapus elemen parent dengan class .item-obat
+            $(this).closest('.item-obat').remove();
+        });
+
+    });
 
     function simpanobatracikan() {
         Swal.fire({

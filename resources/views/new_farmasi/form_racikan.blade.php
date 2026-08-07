@@ -7,7 +7,7 @@
             <input type="hidden" name="kode_barang" value="{{ $row->id }}">
         </td>
         <td>
-            <input type="number" name="stok" class="form-control form-control-sm text-center" value="0"
+            <input readonly type="number" name="stok" class="form-control form-control-sm text-center" value="0"
                 min="0">
         </td>
         <td>
@@ -38,24 +38,24 @@
             <div class="row">
                 <div hidden class="col-md-6"> <input type="number" name="jumlahhari"
                         class="form-control form-control-sm text-center" value="1" min="1" required></div>
-                <div class="col-md-12"><input type="number" name="qtyobat"
+                <div  class="col-md-12"><input readonly type="number" name="qtyobat"
                         class="form-control form-control-sm text-center" value="{{ $row->qtyracikan }}" min="1"
                         required></div>
             </div>
         </td>
-        <td>
-            <input type="number" name="jumlahobat" class="form-control form-control-sm text-center input-jumlah-obat"
+        <td hidden>
+            <input hidden type="number" name="jumlahobat" class="form-control form-control-sm text-center input-jumlah-obat"
                 value="1" min="1" required>
         </td>
         <td>
-            <input type="number" name="signa1" class="form-control form-control-sm text-center" value="3"
-                min="1" required>
+            <input readonly type="number" name="signa1" class="form-control form-control-sm text-center" 
+                min="1" required value="{{ $row->signa1 }}">
         </td>
         <td class="text-center align-middle font-weight-bold">
             <span class="mr-1">x</span>
         </td>
         <td>
-            <input type="number" name="signa2" class="form-control form-control-sm text-center" value="1"
+            <input readonly type="number" name="signa2" class="form-control form-control-sm text-center" value="{{ $row->signa2 }}"
                 min="1" required>
         </td>
         <td>
