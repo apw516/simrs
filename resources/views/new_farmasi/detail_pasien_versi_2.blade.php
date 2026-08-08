@@ -101,7 +101,7 @@
                     <input readonly type="text" name="nama_penjamin" class="form-control" placeholder="0"
                         min="1" value="{{ $data_kunjungan[0]->nama_penjamin }}">
                 </div>
-                <div class="col-md-3 mb-3">
+                <div class="col-md-2 mb-3">
                     <label class="font-weight-bold small text-muted">NO SEP KUNJUNGAN</label>
                     <input readonly type="text" name="no_sep" class="form-control" placeholder="0" min="1"
                         value="{{ $data_kunjungan[0]->no_sep }}">
@@ -124,6 +124,23 @@
                     <input hidden type="text" name="kode_paramedis" class="form-control" placeholder="0"
                         min="1" value="{{ $dokter[0]->kode_dokter_jkn }}">
                 </div>
+                <div class="col-md-2 mb-3">
+                    <label class="font-weight-bold small text-muted">Iterasi</label>
+                    <select class="form-control" id="iterasi" name="iterasi">
+                        <option value="0">NON - ITERASI</option>
+                        <option value="1">ITERASI 1 X</option>
+                        <option value="2">ITERASI 2 X</option>
+                    </select>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label class="font-weight-bold small text-muted">Jenis Obat</label>
+                    <select class="form-control" id="jenisobat" name="jenisobat">
+                        <option value="0">Obat Reguler</option>
+                        <option value="1">Obat PRB</option>
+                        <option value="2">Obat Kronis</option>
+                        <option value="3">Obat Kemo</option>
+                    </select>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-2 mb-3 d-flex align-items-end">
@@ -133,7 +150,7 @@
                     </button>
                 </div>
                 <div class="col-md-2 mb-3 d-flex align-items-end">
-                    <button type="button" class="btn btn-success btn-block font-weight-bold ambilobatracik"
+                    <button type="button" class="btn btn-success btn-block font-weight-bold ambilobatracik2"
                         data-toggle="modal" data-target="#modalobatracikan">
                         <i class="fas fa-plus mr-1"></i> Pilih Obat Racik
                     </button>
@@ -162,9 +179,9 @@
                         <th style="min-width: 90px;">Nama Obat</th>
                         <th style="width: 180px;">Stok</th>
                         <th style="width: 180px;">Jenis Resep</th>
-                        <th style="width: 180px;">Jenis Obat</th>
-                        <th style="width: 90px;">Iterasi</th>
-                        <th style="width: 80px;">Jlh Iter</th>
+                        <th hidden style="width: 180px;">Jenis Obat</th>
+                        <th hidden style="width: 90px;">Iterasi</th>
+                        <th hidden style="width: 80px;">Jlh Iter</th>
                         <th style="width: 190px;">Jlh Obat</th>
                         <th hidden style="width: 100px;">Dosis Minum</th>
                         <th style="width: 120px;">Signa 1</th>
@@ -765,7 +782,7 @@
                     <option value="Racikan">Racikan</option>
                 </select>
             </td>
-            <td>
+            <td hidden>
                 <select name="jenis_obat" class="form-control form-control-sm">
                     <option value="Reguler" ${defaultJenis === 'Reguler' ? 'selected' : ''}>Reguler</option>
                     <option value="Kronis" ${defaultJenis === 'Kronis' ? 'selected' : ''}>Kronis</option>
@@ -773,13 +790,13 @@
                     <option value="Kemoterapi" ${defaultJenis === 'Kemoterapi' ? 'selected' : ''}>Kemoterapi</option>
                 </select>
             </td>
-            <td>
+            <td hidden>
                 <select name="iterasi" class="form-control form-control-sm text-center">
                     <option value="0">Tidak</option>
                     <option value="1">Ya</option>
                 </select>
             </td>
-            <td>
+            <td hidden>
                 <input type="number" name="jlh_iterasi" class="form-control form-control-sm text-center" value="0" min="0">
             </td>
             <td>
@@ -877,7 +894,7 @@
                 data_obat: JSON.stringify(data1),
                 data_header_obat: JSON.stringify(data2),
             },
-            url: '<?= route('simpandataresepobatpasien') ?>',
+            url: '<?= route('simpandataresepobatpasien_versi_2') ?>',
             error: function(data) {
                 spinner.hide()
                 Swal.fire({
@@ -1009,7 +1026,6 @@
         });
     }
     $(document).ready(function() {
-
         // Event listener untuk menghapus baris komponen racikan
         $(document).on('click', '.btn-hapus-racik', function() {
             // Menghapus elemen parent dengan class .item-obat
@@ -1097,14 +1113,14 @@
             }
         });
     }
-    $(".ambilobatracik").on('click', function(event) {
+    $(".ambilobatracik2").on('click', function(event) {
         spinner_on()
         $.ajax({
             type: 'post',
             data: {
                 _token: "{{ csrf_token() }}"
             },
-            url: '<?= route('ambillistobatracikan') ?>',
+            url: '<?= route('ambillistobatracikan_versi2') ?>',
             error: function(response) {
                 spinner_off()
                 alert('error')

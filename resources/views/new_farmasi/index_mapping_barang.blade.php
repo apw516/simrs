@@ -116,6 +116,27 @@
                                                             name="dosis">
                                                     </div>
                                                 </div>
+                                                <div class="col-md-3">
+                                                    <div class="mb-3">
+                                                        <label for="exampleInputPassword1" class="form-label">Kronis</label>
+                                                        <input readonly type="text" class="form-control" id="kronis"
+                                                            name="kronis">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="mb-3">
+                                                        <label for="exampleInputPassword1" class="form-label">Prb</label>
+                                                        <input readonly type="text" class="form-control" id="prb"
+                                                            name="prb">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="mb-3">
+                                                        <label for="exampleInputPassword1" class="form-label">Kemo</label>
+                                                        <input readonly type="text" class="form-control" id="kemo"
+                                                            name="kemo">
+                                                    </div>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
@@ -181,6 +202,9 @@
                     <button class="btn btn-sm btn-success btn-pilih-bpjs" 
                             data-kode="${row.kodeobat}" 
                             data-nama="${row.namaobat}"
+                            data-kronis="${row.kronis}"
+                            data-prb="${row.prb}"
+                            data-kemo="${row.kemo}"
                             data-restriksi="${row.restriksi}"
                             data-generik="${row.generik}"
                             data-sedia="${row.sedia}">
@@ -285,11 +309,17 @@
             restriksi = $(this).attr('data-restriksi');
             generik = $(this).attr('data-generik');
             sedia = $(this).attr('data-sedia');
+            kronis = $(this).attr('data-kronis');
+            prb = $(this).attr('data-prb');
+            kemo = $(this).attr('data-kemo');
             $('#namaobatbpjs').val(nama)
             $('#kodeobatbpjs').val(kode)
             $('#generik').val(generik)
             $('#restriksi').val(restriksi)
             $('#dosis').val(sedia)
+            $('#kronis').val(kronis)
+            $('#kemo').val(kemo)
+            $('#prb').val(prb)
             Swal.fire({
                 title: nama + " berhasil dipilih ...",
                 icon: "success",

@@ -3,7 +3,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
-
 <div class="container-fluid py-4">
     <div class="card shadow-sm border-0">
         <!-- Card Header -->
@@ -136,6 +135,10 @@
                                             title="Cetak Resep" idlayananhheader="{{ $row->id_layanan_header }}">
                                             <i class="fas fa-print"></i>
                                         </button>
+                                        <button type="button" class="btn btn-outline-primary tambahobat"
+                                            title="Tamabah Obat" idlayananhheader="{{ $row->id_layanan_header }}">
+                                            <i class="fas fa-plus"></i> <i class="bi bi-database-add"></i>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -210,7 +213,6 @@
         </div>
     </div>
 </div>
-
 <script>
     $(document).ready(function() {
         $('#res_dt').DataTable({
@@ -263,6 +265,29 @@
             },
             success: function(response) {
                 $('.v_detail_layanan').html(response);
+                spinner.hide()
+            }
+        });
+    });
+    $('.tambahobat').on('click', function() {
+        idlayananhheader = $(this).attr('idlayananhheader')
+        spinner = $('#loader')
+        spinner.show();
+        $('.v_1').attr('hidden',true)
+        $('.v_2').removeAttr('hidden',true)
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                idlayananhheader
+            },
+            url: '<?= route('ambilformtambahobat') ?>',
+            error: function(response) {
+                alert('error!')
+                spinner.hide()
+            },
+            success: function(response) {
+                $('.V_2').html(response);
                 spinner.hide()
             }
         });

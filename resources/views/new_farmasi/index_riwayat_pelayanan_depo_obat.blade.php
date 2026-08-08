@@ -101,7 +101,7 @@
                     </div>
                 </div>
             </div>
-            <div class="v_2">
+            <div hidden class="v_2">
                 <button class="btn btn-danger" onclick="kembali()"><i class="bi bi-backspace"></i> Kembali</button>
                 <div class="v_detail_pasien mt-2">
 
@@ -143,7 +143,6 @@
         {
             $('.v_1').removeAttr('hidden',true)
             $('.v_2').attr('hidden',true)
-        }
-       
+        }       
     </script>
 @endsection
