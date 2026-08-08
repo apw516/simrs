@@ -1270,6 +1270,7 @@ class ErmController extends Controller
         ,a.ref_kunjungan
         ,b.id AS id_1
         ,c.id AS id_2
+        ,a.tgl_masuk as tgl_kunjungan
         ,b.signature AS signature_perawat
         ,c.signature AS signature_dokter
         ,b.keluhanutama AS keluhan_perawat
