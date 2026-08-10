@@ -36,6 +36,7 @@
                 </thead>
                 <tbody class="small">
                     @forelse($data as $index => $row)
+                        @if($row->kode_barang != '')
                         <tr>
                             <td class="text-center align-middle font-weight-bold">{{ $index + 1 }}</td>
 
@@ -100,6 +101,7 @@
                                         class="bi bi-recycle"></i></button>
                             </td>
                         </tr>
+                        @endif
                     @empty
                         <tr>
                             <td colspan="9" class="text-center py-4 text-muted">

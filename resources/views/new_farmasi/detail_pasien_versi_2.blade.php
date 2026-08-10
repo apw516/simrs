@@ -161,7 +161,78 @@
                         <i class="fas fa-plus mr-1"></i> Buat Obat Racik
                     </button>
                 </div>
-
+                <div class="col-md-6">
+                    <div class="card card-outline card-primary shadow-sm border-0">
+                        <div class="card-header bg-warning py-2 px-3">
+                            <h6 class="card-title mb-0 fw-bold fs-7 text-dark">
+                                <i class="bi bi-receipt me-1"></i> Data Obat yang diorder
+                            </h6>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-sm table-striped table-hover align-middle mb-0"
+                                    style="font-size: 12px;">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th class="text-center" style="width: 35px;">#</th>
+                                            {{-- <th>Kode Order</th> --}}
+                                            <th>Nama Layanan/Barang</th>
+                                            <th class="text-center">Qty</th>
+                                            <th class="text-end">Aturan Pakai</th>
+                                            <th class="text-end">Keterangan</th>
+                                            <th class="text-end">Antrian</th>
+                                            <th class="text-center" style="width: 70px;">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse($data_order as $index => $item)
+                                            <tr>
+                                                <td class="text-center fw-bold">{{ $index + 1 }}</td>
+                                                {{-- <td>{{ $item->kode_order ?? ($item->no_order ?? '-') }}</td> --}}
+                                                <td>
+                                                    <span
+                                                        class="text-bold text-dark">{{ $item->kode_barang ?? ($item->nama_barang ?? '-') }}</span>
+                                                </td>
+                                                <td class="text-center fw-bold">
+                                                    {{ $item->jumlah_layanan ?? ($item->qty ?? 1) }}
+                                                </td>
+                                                <td class="text-end">
+                                                    {{ $item->aturan_pakai }}
+                                                </td>
+                                                <td class="text-end">
+                                                    {{ $item->keterangan_header }}
+                                                </td>
+                                                <td class="text-end">
+                                                    {{ $item->jenis_antrian }}
+                                                </td>
+                                                {{-- <td class="text-end fw-bold">
+                                                Rp
+                                                {{ number_format(($item->tarif ?? ($item->harga ?? 0)) * ($item->jumlah ?? ($item->qty ?? 1)), 0, ',', '.') }}
+                                            </td> --}}
+                                                <td class="text-center">
+                                                    @if (($item->status_order ?? 0) == 2)
+                                                        <span class="badge bg-success"
+                                                            style="font-size: 10px;">tracer</span>
+                                                    @else
+                                                        <span class="badge bg-warning text-dark"
+                                                            style="font-size: 10px;">Pending</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="7" class="text-center text-muted py-3">
+                                                    <i class="bi bi-inbox d-block fs-5 mb-1"></i>
+                                                    Belum ada data order untuk kunjungan ini.
+                                                </td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- Tombol Tambah ke Daftar -->
     </div>
@@ -412,6 +483,76 @@
                 </button>
             </div>
             <div class="modal-body">
+                <div class="card card-outline card-primary shadow-sm border-0">
+                    <div class="card-header bg-warning py-2 px-3">
+                        <h6 class="card-title mb-0 fw-bold fs-7 text-dark">
+                            <i class="bi bi-receipt me-1"></i> Data Obat yang diorder
+                        </h6>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped table-hover align-middle mb-0"
+                                style="font-size: 12px;">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th class="text-center" style="width: 35px;">#</th>
+                                        {{-- <th>Kode Order</th> --}}
+                                        <th>Nama Layanan/Barang</th>
+                                        <th class="text-center">Qty</th>
+                                        <th class="text-end">Aturan Pakai</th>
+                                        <th class="text-end">Keterangan</th>
+                                        <th class="text-end">Antrian</th>
+                                        <th class="text-center" style="width: 70px;">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($data_order as $index => $item)
+                                        <tr>
+                                            <td class="text-center fw-bold">{{ $index + 1 }}</td>
+                                            {{-- <td>{{ $item->kode_order ?? ($item->no_order ?? '-') }}</td> --}}
+                                            <td>
+                                                <span
+                                                    class="text-bold text-dark">{{ $item->kode_barang ?? ($item->nama_barang ?? '-') }}</span>
+                                            </td>
+                                            <td class="text-center fw-bold">
+                                                {{ $item->jumlah_layanan ?? ($item->qty ?? 1) }}
+                                            </td>
+                                            <td class="text-end">
+                                                {{ $item->aturan_pakai }}
+                                            </td>
+                                            <td class="text-end">
+                                                {{ $item->keterangan_header }}
+                                            </td>
+                                            <td class="text-end">
+                                                {{ $item->jenis_antrian }}
+                                            </td>
+                                            {{-- <td class="text-end fw-bold">
+                                                Rp
+                                                {{ number_format(($item->tarif ?? ($item->harga ?? 0)) * ($item->jumlah ?? ($item->qty ?? 1)), 0, ',', '.') }}
+                                            </td> --}}
+                                            <td class="text-center">
+                                                @if (($item->status_order ?? 0) == 2)
+                                                    <span class="badge bg-success"
+                                                        style="font-size: 10px;">tracer</span>
+                                                @else
+                                                    <span class="badge bg-warning text-dark"
+                                                        style="font-size: 10px;">Pending</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="7" class="text-center text-muted py-3">
+                                                <i class="bi bi-inbox d-block fs-5 mb-1"></i>
+                                                Belum ada data order untuk kunjungan ini.
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <table id="table-stok-obat"
                         class="table table-striped table-hover table-bordered align-middle w-100">

@@ -3,7 +3,7 @@
         // Mengamankan pembacaan data jika berupa string JSON atau bertipe null
         $res = is_string($data) ? json_decode($data, true) : (array) $data;
         $response = $res['response'] ?? null;
-        
+
         // Pengecekan jumlah data & status meta
         $jumlahData = $response['jumlahdata'] ?? ($response['rekap']['jumlahdata'] ?? 0);
         $rekap = $response['rekap'] ?? null;
@@ -24,12 +24,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            {{-- <div class="col-md-4">
                 <div class="card border-left-warning shadow h-100 py-2">
                     <div class="card-body">
                         <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Total Biaya Pengajuan</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
-                            Rp {{ number_format($rekap['totalbiayapengajuan'] ?? ($response['totalbiayapengajuan'] ?? 0), 0, ',', '.') }}
+                            Rp 0
                         </div>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
 
         {{-- Section Tabel Detail SEP Apotek --}}
@@ -54,7 +54,7 @@
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover mb-0">
+                    <table id="tabelklaim" class="table table-striped table-hover mb-0">
                         <thead class="thead-dark">
                             <tr>
                                 <th class="text-center" width="5%">No</th>
@@ -77,7 +77,8 @@
                                     </td>
                                     <td>
                                         <strong>{{ $ss['namapeserta'] ?? ($ss['nmpst'] ?? '-') }}</strong><br>
-                                        <small class="text-muted">No: {{ $ss['nokartu'] ?? ($ss['nokapst'] ?? '-') }}</small>
+                                        <small class="text-muted">No:
+                                            {{ $ss['nokartu'] ?? ($ss['nokapst'] ?? '-') }}</small>
                                     </td>
                                     <td><span class="badge badge-info">{{ $ss['noresep'] ?? '-' }}</span></td>
                                     <td>{{ $ss['jnsobat'] ?? ($ss['nmjnsobat'] ?? '-') }}</td>
@@ -88,7 +89,8 @@
                                         Rp {{ number_format($ss['biayapengajuan'] ?? 0, 0, ',', '.') }}
                                     </td>
                                     <td class="text-right font-weight-bold text-success">
-                                        Rp {{ number_format($ss['biayasetuju'] ?? ($ss['biayasetujui'] ?? 0), 0, ',', '.') }}
+                                        Rp
+                                        {{ number_format($ss['biayasetuju'] ?? ($ss['biayasetujui'] ?? 0), 0, ',', '.') }}
                                     </td>
                                 </tr>
                             @empty
@@ -116,3 +118,17 @@
         </div>
     @endif
 </div>
+<script>
+    $(function() {
+        $("#tabelklaim").DataTable({
+            "responsive": false,
+            "lengthChange": false,
+            "autoWidth": true,
+            "pageLength": 10,
+            "searching": true,
+            "order": [
+                [1, "desc"]
+            ]
+        });
+    })
+</script>

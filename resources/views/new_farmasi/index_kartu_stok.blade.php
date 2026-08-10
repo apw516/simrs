@@ -19,7 +19,7 @@
     <section class="content">
         <div class="container-fluid">
             <!-- Filter Box -->
-            <div class="card card-default">
+            {{-- <div class="card card-default">
                 <div class="card-header">
                     <h3 class="card-title"><i class="fas fa-filter mr-1"></i> Filter Unit</h3>
                 </div>
@@ -30,7 +30,8 @@
                             <select name="kode_unit" id="kode_unit" class="form-control select2">
                                 <option value="">-- Pilih Unit --</option>
                                 @foreach ($units as $unit)
-                                    <option value="{{ $unit->kode_unit }}" @if(auth()->user()->unit == $unit->kode_unit) selected @endif>{{ $unit->kode_unit }} -
+                                    <option value="{{ $unit->kode_unit }}"
+                                        @if (auth()->user()->unit == $unit->kode_unit) selected @endif>{{ $unit->kode_unit }} -
                                         {{ $unit->nama_unit ?? '' }}</option>
                                 @endforeach
                             </select>
@@ -40,15 +41,66 @@
                             Tampilkan</button>
                     </form>
                 </div>
-            </div>
+            </div> --}}
             <!-- DataTable Box -->
             <div class="card card-primary card-outline">
                 <div class="card-header">
                     <h3 class="card-title">Data Stok Terbaru Per Barang</h3>
                 </div>
-                <div class="card-body">
+                {{-- <div class="card-body">
                     <div class="table-responsive">
                         <table id="table-kartu-stok" class="table table-bordered table-striped table-hover w-100">
+                            <thead>
+                                <tr class="bg-light">
+                                    <th width="5%">No</th>
+                                    <th>Kode Barang</th>
+                                    <th>Nama Barang</th>
+                                    <th>Nama Unit</th>
+                                    <th>Stok Awal</th>
+                                    <th>Masuk</th>
+                                    <th>Keluar</th>
+                                    <th>Stok Akhir</th>
+                                    <th>Keterangan</th>
+                                    <th>Tgl Update</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Data dimuat via DataTables Server-side / AJAX -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div> --}}
+                <div class="card-body">
+                    <!-- Form Filter Pencarian -->
+                    <div class="row g-2 mb-3 align-items-end">
+                        <div class="col-md-4">
+                            <label for="kode_unit" class="form-label small fw-bold">Pilih Unit/Depo <span
+                                    class="text-danger">*</span></label>
+                            <select id="kode_unit" class="form-select form-select-sm">
+                                <option value="">-- Pilih Unit --</option>
+                                <!-- Isi pilihan unit dari controller/database -->
+                                @foreach ($units as $unit)
+                                    <option value="{{ $unit->kode_unit }}" @if(auth()->user()->unit == $unit->kode_unit) selected @endif>{{ $unit->nama_unit }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="keyword_barang" class="form-label small fw-bold">Nama Barang / Kode Barang <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" id="keyword_barang" class="form-control form-control-sm"
+                                placeholder="Ketik nama atau kode barang...">
+                        </div>
+                        <div class="col-md-3">
+                            <button type="button" id="btn-filter2" class="btn btn-sm btn-primary w-100">
+                                <i class="bi bi-search me-1"></i> Cari Kartu Stok
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tabel Data -->
+                    <div class="table-responsive">
+                        <table id="table-kartu-stok" class="table table-bordered table-striped table-hover w-100"
+                            style="font-size: 13px;">
                             <thead>
                                 <tr class="bg-light">
                                     <th width="5%">No</th>
@@ -73,14 +125,89 @@
         </div>
     </section>
     <script>
+        // $(document).ready(function() {
+        //     var table = $('#table-kartu-stok').DataTable({
+        //         processing: true,
+        //         serverSide: true,
+        //         ajax: {
+        //             url: "{{ route('kartu-stok.data') }}",
+        //             data: function(d) {
+        //                 d.kode_unit = $('#kode_unit').val();
+        //             }
+        //         },
+        //         columns: [{
+        //                 data: 'DT_RowIndex',
+        //                 name: 'DT_RowIndex',
+        //                 orderable: false,
+        //                 searchable: false,
+        //                 className: 'text-center'
+        //             },
+        //             {
+        //                 data: 'kode_barang',
+        //                 name: 'a.kode_barang'
+        //             },
+        //             {
+        //                 data: 'nama_barang',
+        //                 name: 'b.nama_barang',
+        //                 defaultContent: '-'
+        //             },
+        //             {
+        //                 data: 'nama_unit',
+        //                 name: 'c.nama_unit',
+        //                 className: 'text-center'
+        //             },
+        //             {
+        //                 data: 'stok_awal',
+        //                 name: 'a.stok_last',
+        //                 className: 'text-right'
+        //             },
+        //             {
+        //                 data: 'stok_masuk',
+        //                 name: 'a.stok_in',
+        //                 className: 'text-right'
+        //             },
+        //             {
+        //                 data: 'stok_keluar',
+        //                 name: 'a.stok_out',
+        //                 className: 'text-right'
+        //             },
+        //             {
+        //                 data: 'stok_akhir',
+        //                 name: 'a.stok_current',
+        //                 className: 'text-right font-weight-bold'
+        //             },
+        //             {
+        //                 data: 'keterangan',
+        //                 name: 'a.keterangan',
+        //                 defaultContent: '-'
+        //             },
+        //             {
+        //                 data: 'created_at',
+        //                 name: 'a.tgl_stok',
+        //                 className: 'text-center'
+        //             }
+        //         ],
+        //         order: false
+        //     });
+
+        //     $('#btn-filter2').click(function() {
+        //         table.draw();
+        //     });
+        // });
         $(document).ready(function() {
             var table = $('#table-kartu-stok').DataTable({
                 processing: true,
                 serverSide: true,
+                deferLoading: 0, // Mencegah pencarian/load data otomatis diawal
+                searching: false, // Mematikan search box bawaan DataTables
+                pageLength: 10,
+                lengthChange: false,
                 ajax: {
                     url: "{{ route('kartu-stok.data') }}",
+                    type: "GET",
                     data: function(d) {
                         d.kode_unit = $('#kode_unit').val();
+                        d.keyword = $('#keyword_barang').val(); // Kirim nama barang ke backend
                     }
                 },
                 columns: [{
@@ -107,22 +234,22 @@
                     {
                         data: 'stok_awal',
                         name: 'a.stok_last',
-                        className: 'text-right'
+                        className: 'text-end'
                     },
                     {
                         data: 'stok_masuk',
                         name: 'a.stok_in',
-                        className: 'text-right'
+                        className: 'text-end'
                     },
                     {
                         data: 'stok_keluar',
                         name: 'a.stok_out',
-                        className: 'text-right'
+                        className: 'text-end'
                     },
                     {
                         data: 'stok_akhir',
                         name: 'a.stok_current',
-                        className: 'text-right font-weight-bold'
+                        className: 'text-end fw-bold'
                     },
                     {
                         data: 'keterangan',
@@ -138,8 +265,30 @@
                 order: false
             });
 
+            // Event Klik Tombol Cari
             $('#btn-filter2').click(function() {
+                var kodeUnit = $('#kode_unit').val();
+                var keyword = $('#keyword_barang').val().trim();
+
+                // Validasi wajib isi
+                if (!kodeUnit) {
+                    Swal.fire('Perhatian', 'Silakan pilih Unit terlebih dahulu!', 'warning');
+                    return;
+                }
+
+                if (keyword.length < 2) {
+                    Swal.fire('Perhatian', 'Masukkan minimal 2 karakter nama/kode barang!', 'warning');
+                    return;
+                }
+
                 table.draw();
+            });
+
+            // Fitur Enter pada Input Nama Barang
+            $('#keyword_barang').on('keyup', function(e) {
+                if (e.key === 'Enter' || e.keyCode === 13) {
+                    $('#btn-filter2').click();
+                }
             });
         });
     </script>

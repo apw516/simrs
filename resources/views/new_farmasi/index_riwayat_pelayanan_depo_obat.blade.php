@@ -65,12 +65,12 @@
                                             <option value="all"
                                                 {{ request('jenis_pelayanan') == 'all' ? 'selected' : '' }}>
                                                 -- Semua Pelayanan --</option>
-                                            <option value="4002"
-                                                {{ request('jenis_pelayanan') == '4002' ? 'selected' : '' }}>
+                                            <option value="4002"  @if(auth()->user()->unit == '4002') selected @endif
+                                                >
                                                 DEPO 1
                                             </option>
-                                            <option value="4008"
-                                                {{ request('jenis_pelayanan') == '4008' ? 'selected' : '' }}>
+                                            <option value="4008"  @if(auth()->user()->unit == '4008') selected @endif
+                                                >
                                                 DEPO 2
                                             </option>
                                         </select>

@@ -199,6 +199,17 @@ class newFarmasiController extends FarmasiController
     public function ambildetailkunjunganpasiendepo_versi2(Request $request)
     {
         $kode_kunjungan = $request->kodekunjungan;
+        $data_order = DB::table('ts_layanan_header_order as a')
+            ->join('ts_layanan_detail_order as b', 'a.id', '=', 'b.row_id_header')
+            ->where('a.kode_kunjungan', $kode_kunjungan)
+            ->where('a.kode_unit', auth()->user()->unit)
+            ->select([
+                'a.*',
+                'b.*',
+                'a.keterangan as keterangan_header', // Menghindari bentrok dengan b.keterangan jika ada
+                'b.keterangan as keterangan_detail', // Opsional: jika butuh keterangan detail terpisah
+            ])
+            ->get();
         $data_kunjungan = db::select('select *,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin from ts_kunjungan where kode_kunjungan = ?', [$kode_kunjungan]);
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx from mt_pasien where no_rm = ?', [$data_kunjungan[0]->no_rm]);
         $kode_paramedis = $data_kunjungan[0]->kode_paramedis;
@@ -232,7 +243,8 @@ class newFarmasiController extends FarmasiController
             'data_kunjungan',
             'mt_pasien',
             'stokBarang',
-            'dokter'
+            'dokter',
+            'data_order'
         ]));
     }
     public function ambildetailkunjunganpasiendepo(Request $request)
@@ -843,7 +855,6 @@ class newFarmasiController extends FarmasiController
     {
         $data_obat = json_decode($_POST['data_obat'], true);
         $data_header_obat = json_decode($_POST['data_header_obat'], true);
-
         $dataheader = [];
         foreach ($data_header_obat as $nama) {
             $index = $nama['name'];
@@ -907,7 +918,7 @@ class newFarmasiController extends FarmasiController
     }
     public function prosesResepObaKronis_versi2($dataobat, $data_kunjungan, $kode_unit_pelayanan, $tipe_anestesi, $dataheader)
     {
-        $r = DB::connection('mysql')->select("CALL GET_NOMOR_LAYANAN_HEADER('$kode_unit_pelayanan')");
+        // $r = DB::connection('mysql')->select("CALL GET_NOMOR_LAYANAN_HEADER('$kode_unit_pelayanan')");
         $PENJAMIN = $data_kunjungan[0]->kode_penjamin;
         $kode_kunjungan = $data_kunjungan[0]->kode_kunjungan;
         $unit = DB::select('select * from mt_unit where kode_unit =?', [$kode_unit_pelayanan]);
@@ -919,15 +930,16 @@ class newFarmasiController extends FarmasiController
             $kat_resep = 'Resep Kredit';
             $tipe_tx = '2';
         }
-        $kode_layanan_header = $r[0]->no_trx_layanan ?? "";
-        if ($kode_layanan_header == "") {
-            $year = date('y');
-            $kode_layanan_header = $unit[0]->prefix_unit . $year . date('m') . date('d') . '000001';
-            DB::connection('mysql')->insert(
-                'INSERT INTO mt_nomor_trx (tgl, no_trx_layanan, unit) VALUES (?, ?, ?)',
-                [date('Y-m-d H:i:s'), $kode_layanan_header, $kode_unit_pelayanan]
-            );
-        }
+        $kode_layanan_header = $this->get_layanan_header($kode_unit_pelayanan);
+        // $kode_layanan_header = $r[0]->no_trx_layanan ?? "";
+        // if ($kode_layanan_header == "") {
+        //     $year = date('y');
+        //     $kode_layanan_header = $unit[0]->prefix_unit . $year . date('m') . date('d') . '000001';
+        //     DB::connection('mysql')->insert(
+        //         'INSERT INTO mt_nomor_trx (tgl, no_trx_layanan, unit) VALUES (?, ?, ?)',
+        //         [date('Y-m-d H:i:s'), $kode_layanan_header, $kode_unit_pelayanan]
+        //     );
+        // }
         $cek_resep_ke = DB::connection('mysql')->select('select id from ts_layanan_header where kode_kunjungan = ? and kode_unit = ? and status_layanan != 3', [$kode_kunjungan, $kode_unit_pelayanan]);
         $urutan = count($cek_resep_ke) + 1;
         $data_layanan_header = [
@@ -1466,7 +1478,7 @@ class newFarmasiController extends FarmasiController
     }
     public function prosesResepObaKronis($dataobat, $data_kunjungan, $kode_unit_pelayanan, $tipe_anestesi, $dataheader)
     {
-        $r = DB::connection('mysql')->select("CALL GET_NOMOR_LAYANAN_HEADER('$kode_unit_pelayanan')");
+        // $r = DB::connection('mysql')->select("CALL GET_NOMOR_LAYANAN_HEADER('$kode_unit_pelayanan')");
         $PENJAMIN = $data_kunjungan[0]->kode_penjamin;
         $kode_kunjungan = $data_kunjungan[0]->kode_kunjungan;
         $unit = DB::select('select * from mt_unit where kode_unit =?', [$kode_unit_pelayanan]);
@@ -1478,15 +1490,16 @@ class newFarmasiController extends FarmasiController
             $kat_resep = 'Resep Kredit';
             $tipe_tx = '2';
         }
-        $kode_layanan_header = $r[0]->no_trx_layanan ?? "";
-        if ($kode_layanan_header == "") {
-            $year = date('y');
-            $kode_layanan_header = $unit[0]->prefix_unit . $year . date('m') . date('d') . '000001';
-            DB::connection('mysql')->insert(
-                'INSERT INTO mt_nomor_trx (tgl, no_trx_layanan, unit) VALUES (?, ?, ?)',
-                [date('Y-m-d H:i:s'), $kode_layanan_header, $kode_unit_pelayanan]
-            );
-        }
+        $kode_layanan_header = $this->get_layanan_header($kode_unit_pelayanan);
+        // $kode_layanan_header = $r[0]->no_trx_layanan ?? "";
+        // if ($kode_layanan_header == "") {
+        //     $year = date('y');
+        //     $kode_layanan_header = $unit[0]->prefix_unit . $year . date('m') . date('d') . '000001';
+        //     DB::connection('mysql')->insert(
+        //         'INSERT INTO mt_nomor_trx (tgl, no_trx_layanan, unit) VALUES (?, ?, ?)',
+        //         [date('Y-m-d H:i:s'), $kode_layanan_header, $kode_unit_pelayanan]
+        //     );
+        // }
         $cek_resep_ke = DB::connection('mysql')->select('select id from ts_layanan_header where kode_kunjungan = ? and kode_unit = ? and status_layanan != 3', [$kode_kunjungan, $kode_unit_pelayanan]);
         $urutan = count($cek_resep_ke) + 1;
         $data_layanan_header = [
@@ -2029,7 +2042,7 @@ class newFarmasiController extends FarmasiController
     }
     public function prosesResepObatPRB($dataobat, $data_kunjungan, $kode_unit_pelayanan, $tipe_anestesi, $dataheader)
     {
-        $r = DB::connection('mysql')->select("CALL GET_NOMOR_LAYANAN_HEADER('$kode_unit_pelayanan')");
+        // $r = DB::connection('mysql')->select("CALL GET_NOMOR_LAYANAN_HEADER('$kode_unit_pelayanan')");
         $PENJAMIN = $data_kunjungan[0]->kode_penjamin;
         $kode_kunjungan = $data_kunjungan[0]->kode_kunjungan;
         $unit = DB::select('select * from mt_unit where kode_unit =?', [$kode_unit_pelayanan]);
@@ -2041,15 +2054,16 @@ class newFarmasiController extends FarmasiController
             $kat_resep = 'Resep Kredit';
             $tipe_tx = '2';
         }
-        $kode_layanan_header = $r[0]->no_trx_layanan ?? "";
-        if ($kode_layanan_header == "") {
-            $year = date('y');
-            $kode_layanan_header = $unit[0]->prefix_unit . $year . date('m') . date('d') . '000001';
-            DB::connection('mysql')->insert(
-                'INSERT INTO mt_nomor_trx (tgl, no_trx_layanan, unit) VALUES (?, ?, ?)',
-                [date('Y-m-d H:i:s'), $kode_layanan_header, $kode_unit_pelayanan]
-            );
-        }
+        $kode_layanan_header = $this->get_layanan_header($kode_unit_pelayanan);
+        // $kode_layanan_header = $r[0]->no_trx_layanan ?? "";
+        // if ($kode_layanan_header == "") {
+        //     $year = date('y');
+        //     $kode_layanan_header = $unit[0]->prefix_unit . $year . date('m') . date('d') . '000001';
+        //     DB::connection('mysql')->insert(
+        //         'INSERT INTO mt_nomor_trx (tgl, no_trx_layanan, unit) VALUES (?, ?, ?)',
+        //         [date('Y-m-d H:i:s'), $kode_layanan_header, $kode_unit_pelayanan]
+        //     );
+        // }
         $cek_resep_ke = DB::connection('mysql')->select('select id from ts_layanan_header where kode_kunjungan = ? and kode_unit = ? and status_layanan != 3', [$kode_kunjungan, $kode_unit_pelayanan]);
         $urutan = count($cek_resep_ke) + 1;
         $data_layanan_header = [
@@ -2590,7 +2604,7 @@ class newFarmasiController extends FarmasiController
     }
     public function prosesResepObatKemo($dataobat, $data_kunjungan, $kode_unit_pelayanan, $tipe_anestesi, $dataheader)
     {
-        $r = DB::connection('mysql')->select("CALL GET_NOMOR_LAYANAN_HEADER('$kode_unit_pelayanan')");
+        // $r = DB::connection('mysql')->select("CALL GET_NOMOR_LAYANAN_HEADER('$kode_unit_pelayanan')");
         $PENJAMIN = $data_kunjungan[0]->kode_penjamin;
         $kode_kunjungan = $data_kunjungan[0]->kode_kunjungan;
         $unit = DB::select('select * from mt_unit where kode_unit =?', [$kode_unit_pelayanan]);
@@ -2602,15 +2616,16 @@ class newFarmasiController extends FarmasiController
             $kat_resep = 'Resep Kredit';
             $tipe_tx = '2';
         }
-        $kode_layanan_header = $r[0]->no_trx_layanan ?? "";
-        if ($kode_layanan_header == "") {
-            $year = date('y');
-            $kode_layanan_header = $unit[0]->prefix_unit . $year . date('m') . date('d') . '000001';
-            DB::connection('mysql')->insert(
-                'INSERT INTO mt_nomor_trx (tgl, no_trx_layanan, unit) VALUES (?, ?, ?)',
-                [date('Y-m-d H:i:s'), $kode_layanan_header, $kode_unit_pelayanan]
-            );
-        }
+        $kode_layanan_header = $this->get_layanan_header($kode_unit_pelayanan);
+        // $kode_layanan_header = $r[0]->no_trx_layanan ?? "";
+        // if ($kode_layanan_header == "") {
+        //     $year = date('y');
+        //     $kode_layanan_header = $unit[0]->prefix_unit . $year . date('m') . date('d') . '000001';
+        //     DB::connection('mysql')->insert(
+        //         'INSERT INTO mt_nomor_trx (tgl, no_trx_layanan, unit) VALUES (?, ?, ?)',
+        //         [date('Y-m-d H:i:s'), $kode_layanan_header, $kode_unit_pelayanan]
+        //     );
+        // }
         $cek_resep_ke = DB::connection('mysql')->select('select id from ts_layanan_header where kode_kunjungan = ? and kode_unit = ? and status_layanan != 3', [$kode_kunjungan, $kode_unit_pelayanan]);
         $urutan = count($cek_resep_ke) + 1;
         $data_layanan_header = [
@@ -3151,7 +3166,7 @@ class newFarmasiController extends FarmasiController
     }
     public function prosesResepObat($dataobat, $data_kunjungan, $kode_unit_pelayanan, $tipe_anestesi, $dataheader)
     {
-        $r = DB::connection('mysql')->select("CALL GET_NOMOR_LAYANAN_HEADER('$kode_unit_pelayanan')");
+        // $r = DB::select("CALL GET_NOMOR_LAYANAN_HEADER('$kode_unit_pelayanan')");
         $PENJAMIN = $data_kunjungan[0]->kode_penjamin;
         $kode_kunjungan = $data_kunjungan[0]->kode_kunjungan;
         $unit = DB::select('select * from mt_unit where kode_unit =?', [$kode_unit_pelayanan]);
@@ -3163,15 +3178,17 @@ class newFarmasiController extends FarmasiController
             $kat_resep = 'Resep Kredit';
             $tipe_tx = '2';
         }
-        $kode_layanan_header = $r[0]->no_trx_layanan ?? "";
-        if ($kode_layanan_header == "") {
-            $year = date('y');
-            $kode_layanan_header = $unit[0]->prefix_unit . $year . date('m') . date('d') . '000001';
-            DB::connection('mysql')->insert(
-                'INSERT INTO mt_nomor_trx (tgl, no_trx_layanan, unit) VALUES (?, ?, ?)',
-                [date('Y-m-d H:i:s'), $kode_layanan_header, $kode_unit_pelayanan]
-            );
-        }
+        $kode_layanan_header = $this->get_layanan_header($kode_unit_pelayanan);
+        // $kode_layanan_header = $r[0]->no_trx_layanan ?? "";
+        // if ($kode_layanan_header == "") {
+        //     $year = date('y');
+        //     $kode_layanan_header = $unit[0]->prefix_unit . $year . date('m') . date('d') . '000001';
+        //     DB::connection('mysql')->insert(
+        //         'INSERT INTO mt_nomor_trx (tgl, no_trx_layanan, unit) VALUES (?, ?, ?)',
+        //         [date('Y-m-d H:i:s'), $kode_layanan_header, $kode_unit_pelayanan]
+        //     );
+        // }
+        // dd($kode_layanan_header);
         $cek_resep_ke = DB::connection('mysql')->select('select id from ts_layanan_header where kode_kunjungan = ? and kode_unit = ? and status_layanan != 3', [$kode_kunjungan, $kode_unit_pelayanan]);
         $urutan = count($cek_resep_ke) + 1;
         $data_layanan_header = [
@@ -4337,6 +4354,26 @@ class newFarmasiController extends FarmasiController
         date_default_timezone_set('Asia/Jakarta');
         return 'RET' . $PREFIX . date('ymd') . $kd;
     }
+    public function get_layanan_header($kode_unit)
+    {
+        $q = DB::select('SELECT id,kode_layanan_header,RIGHT(kode_layanan_header,6) AS kd_max  FROM ts_layanan_header
+        WHERE DATE(tgl_entry) = CURDATE() AND kode_unit = ?
+        ORDER BY id DESC
+        LIMIT 1', [$kode_unit]);
+        $UNIT = db::select('select * from mt_unit where kode_unit = ? ', [$kode_unit]);
+        $kd = "";
+        $PREFIX = $UNIT[0]->prefix_unit;
+        if (count($q) > 0) {
+            foreach ($q as $k) {
+                $tmp = ((int) $k->kd_max) + 1;
+                $kd = sprintf("%06s", $tmp);
+            }
+        } else {
+            $kd = "000001";
+        }
+        date_default_timezone_set('Asia/Jakarta');
+        return $PREFIX . date('ymd') . $kd;
+    }
     public function get_retur_detail()
     {
         $q = DB::select('SELECT id,kode_retur_detail,RIGHT(kode_retur_detail,6) AS kd_max  FROM ts_retur_detail
@@ -4440,58 +4477,16 @@ class newFarmasiController extends FarmasiController
     }
     public function ambilbarangmappingdepo(Request $request)
     {
-        // if ($request->ajax()) {
-        //     $latestStok = DB::table('ti_kartu_stok')
-        //         ->select('kode_barang', DB::raw('MAX(no) as max_id'))
-        //         ->where('kode_unit', '4008')
-        //         ->groupBy('kode_barang');
-
-        //     // 2. Query Utama: Join data transaksi terakhir dan filter stok > 0
-        //     $data = DB::table('ti_kartu_stok as ks')
-        //         ->joinSub($latestStok, 'latest', function ($join) {
-        //             $join->on('ks.no', '=', 'latest.max_id')
-        //                 ->on('ks.kode_barang', '=', 'latest.kode_barang');
-        //         })
-        //         ->join('mt_barang as b', 'ks.kode_barang', '=', 'b.kode_barang')
-        //         ->select([
-        //             'b.kode_barang',
-        //             'b.nama_barang',
-        //             'b.satuan_besar',
-        //             'b.sediaan',
-        //             'b.dosis',
-        //             'b.aturan_pakai',
-        //             'b.kode_obat_bpjs',
-        //             'ks.kode_unit',
-        //             'ks.stok_current',
-        //         ])
-        //         ->where('b.act', 1)
-        //         ->where('ks.kode_unit', '4008')
-        //         ->where('ks.stok_current', '>', 0) // Filter stok > 0 dipindah ke query utama
-        //         ->orderBy('b.nama_barang', 'asc')   // Diurutkan berdasarkan nama barang agar lebih rapi di UI
-        //         ->get();
-
-        //     return DataTables::of($data)
-        //         ->addColumn('action', function ($row) {
-        //             $btn = '<button class="editbarang btn btn-warning btn-sm" data-id="' . $row->kode_barang . '" data-bs-toggle="modal" data-bs-target="#modaleditbarang">
-        //                <i class="bi bi-pencil-square"></i>
-        //             </button>';
-
-        //             $btn .= ' <button class="deletebarang btn btn-danger btn-sm" data-id="' . $row->kode_barang . '">
-        //                 <i class="bi bi-trash3"></i>
-        //             </button>';
-
-        //             return $btn;
-        //         })
-        //         ->rawColumns(['action']) // Pastikan tombol HTML dirender dengan benar
-        //         ->make(true);
-        // }
         if ($request->ajax()) {
+            $keyword = $request->input('keyword');
+
+            // Subquery stok terakhir
             $latestStok = DB::table('ti_kartu_stok')
                 ->select('kode_barang', DB::raw('MAX(no) as max_id'))
                 ->where('kode_unit', '4008')
                 ->groupBy('kode_barang');
 
-            // 1. Ambil Query Builder (JANGAN panggil ->get() di sini)
+            // Query Utama
             $query = DB::table('ti_kartu_stok as ks')
                 ->joinSub($latestStok, 'latest', function ($join) {
                     $join->on('ks.no', '=', 'latest.max_id')
@@ -4504,46 +4499,24 @@ class newFarmasiController extends FarmasiController
                     'b.satuan_besar',
                     'b.sediaan',
                     'b.dosis',
-                    'b.aturan_pakai',
                     'b.kode_obat_bpjs',
-                    'ks.kode_unit',
-                    'ks.stok_current',
                 ])
                 ->where('b.act', 1)
                 ->where('ks.kode_unit', '4008')
                 ->where('ks.stok_current', '>', 0);
 
-            // 2. Pass Query Builder ke DataTables
-            return DataTables::of($query)
-                ->filterColumn('b.kode_barang', function ($q, $keyword) {
-                    $q->where('b.kode_barang', 'like', "%{$keyword}%");
-                })
-                ->filterColumn('b.nama_barang', function ($q, $keyword) {
-                    $q->where('b.nama_barang', 'like', "%{$keyword}%");
-                })
-                ->filterColumn('b.satuan_besar', function ($q, $keyword) {
-                    $q->where('b.satuan_besar', 'like', "%{$keyword}%");
-                })
-                ->filterColumn('b.sediaan', function ($q, $keyword) {
-                    $q->where('b.sediaan', 'like', "%{$keyword}%");
-                })
-                ->filterColumn('b.dosis', function ($q, $keyword) {
-                    $q->where('b.dosis', 'like', "%{$keyword}%");
-                })
-                ->orderColumn('b.nama_barang', 'b.nama_barang $1')
-                ->addColumn('action', function ($row) {
-                    $btn = '<button class="editbarang btn btn-warning btn-sm" data-id="' . $row->kode_barang . '" data-bs-toggle="modal" data-bs-target="#modaleditbarang">
-                   <i class="bi bi-pencil-square"></i>
-                </button>';
+            // Hanya lakukan filter pencarian LIKE jika keyword terisi
+            if (!empty($keyword)) {
+                $query->where(function ($q) use ($keyword) {
+                    $q->where('b.nama_barang', 'LIKE', '%' . $keyword . '%')
+                        ->orWhere('b.kode_barang', 'LIKE', '%' . $keyword . '%');
+                });
+            } else {
+                // Jika keyword kosong, batasi agar query tidak berat (opsional)
+                $query->whereNull('b.kode_barang');
+            }
 
-                    $btn .= ' <button class="deletebarang btn btn-danger btn-sm" data-id="' . $row->kode_barang . '">
-                    <i class="bi bi-trash3"></i>
-                </button>';
-
-                    return $btn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
+            return DataTables::of($query)->make(true);
         }
     }
     public function simpanmappingbaru(Request $request)
@@ -4610,5 +4583,48 @@ class newFarmasiController extends FarmasiController
         $report->load_xml_file($filename)
             ->setDataSource($config)
             ->export('Pdf');
+    }
+    public function kartuStokData(Request $request)
+    {
+        if ($request->ajax()) {
+            $kodeUnit = $request->input('kode_unit');
+            $keyword = $request->input('keyword');
+
+            // Jika filter belum diisi, kembalikan response kosong
+            if (empty($kodeUnit) || empty($keyword)) {
+                return DataTables::of(collect([]))->make(true);
+            }
+
+            // Tentukan batas tanggal 30 hari ke belakang dari hari ini
+            $thirtyDaysAgo = now()->subDays(30)->startOfDay();
+
+            $query = DB::table('ti_kartu_stok as a')
+                ->join('mt_barang as b', 'a.kode_barang', '=', 'b.kode_barang')
+                ->leftJoin('mt_unit as c', 'a.kode_unit', '=', 'c.kode_unit')
+                ->select([
+                    'a.no', // Ditambahkan untuk acuan pengurutan
+                    'a.kode_barang',
+                    'b.nama_barang',
+                    'c.nama_unit',
+                    'a.stok_last as stok_awal',
+                    'a.stok_in as stok_masuk',
+                    'a.stok_out as stok_keluar',
+                    'a.stok_current as stok_akhir',
+                    'a.keterangan',
+                    'a.tgl_stok as created_at',
+                ])
+                ->where('a.kode_unit', $kodeUnit)
+                ->where('a.tgl_stok', '>=', $thirtyDaysAgo) // Limit 30 hari ke belakang
+                ->where(function ($q) use ($keyword) {
+                    $q->where('b.nama_barang', 'LIKE', '%' . $keyword . '%')
+                        ->orWhere('a.kode_barang', 'LIKE', '%' . $keyword . '%');
+                })
+                // Urutkan berdasarkan kolom 'no' dari terbesar (transaksi paling baru) ke terkecil
+                ->orderBy('a.no', 'desc');
+
+            return DataTables::of($query)
+                ->addIndexColumn()
+                ->make(true);
+        }
     }
 }

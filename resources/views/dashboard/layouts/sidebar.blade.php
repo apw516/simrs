@@ -157,7 +157,7 @@
                               </li>
                           </ul>
                       </li>
-                      <li  class="nav-item">
+                      <li class="nav-item">
                           <a href="{{ route('menuriwayatpasien') }}"
                               class="nav-link text-sm @if ($sidebar == 'riwayatpasien') active @endif">
                               <i class="nav-icon  bi bi-clock-history"></i>
@@ -504,7 +504,11 @@
                                   class="nav-link @if ($sidebar == 'ermperawat') active @endif">
                                   <i class="nav-icon fas fa-th"></i>
                                   <p>
-                                      @if(auth()->user()->unit == '1028') ERM Terapis @else ERM Perawat @endif
+                                      @if (auth()->user()->unit == '1028')
+                                          ERM Terapis
+                                      @else
+                                          ERM Perawat
+                                      @endif
                                   </p>
                               </a>
                           </li>
@@ -566,7 +570,7 @@
                       <li class="nav-item">
                           <a href="{{ route('index_depo_obat') }}"
                               class="nav-link @if ($sidebar == 'indexdepo') active @endif">
-                              <i class="nav-icon fas fa-th"></i>
+                              <i class="nav-icon fas fa-desktop"></i>
                               <p>
                                   Depo Obat
                               </p>
@@ -575,7 +579,7 @@
                       <li class="nav-item">
                           <a href="{{ route('index_riwayat_pelayanan_obat_depo') }}"
                               class="nav-link @if ($sidebar == 'index_riwayat_pelayanan_depo') active @endif">
-                              <i class="nav-icon fas fa-th"></i>
+                              <i class="nav-icon fa fa-shopping-cart""></i>
                               <p>
                                   Riwayat Pelayanan Obat
                               </p>
@@ -584,7 +588,7 @@
                       <li class="nav-item">
                           <a href="{{ route('index_log_kartu_stok') }}"
                               class="nav-link @if ($sidebar == 'index_log_kartu_stok') active @endif">
-                              <i class="nav-icon fas fa-th"></i>
+                              <i class="nav-icon fas fa-list"></i>
                               <p>
                                   Log Kartu Stok
                               </p>
@@ -593,7 +597,7 @@
                       <li class="nav-item">
                           <a href="{{ route('index_monitoring_klaim_farmasi') }}"
                               class="nav-link @if ($sidebar == 'monitoring_klaim') active @endif">
-                              <i class="nav-icon fas fa-th"></i>
+                              <i class="nav-icon fas fa-file"></i>
                               <p>
                                   Monitoring Klaim
                               </p>
@@ -602,10 +606,17 @@
                       <li class="nav-item">
                           <a href="{{ route('index_mapping_barang') }}"
                               class="nav-link @if ($sidebar == 'index_mapping_barang') active @endif">
-                              <i class="nav-icon fas fa-th"></i>
+                              <i class="nav-icon fas fa-plus-circle"></i>
                               <p>
                                   Mapping Master Barang
                               </p>
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a href="{{ route('berkaserm2') }}"
+                              class="nav-link @if ($title == 'SIMRS - Berkas ERM') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Berkas ERM by No RM</p>
                           </a>
                       </li>
                       {{-- <li class="nav-item">
@@ -726,16 +737,16 @@
                           </a>
                       </li>
                   @endif
-                    <li hidden class="nav-header">CASEMIX</li>
-                      <li hidden class="nav-item">
-                          <a href="{{ route('index_merger_berkas') }}"
-                              class="nav-link @if ($sidebar == 'mergerberkas') active @endif">
-                              <i class="nav-icon fas fa-th"></i>
-                              <p>
-                                  Merger Berkas
-                              </p>
-                          </a>
-                      </li>
+                  <li hidden class="nav-header">CASEMIX</li>
+                  <li hidden class="nav-item">
+                      <a href="{{ route('index_merger_berkas') }}"
+                          class="nav-link @if ($sidebar == 'mergerberkas') active @endif">
+                          <i class="nav-icon fas fa-th"></i>
+                          <p>
+                              Merger Berkas
+                          </p>
+                      </a>
+                  </li>
                   <li class="nav-header"> <i class="nav-icon bi bi-person-circle mr-2"></i> INFO AKUN</li>
                   <li class="nav-item">
                       <a href="{{ route('profil') }}" class="nav-link">

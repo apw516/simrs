@@ -54,10 +54,24 @@
                 <div class="col-lg-6">
                     <div class="card card-outline card-info shadow-sm h-100">
                         <div class="card-header bg-info text-white py-2">
-                            <h5 class="card-title mb-0 fs-6 fw-semibold"><i class="bi bi-box-seam me-2"></i>Pilih Master
-                                Barang (SIMRS)</h5>
+                            <h5 class="card-title mb-0 fs-6 fw-semibold">
+                                <i class="bi bi-box-seam me-2"></i>Pilih Master Barang (SIMRS)
+                            </h5>
                         </div>
                         <div class="card-body p-3">
+                            <!-- Filter Pencarian Manual -->
+                            <div class="row g-2 mb-3">
+                                <div class="col-8 col-sm-9">
+                                    <input type="text" id="keyword_simrs" class="form-control form-control-sm"
+                                        placeholder="Ketik nama atau kode barang...">
+                                </div>
+                                <div class="col-4 col-sm-3">
+                                    <button type="button" id="btn_cari_simrs" class="btn btn-sm btn-info text-white w-100">
+                                        <i class="bi bi-search me-1"></i> Cari
+                                    </button>
+                                </div>
+                            </div>
+
                             <div class="table-responsive">
                                 <table id="tabel_barang_simrs" class="table table-striped table-hover align-middle w-100"
                                     style="font-size:13px">
@@ -79,7 +93,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- Form Mapping Row -->
             <div class="row mt-4">
                 <div class="col-12">
@@ -234,36 +247,44 @@
                     }
                 ]
             });
-
             var tableSIMRS = $('#tabel_barang_simrs').DataTable({
                 processing: true,
                 serverSide: true,
+                deferLoading: 0, // Mencegah DataTables otomatis mengambil data saat halaman diawal dibuka
                 pageLength: 15,
                 lengthChange: false,
-                ajax: "{{ route('ambilbarangmappingdepo') }}",
+                searching: false, // Matikan pencarian bawaan DataTables
+                ajax: {
+                    url: "{{ route('ambilbarangmappingdepo') }}",
+                    type: "GET",
+                    data: function(d) {
+                        d.keyword = $('#keyword_simrs')
+                    .val(); // Kirim kata kunci pencarian ke controller
+                    }
+                },
                 columns: [{
                         data: 'kode_barang',
-                        name: 'b.kode_barang'
+                        name: 'kode_barang'
                     },
                     {
                         data: 'nama_barang',
-                        name: 'b.nama_barang'
+                        name: 'nama_barang'
                     },
                     {
                         data: 'satuan_besar',
-                        name: 'b.satuan_besar'
+                        name: 'satuan_besar'
                     },
                     {
                         data: 'sediaan',
-                        name: 'b.sediaan'
+                        name: 'sediaan'
                     },
                     {
                         data: 'dosis',
-                        name: 'b.dosis'
+                        name: 'dosis'
                     },
                     {
                         data: 'kode_obat_bpjs',
-                        name: 'b.kode_obat_bpjs',
+                        name: 'kode_obat_bpjs',
                         searchable: false,
                         render: function(data, type, row) {
                             if (data == null || data == '0') {
@@ -294,6 +315,23 @@
                         }
                     }
                 ]
+            });
+
+            // Event Klik Tombol Cari
+            $('#btn_cari_simrs').on('click', function() {
+                var keyword = $('#keyword_simrs').val().trim();
+                if (keyword.length < 2) {
+                    Swal.fire('Perhatian', 'Ketikkan minimal 2 karakter untuk mencari barang!', 'warning');
+                    return;
+                }
+                tableSIMRS.draw();
+            });
+
+            // Event Tekan Enter di Input Text
+            $('#keyword_simrs').on('keyup', function(e) {
+                if (e.key === 'Enter' || e.keyCode === 13) {
+                    $('#btn_cari_simrs').click();
+                }
             });
             // Event Tambah Item SIMRS ke Draft
             $('#tabel_barang_simrs tbody').on('click', '.btn-pilih', function() {
