@@ -325,9 +325,7 @@
                     </div>
                 </div>
             `;
-
                 $(".draft_barang").append(rowHtml);
-
                 Swal.fire({
                     title: "Berhasil Ditambahkan",
                     text: nama_barang,
@@ -356,7 +354,6 @@
                 $('#kronis').val($(this).attr('data-kronis'));
                 $('#kemo').val($(this).attr('data-kemo'));
                 $('#prb').val($(this).attr('data-prb'));
-
                 Swal.fire({
                     title: "BPJS Obat Dipilih",
                     text: $(this).attr('data-nama'),
