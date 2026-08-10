@@ -950,4 +950,5 @@ Route::post('/ambilformtambahobat', [newFarmasiController::class, 'ambilformtamb
 Route::post('/bridginghapusobat', [newFarmasiController::class, 'bridginghapusobat'])->middleware('auth')->name('bridginghapusobat');
 Route::post('/returobatsatuan', [newFarmasiController::class, 'returobatsatuan'])->middleware('auth')->name('returobatsatuan');
 Route::post('/batalresep', [newFarmasiController::class, 'batalresep'])->middleware('auth')->name('batalresep');
+Route::get('cetaketiket_2/{id}', [newFarmasiController::class, 'cetakEtiket_new']); //formpasien_bpjs
 

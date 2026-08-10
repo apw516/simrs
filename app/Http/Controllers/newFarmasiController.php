@@ -14,6 +14,7 @@ use App\Models\model_mt_racikan;
 use App\Models\model_mt_racikan_detail;
 use App\Models\MasterBarangBPJS;
 use App\Models\MasterBarang;
+use simitsdk\phpjasperxml\PHPJasperXML;
 
 class newFarmasiController extends FarmasiController
 {
@@ -4589,5 +4590,25 @@ class newFarmasiController extends FarmasiController
             echo json_encode($data);
             die;
         }
+    }
+    public function cetakEtiket_new($id)
+    {
+        $get_header = DB::connection('mysql')->select('select * from ts_layanan_header where id = ?', [$id]);
+        // dd($get_header);
+        // $KODE_HEADER = $DH[0]->kode_layanan_header;
+        // $ID_HEADER = $DK[0]->counter;
+        $kodeheader = $get_header[0]->kode_layanan_header;
+        // $TE = db::connection('mysql')->select("CALL `SP_CETAK_ETIKET_FARMASI_WD`('$kodeheader','$id')");
+        // DD($TE);
+        $PDO = DB::connection()->getPdo();
+        $QUERY = $PDO->prepare("CALL SP_CETAK_ETIKET_FARMASI_WD('$kodeheader','$id')");
+        $QUERY->execute();
+        $data = $QUERY->fetchAll();
+        $filename = 'C:\cetakanresep\etiket.jrxml';
+        $config = ['driver' => 'array', 'data' => $data];
+        $report = new PHPJasperXML();
+        $report->load_xml_file($filename)
+            ->setDataSource($config)
+            ->export('Pdf');
     }
 }

@@ -134,8 +134,8 @@
                                             data-toggle="modal" data-target="#modaldetail">
                                             <i class="fas fa-eye"></i>
                                         </button>
-                                        <button type="button" class="btn btn-outline-primary cetaknotalayanan"
-                                            title="Cetak Resep" idlayananhheader="{{ $row->id_layanan_header }}">
+                                        <button type="button" class="btn btn-outline-primary cetaketiket"
+                                            title="Cetak Etiket" idlayananhheader="{{ $row->id_layanan_header }}">
                                             <i class="fas fa-print"></i>
                                         </button>
                                         <button type="button" class="btn btn-outline-primary tambahobat"
@@ -320,6 +320,11 @@
                 });
             }
         });
+    });
+    $(".cetaketiket").on('click', function(event) {
+        idlayananhheader = $(this).attr('idlayananhheader')
+        var url = "{{ url('cetaketiket_2') }}/" + idlayananhheader;
+        window.location.href = url;
     });
 
     function hapusresep(idlayananhheader) {
