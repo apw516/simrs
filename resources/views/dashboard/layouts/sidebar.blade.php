@@ -591,6 +591,15 @@
                           </a>
                       </li>
                       <li class="nav-item">
+                          <a href="{{ route('index_monitoring_klaim_farmasi') }}"
+                              class="nav-link @if ($sidebar == 'monitoring_klaim') active @endif">
+                              <i class="nav-icon fas fa-th"></i>
+                              <p>
+                                  Monitoring Klaim
+                              </p>
+                          </a>
+                      </li>
+                      <li class="nav-item">
                           <a href="{{ route('index_mapping_barang') }}"
                               class="nav-link @if ($sidebar == 'index_mapping_barang') active @endif">
                               <i class="nav-icon fas fa-th"></i>

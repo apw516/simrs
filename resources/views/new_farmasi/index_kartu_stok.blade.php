@@ -30,7 +30,7 @@
                             <select name="kode_unit" id="kode_unit" class="form-control select2">
                                 <option value="">-- Pilih Unit --</option>
                                 @foreach ($units as $unit)
-                                    <option value="{{ $unit->kode_unit }}">{{ $unit->kode_unit }} -
+                                    <option value="{{ $unit->kode_unit }}" @if(auth()->user()->unit == $unit->kode_unit) selected @endif>{{ $unit->kode_unit }} -
                                         {{ $unit->nama_unit ?? '' }}</option>
                                 @endforeach
                             </select>
@@ -101,27 +101,27 @@
                     },
                     {
                         data: 'nama_unit',
-                        name: 'a.nama_unit',
+                        name: 'c.nama_unit',
                         className: 'text-center'
                     },
                     {
                         data: 'stok_awal',
-                        name: 'a.stok_awal',
+                        name: 'a.stok_last',
                         className: 'text-right'
                     },
                     {
                         data: 'stok_masuk',
-                        name: 'a.stok_masuk',
+                        name: 'a.stok_in',
                         className: 'text-right'
                     },
                     {
                         data: 'stok_keluar',
-                        name: 'a.stok_keluar',
+                        name: 'a.stok_out',
                         className: 'text-right'
                     },
                     {
                         data: 'stok_akhir',
-                        name: 'a.stok_akhir',
+                        name: 'a.stok_current',
                         className: 'text-right font-weight-bold'
                     },
                     {
@@ -131,13 +131,11 @@
                     },
                     {
                         data: 'created_at',
-                        name: 'a.created_at',
+                        name: 'a.tgl_stok',
                         className: 'text-center'
                     }
                 ],
-                order: [
-                    [1, 'asc']
-                ]
+                order: false
             });
 
             $('#btn-filter2').click(function() {

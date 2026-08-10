@@ -920,11 +920,13 @@ Route::post('/asesmen-bunuh-diri/store', [UpdateERMcontroller::class, 'storeassb
 
 
 
+Route::get('index_monitoring_klaim_farmasi', [newFarmasiController::class, 'index_monitoring_klaim_farmasi'])->name('index_monitoring_klaim_farmasi');
 Route::get('index_mapping_barang', [newFarmasiController::class, 'index_mapping_barang'])->name('index_mapping_barang');
 Route::get('index_log_kartu_stok', [newFarmasiController::class, 'index_log_kartu_stok'])->name('index_log_kartu_stok');
 Route::get('index_riwayat_pelayanan_obat_depo', [newFarmasiController::class, 'index_riwayat_pelayanan_obat_depo'])->name('index_riwayat_pelayanan_obat_depo');
 Route::get('index_depo_obat', [newFarmasiController::class, 'index_depo_obat'])->name('index_depo_obat');
 Route::post('ambildatakunjungandepo', [newFarmasiController::class, 'ambildatakunjungandepo'])->name('ambildatakunjungandepo');
+Route::post('ambildataklaimfarmasi', [newFarmasiController::class, 'ambildataklaimfarmasi'])->name('ambildataklaimfarmasi');
 Route::post('ambil_data_riwayat_pelayanan_obat', [newFarmasiController::class, 'ambil_data_riwayat_pelayanan_obat'])->name('ambil_data_riwayat_pelayanan_obat');
 Route::post('ambildetailkunjunganpasiendepo', [newFarmasiController::class, 'ambildetailkunjunganpasiendepo'])->name('ambildetailkunjunganpasiendepo');
 Route::post('ambildetailkunjunganpasiendepo_versi2', [newFarmasiController::class, 'ambildetailkunjunganpasiendepo_versi2'])->name('ambildetailkunjunganpasiendepo_versi2');
@@ -938,10 +940,14 @@ Route::post('ambillistobatracikan', [newFarmasiController::class, 'ambillistobat
 Route::post('ambillistobatracikan_versi2', [newFarmasiController::class, 'ambillistobatracikan_versi2'])->name('ambillistobatracikan_versi2');
 Route::post('/ambilobatracik', [newFarmasiController::class, 'ambilobatracik'])->middleware('auth')->name('ambilobatracik');
 Route::post('/ambilobatracik_versi_2', [newFarmasiController::class, 'ambilobatracik_versi_2'])->middleware('auth')->name('ambilobatracik_versi_2');
+Route::post('/simpantambahobat', [newFarmasiController::class, 'simpantambahobat'])->middleware('auth')->name('simpantambahobat');
 Route::post('/hapusracikan', [newFarmasiController::class, 'hapusracikan'])->middleware('auth')->name('hapusracikan');
 Route::get('/kartu-stok/data', [newFarmasiController::class, 'getDatastok'])->name('kartu-stok.data');
 Route::get('/ambilbarangbpjs', [newFarmasiController::class, 'ambilbarangbpjs'])->name('ambilbarangbpjs');
 Route::get('/ambilbarangmappingdepo', [newFarmasiController::class, 'ambilbarangmappingdepo'])->middleware('auth')->name('ambilbarangmappingdepo');
 Route::post('/simpanmappingobatdaridepo', [newFarmasiController::class, 'simpanmappingbaru'])->middleware('auth')->name('simpanmappingobatdaridepo');
 Route::post('/ambilformtambahobat', [newFarmasiController::class, 'ambilformtambahobat'])->middleware('auth')->name('ambilformtambahobat');
+Route::post('/bridginghapusobat', [newFarmasiController::class, 'bridginghapusobat'])->middleware('auth')->name('bridginghapusobat');
+Route::post('/returobatsatuan', [newFarmasiController::class, 'returobatsatuan'])->middleware('auth')->name('returobatsatuan');
+Route::post('/batalresep', [newFarmasiController::class, 'batalresep'])->middleware('auth')->name('batalresep');
 

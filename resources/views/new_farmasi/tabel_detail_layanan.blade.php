@@ -16,8 +16,9 @@
                     <tr>
                         <th style="width: 40px;" rowspan="2" class="align-middle">No</th>
                         <th colspan="3" class="bg-light border-bottom-0">Data Obat SIMRS (Layanan)</th>
-                        <th colspan="5" class="bg-light border-bottom-0 border-left">Data Bridging / Resep BPJS</th>
-                        <th style="width: 90px;" rowspan="2" class="align-middle border-left">Status</th>
+                        <th colspan="2" class="bg-light border-bottom-0 border-left">Data Bridging / Resep BPJS</th>
+                        {{-- <th style="width: 90px;" rowspan="2" class="align-middle border-left">Status</th> --}}
+                        <th style="width: 90px;" rowspan="2" class="align-middle border-left">Aksi</th>
                     </tr>
                     <tr>
                         <!-- SIMRS -->
@@ -26,9 +27,9 @@
                         <th>Aturan Pakai</th>
 
                         <!-- BPJS -->
-                        <th class="border-left">Nama Obat di Bpjs</th>
-                        <th style="width: 90px;">Signa</th>
-                        <th style="width: 60px;">JHO</th>
+                        {{-- <th class="border-left">Nama Obat di Bpjs</th>
+                        <th style="width: 90px;">Signa</th> --}}
+                        {{-- <th style="width: 60px;">JHO</th> --}}
                         <th style="width: 80px;">Jml Obat</th>
                         <th>Tarif RS</th>
                     </tr>
@@ -52,7 +53,7 @@
                             </td>
 
                             <!-- BPJS Data -->
-                            <td class="align-middle border-left">
+                            {{-- <td class="align-middle border-left">
                                 @if (!empty($row->NMOBAT))
                                     <span class="text-primary font-weight-bold">{{ $row->NMOBAT }}</span>
                                 @else
@@ -65,13 +66,13 @@
                                 @else
                                     <span class="text-muted">-</span>
                                 @endif
-                            </td>
-                            <td class="text-center align-middle">
+                            </td> --}}
+                            {{-- <td class="text-center align-middle">
                                 {{ $row->JHO ?? '-' }} Hari
-                            </td>
+                            </td> --}}
                             <td class="text-center align-middle">
-                                @if (!empty($row->JMLOBT))
-                                    <span class="badge badge-info px-2 py-1">{{ $row->JMLOBT }}</span>
+                                @if (!empty($row->jumlah_layanan))
+                                    <span class="badge badge-info px-2 py-1">{{ $row->jumlah_layanan }}</span>
                                 @else
                                     <span class="text-muted">-</span>
                                 @endif
@@ -80,7 +81,7 @@
                                 {{ number_format($row->grantotal_layanan, 0, ',', '.') }}
                             </td>
                             <!-- Status Bridging -->
-                            <td class="text-center align-middle border-left">
+                            {{-- <td class="text-center align-middle border-left">
                                 @if ($row->Bridging == '1' || strtolower($row->Bridging ?? '') == 'sudah')
                                     <span class="badge badge-success px-2 py-1" title="Sudah Bridging">
                                         <i class="fas fa-check-circle"></i> Bridging
@@ -94,8 +95,10 @@
                                         {{ $row->Bridging ?? '-' }}
                                     </span>
                                 @endif
+                            </td> --}}
+                            <td class="text-center"> <button class="btn btn-danger btn-sm returobat" idlayanandetail ="{{ $row->id_layanan_detail}}"><i
+                                        class="bi bi-recycle"></i></button>
                             </td>
-
                         </tr>
                     @empty
                         <tr>
@@ -167,7 +170,7 @@
                                         <th>Hari</th>
                                         <th>Jumlah</th>
                                         <th>Harga</th>
-                                        {{-- <th>Subtotal</th> --}}
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -184,6 +187,14 @@
                                             <td class="text-end">Rp {{ number_format($obat->harga, 0, ',', '.') }}</td>
                                             {{-- <td class="text-end font-weight-bold">Rp
                                                 {{ number_format($obat->jumlah * $obat->harga, 0, ',', '.') }}</td> --}}
+                                            <td class="text-center">
+                                                <button class="btn btn-danger btn-sm batalobat"
+                                                    kodeobat="{{ $obat->kodeobat }}"
+                                                    noresep="{{ $databpjs->response->noresep }}"
+                                                    nosepobat="{{ $databpjs->response->noSepApotek }}"
+                                                    tipeobat="{{ $obat->tipeobat }}"><i
+                                                        class="bi bi-recycle"></i></button>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -197,3 +208,141 @@
         @endif
     </div>
 </div>
+<script>
+    $(".returobat").on('click', function(event) {
+        idlayanandetail = $(this).attr('idlayanandetail')
+        Swal.fire({
+            title: "Anda yakin ?",
+            text: "Data obat akan diretur ...",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, retur"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Pastikan data obat yang diretur sudah dipilih dengan benar",
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: "Ya, retur data obat ...",
+                    denyButtonText: `Batal`
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        returobat(idlayanandetail)
+                    }
+                });
+            }
+        });
+    });
+    $(".batalobat").on('click', function(event) {
+        kodeobat = $(this).attr('kodeobat')
+        noresep = $(this).attr('noresep')
+        nosepobat = $(this).attr('nosepobat')
+        tipeobat = $(this).attr('tipeobat')
+        Swal.fire({
+            title: "Anda yakin ?",
+            text: "Data obat akan dihapus ...",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, Hapus"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Pastikan data obat yang dihapus sudah dipilih dengan benar",
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: "Ya, hapus data obat ...",
+                    denyButtonText: `Batal`
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        hapusobat(kodeobat, noresep, nosepobat, tipeobat)
+                    }
+                });
+            }
+        });
+    });
+
+    function hapusobat(kodeobat, noresep, nosepobat, tipeobat) {
+        spinner_on()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodeobat,
+                noresep,
+                nosepobat,
+                tipeobat
+            },
+            url: '<?= route('bridginghapusobat') ?>',
+            error: function(response) {
+                spinner_off()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ups!',
+                    text: response.message,
+                });
+            },
+            success: function(response) {
+                spinner_off()
+                if (response.kode == '500') {
+                    // Kondisi jika validasi gagal atau ada error sistem
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ups!',
+                        text: response.message,
+                    });
+                } else {
+                    $('#modaldetail').modal('hide');
+                    $('.modal-backdrop').remove();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'OK!',
+                        text: response.message,
+                    });
+                }
+            }
+        });
+    }
+
+    function returobat(idlayanandetail) {
+        spinner_on()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                idlayanandetail
+            },
+            url: '<?= route('returobatsatuan') ?>',
+            error: function(response) {
+                spinner_off()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ups!',
+                    text: response.message,
+                });
+            },
+            success: function(response) {
+                spinner_off()
+                if (response.kode == '500') {
+                    // Kondisi jika validasi gagal atau ada error sistem
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ups!',
+                        text: response.message,
+                    });
+                } else {
+                    $('#modaldetail').modal('hide');
+                    $('.modal-backdrop').remove();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'OK!',
+                        text: response.message,
+                    });
+                }
+            }
+        });
+    }
+</script>

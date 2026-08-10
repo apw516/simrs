@@ -1,14 +1,13 @@
 @extends('dashboard.layouts.main')
+
 @section('container')
     <div class="app-content-header">
-        <!--begin::Container-->
         <div class="container-fluid">
-            <!--begin::Row-->
-            <div class="row">
+            <div class="row align-items-center my-2">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Mapping Master Barang</h3>
+                    <h3 class="mb-0 fw-bold text-dark">Mapping Master Barang</h3>
+                    <small class="text-muted">Pemetaan Data Obat BPJS dengan SIMRS</small>
                 </div>
-
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -18,158 +17,177 @@
             </div>
         </div>
     </div>
+
     <div class="app-content">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header">Pilih Nama Obat Generik ( BPJS )</div>
-                        <div class="card-body" style="max-height: 1110px;">
-                            <div class="v_data_barang">
-                                <table id="tabel_barang_bpjs" class="table table-bordered table-hover"
-                                    style="font-size:14px">
-                                    <thead>
+            <!-- Tables Row -->
+            <div class="row g-3">
+                <!-- Table BPJS -->
+                <div class="col-lg-6">
+                    <div class="card card-outline card-primary shadow-sm h-100">
+                        <div class="card-header bg-primary text-white py-2">
+                            <h5 class="card-title mb-0 fs-6 fw-semibold"><i class="bi bi-card-checklist me-2"></i>Pilih Nama
+                                Obat Generik (BPJS)</h5>
+                        </div>
+                        <div class="card-body p-3">
+                            <div class="table-responsive">
+                                <table id="tabel_barang_bpjs" class="table table-striped table-hover align-middle w-100"
+                                    style="font-size:13px">
+                                    <thead class="table-light">
                                         <tr>
-                                            <th>Kode Obat</th>
+                                            <th>Kode</th>
                                             <th>Nama Obat</th>
                                             <th>Generik</th>
                                             <th>Restriksi</th>
                                             <th>Dosis</th>
-                                            <th></th>
+                                            <th class="text-center" style="width: 40px;">Aksi</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-
-                                    </tbody>
+                                    <tbody></tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header">Pilih Master Barang ( SIMRS )</div>
-                        <div class="card-body" style="max-height: 1110px;">
-                            <div class="v_data_barang">
-                                <table id="tabel_barang_simrs" class="table table-bordered table-hover"
-                                    style="font-size:14px">
-                                    <thead>
+
+                <!-- Table SIMRS -->
+                <div class="col-lg-6">
+                    <div class="card card-outline card-info shadow-sm h-100">
+                        <div class="card-header bg-info text-white py-2">
+                            <h5 class="card-title mb-0 fs-6 fw-semibold"><i class="bi bi-box-seam me-2"></i>Pilih Master
+                                Barang (SIMRS)</h5>
+                        </div>
+                        <div class="card-body p-3">
+                            <div class="table-responsive">
+                                <table id="tabel_barang_simrs" class="table table-striped table-hover align-middle w-100"
+                                    style="font-size:13px">
+                                    <thead class="table-light">
                                         <tr>
-                                            <th>Kode Barang</th>
+                                            <th>Kode</th>
                                             <th>Nama Barang</th>
                                             <th>Satuan</th>
-                                            <th>sediaan</th>
+                                            <th>Sediaan</th>
                                             <th>Dosis</th>
                                             <th>Status</th>
-                                            <th></th>
+                                            <th class="text-center" style="width: 40px;">Aksi</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-
-                                    </tbody>
+                                    <tbody></tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row mt-2">
-                <div class="card">
-                    <div class="card-header">Form Mapping data Obat BPJS dan SIMRS</div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header bg-light fw-bold">Nama Obat BPJS</div>
-                                    <div class="card-body">
-                                        <form class="form_obat_bpjs" id="form_obat_bpjs">
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <div class="mb-3">
-                                                        <label for="exampleInputEmail1" class="form-label">Nama Obat</label>
-                                                        <input readonly type="text" class="form-control"
-                                                            id="namaobatbpjs" name="namaobatbpjs"
-                                                            aria-describedby="emailHelp">
-                                                        <input hidden readonly type="text" class="form-control"
-                                                            id="kodeobatbpjs" name="kodeobatbpjs"
-                                                            aria-describedby="emailHelp">
+
+            <!-- Form Mapping Row -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-dark text-white py-2 d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0 fs-6 fw-bold"><i class="bi bi-diagram-3 me-2"></i>Form Mapping Data
+                                Obat</h5>
+                            <span class="badge bg-secondary">Draft Selection</span>
+                        </div>
+                        <div class="card-body bg-light">
+                            <div class="row g-3">
+                                <!-- Selected BPJS Info -->
+                                <div class="col-12">
+                                    <div class="card border">
+                                        <div class="card-header bg-white fw-bold py-2 text-primary border-bottom">
+                                            <i class="bi bi-info-circle me-1"></i> Detail Obat BPJS Terpilih
+                                        </div>
+                                        <div class="card-body">
+                                            <form class="form_obat_bpjs" id="form_obat_bpjs">
+                                                <div class="row g-2">
+                                                    <div class="col-md-4">
+                                                        <label class="form-label small fw-semibold">Nama Obat BPJS</label>
+                                                        <input readonly type="text"
+                                                            class="form-control form-control-sm bg-light" id="namaobatbpjs"
+                                                            name="namaobatbpjs" placeholder="Belum ada yang dipilih...">
+                                                        <input hidden readonly type="text" id="kodeobatbpjs"
+                                                            name="kodeobatbpjs">
                                                     </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="mb-3">
-                                                        <label for="exampleInputEmail1" class="form-label">Generik</label>
-                                                        <input readonly type="text" class="form-control" id="generik"
-                                                            name="generik" aria-describedby="emailHelp">
+                                                    <div class="col-md-4">
+                                                        <label class="form-label small fw-semibold">Generik</label>
+                                                        <input readonly type="text"
+                                                            class="form-control form-control-sm bg-light" id="generik"
+                                                            name="generik">
                                                     </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="mb-3">
-                                                        <label for="exampleInputEmail1" class="form-label">Restriksi</label>
-                                                        <input readonly type="text" class="form-control" id="restriksi"
-                                                            name="restriksi" aria-describedby="emailHelp">
+                                                    <div class="col-md-4">
+                                                        <label class="form-label small fw-semibold">Restriksi</label>
+                                                        <input readonly type="text"
+                                                            class="form-control form-control-sm bg-light" id="restriksi"
+                                                            name="restriksi">
                                                     </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="mb-3">
-                                                        <label for="exampleInputPassword1" class="form-label">Dosis</label>
-                                                        <input readonly type="text" class="form-control" id="dosis"
+                                                    <div class="col-md-3">
+                                                        <label class="form-label small fw-semibold">Dosis</label>
+                                                        <input readonly type="text"
+                                                            class="form-control form-control-sm bg-light" id="dosis"
                                                             name="dosis">
                                                     </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="mb-3">
-                                                        <label for="exampleInputPassword1" class="form-label">Kronis</label>
-                                                        <input readonly type="text" class="form-control" id="kronis"
+                                                    <div class="col-md-3">
+                                                        <label class="form-label small fw-semibold">Kronis</label>
+                                                        <input readonly type="text"
+                                                            class="form-control form-control-sm bg-light" id="kronis"
                                                             name="kronis">
                                                     </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="mb-3">
-                                                        <label for="exampleInputPassword1" class="form-label">Prb</label>
-                                                        <input readonly type="text" class="form-control" id="prb"
+                                                    <div class="col-md-3">
+                                                        <label class="form-label small fw-semibold">PRB</label>
+                                                        <input readonly type="text"
+                                                            class="form-control form-control-sm bg-light" id="prb"
                                                             name="prb">
                                                     </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="mb-3">
-                                                        <label for="exampleInputPassword1" class="form-label">Kemo</label>
-                                                        <input readonly type="text" class="form-control" id="kemo"
+                                                    <div class="col-md-3">
+                                                        <label class="form-label small fw-semibold">Kemo</label>
+                                                        <input readonly type="text"
+                                                            class="form-control form-control-sm bg-light" id="kemo"
                                                             name="kemo">
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </form>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12 mt-2">
-                                <div class="card">
-                                    <div class="card-header bg-light fw-bold">List Obat SIMRS</div>
-                                    <div class="card-body">
-                                        <form action="" method="post" class="v_list_barang  mt-2 mt-2">
-                                            <div class="draft_barang">
-                                                <div>
+
+                                <!-- Selected SIMRS List -->
+                                <div class="col-12">
+                                    <div class="card border">
+                                        <div class="card-header bg-white fw-bold py-2 text-info border-bottom">
+                                            <i class="bi bi-list-check me-1"></i> List Barang SIMRS Terpilih
+                                        </div>
+                                        <div class="card-body">
+                                            <form action="" method="post" class="v_list_barang">
+                                                <div class="draft_barang p-2 rounded bg-white border min-vh-10">
+                                                    <!-- Dynamic rows will append here -->
+                                                    <div class="text-muted text-center py-2 empty-placeholder small">
+                                                        Belum ada barang SIMRS yang dipilih.
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </form>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-footer">
-                        <button class="btn btn-success float-end" onclick="alertsimpandatamapping()">Simpan Data</button>
+                        <div class="card-footer bg-white text-end py-3 border-top">
+                            <button class="btn btn-success px-4" onclick="alertsimpandatamapping()">
+                                <i class="bi bi-save me-1"></i> Simpan Mapping
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <script>
         $(document).ready(function() {
             var tableBPJS = $('#tabel_barang_bpjs').DataTable({
                 processing: true,
                 serverSide: true,
                 pageLength: 5,
+                lengthChange: false,
                 ajax: "{{ route('ambilbarangbpjs') }}",
                 columns: [{
                         data: 'kodeobat',
@@ -192,35 +210,36 @@
                         name: 'sedia'
                     },
                     {
-                        // Tambahkan kolom aksi di sini
                         data: null,
                         name: 'aksi',
                         orderable: false,
                         searchable: false,
+                        className: 'text-center',
                         render: function(data, type, row) {
                             return `
-                    <button class="btn btn-sm btn-success btn-pilih-bpjs" 
-                            data-kode="${row.kodeobat}" 
-                            data-nama="${row.namaobat}"
-                            data-kronis="${row.kronis}"
-                            data-prb="${row.prb}"
-                            data-kemo="${row.kemo}"
-                            data-restriksi="${row.restriksi}"
-                            data-generik="${row.generik}"
-                            data-sedia="${row.sedia}">
-                        <i class="bi bi-check2-square"></i>
-                    </button>
-                `;
+                            <button class="btn btn-xs btn-success btn-pilih-bpjs" 
+                                    data-kode="${row.kodeobat}" 
+                                    data-nama="${row.namaobat}"
+                                    data-kronis="${row.kronis}"
+                                    data-prb="${row.prb}"
+                                    data-kemo="${row.kemo}"
+                                    data-restriksi="${row.restriksi}"
+                                    data-generik="${row.generik}"
+                                    data-sedia="${row.sedia}"
+                                    title="Pilih Obat BPJS">
+                                <i class="bi bi-check-lg"></i>
+                            </button>
+                        `;
                         }
                     }
                 ]
             });
-        });
-        $(document).ready(function() {
-            $('#tabel_barang_simrs').DataTable({
+
+            var tableSIMRS = $('#tabel_barang_simrs').DataTable({
                 processing: true,
                 serverSide: true,
-                pageLength: 7,
+                pageLength: 15,
+                lengthChange: false,
                 ajax: "{{ route('ambilbarangmappingdepo') }}",
                 columns: [{
                         data: 'kode_barang',
@@ -244,14 +263,13 @@
                     },
                     {
                         data: 'kode_obat_bpjs',
-                        name: 'kode_obat_bpjs',
-                        searchable: false ,
+                        name: 'b.kode_obat_bpjs',
+                        searchable: false,
                         render: function(data, type, row) {
-                            // Kondisi jika data null atau kosong
                             if (data == null || data == '0') {
-                                return '<span class="badge badge-danger bg-danger text-light"><i class="bi bi-info-circle"></i>Belum Dimapping</span>';
+                                return '<span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i>Belum</span>';
                             } else {
-                                return '<span class="badge badge-success bg-success text-light"><i class="bi bi-info-circle"></i>Sudah Mapping</span>';
+                                return '<span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Mapped</span>';
                             }
                         }
                     },
@@ -260,94 +278,126 @@
                         name: 'aksi',
                         orderable: false,
                         searchable: false,
+                        className: 'text-center',
                         render: function(data, type, row) {
-                            return ` <button class="btn btn-sm btn-primary btn-pilih" data-id="${row.kode_barang}" data-nama="${row.nama_barang}" data-satuan="${row.satuan_besar}" data-sediaan="${row.sediaan}" data-dosis="${row.dosis}"><i class="bi bi-check2-square"></i></button>`;
+                            return `
+                    <button class="btn btn-xs btn-primary btn-pilih" 
+                            data-id="${row.kode_barang}" 
+                            data-nama="${row.nama_barang}" 
+                            data-satuan="${row.satuan_besar}" 
+                            data-sediaan="${row.sediaan}" 
+                            data-dosis="${row.dosis}"
+                            title="Tambah Ke Draft">
+                        <i class="bi bi-plus-lg"></i>
+                    </button>
+                `;
                         }
                     }
                 ]
             });
-        });
-        $('#tabel_barang_simrs tbody').on('click', '.btn-pilih', function() {
-            id_barang = $(this).attr('data-id')
-            nama_barang = $(this).attr('data-nama')
-            satuan = $(this).attr('data-satuan')
-            sediaan = $(this).attr('data-sediaan')
-            dosis = $(this).attr('data-dosis')
-            var wrapper = $(".draft_barang");
-            $(wrapper).append(
-                '<div class="row"><div class="col-md-4"><label for="exampleFormControlInput1" class="form-label">Nama Barang</label><input readonly type="text" class="form-control" id="namabarang" name="namabarang" value="' +
-                nama_barang +
-                '"><input hidden  readonly type="text" class="form-control" id="kodebarang" name="kodebarang" value="' +
-                id_barang +
-                '"></div><div class="col-md-2"><label for="exampleFormControlInput1" class="form-label">Satuan</label><input readonly type="text" class="form-control" id="satuan" name="satuan" value="' +
-                satuan +
-                '"></div><div class="col-md-2"><label for="exampleFormControlInput1" class="form-label">Sediaan </label><input readonly type="text" class="form-control" id="sediaan" name="sediaan" value="' +
-                sediaan +
-                '"></div><div class="col-md-2"><label for="exampleFormControlInput1" class="form-label">Dosis</label><input readonly type="text" class="form-control" id="dosis" name="dosis" value="' +
-                dosis +
-                '"></div><i class="bi bi-x-square remove_field form-group col-md-1 text-danger" kode2=""></i></div>'
-            );
-            $(wrapper).on("click", ".remove_field", function(e) { //user click on remove
+            // Event Tambah Item SIMRS ke Draft
+            $('#tabel_barang_simrs tbody').on('click', '.btn-pilih', function() {
+                var id_barang = $(this).attr('data-id');
+                var nama_barang = $(this).attr('data-nama');
+                var satuan = $(this).attr('data-satuan');
+                var sediaan = $(this).attr('data-sediaan');
+                var dosis = $(this).attr('data-dosis');
+
+                $('.empty-placeholder').hide();
+
+                var rowHtml = `
+                <div class="row align-items-center g-2 mb-2 pb-2 border-bottom draft-row">
+                    <div class="col-md-5">
+                        <input readonly type="text" class="form-control form-control-sm bg-light" name="namabarang" value="${nama_barang}">
+                        <input type="hidden" name="kodebarang" value="${id_barang}">
+                    </div>
+                    <div class="col-md-2">
+                        <input readonly type="text" class="form-control form-control-sm bg-light" name="satuan" value="${satuan}">
+                    </div>
+                    <div class="col-md-2">
+                        <input readonly type="text" class="form-control form-control-sm bg-light" name="sediaan" value="${sediaan}">
+                    </div>
+                    <div class="col-md-2">
+                        <input readonly type="text" class="form-control form-control-sm bg-light" name="dosis" value="${dosis}">
+                    </div>
+                    <div class="col-md-1 text-center">
+                        <button type="button" class="btn btn-sm btn-outline-danger remove_field"><i class="bi bi-trash"></i></button>
+                    </div>
+                </div>
+            `;
+
+                $(".draft_barang").append(rowHtml);
+
+                Swal.fire({
+                    title: "Berhasil Ditambahkan",
+                    text: nama_barang,
+                    icon: "success",
+                    timer: 800,
+                    showConfirmButton: false
+                });
+            });
+
+            // Event Hapus Item SIMRS
+            $(".draft_barang").on("click", ".remove_field", function(e) {
                 e.preventDefault();
-                $(this).parent('div').remove();
-                x--;
-            })
-            Swal.fire({
-                title: nama_barang + " Berhasil dipilih ...",
-                text: "Silahkan scroll kebawah untuk melihat list obat yang sudah dipilih ..",
-                icon: "success",
-                draggable: true,
-                timer: 1000, // Menutup otomatis dalam 2 detik (2000ms)
-                timerProgressBar: true, // Menampilkan bar progress pemuatan (opsional tapi bagus)
-                showConfirmButton: false
+                $(this).closest('.draft-row').remove();
+                if ($('.draft-row').length === 0) {
+                    $('.empty-placeholder').show();
+                }
+            });
+
+            // Event Pilih Obat BPJS
+            $('#tabel_barang_bpjs tbody').on('click', '.btn-pilih-bpjs', function() {
+                $('#namaobatbpjs').val($(this).attr('data-nama'));
+                $('#kodeobatbpjs').val($(this).attr('data-kode'));
+                $('#generik').val($(this).attr('data-generik'));
+                $('#restriksi').val($(this).attr('data-restriksi'));
+                $('#dosis').val($(this).attr('data-sedia'));
+                $('#kronis').val($(this).attr('data-kronis'));
+                $('#kemo').val($(this).attr('data-kemo'));
+                $('#prb').val($(this).attr('data-prb'));
+
+                Swal.fire({
+                    title: "BPJS Obat Dipilih",
+                    text: $(this).attr('data-nama'),
+                    icon: "success",
+                    timer: 800,
+                    showConfirmButton: false
+                });
             });
         });
-        $('#tabel_barang_bpjs tbody').on('click', '.btn-pilih-bpjs', function() {
-            // Ambil data dari atribut tombol
-            kode = $(this).attr('data-kode');
-            nama = $(this).attr('data-nama');
-            restriksi = $(this).attr('data-restriksi');
-            generik = $(this).attr('data-generik');
-            sedia = $(this).attr('data-sedia');
-            kronis = $(this).attr('data-kronis');
-            prb = $(this).attr('data-prb');
-            kemo = $(this).attr('data-kemo');
-            $('#namaobatbpjs').val(nama)
-            $('#kodeobatbpjs').val(kode)
-            $('#generik').val(generik)
-            $('#restriksi').val(restriksi)
-            $('#dosis').val(sedia)
-            $('#kronis').val(kronis)
-            $('#kemo').val(kemo)
-            $('#prb').val(prb)
-            Swal.fire({
-                title: nama + " berhasil dipilih ...",
-                icon: "success",
-                draggable: true,
-                timer: 1000, // Menutup otomatis dalam 2 detik (2000ms)
-                timerProgressBar: true, // Menampilkan bar progress pemuatan (opsional tapi bagus)
-                showConfirmButton: false
-            });
-        });
+
         function alertsimpandatamapping() {
+            if (!$('#kodeobatbpjs').val()) {
+                Swal.fire('Perhatian', 'Silakan pilih obat BPJS terlebih dahulu!', 'warning');
+                return;
+            }
+            if ($('.draft-row').length === 0) {
+                Swal.fire('Perhatian', 'Silakan pilih minimal 1 barang SIMRS!', 'warning');
+                return;
+            }
+
             Swal.fire({
-                title: "Anda yakin data sudah benar ?",
-                text: "Data obat akan disimpan ...",
+                title: "Konfirmasi Simpan",
+                text: "Apakah data mapping sudah benar?",
                 icon: "question",
                 showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Ya, Simpan !"
+                confirmButtonColor: "#198754",
+                cancelButtonColor: "#dc3545",
+                confirmButtonText: "Ya, Simpan!"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    simpanmappobat()
+                    simpanmappobat();
                 }
             });
         }
+
         function simpanmappobat() {
-            spinner_on()
+            if (typeof spinner_on === "function") spinner_on();
+
             var data_simrs = $('.v_list_barang').serializeArray();
             var data_bpjs = $('.form_obat_bpjs').serializeArray();
+
             $.ajax({
                 async: true,
                 type: 'post',
@@ -357,34 +407,20 @@
                     data_simrs: JSON.stringify(data_simrs),
                     data_bpjs: JSON.stringify(data_bpjs),
                 },
-                url: '<?= route('simpanmappingobatdaridepo') ?>',
+                url: "{{ route('simpanmappingobatdaridepo') }}",
                 error: function(data) {
-                    spinner_off()
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Ooops....',
-                        text: 'Sepertinya ada masalah......',
-                        footer: ''
-                    })
+                    if (typeof spinner_off === "function") spinner_off();
+                    Swal.fire('Error', 'Terjadi kesalahan sistem saat menyimpan.', 'error');
                 },
                 success: function(data) {
-                    spinner_off()
+                    if (typeof spinner_off === "function") spinner_off();
                     if (data.kode == 500) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oopss...',
-                            text: data.message,
-                            footer: ''
-                        })
+                        Swal.fire('Gagal', data.message, 'error');
                     } else {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'OK',
-                            text: data.message,
-                            footer: ''
-                        })
-                        document.getElementById("form_obat_bpjs").reset();
-                        location.reload()
+                        Swal.fire('Sukses', data.message, 'success').then(() => {
+                            document.getElementById("form_obat_bpjs").reset();
+                            location.reload();
+                        });
                     }
                 }
             });

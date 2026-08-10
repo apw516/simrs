@@ -1,6 +1,5 @@
 <!-- CDN DataTables & Bootstrap 4 Integration -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
 <div class="container-fluid py-4">
@@ -126,6 +125,10 @@
                                 <!-- Action Buttons -->
                                 <td class="text-center align-middle no-print">
                                     <div class="btn-group btn-group-sm" role="group">
+                                        <button type="button" class="btn btn-outline-danger batallayanan"
+                                            title="Retur Resep" idlayananhheader="{{ $row->id_layanan_header }}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                         <button type="button" class="btn btn-outline-info detaillayanan"
                                             title="Detail Resep" idlayananhheader="{{ $row->id_layanan_header }}"
                                             data-toggle="modal" data-target="#modaldetail">
@@ -273,8 +276,8 @@
         idlayananhheader = $(this).attr('idlayananhheader')
         spinner = $('#loader')
         spinner.show();
-        $('.v_1').attr('hidden',true)
-        $('.v_2').removeAttr('hidden',true)
+        $('.v_1').attr('hidden', true)
+        $('.v_2').removeAttr('hidden', true)
         $.ajax({
             type: 'post',
             data: {
@@ -287,9 +290,73 @@
                 spinner.hide()
             },
             success: function(response) {
-                $('.V_2').html(response);
+                $('.v_detail_pasien').html(response);
                 spinner.hide()
             }
         });
     });
+    $(".batallayanan").on('click', function(event) {
+        idlayananhheader = $(this).attr('idlayananhheader')
+        Swal.fire({
+            title: "Anda yakin ?",
+            text: "Data Resep akan dibatalkan ...",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, batalkan"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Pastikan data resep yang dibatalkan sudah dipilih dengan benar",
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: "Ya, hapus data obat ...",
+                    denyButtonText: `Batal`
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        hapusresep(idlayananhheader)
+                    }
+                });
+            }
+        });
+    });
+
+    function hapusresep(idlayananhheader) {
+        spinner_on()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                idlayananhheader
+            },
+            url: '<?= route('batalresep') ?>',
+            error: function(response) {
+                spinner_off()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ups!',
+                    text: response.message,
+                });
+            },
+            success: function(response) {
+                spinner_off()
+                if (response.kode == '500') {
+                    // Kondisi jika validasi gagal atau ada error sistem
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ups!',
+                        text: response.message,
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'OK!',
+                        text: response.message,
+                    });
+                    location.reload()
+                }
+            }
+        });
+    }
 </script>
