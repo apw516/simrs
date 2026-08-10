@@ -324,7 +324,7 @@
     $(".cetaketiket").on('click', function(event) {
         idlayananhheader = $(this).attr('idlayananhheader')
         var url = "{{ url('cetaketiket_2') }}/" + idlayananhheader;
-        window.location.href = url;
+        window.open(url, '_blank');
     });
 
     function hapusresep(idlayananhheader) {
