@@ -138,6 +138,10 @@
                                             title="Cetak Etiket" idlayananhheader="{{ $row->id_layanan_header }}">
                                             <i class="fas fa-print"></i>
                                         </button>
+                                        <button type="button" class="btn btn-outline-success cetaknota"
+                                            title="Cetak Nota" idlayananhheader="{{ $row->id_layanan_header }}">
+                                            <i class="fas fa-print"></i>
+                                        </button>
                                         <button type="button" class="btn btn-outline-primary tambahobat"
                                             title="Tamabah Obat" idlayananhheader="{{ $row->id_layanan_header }}">
                                             <i class="fas fa-plus"></i> <i class="bi bi-database-add"></i>
@@ -324,6 +328,11 @@
     $(".cetaketiket").on('click', function(event) {
         idlayananhheader = $(this).attr('idlayananhheader')
         var url = "{{ url('cetaketiket_2') }}/" + idlayananhheader;
+        window.open(url, '_blank');
+    });
+    $(".cetaknota").on('click', function(event) {
+        idlayananhheader = $(this).attr('idlayananhheader')
+        var url = "{{ url('cetaknotafarmasi') }}/" + idlayananhheader;
         window.open(url, '_blank');
     });
 

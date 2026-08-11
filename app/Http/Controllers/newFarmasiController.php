@@ -4597,13 +4597,13 @@ class newFarmasiController extends FarmasiController
         }
 
         $kodeheader = $get_header->kode_layanan_header;
-        
+
         // 2. Eksekusi Stored Procedure
         $PDO = DB::connection()->getPdo();
         $QUERY = $PDO->prepare("CALL SP_CETAK_ETIKET_FARMASI_WD(?, ?)");
         $QUERY->execute([$kodeheader, $id]);
         $data = $QUERY->fetchAll(\PDO::FETCH_OBJ);
-    
+
         // 3. Set Ukuran Kertas Custom Etiket (50.8 mm x 60.6 mm)
         // Format array: [x_origin, y_origin, width_in_pt, height_in_pt]
         $customPaper = [0, 0, 144, 171.78];
@@ -4613,6 +4613,36 @@ class newFarmasiController extends FarmasiController
 
         // 4. Stream PDF ke browser
         return $pdf->stream('etiket_' . $id . '.pdf');
+    }
+    public function cetaknotafarmasi($id)
+    {
+        // 1. Ambil Data Header Transaksi
+        $header = DB::connection('mysql')
+            ->table('ts_layanan_header')
+            ->where('id', $id)
+            ->first();
+
+        if (!$header) {
+            return redirect()->back()->with('error', 'Data header tidak ditemukan.');
+        }
+
+        $dtpx = DB::select('SELECT counter, no_rm, fc_nama_px(no_rm) AS nama, fc_umur(no_rm) AS umur, DATE(fc_tgl_lahir(no_rm)) AS tgl_lahir, fc_alamat(no_rm) AS alamat, fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin, fc_nama_unit1(kode_unit) as unit, fc_nama_paramedis(kode_paramedis) as dokter, kode_penjamin FROM ts_kunjungan WHERE kode_kunjungan = ?', [$header->kode_kunjungan]);
+
+        $kodeheader = $header->kode_layanan_header;
+
+        // 2. Ambil Data Detail Obat via Stored Procedure
+        $PDO = DB::connection()->getPdo();
+        $QUERY = $PDO->prepare("CALL SP_CETAK_NOTA_WEB(?, ?)");
+        $QUERY->execute([$kodeheader, $id]);
+        $details = $QUERY->fetchAll(\PDO::FETCH_OBJ);
+
+        // 3. Set Ukuran Kertas Custom (Lebar 11 cm x Tinggi 14 cm)
+        $customPaper = [0, 0, 311.81, 396.85];
+
+        $pdf = Pdf::loadView('new_farmasi.nota_rincian_biaya_pdf', compact('header', 'details', 'dtpx'))
+            ->setPaper($customPaper, 'portrait');
+
+        return $pdf->stream('rincian_biaya_' . $kodeheader . '.pdf');
     }
     public function kartuStokData(Request $request)
     {

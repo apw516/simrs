@@ -85,9 +85,7 @@
         }
     </style>
 </head>
-
 <body>
-
     @foreach ($data as $row)
         <div class="header-container">
             <div class="header-logo">
@@ -165,7 +163,6 @@
             <div style="page-break-after: always;"></div>
         @endif
     @endforeach
-
 </body>
 
 </html>

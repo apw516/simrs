@@ -752,7 +752,7 @@ Route::group(['middleware' => ['auth', 'hak_akses1:6']], function () {
     Route::post('/ambil_data_obat_retur', [FarmasiController::class, 'ambil_data_obat_retur'])->middleware('auth')->name('ambil_data_obat_retur');
     Route::post('/simpanretur', [FarmasiController::class, 'simpanretur'])->middleware('auth')->name('simpanretur');
     Route::get('/cetaketiket/{kodekunjungan}', [FarmasiController::class, 'CetakEtiket'])->middleware('auth')->name('CetakEtiket');
-    Route::get('/cetaknotafarmasi/{kodekunjungan}', [FarmasiController::class, 'cetaknotafarmasi'])->middleware('auth')->name('CetakNotaFarmasi');
+    // Route::get('/cetaknotafarmasi/{kodekunjungan}', [FarmasiController::class, 'cetaknotafarmasi'])->middleware('auth')->name('CetakNotaFarmasi');
 });
 Route::get('indexjasamedis', [JasaMedisController::class, 'indexjasamedis'])->name('indexjasamedis'); //formpasien_bpjs
 Route::post('ambildatatotalklaim', [JasaMedisController::class, 'ambildatatotalklaim'])->name('ambildatatotalklaim'); //formpasien_bpjs
@@ -951,6 +951,7 @@ Route::post('/bridginghapusobat', [newFarmasiController::class, 'bridginghapusob
 Route::post('/returobatsatuan', [newFarmasiController::class, 'returobatsatuan'])->middleware('auth')->name('returobatsatuan');
 Route::post('/batalresep', [newFarmasiController::class, 'batalresep'])->middleware('auth')->name('batalresep');
 Route::get('cetaketiket_2/{id}', [newFarmasiController::class, 'cetakEtiket_new']); //formpasien_bpjs
+Route::get('cetaknotafarmasi/{id}', [newFarmasiController::class, 'cetaknotafarmasi']); //formpasien_bpjs
 Route::get('/berkaserm', [RanapController::class, 'indexberkaserm'])
     ->name('berkaserm2'); //sidebar
 Route::get('/berkaserm2', [RanapController::class, 'indexberkaserm'])
