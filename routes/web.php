@@ -954,3 +954,5 @@ Route::post('/batalresep', [newFarmasiController::class, 'batalresep'])->middlew
 Route::get('cetaketiket_2/{id}', [newFarmasiController::class, 'cetakEtiket_new']); //formpasien_bpjs
 Route::get('/berkaserm', [RanapController::class, 'indexberkaserm'])
     ->name('berkaserm2'); //sidebar
+Route::get('/berkaserm', [RanapController::class, 'indexberkaserm'])
+    ->name('berkaserm'); //sidebar
