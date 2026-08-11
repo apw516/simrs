@@ -6,12 +6,13 @@
     <title>Rincian Biaya Farmasi</title>
     <style>
         @page {
-            margin: 6px 10px;
+            /* Margin Top/Bottom 5px, Left/Right 0.5cm */
+            margin: 5px 0.5cm;
         }
 
         body {
             font-family: Arial, sans-serif;
-            font-size: 7.5pt;
+            font-size: 8.5pt;
             font-weight: bold;
             color: #000;
             line-height: 1.15;
@@ -27,19 +28,19 @@
         }
 
         .header-logo {
-            width: 32px;
+            width: 30px;
             vertical-align: middle;
         }
 
         .header-logo img {
-            width: 28px;
+            width: 26px;
             height: auto;
         }
 
         .header-title {
             vertical-align: middle;
             font-weight: bold;
-            font-size: 8pt;
+            font-size: 9.5pt;
             line-height: 1.1;
         }
 
@@ -47,7 +48,7 @@
             vertical-align: middle;
             text-align: right;
             font-weight: bold;
-            font-size: 9pt;
+            font-size: 9.5pt;
         }
 
         .divider-top {
@@ -60,6 +61,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 4px;
+            font-size: 8.5pt;
         }
 
         .patient-table td {
@@ -74,15 +76,16 @@
             border-top: 1.5px solid #000;
             border-bottom: 1.5px solid #000;
             margin-bottom: 4px;
+            font-size: 8.5pt;
         }
 
         .item-table th {
-            padding: 2px 0;
+            padding: 3px 0;
             font-weight: bold;
         }
 
         .item-table td {
-            padding: 1.5px 0;
+            padding: 2px 0;
             vertical-align: top;
         }
 
@@ -91,6 +94,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 2px;
+            font-size: 8.5pt;
         }
 
         .summary-table td {
@@ -106,7 +110,7 @@
 
         .footer-info {
             margin-top: 6px;
-            font-size: 7pt;
+            font-size: 8pt;
         }
     </style>
 </head>
@@ -134,12 +138,12 @@
     <!-- INFORMASI PASIEN & LAYANAN -->
     <table class="patient-table">
         <tr>
-            <td width="18%">Kode Layanan</td>
-            <td width="2%">:</td>
-            <td width="40%">{{ $header->kode_layanan_header ?? '-' }}</td>
-            <td width="18%">RM / Counter</td>
-            <td width="2%">:</td>
-            <td width="20%">{{ $dtpx[0]->no_rm ?? '-' }} / {{ $dtpx[0]->counter ?? '-' }}</td>
+            <td width="27%">Kode Layanan</td>
+            <td width="3%">:</td>
+            <td width="30%">{{ $header->kode_layanan_header ?? '-' }}</td>
+            <td width="20%">RM / Ctr</td>
+            <td width="3%">:</td>
+            <td width="17%">{{ $dtpx[0]->no_rm ?? '-' }}/{{ $dtpx[0]->counter ?? '-' }}</td>
         </tr>
         <tr>
             <td>Nama Pasien</td>
@@ -161,7 +165,7 @@
             </td>
         </tr>
         <tr>
-            <td colspan="6" style="height: 5px;"></td>
+            <td colspan="6" style="height: 3px;"></td>
         </tr>
         <tr>
             <td>Penjamin</td>
@@ -184,9 +188,9 @@
     <table class="item-table">
         <thead>
             <tr>
-                <th align="left" width="60%">Nama Obat</th>
-                <th align="center" width="15%">QTY</th>
-                <th align="right" width="25%">Jumlah</th>
+                <th align="left" width="52%">Nama Obat</th>
+                <th align="center" width="13%">QTY</th>
+                <th align="right" width="35%">Jumlah</th>
             </tr>
         </thead>
         <tbody>
@@ -198,11 +202,6 @@
                 @php
                     $jumlah = $item->total_tarif * $item->jumlah_layanan;
                     $subtotal += $jumlah;
-                    // if ($dtpx[0]->kode_penjamin == 'P01') {
-                    //     $jumlah = $item->tagihan_pribadi;
-                    // } else {
-                    //     $jumlah = $item->tagihan_penjamin;
-                    // }
                 @endphp
                 <tr>
                     <td align="left">{{ $item->NAMA_TARIF }}</td>
@@ -220,24 +219,24 @@
     @endphp
     <table class="summary-table">
         <tr>
-            <td width="55%" align="left">
+            <td width="42%" align="left">
                 Total item : {{ $totalItem }}
             </td>
-            <td width="20%" align="left">Subtotal</td>
-            <td width="25%" align="right">: {{ number_format($subtotal, 2, '.', ',') }}</td>
+            <td width="26%" align="left">Subtotal</td>
+            <td width="32%" align="right">: {{ number_format($subtotal, 2, '.', ',') }}</td>
         </tr>
         <tr>
             <td></td>
-            <td align="left">Jasa Resep ( 1 )</td>
+            <td align="left">Jasa Resep (1)</td>
             <td align="right">: {{ number_format($jasaResep, 2, '.', ',') }}</td>
         </tr>
         <tr>
             <td></td>
             <td colspan="2" class="total-box">
-                <table width="100%" style="font-weight: bold;">
+                <table width="100%" style="font-weight: bold; font-size: 8.5pt;">
                     <tr>
-                        <td align="left" width="44%">Total Bayar</td>
-                        <td align="right" width="56%">: {{ number_format($totalBayar, 2, '.', ',') }}</td>
+                        <td align="left" width="45%">Total Bayar</td>
+                        <td align="right" width="55%">: {{ number_format($totalBayar, 2, '.', ',') }}</td>
                     </tr>
                 </table>
             </td>

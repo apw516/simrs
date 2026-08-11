@@ -4636,8 +4636,8 @@ class newFarmasiController extends FarmasiController
         $QUERY->execute([$kodeheader, $id]);
         $details = $QUERY->fetchAll(\PDO::FETCH_OBJ);
 
-        // 3. Set Ukuran Kertas Custom (Lebar 11 cm x Tinggi 14 cm)
-        $customPaper = [0, 0, 311.81, 396.85];
+        // 3. Set Ukuran Kertas Custom (Lebar 10 cm x Tinggi 14 cm)
+        $customPaper = [0, 0, 283.46, 396.85];
 
         $pdf = Pdf::loadView('new_farmasi.nota_rincian_biaya_pdf', compact('header', 'details', 'dtpx'))
             ->setPaper($customPaper, 'portrait');
