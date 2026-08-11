@@ -1316,17 +1316,14 @@ class UpdateERMcontroller extends Controller
                 $kode_layanan = $c->KODE;
                 $noLab = $c->KODE ?? uniqid(); // Gunakan nomor lab sebagai nama file agar unik
                 $namaFile = $noLab . '.pdf';
-
                 if (!$urlDokumen) {
                     $gagal++;
                     continue;
                 }
-
                 try {
                     // --- KONDISI 1: JIKA FILE SUDAH PERNAH DIDOWNLOAD (ADA DI DISK) ---
                     if (Storage::disk('LAB_1')->exists($namaFile)) {
                         $urlFileTersimpan = '\\\\192.168.2.14\\erm\\hasil_lab_1/' . $namaFile;
-
                         // Pastikan log databasenya aman/sinkron
                         \DB::table('ts_hasil_lab_dokumen_lab')->updateOrInsert(
                             [
@@ -1352,7 +1349,6 @@ class UpdateERMcontroller extends Controller
 
                     if ($response->successful()) {
                         $fileContent = $response->body();
-
                         try {
                             // Simpan file fisik ke disk LAB_1
                             $simpan = Storage::disk('LAB_1')->put($namaFile, $fileContent);
@@ -1435,7 +1431,6 @@ class UpdateERMcontroller extends Controller
                 if (Storage::disk('LAB_2')->exists($namaFile)) {
                     // Jika file sudah ada, skip download! Langsung pastikan DB ter-update/insert aman
                     $urlFileTersimpan = '\\\\192.168.2.14\\erm\\hasil_lab_2/' . $namaFile;
-
                     \DB::table('ts_hasil_lab_dokumen_lab_spesial')->updateOrInsert(
                         ['kode_kunjungan' => $kodeKunjungan, 'no_lab' => $noLab],
                         [

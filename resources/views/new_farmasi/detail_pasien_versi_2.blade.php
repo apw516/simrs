@@ -961,16 +961,48 @@
                         footer: ''
                     })
                 } else {
+                    var kodeLayananHeader = data
+                        .row_id_header; // Menggunakan kode_layanan_header dari return backend
                     Swal.fire({
                         icon: 'success',
-                        title: 'OK',
+                        title: 'Berhasil Simpan Resep',
                         text: data.message,
-                        footer: ''
-                    })
-                    location.reload()
+                        showCancelButton: true,
+                        showDenyButton: true,
+                        confirmButtonText: '<i class="fas fa-print"></i> Cetak Etiket',
+                        denyButtonText: '<i class="fas fa-file-invoice"></i> Cetak Nota',
+                        cancelButtonText: 'Selesai',
+                        confirmButtonColor: '#3085d6',
+                        denyButtonColor: '#17a2b8',
+                        cancelButtonColor: '#6c757d',
+                        allowOutsideClick: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Aksi Cetak Etiket
+                            cetakEtiket(kodeLayananHeader);
+                            return false;
+                        } else if (result.isDenied) {
+                            // Aksi Cetak Nota
+                            cetakNota(kodeLayananHeader);
+                            return false;
+                        } else {
+                            location.reload();
+                        }
+                    });
+
                 }
             }
         });
+    }
+
+    function cetakEtiket(kode) {
+        var url = "{{ url('cetaketiket_2') }}/" + kode;
+        window.open(url, '_blank');
+    }
+
+    function cetakNota(kode) {
+        var url = "{{ url('cetaknotafarmasi') }}/" + kode;
+        window.open(url, '_blank');
     }
     $('#tombol_cari_komponen').click(function() {
         $('#tabel_barang2').DataTable().ajax.reload(); // Reload tabel dengan parameter baru
