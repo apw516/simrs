@@ -15,6 +15,7 @@ use App\Models\model_mt_racikan_detail;
 use App\Models\MasterBarangBPJS;
 use App\Models\MasterBarang;
 use simitsdk\phpjasperxml\PHPJasperXML;
+use Barryvdh\DomPDF\Facade\Pdf; // If you added the facade alias
 
 class newFarmasiController extends FarmasiController
 {
@@ -4564,25 +4565,54 @@ class newFarmasiController extends FarmasiController
             die;
         }
     }
+    // public function cetakEtiket_new($id)
+    // {
+    //     $get_header = DB::connection('mysql')->select('select * from ts_layanan_header where id = ?', [$id]);
+    //     // dd($get_header);
+    //     // $KODE_HEADER = $DH[0]->kode_layanan_header;
+    //     // $ID_HEADER = $DK[0]->counter;
+    //     $kodeheader = $get_header[0]->kode_layanan_header;
+    //     // $TE = db::connection('mysql')->select("CALL `SP_CETAK_ETIKET_FARMASI_WD`('$kodeheader','$id')");
+    //     // DD($TE);
+    //     $PDO = DB::connection()->getPdo();
+    //     $QUERY = $PDO->prepare("CALL SP_CETAK_ETIKET_FARMASI_WD('$kodeheader','$id')");
+    //     $QUERY->execute();
+    //     $data = $QUERY->fetchAll();
+    //     $filename = 'C:\cetakanresep\etiket.jrxml';
+    //     $config = ['driver' => 'array', 'data' => $data];
+    //     $report = new PHPJasperXML();
+    //     $report->load_xml_file($filename)
+    //         ->setDataSource($config)
+    //         ->export('Pdf');
+    // }
     public function cetakEtiket_new($id)
     {
-        $get_header = DB::connection('mysql')->select('select * from ts_layanan_header where id = ?', [$id]);
-        // dd($get_header);
-        // $KODE_HEADER = $DH[0]->kode_layanan_header;
-        // $ID_HEADER = $DK[0]->counter;
-        $kodeheader = $get_header[0]->kode_layanan_header;
-        // $TE = db::connection('mysql')->select("CALL `SP_CETAK_ETIKET_FARMASI_WD`('$kodeheader','$id')");
-        // DD($TE);
+        $get_header = DB::connection('mysql')
+            ->table('ts_layanan_header')
+            ->where('id', $id)
+            ->first();
+
+        if (!$get_header) {
+            return redirect()->back()->with('error', 'Data header tidak ditemukan.');
+        }
+
+        $kodeheader = $get_header->kode_layanan_header;
+        
+        // 2. Eksekusi Stored Procedure
         $PDO = DB::connection()->getPdo();
-        $QUERY = $PDO->prepare("CALL SP_CETAK_ETIKET_FARMASI_WD('$kodeheader','$id')");
-        $QUERY->execute();
-        $data = $QUERY->fetchAll();
-        $filename = 'C:\cetakanresep\etiket.jrxml';
-        $config = ['driver' => 'array', 'data' => $data];
-        $report = new PHPJasperXML();
-        $report->load_xml_file($filename)
-            ->setDataSource($config)
-            ->export('Pdf');
+        $QUERY = $PDO->prepare("CALL SP_CETAK_ETIKET_FARMASI_WD(?, ?)");
+        $QUERY->execute([$kodeheader, $id]);
+        $data = $QUERY->fetchAll(\PDO::FETCH_OBJ);
+    
+        // 3. Set Ukuran Kertas Custom Etiket (50.8 mm x 60.6 mm)
+        // Format array: [x_origin, y_origin, width_in_pt, height_in_pt]
+        $customPaper = [0, 0, 144, 171.78];
+
+        $pdf = Pdf::loadView('new_farmasi.cetak_etiket_pdf', compact('get_header', 'data'))
+            ->setPaper($customPaper, 'portrait');
+
+        // 4. Stream PDF ke browser
+        return $pdf->stream('etiket_' . $id . '.pdf');
     }
     public function kartuStokData(Request $request)
     {
