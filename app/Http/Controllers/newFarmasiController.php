@@ -835,7 +835,7 @@ class newFarmasiController extends FarmasiController
                 } elseif ($jenisobat == '3') {
                     $tipe_anestesi = '82';
                 }
-                $this->prosesResepObaKronis_versi2($arrayobat, $data_kunjungan, $kode_unit_pelayanan, $tipe_anestesi, $dataheader);
+                $prossesobat = $this->prosesResepObaKronis_versi2($arrayobat, $data_kunjungan, $kode_unit_pelayanan, $tipe_anestesi, $dataheader);
             }
             // Jalankan Commit jika semua proses sukses tanpa Exception\
             DB::connection('mysql')->commit();
@@ -1477,6 +1477,7 @@ class newFarmasiController extends FarmasiController
                 }
             }
         }
+        return $idBaru;
     }
     public function prosesResepObaKronis($dataobat, $data_kunjungan, $kode_unit_pelayanan, $tipe_anestesi, $dataheader)
     {
