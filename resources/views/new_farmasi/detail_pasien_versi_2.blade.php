@@ -738,7 +738,6 @@
     });
     $(document).ready(function() {
         // 1. Inisialisasi DataTables
-
         var tableObat = $('#table-stok-komponen-obat').DataTable({
             "pageLength": 5,
             "language": {
@@ -771,98 +770,6 @@
                 }
             }
         });
-
-        // 2. Event Listener Klik Tombol 'Pilih'
-        // $('#table-stok-obat').on('click', '.btn-pilih-obat', function() {
-        //     var kodeBarang = $(this).data('kode');
-        //     var namaBarang = $(this).data('nama');
-        //     var maxStok = parseInt($(this).data('stok')) || 999;
-        //     // Cek apakah obat sudah ada di dalam tabel terpilih
-        //     var existingRow = $('#row-obat-' + kodeBarang);
-
-        //     if (existingRow.length > 0) {
-        //         // Jika obat sudah ada, tambahkan nilai 'jumlahobat' (+1)
-        //         var inputQty = existingRow.find('.input-jumlah-obat');
-        //         var currentQty = parseInt(inputQty.val()) || 0;
-
-        //         if (currentQty < maxStok) {
-        //             inputQty.val(currentQty + 1);
-        //         } else {
-        //             alert('Jumlah melebihi stok yang tersedia (' + maxStok + ')');
-        //         }
-        //     } else {
-        //         // Hapus pesan "Belum ada obat" (empty-row)
-        //         $('#empty-row').hide();
-
-        //         // Hitung nomor urut baris
-        //         var noUrut = $('#wrapper-obat-terpilih tr').not('#empty-row').length + 1;
-
-        //         // Generate HTML Baris Baru sesuai <th> Tabel
-        //         var htmlRow = `
-        //         <tr id="row-obat-${kodeBarang}">
-        //             <td class="text-center nomor-urut">${noUrut}</td>
-        //             <td>
-        //                 <span class="font-weight-bold d-block">${namaBarang}</span>
-        //                 <small class="text-muted">${kodeBarang}</small>
-        //                 <input type="hidden" name="kode_barang" value="${kodeBarang}">
-        //             </td>
-        //             <td>
-        //                 <input readonly type="number" name="stok" class="form-control form-control-sm text-center" value="${maxStok}" min="0">
-        //             </td>
-        //             <td>
-        //                 <select readonly name="jenis_resep" class="form-control form-control-sm">
-        //                     <option value="NonRacikan">(Non-Racik)</option>
-        //                     <option value="Racikan">Racikan</option>
-        //                 </select>
-        //             </td>
-        //             <td>
-        //                 <select name="jenis_obat" class="form-control form-control-sm">
-        //                     <option value="Reguler">Reguler</option>
-        //                     <option value="Kronis">Kronis</option>
-        //                     <option value="PRB">PRB</option>
-        //                     <option value="Kemoterapi">Kempoterapi</option>
-        //                 </select>
-        //             </td>
-        //             <td>
-        //                 <select name="iterasi" class="form-control form-control-sm text-center">
-        //                     <option value="0">Tidak</option>
-        //                     <option value="1">Ya</option>
-        //                 </select>
-        //             </td>
-        //             <td>
-        //                 <input type="number" name="jlh_iterasi" class="form-control form-control-sm text-center" value="0" min="0">
-        //             </td>
-        //             <td>
-        //                    <div class="row"><div class="col-md-6"> <input hidden type="number" name="jumlahhari" class="form-control form-control-sm text-center" value="1" min="1" required></div> <div class="col-md-12"><input type="number" name="qtyobat" class="form-control form-control-sm text-center" value="1" min="1" required></div> </div>
-        //             </td>
-        //             <td hidden>
-        //                 <input hidden type="number" name="jumlahobat" class="form-control form-control-sm text-center input-jumlah-obat" value="1" min="1" max="${maxStok}" required>
-        //             </td>
-        //             <td>
-        //                 <input type="number" name="signa1" class="form-control form-control-sm text-center" value="3" min="1" required>
-        //             </td>
-        //             <td  class="text-center align-middle font-weight-bold">
-        //                 <span class="mr-1">x</span>
-        //             </td>
-        //             <td>
-        //                     <input type="number" name="signa2" class="form-control form-control-sm text-center" value="1" min="1" required>
-        //             </td>
-        //             <td>
-        //                 <input type="text" name="catatan" class="form-control form-control-sm" placeholder="Contoh: Ssh Makan">
-        //             </td>
-        //             <td class="text-center">
-        //                 <button type="button" class="btn btn-sm btn-outline-danger btn-hapus-obat">
-        //                     <i class="fas fa-times"></i>
-        //                 </button>
-        //             </td>
-        //         </tr>
-        //     `;
-
-        //         $('#wrapper-obat-terpilih').append(htmlRow);
-        //     }
-        //     updateNomorUrut();
-        //     checkSubmitButton();
-        // });
         $('#table-stok-obat').on('click', '.btn-pilih-obat', function() {
             var kodeBarang = $(this).data('kode');
             var namaBarang = $(this).data('nama');
@@ -968,7 +875,6 @@
             </td>
         </tr>
         `;
-
                 $('#wrapper-obat-terpilih').append(htmlRow);
             }
             updateNomorUrut();

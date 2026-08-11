@@ -3180,16 +3180,6 @@ class newFarmasiController extends FarmasiController
             $tipe_tx = '2';
         }
         $kode_layanan_header = $this->get_layanan_header($kode_unit_pelayanan);
-        // $kode_layanan_header = $r[0]->no_trx_layanan ?? "";
-        // if ($kode_layanan_header == "") {
-        //     $year = date('y');
-        //     $kode_layanan_header = $unit[0]->prefix_unit . $year . date('m') . date('d') . '000001';
-        //     DB::connection('mysql')->insert(
-        //         'INSERT INTO mt_nomor_trx (tgl, no_trx_layanan, unit) VALUES (?, ?, ?)',
-        //         [date('Y-m-d H:i:s'), $kode_layanan_header, $kode_unit_pelayanan]
-        //     );
-        // }
-        // dd($kode_layanan_header);
         $cek_resep_ke = DB::connection('mysql')->select('select id from ts_layanan_header where kode_kunjungan = ? and kode_unit = ? and status_layanan != 3', [$kode_kunjungan, $kode_unit_pelayanan]);
         $urutan = count($cek_resep_ke) + 1;
         $data_layanan_header = [
@@ -3540,7 +3530,7 @@ class newFarmasiController extends FarmasiController
                 'total_layanan' => $totalheader,
                 'tagihan_penjamin' => $tagihan_penjamin_header,
                 'tagihan_pribadi' => $tagihan_pribadi_header
-            ]);
+            ]);  
     }
     public function createLayanandetail()
     {
