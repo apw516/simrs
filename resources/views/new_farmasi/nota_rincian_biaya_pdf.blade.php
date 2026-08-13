@@ -146,7 +146,7 @@
         <tr>
             <td width="27%">Kode Layanan</td>
             <td width="3%">:</td>
-            <td colspan="5">{{ $header->kode_layanan_header ?? '-' }} / {{ $header->keterangan }}</td>
+            <td colspan="5">{{ $header->kode_layanan_header ?? '-' }}` / {{ $header->keterangan }}</td>
         </tr>
         <tr>
             <td>Nama Pasien</td>
@@ -249,7 +249,7 @@
     <!-- FOOTER INFORMASI -->
     <div class="footer-info">
         Tgl Input :
-        {{ !empty($header->tgl_input) ? \Carbon\Carbon::parse($header->tgl_input)->format('Y-m-d H:i:s') : date('Y-m-d H:i:s') }}<br>
+        {{ !empty($header->tgl_input) ? \Carbon\Carbon::parse($header->tgl_input)->format('Y-m-d H:i:s') : date('Y-m-d H:i:s') }}`<br>
         Input by : {{ $header->petugas_input ?? (auth()->user()->name ?? '-') }}
     </div>
 
