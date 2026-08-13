@@ -149,7 +149,8 @@
 
         <!-- Box Aturan Pakai / Dosis -->
         <div class="aturan-pakai">
-            {{ $row->dosis }} {{ $row->carapakai }}
+            {{ $row->dosis }}
+             {{-- {{ $row->carapakai }} --}}
         </div>
 
         <div class="footer">
