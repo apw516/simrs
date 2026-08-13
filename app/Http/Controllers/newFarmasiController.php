@@ -4597,7 +4597,7 @@ class newFarmasiController extends FarmasiController
         $QUERY = $PDO->prepare("CALL SP_CETAK_ETIKET_FARMASI_WD(?, ?)");
         $QUERY->execute([$kodeheader, $id]);
         $data = $QUERY->fetchAll(\PDO::FETCH_OBJ);
-
+        // dd($data);
         // 3. Set Ukuran Kertas Custom Etiket (50.8 mm x 60.6 mm)
         // Format array: [x_origin, y_origin, width_in_pt, height_in_pt]
         $customPaper = [0, 0, 144, 171.78];

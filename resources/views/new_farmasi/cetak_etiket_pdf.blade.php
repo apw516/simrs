@@ -85,6 +85,7 @@
         }
     </style>
 </head>
+
 <body>
     @foreach ($data as $row)
         <div class="header-container">
@@ -102,17 +103,22 @@
         </div>
 
         <table class="content-table">
-            <tr>
+            <tr style="font-size:8px">
                 <td width="30%">No. RM</td>
                 <td width="5%">:</td>
                 <td>{{ $row->no_rm ?? ($get_header->no_rm ?? '-') }}</td>
             </tr>
-            <tr>
+            <tr style="font-size:8px">
                 <td>Nama</td>
                 <td>:</td>
-                <td>{{ $row->nama_px ?? '-' }}</td>
+                <td>{{ $row->nama_px ?? '-' }} / @if (!empty($row->tgl_lahir) && $row->tgl_lahir != '0000-00-00')
+                        {{ \Carbon\Carbon::parse($row->tgl_lahir)->age }} Thn
+                    @else
+                        -
+                    @endif
+                    / {{ $row->BB ? $row->BB . ' Kg' : '-' }}</td>
             </tr>
-            <tr>
+            <tr style="font-size:8px">
                 <td>Tgl Lahir</td>
                 <td>:</td>
                 <td>
@@ -121,9 +127,9 @@
                     @else
                         -
                     @endif
-                </td> 
+                </td>
             </tr>
-            <tr>
+            {{-- <tr style="font-size:8px">
                 <td>Usia / BB</td>
                 <td>:</td>
                 <td>
@@ -134,29 +140,40 @@
                     @endif
                     / {{ $row->BB ? $row->BB . ' Kg' : '-' }}
                 </td>
-            </tr>
+            </tr> --}}
             <tr>
+                <td>Alamat</td>
+                <td>:</td>
+                <td>
+                    <a style="font-size:8px;font-color:black">{{ $row->alamat }}</a>
+                </td>
+            </tr>
+            {{-- <tr>
                 <td>Obat</td>
                 <td>:</td>
                 <td>{{ $row->nama_barang ?? '-' }}</td>
-            </tr>
-            <tr>
+            </tr> --}}
+            {{-- <tr>
                 <td>Jumlah</td>
                 <td>:</td>
                 <td>{{ $row->jumlah_layanan ?? '-' }} {{ $row->satuan ?? '' }} {{ $row->sediaan }}</td>
-            </tr>
+            </tr> --}}
         </table>
 
         <!-- Box Aturan Pakai / Dosis -->
         <div class="aturan-pakai">
-            {{ $row->dosis }}
-             {{-- {{ $row->carapakai }} --}}
+            {{-- {{ $row->dosis }} --}}
+            {{ $row->nama_barang ?? '-' }} <br>
+            <a style="font-size: 8px">Qty : {{ $row->jumlah_layanan ?? '-' }} </a><br>
+            {{ $row->dosis }} {{ $row->carapakai }}
         </div>
 
-        <div class="footer">
+        <div class="footer" style="font-size:6px">
             @if (!empty($row->BUD))
-                BUD : {{ $row->BUD }} /
-            @endif ed: {{ $row->ed_obat ?? '-' }}
+                {{ $row->BUD }} /
+            @endif
+            ed: {{ $row->ed_obat ?? '-' }} <br>
+            tgl entry : {{ $row->tgl_entry }}
         </div>
 
         {{-- Jika ada multiple obat/etiket dalam 1 kueri, beri page break --}}
