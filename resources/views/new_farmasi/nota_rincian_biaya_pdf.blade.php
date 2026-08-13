@@ -6,8 +6,8 @@
     <title>Rincian Biaya Farmasi</title>
     <style>
         @page {
-            /* Margin Top/Bottom 5px, Left/Right 0.5cm */
-            margin: 5px 0.5cm;
+            /* Margin Top 4cm, Bottom 5px, Left/Right 0.5cm */
+            margin: 1cm 0.5cm 5px 0.5cm;
         }
 
         body {
@@ -127,8 +127,8 @@
                 RINCIAN BIAYA FARMASI<br>
                 RSUD WALED KAB.CIREBON
             </td>
-            <td class="header-status">
-                {{ $header->jenis_resep ?? 'Resep Kredit' }}
+            <td class="header-status" style="font-size:8px">
+                {{ $header->jenis_resep ?? 'Resep Kredit' }} / {{ $details[0]->tiperesep}}
             </td>
         </tr>
     </table>
@@ -138,49 +138,52 @@
     <!-- INFORMASI PASIEN & LAYANAN -->
     <table class="patient-table">
         <tr>
+            <td colspan="2"></td>
+            <td colspan="5" align="right" style="font-size: 10px;">
+                RM / Counter : {{ $dtpx[0]->no_rm ?? '-' }} / {{ $dtpx[0]->counter ?? '-' }}
+            </td>
+        </tr>
+        <tr>
             <td width="27%">Kode Layanan</td>
             <td width="3%">:</td>
-            <td width="30%">{{ $header->kode_layanan_header ?? '-' }}</td>
-            <td width="20%">RM / Ctr</td>
-            <td width="3%">:</td>
-            <td width="17%">{{ $dtpx[0]->no_rm ?? '-' }}/{{ $dtpx[0]->counter ?? '-' }}</td>
+            <td colspan="5">{{ $header->kode_layanan_header ?? '-' }} / {{ $header->keterangan }}</td>
         </tr>
         <tr>
             <td>Nama Pasien</td>
             <td>:</td>
-            <td colspan="4">{{ $dtpx[0]->nama ?? '-' }}</td>
+            <td colspan="5">{{ $dtpx[0]->nama ?? '-' }}</td>
         </tr>
         <tr>
             <td>Tanggal Lahir</td>
             <td>:</td>
-            <td colspan="4">
-                {{ !empty($dtpx[0]->tgl_lahir) ? \Carbon\Carbon::parse($dtpx[0]->tgl_lahir)->format('Y-m-d') : '-' }}
+            <td colspan="5">
+                {{ !empty($dtpx[0]->tgl_lahir) ? \Carbon\Carbon::parse($dtpx[0]->tgl_lahir)->format('d-m-Y') : '-' }}
             </td>
         </tr>
         <tr>
             <td>Alamat</td>
             <td>:</td>
-            <td colspan="4">
+            <td colspan="5">
                 {{ $dtpx[0]->alamat ?? '-' }}
             </td>
         </tr>
         <tr>
-            <td colspan="6" style="height: 3px;"></td>
+            <td colspan="7" style="height: 3px;"></td>
         </tr>
         <tr>
             <td>Penjamin</td>
             <td>:</td>
-            <td colspan="4">{{ $dtpx[0]->nama_penjamin ?? '-' }}</td>
+            <td colspan="5">{{ $dtpx[0]->nama_penjamin ?? '-' }}</td>
         </tr>
         <tr>
             <td>Unit Asal</td>
             <td>:</td>
-            <td colspan="4">{{ $dtpx[0]->unit ?? '-' }}</td>
+            <td colspan="5">{{ $dtpx[0]->unit ?? '-' }}</td>
         </tr>
         <tr>
             <td>Dokter</td>
             <td>:</td>
-            <td colspan="4">{{ $dtpx[0]->dokter ?? '-' }}</td>
+            <td colspan="5">{{ $dtpx[0]->dokter ?? '-' }}</td>
         </tr>
     </table>
 

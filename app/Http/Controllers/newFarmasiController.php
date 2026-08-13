@@ -4620,16 +4620,14 @@ class newFarmasiController extends FarmasiController
             return redirect()->back()->with('error', 'Data header tidak ditemukan.');
         }
 
-        $dtpx = DB::select('SELECT counter, no_rm, fc_nama_px(no_rm) AS nama, fc_umur(no_rm) AS umur, DATE(fc_tgl_lahir(no_rm)) AS tgl_lahir, fc_alamat(no_rm) AS alamat, fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin, fc_nama_unit1(kode_unit) as unit, fc_nama_paramedis(kode_paramedis) as dokter, kode_penjamin FROM ts_kunjungan WHERE kode_kunjungan = ?', [$header->kode_kunjungan]);
-
+        $dtpx = DB::select('SELECT counter, no_rm, fc_nama_px(no_rm) AS nama, fc_umur(no_rm) AS umur, DATE(fc_tgl_lahir(no_rm)) AS tgl_lahir, fc_alamat(no_rm) AS alamat, fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin, fc_nama_unit1(kode_unit) as unit, fc_nama_paramedis1(kode_paramedis) as dokter, kode_penjamin FROM ts_kunjungan WHERE kode_kunjungan = ?', [$header->kode_kunjungan]);
         $kodeheader = $header->kode_layanan_header;
-
         // 2. Ambil Data Detail Obat via Stored Procedure
         $PDO = DB::connection()->getPdo();
         $QUERY = $PDO->prepare("CALL SP_CETAK_NOTA_WEB(?, ?)");
         $QUERY->execute([$kodeheader, $id]);
         $details = $QUERY->fetchAll(\PDO::FETCH_OBJ);
-
+        // dd($details);
         // 3. Set Ukuran Kertas Custom (Lebar 10 cm x Tinggi 14 cm)
         $customPaper = [0, 0, 283.46, 396.85];
 
