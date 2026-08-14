@@ -950,11 +950,21 @@ Route::post('/ambilformtambahobat', [newFarmasiController::class, 'ambilformtamb
 Route::post('/bridginghapusobat', [newFarmasiController::class, 'bridginghapusobat'])->middleware('auth')->name('bridginghapusobat');
 Route::post('/returobatsatuan', [newFarmasiController::class, 'returobatsatuan'])->middleware('auth')->name('returobatsatuan');
 Route::post('/batalresep', [newFarmasiController::class, 'batalresep'])->middleware('auth')->name('batalresep');
+Route::post('/ambilriwayatreseppasienfarmasi', [newFarmasiController::class, 'ambilriwayatreseppasienfarmasi'])->middleware('auth')->name('ambilriwayatreseppasienfarmasi');
+Route::post('/ambildetailresepbaru', [newFarmasiController::class, 'ambildetailresep'])->middleware('auth')->name('ambildetailresepbaru');
 Route::get('cetaketiket_2/{id}', [newFarmasiController::class, 'cetakEtiket_new']); //formpasien_bpjs
 Route::get('cetaknotafarmasi/{id}', [newFarmasiController::class, 'cetaknotafarmasi']); //formpasien_bpjs
 Route::get('/berkaserm', [RanapController::class, 'indexberkaserm'])
     ->name('berkaserm2'); //sidebar
 Route::get('/berkaserm2', [RanapController::class, 'indexberkaserm'])
     ->name('berkaserm'); //sidebar
+Route::get('/indexmonitoringpasienkronis', [newFarmasiController::class, 'indexmonitoringpasienkronis'])
+    ->name('indexmonitoringpasienkronis'); //sidebar
 Route::post('/cariberkasnya_pasien', [RanapController::class, 'cariberkasnya_pasien2'])
     ->name('cariberkasnya_pasien'); //sidebar
+Route::post('/ambildatapasienkronis', [newFarmasiController::class, 'ambildatapasienkronis'])
+    ->name('ambildatapasienkronis'); //sidebar
+Route::get('/ambildetailberkas', [newFarmasiController::class, 'ambildetailberkas'])->middleware('auth')->name('ambildetailberkas');
+// Route::get('/pasien.merger-pdf/{$id}', [newFarmasiController::class, 'previewMergerPdf'])->middleware('auth')->name('pasien.merger-pdf');
+Route::get('/preview-merger-pdf/{kode_kunjungan}', [newFarmasiController::class, 'previewMergerPdf'])
+    ->name('farmasi.preview-merger-pdf');

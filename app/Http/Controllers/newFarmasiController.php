@@ -15,7 +15,9 @@ use App\Models\model_mt_racikan_detail;
 use App\Models\MasterBarangBPJS;
 use App\Models\MasterBarang;
 use simitsdk\phpjasperxml\PHPJasperXML;
-use Barryvdh\DomPDF\Facade\Pdf; // If you added the facade alias
+use Barryvdh\DomPDF\Facade\Pdf;
+use Webklex\PDFMerger\Facades\PDFMergerFacade as PDFMerger;
+use Illuminate\Support\Facades\Http;
 
 class newFarmasiController extends FarmasiController
 {
@@ -28,6 +30,19 @@ class newFarmasiController extends FarmasiController
             'title',
             'sidebar',
             'sidebar_m',
+        ]));
+    }
+    public function indexmonitoringpasienkronis()
+    {
+        $title = 'SIMRS - Monitoring Pasien Kronis';
+        $sidebar = 'monitoring_pasien_kronis';
+        $sidebar_m = '1.1';
+        $date = $this->get_date();
+        return view('new_farmasi.index_data_pasien_kronis', compact([
+            'title',
+            'sidebar',
+            'sidebar_m',
+            'date'
         ]));
     }
     public function index_depo_obat()
@@ -3532,7 +3547,7 @@ class newFarmasiController extends FarmasiController
                 'total_layanan' => $totalheader,
                 'tagihan_penjamin' => $tagihan_penjamin_header,
                 'tagihan_pribadi' => $tagihan_pribadi_header
-            ]);  
+            ]);
 
         return $idBaru;
     }
@@ -3553,6 +3568,13 @@ class newFarmasiController extends FarmasiController
         }
         date_default_timezone_set('Asia/Jakarta');
         return 'DET' . date('ymd') . $kd;
+    }
+    public function get_date()
+    {
+        $dt = Carbon::now()->timezone('Asia/Jakarta');
+        $date = $dt->toDateString();
+        $now = $date;
+        return $now;
     }
     public function get_no_resep($kode)
     {
@@ -4678,5 +4700,399 @@ class newFarmasiController extends FarmasiController
                 ->addIndexColumn()
                 ->make(true);
         }
+    }
+    public function ambilriwayatreseppasienfarmasi(Request $request)
+    {
+        $rm = $request->rm;
+        // 1. Ambil data Kunjungan + Header
+        $get_kunjungan = DB::connection('mysql')
+            ->table('ts_kunjungan')
+            ->join('ts_layanan_header', 'ts_kunjungan.kode_kunjungan', '=', 'ts_layanan_header.kode_kunjungan')
+            ->where('ts_kunjungan.no_rm', $rm)
+            ->where(function ($query) {
+                $query->where('ts_kunjungan.kode_unit', '<', 2000)
+                    ->orWhere('ts_kunjungan.kode_unit', '>', 4000);
+            })
+            ->where('ts_layanan_header.kode_unit', '>', 4000)
+            ->select(
+                'ts_kunjungan.*',
+                'ts_layanan_header.*',
+                DB::raw('fc_nama_unit1(ts_kunjungan.kode_unit) as unit_asal'),
+                DB::raw('fc_NAMA_PENJAMIN2(ts_kunjungan.kode_penjamin) as nama_penjamin')
+            )
+            ->limit(5)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        // 2. Ambil semua id_layanan_header dari hasil di atas
+        $headerIds = $get_kunjungan->pluck('id'); // sesuaikan nama kolom primary key header jika berbeda
+        // 3. Ambil data ts_layanan_detail yang memiliki kode_barang
+        $layanan_detail = DB::connection('mysql')
+            ->table('ts_layanan_detail')
+            ->leftJoin('mt_barang', 'ts_layanan_detail.kode_barang', '=', 'mt_barang.kode_barang')
+            ->whereIn('ts_layanan_detail.row_id_header', $headerIds)
+            ->whereNotNull('ts_layanan_detail.kode_barang')
+            ->where('ts_layanan_detail.kode_barang', '!=', '')
+            ->select(
+                'ts_layanan_detail.*',
+                'mt_barang.nama_barang as nama_barang_asli', // jika tetap butuh nama aslinya
+                DB::raw("
+            CASE 
+                WHEN ts_layanan_detail.kode_barang LIKE 'R%' THEN 'Racikan'
+                ELSE mt_barang.nama_barang 
+            END as nama_barang
+        ")
+            )
+            ->get();
+        return view('new_farmasi.riwayatresep', compact([
+            'get_kunjungan',
+            'layanan_detail',
+            'rm'
+        ]));
+    }
+    public function ambildetailresep(Request $request)
+    {
+        $id = $request->idresep;
+
+        // Pastikan $id selalu dalam bentuk array agar aman digunakan pada whereIn
+        $headerIds = is_array($id) ? $id : [$id];
+
+        // Ambil detail resep
+        $data = DB::connection('mysql')
+            ->table('ts_layanan_detail')
+            ->leftJoin('mt_barang', 'ts_layanan_detail.kode_barang', '=', 'mt_barang.kode_barang')
+            ->whereIn('ts_layanan_detail.row_id_header', $headerIds)
+            ->whereNotNull('ts_layanan_detail.kode_barang')
+            ->where('ts_layanan_detail.kode_barang', '!=', '')
+            ->select(
+                'ts_layanan_detail.*',
+                'mt_barang.nama_barang as nama_barang_asli',
+                'mt_barang.kode_barang',
+                DB::raw("
+                CASE 
+                    WHEN ts_layanan_detail.kode_barang LIKE 'R%' THEN 'Racikan'
+                    ELSE mt_barang.nama_barang 
+                END as nama_barang
+            ")
+            )
+            ->get();
+        // dd($data);
+        // Render file blade menjadi string HTML
+        $view = view('new_farmasi.form_riwayat_resep', compact('data'))->render();
+
+        return response()->json(['html' => $view]);
+    }
+    public function ambildatapasienkronis(Request $request)
+    {
+        $awal = $request->awal;
+        $akhir = $request->akhir;
+        // dd($akhir);
+        $data = DB::connection('mysql')
+            ->table('ts_layanan_detail as a')
+            ->join('ts_layanan_header as b', 'a.row_id_header', '=', 'b.id')
+            ->join('ts_kunjungan as k', 'b.kode_kunjungan', '=', 'k.kode_kunjungan')
+            ->join('mt_pasien as m', 'k.no_rm', '=', 'm.no_rm')
+            ->where('a.tipe_anestesi', '81')
+            ->where('a.kode_barang', '!=', '')
+            ->where('k.tgl_masuk', '>=', $awal)
+            ->where('k.tgl_masuk', '<', $akhir)
+            ->select(
+                'b.kode_layanan_header',
+                'b.id as row_id_header',
+                'k.no_rm',
+                'm.nama_px',
+                'm.no_Bpjs',
+                DB::raw('fc_alamat(m.no_rm) as alamat'),
+                DB::raw('fc_nama_unit1(k.kode_unit) as unit_asal'),
+                'k.kode_kunjungan',
+                'k.no_sep',
+                'k.keterangan2',
+                'a.tipe_anestesi',
+                DB::raw('COUNT(a.id) as total_detail')
+            )
+            ->groupBy(
+                'a.row_id_header',
+                'b.id',
+                'b.kode_layanan_header',
+                'k.no_rm',
+                'm.nama_px',
+                'm.no_Bpjs',
+                'k.kode_kunjungan',
+                'k.no_sep',
+                'k.keterangan2',
+                'a.tipe_anestesi'
+            )
+            ->get();
+        return view('new_farmasi.tabel_pasien_kronis', compact([
+            'data',
+            'awal',
+            'akhir'
+        ]));
+        // Pastikan $id selalu dalam bentuk array agar aman digunakan pada whereIn
+
+    }
+    public function ambildetailberkas(Request $request)
+    {
+        $idresep = $request->idresep;
+
+        try {
+            // Ambil data layanan header
+            $layananheader = DB::select('SELECT * FROM ts_layanan_header WHERE id = ?', [$idresep]);
+
+            if (empty($layananheader)) {
+                return response()->json([
+                    'status'  => 'error',
+                    'message' => 'Data layanan header tidak ditemukan.'
+                ], 44);
+            }
+
+            $kode_kunjungan = $layananheader[0]->kode_kunjungan;
+
+            // Ambil data kunjungan
+            $ts_kunjungan = DB::select('SELECT * FROM ts_kunjungan WHERE kode_kunjungan = ?', [$kode_kunjungan]);
+            $no_sep = !empty($ts_kunjungan) ? $ts_kunjungan[0]->no_sep : null;
+            $rm = $ts_kunjungan[0]->no_rm;
+            // Ambil detail rincian obat/layanan (opsional, disesuaikan tabel detail Anda)
+            $detail_obat = DB::select('SELECT * FROM ts_layanan_detail WHERE row_id_header = ?', [$idresep]);
+            // URL Cetak SEP untuk dipanggil di frontend/blade
+            $urlCetakSEP = $no_sep ? "http://192.168.2.30/siramah/cetakSEPAntrian?noSep={$no_sep}" : null;
+            $urlCetakNota = url('cetaknotafarmasi/' . $idresep);
+            $hasil_lab = db::select("CALL LIHAT_HASIL_LAB_XXX(?)", [$rm]);
+            $hasil_lab_spesial = db::select("CALL LIHAT_HASIL_LAB_SPESIAL(?)", [$rm]);
+            $semua_hasil_lab = array_merge($hasil_lab, $hasil_lab_spesial);
+            $lab_terpilih = array_values(array_filter($semua_hasil_lab, function ($item) use ($kode_kunjungan) {
+                return isset($item->kode_kunjungan) && $item->kode_kunjungan == $kode_kunjungan;
+            }));
+            // Query Radiologi
+            $rad_terpilih = DB::connection('mysql6')->select('SELECT * FROM order_table WHERE KODE_KUNJUNGAN = ?', [$kode_kunjungan]);
+
+            $LINK_RADIOLOGI = [];
+            foreach ($rad_terpilih as $rad) {
+                if (!empty($rad->ACCESSIONNUMBER)) {
+                    $LINK_RADIOLOGI[] = "http://196.196.196.251/SIRAMAH/cetakexp/" . trim($rad->ACCESSIONNUMBER);
+                }
+            }
+            // Single Link (opsional, jika ingin dikirim sebagai variabel tersendiri)
+            // $LINK_RADIOLOGI = !empty($rad_terpilih[0]->ACCESSIONNUMBER)
+            //     ? "http://196.196.196.251/SIRAMAH/cetakexp/" . $rad_terpilih[0]->ACCESSIONNUMBER
+            //     : null;
+            $html = view('new_farmasi.detail_berkas', compact('layananheader', 'ts_kunjungan', 'detail_obat', 'urlCetakSEP', 'urlCetakNota', 'lab_terpilih', 'LINK_RADIOLOGI', 'idresep'))->render();
+
+            return response()->json([
+                'status'       => 'success',
+                'message'      => 'Data detail berhasil dimuat',
+                'url_cetak_sep' => $urlCetakSEP,
+                'html'         => $html
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Terjadi kesalahan server.',
+                'error'   => $e->getMessage()
+            ], 500);
+        }
+    }
+    // public function previewMergerPdf($idresep)
+    // {
+    //     // dd('ok');
+    //     $merger = PDFMerger::init();
+    //     $layananheader = DB::select('SELECT * FROM ts_layanan_header WHERE id = ?', [$idresep]);
+
+    //     if (empty($layananheader)) {
+    //         return response()->json([
+    //             'status'  => 'error',
+    //             'message' => 'Data layanan header tidak ditemukan.'
+    //         ], 44);
+    //     }
+
+    //     $kode_kunjungan = $layananheader[0]->kode_kunjungan;
+
+    //     // Ambil data kunjungan
+    //     $ts_kunjungan = DB::select('SELECT * FROM ts_kunjungan WHERE kode_kunjungan = ?', [$kode_kunjungan]);
+    //     $no_sep = !empty($ts_kunjungan) ? $ts_kunjungan[0]->no_sep : null;
+    //     $rm = $ts_kunjungan[0]->no_rm;
+    //     // Ambil detail rincian obat/layanan (opsional, disesuaikan tabel detail Anda)
+    //     $detail_obat = DB::select('SELECT * FROM ts_layanan_detail WHERE row_id_header = ?', [$idresep]);
+    //     // URL Cetak SEP untuk dipanggil di frontend/blade
+    //     $urlCetakSEP = $no_sep ? "http://192.168.2.30/siramah/cetakSEPAntrian?noSep={$no_sep}" : null;
+    //     $urlCetakNota = url('cetaknotafarmasi/' . $idresep);
+    //     $hasil_lab = db::select("CALL LIHAT_HASIL_LAB_XXX(?)", [$rm]);
+    //     $hasil_lab_spesial = db::select("CALL LIHAT_HASIL_LAB_SPESIAL(?)", [$rm]);
+    //     $semua_hasil_lab = array_merge($hasil_lab, $hasil_lab_spesial);
+    //     $lab_terpilih = array_values(array_filter($semua_hasil_lab, function ($item) use ($kode_kunjungan) {
+    //         return isset($item->kode_kunjungan) && $item->kode_kunjungan == $kode_kunjungan;
+    //     }));
+    //     // Query Radiologi
+    //     $rad_terpilih = DB::connection('mysql6')->select('SELECT * FROM order_table WHERE KODE_KUNJUNGAN = ?', [$kode_kunjungan]);
+
+    //     $LINK_RADIOLOGI = [];
+    //     foreach ($rad_terpilih as $rad) {
+    //         if (!empty($rad->ACCESSIONNUMBER)) {
+    //             $LINK_RADIOLOGI[] = "http://196.196.196.251/SIRAMAH/cetakexp/" . trim($rad->ACCESSIONNUMBER);
+    //         }
+    //     }
+    //     $oMerger = PDFMerger::init();
+    //     $tempFiles = []; // Array untuk menampung path file sementara agar bisa dihapus nanti
+
+    //     // 1. Array URL yang ingin digabungkan
+    //     $urls = [
+    //         'http://192.168.2.30/siramah/cetakSEPAntrian?noSep=' . $no_sep,
+    //         // Tambahkan URL Lab / Rad lainnya di sini...
+    //     ];
+
+    //     foreach ($urls as $index => $url) {
+    //         try {
+    //             // Ambil binary konten dari URL
+    //             $response = Http::timeout(10)->get($url);
+
+    //             if ($response->successful()) {
+    //                 // Simpan sementara sebagai file .pdf di storage
+    //                 $tempPath = storage_path("app/temp_pdf_{$index}_" . time() . ".pdf");
+    //                 file_put_contents($tempPath, $response->body());
+
+    //                 // Pastikan file valid dan tambahkan ke Merger
+    //                 $oMerger->addPDF($tempPath, 'all');
+    //                 $tempFiles[] = $tempPath; // Simpan path untuk dibersihkan
+    //             }
+    //         } catch (\Exception $e) {
+    //             // Skip jika URL gagal diakses / timeout
+    //             continue;
+    //         }
+    //     }
+
+    //     // 2. Lakukan Merge
+    //     $oMerger->merge();
+
+    //     // 3. Hapus file temporary di server
+    //     foreach ($tempFiles as $file) {
+    //         if (file_exists($file)) {
+    //             unlink($file);
+    //         }
+    //     }
+
+    //     // 4. Stream ke browser
+    //     return $oMerger->stream('BERKAS_GABUNGAN.pdf');
+    // }
+    public function previewMergerPdf($idresep)
+    {
+        // 1. Ambil Layanan Header
+        $layananheader = DB::select('SELECT * FROM ts_layanan_header WHERE id = ?', [$idresep]);
+
+        if (empty($layananheader)) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Data layanan header tidak ditemukan.'
+            ], 404);
+        }
+
+        $kode_kunjungan = $layananheader[0]->kode_kunjungan;
+
+        // 2. Ambil Data Kunjungan
+        $ts_kunjungan = DB::select('SELECT * FROM ts_kunjungan WHERE kode_kunjungan = ?', [$kode_kunjungan]);
+        $no_sep = !empty($ts_kunjungan) ? $ts_kunjungan[0]->no_sep : null;
+        $rm     = !empty($ts_kunjungan) ? $ts_kunjungan[0]->no_rm : null;
+
+        // 3. Susun Array URL
+        $urls = [];
+
+        // A. URL SEP
+        if ($no_sep) {
+            $urls[] = "http://192.168.2.30/siramah/cetakSEPAntrian?noSep={$no_sep}";
+        }
+
+        // B. URL Hasil Lab
+        if ($rm) {
+            $hasil_lab = DB::select("CALL LIHAT_HASIL_LAB_XXX(?)", [$rm]);
+            $hasil_lab_spesial = DB::select("CALL LIHAT_HASIL_LAB_SPESIAL(?)", [$rm]);
+            $semua_hasil_lab = array_merge($hasil_lab, $hasil_lab_spesial);
+
+            $lab_terpilih = array_values(array_filter($semua_hasil_lab, function ($item) use ($kode_kunjungan) {
+                return isset($item->kode_kunjungan) && $item->kode_kunjungan == $kode_kunjungan;
+            }));
+
+            foreach ($lab_terpilih as $lab) {
+                $urlPdfLab = $lab->link ?? ($lab->file_pdf ?? ($lab->url_file ?? null));
+                if (!empty($urlPdfLab)) {
+                    $urls[] = $urlPdfLab;
+                }
+            }
+        }
+
+        // C. URL Radiologi
+        $rad_terpilih = DB::connection('mysql6')->select('SELECT * FROM order_table WHERE KODE_KUNJUNGAN = ?', [$kode_kunjungan]);
+
+        foreach ($rad_terpilih as $rad) {
+            if (!empty($rad->ACCESSIONNUMBER)) {
+                $urls[] = "http://196.196.196.251/SIRAMAH/cetakexp/" . trim($rad->ACCESSIONNUMBER);
+            }
+        }
+
+        // D. URL Nota / Rincian Obat
+        $urls[] = url('cetaknotafarmasi/' . $idresep);
+        // 4. Proses Merger PDF
+        $oMerger = PDFMerger::init();
+        $tempFiles = [];
+        foreach ($urls as $index => $url) {
+            try {
+                // Gunakan withoutVerifying() untuk menghindari SSL check failure di server lokal
+                $response = Http::withoutVerifying()->timeout(50)->get($url);
+
+                if ($response->successful()) {
+                    $content = $response->body();
+
+                    // Lakukan trim untuk membuang spasi/newline di awal file jika ada
+                    $trimmedContent = ltrim($content);
+
+                    // TAMPILKAN DIAGNOSA KHUSUS INDEX 0 JIKA MASIH GAGAL
+                    if ($index === 0 && strpos($trimmedContent, '%PDF-') !== 0) {
+                        dd([
+                            'index'        => 0,
+                            'url'          => $url,
+                            'status_code'  => $response->status(),
+                            'is_pdf_header' => (strpos($trimmedContent, '%PDF-') === 0),
+                            'awal_konten'  => substr($trimmedContent, 0, 150) // Akan kelihatan apakah ini <html> atau bukan
+                        ]);
+                    }
+
+                    // Jika valid PDF
+                    if (strpos($trimmedContent, '%PDF-') === 0) {
+                        $tempPath = storage_path("app/temp_pdf_{$index}_" . time() . ".pdf");
+                        file_put_contents($tempPath, $content);
+                        $oMerger->addPDF($tempPath, 'all');
+                        $tempFiles[] = $tempPath;
+                    }
+                } else {
+                    if ($index === 0) {
+                        dd("HTTP Request Gagal dengan Status Code: " . $response->status());
+                    }
+                }
+            } catch (\Exception $e) {
+                if ($index === 0) {
+                    dd("Error Eksepsi pada Index 0: " . $e->getMessage());
+                }
+                continue;
+            }
+        }
+        // DD($tempFiles);
+
+        // Pengecekan jika tidak ada file PDF yang berhasil di-fetch
+        if (empty($tempFiles)) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Tidak ada berkas PDF yang dapat digabungkan.'
+            ], 400);
+        }
+
+        // 5. Merge PDF
+        $oMerger->merge();
+        // 6. Hapus File Temporary
+        foreach ($tempFiles as $file) {
+            if (file_exists($file)) {
+                unlink($file);
+            }
+        }
+
+        // 7. Stream Hasil Gabungan
+        return $oMerger->stream('BERKAS_GABUNGAN_' . $kode_kunjungan . '.pdf');
     }
 }

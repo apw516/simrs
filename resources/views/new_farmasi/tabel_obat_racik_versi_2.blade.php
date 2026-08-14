@@ -124,15 +124,15 @@
         });
     }
     function updateNomorUrut() {
-    $('#wrapper-obat-terpilih tr').not('#empty-row').each(function(index) {
-           $(this).find('.nomor-urut').text(index + 1);
-       });
+        $('#wrapper-obat-terpilih tr').not('#empty-row').each(function(index) {
+            $(this).find('.nomor-urut').text(index + 1);
+        });
     }
-      function checkSubmitButton() {
-            var totalItem = $('#wrapper-obat-terpilih tr').not('#empty-row').length;
-            if (totalItem > 0) {
-                $('#btn-submit-obat').prop('disabled', false);
-            } else {
-                $('#btn-submit-obat').prop('disabled', true);
-            }
+    function checkSubmitButton() {
+        var totalItem = $('#wrapper-obat-terpilih tr').not('#empty-row').length;
+        if (totalItem > 0) {
+            $('#btn-submit-obat').prop('disabled', false);
+        } else {
+            $('#btn-submit-obat').prop('disabled', true);
         }
+    }

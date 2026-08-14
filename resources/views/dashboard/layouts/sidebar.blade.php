@@ -612,6 +612,14 @@
                               </p>
                           </a>
                       </li>
+                      <li class="nav-header">FARMASI</li>
+                      <li class="nav-item">
+                          <a href="{{ route('indexmonitoringpasienkronis') }}"
+                              class="nav-link @if ($title == 'SIMRS - Monitoring Pasien Kronis') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Data Pasien Kronis</p>
+                          </a>
+                      </li>
                       <li class="nav-item">
                           <a href="{{ route('berkaserm2') }}"
                               class="nav-link @if ($title == 'SIMRS - Berkas ERM') active @endif">
