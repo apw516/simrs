@@ -1,6 +1,6 @@
 @foreach ($resep as $r)
     <div class="form-row text-xs">
-        <div class="form-group col-md-2"><label for="">Nama Obat</label><input type=""
+        <div class="form-group col-md-2"><label for="">Nama Obat a</label><input type=""
                 class="form-control form-control-sm text-xs" id="" name="namaobat"
                 value="{{ $r->nama_barang }}"><input hidden readonly type="" class="form-control form-control-sm"
                 id="" name="kodebarang" value="{{ $r->kode_barang }}"><input hidden type=""

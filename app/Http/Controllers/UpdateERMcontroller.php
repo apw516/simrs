@@ -196,8 +196,14 @@ class UpdateERMcontroller extends Controller
             $datatindaklanjut = json_decode($_POST['datatindaklanjut'], true);
             $formobat_farmasi = json_decode($_POST['formobat_farmasi'], true);
             $formobatfarmasi2 = json_decode($_POST['formobatfarmasi2'], true);
-
-
+               foreach ($formobatfarmasi2 as $nama) {
+                    $index = $nama['name'];
+                    $value = $nama['value'];
+                    $dataSet[$index] = $value;
+                    if ($index == 'keterangan') {
+                        $arrayindex_far[] = $dataSet;
+                    }
+                }
             if (count($datatindaklanjut) == 1) {
                 $data = [
                     'kode' => 500,
