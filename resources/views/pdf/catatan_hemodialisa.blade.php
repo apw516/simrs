@@ -993,8 +993,6 @@
                                     diperiksa :
                                     {{ \Carbon\Carbon::parse($header->tgl_periksa)->locale('id')->translatedFormat('d F Y') }}
                                     <br>Nama dan tanda tangan perawat yang bertugas :
-                                    <br>
-                                    <br>
                                 <div style="width: 90px; height: 90px; margin: 0 auto; text-align: center;">
                                     <img src="data:image/svg+xml;base64,{{ $qrtte }}"
                                         style="width: 90px; height: 90px; display: block;" alt="QR Code TTE">

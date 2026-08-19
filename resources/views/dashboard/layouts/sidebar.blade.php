@@ -693,8 +693,16 @@
                                   <i class="fas fa-angle-left right"></i>
                               </p>
                           </a>
+
                           <ul class="nav nav-treeview">
                               <li class="nav-item">
+                                  <a href="{{ route('indexmonitoringberkaspasien') }}"
+                                      class="nav-link @if ($title == 'SIMRS - Monitoring Berkas Pasien') active @endif">
+                                      <i class="far fa-circle nav-icon"></i>
+                                      <p>Berkas Pasien</p>
+                                  </a>
+                              </li>
+                              <li hidden class="nav-item">
                                   <a href="{{ route('monitoring_erm') }}"
                                       class="nav-link @if ($sidebar_m == 'Monitoring ERM') active @endif">
                                       <i class="far fa-circle nav-icon"></i>
@@ -702,7 +710,7 @@
                                   </a>
                               </li>
                           </ul>
-                          <ul class="nav nav-treeview">
+                          <ul hidden class="nav nav-treeview">
                               <li class="nav-item">
                                   <a href="{{ route('kunjungan_pasien') }}"
                                       class="nav-link @if ($sidebar_m == 'kunjungan_pasien') active @endif">
@@ -720,7 +728,7 @@
                                   </a>
                               </li>
                           </ul>
-                          <ul class="nav nav-treeview">
+                          <ul hidden class="nav nav-treeview">
                               <li class="nav-item">
                                   <a href="{{ route('berkas_erm') }}"
                                       class="nav-link @if ($sidebar_m == 'berkas_erm') active @endif">

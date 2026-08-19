@@ -50,7 +50,7 @@
                     </form>
                     <div class="v_data_pasien mt-2">
                         <div class="card">
-                            <div class="card-header">Data Pasien Kronis</div>
+                            <div class="card-header">Berkas Pasien</div>
                             <div class="card-body">
                                 <div class="vd">
 
