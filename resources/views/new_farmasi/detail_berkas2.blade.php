@@ -88,21 +88,31 @@
                 <i class="fas fa-file-invoice-dollar mr-1"></i> Lembar Konsul
             </a>
         </li>
-        @if($ts_kunjungan[0]->kode_unit == '1012' || $ts_kunjungan[0]->kode_unit == '1027' || $ts_kunjungan[0]->kode_unit == '1032')
+        @if (
+            $ts_kunjungan[0]->kode_unit == '1012' ||
+                $ts_kunjungan[0]->kode_unit == '1027' ||
+                $ts_kunjungan[0]->kode_unit == '1032')
+            <li class="nav-item">
+                <a class="nav-link font-weight-bold" id="expertisipoli-tab" data-toggle="tab" href="#expertisipoli"
+                    role="tab">
+                    <i class="fas fa-file-invoice-dollar mr-1"></i> Expertisi Ultrasonography
+                </a>
+            </li>
+        @endif
+        @if ($ts_kunjungan[0]->kode_unit == '3007')
+            <li class="nav-item">
+                <a class="nav-link font-weight-bold" id="catatanhd-tab" data-toggle="tab" href="#catatanhd"
+                    role="tab">
+                    <i class="fas fa-file-invoice-dollar mr-1"></i> Catatan Hemodialisa
+                </a>
+            </li>
+        @endif
         <li class="nav-item">
-            <a class="nav-link font-weight-bold" id="expertisipoli-tab" data-toggle="tab" href="#expertisipoli"
+            <a class="nav-link font-weight-bold" id="berkasscan-tab" data-toggle="tab" href="#berkasscan"
                 role="tab">
-                <i class="fas fa-file-invoice-dollar mr-1"></i> Expertisi Ultrasonography
+                <i class="fas fa-layer-group mr-1 text-purple"></i> Berkas scan dipoli
             </a>
         </li>
-        @endif
-        @if($ts_kunjungan[0]->kode_unit == '3007')
-        <li class="nav-item">
-            <a class="nav-link font-weight-bold" id="catatanhd-tab" data-toggle="tab" href="#catatanhd" role="tab">
-                <i class="fas fa-file-invoice-dollar mr-1"></i> Catatan Hemodialisa
-            </a>
-        </li>
-        @endif
         <li hidden class="nav-item">
             <a class="nav-link font-weight-bold" id="all-tab" data-toggle="tab" href="#all" role="tab">
                 <i class="fas fa-layer-group mr-1 text-purple"></i> Semua Berkas (Merger View)
@@ -163,7 +173,6 @@
                             @php
                                 $urlPdfLab = $lab->link ?? ($lab->file_pdf ?? ($lab->url_file ?? null));
                             @endphp
-
                             @if ($urlPdfLab)
                                 <div class="d-flex justify-content-between align-items-center mb-2 px-2">
                                     <span class="font-weight-bold text-dark">
@@ -270,7 +279,8 @@
                             </a>
                         </div>
                         <div class="embed-responsive embed-responsive-16by9" style="min-height: 480px;">
-                            <iframe class="embed-responsive-item" src="{{ $urlLembarKonsul }}" allowfullscreen></iframe>
+                            <iframe class="embed-responsive-item" src="{{ $urlLembarKonsul }}"
+                                allowfullscreen></iframe>
                         </div>
                     @else
                         <div class="text-center py-5 text-muted">
@@ -286,12 +296,14 @@
                 <div class="card-body p-1">
                     @if (isset($urlExpertisiPoli) && $urlExpertisiPoli)
                         <div class="d-flex justify-content-end mb-2 p-2">
-                            <a href="{{ $urlExpertisiPoli }}" target="_blank" class="btn btn-xs btn-outline-primary">
+                            <a href="{{ $urlExpertisiPoli }}" target="_blank"
+                                class="btn btn-xs btn-outline-primary">
                                 <i class="fas fa-external-link-alt mr-1"></i> Buka Cetakan di Tab Baru
                             </a>
                         </div>
                         <div class="embed-responsive embed-responsive-16by9" style="min-height: 480px;">
-                            <iframe class="embed-responsive-item" src="{{ $urlExpertisiPoli }}" allowfullscreen></iframe>
+                            <iframe class="embed-responsive-item" src="{{ $urlExpertisiPoli }}"
+                                allowfullscreen></iframe>
                         </div>
                     @else
                         <div class="text-center py-5 text-muted">
@@ -318,6 +330,45 @@
                         <div class="text-center py-5 text-muted">
                             <i class="fas fa-exclamation-circle fa-3x mb-3 text-warning"></i>
                             <p class="mb-0">URL Cetak Nota/Rincian Obat tidak ditemukan.</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="berkasscan" role="tabpanel">
+            <div class="card shadow-sm">
+                <div class="card-body p-1">
+                    @if (isset($gambarscan) && $gambarscan)
+                        @foreach ($gambarscan as $aaa)
+                            @php
+                                // Menyusun URL lengkap ke server IP internal
+                                $fileUrl = 'http://192.168.2.45/files/' . ltrim($aaa->gambar, '/');
+                            @endphp
+                            <div class="d-flex justify-content-end mb-2 p-2">
+                                <a href="{{ $fileUrl }}" target="_blank"
+                                    class="btn btn-xs btn-outline-primary">
+                                    <i class="fas fa-external-link-alt mr-1"></i> Buka Cetakan di Tab Baru
+                                </a>
+                            </div>
+                            <div class="embed-responsive embed-responsive-16by9" style="min-height: 480px;">
+                                <iframe class="embed-responsive-item" src="{{ $fileUrl }}"
+                                    allowfullscreen></iframe>
+                            </div>
+                            {{-- <div class="d-flex justify-content-end mb-2 p-2">
+                                <a href="{{ url('../../files/' . $aaa->gambar) }}" target="_blank"
+                                    class="btn btn-xs btn-outline-primary">
+                                    <i class="fas fa-external-link-alt mr-1"></i> Buka Cetakan di Tab Baru
+                                </a>
+                            </div>
+                            <div class="embed-responsive embed-responsive-16by9" style="min-height: 480px;">
+                                <iframe class="embed-responsive-item" src="{{ url('../../files/' . $aaa->gambar) }}"
+                                    allowfullscreen></iframe>
+                            </div> --}}
+                        @endforeach
+                    @else
+                        <div class="text-center py-5 text-muted">
+                            <i class="fas fa-exclamation-circle fa-3x mb-3 text-warning"></i>
+                            <p class="mb-0">Tidak ada berkas yang discan ...</p>
                         </div>
                     @endif
                 </div>

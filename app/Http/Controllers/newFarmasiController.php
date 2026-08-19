@@ -4993,6 +4993,7 @@ class newFarmasiController extends FarmasiController
             // dd($layananheader);
             $kode_kunjungan = $kodekunjungan;
             // Ambil data kunjungan
+            $gambarscan = DB::select('SELECT * FROM erm_upload_gambar WHERE kodekunjungan = ?', [$kode_kunjungan]);
             $ts_kunjungan = DB::select('SELECT * FROM ts_kunjungan WHERE kode_kunjungan = ?', [$kode_kunjungan]);
             $no_sep = !empty($ts_kunjungan) ? $ts_kunjungan[0]->no_sep : null;
             $ref_kunjungan = $ts_kunjungan[0]->ref_kunjungan;
@@ -5034,7 +5035,7 @@ class newFarmasiController extends FarmasiController
                 $urlCetakResume = '';
             }
             // dd($urlCetakResume->content);
-            $html = view('new_farmasi.detail_berkas2', compact('layananheader', 'ts_kunjungan', 'detail_obat', 'urlCetakSEP', 'urlCetakNota', 'lab_terpilih', 'LINK_RADIOLOGI', 'idresep', 'urlCetakResume','urlLembarKonsul','urlExpertisiPoli','urlCetakHD'))->render();
+            $html = view('new_farmasi.detail_berkas2', compact('layananheader', 'ts_kunjungan', 'detail_obat', 'urlCetakSEP', 'urlCetakNota', 'lab_terpilih', 'LINK_RADIOLOGI', 'idresep', 'urlCetakResume','urlLembarKonsul','urlExpertisiPoli','urlCetakHD','gambarscan'))->render();
             return response()->json([
                 'status'       => 'success',
                 'message'      => 'Data detail berhasil dimuat',
