@@ -133,7 +133,7 @@
             </tr>
             <tr>
                 <td colspan="3" class="text-center text-bold bg-secondary" style="padding: 4px; font-size: 13px;">
-                    HASIL EKSPERTISI
+                    EKSPERTISI ULTRASONOGRAPHY
                 </td>
             </tr>
         </table>

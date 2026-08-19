@@ -39,7 +39,6 @@
                                 <i class="fas fa-print mr-1"></i> Cetak SEP Antrian
                             </a>
                         @endif
-
                         @if (isset($urlCetakNota) && $urlCetakNota)
                             <a href="{{ $urlCetakNota }}" target="_blank" class="btn btn-sm btn-success">
                                 <i class="fas fa-receipt mr-1"></i> Cetak Nota Farmasi
@@ -50,7 +49,6 @@
             </div>
         </div>
     </div>
-
     <!-- Navigation Tabs untuk Tampilan Berkas -->
     <ul class="nav nav-tabs mb-3" id="berkasTab" role="tablist">
         <li class="nav-item">
@@ -85,6 +83,27 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link font-weight-bold" id="lembarkonsul-tab" data-toggle="tab" href="#lembarkonsul"
+                role="tab">
+                <i class="fas fa-file-invoice-dollar mr-1"></i> Lembar Konsul
+            </a>
+        </li>
+        @if($ts_kunjungan[0]->kode_unit == '1012' || $ts_kunjungan[0]->kode_unit == '1027' || $ts_kunjungan[0]->kode_unit == '1032')
+        <li class="nav-item">
+            <a class="nav-link font-weight-bold" id="expertisipoli-tab" data-toggle="tab" href="#expertisipoli"
+                role="tab">
+                <i class="fas fa-file-invoice-dollar mr-1"></i> Expertisi Ultrasonography
+            </a>
+        </li>
+        @endif
+        @if($ts_kunjungan[0]->kode_unit == '3007')
+        <li class="nav-item">
+            <a class="nav-link font-weight-bold" id="catatanhd-tab" data-toggle="tab" href="#catatanhd" role="tab">
+                <i class="fas fa-file-invoice-dollar mr-1"></i> Catatan Hemodialisa
+            </a>
+        </li>
+        @endif
+        <li hidden class="nav-item">
             <a class="nav-link font-weight-bold" id="all-tab" data-toggle="tab" href="#all" role="tab">
                 <i class="fas fa-layer-group mr-1 text-purple"></i> Semua Berkas (Merger View)
             </a>
@@ -93,7 +112,6 @@
 
     <!-- Tab Content -->
     <div class="tab-content" id="berkasTabContent">
-
         <!-- 1. TAB PREVIEW SEP -->
         <div class="tab-pane fade show active" id="sep" role="tabpanel">
             <div class="card shadow-sm">
@@ -116,7 +134,7 @@
                 <div class="card-body p-1">
                     @php
                         // Sesuaikan variabel URL Resume dengan variabel/route controller Anda
-                        $urlResume =  route('cetakresumedmedisttelokal', $ts_kunjungan[0]->kode_kunjungan);
+                        $urlResume = route('cetakresumedmedisttelokal', $ts_kunjungan[0]->kode_kunjungan);
                     @endphp
                     @if (isset($urlResume))
                         <div class="d-flex justify-content-end mb-2 p-2">
@@ -232,6 +250,69 @@
                         </div>
                         <div class="embed-responsive embed-responsive-16by9" style="min-height: 480px;">
                             <iframe class="embed-responsive-item" src="{{ $urlCetakNota }}" allowfullscreen></iframe>
+                        </div>
+                    @else
+                        <div class="text-center py-5 text-muted">
+                            <i class="fas fa-exclamation-circle fa-3x mb-3 text-warning"></i>
+                            <p class="mb-0">URL Cetak Nota/Rincian Obat tidak ditemukan.</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="lembarkonsul" role="tabpanel">
+            <div class="card shadow-sm">
+                <div class="card-body p-1">
+                    @if (isset($urlLembarKonsul) && $urlLembarKonsul)
+                        <div class="d-flex justify-content-end mb-2 p-2">
+                            <a href="{{ $urlLembarKonsul }}" target="_blank" class="btn btn-xs btn-outline-primary">
+                                <i class="fas fa-external-link-alt mr-1"></i> Buka Cetakan di Tab Baru
+                            </a>
+                        </div>
+                        <div class="embed-responsive embed-responsive-16by9" style="min-height: 480px;">
+                            <iframe class="embed-responsive-item" src="{{ $urlLembarKonsul }}" allowfullscreen></iframe>
+                        </div>
+                    @else
+                        <div class="text-center py-5 text-muted">
+                            <i class="fas fa-exclamation-circle fa-3x mb-3 text-warning"></i>
+                            <p class="mb-0">URL Cetak Lembar Konsul tidak ditemukan.</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="expertisipoli" role="tabpanel">
+            <div class="card shadow-sm">
+                <div class="card-body p-1">
+                    @if (isset($urlExpertisiPoli) && $urlExpertisiPoli)
+                        <div class="d-flex justify-content-end mb-2 p-2">
+                            <a href="{{ $urlExpertisiPoli }}" target="_blank" class="btn btn-xs btn-outline-primary">
+                                <i class="fas fa-external-link-alt mr-1"></i> Buka Cetakan di Tab Baru
+                            </a>
+                        </div>
+                        <div class="embed-responsive embed-responsive-16by9" style="min-height: 480px;">
+                            <iframe class="embed-responsive-item" src="{{ $urlExpertisiPoli }}" allowfullscreen></iframe>
+                        </div>
+                    @else
+                        <div class="text-center py-5 text-muted">
+                            <i class="fas fa-exclamation-circle fa-3x mb-3 text-warning"></i>
+                            <p class="mb-0">URL Cetak Nota/Rincian Obat tidak ditemukan.</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="catatanhd" role="tabpanel">
+            <div class="card shadow-sm">
+                <div class="card-body p-1">
+                    @if (isset($urlCetakHD) && $urlCetakHD)
+                        <div class="d-flex justify-content-end mb-2 p-2">
+                            <a href="{{ $urlCetakHD }}" target="_blank" class="btn btn-xs btn-outline-primary">
+                                <i class="fas fa-external-link-alt mr-1"></i> Buka Cetakan di Tab Baru
+                            </a>
+                        </div>
+                        <div class="embed-responsive embed-responsive-16by9" style="min-height: 480px;">
+                            <iframe class="embed-responsive-item" src="{{ $urlCetakHD }}" allowfullscreen></iframe>
                         </div>
                     @else
                         <div class="text-center py-5 text-muted">

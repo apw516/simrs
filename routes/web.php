@@ -874,6 +874,7 @@ Route::get('/cetaksuratpengantar/{id}', [PdfController::class, 'cetaksuratpengan
 Route::post('/simpantandatanganbsre', [Pdf2Controller::class, 'simpantandatanganbsre'])->name('simpantandatanganbsre');
 Route::post('/simpantandatanganbsre_manual', [Pdf2Controller::class, 'simpantandatanganbsre_manual'])->name('simpantandatanganbsre_manual');
 Route::post('/ambil_form_login_tte', [Pdf2Controller::class, 'form_login_tte'])->name('ambil_form_login_tte');
+Route::get('/cetakresumedmedisttelokal/{kodekunjungan}', [Pdf2Controller::class, 'cetak_dokumen_tte_lokal'])->name('cetakresumedmedisttelokal');
 Route::get('/cetak_dokumen_tte/{kodekunjungan}', [Pdf2Controller::class, 'cetak_dokumen_tte']);
 Route::get('/cetak_dokumen_tte_v2/{kodekunjungan}', [Pdf2Controller::class, 'cetak_dokumen_tte_v2']);
 Route::post('/simpanttddokter2', [Pdf2Controller::class, 'simpanttddokter'])->name('simpanttddokter2');
@@ -954,17 +955,26 @@ Route::post('/ambilriwayatreseppasienfarmasi', [newFarmasiController::class, 'am
 Route::post('/ambildetailresepbaru', [newFarmasiController::class, 'ambildetailresep'])->middleware('auth')->name('ambildetailresepbaru');
 Route::get('cetaketiket_2/{id}', [newFarmasiController::class, 'cetakEtiket_new']); //formpasien_bpjs
 Route::get('cetaknotafarmasi/{id}', [newFarmasiController::class, 'cetaknotafarmasi']); //formpasien_bpjs
+Route::get('/cetakresumedifarmasi/{kodekunjungan}', [newFarmasiController::class, 'cetak_dokumen_tte_lokal'])->name('cetakresumedifarmasi');
+
+
 Route::get('/berkaserm', [RanapController::class, 'indexberkaserm'])
     ->name('berkaserm2'); //sidebar
 Route::get('/berkaserm2', [RanapController::class, 'indexberkaserm'])
     ->name('berkaserm'); //sidebar
 Route::get('/indexmonitoringpasienkronis', [newFarmasiController::class, 'indexmonitoringpasienkronis'])
     ->name('indexmonitoringpasienkronis'); //sidebar
+Route::get('/indexmonitoringberkaspasien', [newFarmasiController::class, 'indexmonitoringberkaspasien'])
+    ->name('indexmonitoringberkaspasien'); //sidebar
 Route::post('/cariberkasnya_pasien', [RanapController::class, 'cariberkasnya_pasien2'])
     ->name('cariberkasnya_pasien'); //sidebar
+Route::post('/ambilberkaspasienlengkap', [newFarmasiController::class, 'ambilberkaspasienlengkap'])
+    ->name('ambilberkaspasienlengkap'); //sidebar
 Route::post('/ambildatapasienkronis', [newFarmasiController::class, 'ambildatapasienkronis'])
     ->name('ambildatapasienkronis'); //sidebar
 Route::get('/ambildetailberkas', [newFarmasiController::class, 'ambildetailberkas'])->middleware('auth')->name('ambildetailberkas');
+Route::get('/ambildetailberkaslengkap', [newFarmasiController::class, 'ambildetailberkaslengkap'])->middleware('auth')->name('ambildetailberkaslengkap');
+Route::get('/ambildetailberkaslengkap2', [newFarmasiController::class, 'ambildetailberkaslengkap2'])->middleware('auth')->name('ambildetailberkaslengkap2');
 // Route::get('/pasien.merger-pdf/{$id}', [newFarmasiController::class, 'previewMergerPdf'])->middleware('auth')->name('pasien.merger-pdf');
 Route::get('/preview-merger-pdf/{kode_kunjungan}', [newFarmasiController::class, 'previewMergerPdf'])
     ->name('farmasi.preview-merger-pdf');

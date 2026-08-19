@@ -18,6 +18,9 @@ use simitsdk\phpjasperxml\PHPJasperXML;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Webklex\PDFMerger\Facades\PDFMergerFacade as PDFMerger;
 use Illuminate\Support\Facades\Http;
+use App\Models\ModelBSRE;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\Storage;
 
 class newFarmasiController extends FarmasiController
 {
@@ -30,6 +33,19 @@ class newFarmasiController extends FarmasiController
             'title',
             'sidebar',
             'sidebar_m',
+        ]));
+    }
+    public function indexmonitoringberkaspasien()
+    {
+        $title = 'SIMRS - Monitoring Berkas Pasien';
+        $sidebar = 'indexmonitoringberkaspasien';
+        $sidebar_m = '1.1';
+        $date = $this->get_date();
+        return view('new_farmasi.index_berkas_pasien', compact([
+            'title',
+            'sidebar',
+            'sidebar_m',
+            'date'
         ]));
     }
     public function indexmonitoringpasienkronis()
@@ -4834,20 +4850,16 @@ class newFarmasiController extends FarmasiController
     public function ambildetailberkas(Request $request)
     {
         $idresep = $request->idresep;
-
         try {
             // Ambil data layanan header
             $layananheader = DB::select('SELECT * FROM ts_layanan_header WHERE id = ?', [$idresep]);
-
             if (empty($layananheader)) {
                 return response()->json([
                     'status'  => 'error',
                     'message' => 'Data layanan header tidak ditemukan.'
                 ], 44);
             }
-
             $kode_kunjungan = $layananheader[0]->kode_kunjungan;
-
             // Ambil data kunjungan
             $ts_kunjungan = DB::select('SELECT * FROM ts_kunjungan WHERE kode_kunjungan = ?', [$kode_kunjungan]);
             $no_sep = !empty($ts_kunjungan) ? $ts_kunjungan[0]->no_sep : null;
@@ -4865,19 +4877,24 @@ class newFarmasiController extends FarmasiController
             }));
             // Query Radiologi
             $rad_terpilih = DB::connection('mysql6')->select('SELECT * FROM order_table WHERE KODE_KUNJUNGAN = ?', [$kode_kunjungan]);
-
             $LINK_RADIOLOGI = [];
             foreach ($rad_terpilih as $rad) {
                 if (!empty($rad->ACCESSIONNUMBER)) {
                     $LINK_RADIOLOGI[] = "http://196.196.196.251/SIRAMAH/cetakexp/" . trim($rad->ACCESSIONNUMBER);
                 }
             }
-            // Single Link (opsional, jika ingin dikirim sebagai variabel tersendiri)
-            // $LINK_RADIOLOGI = !empty($rad_terpilih[0]->ACCESSIONNUMBER)
-            //     ? "http://196.196.196.251/SIRAMAH/cetakexp/" . $rad_terpilih[0]->ACCESSIONNUMBER
-            //     : null;
-            $html = view('new_farmasi.detail_berkas', compact('layananheader', 'ts_kunjungan', 'detail_obat', 'urlCetakSEP', 'urlCetakNota', 'lab_terpilih', 'LINK_RADIOLOGI', 'idresep'))->render();
-
+            //resumerajal
+            $getresume_rajal = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and jenis_dokumen = ?', [$kode_kunjungan, 'Resume-medis22']);
+            if ($getresume_rajal) {
+                $urlCetakResume1 = $getresume_rajal[0]->file;
+                $urlCetakResume =  response($urlCetakResume1)
+                    ->header('Content-Security-Policy', "frame-ancestors 'self' http://192.168.2.14")
+                    ->header('Content-Type', 'application/pdf');
+            } else {
+                $urlCetakResume = '';
+            }
+            // dd($urlCetakResume->content);
+            $html = view('new_farmasi.detail_berkas', compact('layananheader', 'ts_kunjungan', 'detail_obat', 'urlCetakSEP', 'urlCetakNota', 'lab_terpilih', 'LINK_RADIOLOGI', 'idresep', 'urlCetakResume'))->render();
             return response()->json([
                 'status'       => 'success',
                 'message'      => 'Data detail berhasil dimuat',
@@ -4892,114 +4909,174 @@ class newFarmasiController extends FarmasiController
             ], 500);
         }
     }
-    // public function previewMergerPdf($idresep)
-    // {
-    //     // dd('ok');
-    //     $merger = PDFMerger::init();
-    //     $layananheader = DB::select('SELECT * FROM ts_layanan_header WHERE id = ?', [$idresep]);
-
-    //     if (empty($layananheader)) {
-    //         return response()->json([
-    //             'status'  => 'error',
-    //             'message' => 'Data layanan header tidak ditemukan.'
-    //         ], 44);
-    //     }
-
-    //     $kode_kunjungan = $layananheader[0]->kode_kunjungan;
-
-    //     // Ambil data kunjungan
-    //     $ts_kunjungan = DB::select('SELECT * FROM ts_kunjungan WHERE kode_kunjungan = ?', [$kode_kunjungan]);
-    //     $no_sep = !empty($ts_kunjungan) ? $ts_kunjungan[0]->no_sep : null;
-    //     $rm = $ts_kunjungan[0]->no_rm;
-    //     // Ambil detail rincian obat/layanan (opsional, disesuaikan tabel detail Anda)
-    //     $detail_obat = DB::select('SELECT * FROM ts_layanan_detail WHERE row_id_header = ?', [$idresep]);
-    //     // URL Cetak SEP untuk dipanggil di frontend/blade
-    //     $urlCetakSEP = $no_sep ? "http://192.168.2.30/siramah/cetakSEPAntrian?noSep={$no_sep}" : null;
-    //     $urlCetakNota = url('cetaknotafarmasi/' . $idresep);
-    //     $hasil_lab = db::select("CALL LIHAT_HASIL_LAB_XXX(?)", [$rm]);
-    //     $hasil_lab_spesial = db::select("CALL LIHAT_HASIL_LAB_SPESIAL(?)", [$rm]);
-    //     $semua_hasil_lab = array_merge($hasil_lab, $hasil_lab_spesial);
-    //     $lab_terpilih = array_values(array_filter($semua_hasil_lab, function ($item) use ($kode_kunjungan) {
-    //         return isset($item->kode_kunjungan) && $item->kode_kunjungan == $kode_kunjungan;
-    //     }));
-    //     // Query Radiologi
-    //     $rad_terpilih = DB::connection('mysql6')->select('SELECT * FROM order_table WHERE KODE_KUNJUNGAN = ?', [$kode_kunjungan]);
-
-    //     $LINK_RADIOLOGI = [];
-    //     foreach ($rad_terpilih as $rad) {
-    //         if (!empty($rad->ACCESSIONNUMBER)) {
-    //             $LINK_RADIOLOGI[] = "http://196.196.196.251/SIRAMAH/cetakexp/" . trim($rad->ACCESSIONNUMBER);
-    //         }
-    //     }
-    //     $oMerger = PDFMerger::init();
-    //     $tempFiles = []; // Array untuk menampung path file sementara agar bisa dihapus nanti
-
-    //     // 1. Array URL yang ingin digabungkan
-    //     $urls = [
-    //         'http://192.168.2.30/siramah/cetakSEPAntrian?noSep=' . $no_sep,
-    //         // Tambahkan URL Lab / Rad lainnya di sini...
-    //     ];
-
-    //     foreach ($urls as $index => $url) {
-    //         try {
-    //             // Ambil binary konten dari URL
-    //             $response = Http::timeout(10)->get($url);
-
-    //             if ($response->successful()) {
-    //                 // Simpan sementara sebagai file .pdf di storage
-    //                 $tempPath = storage_path("app/temp_pdf_{$index}_" . time() . ".pdf");
-    //                 file_put_contents($tempPath, $response->body());
-
-    //                 // Pastikan file valid dan tambahkan ke Merger
-    //                 $oMerger->addPDF($tempPath, 'all');
-    //                 $tempFiles[] = $tempPath; // Simpan path untuk dibersihkan
-    //             }
-    //         } catch (\Exception $e) {
-    //             // Skip jika URL gagal diakses / timeout
-    //             continue;
-    //         }
-    //     }
-
-    //     // 2. Lakukan Merge
-    //     $oMerger->merge();
-
-    //     // 3. Hapus file temporary di server
-    //     foreach ($tempFiles as $file) {
-    //         if (file_exists($file)) {
-    //             unlink($file);
-    //         }
-    //     }
-
-    //     // 4. Stream ke browser
-    //     return $oMerger->stream('BERKAS_GABUNGAN.pdf');
-    // }
+    public function ambildetailberkaslengkap(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        try {
+            // Ambil data layanan header
+            $layananheader = DB::select('SELECT * FROM ts_layanan_header WHERE kode_kunjungan = ? and kode_unit = ?', [$kodekunjungan,'4008']);
+            if (empty($layananheader)) {
+                return response()->json([
+                    'status'  => 'error',
+                    'message' => 'Data layanan header tidak ditemukan.'
+                ], 44);
+            }
+            $kode_kunjungan = $kodekunjungan;
+            // Ambil data kunjungan
+            $ts_kunjungan = DB::select('SELECT * FROM ts_kunjungan WHERE kode_kunjungan = ?', [$kode_kunjungan]);
+            $no_sep = !empty($ts_kunjungan) ? $ts_kunjungan[0]->no_sep : null;
+            $rm = $ts_kunjungan[0]->no_rm;
+            // Ambil detail rincian obat/layanan (opsional, disesuaikan tabel detail Anda)
+            $detail_obat = DB::select('SELECT * FROM ts_layanan_detail WHERE row_id_header = ?', [$layananheader[0]->id]);
+            // URL Cetak SEP untuk dipanggil di frontend/blade
+            $urlCetakSEP = $no_sep ? "http://192.168.2.30/siramah/cetakSEPAntrian?noSep={$no_sep}" : null;
+            $urlCetakNota = url('cetaknotafarmasi/' . $layananheader[0]->id);
+            $hasil_lab = db::select("CALL LIHAT_HASIL_LAB_XXX(?)", [$rm]);
+            $hasil_lab_spesial = db::select("CALL LIHAT_HASIL_LAB_SPESIAL(?)", [$rm]);
+            $semua_hasil_lab = array_merge($hasil_lab, $hasil_lab_spesial);
+            $lab_terpilih = array_values(array_filter($semua_hasil_lab, function ($item) use ($kode_kunjungan) {
+                return isset($item->kode_kunjungan) && $item->kode_kunjungan == $kode_kunjungan;
+            }));
+            // Query Radiologi
+            $rad_terpilih = DB::connection('mysql6')->select('SELECT * FROM order_table WHERE KODE_KUNJUNGAN = ?', [$kode_kunjungan]);
+            $LINK_RADIOLOGI = [];
+            foreach ($rad_terpilih as $rad) {
+                if (!empty($rad->ACCESSIONNUMBER)) {
+                    $LINK_RADIOLOGI[] = "http://196.196.196.251/SIRAMAH/cetakexp/" . trim($rad->ACCESSIONNUMBER);
+                }
+            }
+            //resumerajal
+            $getresume_rajal = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and jenis_dokumen = ?', [$kode_kunjungan, 'Resume-medis22']);
+            if ($getresume_rajal) {
+                $urlCetakResume1 = $getresume_rajal[0]->file;
+                $urlCetakResume =  response($urlCetakResume1)
+                    ->header('Content-Security-Policy', "frame-ancestors 'self' http://192.168.2.14")
+                    ->header('Content-Type', 'application/pdf');
+            } else {
+                $urlCetakResume = '';
+            }
+            $idresep = $layananheader[0]->id;
+            // dd($urlCetakResume->content);
+            $html = view('new_farmasi.detail_berkas', compact('layananheader', 'ts_kunjungan', 'detail_obat', 'urlCetakSEP', 'urlCetakNota', 'lab_terpilih', 'LINK_RADIOLOGI', 'idresep', 'urlCetakResume'))->render();
+            return response()->json([
+                'status'       => 'success',
+                'message'      => 'Data detail berhasil dimuat',
+                'url_cetak_sep' => $urlCetakSEP,
+                'html'         => $html
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Terjadi kesalahan server.',
+                'error'   => $e->getMessage()
+            ], 500);
+        }
+    }
+    public function ambildetailberkaslengkap2(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        try {
+            // Ambil data layanan header
+            $layananheader = DB::select('SELECT * FROM ts_layanan_header WHERE kode_kunjungan = ? and kode_unit = ?', [$kodekunjungan,'4008']);
+            $idresep = '';
+            $detail_obat = '';
+            $urlCetakNota = '';
+            if ($layananheader) {
+                $idresep = $layananheader[0]->id;
+                $detail_obat = DB::select('SELECT * FROM ts_layanan_detail WHERE row_id_header = ?', [$layananheader[0]->id]);
+                $urlCetakNota = url('cetaknotafarmasi/' . $layananheader[0]->id);
+                // return response()->json([
+                //     'status'  => 'error',
+                //     'message' => 'Data layanan header tidak ditemukan.'
+                // ], 44);
+            }
+            // dd($layananheader);
+            $kode_kunjungan = $kodekunjungan;
+            // Ambil data kunjungan
+            $ts_kunjungan = DB::select('SELECT * FROM ts_kunjungan WHERE kode_kunjungan = ?', [$kode_kunjungan]);
+            $no_sep = !empty($ts_kunjungan) ? $ts_kunjungan[0]->no_sep : null;
+            $ref_kunjungan = $ts_kunjungan[0]->ref_kunjungan;
+            $rm = $ts_kunjungan[0]->no_rm;
+            // Ambil detail rincian obat/layanan (opsional, disesuaikan tabel detail Anda)
+            // URL Cetak SEP untuk dipanggil di frontend/blade
+            $urlCetakSEP = $no_sep ? "http://192.168.2.30/siramah/cetakSEPAntrian?noSep={$no_sep}" : null;
+            $urlLembarKonsul = url('cetaklembarkonsul/' . $kode_kunjungan);
+            $urlExpertisiPoli = url('cetakhasilexpertisipoli/' . $kode_kunjungan);
+            $headerhd = db::select('select * from ts_header_catatan_hemodialisis where kode_kunjungan = ?',[$kode_kunjungan]);
+            if(count($headerhd)>0){
+                // dd($headerhd);
+                $urlCetakHD = url('cetakcatatanhemodialisa/' . $headerhd[0]->id);
+            }else{
+                $urlCetakHD = '';
+            }
+            $hasil_lab = db::select("CALL LIHAT_HASIL_LAB_XXX(?)", [$rm]);
+            $hasil_lab_spesial = db::select("CALL LIHAT_HASIL_LAB_SPESIAL(?)", [$rm]);
+            $semua_hasil_lab = array_merge($hasil_lab, $hasil_lab_spesial);
+            $lab_terpilih = array_values(array_filter($semua_hasil_lab, function ($item) use ($kode_kunjungan) {
+                return isset($item->kode_kunjungan) && $item->kode_kunjungan == $kode_kunjungan;
+            }));
+            // Query Radiologi
+            $rad_terpilih = DB::connection('mysql6')->select('SELECT * FROM order_table WHERE KODE_KUNJUNGAN = ?', [$kode_kunjungan]);
+            $LINK_RADIOLOGI = [];
+            foreach ($rad_terpilih as $rad) {
+                if (!empty($rad->ACCESSIONNUMBER)) {
+                    $LINK_RADIOLOGI[] = "http://196.196.196.251/SIRAMAH/cetakexp/" . trim($rad->ACCESSIONNUMBER);
+                }
+            }
+            //resumerajal
+            $getresume_rajal = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and jenis_dokumen = ?', [$kode_kunjungan, 'Resume-medis22']);
+            if ($getresume_rajal) {
+                $urlCetakResume1 = $getresume_rajal[0]->file;
+                $urlCetakResume =  response($urlCetakResume1)
+                    ->header('Content-Security-Policy', "frame-ancestors 'self' http://192.168.2.14")
+                    ->header('Content-Type', 'application/pdf');
+            } else {
+                $urlCetakResume = '';
+            }
+            // dd($urlCetakResume->content);
+            $html = view('new_farmasi.detail_berkas2', compact('layananheader', 'ts_kunjungan', 'detail_obat', 'urlCetakSEP', 'urlCetakNota', 'lab_terpilih', 'LINK_RADIOLOGI', 'idresep', 'urlCetakResume','urlLembarKonsul','urlExpertisiPoli','urlCetakHD'))->render();
+            return response()->json([
+                'status'       => 'success',
+                'message'      => 'Data detail berhasil dimuat',
+                'url_cetak_sep' => $urlCetakSEP,
+                'html'         => $html
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Terjadi kesalahan server.',
+                'error'   => $e->getMessage()
+            ], 500);
+        }
+    }
     public function previewMergerPdf($idresep)
     {
         // 1. Ambil Layanan Header
         $layananheader = DB::select('SELECT * FROM ts_layanan_header WHERE id = ?', [$idresep]);
-
         if (empty($layananheader)) {
             return response()->json([
                 'status'  => 'error',
                 'message' => 'Data layanan header tidak ditemukan.'
             ], 404);
         }
-
         $kode_kunjungan = $layananheader[0]->kode_kunjungan;
 
         // 2. Ambil Data Kunjungan
         $ts_kunjungan = DB::select('SELECT * FROM ts_kunjungan WHERE kode_kunjungan = ?', [$kode_kunjungan]);
         $no_sep = !empty($ts_kunjungan) ? $ts_kunjungan[0]->no_sep : null;
+        $resume = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and jenis_dokumen = ?', [$kode_kunjungan, 'Resume-medis']);
+        // dd($resume);
         $rm     = !empty($ts_kunjungan) ? $ts_kunjungan[0]->no_rm : null;
-
         // 3. Susun Array URL
         $urls = [];
-
         // A. URL SEP
         if ($no_sep) {
             $urls[] = "http://192.168.2.30/siramah/cetakSEPAntrian?noSep={$no_sep}";
         }
-
+        // if ($resume) {
+        //     $urls[] = $this->cetak_dokumen_tte_lokal($kode_kunjungan);
+        // }
+        $urls[] = url('cetakresumedifarmasi/' . $kode_kunjungan);
         // B. URL Hasil Lab
         if ($rm) {
             $hasil_lab = DB::select("CALL LIHAT_HASIL_LAB_XXX(?)", [$rm]);
@@ -5032,6 +5109,7 @@ class newFarmasiController extends FarmasiController
         // 4. Proses Merger PDF
         $oMerger = PDFMerger::init();
         $tempFiles = [];
+        // dd($urls);
         foreach ($urls as $index => $url) {
             try {
                 // Gunakan withoutVerifying() untuk menghindari SSL check failure di server lokal
@@ -5039,7 +5117,6 @@ class newFarmasiController extends FarmasiController
 
                 if ($response->successful()) {
                     $content = $response->body();
-
                     // Lakukan trim untuk membuang spasi/newline di awal file jika ada
                     $trimmedContent = ltrim($content);
 
@@ -5073,8 +5150,7 @@ class newFarmasiController extends FarmasiController
                 continue;
             }
         }
-        // DD($tempFiles);
-
+        // dd($tempFiles);
         // Pengecekan jika tidak ada file PDF yang berhasil di-fetch
         if (empty($tempFiles)) {
             return response()->json([
@@ -5094,5 +5170,136 @@ class newFarmasiController extends FarmasiController
 
         // 7. Stream Hasil Gabungan
         return $oMerger->stream('BERKAS_GABUNGAN_' . $kode_kunjungan . '.pdf');
+    }
+    public function cetak_dokumen_tte_lokal($kodekunjungan)
+    {
+        $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
+        $data = ['title' => 'My PDF Document', 'content' => 'This is some content for the PDF.', $mt_pasien];
+        $assesmen = db::select('select *,date(tgl_pemeriksaan) as tglk2 ,versi as versidk from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
+        $tindakan = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+            ,c.`kode_tarif_detail`,d.`NAMA_TARIF`
+            FROM ts_kunjungan a
+            INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+            INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+            INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER`
+            WHERE SUBSTR(b.`kode_unit`,1,1) = 1
+            AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
+            AND a.kode_kunjungan = ?", [$kodekunjungan]);
+
+        $farmasi = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+            ,c.`kode_tarif_detail`,d.`nama_barang`,C.`jumlah_layanan`,C.`aturan_pakai`
+            FROM ts_kunjungan a
+            INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+            INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+            INNER JOIN mt_barang d ON c.`kode_barang` = d.`kode_barang`
+            WHERE SUBSTR(b.`kode_unit`,1,1) = 4
+            AND a.kode_kunjungan = ?", [$kodekunjungan]);
+
+        $penunjang = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+            ,c.`kode_tarif_detail`,d.`NAMA_TARIF`,b.kode_unit
+            FROM ts_kunjungan a
+            INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+            INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+            INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER`
+            WHERE SUBSTR(b.`kode_unit`,1,1) = 3
+            AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
+            AND a.kode_kunjungan = ?", [$kodekunjungan]);
+        $orderfarmasi = db::select('SELECT kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.kode_kunjungan = ? and  kode_unit > ?', [$kodekunjungan, '4000']);
+        $order_penunjang = db::select('SELECT fc_nama_unit1(a.`kode_unit`)AS nama_unit,a.kode_unit,SUBSTR(kode_tarif_detail,1,6) AS kode_tarif_header,c.`NAMA_TARIF` FROM ts_layanan_header_order a
+        INNER JOIN ts_layanan_detail_order b ON a.id = b.`row_id_header`
+        INNER JOIN mt_tarif_header c ON SUBSTR(b.kode_tarif_detail,1,6) = c.`KODE_TARIF_HEADER`
+        WHERE a.`kode_kunjungan` = ? AND a.`kode_unit` < ?', [$kodekunjungan, '4000']);
+        $today = Carbon::now()->isoFormat('D MMMM Y');
+        if (count($assesmen) > 0) {
+            $tglll =  $assesmen[0]->tglk2;
+            $carbonDate = Carbon::parse($tglll);
+            $tglperiksa = $carbonDate->isoFormat('dddd, D MMMM Y');
+        } else {
+            $tglperiksa = Carbon::now()->isoFormat('dddd, D MMMM Y');
+        }
+        // $cek2 = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and status_code = ?', [$kodekunjungan, 200]);
+        $cek2 = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and jenis_dokumen = ?', [$kodekunjungan, 'Resume-medis']);
+        $hitung = count($cek2);
+        $cetakanke = $hitung + 1;
+        $mt_paramedis = db::select('select * from mt_paramedis where kode_paramedis = ?', [$ts_kunjungan[0]->kode_paramedis]);
+        if (count($cek2) > 0) {
+            $t = count($cek2) + 1;
+            $nama = 'Resume-medis' . $t;
+            $urlfile = '\\\\192.168.2.14\\erm\\resume_medis_rawat_jalan/';
+            $pdf = $urlfile . $kodekunjungan . $nama . '.pdf';
+            db::table('log_ttd_elektronik')->where('id', $cek2[0]->id)->update(['file' => $pdf]);
+        } else {
+            $nama = 'Resume-medis' . '1';
+            // $namafile = $nama . $kodekunjungan . '.pdf';
+            $urlfile = '\\\\192.168.2.14\\erm\\resume_medis_rawat_jalan/';
+            $pdf = $urlfile . $kodekunjungan . $nama . '.pdf';
+            $savee = [
+                'kode_kunjungan' => $kodekunjungan,
+                'status_code' => '200',
+                'tgl_kirim' => $this->get_now(),
+                'jenis_dokumen' => 'Resume-medis',
+                'file' => $pdf
+            ];
+            db::table('log_ttd_elektronik')->insert($savee);
+        }
+        $datasend = [
+            'id_dokumen' => $nama . $kodekunjungan,
+            'nama_user' => $assesmen[0]->nama_dokter,
+            'tanggal_verifikasi' => $assesmen[0]->tgl_pemeriksaan,
+            'jabatan' => "Dokter",
+        ];
+
+        $v = new ModelBSRE();
+        $DD = $v->sendpdftosiramah($datasend);
+        $url1 = "https://siramah.rsudwaled.com/filetandatangan?id=" . $nama . $kodekunjungan;
+        // $url = 'adadad';
+        $qrttd = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url1));
+        $pdf = Pdf::loadView('pdf.resumettelokal', compact([
+            'data',
+            'tglperiksa',
+            'mt_pasien',
+            'ts_kunjungan',
+            'assesmen',
+            'tindakan',
+            'farmasi',
+            'penunjang',
+            'orderfarmasi',
+            'order_penunjang',
+            'mt_paramedis',
+            'today',
+            'cetakanke',
+            'qrttd'
+        ]));
+        $pdf->set_option("isPhpEnabled", true);
+        $pdf->setPaper('Letter', 'portrait');
+        $name = $nama . $kodekunjungan . '.pdf';
+        // Stream langsung ke browser
+        // $d = $pdf->output();
+        // $pdf->save(Storage::disk('shared', $name)->put($name, $d));
+        return $pdf->stream($name, ["Attachment" => false]);
+    }
+    public function ambilberkaspasienlengkap(Request $request)
+    {
+        $rm = $request->nomorrm;
+        $ts_kunjungan = DB::table('ts_kunjungan')
+            ->select([
+                'kode_kunjungan',
+                'no_rm',
+                'tgl_masuk',
+                'no_sep',
+                'kode_unit',
+                'ref_kunjungan',
+                DB::raw('fc_nama_px(no_rm) as nama_pasien'),
+                DB::raw('fc_nama_unit1(kode_unit) as nama_unit'),
+                DB::raw('fc_NAMA_PARAMEDIS1(kode_paramedis) as nama_dokter'),
+            ])
+            ->where('no_rm', $rm)
+            ->where('status_kunjungan', '!=', 8)
+            ->orderBy('kode_kunjungan', 'desc')
+            ->get();
+        return view('new_farmasi.riwayat_berkas_pasien_kunjungan', compact([
+            'ts_kunjungan'
+        ]));
     }
 }

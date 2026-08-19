@@ -236,14 +236,14 @@ class PdfController extends Controller
             $tglperiksa2 = Carbon::now()->addMinutes(60)->isoFormat('dddd, D MMMM Y HH:mm:ss');
         }
         $datawebsiramah = [
-            'id_dokumen' => $kodekunjungan+1,
+            'id_dokumen' => $kodekunjungan + 1,
             'nama_user' => $mt_paramedis[0]->nama_paramedis,
             'tanggal_verifikasi' => $this->get_now(),
             'jabatan' => "Dokter",
         ];
         $v = new ModelBSRE();
         $DD = $v->sendpdftosiramah($datawebsiramah);
-        $url = "https://siramah.rsudwaled.com/filetandatangan?id=" . $kodekunjungan+1;
+        $url = "https://siramah.rsudwaled.com/filetandatangan?id=" . $kodekunjungan + 1;
         $qrcode = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url));
         $pdf = Pdf::loadView('pdf.document_assesmen_medis', compact([
             'data',
@@ -362,16 +362,16 @@ class PdfController extends Controller
         $fromDate = Carbon::parse($mt_pasien[0]->tgl_lahirs);
         $usiatahun = $toDate->diff($fromDate)->y;
         $usia_hari = $toDate->diffInDays($fromDate);
-        $username = db::select('select * from user where id = ?',[$assesmen[0]->idpemeriksa]);
+        $username = db::select('select * from user where id = ?', [$assesmen[0]->idpemeriksa]);
         $datawebsiramah = [
-            'id_dokumen' => $kodekunjungan+2,
+            'id_dokumen' => $kodekunjungan + 2,
             'nama_user' => $username[0]->nama,
             'tanggal_verifikasi' => $this->get_now(),
             'jabatan' => "Perawat",
         ];
         $v = new ModelBSRE();
         $DD = $v->sendpdftosiramah($datawebsiramah);
-        $url = "https://siramah.rsudwaled.com/filetandatangan?id=" . $kodekunjungan+2;
+        $url = "https://siramah.rsudwaled.com/filetandatangan?id=" . $kodekunjungan + 2;
         $qrcode = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url));
         $pdf = Pdf::loadView('pdf.cetakan_assesmen_perawat', compact([
             'mt_pasien',
@@ -470,7 +470,32 @@ class PdfController extends Controller
         $header = db::table('ts_header_catatan_hemodialisis')->where('id', $id)->get()->first();
         $rm = $header->no_rm;
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$rm]);
-
+        $kodekunjungan = $header->kode_kunjungan;
+        $cek2 = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and jenis_dokumen = ?', [$header->kode_kunjungan, 'CATATAN HD']);
+        if (count($cek2) > 0) {
+            $t = count($cek2) + 1;
+            $nama = 'ch' . $t;
+        } else {
+            $savee = [
+                'kode_kunjungan' => $kodekunjungan,
+                'status_code' => '200',
+                'tgl_kirim' => $this->get_now(),
+                'jenis_dokumen' => 'CATATAN HD',
+            ];
+            db::table('log_ttd_elektronik')->insert($savee);
+            $nama = 'ch' . '1';
+        }
+        $jawabkonsulan = [
+            'id_dokumen' => $nama . $kodekunjungan,
+            'nama_user' => $header->akses_vaskuler_oleh,
+            'tanggal_verifikasi' => $header->tgl_entry,
+            'jabatan' => "Perawat",
+        ];
+        $v = new ModelBSRE();
+        $DD = $v->sendpdftosiramah($jawabkonsulan);
+        $url1 = "https://siramah.rsudwaled.com/filetandatangan?id=" . $nama . $kodekunjungan;
+        // $url = 'adadad';
+        $qrtte = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url1));
         // dd($rm);
         // if(!!$request->jenis){
         $jenis = 1;
@@ -495,7 +520,6 @@ class PdfController extends Controller
             $arrayBaru3 = [];
             $arrayBaru4 = [];
         }
-
         $dompdf = Pdf::loadView('pdf.catatan_hemodialisa', compact([
             'mt_pasien',
             'header',
@@ -504,7 +528,8 @@ class PdfController extends Controller
             'arrayBaru2',
             'arrayBaru3',
             'arrayBaru4',
-            'jenis'
+            'jenis',
+            'qrtte'
         ]));
         $dompdf->setPaper('A4', 'portrait'); // 'A4' for paper size, 'portrait' or 'landscape' for orientation
         // Render the HTML as PDF

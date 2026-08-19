@@ -1106,7 +1106,6 @@
                                                                                 $mm->tekananintraokular ?? '',
                                                                             );
                                                                         @endphp
-
                                                                         <div class="card mb-3 border-secondary text-sm"
                                                                             style="font-size: 0.85rem;">
                                                                             <div
@@ -1114,11 +1113,9 @@
                                                                                 <span><i class="fas fa-eye me-1"></i>
                                                                                     Hasil Pemeriksaan Mata (RO)</span>
                                                                                 <span
-                                                                                    class="badge bg-info text-dark">Tajam
-                                                                                    Penglihatan Dekat:
+                                                                                    class="text-dark">:
                                                                                     {{ $mm->tajampenglihatandekat ?? '-' }}</span>
                                                                             </div>
-
                                                                             <div class="card-body p-2">
                                                                                 <!-- Table Perbandingan Mata Kiri & Kanan -->
                                                                                 <table

@@ -110,6 +110,11 @@
                                         unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
                                             class="bi bi-printer mr-2"></i>Assesmen
                                         Medis </button>
+                                    <button type="button" class="btn btn-secondary cetakresumemedis"
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
+                                            class="bi bi-printer mr-2"></i>Resume
+                                        Medis </button>
                                     @if ($k->kode_unit == '1009')
                                         <button type="button" class="btn btn-secondary cetakassemenbunuhdiri"
                                             nomor_rm="{{ $k->no_rm_k }}"><i class="bi bi-eye mr-2"></i>Asesmen
@@ -2008,6 +2013,10 @@
     })
 </script>
 <script>
+    $(".cetakresumemedis").on('click', function(event) {
+        kodekunjungan = $(this).attr('kodekunjungan')
+        window.open('cetakresumedmedisttelokal/' + kodekunjungan)
+    });
     $(".cetakdokumen").on('click', function(event) {
         iddokumen = $(this).attr('iddokumen')
         window.open('cetaksuratpengantar/' + iddokumen)

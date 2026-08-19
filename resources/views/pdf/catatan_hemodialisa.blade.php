@@ -995,12 +995,11 @@
                                     <br>Nama dan tanda tangan perawat yang bertugas :
                                     <br>
                                     <br>
-                                    #
-                                    <br>                                    
-                                    <br>                                    
-                                    <br>                                    
-                                    {{ strtoupper($header->akses_vaskuler_oleh) }}
-                                    {{-- </h5> --}}
+                                <div style="width: 90px; height: 90px; margin: 0 auto; text-align: center;">
+                                    <img src="data:image/svg+xml;base64,{{ $qrtte }}"
+                                        style="width: 90px; height: 90px; display: block;" alt="QR Code TTE">
+                                </div>
+                                <p class="text-center" style="font-weight: bolder">{{ strtoupper($header->akses_vaskuler_oleh) }} </p>
                                 </p>
                             </td>
                         </tr>
