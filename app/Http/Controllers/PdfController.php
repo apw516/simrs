@@ -285,6 +285,60 @@ class PdfController extends Controller
         LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal a ON a.`kode_kunjungan` = c.`kode_kunjungan`
         LEFT OUTER JOIN assesmen_dokters b ON c.kode_kunjungan = b.id_kunjungan WHERE c.kode_kunjungan = ?', [$kode_kunjungan]);
 
+        $cektteasdok = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and jenis_dokumen = ?', [$kode_kunjungan, 'ASSESMEN AWAL MEDIS']);
+        if (count($cektteasdok) > 0) {
+            $t = count($cektteasdok) + 1;
+            $nama = 'assesmnawalmedis' . $t;
+        } else {
+            $savettedokter = [
+                'kode_kunjungan' => $kode_kunjungan,
+                'status_code' => '200',
+                'tgl_kirim' => $this->get_now(),
+                'jenis_dokumen' => 'ASSESMEN AWAL MEDIS',
+            ];
+            db::table('log_ttd_elektronik')->insert($savettedokter);
+            $nama = 'assesmnawalmedis' . '1';
+        }
+        $sendttedokter = [
+            'id_dokumen' => $nama . $kode_kunjungan,
+            'nama_user' => $header[0]->nama_dokter,
+            'tanggal_verifikasi' => $header[0]->tanggalkunjungan,
+            'jabatan' => "Dokter",
+        ];
+        $v = new ModelBSRE();
+        $nama_tte_dokter = $nama . $kode_kunjungan;
+        $DD = $v->sendpdftosiramah($sendttedokter);
+        $url_tte_asmed = "https://siramah.rsudwaled.com/filetandatangan?id=" . $nama_tte_dokter;
+
+        $cektteaskep = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and jenis_dokumen = ?', [$kode_kunjungan, 'ASSESMEN AWAL PERAWAT']);
+        if (count($cektteaskep) > 0) {
+            $t = count($cektteaskep) + 1;
+            $namattep = 'assesmenawalperawat' . $t;
+        } else {
+            $savetteperawat = [
+                'kode_kunjungan' => $kode_kunjungan,
+                'status_code' => '200',
+                'tgl_kirim' => $this->get_now(),
+                'jenis_dokumen' => 'ASSESMEN AWAL PERAWAT',
+            ];
+            db::table('log_ttd_elektronik')->insert($savetteperawat);
+            $namattep = 'assesmenawalperawat' . '1';
+        }
+        $sendtteperawat = [
+            'id_dokumen' => $namattep . $kode_kunjungan,
+            'nama_user' => $header[0]->namapemeriksa,
+            'tanggal_verifikasi' => $header[0]->tanggalkunjungan,
+            'jabatan' => "Perawat",
+        ];
+        $nama_tte_perawat = $namattep . $kode_kunjungan;
+        $DD = $v->sendpdftosiramah($sendtteperawat);
+        $url_tte_askep = "https://siramah.rsudwaled.com/filetandatangan?id=" . $nama_tte_perawat;
+        $url_tte_asmed = "https://siramah.rsudwaled.com/filetandatangan?id=" . $nama_tte_dokter;
+        // $url = 'adadad';
+        $qrtteasmed = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url_tte_asmed));
+        $qrtteaskep = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url_tte_askep));
+
+
         $no_rm = $header[0]->no_rm;
 
         $cppt = DB::connection('mysql')->select('SELECT *,a.id AS idasskep,b.versi AS versidk,DATE(c.tgl_masuk) AS tglk,a.kode_unit AS unitpoli ,fc_nama_unit1(a.kode_unit) AS nama_unit ,c.kode_kunjungan,a. kode_kunjungan as kode_kunjungan_asskep,b.id_kunjungan as kode_kunjungan_assdok
@@ -292,6 +346,70 @@ class PdfController extends Controller
         LEFT OUTER JOIN assesmen_dokters b ON a.kode_kunjungan = b.id_kunjungan
         WHERE a.no_rm = ? AND c.status_kunjungan != 8 AND a.jenis_berkas = ? ORDER  BY c.kode_kunjungan DESC', [$no_rm, 0]);
 
+        $data_pemeriksa = [];
+        foreach ($cppt as $d) {
+            $id_header = $d->idasskep; // Menggunakan ID assesmen keperawatan sebagai id_header
+            $kode_kunjungan_a = $d->kode_kunjungan_asskep; // Menggunakan ID assesmen keperawatan sebagai id_header
+            if ($id_header) {                
+                $cektteasdok1 = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and jenis_dokumen = ?', [$kode_kunjungan_a, 'CPPT MEDIS']);
+                if (count($cektteasdok1) > 0) {
+                    $t = count($cektteasdok1) + 1;
+                    $nama_1 = 'CPPTMEDIS' . $t;
+                } else {
+                    $savettedokter = [
+                        'kode_kunjungan' => $kode_kunjungan_a,
+                        'status_code' => '200',
+                        'tgl_kirim' => $this->get_now(),
+                        'jenis_dokumen' => 'CPPT MEDIS',
+                    ];
+                    db::table('log_ttd_elektronik')->insert($savettedokter);
+                    $nama_1 = 'CPPTMEDIS' . '1';
+                }
+                $sendttedokter = [
+                    'id_dokumen' => $nama_1 . $kode_kunjungan_a,
+                    'nama_user' => $d->nama_dokter,
+                    'tanggal_verifikasi' => $d->tgl_masuk,
+                    'jabatan' => "Dokter",
+                ];
+                $nama_tte_dokter_1 = $nama_1 . $kode_kunjungan_a;
+                $DD = $v->sendpdftosiramah($sendttedokter);
+
+                $cektteaskep_1 = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and jenis_dokumen = ?', [$kode_kunjungan_a, 'CPPT PERAWAT']);
+                if (count($cektteaskep_1) > 0) {
+                    $t = count($cektteaskep_1) + 1;
+                    $namattep_1 = 'CPPTPERAWAT' . $t;
+                } else {
+                    $savetteperawat = [
+                        'kode_kunjungan' => $kode_kunjungan_a,
+                        'status_code' => '200',
+                        'tgl_kirim' => $this->get_now(),
+                        'jenis_dokumen' => 'CPPTPERAWAT',
+                    ];
+                    db::table('log_ttd_elektronik')->insert($savetteperawat);
+                    $namattep_1 = 'CPPTPERAWAT' . '1';
+                }
+                $sendtteperawat_1 = [
+                    'id_dokumen' => $namattep_1 . $kode_kunjungan_a,
+                    'nama_user' => $d->namapemeriksa,
+                    'tanggal_verifikasi' => $d->tgl_masuk,
+                    'jabatan' => "Perawat",
+                ];
+                $nama_tte_perawat_1 = $namattep_1 . $kode_kunjungan_a;
+                $DD = $v->sendpdftosiramah($sendtteperawat_1);
+                $url_tte_askep_1 = "https://siramah.rsudwaled.com/filetandatangan?id=" . $nama_tte_perawat_1;
+                $url_tte_asmed_1 = "https://siramah.rsudwaled.com/filetandatangan?id=" . $nama_tte_dokter_1;
+                // $url = 'adadad';
+                $qrtteasmed_1 = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url_tte_asmed_1));
+                $qrtteaskep_1 = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url_tte_askep_1));
+                $data_pemeriksa[$id_header] = [
+                    'id_header'    => $d->idasskep,
+                    'nama_dokter'  => $d->nama_dokter ?? '-',
+                    'nama_perawat' => $d->namapemeriksa ?? '-',
+                    'TTE_DOKTER' => $qrtteasmed_1,
+                    'TTE_PERAWAT' => $qrtteaskep_1,
+                ];
+            }
+        }
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$no_rm]);
         $datakonsul = db::select('select *,fc_nama_unit1(unit_pengirim) as poli_pengirim,fc_nama_unit1(unit_tujuan) as poli_konsul,fc_nama_paramedis1(dokter_penerima) as dokter_penerima_2 from ts_konsul_antar_poli where no_rm = ?', [$no_rm]);
         $tindakan = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
@@ -321,6 +439,7 @@ class PdfController extends Controller
             AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
             AND a.no_rm = ?", [$no_rm]);
         $orderfarmasi = db::select('SELECT kode_kunjungan,a.keterangan as keteranganresep,kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.no_rm = ? and  kode_unit > ?', [$no_rm, '4000']);
+        // dd($data_pemeriksa);
         $dompdf = Pdf::loadView('pdf.cetakan_cppt', compact([
             'mt_pasien',
             'header',
@@ -329,14 +448,17 @@ class PdfController extends Controller
             'farmasi',
             'orderfarmasi',
             'penunjang',
-            'cppt'
+            'cppt',
+            'qrtteasmed',
+            'qrtteaskep',
+            'data_pemeriksa'
         ]));
         $dompdf->setPaper('A4', 'portrait'); // 'A4' for paper size, 'portrait' or 'landscape' for orientation
         $dompdf->set_option("isPhpEnabled", true);
         // Render the HTML as PDF
         $dompdf->render();
         $namaberkas = 'CPPT_' . $mt_pasien[0]->nama_px;
-        return $dompdf->download($namaberkas . '.pdf');
+        return $dompdf->stream($namaberkas . '.pdf');
         // Output the generated PDF to Browser
         return $dompdf->stream($namaberkas . ".pdf", array("Attachment" => false));
     }

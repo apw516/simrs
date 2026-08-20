@@ -230,7 +230,7 @@ class ReportingController extends Controller
                 $akhir = date_create($f->tgl_masuk);
                 $bulan = date_diff($tanggal_awal, $akhir);
                 $days = $bulan->days;
-                if ($days > 91) {
+                if ($days > 30 ) {
                     $dataSet['tgl_masuk'] = $f->tgl_masuk;
                     $dataSet['kode_kunjungan'] = $f->kode_kunjungan;
                     $arrayindex_reguler[] = $dataSet;
