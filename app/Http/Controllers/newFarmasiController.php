@@ -4877,12 +4877,14 @@ class newFarmasiController extends FarmasiController
             }));
             // Query Radiologi
             $rad_terpilih = DB::connection('mysql6')->select('SELECT * FROM order_table WHERE KODE_KUNJUNGAN = ?', [$kode_kunjungan]);
+            $gambarscan = DB::select('SELECT * FROM erm_upload_gambar WHERE kodekunjungan = ?', [$kode_kunjungan]);
             $LINK_RADIOLOGI = [];
             foreach ($rad_terpilih as $rad) {
                 if (!empty($rad->ACCESSIONNUMBER)) {
                     $LINK_RADIOLOGI[] = "http://196.196.196.251/SIRAMAH/cetakexp/" . trim($rad->ACCESSIONNUMBER);
                 }
             }
+            // dd($gambarscan);
             //resumerajal
             $getresume_rajal = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and jenis_dokumen = ?', [$kode_kunjungan, 'Resume-medis22']);
             if ($getresume_rajal) {
@@ -4894,7 +4896,7 @@ class newFarmasiController extends FarmasiController
                 $urlCetakResume = '';
             }
             // dd($urlCetakResume->content);
-            $html = view('new_farmasi.detail_berkas', compact('layananheader', 'ts_kunjungan', 'detail_obat', 'urlCetakSEP', 'urlCetakNota', 'lab_terpilih', 'LINK_RADIOLOGI', 'idresep', 'urlCetakResume'))->render();
+            $html = view('new_farmasi.detail_berkas', compact('layananheader', 'ts_kunjungan', 'detail_obat', 'urlCetakSEP', 'urlCetakNota', 'lab_terpilih', 'LINK_RADIOLOGI', 'idresep', 'urlCetakResume','gambarscan'))->render();
             return response()->json([
                 'status'       => 'success',
                 'message'      => 'Data detail berhasil dimuat',
@@ -4931,6 +4933,7 @@ class newFarmasiController extends FarmasiController
             // URL Cetak SEP untuk dipanggil di frontend/blade
             $urlCetakSEP = $no_sep ? "http://192.168.2.30/siramah/cetakSEPAntrian?noSep={$no_sep}" : null;
             $urlCetakNota = url('cetaknotafarmasi/' . $layananheader[0]->id);
+            $gambarscan = DB::select('SELECT * FROM erm_upload_gambar WHERE kodekunjungan = ?', [$kode_kunjungan]);
             $hasil_lab = db::select("CALL LIHAT_HASIL_LAB_XXX(?)", [$rm]);
             $hasil_lab_spesial = db::select("CALL LIHAT_HASIL_LAB_SPESIAL(?)", [$rm]);
             $semua_hasil_lab = array_merge($hasil_lab, $hasil_lab_spesial);
@@ -4956,8 +4959,9 @@ class newFarmasiController extends FarmasiController
                 $urlCetakResume = '';
             }
             $idresep = $layananheader[0]->id;
+            
             // dd($urlCetakResume->content);
-            $html = view('new_farmasi.detail_berkas', compact('layananheader', 'ts_kunjungan', 'detail_obat', 'urlCetakSEP', 'urlCetakNota', 'lab_terpilih', 'LINK_RADIOLOGI', 'idresep', 'urlCetakResume'))->render();
+            $html = view('new_farmasi.detail_berkas', compact('layananheader', 'ts_kunjungan', 'detail_obat', 'urlCetakSEP', 'urlCetakNota', 'lab_terpilih', 'LINK_RADIOLOGI', 'idresep', 'urlCetakResume','gambarscan'))->render();
             return response()->json([
                 'status'       => 'success',
                 'message'      => 'Data detail berhasil dimuat',
