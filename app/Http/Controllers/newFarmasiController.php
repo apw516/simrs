@@ -231,6 +231,66 @@ class newFarmasiController extends FarmasiController
     public function ambildetailkunjunganpasiendepo_versi2(Request $request)
     {
         $kode_kunjungan = $request->kodekunjungan;
+        $data_kunjungan = db::select('select *,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin from ts_kunjungan where kode_kunjungan = ?', [$kode_kunjungan]);
+        $kode_unit = $data_kunjungan[0]->kode_unit;
+        if($kode_unit >= 2000 && $kode_unit != 3007){
+            return $this->formdepo1($kode_kunjungan);
+        }else{
+            return $this->formdepo2($kode_kunjungan);
+        }
+    }
+    public function formdepo1($kode_kunjungan)
+    {
+        $data_order = DB::table('ts_order_farmasi_header as a')
+            ->join('ts_order_farmasi_detail as b', 'a.id', '=', 'b.row_id_header')
+            ->leftjoin('mt_barang as c', 'b.kode_barang', '=', 'c.kode_barang')
+            ->where('a.kode_kunjungan', $kode_kunjungan)
+            ->where('a.kode_unit', auth()->user()->unit)
+            ->select([
+                'a.*',
+                'b.*',
+                'c.*'
+            ])
+            ->get();
+        $data_kunjungan = db::select('select *,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin from ts_kunjungan where kode_kunjungan = ?', [$kode_kunjungan]);
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx from mt_pasien where no_rm = ?', [$data_kunjungan[0]->no_rm]);
+        $kode_paramedis = $data_kunjungan[0]->kode_paramedis;
+        $dokter = db::select('select * from mt_paramedis where kode_paramedis = ?', [$kode_paramedis]);
+        $kodeUnit = '4002';
+        // 1. Buat Subquery terlebih dahulu
+        $subQuery = DB::connection('mysql')->table('ti_kartu_stok')
+            ->select('kode_unit', 'kode_barang', DB::raw('MAX(no) AS max_id'))
+            ->where('kode_unit', $kodeUnit)
+            ->groupBy('kode_unit', 'kode_barang');
+        $stokBarang = DB::connection('mysql')->table('ti_kartu_stok as k')
+            ->joinSub($subQuery, 'last_trans', function ($join) {
+                $join->on('k.no', '=', 'last_trans.max_id');
+            })
+            ->join('mt_barang as b', 'k.kode_barang', '=', 'b.kode_barang')
+            ->where('k.kode_unit', $kodeUnit)
+            ->where('k.stok_current', '>', 0)
+            ->select([
+                'b.kode_barang',
+                'b.nama_barang',
+                'b.nama_generik',
+                'k.kode_unit',
+                'b.kronis',
+                'b.prb',
+                'b.kemo',
+                'k.stok_current as stok_saat_ini',
+                'k.tgl_stok as tanggal_transaksi_terakhir',
+            ])
+            ->get();
+        return view('new_farmasi.detail_pasien_versi_2_depo_1', compact([
+            'data_kunjungan',
+            'mt_pasien',
+            'stokBarang',
+            'dokter',
+            'data_order'
+        ]));
+    }
+    public function formdepo2($kode_kunjungan)
+    {
         $data_order = DB::table('ts_layanan_header_order as a')
             ->join('ts_layanan_detail_order as b', 'a.id', '=', 'b.row_id_header')
             ->where('a.kode_kunjungan', $kode_kunjungan)
@@ -4896,7 +4956,7 @@ class newFarmasiController extends FarmasiController
                 $urlCetakResume = '';
             }
             // dd($urlCetakResume->content);
-            $html = view('new_farmasi.detail_berkas', compact('layananheader', 'ts_kunjungan', 'detail_obat', 'urlCetakSEP', 'urlCetakNota', 'lab_terpilih', 'LINK_RADIOLOGI', 'idresep', 'urlCetakResume','gambarscan'))->render();
+            $html = view('new_farmasi.detail_berkas', compact('layananheader', 'ts_kunjungan', 'detail_obat', 'urlCetakSEP', 'urlCetakNota', 'lab_terpilih', 'LINK_RADIOLOGI', 'idresep', 'urlCetakResume', 'gambarscan'))->render();
             return response()->json([
                 'status'       => 'success',
                 'message'      => 'Data detail berhasil dimuat',
@@ -4916,7 +4976,7 @@ class newFarmasiController extends FarmasiController
         $kodekunjungan = $request->kodekunjungan;
         try {
             // Ambil data layanan header
-            $layananheader = DB::select('SELECT * FROM ts_layanan_header WHERE kode_kunjungan = ? and kode_unit = ?', [$kodekunjungan,'4008']);
+            $layananheader = DB::select('SELECT * FROM ts_layanan_header WHERE kode_kunjungan = ? and kode_unit = ?', [$kodekunjungan, '4008']);
             if (empty($layananheader)) {
                 return response()->json([
                     'status'  => 'error',
@@ -4959,9 +5019,9 @@ class newFarmasiController extends FarmasiController
                 $urlCetakResume = '';
             }
             $idresep = $layananheader[0]->id;
-            
+
             // dd($urlCetakResume->content);
-            $html = view('new_farmasi.detail_berkas', compact('layananheader', 'ts_kunjungan', 'detail_obat', 'urlCetakSEP', 'urlCetakNota', 'lab_terpilih', 'LINK_RADIOLOGI', 'idresep', 'urlCetakResume','gambarscan'))->render();
+            $html = view('new_farmasi.detail_berkas', compact('layananheader', 'ts_kunjungan', 'detail_obat', 'urlCetakSEP', 'urlCetakNota', 'lab_terpilih', 'LINK_RADIOLOGI', 'idresep', 'urlCetakResume', 'gambarscan'))->render();
             return response()->json([
                 'status'       => 'success',
                 'message'      => 'Data detail berhasil dimuat',
@@ -4981,7 +5041,7 @@ class newFarmasiController extends FarmasiController
         $kodekunjungan = $request->kodekunjungan;
         try {
             // Ambil data layanan header
-            $layananheader = DB::select('SELECT * FROM ts_layanan_header WHERE kode_kunjungan = ? and kode_unit = ?', [$kodekunjungan,'4008']);
+            $layananheader = DB::select('SELECT * FROM ts_layanan_header WHERE kode_kunjungan = ? and kode_unit = ?', [$kodekunjungan, '4008']);
             $idresep = '';
             $detail_obat = '';
             $urlCetakNota = '';
@@ -5007,11 +5067,11 @@ class newFarmasiController extends FarmasiController
             $urlCetakSEP = $no_sep ? "http://192.168.2.30/siramah/cetakSEPAntrian?noSep={$no_sep}" : null;
             $urlLembarKonsul = url('cetaklembarkonsul/' . $kode_kunjungan);
             $urlExpertisiPoli = url('cetakhasilexpertisipoli/' . $kode_kunjungan);
-            $headerhd = db::select('select * from ts_header_catatan_hemodialisis where kode_kunjungan = ?',[$kode_kunjungan]);
-            if(count($headerhd)>0){
+            $headerhd = db::select('select * from ts_header_catatan_hemodialisis where kode_kunjungan = ?', [$kode_kunjungan]);
+            if (count($headerhd) > 0) {
                 // dd($headerhd);
                 $urlCetakHD = url('cetakcatatanhemodialisa/' . $headerhd[0]->id);
-            }else{
+            } else {
                 $urlCetakHD = '';
             }
             $hasil_lab = db::select("CALL LIHAT_HASIL_LAB_XXX(?)", [$rm]);
@@ -5039,7 +5099,7 @@ class newFarmasiController extends FarmasiController
                 $urlCetakResume = '';
             }
             // dd($urlCetakResume->content);
-            $html = view('new_farmasi.detail_berkas2', compact('layananheader', 'ts_kunjungan', 'detail_obat', 'urlCetakSEP', 'urlCetakNota', 'lab_terpilih', 'LINK_RADIOLOGI', 'idresep', 'urlCetakResume','urlLembarKonsul','urlExpertisiPoli','urlCetakHD','gambarscan'))->render();
+            $html = view('new_farmasi.detail_berkas2', compact('layananheader', 'ts_kunjungan', 'detail_obat', 'urlCetakSEP', 'urlCetakNota', 'lab_terpilih', 'LINK_RADIOLOGI', 'idresep', 'urlCetakResume', 'urlLembarKonsul', 'urlExpertisiPoli', 'urlCetakHD', 'gambarscan'))->render();
             return response()->json([
                 'status'       => 'success',
                 'message'      => 'Data detail berhasil dimuat',

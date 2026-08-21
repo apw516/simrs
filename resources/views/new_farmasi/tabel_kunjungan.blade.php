@@ -65,7 +65,7 @@
                             <td class="text-center px-3">
                                 <!-- PERBAIKAN: Flexbox container agar tombol sejajar -->
                                 <div class="d-flex justify-content-center align-items-center gap-1">
-                                    <button type="button" class="btn btn-sm btn-primary shadow-sm pilihpasien"
+                                    <button hidden type="button" class="btn btn-sm btn-primary shadow-sm pilihpasien"
                                         data-kodekunjungan="{{ $d->kode_kunjungan }}" data-form="1">
                                         <i class="fas fa-user-md mr-1"></i> Form 1
                                     </button>

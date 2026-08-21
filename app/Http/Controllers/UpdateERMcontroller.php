@@ -1299,7 +1299,8 @@ class UpdateERMcontroller extends Controller
         // Query counter kunjungan (tetap dipertahankan sesuai kode Anda)
         $ts_kunjungan = db::select('select counter from ts_kunjungan where no_rm = ? and status_kunjungan != 8 ORDER BY kode_kunjungan DESC limit 8', [$rm]);
         // Panggil Stored Procedure hasil lab umum/non-spesial
-        $hasil_lab = db::select("CALL LIHAT_HASIL_LAB_XXX(?)", [$rm]);
+        // $hasil_lab = db::select("CALL LIHAT_HASIL_LAB_XXX(?)", [$rm]);
+        $hasil_lab = db::select("CALL LIHAT_HASIL_LAB(?,?)", [$rm,'0']);
         if (empty($hasil_lab)) {
             return response()->json(['status' => 'empty', 'message' => 'Tidak ada data hasil lab untuk RM ini.']);
         }
@@ -1308,7 +1309,8 @@ class UpdateERMcontroller extends Controller
         $list_file = [];
         if (count($hasil_lab) > 0) {
             foreach ($hasil_lab as $c) {
-                $urlDokumen = $c->link;
+                // $urlDokumen = $c->link;
+                $urlDokumen = str_replace('192.168.2.74', '192.168.2.77', $c->link);
                 $no_rm = $c->no_rm;
                 $kodeKunjungan = $c->kode_kunjungan;
                 $kode_layanan = $c->KODE;
@@ -1402,7 +1404,8 @@ class UpdateERMcontroller extends Controller
         $ts_kunjungan = db::select('select counter from ts_kunjungan where no_rm = ? and status_kunjungan != 8 ORDER BY kode_kunjungan DESC limit 8', [$rm]);
 
         // Panggil Stored Procedure hasil lab spesial
-        $hasil_lab = db::select("CALL LIHAT_HASIL_LAB_SPESIAL(?)", [$rm]);
+        // $hasil_lab = db::select("CALL LIHAT_HASIL_LAB_SPESIAL(?)", [$rm]);
+        $hasil_lab = db::select("CALL LIHAT_HASIL_LAB(?,?)", [$rm,'0']);
 
         if (empty($hasil_lab)) {
             return response()->json(['status' => 'empty', 'message' => 'Tidak ada data hasil lab untuk RM ini.']);
