@@ -5369,4 +5369,36 @@ class newFarmasiController extends FarmasiController
             'ts_kunjungan'
         ]));
     }
+    public function checkNotif(Request $request)
+    {
+        $today = date('Y-m-d');
+        // Query data order farmasi hari ini dengan status = 1
+        $query = DB::table('ts_order_farmasi_header as a')
+        ->leftJoin('ts_kunjungan as c', 'a.kode_kunjungan', '=', 'c.kode_kunjungan')
+            ->leftJoin('mt_pasien as b', 'c.no_rm', '=', 'b.no_rm')
+            // ->leftJoin('mt_unit as d', 'a.', '=', 'b.no_rm')
+            ->whereDate('a.tgl_entry', $today)
+            ->where('a.status_order', 1);
+
+        $totalBaru = $query->count();
+
+        // Ambil 5 order terbaru untuk ditampilkan di tabel alert
+        $listOrder = $query->select([
+            'a.kode_order_header',
+            'a.tgl_entry',
+            'b.no_rm',
+            'a.kode_kunjungan',
+            'b.nama_px',
+            // 'a.nama_unit',
+            'a.status_order'
+        ])
+            ->orderBy('a.tgl_entry', 'ASC')
+            ->get();
+
+        return response()->json([
+            'status'     => true,
+            'total_baru' => $totalBaru,
+            'data'       => $listOrder
+        ]);
+    }
 }

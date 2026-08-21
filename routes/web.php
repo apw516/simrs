@@ -920,6 +920,7 @@ Route::post('/asesmen-bunuh-diri/store', [UpdateERMcontroller::class, 'storeassb
 
 
 
+Route::get('farmasi.check-notif', [newFarmasiController::class, 'checkNotif'])->name('farmasi.check-notif');
 Route::get('index_monitoring_klaim_farmasi', [newFarmasiController::class, 'index_monitoring_klaim_farmasi'])->name('index_monitoring_klaim_farmasi');
 Route::get('index_mapping_barang', [newFarmasiController::class, 'index_mapping_barang'])->name('index_mapping_barang');
 Route::get('index_log_kartu_stok', [newFarmasiController::class, 'index_log_kartu_stok'])->name('index_log_kartu_stok');
