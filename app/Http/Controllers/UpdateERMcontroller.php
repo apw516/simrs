@@ -1416,7 +1416,8 @@ class UpdateERMcontroller extends Controller
         $list_file = [];
 
         foreach ($hasil_lab as $c) {
-            $urlDokumen = $c->link;
+            // $urlDokumen = $c->link;
+            $urlDokumen = str_replace('192.168.2.74', '192.168.2.77', $c->link);
             $no_rm = $c->no_rm;
             $kodeKunjungan = $c->kode_kunjungan;
             $noLab = $c->KODE ?? uniqid(); // Gunakan nomor lab sebagai nama file agar unik

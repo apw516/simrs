@@ -233,9 +233,9 @@ class newFarmasiController extends FarmasiController
         $kode_kunjungan = $request->kodekunjungan;
         $data_kunjungan = db::select('select *,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin from ts_kunjungan where kode_kunjungan = ?', [$kode_kunjungan]);
         $kode_unit = $data_kunjungan[0]->kode_unit;
-        if($kode_unit >= 2000 && $kode_unit != 3007){
+        if ($kode_unit >= 2000 && $kode_unit != 3007) {
             return $this->formdepo1($kode_kunjungan);
-        }else{
+        } else {
             return $this->formdepo2($kode_kunjungan);
         }
     }
@@ -245,6 +245,7 @@ class newFarmasiController extends FarmasiController
             ->join('ts_order_farmasi_detail as b', 'a.id', '=', 'b.row_id_header')
             ->leftjoin('mt_barang as c', 'b.kode_barang', '=', 'c.kode_barang')
             ->where('a.kode_kunjungan', $kode_kunjungan)
+            ->where('a.status_order', 1)
             ->where('a.kode_unit', auth()->user()->unit)
             ->select([
                 'a.*',
@@ -387,7 +388,7 @@ class newFarmasiController extends FarmasiController
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx from mt_pasien where no_rm = ?', [$data_kunjungan[0]->no_rm]);
         $kode_paramedis = $data_kunjungan[0]->kode_paramedis;
         $dokter = db::select('select * from mt_paramedis where kode_paramedis = ?', [$kode_paramedis]);
-        $kodeUnit = '4008';
+        $kodeUnit = auth()->user()->unit;
         // 1. Buat Subquery terlebih dahulu
         $subQuery = DB::connection('mysql')->table('ti_kartu_stok')
             ->select('kode_unit', 'kode_barang', DB::raw('MAX(no) AS max_id'))
@@ -4574,9 +4575,10 @@ class newFarmasiController extends FarmasiController
             $keyword = $request->input('keyword');
 
             // Subquery stok terakhir
+            $unit = auth()->user()->unit;
             $latestStok = DB::table('ti_kartu_stok')
                 ->select('kode_barang', DB::raw('MAX(no) as max_id'))
-                ->where('kode_unit', '4008')
+                ->where('kode_unit', $unit)
                 ->groupBy('kode_barang');
 
             // Query Utama
@@ -4595,7 +4597,7 @@ class newFarmasiController extends FarmasiController
                     'b.kode_obat_bpjs',
                 ])
                 ->where('b.act', 1)
-                ->where('ks.kode_unit', '4008')
+                ->where('ks.kode_unit', $unit)
                 ->where('ks.stok_current', '>', 0);
 
             // Hanya lakukan filter pencarian LIKE jika keyword terisi

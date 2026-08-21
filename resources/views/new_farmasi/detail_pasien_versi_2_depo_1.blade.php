@@ -170,7 +170,8 @@
                         </div>
                         <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table class="table table-sm table-striped table-hover align-middle mb-0"
+                                <table id="tborder1"
+                                    class="table table-sm table-striped table-hover align-middle mb-0"
                                     style="font-size: 12px;">
                                     <thead class="table-dark">
                                         <tr>
@@ -280,8 +281,7 @@
                             </td>
                             <td>
                                 <input readonly type="number" name="stok"
-                                    class="form-control form-control-sm text-center" value=""
-                                    min="0">
+                                    class="form-control form-control-sm text-center" value="" min="0">
                             </td>
                             <td>
                                 <select name="jenis_resep" class="form-control form-control-sm">
@@ -317,8 +317,8 @@
                                             class="form-control form-control-sm text-center" value="1"
                                             min="1" required></div>
                                     <div class="col-md-12"><input type="number" name="qtyobat"
-                                            class="form-control form-control-sm text-center" value="1"
-                                            min="1" required></div>
+                                            class="form-control form-control-sm text-center"
+                                            value="{{ $item->jumlah_layanan }}" min="1" required></div>
                                 </div>
                             </td>
                             <td hidden>
@@ -339,7 +339,7 @@
                             </td>
                             <td>
                                 <input type="text" name="catatan" class="form-control form-control-sm"
-                                    placeholder="Contoh: Ssh Makan">
+                                    placeholder="Contoh: Ssh Makan" value="{{ $item->aturan_pakai }}">
                             </td>
                             <td class="text-center">
                                 <button type="button" class="btn btn-sm btn-outline-danger btn-hapus-obat">
@@ -577,7 +577,7 @@
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
-                            <table class="table table-sm table-striped table-hover align-middle mb-0"
+                            <table id="tborder2" class="table table-sm table-striped table-hover align-middle mb-0"
                                 style="font-size: 12px;">
                                 <thead class="table-dark">
                                     <tr>
@@ -1336,5 +1336,27 @@
                 $('.v_riwayat_resep').html(response);
             }
         });
+    });
+</script>
+<script>
+    $(function() {
+        $("#tborder1").DataTable({
+            "responsive": true,
+            "lengthChange": true,
+            "autoWidth": false,
+            "pageLength": 8,
+            "searching": true,
+            "ordering": false,
+        })
+    });
+    $(function() {
+        $("#tborder2").DataTable({
+            "responsive": true,
+            "lengthChange": true,
+            "autoWidth": false,
+            "pageLength": 8,
+            "searching": true,
+            "ordering": false,
+        })
     });
 </script>
