@@ -551,6 +551,20 @@
                   @if (auth()->user()->nama == 'agyl')
                       <li class="nav-header"> <i class="nav-icon bi bi-person-circle mr-2"></i> ADMIN IT</li>
                       <li class="nav-item ">
+                          <a href="{{ route('indexbillingpenunjang') }}"
+                              class="nav-link @if ($sidebar == 'billingpenunjang') active @endif">
+                              <i class="bi bi-person-lines-fill nav-icon"></i>
+                              <p>Billing Penunjang</p>
+                          </a>
+                      </li>
+                      <li class="nav-item ">
+                          <a href="{{ route('indexriwayatpasienpenunjang') }}"
+                              class="nav-link @if ($sidebar == 'riwayatpasienpenunjang') active @endif">
+                              <i class="bi bi-person-lines-fill nav-icon"></i>
+                              <p>Riwayat Pasien Penunjang</p>
+                          </a>
+                      </li>
+                      <li class="nav-item ">
                           <a href="{{ route('datauser') }}"
                               class="nav-link @if ($sidebar == 'datauser') active @endif">
                               <i class="bi bi-person-lines-fill nav-icon"></i>

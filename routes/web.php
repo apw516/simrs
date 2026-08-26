@@ -888,7 +888,6 @@ Route::get('/cetakresumebunuhdiri2/{kodekunjungan}', [Pdf2Controller::class, 'ce
 
 
 
-
 Route::get('/index_merger_berkas', [CasemixController::class, 'index_merger_berkas'])->name('index_merger_berkas');
 Route::post('/caridatakunjungan_casemix', [CasemixController::class, 'caridatakunjungan_casemix'])->name('caridatakunjungan_casemix');
 Route::get('/downloadberkas/{kode_kunjungan}', [CasemixController::class, 'downloadberkas'])->name('downloadberkas');
@@ -918,6 +917,13 @@ Route::post('/formassesmenbundir', [UpdateERMcontroller::class, 'formassesmenbun
 Route::post('/v_berkas_scan_kunjungan', [UpdateERMcontroller::class, 'v_berkas_scan_kunjungan'])->name('v_berkas_scan_kunjungan');
 Route::post('/asesmen-bunuh-diri/store', [UpdateERMcontroller::class, 'storeassbun'])->name('asesmen-bunuh-diri.store');
 
+// indexbillingpenunjang
+Route::get('indexbillingpenunjang', [BillingController::class, 'Billing'])->name('indexbillingpenunjang');
+Route::get('indexriwayatpasienpenunjang', [BillingController::class, 'indexriwayatpasienpenunjang'])->name('indexriwayatpasienpenunjang');
+Route::post('cari_pasien_penunjang', [BillingController::class, 'cari_pasien_penunjang'])->name('cari_pasien_penunjang');
+Route::post('cari_riwayat_pasien_penunjang', [BillingController::class, 'cari_riwayat_pasien_penunjang'])->name('cari_riwayat_pasien_penunjang');
+Route::post('ambil_form_billing_penunjang', [BillingController::class, 'ambil_form_billing_penunjang'])->name('ambil_form_billing_penunjang');
+Route::post('/billing/simpan-penunjang', [BillingController::class, 'simpanPenunjang'])->name('billing.simpan_penunjang');
 
 
 Route::get('farmasi.check-notif', [newFarmasiController::class, 'checkNotif'])->name('farmasi.check-notif');

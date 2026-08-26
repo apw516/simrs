@@ -5379,9 +5379,7 @@ class newFarmasiController extends FarmasiController
             // ->leftJoin('mt_unit as d', 'a.', '=', 'b.no_rm')
             ->whereDate('a.tgl_entry', $today)
             ->where('a.status_order', 1);
-
         $totalBaru = $query->count();
-
         // Ambil 5 order terbaru untuk ditampilkan di tabel alert
         $listOrder = $query->select([
             'a.kode_order_header',
@@ -5394,7 +5392,6 @@ class newFarmasiController extends FarmasiController
         ])
             ->orderBy('a.tgl_entry', 'ASC')
             ->get();
-
         return response()->json([
             'status'     => true,
             'total_baru' => $totalBaru,

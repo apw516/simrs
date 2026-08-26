@@ -4,7 +4,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Data Pasien</h1>
+                    <h1 class="m-0">Riwayat Pasien Penunjang</h1>
                 </div>
                 <!-- /.col -->
                 <div class="col-sm-6">
@@ -25,7 +25,7 @@
                 <div class="card card-outline card-primary shadow-sm">
                     <div class="card-header">
                         <h3 class="card-title font-weight-bold">
-                            <i class="fas fa-filter mr-1"></i> Filter Periode Tanggal Masuk Pasien
+                            <i class="fas fa-filter mr-1"></i> Filter Periode Tanggal Input Layanan
                         </h3>
                     </div>
                     <div class="card-body">
@@ -53,7 +53,7 @@
                                             value="{{ request('tgl_akhir') ?? date('Y-m-d') }}" required>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3 mb-2 mb-md-0">
+                                <div hidden class="form-group col-md-3 mb-2 mb-md-0">
                                     <label for="tgl_akhir" class="font-weight-bold">Jenis Pasien</label>
                                     <select class="form-control" id="jenispasien">
                                         <option value="1">Rawat Jalan</option>
@@ -63,7 +63,7 @@
                                 <!-- Tombol Aksi -->
                                 <div class="form-group col-md-3 mb-0">
                                     <button type="button" class="btn btn-primary shadow-sm"
-                                        onclick="caripasienpenunjang()">
+                                        onclick="caririwayatpasienpenunjang()">
                                         <i class="fas fa-search mr-1"></i> Tampilkan
                                     </button>
                                     <a href="{{ url()->current() }}" class="btn btn-secondary shadow-sm ml-1">
@@ -93,24 +93,22 @@
     </section>
     <script>
         $(document).ready(function() {
-            caripasienpenunjang()
+            caririwayatpasienpenunjang()
         });
 
-        function caripasienpenunjang() {
+        function caririwayatpasienpenunjang() {
             spinner = $('#loader')
             spinner.show();
             tanggalawal = $('#tgl_awal').val()
             tanggalakhir = $('#tgl_akhir').val()
-            jenispasien = $('#jenispasien').val()
             $.ajax({
                 type: 'post',
                 data: {
                     _token: "{{ csrf_token() }}",
                     tanggalawal,
                     tanggalakhir,
-                    jenispasien
                 },
-                url: '<?= route('cari_pasien_penunjang') ?>',
+                url: '<?= route('cari_riwayat_pasien_penunjang') ?>',
                 error: function(response) {
                     spinner.hide()
                     alert('something wrong ...')
