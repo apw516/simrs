@@ -1558,7 +1558,7 @@ class ErmController extends Controller
                         $pesan_rujukan = "Gagal memvalidasi data ke web service BPJS: " . $res->metaData->message;
                     }
                 } catch (\Exception $e) {
-                    $pesan_rujukan = "Terjadi kesalahan sistem bridging: " . $e->getMessage();
+                    // $pesan_rujukan = "Terjadi kesalahan sistem bridging: " . $e->getMessage();
                 }
             }
         }
