@@ -924,6 +924,8 @@ Route::post('cari_pasien_penunjang', [BillingController::class, 'cari_pasien_pen
 Route::post('cari_riwayat_pasien_penunjang', [BillingController::class, 'cari_riwayat_pasien_penunjang'])->name('cari_riwayat_pasien_penunjang');
 Route::post('ambil_form_billing_penunjang', [BillingController::class, 'ambil_form_billing_penunjang'])->name('ambil_form_billing_penunjang');
 Route::post('/billing/simpan-penunjang', [BillingController::class, 'simpanPenunjang'])->name('billing.simpan_penunjang');
+Route::post('ambil_hasil_expertisi_pa', [BillingController::class, 'ambil_hasil_expertisi_pa'])->name('ambil_hasil_expertisi_pa');
+Route::post('expertisi.generate_nomor', [BillingController::class, 'generatenomorsediaan'])->name('expertisi.generate_nomor');
 
 
 Route::get('farmasi.check-notif', [newFarmasiController::class, 'checkNotif'])->name('farmasi.check-notif');

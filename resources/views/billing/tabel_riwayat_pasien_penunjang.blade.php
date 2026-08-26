@@ -9,7 +9,7 @@
             <th>Unit Pengirim</th>
             <th>Tgl Entry / Kunjungan</th>
             <th class="text-center">Status</th>
-            <th class="text-center" style="width: 80px;">Aksi</th>
+            <th class="text-center" style="width: 180px;">Aksi</th>
         </tr>
     </thead>
     <tbody>
@@ -50,14 +50,11 @@
                     @endif
                 </td>
                 <td class="text-center">
-                    {{-- <a href="{{ route('billing.penunjang', ['kode' => $row->kode_kunjungan]) }}"
-                                        class="btn btn-sm btn-primary" title="Proses Order / Billing">
-                                        <i class="fa-solid fa-arrow-right"></i>
-                                    </a> --}}
-                    <a class="btn btn-sm btn-primary" title="Detail Layanan">
+                    <a class="btn btn-sm btn-primary" title="Detail Layanan" idlayanan="{{ $row->id_layanan_header }}">
                         <i class="bi bi-eye"></i>
                     </a>
-                    <a class="btn btn-sm btn-success" title="Lihat Hasil Expertisi">
+                    <a class="btn btn-sm btn-success lihathasilexpertisi" title="Lihat Hasil Expertisi"
+                        idlayanan="{{ $row->id_layanan_header }}" data-toggle="modal" data-target="#modalexpertisi">
                         <i class="bi bi-eye"></i>
                     </a>
                 </td>
@@ -72,3 +69,69 @@
         @endforelse
     </tbody>
 </table>
+<!-- Modal -->
+<div class="modal fade" id="modalexpertisi" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hasil Expertisi PA</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_hasil_expertisi">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        // Inisialisasi DataTables
+        var table = $('#tableLayanan').DataTable({
+            "language": {
+                "search": "Cari Pasien:",
+                "lengthMenu": "Tampilkan _MENU_ data per halaman",
+                "zeroRecords": "Data tidak ditemukan",
+                "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+                "infoEmpty": "Tidak ada data tersedia",
+                "infoFiltered": "(disaring dari total _MAX_ data)",
+                "paginate": {
+                    "first": "Pertama",
+                    "last": "Terakhir",
+                    "next": "Lanjut",
+                    "previous": "Kembali"
+                }
+            },
+            "pageLength": 10,
+            "order": [
+                [7, "desc"]
+            ] // Urutkan berdasarkan Tanggal Masuk
+        });
+        // Event Handler saat Tombol "Pilih" Diklik
+        $('#tableLayanan').on('click', '.lihathasilexpertisi', function() {
+            var id_layanan_header = $(this).attr('idlayanan');
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id_layanan_header
+                },
+                url: '<?= route('ambil_hasil_expertisi_pa') ?>',
+                error: function(response) {
+                    spinner.hide()
+                    alert('something wrong ...')
+                },
+                success: function(response) {
+                    spinner.hide()
+                    $('.v_hasil_expertisi').html(response);
+                }
+            });
+        });
+    });
+</script>

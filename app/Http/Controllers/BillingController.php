@@ -79,6 +79,7 @@ class BillingController extends Controller
             ->join('ts_kunjungan as b', 'a.kode_kunjungan', '=', 'b.kode_kunjungan')
             ->select([
                 'a.kode_kunjungan',
+                'a.id as id_layanan_header',
                 'a.kode_layanan_header',
                 'b.no_rm',
                 DB::raw('fc_nama_px(b.no_rm) as nama_pasien'),
@@ -317,5 +318,87 @@ class BillingController extends Controller
         }
         date_default_timezone_set('Asia/Jakarta');
         return 'DET' . date('ymd') . $kd;
+    }
+    public function ambil_hasil_expertisi_pa(Request $request)
+    {
+        $ID_HEADER = $request->id_layanan_header;
+        $expertisi = db::select('select * from ts_hasil_expertisi_pa where id_header = ?', [$ID_HEADER]);
+        return view('billing.form_expertisi_pa', compact([
+            'expertisi',
+            'ID_HEADER'
+        ]));
+    }
+    public function generatenomorsediaan(Request $request)
+    {
+        $id_header = $request->id_header;
+        $jenis = $request->jenis_pemeriksaan;
+        $get_sediaan = $this->getnomorsediaan($jenis);
+        $data_sediaan = [
+            'no_sediaan' => $get_sediaan,
+            'tanggal' => $this->get_date(),
+            'jenis_pemeriksaan' => $jenis,
+        ];
+        $lyheader = db::select('select * from ts_layanan_header where id = ?', [$id_header]);
+        $lydetail = db::select('select * from ts_layanan_detail where row_id_header = ?', [$id_header]);
+        $kode_kunjungan = $lyheader[0]->kode_kunjungan;
+        $kunjungan = db::select('select *,fc_nama_unit1(kode_unit) as unit_asal from ts_kunjungan where kode_kunjungan = ?', [$kode_kunjungan]);
+        DB::table('mt_nomor_sediaan_pa')->insert($data_sediaan);
+        $ts_expertisi = [
+            'kode_unit' => '3020',
+            'kode_kunjungan' => $kode_kunjungan,
+            'no_rm' => $kunjungan[0]->no_rm,
+            'counter' => $kunjungan[0]->counter,
+            'kode_header' => $lyheader[0]->kode_layanan_header,
+            'id_header' => $id_header,
+            'id_detail' => $lydetail[0]->id,
+            'unit_asal' => $kunjungan[0]->unit_asal,
+            'validasi' => '0',
+            'cetak' => '0',
+            'no_periksa' => $get_sediaan,
+            'tgl_input_layanan' => $this->get_now()
+        ];
+        DB::table('ts_hasil_expertisi_pa')->insert($ts_expertisi);
+    }
+    public function get_date()
+    {
+        $dt = Carbon::now()->timezone('Asia/Jakarta');
+        $date = $dt->toDateString();
+        $now = $date;
+        return $now;
+    }
+    public function getnomorsediaan($jenis)
+    {
+        $q = DB::connection('mysql')->select('SELECT id,no_sediaan,RIGHT(no_sediaan,3) AS kd_max  FROM mt_nomor_sediaan_pa
+        WHERE DATE(tanggal) = CURDATE() AND jenis_pemeriksaan = ?
+        ORDER BY id DESC
+        LIMIT 1', [$jenis]);
+        $kd = "";
+        if (count($q) > 0) {
+            foreach ($q as $k) {
+                $tmp = ((int) $k->kd_max) + 1;
+                $kd = sprintf("%03s", $tmp);
+            }
+        } else {
+            $kd = "001";
+        }
+
+        if ($jenis == '1') {
+            $prefix = 'H';
+        } else if ($jenis == '2') {
+            $prefix = 'F';
+        } else if ($jenis == '3') {
+            $prefix = 'S';
+        }
+
+        date_default_timezone_set('Asia/Jakarta');
+        return $prefix . '-' . date('ym') . $kd;
+    }
+    public function get_now()
+    {
+        $dt = Carbon::now()->timezone('Asia/Jakarta');
+        $date = $dt->toDateString();
+        $time = $dt->toTimeString();
+        $now = $date . ' ' . $time;
+        return $now;
     }
 }
