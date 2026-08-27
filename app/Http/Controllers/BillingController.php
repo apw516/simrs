@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\ts_layanan_detail;
 use App\Models\ts_layanan_header;
+use Barryvdh\DomPDF\Facade\Pdf; // If you added the facade alias
 
 class BillingController extends Controller
 {
@@ -27,6 +28,19 @@ class BillingController extends Controller
             // 'data_pasien' => DB::select("CALL SP_PANGGIL_PASIEN_PENUNJANG_BARU_RI('','','')")
         ]);
     }
+    public function indexexpertisipa()
+    {
+        $title = 'SIMRS - Expertisi Patologi Anatomi';
+        $sidebar = 'expertisipatologi';
+        $sidebar_m = 'expertisipatologi';
+        $unit = auth()->user()->unit;
+        return view('billing.index_expertisi_pat', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+            // 'data_pasien' => DB::select("CALL SP_PANGGIL_PASIEN_PENUNJANG_BARU_RI('','','')")
+        ]);
+    }
     public function indexriwayatpasienpenunjang()
     {
         $title = 'SIMRS - Billing Penunjang';
@@ -39,6 +53,39 @@ class BillingController extends Controller
             'sidebar_m' => $sidebar_m,
             // 'data_pasien' => DB::select("CALL SP_PANGGIL_PASIEN_PENUNJANG_BARU_RI('','','')")
         ]);
+    }
+    public function cari_hasil_expertisi_pa(Request $request)
+    {
+        $tgl_awal = $request->tanggalawal;
+        $tgl_akhir = $request->tanggalakhir;
+        $data = DB::table('ts_hasil_expertisi_pa as a')
+            ->join('ts_kunjungan as b', 'a.kode_kunjungan', '=', 'b.kode_kunjungan')
+            ->join('ts_layanan_detail as c', 'a.id_detail', '=', 'c.id')
+            ->join('mt_tarif_detail as d', 'c.kode_tarif_detail', '=', 'd.KODE_TARIF_DETAIL')
+            ->join('mt_tarif_header as e', 'd.KODE_TARIF_HEADER', '=', 'e.KODE_TARIF_HEADER')
+            ->select([
+                'a.kode_kunjungan',
+                'a.id as id_Ex',
+                'b.tgl_masuk',
+                'b.status_kunjungan',
+                'b.no_rm',
+                DB::raw('fc_nama_px(b.no_rm) AS nama_pasien'),
+                DB::raw('fc_alamat(b.no_rm) AS alamat_pasien'),
+                DB::raw('fc_NAMA_PENJAMIN2(b.kode_penjamin) AS nama_penjamin'),
+                'a.kode_header AS kode_layanan_header',
+                'a.id_detail',
+                'a.unit_asal',
+                'a.kode_dokter',
+                DB::raw('fc_NAMA_PARAMEDIS1(a.kode_dokter) AS nama_dokter'),
+                'c.kode_tarif_detail',
+                'e.NAMA_TARIF',
+                'a.*',
+            ])
+            ->whereBetween(DB::raw('DATE(tgl_input_layanan)'), [$tgl_awal, $tgl_akhir])
+            ->get();
+        return view('billing.tabel_hasil_expertisi_pa', compact([
+            'data'
+        ]));
     }
     public function cari_pasien_penunjang(Request $request)
     {
@@ -323,9 +370,62 @@ class BillingController extends Controller
     {
         $ID_HEADER = $request->id_layanan_header;
         $expertisi = db::select('select * from ts_hasil_expertisi_pa where id_header = ?', [$ID_HEADER]);
+        if ($expertisi) {
+            $data_2 = DB::table('ts_hasil_expertisi_pa as a')
+                ->join('ts_kunjungan as b', 'a.kode_kunjungan', '=', 'b.kode_kunjungan')
+                ->join('ts_layanan_detail as c', 'a.id_detail', '=', 'c.id')
+                ->join('mt_tarif_detail as d', 'c.kode_tarif_detail', '=', 'd.KODE_TARIF_DETAIL')
+                ->join('mt_tarif_header as e', 'd.KODE_TARIF_HEADER', '=', 'e.KODE_TARIF_HEADER')
+                ->select([
+                    'a.kode_kunjungan',
+                    'a.id as id_Ex',
+                    'b.tgl_masuk',
+                    'b.status_kunjungan',
+                    'b.no_rm',
+                    DB::raw('fc_nama_px(b.no_rm) AS nama_pasien'),
+                    DB::raw('fc_alamat(b.no_rm) AS alamat_pasien'),
+                    DB::raw('fc_NAMA_PENJAMIN2(b.kode_penjamin) AS nama_penjamin'),
+                    'a.kode_header AS kode_layanan_header',
+                    'a.id_detail',
+                    'a.unit_asal',
+                    'a.kode_dokter',
+                    DB::raw('fc_NAMA_PARAMEDIS1(a.kode_dokter) AS nama_dokter'),
+                    'c.kode_tarif_detail',
+                    'e.NAMA_TARIF',
+                    'a.*',
+                ])
+                ->where('b.kode_kunjungan', '=', $expertisi[0]->kode_kunjungan)
+                ->first();
+        } else {
+            $data_2 = [];
+        }
+        $result = DB::table('ts_layanan_header as a')
+            ->join('ts_layanan_detail as b', 'a.id', '=', 'b.row_id_header')
+            ->join('mt_tarif_detail as c', 'b.kode_tarif_detail', '=', 'c.KODE_TARIF_DETAIL')
+            ->join('mt_tarif_header as d', 'c.KODE_TARIF_HEADER', '=', 'd.KODE_TARIF_HEADER')
+            ->join('ts_kunjungan as e', 'a.kode_kunjungan', '=', 'e.kode_kunjungan')
+            ->select(
+                'a.kode_kunjungan',
+                'e.no_rm',
+                DB::raw('fc_nama_px(e.no_rm) AS nama_pasien'),
+                DB::raw('fc_NAMA_PENJAMIN2(e.kode_penjamin) AS nama_penjamin'),
+                DB::raw('fc_NAMA_PARAMEDIS1(e.kode_paramedis) AS dokter_pengirim'),
+                DB::raw('fc_NAMA_PARAMEDIS1(b.kode_dokter1) AS dokter_pemeriksa'),
+                'a.kode_layanan_header',
+                'a.total_layanan',
+                'a.status_layanan',
+                'b.grantotal_layanan as total_detail',
+                'b.jumlah_layanan',
+                'b.kode_tarif_detail',
+                'd.NAMA_TARIF'
+            )
+            ->where('a.id', $ID_HEADER)
+            ->get();
         return view('billing.form_expertisi_pa', compact([
             'expertisi',
-            'ID_HEADER'
+            'ID_HEADER',
+            'data_2',
+            'result'
         ]));
     }
     public function generatenomorsediaan(Request $request)
@@ -358,6 +458,13 @@ class BillingController extends Controller
             'tgl_input_layanan' => $this->get_now()
         ];
         DB::table('ts_hasil_expertisi_pa')->insert($ts_expertisi);
+        return response()->json([
+            'success'       => 'success',
+            'status'       => 'success',
+            'no_sediaan'       => $get_sediaan,
+            'message'      => 'Data order & billing penunjang berhasil disimpan!',
+            'redirect_url' => route('indexbillingpenunjang') // Ganti sesuai route tujuan Anda (opsional)
+        ], 200);
     }
     public function get_date()
     {
@@ -400,5 +507,128 @@ class BillingController extends Controller
         $time = $dt->toTimeString();
         $now = $date . ' ' . $time;
         return $now;
+    }
+    public function ambil_form_expertisi_pa(Request $request)
+    {
+        $id_ex = $request->id_expertisi;
+        $data = DB::table('ts_hasil_expertisi_pa')
+            ->where('id', $id_ex)
+            ->first();
+        $kode_kunjungan = $data->kode_kunjungan;
+        $datakunjungan = DB::table('ts_kunjungan')
+            ->select([
+                'counter',
+                'kode_kunjungan',
+                'no_rm',
+                DB::raw('fc_nama_px(no_rm) AS nama_pasien'),
+                DB::raw('fc_alamat(no_rm) AS alamat_pasien'),
+                DB::raw('fc_nama_unit1(kode_unit) AS nama_unit'),
+                'tgl_masuk',
+                'status_kunjungan',
+                DB::raw('fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin'),
+            ])
+            ->where('kode_kunjungan', '=', $kode_kunjungan)
+            // Kondisi dinamis berdasarkan jenis pasien
+            ->get();
+
+        $data_2 = DB::table('ts_hasil_expertisi_pa as a')
+            ->join('ts_kunjungan as b', 'a.kode_kunjungan', '=', 'b.kode_kunjungan')
+            ->join('ts_layanan_detail as c', 'a.id_detail', '=', 'c.id')
+            ->join('mt_tarif_detail as d', 'c.kode_tarif_detail', '=', 'd.KODE_TARIF_DETAIL')
+            ->join('mt_tarif_header as e', 'd.KODE_TARIF_HEADER', '=', 'e.KODE_TARIF_HEADER')
+            ->select([
+                'a.kode_kunjungan',
+                'a.id as id_Ex',
+                'b.tgl_masuk',
+                'b.status_kunjungan',
+                'b.no_rm',
+                DB::raw('fc_nama_px(b.no_rm) AS nama_pasien'),
+                DB::raw('fc_alamat(b.no_rm) AS alamat_pasien'),
+                DB::raw('fc_NAMA_PENJAMIN2(b.kode_penjamin) AS nama_penjamin'),
+                'a.kode_header AS kode_layanan_header',
+                'a.id_detail',
+                'a.unit_asal',
+                'a.kode_dokter',
+                DB::raw('fc_NAMA_PARAMEDIS1(a.kode_dokter) AS nama_dokter'),
+                'c.kode_tarif_detail',
+                'e.NAMA_TARIF',
+                'a.*',
+            ])
+            ->where('b.kode_kunjungan', '=', $kode_kunjungan)
+            ->first();
+        return view('billing.form_expertisi_pa2', compact([
+            'data',
+            'datakunjungan',
+            'data_2'
+        ]));
+    }
+    public function simpanExpertisi(Request $request, $id)
+    {
+        // Validasi input jika diperlukan
+        $request->validate([
+            'makroskopis' => 'nullable|string',
+            'mikroskopis' => 'nullable|string',
+            'kesimpulan'  => 'nullable|string',
+        ]);
+        // try {
+        // Update data menggunakan Query Builder DB::table
+        DB::table('ts_hasil_expertisi_pa')
+            ->where('id', $id)
+            ->update([
+                'tipe'          => $request->jenis_sampel,
+                'kritis'             => $request->has('is_kritis') ? 1 : 0,
+                'cito'               => $request->has('is_cyto') ? 1 : 0,
+                'hasil'           => $request->makroskopis . ' | ' . $request->mikroskopis . ' | ' . $request->kesimpulan,
+                'kode_dokter' => auth()->user()->kode_paramedis,
+                'diagnostik_klinik'     => $request->diagnostik_klinik,
+                'diagnostik_pasca_bedah' => $request->diagnostik_pasca_bedah,
+                'validasi'           => $request->has('is_validasi') ? 2 : 1,
+                'tgl_baca'            => now(), // Sesuaikan jika ada timestamp
+            ]);
+
+        return redirect()->back()->with('success', 'Data hasil expertisi PA berhasil disimpan.');
+        // } catch (\Exception $e) {
+        //     return redirect()->back()->with('error', 'Gagal menyimpan data: ' . $e->getMessage());
+        // }
+    }
+    public function cetakexpa($id)
+    {
+        $data = DB::table('ts_layanan_header as a')
+            ->join('ts_hasil_expertisi_pa as b', 'a.id', '=', 'b.id_header')
+            ->join('ts_kunjungan as e', 'a.kode_kunjungan', '=', 'e.kode_kunjungan')
+            ->select(
+                'a.id as id_header',
+                'a.kode_kunjungan',
+                'e.no_rm',
+                DB::raw('fc_nama_px(e.no_rm) AS nama_pasien'),
+                DB::raw('fc_NAMA_PENJAMIN2(e.kode_penjamin) AS nama_penjamin'),
+                DB::raw('fc_NAMA_PARAMEDIS1(e.kode_paramedis) AS dokter_pengirim'),
+                DB::raw('fc_NAMA_PARAMEDIS1(b.kode_dokter) AS dokter_pemeriksa'),
+                'b.no_periksa',
+                'b.tipe as jenis_sampel',
+                'b.hasil',
+                'b.tgl_baca',
+                'b.diagnostik_klinik',
+                'b.diagnostik_pasca_bedah'
+            )
+            ->where('a.id', $id)
+            ->first();
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamat_pasien from mt_pasien where no_rm = ?',[$data->no_rm]);
+        // Safety check jika data tidak ditemukan
+        if (!$data) {
+            abort(404, 'Data Expertisi tidak ditemukan.');
+        }
+
+        // Parsing field hasil (Makroskopis | Mikroskopis | Kesimpulan)
+        $hasil_split = isset($data->hasil) ? array_map('trim', explode('|', $data->hasil)) : [];
+        $data->makroskopis = $hasil_split[0] ?? '-';
+        $data->mikroskopis = $hasil_split[1] ?? '-';
+        $data->kesimpulan  = $hasil_split[2] ?? '-';
+        // Render PDF menggunakan Dompdf
+        $pdf = Pdf::loadView('billing.cetak_expertisi_PA', compact('data','mt_pasien'))
+            ->setPaper('a4', 'portrait');
+
+        // Stream langsung di browser (tab baru)
+        return $pdf->stream('Expertisi_PA_' . ($data->no_periksa ?? $id) . '.pdf');
     }
 }

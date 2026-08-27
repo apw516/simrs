@@ -470,13 +470,12 @@
                           </li>
                       </div>
                   @endif
-                  @if (auth()->user()->hak_akses == 3)
+                  {{-- @if (auth()->user()->hak_akses == 3)
                       <li class="nav-header"></i>PENUNJANG</li>
                       <li class="nav-item">
                           <a href="{{ route('ordermasuk') }}"
                               class="nav-link @if ($sidebar_m == 6) active @endif"">
                               <i class="bi bi-bag nav-icon"></i>
-                              {{-- <i class="bi bi-person-lines-fill nav-icon"></i> --}}
                               <p>ORDER MASUK</p>
                               <input hidden type="text" id="value1">
                               <input hidden type="text" id="value2">
@@ -485,7 +484,6 @@
                       </li>
                       <li class="nav-item">
                           <a href="" class="nav-link">
-                              {{-- <i class="bi bi-person-lines-fill nav-icon"></i> --}}
                               <i class="bi bi-search  nav-icon"></i>
                               <p>CARI PASIEN</p>
                           </a>
@@ -496,7 +494,7 @@
                               <p>RIWAYAT PELAYANAN</p>
                           </a>
                       </li>
-                  @endif
+                  @endif --}}
                   @if (auth()->user()->hak_akses == 4 || auth()->user()->hak_akses == 5 || auth()->user()->hak_akses == 7)
                       @if (auth()->user()->hak_akses == 1 || auth()->user()->hak_akses == 4)
                           <li class="nav-item">
@@ -548,22 +546,37 @@
                           </li>
                       @endif
                   @endif
+                  @if (auth()->user()->unit == '3020')
+                      <li class="nav-header"> <i class="nav-icon bi bi-meta mr-2"></i> PATOLOGI ANATOMI</li>
+                      @if (auth()->user()->hak_akses == 3)
+                          <li class="nav-item ">
+                              <a href="{{ route('indexbillingpenunjang') }}"
+                                  class="nav-link @if ($sidebar == 'billingpenunjang') active @endif">
+                                  <i class="bi bi-journal-medical nav-icon"></i>
+                                  <p>Billing Penunjang</p>
+                              </a>
+                          </li>
+                          <li class="nav-item ">
+                              <a href="{{ route('indexriwayatpasienpenunjang') }}"
+                                  class="nav-link @if ($sidebar == 'riwayatpasienpenunjang') active @endif">
+                                  <i class="bi bi-journal-medical nav-icon"></i>
+                                  <p>Riwayat Pasien Penunjang</p>
+                              </a>
+                          </li>
+                      @endif
+                      @if (auth()->user()->hak_akses == 55)
+                          <li class="nav-item ">
+                              <a href="{{ route('indexexpertisipa') }}"
+                                  class="nav-link @if ($sidebar == 'expertisipatologi') active @endif">
+                                  <i class="bi bi-journal-medical nav-icon"></i>
+                                  <p>Expertisi Patologi Anatomi</p>
+                              </a>
+                          </li>
+                      @endif
+                  @endif
                   @if (auth()->user()->nama == 'agyl')
                       <li class="nav-header"> <i class="nav-icon bi bi-person-circle mr-2"></i> ADMIN IT</li>
-                      <li class="nav-item ">
-                          <a href="{{ route('indexbillingpenunjang') }}"
-                              class="nav-link @if ($sidebar == 'billingpenunjang') active @endif">
-                              <i class="bi bi-person-lines-fill nav-icon"></i>
-                              <p>Billing Penunjang</p>
-                          </a>
-                      </li>
-                      <li class="nav-item ">
-                          <a href="{{ route('indexriwayatpasienpenunjang') }}"
-                              class="nav-link @if ($sidebar == 'riwayatpasienpenunjang') active @endif">
-                              <i class="bi bi-person-lines-fill nav-icon"></i>
-                              <p>Riwayat Pasien Penunjang</p>
-                          </a>
-                      </li>
+
                       <li class="nav-item ">
                           <a href="{{ route('datauser') }}"
                               class="nav-link @if ($sidebar == 'datauser') active @endif">

@@ -50,10 +50,10 @@
                     @endif
                 </td>
                 <td class="text-center">
-                    <a class="btn btn-sm btn-primary" title="Detail Layanan" idlayanan="{{ $row->id_layanan_header }}">
+                    {{-- <a class="btn btn-sm btn-primary" title="Detail Layanan" idlayanan="{{ $row->id_layanan_header }}">
                         <i class="bi bi-eye"></i>
-                    </a>
-                    <a class="btn btn-sm btn-success lihathasilexpertisi" title="Lihat Hasil Expertisi"
+                    </a> --}}
+                    <a class="btn btn-sm btn-success lihathasilexpertisi" title="Lihat detail layanan"
                         idlayanan="{{ $row->id_layanan_header }}" data-toggle="modal" data-target="#modalexpertisi">
                         <i class="bi bi-eye"></i>
                     </a>
@@ -74,7 +74,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Hasil Expertisi PA</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Detail Layanan</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -115,6 +115,9 @@
         });
         // Event Handler saat Tombol "Pilih" Diklik
         $('#tableLayanan').on('click', '.lihathasilexpertisi', function() {
+
+            spinner = $('#loader');
+            spinner.show();
             var id_layanan_header = $(this).attr('idlayanan');
             $.ajax({
                 type: 'post',
@@ -128,8 +131,8 @@
                     alert('something wrong ...')
                 },
                 success: function(response) {
-                    spinner.hide()
                     $('.v_hasil_expertisi').html(response);
+                    spinner.hide()
                 }
             });
         });
