@@ -207,7 +207,7 @@
             <td class="lbl" style="width: 90px;">Tanggal</td>
             <td class="sep">:</td>
             <td style="width: 32%;">
-                {{ isset($data->tgl_baca) ? date('d-m-Y', strtotime($data->tgl_baca)) : date('d-m-Y') }}</td>
+                {{ isset($data->tgl_input_layanan) ? date('d-m-Y', strtotime($data->tgl_input_layanan)) : date('d-m-Y') }}</td>
 
             <td class="lbl" style="width: 130px;">Nomor pemeriksaan</td>
             <td class="sep">:</td>
@@ -229,7 +229,7 @@
 
             <td class="lbl">Tanggal selesai</td>
             <td class="sep">:</td>
-            <td>{{ isset($data->tgl_selesai) ? date('d-m-Y', strtotime($data->tgl_selesai)) : date('d-m-Y') }}</td>
+            <td>{{ isset($data->tgl_baca) ? date('d-m-Y', strtotime($data->tgl_baca)) : date('d-m-Y') }}</td>
         </tr>
         <tr>
             <td class="lbl">Tanggal lahir</td>

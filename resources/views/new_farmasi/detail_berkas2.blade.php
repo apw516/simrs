@@ -70,6 +70,11 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link font-weight-bold" id="labPA-tab" data-toggle="tab" href="#labPA" role="tab">
+                <i class="fas fa-vials mr-1"></i> Hasil Lab PA                
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link font-weight-bold" id="rad-tab" data-toggle="tab" href="#rad" role="tab">
                 <i class="fas fa-x-ray mr-1"></i> Hasil Radiologi
                 @if (isset($rad_terpilih) && count($rad_terpilih) > 0)
@@ -186,6 +191,48 @@
                                 </div>
                                 <div class="embed-responsive embed-responsive-16by9 mb-3" style="min-height: 480px;">
                                     <iframe class="embed-responsive-item" src="{{ $urlPdfLab }}"
+                                        allowfullscreen></iframe>
+                                </div>
+                                @if (!$loop->last)
+                                    <hr class="my-3">
+                                @endif
+                            @else
+                                <div class="text-center py-4 text-muted">
+                                    <i class="fas fa-exclamation-triangle text-warning mb-2 fa-2x"></i>
+                                    <p>URL berkas PDF untuk hasil lab ini tidak valid atau kosong.</p>
+                                </div>
+                            @endif
+                        @endforeach
+                    @else
+                        <div class="text-center py-5 text-muted">
+                            <i class="fas fa-info-circle fa-3x mb-3 text-info"></i>
+                            <p class="mb-0">Tidak ada berkas PDF hasil laboratorium untuk kode kunjungan ini.</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="labPA" role="tabpanel">
+            <div class="card shadow-sm">
+                <div class="card-body p-2">
+                    @if (isset($layananheaderPA) && count($layananheaderPA) > 0)
+                        @foreach ($layananheaderPA as $index => $labPA)
+                            @php
+                                $urlPdfLab = $labPA->id ?? ($labPA->id ?? ($labPA->id ?? null));
+                            @endphp
+                            @if ($urlPdfLab)
+                                <div class="d-flex justify-content-between align-items-center mb-2 px-2">
+                                    <span class="font-weight-bold text-dark">
+                                        <i class="fas fa-file-pdf text-danger mr-1"></i> Hasil Lab
+                                        #{{ $index + 1 }}
+                                    </span>
+                                    <a href="{{ route('expertisi.cetak', ['id' => $urlPdfLab]) }}" target="_blank"
+                                        class="btn btn-xs btn-outline-primary">
+                                        <i class="fas fa-external-link-alt mr-1"></i> Buka di Tab Baru
+                                    </a>
+                                </div>
+                                <div class="embed-responsive embed-responsive-16by9 mb-3" style="min-height: 480px;">
+                                    <iframe class="embed-responsive-item" src="{{ route('expertisi.cetak', ['id' => $urlPdfLab]) }}"
                                         allowfullscreen></iframe>
                                 </div>
                                 @if (!$loop->last)

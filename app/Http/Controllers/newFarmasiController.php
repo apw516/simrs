@@ -5044,6 +5044,7 @@ class newFarmasiController extends FarmasiController
         try {
             // Ambil data layanan header
             $layananheader = DB::select('SELECT * FROM ts_layanan_header WHERE kode_kunjungan = ? and kode_unit = ?', [$kodekunjungan, '4008']);
+            $layananheaderPA = DB::select('SELECT * FROM ts_layanan_header WHERE kode_kunjungan = ? and kode_unit = ?', [$kodekunjungan, '3020']);
             $idresep = '';
             $detail_obat = '';
             $urlCetakNota = '';
@@ -5101,7 +5102,7 @@ class newFarmasiController extends FarmasiController
                 $urlCetakResume = '';
             }
             // dd($urlCetakResume->content);
-            $html = view('new_farmasi.detail_berkas2', compact('layananheader', 'ts_kunjungan', 'detail_obat', 'urlCetakSEP', 'urlCetakNota', 'lab_terpilih', 'LINK_RADIOLOGI', 'idresep', 'urlCetakResume', 'urlLembarKonsul', 'urlExpertisiPoli', 'urlCetakHD', 'gambarscan'))->render();
+            $html = view('new_farmasi.detail_berkas2', compact('layananheader', 'ts_kunjungan', 'detail_obat', 'urlCetakSEP', 'urlCetakNota', 'lab_terpilih', 'LINK_RADIOLOGI', 'idresep', 'urlCetakResume', 'urlLembarKonsul', 'urlExpertisiPoli', 'urlCetakHD', 'gambarscan','layananheaderPA'))->render();
             return response()->json([
                 'status'       => 'success',
                 'message'      => 'Data detail berhasil dimuat',

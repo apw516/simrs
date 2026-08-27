@@ -607,10 +607,12 @@ class BillingController extends Controller
                 DB::raw('fc_NAMA_PENJAMIN2(e.kode_penjamin) AS nama_penjamin'),
                 DB::raw('fc_NAMA_PARAMEDIS1(e.kode_paramedis) AS dokter_pengirim'),
                 DB::raw('fc_NAMA_PARAMEDIS1(b.kode_dokter) AS dokter_pemeriksa'),
+                DB::raw('fc_NAMA_UNIT1(e.kode_unit) AS nama_ruangan'),
                 'b.no_periksa',
                 'b.tipe as jenis_sampel',
                 'b.hasil',
                 'b.tgl_baca',
+                'b.tgl_input_layanan',
                 'b.diagnostik_klinik',
                 'b.diagnostik_pasca_bedah'
             )
