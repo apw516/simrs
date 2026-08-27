@@ -105,7 +105,7 @@ class BillingController extends Controller
                 DB::raw('fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin'),
             ])
             ->whereBetween(DB::raw('DATE(tgl_masuk)'), [$tgl_awal, $tgl_akhir])
-            ->where('status_kunjungan', '!=', 8)
+            ->whereNotIn('status_kunjungan', [2, 8,3])
             // Kondisi dinamis berdasarkan jenis pasien
             ->when($jenispasien == 1, function ($query) {
                 return $query->where('kode_unit', '<', 2000);
