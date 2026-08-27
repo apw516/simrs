@@ -8,6 +8,8 @@ use Carbon\Carbon;
 use App\Models\ts_layanan_detail;
 use App\Models\ts_layanan_header;
 use Barryvdh\DomPDF\Facade\Pdf; // If you added the facade alias
+use App\Models\ModelBSRE;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class BillingController extends Controller
 {
@@ -67,6 +69,7 @@ class BillingController extends Controller
                 'a.kode_kunjungan',
                 'a.id as id_Ex',
                 'b.tgl_masuk',
+                'c.row_id_header as id_lyheader',
                 'b.status_kunjungan',
                 'b.no_rm',
                 DB::raw('fc_nama_px(b.no_rm) AS nama_pasien'),
@@ -105,7 +108,7 @@ class BillingController extends Controller
                 DB::raw('fc_NAMA_PENJAMIN2(kode_penjamin) AS nama_penjamin'),
             ])
             ->whereBetween(DB::raw('DATE(tgl_masuk)'), [$tgl_awal, $tgl_akhir])
-            ->whereNotIn('status_kunjungan', [2, 8,3])
+            ->whereNotIn('status_kunjungan', [2, 8, 3])
             // Kondisi dinamis berdasarkan jenis pasien
             ->when($jenispasien == 1, function ($query) {
                 return $query->where('kode_unit', '<', 2000);
@@ -613,7 +616,7 @@ class BillingController extends Controller
             )
             ->where('a.id', $id)
             ->first();
-        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamat_pasien from mt_pasien where no_rm = ?',[$data->no_rm]);
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamat_pasien from mt_pasien where no_rm = ?', [$data->no_rm]);
         // Safety check jika data tidak ditemukan
         if (!$data) {
             abort(404, 'Data Expertisi tidak ditemukan.');
@@ -625,7 +628,36 @@ class BillingController extends Controller
         $data->mikroskopis = $hasil_split[1] ?? '-';
         $data->kesimpulan  = $hasil_split[2] ?? '-';
         // Render PDF menggunakan Dompdf
-        $pdf = Pdf::loadView('billing.cetak_expertisi_PA', compact('data','mt_pasien'))
+        $kodekunjungan = $data->kode_kunjungan;
+        $cek_tte_lokal = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and jenis_dokumen = ?', [$kodekunjungan, 'EXPERTISI PA']);
+        $cetakanke = 0;
+        if (count($cek_tte_lokal) > 0) {
+            $t = count($cek_tte_lokal) + 1;
+            $nama = 'Expertisi_PA' . $t;
+            $cetakanke = $t;
+        } else {
+            $savee = [
+                'kode_kunjungan' => $kodekunjungan,
+                'status_code' => '200',
+                'tgl_kirim' => $this->get_now(),
+                'jenis_dokumen' => 'EXPERTISI PA',
+            ];
+            db::table('log_ttd_elektronik')->insert($savee);
+            $nama = 'Expertisi_PA' . '1';
+            $cetakanke = 1;
+        }
+        $sendttelokal = [
+            'id_dokumen' => $nama . $kodekunjungan,
+            'nama_user' => $data->dokter_pemeriksa,
+            'tanggal_verifikasi' => $data->tgl_baca,
+            'jabatan' => "Dokter",
+        ];
+        $v = new ModelBSRE();
+        $DD = $v->sendpdftosiramah($sendttelokal);
+        $url1 = "https://siramah.rsudwaled.com/filetandatangan?id=" . $nama . $kodekunjungan;
+        $qrtte = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url1));
+
+        $pdf = Pdf::loadView('billing.cetak_expertisi_PA', compact('data', 'mt_pasien','qrtte','cetakanke'))
             ->setPaper('a4', 'portrait');
 
         // Stream langsung di browser (tab baru)

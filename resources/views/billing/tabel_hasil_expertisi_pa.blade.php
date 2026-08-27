@@ -2,20 +2,21 @@
     <thead class="thead-light">
         <tr>
             <th class="text-center align-middle" style="width: 40px;">No</th>
+            <th class="align-middle" style="width: 200px;">Tanggal Kunjungan</th>
             <th class="align-middle">No. RM / Nama Pasien</th>
             <th class="align-middle">Nomor Sediaan</th>
             <th class="align-middle">Pemeriksaan / Tarif</th>
             <th class="align-middle">Dokter Pemeriksa</th>
-            <th class="align-middle">Tgl Kunjungan</th>
-            <th class="align-middle">Status Berkas</th>
-            <th class="text-center align-middle">Status Kunjungan</th>
-            <th class="text-center align-middle" style="width: 80px;">Aksi</th>
+            <th class="text-center align-middle" style="width: 120px;">Aksi</th>
         </tr>
     </thead>
     <tbody>
         @forelse ($data as $row)
             <tr>
                 <td class="text-center align-middle font-weight-bold">{{ $loop->iteration }}</td>
+                <td class="align-middle">
+                    {{ \Carbon\Carbon::parse($row->tgl_masuk)->format('d-m-Y H:i') }}
+                </td>
                 <td class="align-middle">
                     <strong>{{ $row->nama_pasien ?? '-' }}</strong><br>
                     <span class="badge badge-secondary">{{ $row->no_rm }}</span>
@@ -36,12 +37,7 @@
                 <td class="align-middle">
                     <i class="fas fa-user-md mr-1 text-info"></i>{{ $row->nama_dokter ?? '-' }}<br>
                     <span class="badge badge-info mt-1">{{ $row->nama_penjamin ?? '-' }}</span>
-                </td>
-                <td class="align-middle">
-                    {{ \Carbon\Carbon::parse($row->tgl_masuk)->format('d-m-Y H:i') }}
-                </td>
-                <td class="align-middle">
-                    @if ($row->validasi == 0)
+                    / @if ($row->validasi == 0)
                         <span class="badge badge-danger">Belum diisi</span>
                     @elseif ($row->validasi == 1)
                         <span class="badge badge-warning">Sudah diisi belum validasi</span>
@@ -50,19 +46,16 @@
                     @endif
                 </td>
                 <td class="text-center align-middle">
-                    @if ($row->status_kunjungan == 1)
-                        <span class="badge badge-warning">Aktif</span>
-                    @elseif ($row->status_kunjungan == 2)
-                        <span class="badge badge-success">Selesai</span>
-                    @else
-                        <span class="badge badge-light">Status: {{ $row->status_kunjungan }}</span>
-                    @endif
-                </td>
-                <td class="text-center align-middle">
-                    <a  class="btn btn-sm btn-primary pilihpasien @if($row->kode_dokter != NULL) @if($row->kode_dokter != auth()->user()->kode_paramedis) disabled @endif @endif" title="Isi / Edit Expertisi"
-                        id_expertisi="{{ $row->id_Ex }}" >
-                        <i class="fas fa-edit mr-1"></i> Form
+                    <a class="btn btn-sm btn-primary pilihpasien @if ($row->kode_dokter != null) @if ($row->kode_dokter != auth()->user()->kode_paramedis) disabled @endif @endif"
+                        title="Isi / Edit Expertisi" id_expertisi="{{ $row->id_Ex }}">
+                        <i class="fas fa-edit"></i>
                     </a>
+                    @if ($row->validasi == 2)
+                        <a href="{{ route('expertisi.cetak', ['id' => $row->id_lyheader]) }}" target="_blank" class="btn btn-sm btn-success cetakhasil" title="Print hasil expertisi ..."
+                            id_expertisi="{{ $row->id_Ex }}">
+                            <i class="fas fa-print"></i>
+                        </a>
+                    @endif
                 </td>
             </tr>
         @empty

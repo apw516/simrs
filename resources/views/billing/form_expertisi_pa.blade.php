@@ -231,8 +231,8 @@
                     </div>
                 </div>
 
-                <a href="{{ route('expertisi.cetak', ['id' => $ID_HEADER]) }}" target="_blank"
-                    rel="noopener noreferrer" class="btn btn-success">
+                <a  href="{{ route('expertisi.cetak', ['id' => $ID_HEADER]) }}" target="_blank"
+                    rel="noopener noreferrer" class="btn btn-success @if($data->validasi != 2 ) disabled @endif">
                     <i class="bi bi-printer mr-1"></i> Cetak Hasil Expertisi
                 </a>
             </form>

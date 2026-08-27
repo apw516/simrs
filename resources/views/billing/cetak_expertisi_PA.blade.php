@@ -131,7 +131,7 @@
         /* Tanda Tangan Dokter */
         .ttd-container {
             width: 100%;
-            margin-top: 25px;
+            margin-top: 20px;
             border-collapse: collapse;
         }
 
@@ -148,6 +148,35 @@
             font-size: 8pt;
             margin-top: 2px;
         }
+
+        /* Footer Informasi Verifikasi BSrE Resmi */
+        .footer-tte {
+            margin-top: 25px;
+            padding-top: 6px;
+            border-top: 0.5px solid #ccc;
+            width: 100%;
+        }
+
+        .footer-tte table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .footer-tte td {
+            vertical-align: middle;
+        }
+
+        .footer-tte .logo-bsre {
+            width: 28px;
+            padding-right: 8px;
+        }
+
+        .footer-tte .text-bsre {
+            font-size: 6.5pt;
+            line-height: 1.2;
+            color: #444;
+            font-style: italic;
+        }
     </style>
 </head>
 
@@ -157,7 +186,6 @@
     <table class="kop-table">
         <tr>
             <td class="logo-left">
-                <!-- Sesuaikan path logo Pemkab/Kabupaten Cirebon -->
                 <img src="{{ public_path('../public/img/logo_rs.png') }}" style="width: 100px;" alt="Logo Kab">
             </td>
             <td class="kop-header">
@@ -166,7 +194,6 @@
                 <div class="alamat">Jl. Prabu Kiansantang No.4, Waled Kota, Waled, Cirebon, Jawa Barat 45187</div>
             </td>
             <td class="logo-right">
-                <!-- Sesuaikan path logo RSUD Waled -->
                 {{-- <img src="{{ public_path('../public/img/logo_rs.png') }}" style="width: 85px;" alt="Logo RS"> --}}
             </td>
         </tr>
@@ -184,7 +211,7 @@
 
             <td class="lbl" style="width: 130px;">Nomor pemeriksaan</td>
             <td class="sep">:</td>
-            <td><strong>[{{ $data->no_periksa ?? '-' }}]</strong></td>
+            <td><strong>{{ $data->no_periksa ?? '-' }}</strong></td>
         </tr>
         <tr>
             <td class="lbl">Nomor RM</td>
@@ -244,7 +271,7 @@
     <!-- TITLE PATOLOGI ANATOMI -->
     <div class="title-box">
         <div class="main-title">PATOLOGI ANATOMI</div>
-        <div class="sub-title">[{{ $data->no_periksa ?? '-' }}]</div>
+        <div class="sub-title">{{ $data->no_periksa ?? '-' }}</div>
     </div>
 
     <!-- DETAIL EXPERTISI -->
@@ -272,16 +299,24 @@
     <hr style="border: none; border-top: 1px solid #000; margin-top: 15px;">
 
     <!-- TANDA TANGAN DOKTER -->
-    <table class="ttd-container">
+    <table class="ttd-container" style="width: 100%;">
         <tr>
             <td style="width: 50%;"></td>
-            <td style="width: 50%;">
-                <div>Cirebon, {{ \Carbon\Carbon::parse($data->tgl_baca)->locale('id')->translatedFormat('d F Y') }}
+            <td style="width: 50%; text-align: center;">
+                <div>
+                    Cirebon, {{ \Carbon\Carbon::parse($data->tgl_baca)->locale('id')->translatedFormat('d F Y') }}
                 </div>
-                <div style="font-weight: bold; margin-top: 2px;">DPJP Laboratorium PA</div>
+                <div style="font-weight: bold; margin-top: 2px;">
+                    DPJP Laboratorium PA
+                </div>
 
-                <div class="ttd-space"></div>
+                <!-- Container QR Code dipastikan center -->
+                <div style="width: 100%; text-align: center; margin: 6px 0;" class="ttd-space">
+                    <img src="data:image/svg+xml;base64,{{ $qrtte }}"
+                        style="width: 80px; height: 80px; display: inline-block;" alt="QR Code TTE">
+                </div>
 
+                <br>
                 <div style="font-weight: bold; text-decoration: underline;">
                     {{ $data->dokter_pemeriksa ?? 'dr. Hani Andriani, Sp.PA' }}
                 </div>
@@ -291,6 +326,20 @@
             </td>
         </tr>
     </table>
+
+    <!-- FOOTER INFORMASI VERIFIKASI TTE BSRE -->
+    <div class="footer-tte">
+        <table>
+            <tr>
+                <td class="logo-bsre" style="width: 1%;">
+                    <img src="{{ public_path('../public/img/logobsre.png') }}" style="width: 24px; display: block;" alt="BSrE">
+                </td>
+                <td class="text-bsre">
+                    Dokumen ini telah ditandatangani secara elektronik menggunakan sertifikat elektronik yang diterbitkan oleh Balai Sertifikasi Elektronik (BSrE), BSSN. (Cetakan ke-{{ $cetakanke }})
+                </td>
+            </tr>
+        </table>
+    </div>
 
 </body>
 
