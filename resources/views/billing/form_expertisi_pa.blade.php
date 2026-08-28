@@ -33,7 +33,6 @@
         @else
             <!-- TAMPILAN JIKA DATA ADA -->
             @php $header = $result->first(); @endphp
-
             <!-- Informas Pasien & Kunjungan -->
             <div class="row mb-4 p-3 bg-light rounded border">
                 <div class="col-md-4 mb-2">
@@ -67,7 +66,21 @@
                     </span>
                 </div>
             </div>
-
+            @if ($header->status_kunjungan != 1)
+                <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                    title="Pasien sudah pulang, layanan tidak bisa diretur atau hubungi tim Casemix">
+                    <button class="btn btn-danger mb-2" disabled style="pointer-events: none;">
+                        <i class="bi bi-trash mr-2"></i> Retur Layanan
+                    </button>
+                </span>
+                <small class="d-block text-danger font-weight-bold mb-1">
+                    *Pasien sudah dipulangkan atau status kunjungan sudah ditutup, layanan tidak bisa diretur. Hubungi tim Casemix jika layanan akan diretur...
+                </small>
+            @else
+                <button class="btn btn-danger mb-2">
+                    <i class="bi bi-trash mr-2"></i> Retur Layanan
+                </button>
+            @endif
             <!-- Tabel Detail Layanan/Tarif -->
             <div class="table-responsive">
                 <table class="table table-bordered table-striped hover">
@@ -231,8 +244,9 @@
                     </div>
                 </div>
 
-                <a  href="{{ route('expertisi.cetak', ['id' => $ID_HEADER]) }}" target="_blank"
-                    rel="noopener noreferrer" class="btn btn-success @if($data->validasi != 2 ) disabled @endif">
+                <a href="{{ route('expertisi.cetak', ['id' => $ID_HEADER]) }}" target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-success @if ($data->validasi != 2) disabled @endif">
                     <i class="bi bi-printer mr-1"></i> Cetak Hasil Expertisi
                 </a>
             </form>

@@ -82,7 +82,6 @@
                 <form action="{{ route('expertisi.simpan', $data->id) }}" method="POST">
                     @csrf
                     @method('PUT')
-
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <label class="font-weight-bold text-dark">Jenis Pemeriksaan</label>
@@ -100,7 +99,7 @@
                         <div class="col-md-3">
                             <label class="font-weight-bold text-dark">Jenis Sampel</label>
                             <input type="text" name="jenis_sampel" class="form-control"
-                                value="{{ old('jenis_sampel', $data->jenis_sampel ?? '') }}"
+                                value="{{ old('jenis_sampel', $data->tipe ?? '') }}"
                                 placeholder="Masukkan jenis sampel">
                         </div>
                         <div class="col-md-6">

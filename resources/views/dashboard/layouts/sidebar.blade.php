@@ -563,6 +563,13 @@
                                   <p>Riwayat Pasien Penunjang</p>
                               </a>
                           </li>
+                          <li class="nav-item">
+                              <a href="{{ route('indexmonitoringberkaspasien') }}"
+                                  class="nav-link @if ($title == 'SIMRS - Monitoring Berkas Pasien') active @endif">
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>Berkas Pasien</p>
+                              </a>
+                          </li>
                       @endif
                       @if (auth()->user()->hak_akses == 55)
                           <li class="nav-item ">

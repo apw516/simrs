@@ -416,6 +416,7 @@ class BillingController extends Controller
                 DB::raw('fc_NAMA_PARAMEDIS1(b.kode_dokter1) AS dokter_pemeriksa'),
                 'a.kode_layanan_header',
                 'a.total_layanan',
+                'e.status_kunjungan',
                 'a.status_layanan',
                 'b.grantotal_layanan as total_detail',
                 'b.jumlah_layanan',
@@ -617,18 +618,26 @@ class BillingController extends Controller
                 'b.diagnostik_pasca_bedah'
             )
             ->where('a.id', $id)
+            ->where('b.validasi', 2)
             ->first();
-        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamat_pasien from mt_pasien where no_rm = ?', [$data->no_rm]);
-        // Safety check jika data tidak ditemukan
         if (!$data) {
             abort(404, 'Data Expertisi tidak ditemukan.');
         }
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamat_pasien from mt_pasien where no_rm = ?', [$data->no_rm]);
+        // Safety check jika data tidak ditemukan
 
         // Parsing field hasil (Makroskopis | Mikroskopis | Kesimpulan)
         $hasil_split = isset($data->hasil) ? array_map('trim', explode('|', $data->hasil)) : [];
-        $data->makroskopis = $hasil_split[0] ?? '-';
-        $data->mikroskopis = $hasil_split[1] ?? '-';
-        $data->kesimpulan  = $hasil_split[2] ?? '-';
+
+        // $hasil_split = isset($data->hasil) ? explode('|', $data->hasil) : [];
+        $hasil_split = array_pad($hasil_split, 3, '');
+        $data->makroskopis     = $hasil_split[0];
+        $data->mikroskopis     = $hasil_split[1];
+        $data->kesimpulan = $hasil_split[2];
+
+        // $data->makroskopis = $hasil_split[0] ?? '-';
+        // $data->mikroskopis = $hasil_split[1] ?? '-';
+        // $data->kesimpulan  = $hasil_split[2] ?? '-';
         // Render PDF menggunakan Dompdf
         $kodekunjungan = $data->kode_kunjungan;
         $cek_tte_lokal = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and jenis_dokumen = ?', [$kodekunjungan, 'EXPERTISI PA']);
@@ -659,7 +668,7 @@ class BillingController extends Controller
         $url1 = "https://siramah.rsudwaled.com/filetandatangan?id=" . $nama . $kodekunjungan;
         $qrtte = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url1));
 
-        $pdf = Pdf::loadView('billing.cetak_expertisi_PA', compact('data', 'mt_pasien','qrtte','cetakanke'))
+        $pdf = Pdf::loadView('billing.cetak_expertisi_PA', compact('data', 'mt_pasien', 'qrtte', 'cetakanke'))
             ->setPaper('a4', 'portrait');
 
         // Stream langsung di browser (tab baru)

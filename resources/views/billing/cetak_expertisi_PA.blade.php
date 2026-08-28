@@ -207,7 +207,8 @@
             <td class="lbl" style="width: 90px;">Tanggal</td>
             <td class="sep">:</td>
             <td style="width: 32%;">
-                {{ isset($data->tgl_input_layanan) ? date('d-m-Y', strtotime($data->tgl_input_layanan)) : date('d-m-Y') }}</td>
+                {{ isset($data->tgl_input_layanan) ? date('d-m-Y', strtotime($data->tgl_input_layanan)) : date('d-m-Y') }}
+            </td>
 
             <td class="lbl" style="width: 130px;">Nomor pemeriksaan</td>
             <td class="sep">:</td>
@@ -282,17 +283,15 @@
         </tr>
         <tr>
             <td class="label-column">MAKROSKOPIS</td>
-            <td class="value-column">{{ $data->makroskopis ?? '-' }}</td>
+            <td class="value-column">{!! nl2br(e($data->makroskopis)) !!}</td>
         </tr>
         <tr>
             <td class="label-column">MIKROSKOPIS</td>
-            <td class="value-column">{{ $data->mikroskopis ?? '-' }}</td>
+            <td class="value-column">{!! nl2br(e($data->mikroskopis)) !!}</td>
         </tr>
         <tr>
             <td class="label-column">KESIMPULAN</td>
-            <td class="value-column">
-                <strong>{{ $data->kesimpulan ?? '-' }}</strong>
-            </td>
+            <td class="value-column">{!! nl2br(e($data->kesimpulan)) !!}</td>
         </tr>
     </table>
 
@@ -332,10 +331,12 @@
         <table>
             <tr>
                 <td class="logo-bsre" style="width: 1%;">
-                    <img src="{{ public_path('../public/img/logobsre.png') }}" style="width: 24px; display: block;" alt="BSrE">
+                    <img src="{{ public_path('../public/img/logobsre.png') }}" style="width: 24px; display: block;"
+                        alt="BSrE">
                 </td>
                 <td class="text-bsre">
-                    Dokumen ini telah ditandatangani secara elektronik menggunakan sertifikat elektronik yang diterbitkan oleh Balai Sertifikasi Elektronik (BSrE), BSSN. (Cetakan ke-{{ $cetakanke }})
+                    Dokumen ini telah ditandatangani secara elektronik menggunakan sertifikat elektronik yang
+                    diterbitkan oleh Balai Sertifikasi Elektronik (BSrE), BSSN. (Cetakan ke-{{ $cetakanke }})
                 </td>
             </tr>
         </table>
