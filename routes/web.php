@@ -918,16 +918,20 @@ Route::post('/v_berkas_scan_kunjungan', [UpdateERMcontroller::class, 'v_berkas_s
 Route::post('/asesmen-bunuh-diri/store', [UpdateERMcontroller::class, 'storeassbun'])->name('asesmen-bunuh-diri.store');
 
 // indexbillingpenunjang
+Route::get('indexlaporanpendapatanpa', [BillingController::class, 'indexlaporanpendapatanpa'])->name('indexlaporanpendapatanpa');
+Route::get('indexriwayatpemeriksaanlab_pa', [BillingController::class, 'indexriwayatpemeriksaanlab_pa'])->name('indexriwayatpemeriksaanlab_pa');
 Route::get('indexexpertisipa', [BillingController::class, 'indexexpertisipa'])->name('indexexpertisipa');
 Route::get('indexbillingpenunjang', [BillingController::class, 'Billing'])->name('indexbillingpenunjang');
 Route::get('indexriwayatpasienpenunjang', [BillingController::class, 'indexriwayatpasienpenunjang'])->name('indexriwayatpasienpenunjang');
 Route::post('cari_pasien_penunjang', [BillingController::class, 'cari_pasien_penunjang'])->name('cari_pasien_penunjang');
 Route::post('cari_riwayat_pasien_penunjang', [BillingController::class, 'cari_riwayat_pasien_penunjang'])->name('cari_riwayat_pasien_penunjang');
+Route::post('cari_riwayat_hasil_pemeriksaan_pa', [BillingController::class, 'cari_riwayat_hasil_pemeriksaan_pa'])->name('cari_riwayat_hasil_pemeriksaan_pa');
 Route::post('ambil_form_billing_penunjang', [BillingController::class, 'ambil_form_billing_penunjang'])->name('ambil_form_billing_penunjang');
 Route::post('/billing/simpan-penunjang', [BillingController::class, 'simpanPenunjang'])->name('billing.simpan_penunjang');
 Route::post('ambil_hasil_expertisi_pa', [BillingController::class, 'ambil_hasil_expertisi_pa'])->name('ambil_hasil_expertisi_pa');
 Route::post('cari_hasil_expertisi_pa', [BillingController::class, 'cari_hasil_expertisi_pa'])->name('cari_hasil_expertisi_pa');
 Route::post('ambil_form_expertisi_pa', [BillingController::class, 'ambil_form_expertisi_pa'])->name('ambil_form_expertisi_pa');
+Route::post('cari_laporan_pendapatan_lab_pa', [BillingController::class, 'cari_laporan_pendapatan_lab_pa'])->name('cari_laporan_pendapatan_lab_pa');
 Route::post('expertisi.generate_nomor', [BillingController::class, 'generatenomorsediaan'])->name('expertisi.generate_nomor');
 Route::put('/expertisi-pa/simpan/{id}', [BillingController::class, 'simpanExpertisi'])->name('expertisi.simpan');
 Route::get('/expertisi/cetak/{id}', [BillingController::class, 'cetakexpa'])->name('expertisi.cetak');

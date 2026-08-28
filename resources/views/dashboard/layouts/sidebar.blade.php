@@ -580,6 +580,20 @@
                               </a>
                           </li>
                       @endif
+                      <li class="nav-item">
+                          <a href="{{ route('indexriwayatpemeriksaanlab_pa') }}"
+                              class="nav-link @if ($title == 'SIMRS - Riwayat Hasil Pemeriksaan') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Riwayat Hasil Pemeriksaan</p>
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a href="{{ route('indexlaporanpendapatanpa') }}"
+                              class="nav-link @if ($title == 'SIMRS - Laporan Pendapatan Laboratorium Patologi Anatomi') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Laporan Pendapatan</p>
+                          </a>
+                      </li>
                   @endif
                   @if (auth()->user()->nama == 'agyl')
                       <li class="nav-header"> <i class="nav-icon bi bi-person-circle mr-2"></i> ADMIN IT</li>

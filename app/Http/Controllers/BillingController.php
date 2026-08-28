@@ -30,6 +30,32 @@ class BillingController extends Controller
             // 'data_pasien' => DB::select("CALL SP_PANGGIL_PASIEN_PENUNJANG_BARU_RI('','','')")
         ]);
     }
+    public function indexriwayatpemeriksaanlab_pa()
+    {
+        $title = 'SIMRS - Riwayat Hasil Pemeriksaan';
+        $sidebar = 'indexriwayathasilpemeriksaan';
+        $sidebar_m = 'indexriwayathasilpemeriksaan';
+        $unit = auth()->user()->unit;
+        return view('billing.index_riwayat_hasil_pemeriksaan', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+            // 'data_pasien' => DB::select("CALL SP_PANGGIL_PASIEN_PENUNJANG_BARU_RI('','','')")
+        ]);
+    }
+    public function indexlaporanpendapatanpa()
+    {
+        $title = 'SIMRS - Laporan Pendapatan Laboratorium Patologi Anatomi';
+        $sidebar = 'indexriwayathasilpemeriksaan';
+        $sidebar_m = 'indexriwayathasilpemeriksaan';
+        $unit = auth()->user()->unit;
+        return view('billing.index_laporan_pendapatan_lab_pa', [
+            'title' => $title,
+            'sidebar' => $sidebar,
+            'sidebar_m' => $sidebar_m,
+            // 'data_pasien' => DB::select("CALL SP_PANGGIL_PASIEN_PENUNJANG_BARU_RI('','','')")
+        ]);
+    }
     public function indexexpertisipa()
     {
         $title = 'SIMRS - Expertisi Patologi Anatomi';
@@ -88,6 +114,67 @@ class BillingController extends Controller
             ->get();
         return view('billing.tabel_hasil_expertisi_pa', compact([
             'data'
+        ]));
+    }
+    public function cari_laporan_pendapatan_lab_pa(Request $request)
+    {
+        $tgl_awal = $request->tanggalawal;
+        $tgl_akhir = $request->tanggalakhir;
+        $results = DB::table('ts_layanan_header as a')
+            ->join('ts_layanan_detail as b', 'a.id', '=', 'b.row_id_header')
+            ->join('ts_kunjungan as c', 'a.kode_kunjungan', '=', 'c.kode_kunjungan')
+            ->join('mt_tarif_detail as e', 'b.kode_tarif_detail', '=', 'e.KODE_TARIF_DETAIL')
+            ->join('mt_tarif_header as f', 'e.KODE_TARIF_HEADER', '=', 'f.KODE_TARIF_HEADER')
+            ->select(
+                'a.tgl_entry',
+                'c.no_rm',
+                DB::raw('fc_nama_px(c.no_rm) AS nama_pasien'),
+                'f.NAMA_TARIF',
+                'b.total_tarif',
+                'b.jumlah_layanan',
+                'a.tagihan_penjamin',
+                'a.tagihan_pribadi'
+            )
+            ->where('a.kode_unit', '3020')
+            ->whereDate('a.tgl_entry', '>=', $tgl_awal)
+            ->whereDate('a.tgl_entry', '<=', $tgl_akhir)
+            ->where('a.status_layanan', '!=', 3)
+            ->where('b.status_layanan_detail', '!=', 3)
+            ->get();
+        return view('billing.tabel_laporan_pendapatan', compact([
+            'results',
+            'tgl_awal',
+            'tgl_akhir'
+        ]));
+    }
+    public function cari_riwayat_hasil_pemeriksaan_pa(Request $request)
+    {
+        $tgl_awal = $request->tanggalawal;
+        $tgl_akhir = $request->tanggalakhir;
+        $results = DB::table('ts_hasil_expertisi_pa as a')
+            ->join('ts_kunjungan as b', 'a.kode_kunjungan', '=', 'b.kode_kunjungan')
+            ->join('ts_layanan_detail as c', 'a.id_detail', '=', 'c.id')
+            ->join('mt_tarif_detail as d', 'c.kode_tarif_detail', '=', 'd.KODE_TARIF_DETAIL')
+            ->join('mt_tarif_header as e', 'd.KODE_TARIF_HEADER', '=', 'e.KODE_TARIF_HEADER')
+            ->join('mt_pasien as f', 'b.no_rm', '=', 'f.no_rm')
+            ->select(
+                'a.no_rm',
+                DB::raw('fc_nama_px(a.no_rm) AS nama_pasien'),
+                'f.tgl_lahir',
+                DB::raw('fc_alamat(a.no_rm) AS alamat'),
+                'a.no_periksa',
+                'a.tipe',
+                'a.hasil',
+                'a.tgl_input_layanan',
+                'e.NAMA_TARIF'
+            )
+            ->whereDate('a.tgl_input_layanan', '>=', $tgl_awal)
+            ->whereDate('a.tgl_input_layanan', '<=', $tgl_akhir)
+            ->where('b.status_kunjungan', '!=', '8')
+            ->where('c.status_layanan_detail', '!=', '3')
+            ->get();
+        return view('billing.tabel_riwayat_hasil_pemeriksaan', compact([
+            'results'
         ]));
     }
     public function cari_pasien_penunjang(Request $request)
