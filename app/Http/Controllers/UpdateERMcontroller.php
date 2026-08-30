@@ -178,12 +178,12 @@ class UpdateERMcontroller extends Controller
     {
         DB::beginTransaction();
         try {
-            $pasieniter = $request->pasieniter;
-            $jumlahiter = $request->jumlahiter;
-            $keterangan_iter = '';
-            if ($pasieniter == 1) {
-                $keterangan_iter = 'PASIEN ITER ' . $jumlahiter . ' x';
-            }
+            // $pasieniter = $request->pasieniter;
+            // $jumlahiter = $request->jumlahiter;
+            // $keterangan_iter = '';
+            // if ($pasieniter == 1) {
+            //     $keterangan_iter = 'PASIEN ITER ' . $jumlahiter . ' x';
+            // }
             $data1 = json_decode($_POST['data1'], true);
             $data2 = json_decode($_POST['data2'], true);
             $data3 = json_decode($_POST['data3'], true);
@@ -214,6 +214,35 @@ class UpdateERMcontroller extends Controller
                 $value =  $nama['value'];
                 $dataSet_1[$index] = $value;
             }
+            $tindaklanjutarr = [
+                'tl_konsul'     => $dataSet_tindaklanjut['tl_konsul'] ?? null,
+                'tl_kontrol'    => $dataSet_tindaklanjut['tl_kontrol'] ?? null,
+                'tl_iterasi_1'  => $dataSet_tindaklanjut['tl_iterasi_1'] ?? null,
+                'tl_iterasi_2'  => $dataSet_tindaklanjut['tl_iterasi_2'] ?? null,
+                'tl_prb'        => $dataSet_tindaklanjut['tl_prb'] ?? null,
+                'tl_rujuk_int'  => $dataSet_tindaklanjut['tl_rujuk_int'] ?? null,
+                'tl_pulang'     => $dataSet_tindaklanjut['tl_pulang'] ?? null,
+                'tl_rujuk_out'  => $dataSet_tindaklanjut['tl_rujuk_out'] ?? null,
+                'tl_rawat_inap' => $dataSet_tindaklanjut['tl_rawat_inap'] ?? null,
+                'tl_meninggal'  => $dataSet_tindaklanjut['tl_meninggal'] ?? null,
+            ];
+
+            // 2. Filter nilai yang kosong/null lalu gabungkan dengan koma
+            $tindaklanjut = implode(',', array_filter($tindaklanjutarr));
+            if (!empty($dataSet_tindaklanjut['tl_iterasi_1'])) {
+                $pasieniter = 1;
+                $jumlahiter = 1;
+                $keterangan_iter = 'PASIEN ITER ' . $jumlahiter . ' x';
+            } else if (!empty($dataSet_tindaklanjut['tl_iterasi_2'])) {
+                $pasieniter = 1;
+                $jumlahiter = 2;
+                $keterangan_iter = 'PASIEN ITER ' . $jumlahiter . ' x';
+            } else {
+                $pasieniter = 0;
+                $jumlahiter = 0;
+                $keterangan_iter = '';
+            }
+
             foreach ($data2 as $nama) {
                 $index =  $nama['name'];
                 $value =  $nama['value'];
@@ -399,7 +428,7 @@ class UpdateERMcontroller extends Controller
                 'tindakanmedis' => trim($dataSet_4['tindakanmedis']),
                 'tindakanpenunjang' => trim($dataSet_4['tindakanpenunjang']),
                 'keluhan_pasien' => trim($dataSet_1['keluhanutama']),
-                'tindak_lanjut' => $dataSet_tindaklanjut['pilihtindaklanjut'],
+                'tindak_lanjut' => $tindaklanjut,
                 'keterangan_tindak_lanjut' => trim($dataSet_tindaklanjut['keterangantindaklanjut'] . ' ' . $keterangan_iter),
                 'keterangan_tindak_lanjut_2' => trim($dataSet_jawabankonsul['isi_jawaban_konsul']),
                 'umur' => $dataSet_2['usia'],
@@ -1300,7 +1329,7 @@ class UpdateERMcontroller extends Controller
         $ts_kunjungan = db::select('select counter from ts_kunjungan where no_rm = ? and status_kunjungan != 8 ORDER BY kode_kunjungan DESC limit 8', [$rm]);
         // Panggil Stored Procedure hasil lab umum/non-spesial
         // $hasil_lab = db::select("CALL LIHAT_HASIL_LAB_XXX(?)", [$rm]);
-        $hasil_lab = db::select("CALL LIHAT_HASIL_LAB(?,?)", [$rm,'0']);
+        $hasil_lab = db::select("CALL LIHAT_HASIL_LAB(?,?)", [$rm, '0']);
         if (empty($hasil_lab)) {
             return response()->json(['status' => 'empty', 'message' => 'Tidak ada data hasil lab untuk RM ini.']);
         }
@@ -1405,7 +1434,7 @@ class UpdateERMcontroller extends Controller
 
         // Panggil Stored Procedure hasil lab spesial
         // $hasil_lab = db::select("CALL LIHAT_HASIL_LAB_SPESIAL(?)", [$rm]);
-        $hasil_lab = db::select("CALL LIHAT_HASIL_LAB(?,?)", [$rm,'0']);
+        $hasil_lab = db::select("CALL LIHAT_HASIL_LAB(?,?)", [$rm, '0']);
 
         if (empty($hasil_lab)) {
             return response()->json(['status' => 'empty', 'message' => 'Tidak ada data hasil lab untuk RM ini.']);

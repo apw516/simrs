@@ -636,17 +636,17 @@ class SimrsController extends Controller
             ];
             $kodekelas = $d->kodekelas;
             $koderuang = $d->koderuang;
-            $cek = db::select('select * from ts_ketersediaan_kamar_bpjs where kodekelas = ? and koderuang = ?',[$kodekelas,$koderuang]);
-            if(count($cek) > 0){
+            $cek = db::select('select * from ts_ketersediaan_kamar_bpjs where kodekelas = ? and koderuang = ?', [$kodekelas, $koderuang]);
+            if (count($cek) > 0) {
                 $databed = [
                     'status_send' => 1,
                     'last_update' => $this->get_now(),
                     'last_update_from_sp' => $this->get_now()
 
                 ];
-                mode_ketersediaan_bed_bpjs::whereRaw('kodekelas = ? and koderuang = ?', array($d->kodekelas,$d->koderuang))->update($databed);
-            }else{
-                  $databed = [
+                mode_ketersediaan_bed_bpjs::whereRaw('kodekelas = ? and koderuang = ?', array($d->kodekelas, $d->koderuang))->update($databed);
+            } else {
+                $databed = [
                     'status_send' => 0,
                     'last_update' => $this->get_now(),
                     'last_update_from_sp' => $this->get_now()
@@ -727,24 +727,24 @@ class SimrsController extends Controller
         $data = db::select('select * from ts_ketersediaan_kamar_bpjs order by last_update asc');
         $jam = Carbon::now()->hour;
         $menit = Carbon::now()->minute;
-        $waktu = $jam.':'.$menit;
-        if($waktu == '1:00'){
+        $waktu = $jam . ':' . $menit;
+        if ($waktu == '1:00') {
             $this->get_ruangan_for_brid();
-        }elseif($waktu == '5:00'){
+        } elseif ($waktu == '5:00') {
             $this->get_ruangan_for_brid();
-        }elseif($waktu == '9:00'){
+        } elseif ($waktu == '9:00') {
             $this->get_ruangan_for_brid();
-        }elseif($waktu == '11:00'){
+        } elseif ($waktu == '11:00') {
             $this->get_ruangan_for_brid();
-        }elseif($waktu == '14:00'){
+        } elseif ($waktu == '14:00') {
             $this->get_ruangan_for_brid();
-        }elseif($waktu == '16:00'){
+        } elseif ($waktu == '16:00') {
             $this->get_ruangan_for_brid();
-        }elseif($waktu == '18:00'){
+        } elseif ($waktu == '18:00') {
             $this->get_ruangan_for_brid();
-        }elseif($waktu == '21:00'){
+        } elseif ($waktu == '21:00') {
             $this->get_ruangan_for_brid();
-        }elseif($waktu == '23:30'){
+        } elseif ($waktu == '23:30') {
             $this->get_ruangan_for_brid();
         }
         try {
@@ -856,16 +856,39 @@ class SimrsController extends Controller
     }
     public function cariobat(Request $request)
     {
+        // $v = new VclaimModel();
+        // $result = $v->referensi_obat_generik_prb($request['term']);
+        // // dd($result);
+        // if (count($result->response->list) > 0) {
+        //     foreach ($result->response->list as $row)
+        //         $arr_result[] = array(
+        //             'label' => $row->nama,
+        //             'kode' => $row->kode,
+        //         );
+        //     echo json_encode($arr_result);
+        // }
         $v = new VclaimModel();
-        $result = $v->referensi_obat_generik_prb($request['term']);
-        if (count($result->response->list) > 0) {
-            foreach ($result->response->list as $row)
-                $arr_result[] = array(
-                    'label' => $row->nama,
-                    'kode' => $row->kode,
-                );
-            echo json_encode($arr_result);
+        // Mengambil query dari request AJAX (fallback jika kosong)
+        $keyword = $request->input('q', $request->input('term'));
+
+        $result = $v->referensi_obat_generik_prb($keyword);
+        $arr_result = [];
+        
+        // Validasi response dari VClaim BPJS agar tidak error saat data kosong/null
+        if (isset($result->response->list) && is_array($result->response->list) && count($result->response->list) > 0) {
+            foreach ($result->response->list as $row) {
+                $arr_result[] = [
+                    'id'        => $row->kode,        // Dipakai sebagai ID di form dinamis
+                    'kode_obat' => $row->kode,        // Ditampilkan pada kolom Kode
+                    'nama_obat' => $row->nama,        // Ditampilkan pada kolom Nama
+                    'stok'      => '-',               // Stok BPJS (opsional/default)
+                    'harga'     => 0                  // Harga BPJS (bisa disesuaikan jika ada)
+                ];
+            }
         }
+
+        // Mengembalikan response JSON standar Laravel
+        return response()->json($arr_result);
     }
     public function cariprocedure(Request $request)
     {

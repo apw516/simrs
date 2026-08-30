@@ -35,12 +35,12 @@
                 Lain</button>
             <button type="button" class="btn btn-warning btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
                 onclick="showmodalcatatanhemodialisa()" data-toggle="modal" data-target="#modalcatatanhemodialisa"><i
-                    class="bi bi-clipboard-data"></i> Catatan Hemodialisa</button>           
+                    class="bi bi-clipboard-data"></i> Catatan Hemodialisa</button>
         </div>
         <div class="btn-group mb-3 mt-4" role="group" aria-label="Basic outlined example">
-            <button type="button" nomorrm="{{ $kunjungan[0]->no_rm }}" class="btn btn-success btn-outline-dark text-light"
-                onclick="ambildatakunjungan()" data-toggle="modal" data-target="#modalcppt"><i
-                    class="bi bi-clipboard-data"></i> Data Pemeriksaan Sebelumnya</button>
+            <button type="button" nomorrm="{{ $kunjungan[0]->no_rm }}"
+                class="btn btn-success btn-outline-dark text-light" onclick="ambildatakunjungan()" data-toggle="modal"
+                data-target="#modalcppt"><i class="bi bi-clipboard-data"></i> Data Pemeriksaan Sebelumnya</button>
         </div>
     </div>
     <div class="card-body table-responsive p-5" style="height: 757Px">
@@ -493,9 +493,9 @@
                                     <td class="text-bold font-italic">Tinggi Badan</td>
                                     <td>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Tinggi badan pasien ..."
-                                                aria-label="Suhu tubuh pasien" name="tinggibadan" id="tinggibadan"
-                                                aria-describedby="basic-addon2"
+                                            <input type="text" class="form-control"
+                                                placeholder="Tinggi badan pasien ..." aria-label="Suhu tubuh pasien"
+                                                name="tinggibadan" id="tinggibadan" aria-describedby="basic-addon2"
                                                 value="{{ $asesmen_perawat ? $asesmen_perawat->tinggibadan : '' }}">
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="basic-addon2"></span>
@@ -507,9 +507,9 @@
                                     <td class="text-bold font-italic">IMT</td>
                                     <td>
                                         <div class="input-group">
-                                            <input type="text" class="form-control"
-                                                placeholder="IMT Pasien ..." name="imt" id="imt"
-                                                aria-label="Recipient's username" aria-describedby="basic-addon2"
+                                            <input type="text" class="form-control" placeholder="IMT Pasien ..."
+                                                name="imt" id="imt" aria-label="Recipient's username"
+                                                aria-describedby="basic-addon2"
                                                 value="{{ $asesmen_perawat ? $asesmen_perawat->imt : '' }}">
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="basic-addon2"></span>
@@ -935,7 +935,7 @@
                                 <input hidden type="text" class="form-control col-md-3 mb-3" id="namaresep"
                                     name="namaresep" placeholder="isi nama resep ...">
                             </form>
-                            <div class="v_itterasi_obat">
+                            <div hidden class="v_itterasi_obat">
 
                             </div>
                         </div>
@@ -985,6 +985,7 @@
                                     data-target="#modalriwayatkonsul">Riwayat Konsul</button> --}}
                             </div>
                             <div class="card-body">
+
                                 @php
                                     // Menentukan class animasi berkedip secara otomatis
                                     $blinkClass = '';
@@ -1016,59 +1017,111 @@
                                         <span aria-hidden="true" style="font-size: 1.5rem;">&times;</span>
                                     </button>
                                 </div>
+                                {{-- <p class='text-danger text-bold font-italic'>*Iterasi BPJS adalah program layanan
+                                    peresepan obat
+                                    kronis yang memungkinkan peserta JKN (Jaminan Kesehatan Nasional) untuk mendapatkan
+                                    obat secara berulang tanpa harus berkonsultasi dengan dokter setiap bulan.</p>
+                                <br>
+                                <label for="staticEmail" class="col-sm-4 col-form-label">Apakah pasien termasuk
+                                    kedalam iterasi BPJS ?</label> <br> --}}
                                 @php
-                                    // Ambil nilai tindak lanjut dari database, jika null atau kosong set default ke 'PASIEN DIPULANGKAN'
-                                    $tindak_lanjut =
-                                        $asesmen_terakhir && !empty($asesmen_terakhir->tindak_lanjut)
-                                            ? $asesmen_terakhir->tindak_lanjut
-                                            : 'PASIEN DIPULANGKAN';
+                                    $selected_tl = [];
+                                    // 1. Cek jika $asesmen_terakhir ada dan tidak kosong
+                                    if (isset($asesmen_terakhir) && !empty($asesmen_terakhir->tindak_lanjut)) {
+                                        $raw_data = $asesmen_terakhir->tindak_lanjut;
+
+                                        if (is_array($raw_data)) {
+                                            $selected_tl = $raw_data;
+                                        } elseif (is_string($raw_data)) {
+                                            $trimmed = trim($raw_data);
+                                            if ($trimmed !== '') {
+                                                $selected_tl = array_map('trim', explode(',', $trimmed));
+                                            }
+                                        }
+                                    }
+
+                                    // 2. Default jika data tidak ada, kosong, atau gagal diexplode
+                                    if (empty($selected_tl)) {
+                                        $selected_tl = ['PASIEN DIPULANGKAN'];
+                                    }
+
+                                    // 3. Inisialisasi semua variabel agar TIDAK TERJADI UNDEFINED VARIABLE
+                                    // Mengembalikan nilai boolean (true jika ada di array, false jika tidak)
+                                    $konsul = in_array('KONSUL KE POLI LAIN', $selected_tl);
+                                    $kontrol = in_array('KONTROL', $selected_tl);
+                                    $iterasi_1 = in_array('ITERASI 1X', $selected_tl);
+                                    $iterasi_2 = in_array('ITERASI 2X', $selected_tl);
+                                    $prb = in_array('PRB', $selected_tl);
+                                    $rujin = in_array('RUJUK INTERNAL', $selected_tl);
+                                    $pulang = in_array('PASIEN DIPULANGKAN', $selected_tl);
+                                    $rujukout = in_array('RUJUK KELUAR', $selected_tl);
+                                    $ranap = in_array('RUJUK RAWAT INAP', $selected_tl);
+                                    $meninggal = in_array('PASIEN MENINGGAL', $selected_tl);
                                 @endphp
+                                <!-- Checkbox Options -->
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                                        id="tl_konsul" value="KONSUL KE POLI LAIN"
-                                        {{ $tindak_lanjut == 'KONSUL KE POLI LAIN' ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox" name="tl_konsul" id="tl_konsul"
+                                        value="KONSUL KE POLI LAIN" @checked($konsul)>
                                     <label class="form-check-label" for="tl_konsul">KONSUL KE POLI LAIN</label>
                                 </div>
+
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                                        id="tl_kontrol" value="KONTROL"
-                                        {{ $tindak_lanjut == 'KONTROL' ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox" name="tl_kontrol"
+                                        id="tl_kontrol" value="KONTROL" @checked($kontrol)>
                                     <label class="form-check-label" for="tl_kontrol">KONTROL</label>
                                 </div>
+
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                                        id="tl_rujuk_int" value="RUJUK INTERNAL"
-                                        {{ $tindak_lanjut == 'RUJUK INTERNAL' ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox" name="tl_iterasi_1"
+                                        id="tl_iterasi_1" value="ITERASI 1X" @checked($iterasi_1)>
+                                    <label class="form-check-label" for="tl_iterasi_1">ITERASI 1X</label>
+                                </div>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" name="tl_iterasi_2"
+                                        id="tl_iterasi_2" value="ITERASI 2X" @checked($iterasi_2)>
+                                    <label class="form-check-label" for="tl_iterasi_2">ITERASI 2X</label>
+                                </div>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" name="tl_prb" id="tl_prb"
+                                        value="PRB" @checked($prb)>
+                                    <label class="form-check-label" for="tl_prb">PRB</label>
+                                </div>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" name="tl_rujuk_int"
+                                        id="tl_rujuk_int" value="RUJUK INTERNAL" @checked($rujin)>
                                     <label class="form-check-label" for="tl_rujuk_int">RUJUK INTERNAL</label>
                                 </div>
+
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                                        id="tl_pulang" value="PASIEN DIPULANGKAN"
-                                        {{ $tindak_lanjut == 'PASIEN DIPULANGKAN' ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox" name="tl_pulang" id="tl_pulang"
+                                        value="PULANG" @checked($pulang)>
                                     <label class="form-check-label" for="tl_pulang">PULANG</label>
                                 </div>
+
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                                        id="tl_rujuk_out" value="RUJUK KELUAR"
-                                        {{ $tindak_lanjut == 'RUJUK KELUAR' ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox" name="tl_rujuk_out"
+                                        id="tl_rujuk_out" value="RUJUK KELUAR" @checked($rujukout)>
                                     <label class="form-check-label" for="tl_rujuk_out">RUJUK KELUAR</label>
                                 </div>
+
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                                        id="tl_rawat_inap" value="RUJUK RAWAT INAP"
-                                        {{ $tindak_lanjut == 'RUJUK RAWAT INAP' ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox" name="tl_rawat_inap"
+                                        id="tl_rawat_inap" value="RAWAT INAP" @checked($ranap)>
                                     <label class="form-check-label" for="tl_rawat_inap">RAWAT INAP</label>
                                 </div>
+
                                 <div class="form-check form-check-inline mb-2">
-                                    <input class="form-check-input" type="radio" name="pilihtindaklanjut"
-                                        id="tl_meninggal" value="PASIEN MENINGGAL"
-                                        {{ $tindak_lanjut == 'PASIEN MENINGGAL' ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox" name="tl_meninggal"
+                                        id="tl_meninggal" value="PASIEN MENINGGAL" @checked($meninggal)>
                                     <label class="form-check-label" for="tl_meninggal">PASIEN MENINGGAL</label>
                                 </div>
+                                <!-- Keterangan Field -->
                                 <div class="form-group mt-2">
-                                    <label for="exampleInputEmail1">Keterangan</label>
-                                    <textarea type="text" class="form-control" id="keterangantindaklanjut" name="keterangantindaklanjut"
-                                        aria-describedby="emailHelp">{{ $asesmen_terakhir ? $asesmen_terakhir->keterangan_tindak_lanjut : '' }}</textarea>
+                                    <label for="keterangantindaklanjut">Keterangan</label>
+                                    <textarea class="form-control" id="keterangantindaklanjut" name="keterangantindaklanjut" rows="3">{{ $asesmen_terakhir ? $asesmen_terakhir->keterangan_tindak_lanjut : '' }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -1136,7 +1189,6 @@
                             </div>
                         </div>
                     </form>
-
                     {{-- formtindakan --}}
                     <div class="accordion" id="accordionExample">
                         <div class="card">
@@ -1785,6 +1837,7 @@
             }
         });
     }
+
     function showmodalriwayatsumarilis() {
         spinner = $('#loader')
         spinner.show();
@@ -1989,6 +2042,7 @@
             }
         });
     }
+
     function batalisi() {
         rm = $('#nomorrm').val()
         formcatatanmedis(rm)
@@ -2137,6 +2191,7 @@
             }
         }
     });
+
     function showname() {
         a = $('#simpantemplate:checked').val()
         if (a == 'on') {
@@ -2145,6 +2200,7 @@
             $('#namaresep').attr('Hidden', true)
         }
     }
+
     function ambilresep() {
         spinner = $('#loader')
         spinner.show();
@@ -2165,6 +2221,7 @@
             }
         });
     }
+
     function ambilriwayatresep() {
         spinner = $('#loader')
         spinner.show();
@@ -2203,6 +2260,7 @@
             }
         });
     });
+
     function showMarkerArea(target) {
         const markerArea = new markerjs2.MarkerArea(target);
         markerArea.addEventListener("render", (event) => (target.src = event.dataUrl));
@@ -2213,6 +2271,7 @@
         ambilriwayatobat()
         ambilformiterasiobat()
     })
+
     function ambilriwayatobat() {
         spinner = $('#loader')
         spinner.show();
@@ -2232,6 +2291,7 @@
             }
         });
     }
+
     function resetgambar() {
         $.ajax({
             type: 'post',
@@ -2248,6 +2308,7 @@
             }
         });
     }
+
     function ambilgambar() {
         $.ajax({
             type: 'post',
@@ -2264,6 +2325,7 @@
             }
         });
     }
+
     function showicare2() {
         var kodekunjungan = $('#kodekunjungan').val()
         $.ajax({
@@ -2279,6 +2341,7 @@
             }
         });
     }
+
     function addform() {
         var max_fields = 10;
         var wrapper = $(".formobatfarmasi2"); //Fields wrapper
@@ -2376,7 +2439,8 @@
             }
         });
     })
-     function ambildatakunjungan() {
+
+    function ambildatakunjungan() {
         rm = $('#nomorrm').val()
         spinner = $('#loader')
         spinner.show();
