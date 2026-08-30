@@ -327,7 +327,7 @@
     </table>
 
     <!-- FOOTER INFORMASI VERIFIKASI TTE BSRE -->
-    <div class="footer-tte">
+    {{-- <div class="footer-tte hidden">
         <table>
             <tr>
                 <td class="logo-bsre" style="width: 1%;">
@@ -340,7 +340,7 @@
                 </td>
             </tr>
         </table>
-    </div>
+    </div> --}}
 
 </body>
 
