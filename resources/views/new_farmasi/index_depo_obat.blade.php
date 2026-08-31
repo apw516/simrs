@@ -22,6 +22,7 @@
 
     <section class="content">
         <div class="container-fluid">
+            <input type="text" hidden value="{{ auth()->user()->unit }}" id="unitlogin">
             <div class="v_1">
                 @if (auth()->user()->unit != '4008')
                     <div id="realtime-alert-container"></div>
@@ -175,9 +176,12 @@
         let lastOrderCount = 0;
 
         $(document).ready(function() {
-            checkRealtimeNotification();
-            // Cek ulang setiap 10 detik
-            setInterval(checkRealtimeNotification, 10000);
+            unit = $('#unitlogin').val()
+            if(unit == '4002'){
+                checkRealtimeNotification();
+                // Cek ulang setiap 10 detik
+                setInterval(checkRealtimeNotification, 10000);
+            }
         });
 
         // Fungsi untuk memainkan suara notifikasi
