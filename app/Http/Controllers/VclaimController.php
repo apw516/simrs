@@ -714,7 +714,7 @@ class VclaimController extends Controller
                 $arrayindex_far[] = $dataSet;
             }
         }
-        dd($arrayindex_far);
+        // dd($arrayindex_far);
         $data = [
             "request" => [
                 "t_prb" => [
