@@ -17,22 +17,20 @@
             </select>
         </div>
         <div class="form-group col-md-1"><label for="inputPassword4">Jumlah Obat</label><input type=""
-                class="form-control form-control-sm" id="" name="jumlah" value="{{ $r->jumlah }}">
+                class="form-control form-control-sm" id="" name="jumlah" value="{{ $r->jumlah_layanan }}">
         </div>
         <div class="form-group col-md-1"><label for="inputPassword4">Signa 1</label><input type=""
-                class="form-control form-control-sm" id="" name="signa1" value="{{ $r->signa }}"></div>
+                class="form-control form-control-sm" id="" name="signa1" value=""></div>
         <div class="form-group col-md-1"><label for="inputPassword4">Signa 2</label><input type=""
-                class="form-control form-control-sm" id="" name="signa2" value="{{ $r->signa }}"></div>
+                class="form-control form-control-sm" id="" name="signa2" value=""></div>
         <div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type=""
                 class="form-control form-control-sm" id="" name="keterangan" value="{{ $r->aturan_pakai }}">
         </div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i>
     </div>
 @endforeach
 <script>
-    $(".fi").on("click", ".remove_field", function(e) { //user click on remove
+    $(".formobatfarmasiriwayat").on("click", ".remove_field", function(e) { //user click on remove
         e.preventDefault();
         $(this).parent('div').remove();
     })
 </script>
-
-

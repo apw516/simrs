@@ -1697,4 +1697,60 @@ class UpdateERMcontroller extends Controller
             // 'html' => $html // Opsional jika update tabel tanpa reload
         ], 200);
     }
+    public function ambil_form_cari_stok_obat(Request $request)
+    {
+        $kode_kunjungan = $request->kodekunjungan;
+        $data_kunjungan = ts_kunjungan::where('kode_kunjungan', $kode_kunjungan)->get()->first();
+        $penjamin = $data_kunjungan->kode_penjamin;
+        return view('update_erm_dokter.form_cari_stok_obat', compact([
+            'penjamin'
+        ]));
+    }
+    public function cariobat(Request $request)
+    {
+        $keyword = $request->input('keyword');
+        // Terima unit dari parameter request, jika tidak ada gunakan unit dari auth user
+        $unit = $request->input('unit', auth()->user()->unit ?? null);
+        // 1. Subquery stok terakhir per barang di unit tertentu
+        $latestStok = DB::table('ti_kartu_stok')
+            ->select('kode_barang', DB::raw('MAX(no) as max_id'))
+            ->where('kode_unit', $unit)
+            ->groupBy('kode_barang');
+
+        // 2. Query Utama (Join dengan subquery & master barang)
+        $query = DB::table('ti_kartu_stok as ks')
+            ->joinSub($latestStok, 'latest', function ($join) {
+                $join->on('ks.no', '=', 'latest.max_id')
+                    ->on('ks.kode_barang', '=', 'latest.kode_barang');
+            })
+            ->join('mt_barang as b', 'ks.kode_barang', '=', 'b.kode_barang')
+            ->select([
+                'b.kode_barang',
+                'b.nama_barang',
+                'b.satuan_besar',
+                'b.sediaan',
+                'b.dosis',
+                'b.kode_obat_bpjs',
+                'ks.stok_current as stok' // Tambahkan ini agar nilai stok ikut ter-fetch
+            ])
+            ->where('b.act', 1)
+            ->where('ks.kode_unit', $unit)
+            ->where('ks.stok_current', '>', 0);
+
+        // 3. Filter pencarian kata kunci
+        if (!empty($keyword)) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('b.nama_barang', 'LIKE', '%' . $keyword . '%')
+                    ->orWhere('b.kode_barang', 'LIKE', '%' . $keyword . '%');
+            });
+        }
+
+        // 4. Eksekusi query dengan ->get()
+        $dataObat = $query->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $dataObat
+        ]);
+    }
 }

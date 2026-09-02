@@ -72,10 +72,14 @@ Route::post('/ambilresep', [ErmController::class, 'ambilresep'])
     ->name('ambilresep'); //sidebar
 Route::post('/ambilriwayatreseppasien', [ErmController::class, 'ambilriwayatreseppasien'])
     ->name('ambilriwayatreseppasien'); //sidebar
+Route::post('/ambilriwayatresepdokter', [ErmController::class, 'ambilriwayatresepdokter'])
+    ->name('ambilriwayatresepdokter'); //sidebar
 Route::post('/ambilresep_detail', [ErmController::class, 'ambilresep_detail'])
     ->name('ambilresep_detail'); //sidebar
 Route::post('/ambilresep_detail2', [ErmController::class, 'ambilresep_detail2'])
     ->name('ambilresep_detail2'); //sidebar
+Route::post('/ambilresep_detail3', [ErmController::class, 'ambilresep_detail3'])
+    ->name('ambilresep_detail3'); //sidebar
 Route::post('/lihathasillab', [ErmController::class, 'lihathasillab'])
     ->name('lihathasillab'); //sidebar
 Route::post('/lihathasilex', [ErmController::class, 'lihathasilex'])
@@ -916,6 +920,8 @@ Route::post('/simpanaktivasitte', [UpdateERMcontroller::class, 'simpanaktivasitt
 Route::post('/formassesmenbundir', [UpdateERMcontroller::class, 'formassesmenbundir'])->name('formassesmenbundir');
 Route::post('/v_berkas_scan_kunjungan', [UpdateERMcontroller::class, 'v_berkas_scan_kunjungan'])->name('v_berkas_scan_kunjungan');
 Route::post('/asesmen-bunuh-diri/store', [UpdateERMcontroller::class, 'storeassbun'])->name('asesmen-bunuh-diri.store');
+Route::post('/ambil_form_cari_stok_obat', [UpdateERMcontroller::class, 'ambil_form_cari_stok_obat'])->name('ambil_form_cari_stok_obat');
+Route::get('/cariobat', [UpdateERMcontroller::class, 'cariobat'])->name('cariobat');
 
 // indexbillingpenunjang
 Route::get('indexlaporanpendapatanpa', [BillingController::class, 'indexlaporanpendapatanpa'])->name('indexlaporanpendapatanpa');

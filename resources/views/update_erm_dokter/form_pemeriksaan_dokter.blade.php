@@ -908,20 +908,26 @@
                             <button type="button" class="btn btn-success float-right" data-toggle="modal"
                                 data-target="#modaltemplate" onclick="ambilresep()">Template resep</button>
                             <button type="button" class="btn btn-success float-right mr-1 ml-1" data-toggle="modal"
-                                data-target="#modaltemplate" onclick="ambilriwayatresep()">Riwayat Resep
+                                data-target="#modaltemplate" onclick="ambilriwayatresep()"> <i class="bi bi-clipboard2-data mr-1"></i> Riwayat Resep
                                 Pasien</button>
+                            <button hidden type="button" class="btn btn-success float-right mr-1 ml-1" data-toggle="modal"
+                                data-target="#modaltemplate" onclick="ambilriwayatresepdokter()"> <i class="bi bi-clipboard2-data mr-1"></i> Riwayat Resep
+                                Dokter</button>
                         </div>
                         <div class="card-body">
                             <div class="form-group mt-2">
-                                <button type="button" class="btn btn-success tambahobat" onclick="addform()">+
+                                <button hidden type="button" class="btn btn-success tambahobat" onclick="addform()">+
                                     Tambah
                                     Obat</button>
+                                <button type="button" class="btn btn-success ambilstokobat" data-toggle="modal"
+                                data-target="#modalcaristokobat"><i class="bi bi-search mr-1"></i> Cari Obat</button>
                             </div>
                             <input hidden type="text" id="selisih" value="">
                             <input hidden type="text" value="" id="jumlahform">
                             <form action="" method="post" class="arrayobat">
                                 <div class="formobatfarmasi2">
-
+                                </div>
+                                <div class="formtemplateobat">
                                 </div>
                                 <div class="formobatfarmasiriwayat">
                                 </div>
@@ -1667,6 +1673,28 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalcaristokobat" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Silahkan Pilih Obat</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_tabel_stok">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <style>
     .modal-xl {
         max-width: 80%;
@@ -1753,7 +1781,6 @@
             }
         });
     }
-
     function showmodalpenunjanglabspesial() {
         spinner = $('#loader')
         spinner.show();
@@ -1774,7 +1801,6 @@
             }
         });
     }
-
     function showmodalpenunjangPA() {
         spinner = $('#loader')
         spinner.show();
@@ -1795,7 +1821,6 @@
             }
         });
     }
-
     function showmodalpenunjangRAD() {
         spinner = $('#loader')
         spinner.show();
@@ -1816,7 +1841,6 @@
             }
         });
     }
-
     function showmodalberkasrm() {
         spinner = $('#loader')
         spinner.show();
@@ -1837,7 +1861,6 @@
             }
         });
     }
-
     function showmodalriwayatsumarilis() {
         spinner = $('#loader')
         spinner.show();
@@ -1858,7 +1881,6 @@
             }
         });
     }
-
     function showmodalscanberkaslain() {
         spinner = $('#loader')
         spinner.show();
@@ -1879,7 +1901,6 @@
             }
         });
     }
-
     function showmodalcatatanhemodialisa() {
         spinner = $('#loader')
         spinner.show();
@@ -1908,7 +1929,6 @@
             todayHighlight: true,
         }).datepicker('update', new Date());
     });
-
     function simpanhasil() {
         Swal.fire({
             title: "Anda yakin ?",
@@ -1924,7 +1944,6 @@
             }
         });
     }
-
     function tampilkanhasilnya() {
         jlh = $('#jumlahdatahasil').val()
         rm = $('#rm').val()
@@ -1948,7 +1967,6 @@
             }
         });
     }
-
     function simpanhasil2() {
         var data1 = $('.form_pemeriksaan_1').serializeArray();
         var data2 = $('.form_pemeriksaan_2').serializeArray();
@@ -2026,7 +2044,6 @@
             }
         });
     }
-
     function ambilformiterasiobat() {
         var kodekunjungan = $('#kodekunjungan').val()
         $.ajax({
@@ -2191,7 +2208,6 @@
             }
         }
     });
-
     function showname() {
         a = $('#simpantemplate:checked').val()
         if (a == 'on') {
@@ -2200,7 +2216,6 @@
             $('#namaresep').attr('Hidden', true)
         }
     }
-
     function ambilresep() {
         spinner = $('#loader')
         spinner.show();
@@ -2221,7 +2236,26 @@
             }
         });
     }
-
+    function ambilriwayatresepdokter() {
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan: $('#kodekunjungan').val()
+            },
+            url: '<?= route('ambilriwayatresepdokter') ?>',
+            error: function(data) {
+                alert('ok')
+                spinner.hide()
+            },
+            success: function(response) {
+                $('.vtemplateresep').html(response)
+                spinner.hide()
+            }
+        });
+    }
     function ambilriwayatresep() {
         spinner = $('#loader')
         spinner.show();
@@ -2260,7 +2294,6 @@
             }
         });
     });
-
     function showMarkerArea(target) {
         const markerArea = new markerjs2.MarkerArea(target);
         markerArea.addEventListener("render", (event) => (target.src = event.dataUrl));
@@ -2271,7 +2304,6 @@
         ambilriwayatobat()
         ambilformiterasiobat()
     })
-
     function ambilriwayatobat() {
         spinner = $('#loader')
         spinner.show();
@@ -2291,7 +2323,6 @@
             }
         });
     }
-
     function resetgambar() {
         $.ajax({
             type: 'post',
@@ -2308,7 +2339,6 @@
             }
         });
     }
-
     function ambilgambar() {
         $.ajax({
             type: 'post',
@@ -2325,7 +2355,6 @@
             }
         });
     }
-
     function showicare2() {
         var kodekunjungan = $('#kodekunjungan').val()
         $.ajax({
@@ -2341,7 +2370,6 @@
             }
         });
     }
-
     function addform() {
         var max_fields = 10;
         var wrapper = $(".formobatfarmasi2"); //Fields wrapper
@@ -2371,13 +2399,6 @@
                 $(this).parent('div').remove();
                 x--;
             })
-            // $('#'+nama).autocomplete({
-            //     source: "<?= route('cariobat') ?>",
-            //     select: function(event, ui) {
-            //         $('[id="namaobat"]').val(ui.item.label);
-            //         $('[id="'+aturan+'"]').val(ui.item.aturan);
-            //     }
-            // });
         }
     }
     $(".scanrm_liat").on('click', function(event) {
@@ -2439,7 +2460,6 @@
             }
         });
     })
-
     function ambildatakunjungan() {
         rm = $('#nomorrm').val()
         spinner = $('#loader')
@@ -2457,5 +2477,26 @@
             }
         });
     }
+      $(".ambilstokobat").on('click', function(event) {
+        var kodekunjungan = $('#kodekunjungan').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('ambil_form_cari_stok_obat') ?>',
+            error: function(data) {
+                spinner.hide();
+                alert('error')
+            },
+            success: function(response) {
+                spinner.hide();
+                $('.v_tabel_stok').html(response);
+            }
+        });
+    })
 </script>
 <script src="{{ asset('public/marker/markerjs2.js') }}"></script>
