@@ -9,6 +9,7 @@ use App\Models\Pasien;
 use App\Models\ts_kunjungan;
 use App\Models\ts_sep;
 use Codedge\Fpdf\Fpdf\Fpdf;
+use Carbon\Carbon;
 
 class VclaimController extends Controller
 {
@@ -713,6 +714,7 @@ class VclaimController extends Controller
                 $arrayindex_far[] = $dataSet;
             }
         }
+        dd($arrayindex_far);
         $data = [
             "request" => [
                 "t_prb" => [
@@ -731,6 +733,29 @@ class VclaimController extends Controller
         ];
         $v = new VclaimModel();
         $prb = $v->InsertPRB($data);
+        $datasave = [
+            'no_sep' => $sep,
+            'no_kartu' => $noka_prb,
+            'alamat' => $alamatpx_prb,
+            'email' => $email_prb,
+            'programprb' => $kodeprogramprb,
+            'kodedpjp' => $kodedokter_prb,
+            'keterangan' => $keterangan_prb,
+            'saran' => $saran_prb,
+            'user' => auth()->user()->id . ' | ' . auth()->user()->nama,
+            'tgl_entry' => $this->get_now(),
+        ];
+        $headerId = DB::table('tabel_riwayat_prb')->insertGetId($datasave);
+        foreach($arrayindex_far as $f)
+            {
+                $datadetail = [
+                    'id_header' => $headerId,
+                    'kdobat' => $f['kdObat'],
+                    'signa1' => $f['signa1'],
+                    'signa2' => $f['signa2'],
+                    'jmlobat' => $f['jmlObat'],
+                ];
+            }
         $data1 = [
             'kode' => $prb->metaData->code,
             'message' => $prb->metaData->message
@@ -744,6 +769,14 @@ class VclaimController extends Controller
         return view('vclaim.detailsurkon', [
             'detail' => $detail
         ]);
+    }
+    public function get_now()
+    {
+        $dt = Carbon::now()->timezone('Asia/Jakarta');
+        $date = $dt->toDateString();
+        $time = $dt->toTimeString();
+        $now = $date . ' ' . $time;
+        return $now;
     }
     public function vclaimcarisuratkontrolpeserta_bycard(Request $request)
     {
