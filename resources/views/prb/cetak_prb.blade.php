@@ -240,7 +240,6 @@
                     Demikian atas bantuannya, diucapkan banyak terima kasih.
                 </div>
             </td>
-
             <!-- KOLOM KANAN: RESEP OBAT & TTD -->
             <td class="right-col align-top">
                 <div class="resep-title">R/.</div>
@@ -260,11 +259,9 @@
             </td>
         </tr>
     </table>
-
     <div class="footer-print">
         Tgl.Cetak.{{ now()->timezone(config('app.timezone'))->format('d-m-Y H:i') }}
     </div>
-
     <script>
         window.onload = function() {
             window.print();
