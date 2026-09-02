@@ -321,8 +321,6 @@ class UpdateERMcontroller extends Controller
                 echo json_encode($data);
                 die;
             }
-            $pasieniter = $request->pasieniter;
-            $jumlahiter = $request->jumlahiter;
             $simpantemplate = $request->simpantemplate;
             if (empty($dataSet_1['hipertensi'])) {
                 $hipertensi = 0;
