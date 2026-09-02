@@ -744,10 +744,11 @@ class VclaimController extends Controller
             'saran' => $saran_prb,
             'user' => auth()->user()->id . ' | ' . auth()->user()->nama,
             'tgl_entry' => $this->get_now(),
+            'no_srb' => ''
         ];
-        $headerId = DB::table('tabel_riwayat_prb')->insertGetId($datasave);
-        foreach($arrayindex_far as $f)
-            {
+        if ($prb->metaData->code == '200') {
+            $headerId = DB::table('tabel_riwayat_prb')->insertGetId($datasave);
+            foreach ($arrayindex_far as $f) {
                 $datadetail = [
                     'id_header' => $headerId,
                     'kdobat' => $f['kdObat'],
@@ -755,7 +756,9 @@ class VclaimController extends Controller
                     'signa2' => $f['signa2'],
                     'jmlobat' => $f['jmlObat'],
                 ];
+                DB::table('tabel_detail_prb')->insertGetId($datadetail);
             }
+        }
         $data1 = [
             'kode' => $prb->metaData->code,
             'message' => $prb->metaData->message
@@ -1143,5 +1146,38 @@ class VclaimController extends Controller
         $pdf->Output();
 
         exit;
+    }
+    public function cetakPrb(Request $request)
+    {
+        // 1. Tangkap parameter dari query string (URL)
+        $noSrb = $request->query('no_srb');
+        $noSep = $request->query('no_sep');
+        $nama = $request->query('nama');
+        $noka = $request->query('noka');
+        $namaProgram = $request->query('namaprogram');
+        $saran = $request->query('saran');
+        $keterangan = $request->query('keterangan');
+        // Validasi jika parameter tidak ada
+        if (!$noSrb || !$noSep) {
+            return abort(404, 'Parameter Nomor SRB atau Nomor SEP tidak ditemukan.');
+        }
+        // 2. Ambil data Surat PRB dari database lokal
+        // (Sesuaikan nama tabel dan kolom sesuai dengan database Anda)
+        $prb = DB::table('tabel_riwayat_prb')
+            ->where('no_srb', $noSrb)
+            ->orWhere('no_sep', $noSep)
+            ->first();
+
+        // 3. Jika data tidak ditemukan di DB
+        // if (!$prb) {
+        //     return abort(404, 'Data Surat PRB tidak ditemukan.');
+        // }
+        $v = new VclaimModel();
+        $info = $v->get_peserta_noka($noka, date('Y-m-d'));
+        $detail = $v->cariprb($noSrb, $noSep);
+        $kodedpjp = $detail->response->prb->DPJP->kode;
+        $mt_paramedis = db::table('mt_paramedis')->where('kode_dokter_jkn',$kodedpjp)->get()->first();
+        // 4. Return view khusus cetak beserta membawa data PRB
+        return view('prb.cetak_prb', compact('namaProgram','nama','noka','prb', 'noSrb', 'noSep','saran','keterangan','info','detail','mt_paramedis'));
     }
 }

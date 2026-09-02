@@ -996,3 +996,5 @@ Route::get('/ambildetailberkaslengkap2', [newFarmasiController::class, 'ambildet
 // Route::get('/pasien.merger-pdf/{$id}', [newFarmasiController::class, 'previewMergerPdf'])->middleware('auth')->name('pasien.merger-pdf');
 Route::get('/preview-merger-pdf/{kode_kunjungan}', [newFarmasiController::class, 'previewMergerPdf'])
     ->name('farmasi.preview-merger-pdf');
+
+Route::get('/prb/cetak', [VclaimController::class, 'cetakPrb'])->name('prb.cetak');
