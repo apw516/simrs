@@ -321,8 +321,7 @@ class UpdateERMcontroller extends Controller
                 echo json_encode($data);
                 die;
             }
-            // $pasieniter = $request->pasieniter;
-            // $jumlahiter = $request->jumlahiter;
+           
             $simpantemplate = $request->simpantemplate;
             if (empty($dataSet_1['hipertensi'])) {
                 $hipertensi = 0;
@@ -689,7 +688,7 @@ class UpdateERMcontroller extends Controller
                         'diagnosa' => $diagnosakerja,
                         'dok_kirim' => auth()->user()->kode_paramedis,
                         'status_layanan' => '3',
-                        'keterangan' => $itt,
+                        'keterangan' => $keterangan_iter,
                         'status_retur' => 'OPN',
                         'status_pembayaran' => 'OPN',
                         'status_order' => '0',
