@@ -178,12 +178,6 @@ class UpdateERMcontroller extends Controller
     {
         DB::beginTransaction();
         try {
-            // $pasieniter = $request->pasieniter;
-            // $jumlahiter = $request->jumlahiter;
-            // $keterangan_iter = '';
-            // if ($pasieniter == 1) {
-            //     $keterangan_iter = 'PASIEN ITER ' . $jumlahiter . ' x';
-            // }
             $data1 = json_decode($_POST['data1'], true);
             $data2 = json_decode($_POST['data2'], true);
             $data3 = json_decode($_POST['data3'], true);
@@ -226,7 +220,6 @@ class UpdateERMcontroller extends Controller
                 'tl_rawat_inap' => $dataSet_tindaklanjut['tl_rawat_inap'] ?? null,
                 'tl_meninggal'  => $dataSet_tindaklanjut['tl_meninggal'] ?? null,
             ];
-
             // 2. Filter nilai yang kosong/null lalu gabungkan dengan koma
             $tindaklanjut = implode(',', array_filter($tindaklanjutarr));
             if (!empty($dataSet_tindaklanjut['tl_iterasi_1'])) {
@@ -242,7 +235,6 @@ class UpdateERMcontroller extends Controller
                 $jumlahiter = 0;
                 $keterangan_iter = '';
             }
-
             foreach ($data2 as $nama) {
                 $index =  $nama['name'];
                 $value =  $nama['value'];
@@ -593,12 +585,12 @@ class UpdateERMcontroller extends Controller
             }
             if (count($formobatfarmasi2) > 1) {
                 $simpantemplate = $request->simpantemplate;
-                // $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
+                $kunjungan = DB::select('select * from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
                 $dt = Carbon::now()->timezone('Asia/Jakarta');
                 $date = $dt->toDateString();
                 $time = $dt->toTimeString();
                 $now = $date . ' ' . $time;
-                // $cek_layanan_header = count(DB::SELECT('select id from ts_layanan_header_order where kode_kunjungan = ?', [$kodekunjungan]));
+                $cek_layanan_header = count(DB::SELECT('select id from ts_layanan_header_order where kode_kunjungan = ?', [$kodekunjungan]));
                 $penjamin = $kunjungan[0]->kode_penjamin;
                 //jika penjamin bpjs order ke dp2
                 //jika penjamin umum order ke dp1
@@ -631,7 +623,7 @@ class UpdateERMcontroller extends Controller
                         $list_obat[] = "{$no}. Nama Obat: " . $d['namaobat'] .
                             ", Jumlah: " . $d['jumlah'] .
                             ", Aturan Pakai: " . trim($aturan_pakai_bersih) .
-                            ", Signa: " . $d['signa'] .
+                            ", Signa: " . $d['signa1'] . 'x' . $d['signa2'] .
                             ", Keterangan: " . $d['keterangan'];
                     }
                 }
@@ -659,7 +651,7 @@ class UpdateERMcontroller extends Controller
                             'kode_barang' => $d['kodebarang'],
                             'aturan_pakai' => $d['aturanpakai'],
                             'jumlah' => $d['jumlah'],
-                            'signa' => $d['signa'],
+                            'signa' => $d['signa1'].' x '.$d['signa2'],
                             'keterangan' => $d['keterangan'],
                         ];
                         $detailresep = templateresep_detail::create($detailresep);
@@ -700,15 +692,16 @@ class UpdateERMcontroller extends Controller
                         if ($d['kode_kunjungan'] != $kodekunjungan) {
                             $id_detail = $this->createLayanandetailOrder();
                             $aturan = trim(str_replace('|', ' ', $d['aturanpakai']));
-                            $signa  = trim(str_replace('|', ' ', $d['signa']));
+                            $signa1  = trim(str_replace('|', ' ', $d['signa1']));
+                            $signa2  = trim(str_replace('|', ' ', $d['signa2']));
                             $ket    = trim(str_replace('|', ' ', $d['keterangan']));
-                            $komponen = array_filter([$aturan, $signa, $ket]);
+                            $komponen = array_filter([$aturan, $signa1,$signa2, $ket]);
                             $aturan_pakai_bersih = implode(' | ', $komponen);
                             $save_detail = [
                                 'id_layanan_detail' => $id_detail,
                                 'kode_layanan_header' => $kode_layanan_header,
                                 'kode_dokter1' => auth()->user()->kode_paramedis,
-                                'kode_barang' => $d['namaobat'],
+                                'kode_barang' => $d['namaobat'] .' | '.$d['kodebarang'],
                                 'jumlah_layanan' => $d['jumlah'],
                                 'aturan_pakai' => $aturan_pakai_bersih,
                                 'status_layanan_detail' => 'OPN',
