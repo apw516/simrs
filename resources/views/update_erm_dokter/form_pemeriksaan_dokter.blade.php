@@ -917,10 +917,9 @@
                         <div class="card-body">
                             <div class="form-group mt-2">
                                 <button type="button" class="btn btn-success tambahobat" onclick="addform()">+
-                                    Tambah
-                                    Obat</button>
+                                    Tambah Obat ( Ketik Manual Nama Obat )</button>
                                 <button type="button" class="btn btn-success ambilstokobat" data-toggle="modal"
-                                data-target="#modalcaristokobat"><i class="bi bi-search mr-1"></i> Cari Obat</button>
+                                data-target="#modalcaristokobat"><i class="bi bi-search mr-1"></i> Cari Obat ( Berdasarkan Stok di Farmasi )</button>
                             </div>
                             <input hidden type="text" id="selisih" value="">
                             <input hidden type="text" value="" id="jumlahform">
