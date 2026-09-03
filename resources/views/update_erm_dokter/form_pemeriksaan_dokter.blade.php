@@ -3,37 +3,37 @@
         <h3>Form Pemeriksaan</h3>
         <br>
         <div class="btn-group mb-3" role="group" aria-label="Basic outlined example">
-            <button type="button" nomorrm="{{ $kunjungan[0]->no_rm }}" class="btn btn-warning btn-outline-dark"
+            <button type="button" nomorrm="{{ $kunjungan[0]->no_rm }}" class="btn btn-light btn-outline-dark"
                 onclick="showmodalpenunjanglab()" data-toggle="modal" data-target="#modalhasillab"><i
                     class="bi bi-clipboard-data"></i> Hasil
                 Pemeriksaan
                 Laboratorium</button>
-            <button type="button" class="btn btn-warning btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
+            <button type="button" class="btn btn-light btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
                 onclick="showmodalpenunjanglabspesial()" data-toggle="modal" data-target="#modalhasillab"><i
                     class="bi bi-clipboard-data"></i> Hasil Laboratorium Spesial
                 Order</button>
-            <button type="button" class="btn btn-warning btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
+            <button type="button" class="btn btn-light btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
                 onclick="showmodalpenunjangRAD()" data-toggle="modal" data-target="#modalhasilpenunjang_rad"><i
                     class="bi bi-clipboard-data"></i> Hasil
                 Pemeriksaan
                 Radiologi</button>
-            <button type="button" class="btn btn-warning btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
+            <button type="button" class="btn btn-light btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
                 onclick="showmodalpenunjangPA()" data-toggle="modal" data-target="#modalhasilpenunjang_pa"><i
                     class="bi bi-clipboard-data"></i> Hasil
                 Pemeriksaan PA</button>
-            <button type="button" class="btn btn-warning btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
+            <button type="button" class="btn btn-light btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
                 onclick="showmodalberkasrm()" data-toggle="modal" data-target="#modalscan_rm"><i
                     class="bi bi-clipboard-data"></i> Berkas
                 Rekamedis</button>
-            <button type="button" class="btn btn-warning btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
+            <button type="button" class="btn btn-light btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
                 onclick="showmodalriwayatsumarilis()" data-toggle="modal" data-target="#modalsumarilis"><i
                     class="bi bi-clipboard-data"></i>
                 SUMARILIS</button>
-            <button type="button" class="btn btn-warning btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
+            <button type="button" class="btn btn-light btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
                 onclick="showmodalscanberkaslain()" data-toggle="modal" data-target="#modalberkaslain"><i
                     class="bi bi-clipboard-data"></i> Berkas
                 Lain</button>
-            <button type="button" class="btn btn-warning btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
+            <button type="button" class="btn btn-light btn-outline-dark" nomorrm="{{ $kunjungan[0]->no_rm }}"
                 onclick="showmodalcatatanhemodialisa()" data-toggle="modal" data-target="#modalcatatanhemodialisa"><i
                     class="bi bi-clipboard-data"></i> Catatan Hemodialisa</button>
         </div>
@@ -44,6 +44,61 @@
         </div>
     </div>
     <div class="card-body table-responsive p-5" style="height: 757Px">
+        <style>
+            @keyframes alertPulseBlink {
+                0% {
+                    transform: scale(1);
+                    background-color: #f8d7da;
+                    /* Warna dasar danger light */
+                    border-color: #f5c6cb;
+                    box-shadow: 0 0 0px rgba(220, 53, 69, 0);
+                }
+
+                50% {
+                    transform: scale(1.02);
+                    /* Effect Zoom Out/In sedikit mekar */
+                    background-color: #dc3545;
+                    /* Berkedip ke Merah Tegas */
+                    color: #ffffff;
+                    /* Teks berubah jadi putih */
+                    border-color: #bd2130;
+                    box-shadow: 0 0 15px rgba(220, 53, 69, 0.6);
+                }
+
+                100% {
+                    transform: scale(1);
+                    background-color: #f8d7da;
+                    border-color: #f5c6cb;
+                    box-shadow: 0 0 0px rgba(220, 53, 69, 0);
+                }
+            }
+
+            .alert-prb-animated {
+                /* Menerapkan animasi berulang terus menerus (infinite) selama 1.8 detik */
+                animation: alertPulseBlink 1.8s infinite ease-in-out;
+                transition: all 0.3s ease;
+            }
+
+            /* Pastikan warna ikon/teks menyesuaikan saat animasi berjalan */
+            .alert-prb-animated .text-warning-custom {
+                color: #ffc107;
+            }
+        </style>
+        @if ($pesanprb !== 'Bukan Pasien PRB')
+            <!-- Alert Pasien PRB (Animasi Zoom & Blink) -->
+            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center alert-prb-animated"
+                role="alert">
+                <i class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2 fs-3 text-warning-custom"></i>
+                <div>
+                    <strong>PERHATIAN!</strong> {{ $pesanprb }}.
+                    <div class="small">
+                        Pasien ini teridentifikasi sebagai peserta Program Rujuk Balik (PRB).
+                        Pertimbangkan untuk membuatkan Surat PRB.
+                    </div>
+                </div>
+                <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <style>
             .alert-blink-danger {
                 animation: pulse-danger 2s infinite;
@@ -405,7 +460,30 @@
                             <tr>
                                 <td class="text-bold font-italic">Keluhan Utama</td>
                                 <td colspan="3">
-                                    <textarea class="form-control" id="keluhanutama" name="keluhanutama" placeholder="Ketik keluhan pasien ...">{{ $asesmen_perawat ? $asesmen_perawat->keluhanutama : '' }}</textarea>
+                                    <textarea hidden readonly class="form-control" rows="8" id="keluhanutamaawal" name="keluhanutamaawal"
+                                        placeholder="Ketik keluhan pasien ...">{{ $asesmen_perawat ? $asesmen_perawat->keluhanutama : '' }}</textarea>
+                                    <textarea class="form-control" rows="8" id="keluhanutama" name="keluhanutama"
+                                        placeholder="Ketik keluhan pasien ...">{{ $asesmen_perawat ? $asesmen_perawat->keluhanutama : '' }}</textarea>
+                                    <div class="custom-control custom-checkbox border-top pt-2 mt-2">
+                                        <input type="checkbox" class="custom-control-input" id="is_verified_dok"
+                                            name="is_verified_dok" value="1"
+                                            {{ isset($asesmen_terakhir) && $asesmen_terakhir->validasi_anamnesa == 1 ? 'checked' : '' }}>
+                                        <label class="custom-control-label font-weight-bold text-success"
+                                            for="is_verified_dok">
+                                            Ceklis Verifikasi : Saya
+                                            menyatakan telah memeriksa & mengonfirmasi isian ini.
+                                        </label>
+                                    </div>
+
+                                    <!-- Tampilkan info siapa & kapan verifikasi dilakukan (opsional) -->
+                                    {{-- @if (isset($asesmen_perawat) && $asesmen_perawat->is_verified_dok == 1)
+                                        <small class="text-muted d-block mt-1">
+                                            <i class="bi bi-info-circle"></i> Diverifikasi oleh:
+                                            <strong>{{ $asesmen_perawat->verified_by_dokter ?? 'Dokter' }}</strong>
+                                            pada
+                                            {{ isset($asesmen_perawat->verified_at) ? \Carbon\Carbon::parse($asesmen_perawat->verified_at)->format('d-m-Y H:i') : '-' }}
+                                        </small>
+                                    @endif --}}
                                 </td>
                             </tr>
                         </table>
@@ -985,7 +1063,23 @@
                                     data-target="#modalriwayatkonsul">Riwayat Konsul</button> --}}
                             </div>
                             <div class="card-body">
-
+                                @if ($pesanprb !== 'Bukan Pasien PRB')
+                                    <!-- Alert Pasien PRB (Animasi Zoom & Blink) -->
+                                    <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center alert-prb-animated"
+                                        role="alert">
+                                        <i
+                                            class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2 fs-3 text-warning-custom"></i>
+                                        <div>
+                                            <strong>PERHATIAN!</strong> {{ $pesanprb }}.
+                                            <div class="small">
+                                                Pasien ini teridentifikasi sebagai peserta Program Rujuk Balik (PRB).
+                                                Pertimbangkan untuk membuatkan Surat PRB.
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                    </div>
+                                @endif
                                 @php
                                     // Menentukan class animasi berkedip secara otomatis
                                     $blinkClass = '';
@@ -1341,8 +1435,8 @@
                                             <div class="form-group">
                                                 <label for="exampleFormControlSelect1">Tanggal Pemeriksaan
                                                     Penunjang</label>
-                                                <input type="date" id="tanggalperiksapenunjang" value="03/06/2023"
-                                                    class="form-control">
+                                                <input type="date" id="tanggalperiksapenunjang"
+                                                    value="03/06/2023" class="form-control">
                                             </div>
                                         </div>
                                     </div>
@@ -1356,8 +1450,8 @@
                                                 <tbody>
                                                     @foreach ($layanan_rad as $t)
                                                         <tr class="pilihlayanan" namatindakan="{{ $t->Tindakan }}"
-                                                            tarif="{{ $t->tarif }}" kode="{{ $t->kode }}"
-                                                            id="{{ $t->kode }}">
+                                                            tarif="{{ $t->tarif }}"
+                                                            kode="{{ $t->kode }}" id="{{ $t->kode }}">
                                                             <td>{{ $t->Tindakan }}</td>
                                                         </tr>
                                                     @endforeach

@@ -140,6 +140,46 @@ class UpdateERMcontroller extends Controller
         $unit = auth()->user()->unit;
         $layanan = $this->carilayanan(3, $layanan, $unit);
         $hasil_ro = DB::select('select * from erm_mata_kanan_kiri where kode_kunjungan = ? ', [$request->kodekunjungan]);
+        $riwayat_diagnosa = DB::select('select * from di_pasien_diagnosa where no_rm = ?', [$no_rm]);
+        $is_prb = false;
+        $diagnosa_prb_matched = null;
+
+        if (!empty($riwayat_diagnosa)) {
+
+            // Iterasi/looping riwayat diagnosa
+            foreach ($riwayat_diagnosa as $diag) {
+
+                // Pastikan kolom diag_utama tidak kosong
+                if (!empty($diag->diag_utama)) {
+
+                    // Ambil kode diagnosa utama (misal: "E10.1" atau "I10")
+                    $kode_diag = trim($diag->diag_utama);
+
+                    // Cek apakah kode diagnosa cocok dengan tabel mt_diagnosa_prb
+                    $check_prb = DB::table('mt_diagnosa_prb')
+                        ->whereRaw('? LIKE CONCAT(icd10, "%")', [$kode_diag])
+                        ->first();
+
+                    if ($check_prb) {
+                        $is_prb = true;
+                        $diagnosa_prb_matched = $check_prb;
+                        break; // Keluar dari loop jika sudah ditemukan diagnosa PRB
+                    }
+                }
+            }
+        }
+
+        // Hasil Pengujian
+        if ($is_prb) {
+            // Ambil nama diagnosa/program PRB dari hasil query (sesuaikan nama kolomnya, misal: nama_diagnosa, nm_diagnosa, atau nama)
+            $nama_prb = $diagnosa_prb_matched->nama_diagnosa ?? $diagnosa_prb_matched->nama ?? $diagnosa_prb_matched->icd10;
+
+            // Pesan menampilkan nama diagnosanya
+            $pesanprb = 'Pasien PRB (' . $nama_prb . ')';
+        } else {
+            // Pasien bukan PRB
+            $pesanprb = 'Bukan Pasien PRB';
+        }
         if (auth()->user()->unit == '1028') {
             return view('update_erm_dokter.form_pemeriksaan_dokter_fisio', compact([
                 'kunjungan',
@@ -154,7 +194,8 @@ class UpdateERMcontroller extends Controller
                 'hasil_ro',
                 'poli_pengirim_konsul',
                 'catatan_konsul',
-                'layanan'
+                'layanan',
+                'pesanprb'
             ]));
         } else {
             return view('update_erm_dokter.form_pemeriksaan_dokter', compact([
@@ -170,7 +211,8 @@ class UpdateERMcontroller extends Controller
                 'hasil_ro',
                 'poli_pengirim_konsul',
                 'catatan_konsul',
-                'layanan'
+                'layanan',
+                'pesanprb'
             ]));
         }
     }
@@ -178,12 +220,6 @@ class UpdateERMcontroller extends Controller
     {
         DB::beginTransaction();
         try {
-            // $pasieniter = $request->pasieniter;
-            // $jumlahiter = $request->jumlahiter;
-            // $keterangan_iter = '';
-            // if ($pasieniter == 1) {
-            //     $keterangan_iter = 'PASIEN ITER ' . $jumlahiter . ' x';
-            // }
             $data1 = json_decode($_POST['data1'], true);
             $data2 = json_decode($_POST['data2'], true);
             $data3 = json_decode($_POST['data3'], true);
@@ -214,6 +250,26 @@ class UpdateERMcontroller extends Controller
                 $value =  $nama['value'];
                 $dataSet_1[$index] = $value;
             }
+            if (trim($dataSet_1['keluhanutama']) == trim($dataSet_1['keluhanutamaawal'])) {
+                $data = [
+                    'kode' => 500,
+                    'message' => 'Isi keluhan utama / Anamnesa tidak boleh sama dengan bulan kemarin ... !'
+                ];
+                echo json_encode($data);
+                die;
+            }
+            if (!empty($dataSet_1['is_verified_dok'])) {
+                $validasi_anamnesa = 1;
+            } else {
+                $validasi_anamnesa = 0;
+                $data = [
+                    'kode' => 500,
+                    'message' => 'Verifikasi Keluhan utama atau Anamnesa belum diceklis !'
+                ];
+                echo json_encode($data);
+                die;
+            }
+
             $tindaklanjutarr = [
                 'tl_konsul'     => $dataSet_tindaklanjut['tl_konsul'] ?? null,
                 'tl_kontrol'    => $dataSet_tindaklanjut['tl_kontrol'] ?? null,
@@ -321,7 +377,7 @@ class UpdateERMcontroller extends Controller
                 echo json_encode($data);
                 die;
             }
-           
+
             $simpantemplate = $request->simpantemplate;
             if (empty($dataSet_1['hipertensi'])) {
                 $hipertensi = 0;
@@ -434,7 +490,8 @@ class UpdateERMcontroller extends Controller
                 'tgl_entry' => $this->get_now(),
                 'status' => '0',
                 'signature' => '',
-                'evaluasi' => $request->hasilexpertisi
+                'evaluasi' => $request->hasilexpertisi,
+                'validasi_anamnesa' => $validasi_anamnesa
             ];
             $assdok = assesmenawaldokter::updateOrCreate(
                 ['id_kunjungan' => $dataSet_1['kodekunjungan']],
