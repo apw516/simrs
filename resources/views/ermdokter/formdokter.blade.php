@@ -205,7 +205,8 @@
 <script>
     $(document).ready(function() {
         rm = $('#nomorrm').val()
-        formcatatanmedis(rm)
+        // formcatatanmedis(rm)
+        update_formpemeriksaandokter()
         catatankonsul()
     })
 
