@@ -9,6 +9,7 @@ use App\Models\Pasien;
 use App\Models\ts_kunjungan;
 use App\Models\ts_sep;
 use Codedge\Fpdf\Fpdf\Fpdf;
+use Carbon\Carbon;
 
 class VclaimController extends Controller
 {
@@ -713,6 +714,7 @@ class VclaimController extends Controller
                 $arrayindex_far[] = $dataSet;
             }
         }
+        // dd($arrayindex_far);
         $data = [
             "request" => [
                 "t_prb" => [
@@ -731,6 +733,32 @@ class VclaimController extends Controller
         ];
         $v = new VclaimModel();
         $prb = $v->InsertPRB($data);
+        $datasave = [
+            'no_sep' => $sep,
+            'no_kartu' => $noka_prb,
+            'alamat' => $alamatpx_prb,
+            'email' => $email_prb,
+            'programprb' => $kodeprogramprb,
+            'kodedpjp' => $kodedokter_prb,
+            'keterangan' => $keterangan_prb,
+            'saran' => $saran_prb,
+            'user' => auth()->user()->id . ' | ' . auth()->user()->nama,
+            'tgl_entry' => $this->get_now(),
+            'no_srb' => ''
+        ];
+        if ($prb->metaData->code == '200') {
+            $headerId = DB::table('tabel_riwayat_prb')->insertGetId($datasave);
+            foreach ($arrayindex_far as $f) {
+                $datadetail = [
+                    'id_header' => $headerId,
+                    'kdobat' => $f['kdObat'],
+                    'signa1' => $f['signa1'],
+                    'signa2' => $f['signa2'],
+                    'jmlobat' => $f['jmlObat'],
+                ];
+                DB::table('tabel_detail_prb')->insertGetId($datadetail);
+            }
+        }
         $data1 = [
             'kode' => $prb->metaData->code,
             'message' => $prb->metaData->message
@@ -744,6 +772,14 @@ class VclaimController extends Controller
         return view('vclaim.detailsurkon', [
             'detail' => $detail
         ]);
+    }
+    public function get_now()
+    {
+        $dt = Carbon::now()->timezone('Asia/Jakarta');
+        $date = $dt->toDateString();
+        $time = $dt->toTimeString();
+        $now = $date . ' ' . $time;
+        return $now;
     }
     public function vclaimcarisuratkontrolpeserta_bycard(Request $request)
     {
@@ -1110,5 +1146,38 @@ class VclaimController extends Controller
         $pdf->Output();
 
         exit;
+    }
+    public function cetakPrb(Request $request)
+    {
+        // 1. Tangkap parameter dari query string (URL)
+        $noSrb = $request->query('no_srb');
+        $noSep = $request->query('no_sep');
+        $nama = $request->query('nama');
+        $noka = $request->query('noka');
+        $namaProgram = $request->query('namaprogram');
+        $saran = $request->query('saran');
+        $keterangan = $request->query('keterangan');
+        // Validasi jika parameter tidak ada
+        if (!$noSrb || !$noSep) {
+            return abort(404, 'Parameter Nomor SRB atau Nomor SEP tidak ditemukan.');
+        }
+        // 2. Ambil data Surat PRB dari database lokal
+        // (Sesuaikan nama tabel dan kolom sesuai dengan database Anda)
+        $prb = DB::table('tabel_riwayat_prb')
+            ->where('no_srb', $noSrb)
+            ->orWhere('no_sep', $noSep)
+            ->first();
+
+        // 3. Jika data tidak ditemukan di DB
+        // if (!$prb) {
+        //     return abort(404, 'Data Surat PRB tidak ditemukan.');
+        // }
+        $v = new VclaimModel();
+        $info = $v->get_peserta_noka($noka, date('Y-m-d'));
+        $detail = $v->cariprb($noSrb, $noSep);
+        $kodedpjp = $detail->response->prb->DPJP->kode;
+        $mt_paramedis = db::table('mt_paramedis')->where('kode_dokter_jkn',$kodedpjp)->get()->first();
+        // 4. Return view khusus cetak beserta membawa data PRB
+        return view('prb.cetak_prb', compact('namaProgram','nama','noka','prb', 'noSrb', 'noSep','saran','keterangan','info','detail','mt_paramedis'));
     }
 }

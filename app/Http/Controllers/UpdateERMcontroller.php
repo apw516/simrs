@@ -687,7 +687,7 @@ class UpdateERMcontroller extends Controller
                         'diagnosa' => $diagnosakerja,
                         'dok_kirim' => auth()->user()->kode_paramedis,
                         'status_layanan' => '3',
-                        'keterangan' => $itt,
+                        'keterangan' => $keterangan_iter,
                         'status_retur' => 'OPN',
                         'status_pembayaran' => 'OPN',
                         'status_order' => '0',
