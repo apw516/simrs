@@ -8263,22 +8263,112 @@ class ErmController extends Controller
     }
     public function ambilriwayatreseppasien(Request $request)
     {
-        // $user = auth()->user()->kode_paramedis;
+        $user = auth()->user()->kode_paramedis;
         $t = db::select('select no_rm from ts_kunjungan where kode_kunjungan = ?',[$request->kodekunjungan]);
         $rm = $t[0]->no_rm;
 
-        $resep = db::select('select b.* from ts_layanan_header_order a inner join ts_layanan_detail_order b on a.id = b.row_id_header where a.no_rm = ? and kode_unit in (4002,4008)',[$rm]);
-        $header = db::select('select *,fc_nama_unit1(unit_pengirim) as unit_pengirim,fc_NAMA_PARAMEDIS1(dok_kirim) as nama_dokter from ts_layanan_header_order where no_rm = ? and kode_unit in (4002,4008) order by kode_kunjungan DESC',[$rm]);
-        // $resep = DB::SELECT('select * from ts_template_resep where user = ? and status = ?', [$user, 1]);
+        $header = DB::table('ts_kunjungan as a')
+            ->join('ts_layanan_header as b', 'a.kode_kunjungan', '=', 'b.kode_kunjungan')
+            ->select([
+                'a.kode_kunjungan',
+                'a.tgl_masuk',
+                DB::raw('fc_nama_unit1(a.kode_unit) AS nama_unit'),
+                DB::raw('fc_NAMA_PENJAMIN2(a.kode_penjamin) AS nama_penjamin'),
+                DB::raw('fc_NAMA_PARAMEDIS1(a.kode_paramedis) AS nama_dokter'),
+                'b.id as id_layanan_header',
+                'b.kode_layanan_header',
+            ])
+            ->where('a.no_rm', $rm)
+            ->where('b.kode_unit', '4008')
+            ->where('a.kode_paramedis', $user)
+            ->get();
+
+            $detail = DB::table('ts_kunjungan as a')
+            ->join('ts_layanan_header as b', 'a.kode_kunjungan', '=', 'b.kode_kunjungan')
+            ->join('ts_layanan_detail as c', 'b.id', '=', 'c.row_id_header')
+            ->select([
+                'a.tgl_masuk',
+                'a.kode_kunjungan',
+                DB::raw('fc_NAMA_PARAMEDIS1(a.kode_paramedis) as nama_dokter'),
+                DB::raw('fc_nama_unit1(a.kode_unit) as nama_unit'),
+                DB::raw('fc_nama_barang(c.kode_barang) as nama_barang'),
+                'c.kode_barang',
+                'c.jumlah_layanan',
+                'c.aturan_pakai',
+                'b.id as id_header',
+            ])
+            ->where('a.no_rm', $rm)
+            ->where('b.kode_unit', '4008')
+            ->where('c.kode_barang', '!=', '')
+            ->where('a.kode_paramedis', $user)
+            ->get();
+
         return view('ermtemplate.tabel_riwayat_resep_pasien', compact(
             'header',
-            'resep'
+            'detail'
+        ));
+    }
+    public function ambilriwayatresepdokter(Request $request)
+    {
+      $user = auth()->user()->kode_paramedis;
+$sixMonthsAgo = Carbon::now()->subMonths(1)->toDateString();
+
+// 1. Ambil Header 6 bulan terakhir
+$header = DB::table('ts_kunjungan as a')
+    ->join('ts_layanan_header as b', 'a.kode_kunjungan', '=', 'b.kode_kunjungan')
+    ->select([
+        'a.kode_kunjungan',
+        'a.tgl_masuk',
+        DB::raw('fc_nama_unit1(a.kode_unit) AS nama_unit'),
+        DB::raw('fc_NAMA_PENJAMIN2(a.kode_penjamin) AS nama_penjamin'),
+        DB::raw('fc_NAMA_PARAMEDIS1(a.kode_paramedis) AS nama_dokter'),
+        'b.id as id_layanan_header',
+        'b.kode_layanan_header',
+    ])
+    ->where('b.kode_unit', '4008')
+    ->where('a.kode_paramedis', $user)
+    ->where('a.kode_unit', '<', '2000')
+    ->where('a.tgl_masuk', '>=', $sixMonthsAgo) // Filter 6 bulan terakhir
+    ->get();
+
+// 2. Ambil ID Header yang didapat
+$headerIds = $header->pluck('id_layanan_header');
+
+// 3. Ambil Detail HANYA dari ID Header yang ada (Tanpa Join ts_kunjungan ulang)
+$detail = DB::table('ts_layanan_detail as c')
+    ->select([
+        'c.row_id_header as id_header',
+        'c.kode_barang',
+        DB::raw('fc_nama_barang(c.kode_barang) as nama_barang'),
+        'c.jumlah_layanan',
+        'c.aturan_pakai',
+    ])
+    ->whereIn('c.row_id_header', $headerIds)
+    ->where('c.kode_barang', '!=', '')
+    ->whereNotNull('c.kode_barang')
+    ->get();
+
+        return view('ermtemplate.tabel_riwayat_resep_pasien', compact(
+            'header',
+            'detail'
         ));
     }
     public function ambilresep_detail2(Request $request)
     {
         $resep = DB::SELECT('select * from ts_layanan_detail_order where row_id_header = ?', [$request->idheader]);
         return view('ermtemplate.reseptemplatedetail2', compact(
+            'resep'
+        ));
+    }
+    public function ambilresep_detail3(Request $request)
+    {
+        $resep = DB::SELECT('SELECT kode_barang
+        ,fc_nama_barang(kode_barang) AS nama_barang
+        ,jumlah_layanan
+        ,aturan_pakai
+        FROM ts_layanan_detail WHERE row_id_header = ?
+        AND kode_barang != ?', [$request->idheader,'']);
+        return view('ermtemplate.reseptemplatedetail3', compact(
             'resep'
         ));
     }
@@ -8952,12 +9042,7 @@ class ErmController extends Controller
         $kunjungan = db::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
         $rm = $kunjungan[0]->no_rm;
         $riwayatobat = db::select('SELECT * from ts_layanan_header_order a left outer join ts_layanan_detail_order b on a.id = b.row_id_header WHERE a.no_rm = ? and a.unit_pengirim = ? and a.kode_unit in (4002,4008) and a.id = (SELECT MAX(id) from ts_layanan_header_order where no_rm = ? and unit_pengirim = ? and kode_unit in (4002,4008))',[$rm,$unit,$rm,$unit]);
-        // dd($riwayatobat);
-        // $last_assdok = DB::select('SELECT * FROM assesmen_dokters
-        // WHERE id = (SELECT MAX(id) FROM assesmen_dokters WHERE id_pasien = ? AND kode_unit = ? ) AND id_pasien = ? AND kode_unit = ?', [$kunjungan[0]->no_rm, $unit, $kunjungan[0]->no_rm, $unit]);
         if (count($riwayatobat) > 0) {
-            // $riwayatobat = db::select('SELECT * FROM ts_layanan_header_order AS a
-            // LEFT OUTER JOIN ts_layanan_detail_order b ON a.`id` = b.row_id_header WHERE LEFT(a.kode_layanan_header,3) = ? AND a.kode_kunjungan = ?', ['ORF', $last_assdok[0]->id_kunjungan]);
             return view('ermtemplate.riwayat_obat', compact([
                 'riwayatobat'
             ]));

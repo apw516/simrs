@@ -117,7 +117,6 @@
         $(document).ready(function() {
             tampilkandata()
         });
-
         function tampilkandata() {
             tgl_awal = $('#tgl_awal').val()
             tgl_akhir = $('#tgl_akhir').val()
@@ -143,12 +142,10 @@
                 }
             });
         }
-
         function kembali() {
             $('.v_1').removeAttr('hidden', true)
             $('.v_2').attr('hidden', true)
         }
-
         function caripasien_far() {
             rm = $('#cari_rm').val()
             tanggalcari = $('#tanggalcari').val()
