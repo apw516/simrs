@@ -659,4 +659,76 @@ class PdfController extends Controller
         $namaberkas = 'HD ';
         return $dompdf->stream($namaberkas . $mt_pasien[0]->nama_px . ".pdf", array("Attachment" => false));
     }
+    public function cetakcatatanhemodialisa2($kode_kunjungan)
+    {
+        $header = db::table('ts_header_catatan_hemodialisis')->where('kode_kunjungan', $kode_kunjungan)->get()->first();
+        $rm = $header->no_rm;
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$rm]);
+        $kodekunjungan = $header->kode_kunjungan;
+        $cek2 = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and jenis_dokumen = ?', [$header->kode_kunjungan, 'CATATAN HD']);
+        if (count($cek2) > 0) {
+            $t = count($cek2) + 1;
+            $nama = 'ch' . $t;
+        } else {
+            $savee = [
+                'kode_kunjungan' => $kodekunjungan,
+                'status_code' => '200',
+                'tgl_kirim' => $this->get_now(),
+                'jenis_dokumen' => 'CATATAN HD',
+            ];
+            db::table('log_ttd_elektronik')->insert($savee);
+            $nama = 'ch' . '1';
+        }
+        $jawabkonsulan = [
+            'id_dokumen' => $nama . $kodekunjungan,
+            'nama_user' => $header->akses_vaskuler_oleh,
+            'tanggal_verifikasi' => $header->tgl_entry,
+            'jabatan' => "Perawat",
+        ];
+        $v = new ModelBSRE();
+        $DD = $v->sendpdftosiramah($jawabkonsulan);
+        $url1 = "https://siramah.rsudwaled.com/filetandatangan?id=" . $nama . $kodekunjungan;
+        // $url = 'adadad';
+        $qrtte = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url1));
+        // dd($rm);
+        // if(!!$request->jenis){
+        $jenis = 1;
+        // }else{
+        //     $jenis = 0;
+        // }
+        $kode_kunjungan = $header->kode_kunjungan;
+        $datah = db::select('select * from ts_header_catatan_hemodialisis where id = ? ORDER BY id DESC', [$id]);
+        // Ambil semua ID header terlebih dahulu
+        $ids = collect($datah)->pluck('id')->toArray();
+        // dd($datah);
+        if (!empty($ids)) {
+            // Gunakan WHERE IN untuk mengambil semua data sekaligus
+            $placeholder = implode(',', array_fill(0, count($ids), '?'));
+            $arrayBaru = db::select("select * from ts_catatan_pre_hemodialisa where idheader IN ($placeholder) and jenis = 1 ORDER BY id asc", $ids);
+            $arrayBaru2 = db::select("select * from ts_catatan_pre_hemodialisa where idheader IN ($placeholder) and jenis = 2 ORDER BY id asc", $ids);
+            $arrayBaru3 = db::select("select * from ts_catatan_pre_hemodialisa where idheader IN ($placeholder) and jenis = 3 ORDER BY id asc", $ids);
+            $arrayBaru4 = db::select("select * from ts_catatan_penyulit_hemodialisa where idheader IN ($placeholder) ORDER BY id asc", $ids);
+        } else {
+            $arrayBaru = [];
+            $arrayBaru2 = [];
+            $arrayBaru3 = [];
+            $arrayBaru4 = [];
+        }
+        $dompdf = Pdf::loadView('pdf.catatan_hemodialisa', compact([
+            'mt_pasien',
+            'header',
+            'datah',
+            'arrayBaru',
+            'arrayBaru2',
+            'arrayBaru3',
+            'arrayBaru4',
+            'jenis',
+            'qrtte'
+        ]));
+        $dompdf->setPaper('A4', 'portrait'); // 'A4' for paper size, 'portrait' or 'landscape' for orientation
+        // Render the HTML as PDF
+        $dompdf->render();
+        $namaberkas = 'HD ';
+        return $dompdf->stream($namaberkas . $mt_pasien[0]->nama_px . ".pdf", array("Attachment" => false));
+    }
 }

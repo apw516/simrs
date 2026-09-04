@@ -998,3 +998,4 @@ Route::get('/preview-merger-pdf/{kode_kunjungan}', [newFarmasiController::class,
     ->name('farmasi.preview-merger-pdf');
 
 Route::get('/prb/cetak', [VclaimController::class, 'cetakPrb'])->name('prb.cetak');
+Route::get('/cetakcatatanhemodialisa2/{id}', [PdfController::class, 'cetakcatatanhemodialisa2']); //formpasien_bpjs
