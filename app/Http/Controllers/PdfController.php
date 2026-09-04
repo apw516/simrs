@@ -659,9 +659,9 @@ class PdfController extends Controller
         $namaberkas = 'HD ';
         return $dompdf->stream($namaberkas . $mt_pasien[0]->nama_px . ".pdf", array("Attachment" => false));
     }
-    public function cetakcatatanhemodialisa2($kode_kunjungan)
+    public function cetakcatatanhemodialisa2($id)
     {
-        $header = db::table('ts_header_catatan_hemodialisis')->where('kode_kunjungan', $kode_kunjungan)->get()->first();
+        $header = db::table('ts_header_catatan_hemodialisis')->where('kode_kunjungan', $id)->get()->first();
         $rm = $header->no_rm;
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$rm]);
         $kodekunjungan = $header->kode_kunjungan;
