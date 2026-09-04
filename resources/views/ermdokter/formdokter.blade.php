@@ -398,7 +398,6 @@
             }
         });
     }
-
     function formprmj() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -418,7 +417,6 @@
             }
         });
     }
-
     function formpemeriksaankhusus() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -438,7 +436,6 @@
             }
         });
     }
-
     function formupload() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
