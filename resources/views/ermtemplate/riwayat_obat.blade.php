@@ -21,10 +21,6 @@
                  class="form-control form-control-sm" id="" name="signa" value="{{ $r->signa_1 }}"><input
                  hidden type="" class="form-control form-control-sm" id="" name="kode_kunjungan"
                  value="{{ $r->kode_kunjungan }}"></div>
-         <div class="form-group col-md-1"><label for="inputPassword4">Signa 2</label><input type=""
-                 class="form-control form-control-sm" id="" name="signa" value="{{ $r->signa_2 }}"><input
-                 hidden type="" class="form-control form-control-sm" id="" name="kode_kunjungan"
-                 value="{{ $r->kode_kunjungan }}"></div>
          <div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type=""
                  class="form-control form-control-sm" id="" name="keterangan" value="{{ $r->keterangan }}">
          </div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i>
