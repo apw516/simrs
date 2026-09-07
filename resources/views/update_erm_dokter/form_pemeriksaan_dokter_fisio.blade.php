@@ -1438,7 +1438,6 @@
         ambilriwayatobat()
         ambilformiterasiobat()
     })
-
     function ambilriwayatobat() {
         spinner = $('#loader')
         spinner.show();
@@ -1458,7 +1457,6 @@
             }
         });
     }
-
     function resetgambar() {
         $.ajax({
             type: 'post',
@@ -1475,7 +1473,6 @@
             }
         });
     }
-
     function ambilgambar() {
         $.ajax({
             type: 'post',
@@ -1492,7 +1489,6 @@
             }
         });
     }
-
     function showicare2() {
         var kodekunjungan = $('#kodekunjungan').val()
         $.ajax({
@@ -1508,7 +1504,6 @@
             }
         });
     }
-
     // function addform() {
     //     var max_fields = 10;
     //     var wrapper = $(".formobatfarmasi2"); //Fields wrapper
@@ -1637,7 +1632,6 @@
             }
         });
     })
-
     function ambildatakunjungan() {
         rm = $('#nomorrm').val()
         spinner = $('#loader')
