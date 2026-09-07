@@ -552,16 +552,31 @@
         <div class="card">
             <div class="card-header bg-light">Order Farmasi <button type="button"
                     class="btn btn-success float-right" data-toggle="modal" data-target="#modaltemplate"
-                    onclick="ambilresep()">Template resep</button></div>
+                    onclick="ambilresep()">Template resep</button>
+                <button type="button" class="btn btn-success float-right mr-1 ml-1" data-toggle="modal"
+                    data-target="#modaltemplate" onclick="ambilriwayatresep()"> <i
+                        class="bi bi-clipboard2-data mr-1"></i> Riwayat Resep
+                    Pasien</button>
+            </div>
             <div class="card-body">
-                <div class="form-group mt-2">
+                {{-- <div class="form-group mt-2">
                     <button type="button" class="btn btn-success tambahobat" onclick="addform()">+ Tambah
                         Obat</button>
+                </div> --}}
+                <div class="form-group mt-2">
+                    <button type="button" class="btn btn-success tambahobat" onclick="addform()">+
+                        Tambah Obat ( Ketik Manual Nama Obat )</button>
+                    <button type="button" class="btn btn-success ambilstokobat" data-toggle="modal"
+                        data-target="#modalcaristokobat"><i class="bi bi-search mr-1"></i> Cari Obat ( Berdasarkan
+                        Stok di Farmasi )</button>
                 </div>
                 <input hidden type="text" value="" id="jumlahform">
                 <form action="" method="post" class="arrayobat">
                     <div class="formobatfarmasi2">
-
+                    </div>
+                    <div class="formtemplateobat">
+                    </div>
+                    <div class="formobatfarmasiriwayat">
                     </div>
                     <div class="form-group form-check">
                         <input type="checkbox" class="form-check-input" id="simpantemplate" onclick="showname()">
@@ -686,6 +701,28 @@
             </div>
             <div class="modal-body">
                 <div class="v_hasil_penunjang_pa">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalcaristokobat" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Silahkan Pilih Obat</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_tabel_stok">
 
                 </div>
             </div>
@@ -1472,6 +1509,44 @@
         });
     }
 
+    // function addform() {
+    //     var max_fields = 10;
+    //     var wrapper = $(".formobatfarmasi2"); //Fields wrapper
+    //     var x = 1
+    //     jlh = $('#jumlahform').val()
+    //     cek = document.getElementById('jumlahform').value
+    //     if (cek === '') {
+    //         jlh1 = $('#jumlahform').val(1)
+    //     } else {
+    //         cek = parseInt(document.getElementById('jumlahform').value)
+    //         jlh2 = $('#jumlahform').val(cek + 1)
+    //     }
+    //     nomor = parseInt(document.getElementById('jumlahform').value)
+    //     if (x < max_fields) { //max input box allowed
+    //         nama = 'namaobat' + nomor
+    //         aturan = 'aturanpakai' + nomor
+    //         $(wrapper).append(
+    //             '<div class="form-row text-xs"><div class="form-group col-md-2"><label for="">Nama Obat</label><input type="" class="form-control form-control-sm text-xs" id="' +
+    //             nama +
+    //             '" name="namaobat" value=""><input hidden readonly type="" class="form-control form-control-sm" id="" name="kodebarang" value="""></div><div class="form-group col-md-2"><label for="inputPassword4">Aturan Pakai</label><input type="" class="form-control form-control-sm" id="' +
+    //             aturan +
+    //             '" name="aturanpakai" value=""></div><div class="form-group col-md-1"><label for="inputPassword4">Jumlah</label><input type="" class="form-control form-control-sm" id="" name="jumlah" value="0"></div><div class="form-group col-md-1"><label for="inputPassword4">Signa</label><input type="" class="form-control form-control-sm" id="" name="signa" value="0"><input hidden type="" class="form-control form-control-sm" id="" name="kode_kunjungan" value="0"></div><div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type="" class="form-control form-control-sm" id="" name="keterangan" value=""></div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i></div>'
+    //         );
+    //         $(wrapper).on("click", ".remove_field", function(e) { //user click on remove
+    //             kode = $(this).attr('kode2')
+    //             e.preventDefault();
+    //             $(this).parent('div').remove();
+    //             x--;
+    //         })
+    //         // $('#'+nama).autocomplete({
+    //         //     source: "<?= route('cariobat') ?>",
+    //         //     select: function(event, ui) {
+    //         //         $('[id="namaobat"]').val(ui.item.label);
+    //         //         $('[id="'+aturan+'"]').val(ui.item.aturan);
+    //         //     }
+    //         // });
+    //     }
+    // }
     function addform() {
         var max_fields = 10;
         var wrapper = $(".formobatfarmasi2"); //Fields wrapper
@@ -1491,9 +1566,9 @@
             $(wrapper).append(
                 '<div class="form-row text-xs"><div class="form-group col-md-2"><label for="">Nama Obat</label><input type="" class="form-control form-control-sm text-xs" id="' +
                 nama +
-                '" name="namaobat" value=""><input hidden readonly type="" class="form-control form-control-sm" id="" name="kodebarang" value="""></div><div class="form-group col-md-2"><label for="inputPassword4">Aturan Pakai</label><input type="" class="form-control form-control-sm" id="' +
+                '" name="namaobat" value=""><input hidden readonly type="" class="form-control form-control-sm" id="" name="kodebarang" value="""></div><div hidden class="form-group col-md-2"><label for="inputPassword4">Aturan Pakai</label><input type="" class="form-control form-control-sm" id="' +
                 aturan +
-                '" name="aturanpakai" value=""></div><div class="form-group col-md-1"><label for="inputPassword4">Jumlah</label><input type="" class="form-control form-control-sm" id="" name="jumlah" value="0"></div><div class="form-group col-md-1"><label for="inputPassword4">Signa</label><input type="" class="form-control form-control-sm" id="" name="signa" value="0"><input hidden type="" class="form-control form-control-sm" id="" name="kode_kunjungan" value="0"></div><div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type="" class="form-control form-control-sm" id="" name="keterangan" value=""></div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i></div>'
+                '" name="aturanpakai" value=""></div><div class="form-group col-md-2"><label for="inputPassword4">Jenis Resep</label><select class="form-control form-control-sm" id="jenisresep" name="jenisresep"><option value="NON-RACIKAN">NON RACIKAN</option><option value="RACIKAN">RACIKAN</option></select></div><div class="form-group col-md-1"><label for="inputPassword4">Jumlah</label><input type="" class="form-control form-control-sm" id="" name="jumlah" value="0"></div><div class="form-group col-md-1"><label for="inputPassword4">Signa1</label><input type="" class="form-control form-control-sm" id="" name="signa1" value="0"><input hidden type="" class="form-control form-control-sm" id="" name="kode_kunjungan" value="0"></div><div class="form-group col-md-1"><label for="inputPassword4">Signa2</label><input type="" class="form-control form-control-sm" id="" name="signa2" value="0"></div><div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type="" class="form-control form-control-sm" id="" name="keterangan" value=""></div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i></div>'
             );
             $(wrapper).on("click", ".remove_field", function(e) { //user click on remove
                 kode = $(this).attr('kode2')
@@ -1501,13 +1576,6 @@
                 $(this).parent('div').remove();
                 x--;
             })
-            // $('#'+nama).autocomplete({
-            //     source: "<?= route('cariobat') ?>",
-            //     select: function(event, ui) {
-            //         $('[id="namaobat"]').val(ui.item.label);
-            //         $('[id="'+aturan+'"]').val(ui.item.aturan);
-            //     }
-            // });
         }
     }
     $(".scanrm_liat").on('click', function(event) {
@@ -1587,5 +1655,26 @@
             }
         });
     }
+    $(".ambilstokobat").on('click', function(event) {
+        var kodekunjungan = $('#kodekunjungan').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                kodekunjungan
+            },
+            url: '<?= route('ambil_form_cari_stok_obat') ?>',
+            error: function(data) {
+                spinner.hide();
+                alert('error')
+            },
+            success: function(response) {
+                spinner.hide();
+                $('.v_tabel_stok').html(response);
+            }
+        });
+    })
 </script>
 <script src="{{ asset('public/marker/markerjs2.js') }}"></script>

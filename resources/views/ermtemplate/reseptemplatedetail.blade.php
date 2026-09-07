@@ -20,9 +20,9 @@
                 class="form-control form-control-sm" id="" name="jumlah" value="{{ $r->jumlah }}">
         </div>
         <div class="form-group col-md-1"><label for="inputPassword4">Signa 1</label><input type=""
-                class="form-control form-control-sm" id="" name="signa1" value="{{ $r->signa }}"></div>
+                class="form-control form-control-sm" id="" name="signa1" value="{{ $r->signa_1 }}"></div>
         <div class="form-group col-md-1"><label for="inputPassword4">Signa 2</label><input type=""
-                class="form-control form-control-sm" id="" name="signa2" value="{{ $r->signa }}"></div>
+                class="form-control form-control-sm" id="" name="signa2" value="{{ $r->signa_2 }}"></div>
         <div class="form-group col-md-2"><label for="inputPassword4">Keterangan</label><input type=""
                 class="form-control form-control-sm" id="" name="keterangan" value="{{ $r->aturan_pakai }}">
         </div><i class="bi bi-x-square remove_field form-group col-md-2 text-danger"></i>
