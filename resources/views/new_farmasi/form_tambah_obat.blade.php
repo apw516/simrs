@@ -145,7 +145,7 @@
                     <label class="font-weight-bold small text-muted">No Resep</label>
                     <input readonly type="text" name="no_resep" class="form-control" placeholder="0" min="1"
                         value="@if($resep_bpjs_header){{ $resep_bpjs_header[0]->NORESEP}}@else 0 @endif">
-                    <input readonly type="text" name="id_resep" class="form-control" placeholder="0" min="1"
+                    <input hidden readonly type="text" name="id_resep" class="form-control" placeholder="0" min="1"
                         value="@if($resep_bpjs_header){{ $resep_bpjs_header[0]->id}}@else 0 @endif">
                 </div>
                 <div class="col-md-3 mb-3">
