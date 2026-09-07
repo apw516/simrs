@@ -4664,26 +4664,6 @@ class newFarmasiController extends FarmasiController
             die;
         }
     }
-    // public function cetakEtiket_new($id)
-    // {
-    //     $get_header = DB::connection('mysql')->select('select * from ts_layanan_header where id = ?', [$id]);
-    //     // dd($get_header);
-    //     // $KODE_HEADER = $DH[0]->kode_layanan_header;
-    //     // $ID_HEADER = $DK[0]->counter;
-    //     $kodeheader = $get_header[0]->kode_layanan_header;
-    //     // $TE = db::connection('mysql')->select("CALL `SP_CETAK_ETIKET_FARMASI_WD`('$kodeheader','$id')");
-    //     // DD($TE);
-    //     $PDO = DB::connection()->getPdo();
-    //     $QUERY = $PDO->prepare("CALL SP_CETAK_ETIKET_FARMASI_WD('$kodeheader','$id')");
-    //     $QUERY->execute();
-    //     $data = $QUERY->fetchAll();
-    //     $filename = 'C:\cetakanresep\etiket.jrxml';
-    //     $config = ['driver' => 'array', 'data' => $data];
-    //     $report = new PHPJasperXML();
-    //     $report->load_xml_file($filename)
-    //         ->setDataSource($config)
-    //         ->export('Pdf');
-    // }
     public function cetakEtiket_new($id)
     {
         $get_header = DB::connection('mysql')

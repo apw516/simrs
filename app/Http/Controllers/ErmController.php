@@ -721,17 +721,49 @@ class ErmController extends Controller
                     'pasienpoli'
                 ]));
             } else {
+                // $unit = auth()->user()->unit;
+                // if ($unit == '3012') {
+                //     $unit = '1006'; //1
+                // }
+                // $pasienpoli = DB::select('SELECT IFNULL(d.nomorantrean, TIME(a.`tgl_masuk`)) AS antrian,d.`nomorantrean`,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,b.namapemeriksa,a.ref_kunjungan,c.nama_dokter,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok,date(e.tgl_lahir) as tgl_lahir
+                // FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan LEFT OUTER JOIN jkn_antrian d ON a.`kode_kunjungan` = d.`kode_kunjungan`
+                // INNER JOIN mt_pasien e ON a.no_rm = e.no_rm
+                // WHERE a.status_kunjungan = ? AND DATE(a.tgl_masuk) = CURDATE() AND a.`kode_unit` = ? ORDER BY a.kode_kunjungan ASC', [
+                //     '1',
+                //     $unit
+                // ]);
                 $unit = auth()->user()->unit;
-                if ($unit == '3012') {
-                    $unit = '1006'; //1
-                }
-                $pasienpoli = DB::select('SELECT IFNULL(d.nomorantrean, TIME(a.`tgl_masuk`)) AS antrian,d.`nomorantrean`,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,b.namapemeriksa,a.ref_kunjungan,c.nama_dokter,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok,date(e.tgl_lahir) as tgl_lahir
-                FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan LEFT OUTER JOIN jkn_antrian d ON a.`kode_kunjungan` = d.`kode_kunjungan`
-                INNER JOIN mt_pasien e ON a.no_rm = e.no_rm
-                WHERE a.status_kunjungan = ? AND DATE(a.tgl_masuk) = CURDATE() AND a.`kode_unit` = ? ORDER BY a.kode_kunjungan ASC', [
-                    '1',
-                    $unit
-                ]);
+                $unitList = ($unit == '3012') ? ['1006', '1024'] : [$unit];
+
+                $pasienpoli = DB::table('ts_kunjungan as a')
+                    ->selectRaw("
+                        IFNULL(d.nomorantrean, TIME(a.tgl_masuk)) AS antrian,
+                        d.nomorantrean,
+                        a.kode_kunjungan,
+                        fc_nama_unit1(a.kode_unit) as nama_unit,
+                        a.no_rm,
+                        fc_nama_px(a.no_rm) as nama_pasien,
+                        a.ref_kunjungan,
+                        b.namapemeriksa,
+                        c.nama_dokter,
+                        a.tgl_masuk,
+                        fc_NAMA_PENJAMIN2(a.kode_penjamin) AS nama_penjamin,
+                        a.kode_penjamin,
+                        b.id AS id_pemeriksaan_perawat,
+                        c.id AS id_pemeriksaan_dokter,
+                        b.status as status_asskep,
+                        c.status as status_assdok,
+                        DATE(e.tgl_lahir) as tgl_lahir
+                    ")
+                    ->leftJoin('erm_hasil_assesmen_keperawatan_rajal as b', 'a.kode_kunjungan', '=', 'b.kode_kunjungan')
+                    ->leftJoin('assesmen_dokters as c', 'b.kode_kunjungan', '=', 'c.id_kunjungan')
+                    ->leftJoin('jkn_antrian as d', 'a.kode_kunjungan', '=', 'd.kode_kunjungan')
+                    ->join('mt_pasien as e', 'a.no_rm', '=', 'e.no_rm')
+                    ->whereIn('a.kode_unit', $unitList)
+                    ->whereDate('a.tgl_masuk', now()->toDateString()) // Perbaikan disini
+                    ->where('a.status_kunjungan', '!=', 8)
+                    ->orderBy('a.kode_kunjungan', 'asc')
+                    ->get();
                 return view('ermtemplate.tabelpasien', compact([
                     'pasienpoli'
                 ]));
@@ -774,18 +806,49 @@ class ErmController extends Controller
                     'pasienpoli'
                 ]));
             } else {
+                // $unit = auth()->user()->unit;
+                // if ($unit == '3012') {
+                //     $unit = ['1006','1014']; //1
+                // }
+                // $pasienpoli = DB::select('SELECT IFNULL(d.nomorantrean, TIME(a.`tgl_masuk`)) AS antrian,d.`nomorantrean`,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.ref_kunjungan,b.namapemeriksa,c.nama_dokter,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok,date(e.tgl_lahir) as tgl_lahir FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan LEFT OUTER JOIN jkn_antrian d ON a.`kode_kunjungan` = d.`kode_kunjungan`
+                // INNER JOIN mt_pasien e ON a.no_rm = e.no_rm
+                //  WHERE a.`kode_unit` = ? AND DATE(a.tgl_masuk) BETWEEN ? AND ? AND status_kunjungan != ? ORDER BY a.kode_kunjungan ASC', [
+                //     $unit,
+                //     $request->tgl_awal,
+                //     $request->tgl_akhir,
+                //     8
+                // ]);
                 $unit = auth()->user()->unit;
-                if ($unit == '3012') {
-                    $unit = '1006'; //1
-                }
-                $pasienpoli = DB::select('SELECT IFNULL(d.nomorantrean, TIME(a.`tgl_masuk`)) AS antrian,d.`nomorantrean`,a.kode_kunjungan,fc_nama_unit1(a.kode_unit) as nama_unit,a.no_rm,fc_nama_px(a.no_rm) as nama_pasien,a.ref_kunjungan,b.namapemeriksa,c.nama_dokter,a.`kode_kunjungan`,a.`tgl_masuk`,fc_NAMA_PENJAMIN2(a.`kode_penjamin`) AS nama_penjamin,a.`kode_penjamin`,b.`id` AS id_pemeriksaan_perawat,c.id AS id_pemeriksaan_dokter,b.status as status_asskep,c.status as status_assdok,date(e.tgl_lahir) as tgl_lahir FROM ts_kunjungan a LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.kode_kunjungan = b.kode_kunjungan LEFT OUTER JOIN assesmen_dokters c ON b.`kode_kunjungan` = c.id_kunjungan LEFT OUTER JOIN jkn_antrian d ON a.`kode_kunjungan` = d.`kode_kunjungan`
-                INNER JOIN mt_pasien e ON a.no_rm = e.no_rm
-                 WHERE a.`kode_unit` = ? AND DATE(a.tgl_masuk) BETWEEN ? AND ? AND status_kunjungan != ? ORDER BY a.kode_kunjungan ASC', [
-                    $unit,
-                    $request->tgl_awal,
-                    $request->tgl_akhir,
-                    8
-                ]);
+                $unitList = ($unit == '3012') ? ['1006', '1024'] : [$unit];
+                $pasienpoli = DB::table('ts_kunjungan as a')
+                    ->selectRaw("
+                        IFNULL(d.nomorantrean, TIME(a.tgl_masuk)) AS antrian,
+                        d.nomorantrean,
+                        a.kode_kunjungan,
+                        fc_nama_unit1(a.kode_unit) as nama_unit,
+                        a.no_rm,
+                        fc_nama_px(a.no_rm) as nama_pasien,
+                        a.ref_kunjungan,
+                        b.namapemeriksa,
+                        c.nama_dokter,
+                        a.tgl_masuk,
+                        fc_NAMA_PENJAMIN2(a.kode_penjamin) AS nama_penjamin,
+                        a.kode_penjamin,
+                        b.id AS id_pemeriksaan_perawat,
+                        c.id AS id_pemeriksaan_dokter,
+                        b.status as status_asskep,
+                        c.status as status_assdok,
+                        DATE(e.tgl_lahir) as tgl_lahir
+                    ")
+                    ->leftJoin('erm_hasil_assesmen_keperawatan_rajal as b', 'a.kode_kunjungan', '=', 'b.kode_kunjungan')
+                    ->leftJoin('assesmen_dokters as c', 'b.kode_kunjungan', '=', 'c.id_kunjungan')
+                    ->leftJoin('jkn_antrian as d', 'a.kode_kunjungan', '=', 'd.kode_kunjungan')
+                    ->join('mt_pasien as e', 'a.no_rm', '=', 'e.no_rm')
+                    ->whereIn('a.kode_unit', $unitList)
+                    ->whereBetween(DB::raw('DATE(a.tgl_masuk)'), [$request->tgl_awal, $request->tgl_akhir])
+                    ->where('a.status_kunjungan', '!=', 8)
+                    ->orderBy('a.kode_kunjungan', 'asc')
+                    ->get();
                 return view('ermtemplate.tabelpasien', compact([
                     'pasienpoli'
                 ]));
@@ -1279,7 +1342,7 @@ class ErmController extends Controller
         ,fc_nama_unit1(a.kode_unit) AS nama_unit FROM ts_kunjungan a
         LEFT OUTER JOIN erm_hasil_assesmen_keperawatan_rajal b ON a.`kode_kunjungan` = b.kode_kunjungan AND b.`kode_unit` = a.`kode_unit`
         LEFT OUTER JOIN assesmen_dokters c ON a.`kode_kunjungan` = c.`id_kunjungan` AND c.`kode_unit` = a.`kode_unit`
-        WHERE a.no_rm = ? AND a.status_kunjungan NOT IN(8,11) ORDER BY a.kode_kunjungan DESC LIMIT 10', [$request->rm]);
+        WHERE a.no_rm = ? AND a.status_kunjungan NOT IN(8,11) ORDER BY a.kode_kunjungan DESC LIMIT 20', [$request->rm]);
         //sebelumnya menggunakan file form_catatan_medis
         $tindakan = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit,c.`kode_tarif_detail`,d.`NAMA_TARIF` FROM ts_kunjungan a INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan` INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header` INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER` WHERE SUBSTR(b.`kode_unit`,1,1) = 1 AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883') AND a.no_rm = ?", [$rm]);
         $orderfarmasi = db::select('SELECT kode_kunjungan,a.keterangan as keteranganresep,kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.no_rm = ? and  kode_unit > ?', [$rm, '4000']);
