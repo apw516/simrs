@@ -1,7 +1,7 @@
 @foreach ($header as $h)
-    @if ($h->dok_kirim == auth()->user()->kode_paramedis)
+    {{-- @if ($h->dok_kirim == auth()->user()->kode_paramedis) --}}
         <div class="card">
-            <div class="card-header">{{ $h->tgl_entry }} | {{ $h->unit_pengirim }} | {{ $h->nama_dokter }} | <button class="btn btn-success pakairesep" idheader="{{ $h->id }}"><i class="bi bi-check2-square"></i> Pakai Resep</button></div>
+            <div class="card-header">{{ $h->tgl_masuk }} | {{ $h->nama_unit }} | {{ $h->nama_dokter }} | <button class="btn btn-success pakairesep" idheader="{{ $h->id_layanan_header }}"><i class="bi bi-check2-square"></i> Pakai Resep</button></div>
             <div class="card-body">
                 <table class="table table-sm table-bordered">
                     <thead>
@@ -10,10 +10,10 @@
                         <th>Aturan Pakai</th>
                     </thead>
                     <tbody>
-                        @foreach ($resep as $d)
-                            @if ($d->row_id_header == $h->id)
+                        @foreach ($detail as $d)
+                            @if ($d->id_header == $h->id_layanan_header)
                                 <tr>
-                                    <td>{{ $d->kode_barang }}</td>
+                                    <td>{{ $d->nama_barang }}</td>
                                     <td>{{ $d->jumlah_layanan }}</td>
                                     <td>{{ $d->aturan_pakai }}</td>
                                 </tr>
@@ -23,7 +23,7 @@
                 </table>
             </div>
         </div>
-    @endif
+    {{-- @endif --}}
 @endforeach
 <script>
      $(".pakairesep").on('click', function(event) {
@@ -35,7 +35,7 @@
                 _token: "{{ csrf_token() }}",
                 idheader
             },
-            url: '<?= route('ambilresep_detail2') ?>',
+            url: '<?= route('ambilresep_detail3') ?>',
             error: function(response) {
                 spinner.hide();
                 alert('error')
