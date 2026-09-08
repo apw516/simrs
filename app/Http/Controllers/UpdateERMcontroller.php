@@ -338,7 +338,7 @@ class UpdateERMcontroller extends Controller
                 }
             } else {
                 $rencanaoperasi = 0;
-                $catatan_ok = $dataSet_4['catatan_operasi'];
+                $catatan_ok = '';
                 $tanggaloperasi = null;
             }
             foreach ($jawabankonsul as $nama) {
