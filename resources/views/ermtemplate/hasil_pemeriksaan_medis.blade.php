@@ -180,6 +180,18 @@
                             <td>{{ $cp->rencanakerja }}</td>
                         </tr>
                         <tr>
+                            <td>Rencana Tindakan Operasi</td>
+                            <td>
+                                @if ($cp->ada_rencana_operasi == 1)
+                                    Dijadwalkan Operasi <br>
+                                    {{ $cp->tgl_jadwal_operasi }} <br>
+                                    {{ $cp->catatan_operasi }} <br>
+                                @else
+                                    -
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
                             <td>Tindak Lanjut</td>
                             <td>{{ $cp->tindak_lanjut }}<br>
                                 {{ $cp->keterangan_tindak_lanjut }} <br><br>

@@ -461,7 +461,7 @@
                                 <td class="text-bold font-italic">Keluhan Utama</td>
                                 <td colspan="3">
                                     <textarea hidden readonly class="form-control" rows="8" id="keluhanutamaawal" name="keluhanutamaawal"
-                                        placeholder="Ketik keluhan pasien ...">{{ $asesmen_perawat ? $asesmen_perawat->keluhanutama : '' }}</textarea>
+                                        placeholder="Ketik keluhan pasien ...">{{ $asesmen_perawat_last ? $asesmen_perawat_last->keluhanutama : '' }}</textarea>
                                     <textarea class="form-control" rows="8" id="keluhanutama" name="keluhanutama"
                                         placeholder="Ketik keluhan pasien ...">{{ $asesmen_perawat ? $asesmen_perawat->keluhanutama : '' }}</textarea>
                                     <div class="custom-control custom-checkbox border-top pt-2 mt-2">
@@ -471,7 +471,7 @@
                                         <label class="custom-control-label font-weight-bold text-success"
                                             for="is_verified_dok">
                                             Ceklis Verifikasi : Saya
-                                            menyatakan telah memeriksa & mengonfirmasi isian ini.
+                                            menyatakan telah memeriksa & mengonfirmasi isian ini
                                         </label>
                                     </div>
 
@@ -968,6 +968,52 @@
                                         <textarea class="form-control" name="tindakanpenunjang">{{ $asesmen_terakhir ? $asesmen_terakhir->tindakanpenunjang : '' }}</textarea>
                                     </td>
                                 </tr>
+                                {{-- <tr>
+                                    <td class="text-bold font-italic">Rencana Operasi</td>
+                                    <td colspan="3">
+                                        <textarea class="form-control" name="rencanaoperasi">{{ $asesmen_terakhir ? $asesmen_terakhir->tindakanpenunjang : '' }}</textarea>
+                                    </td>
+                                </tr> --}}
+                                <tr>
+                                    <td class="text-bold font-italic">Rencana Operasi</td>
+                                    <td colspan="3">
+                                        <!-- Status Checkbox -->
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="checkRencanaOperasi"
+                                                name="ada_rencana_operasi" value="1"
+                                                {{ isset($asesmen_terakhir) && $asesmen_terakhir->ada_rencana_operasi == '1' ? 'checked' : '' }}
+                                                onchange="toggleRencanaOperasi(this.checked)">
+                                            <label class="form-check-label font-weight-bold"
+                                                for="checkRencanaOperasi">
+                                                Ada Rencana Operasi
+                                            </label>
+                                        </div>
+
+                                        <!-- Container Form Input (Hidden by Default jika tidak ada rencana) -->
+                                        <div id="wrapperRencanaOperasi"
+                                            style="{{ isset($asesmen_terakhir) && $asesmen_terakhir->ada_rencana_operasi == '1' ? '' : 'display: none;' }}">
+                                            <div class="form-group row my-2">
+                                                <label for="tglJadwalOperasi"
+                                                    class="col-sm-3 col-form-label text-bold">Tanggal Jadwal
+                                                    Operasi</label>
+                                                <div class="col-sm-9">
+                                                    <input type="datetime-local" class="form-control"
+                                                        id="tglJadwalOperasi" name="tgl_jadwal_operasi"
+                                                        value="{{ $asesmen_terakhir ? $asesmen_terakhir->tgl_jadwal_operasi : '' }}">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row my-2">
+                                                <label for="catatanOperasi"
+                                                    class="col-sm-3 col-form-label text-bold">Catatan</label>
+                                                <div class="col-sm-9">
+                                                    <textarea class="form-control" id="catatanOperasi" name="catatan_operasi" rows="3"
+                                                        placeholder="Masukkan detail/catatan rencana operasi...">{{ $asesmen_terakhir ? $asesmen_terakhir->catatan_operasi : '' }}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </form>
@@ -1449,7 +1495,8 @@
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($layanan_rad as $t)
-                                                        <tr class="pilihlayanan" namatindakan="{{ $t->Tindakan }}"
+                                                        <tr class="pilihlayanan"
+                                                            namatindakan="{{ $t->Tindakan }}"
                                                             tarif="{{ $t->tarif }}"
                                                             kode="{{ $t->kode }}" id="{{ $t->kode }}">
                                                             <td>{{ $t->Tindakan }}</td>
@@ -2553,3 +2600,13 @@
     }
 </script>
 <script src="{{ asset('public/marker/markerjs2.js') }}"></script>
+<script>
+    function toggleRencanaOperasi(isChecked) {
+        const wrapper = document.getElementById('wrapperRencanaOperasi');
+        if (isChecked) {
+            wrapper.style.display = 'block';
+        } else {
+            wrapper.style.display = 'none';
+        }
+    }
+</script>

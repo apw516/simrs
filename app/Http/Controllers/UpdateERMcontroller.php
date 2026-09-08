@@ -130,7 +130,11 @@ class UpdateERMcontroller extends Controller
             ->orderBy('a.tgl_masuk', 'DESC')
             ->orderBy('b.id', 'DESC')
             ->first();
-
+        
+        $asesmen_perawat_last = DB::table('erm_hasil_assesmen_keperawatan_rajal')
+            ->where('kode_kunjungan','!=', $request->kodekunjungan)
+            ->where('kode_unit','=', auth()->user()->unit)
+            ->first();
         $asesmen_perawat = DB::table('erm_hasil_assesmen_keperawatan_rajal')
             ->where('kode_kunjungan', $request->kodekunjungan)
             ->first();
@@ -212,7 +216,8 @@ class UpdateERMcontroller extends Controller
                 'poli_pengirim_konsul',
                 'catatan_konsul',
                 'layanan',
-                'pesanprb'
+                'pesanprb',
+                'asesmen_perawat_last'
             ]));
         }
     }
@@ -318,6 +323,23 @@ class UpdateERMcontroller extends Controller
                 $index =  $nama['name'];
                 $value =  $nama['value'];
                 $dataSet_5[$index] = $value;
+            }
+            if (isset($dataSet_4['ada_rencana_operasi']) && $dataSet_4['ada_rencana_operasi']) {
+                $rencanaoperasi = 1;
+                $catatan_ok = $dataSet_4['catatan_operasi'];
+                $tanggaloperasi = $dataSet_4['tgl_jadwal_operasi'] . ':00';
+                if ($tanggaloperasi == ':00') {
+                    $data = [
+                        'kode' => 500,
+                        'message' => 'Tentukan tanggal dan jam operasi !'
+                    ];
+                    echo json_encode($data);
+                    die;
+                }
+            } else {
+                $rencanaoperasi = 0;
+                $catatan_ok = $dataSet_4['catatan_operasi'];
+                $tanggaloperasi = null;
             }
             foreach ($jawabankonsul as $nama) {
                 $index =  $nama['name'];
@@ -491,8 +513,12 @@ class UpdateERMcontroller extends Controller
                 'status' => '0',
                 'signature' => '',
                 'evaluasi' => $request->hasilexpertisi,
-                'validasi_anamnesa' => $validasi_anamnesa
-            ];
+                'validasi_anamnesa' => $validasi_anamnesa,
+                'ada_rencana_operasi' => $rencanaoperasi,
+                'tgl_jadwal_operasi' => $tanggaloperasi,
+                'catatan_operasi' => $catatan_ok,
+            ];           
+
             $assdok = assesmenawaldokter::updateOrCreate(
                 ['id_kunjungan' => $dataSet_1['kodekunjungan']],
                 $data
