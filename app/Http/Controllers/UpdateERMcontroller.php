@@ -324,7 +324,9 @@ class UpdateERMcontroller extends Controller
                 $value =  $nama['value'];
                 $dataSet_5[$index] = $value;
             }
+            $cok = 0;
             if (isset($dataSet_4['ada_rencana_operasi']) && $dataSet_4['ada_rencana_operasi']) {
+                $cok = 9;
                 $rencanaoperasi = 1;
                 $catatan_ok = $dataSet_4['catatan_operasi'];
                 $tanggaloperasi = $dataSet_4['tgl_jadwal_operasi'] . ':00';
@@ -981,7 +983,7 @@ class UpdateERMcontroller extends Controller
                 }
             }
             ts_kunjungan::whereRaw('kode_kunjungan = ?', array($kodekunjungan))->update([
-                'kode_paramedis' => auth()->user()->kode_paramedis
+                'kode_paramedis' => auth()->user()->kode_paramedis,'cok' => $cok
             ]);
             $di_diagnosa = [
                 'no_rm' => $dataSet_1['nomorrm'],
