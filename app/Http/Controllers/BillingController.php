@@ -499,7 +499,7 @@ class BillingController extends Controller
                 'e.no_rm',
                 DB::raw('fc_nama_px(e.no_rm) AS nama_pasien'),
                 DB::raw('fc_NAMA_PENJAMIN2(e.kode_penjamin) AS nama_penjamin'),
-                DB::raw('fc_NAMA_PARAMEDIS1(e.kode_paramedis) AS dokter_pengirim'),
+                DB::raw('fc_NAMA_PARAMEDIS1(a.dok_kirim) AS dokter_pengirim'),
                 DB::raw('fc_NAMA_PARAMEDIS1(b.kode_dokter1) AS dokter_pemeriksa'),
                 'a.kode_layanan_header',
                 'a.total_layanan',
@@ -512,6 +512,7 @@ class BillingController extends Controller
             )
             ->where('a.id', $ID_HEADER)
             ->get();
+          
         return view('billing.form_expertisi_pa', compact([
             'expertisi',
             'ID_HEADER',
@@ -693,7 +694,7 @@ class BillingController extends Controller
                 'e.no_rm',
                 DB::raw('fc_nama_px(e.no_rm) AS nama_pasien'),
                 DB::raw('fc_NAMA_PENJAMIN2(e.kode_penjamin) AS nama_penjamin'),
-                DB::raw('fc_NAMA_PARAMEDIS1(e.kode_paramedis) AS dokter_pengirim'),
+                DB::raw('fc_NAMA_PARAMEDIS1(a.dok_kirim) AS dokter_pengirim'),
                 DB::raw('fc_NAMA_PARAMEDIS1(b.kode_dokter) AS dokter_pemeriksa'),
                 DB::raw('fc_NAMA_UNIT1(e.kode_unit) AS nama_ruangan'),
                 'b.no_periksa',
@@ -707,6 +708,7 @@ class BillingController extends Controller
             ->where('a.id', $id)
             ->where('b.validasi', 2)
             ->first();
+        
         if (!$data) {
             abort(404, 'Data Expertisi tidak ditemukan.');
         }

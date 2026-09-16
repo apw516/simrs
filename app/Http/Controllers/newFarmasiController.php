@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -21,7 +20,6 @@ use Illuminate\Support\Facades\Http;
 use App\Models\ModelBSRE;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
-
 class newFarmasiController extends FarmasiController
 {
     public function index_monitoring_klaim_farmasi()
@@ -4676,7 +4674,6 @@ class newFarmasiController extends FarmasiController
         }
 
         $kodeheader = $get_header->kode_layanan_header;
-
         // 2. Eksekusi Stored Procedure
         $PDO = DB::connection()->getPdo();
         $QUERY = $PDO->prepare("CALL SP_CETAK_ETIKET_FARMASI_WD(?, ?)");
