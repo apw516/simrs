@@ -239,7 +239,7 @@
                 <div class="col-md-2 mb-3 d-flex align-items-end"> <button type="button"
                         class="btn btn-info btn-block font-weight-bold ambilriwayatreseppasien" data-toggle="modal"
                         data-target="#modalriwayatresep">
-                        <i class="fas fa-plus mr-1"></i> Riwayat Resep Pasien
+                        <i class="fas fa-plus mr-1"></i> Riwayat Resep Pasien 
                     </button></div>
             </div>
             <!-- Tombol Tambah ke Daftar -->

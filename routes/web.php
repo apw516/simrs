@@ -975,6 +975,13 @@ Route::get('cetaketiket_2/{id}', [newFarmasiController::class, 'cetakEtiket_new'
 Route::get('cetaknotafarmasi/{id}', [newFarmasiController::class, 'cetaknotafarmasi']); //formpasien_bpjs
 Route::get('/cetakresumedifarmasi/{kodekunjungan}', [newFarmasiController::class, 'cetak_dokumen_tte_lokal'])->name('cetakresumedifarmasi');
 
+Route::get('/indexdaftarresepbridging', [newFarmasiController::class, 'indexdaftarresepbridging'])->name('indexdaftarresepbridging');
+Route::get('/indexrefdpho', [newFarmasiController::class, 'indexrefdpho'])->name('indexrefdpho');
+Route::get('/indexreffaskes', [newFarmasiController::class, 'indexreffaskes'])->name('indexreffaskes');
+Route::post('/carifaskes', [newFarmasiController::class, 'carifaskes'])->name('carifaskes');
+Route::post('/ambilriwayatresepbpjs', [newFarmasiController::class, 'ambilriwayatresepbpjs'])->name('ambilriwayatresepbpjs');
+Route::post('/ambildataresepbridging', [newFarmasiController::class, 'ambildataresepbridging'])->name('ambildataresepbridging');
+
 
 Route::get('/berkaserm', [RanapController::class, 'indexberkaserm'])
     ->name('berkaserm2'); //sidebar

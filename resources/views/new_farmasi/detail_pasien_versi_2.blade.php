@@ -91,6 +91,7 @@
         <form action="" method="POST" id="formInputObat" class="formInputObat">
             <!-- Hidden Input untuk menangkap No RM / Kunjungan -->
             <input type="hidden" id="no_rm" name="no_rm" value="{{ $data_kunjungan[0]->no_rm ?? '' }}">
+            <input type="hidden" id="no_kartu" name="no_kartu" value="{{ $mt_pasien[0]->no_Bpjs ?? '' }}">
             <input type="hidden" id="kode_kunjungan" name="kode_kunjungan"
                 value="{{ $data_kunjungan[0]->kode_kunjungan ?? '' }}">
             <input type="hidden" name="kode_penjamin" value="{{ $data_kunjungan[0]->kode_penjamin ?? '' }}">
@@ -238,8 +239,14 @@
                 <div class="col-md-2 mb-3 d-flex align-items-end"> <button type="button"
                         class="btn btn-info btn-block font-weight-bold ambilriwayatreseppasien" data-toggle="modal"
                         data-target="#modalriwayatresep">
-                        <i class="fas fa-plus mr-1"></i> Riwayat Resep Pasien
-                    </button></div>
+                        <i class="fas fa-plus mr-1"></i> Riwayat Resep RS
+                    </button>
+                </div>
+                <div class="col-md-2 mb-3 d-flex align-items-end">
+                    <button type="button" class="btn btn-info btn-block font-weight-bold ambilriwayatreseppasien"
+                        data-toggle="modal" data-target="#modalriwayatresepbpjs">
+                        <i class="fas fa-plus mr-1"></i> Riwayat Resep Bridging BPJS </button>
+                </div>
             </div>
             <!-- Tombol Tambah ke Daftar -->
     </div>
@@ -656,6 +663,47 @@
             </div>
             <div class="modal-body">
                 <div class="v_riwayat_resep">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalriwayatresepbpjs" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Riwayat Resep Bridging </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Tanggal Awal</label>
+                            <input type="date" class="form-control" id="tanggalawalresepbpjs"
+                                aria-describedby="emailHelp">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Tanggal Akhir</label>
+                            <input type="date" class="form-control" id="tanggalakhirresepbpjs"
+                                aria-describedby="emailHelp">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button onclick="caririwayatresepbpjs()" class="btn btn-success"
+                            style="margin-top:32px">Tampilkan Data</button>
+                    </div>
+                </div>
+                <div class="v_riwayat_resep_bpjs">
 
                 </div>
             </div>
@@ -1244,7 +1292,8 @@
         $.ajax({
             type: 'post',
             data: {
-                _token: "{{ csrf_token() }}",rm
+                _token: "{{ csrf_token() }}",
+                rm
             },
             url: '<?= route('ambilriwayatreseppasienfarmasi') ?>',
             error: function(response) {
@@ -1257,4 +1306,27 @@
             }
         });
     });
+
+    function caririwayatresepbpjs() {
+        spinner_on()
+        awal = $('#tanggalawalresepbpjs').val()
+        akhir = $('#tanggalakhirresepbpjs').val()
+        no_kartu = $('#no_kartu').val()
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                awal,akhir,no_kartu
+            },
+            url: '<?= route('ambilriwayatresepbpjs') ?>',
+            error: function(response) {
+                spinner_off()
+                alert('error')
+            },
+            success: function(response) {
+                spinner_off()
+                $('.v_riwayat_resep_bpjs').html(response);
+            }
+        });
+    }
 </script>

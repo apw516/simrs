@@ -660,6 +660,28 @@
                               </p>
                           </a>
                       </li>
+                      <li class="nav-header">REFERENSI APOTEK ONLINE</li>
+                      <li class="nav-item">
+                          <a href="{{ route('indexdaftarresepbridging') }}"
+                              class="nav-link @if ($title == 'SIMRS - Daftar Resep Bridging') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Daftar Resep Bridging</p>
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a href="{{ route('indexrefdpho') }}"
+                              class="nav-link @if ($title == 'SIMRS - Referensi DPHO Apotek') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Ref DPHO</p>
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a href="{{ route('indexreffaskes') }}"
+                              class="nav-link @if ($title == 'SIMRS - Referensi Fakses') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Ref Faskes</p>
+                          </a>
+                      </li>
                       <li class="nav-header">FARMASI</li>
                       <li class="nav-item">
                           <a href="{{ route('indexmonitoringberkaspasien') }}"

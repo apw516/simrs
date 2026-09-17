@@ -73,7 +73,7 @@
                                         data-kodekunjungan="{{ $d->kode_kunjungan }}" data-form="2">
                                         <i class="fas fa-user-md mr-1"></i> Form 2
                                     </button>
-                                    <button type="button" class="btn btn-sm btn-outline-primary shadow-sm pilihpasien3"
+                                    <button hidden type="button" class="btn btn-sm btn-outline-primary shadow-sm pilihpasien3"
                                         data-kodekunjungan="{{ $d->kode_kunjungan }}" data-form="2">
                                         <i class="fas fa-user-md mr-1"></i> Form Input
                                     </button>
