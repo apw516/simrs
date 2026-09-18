@@ -950,6 +950,7 @@
                                                                     <div class="card-body">
                                                                         <table class="table table-sm">
                                                                             <thead>
+                                                                                <th>Tgl entry</th>
                                                                                 <th>Nama Obat</th>
                                                                                 <th>qty</th>
                                                                                 <th>Aturan Pakai</th>
@@ -958,6 +959,7 @@
                                                                                 @foreach ($orderfarmasi as $t)
                                                                                     @if ($t->kode_kunjungan == $k->id_kunjungan)
                                                                                         <tr>
+                                                                                            <td>{{ \Carbon\Carbon::parse($t->tgl_entry)->translatedFormat('d F Y, H:i') }} WIB </td>
                                                                                             <td>{{ $t->kode_barang }}
                                                                                             </td>
                                                                                             <td>{{ $t->jumlah_layanan }}
@@ -977,6 +979,7 @@
                                                                     <div class="card-body">
                                                                         <table class="table table-sm">
                                                                             <thead>
+                                                                                <th>Tgl entry</th>
                                                                                 <th>Nama Obat</th>
                                                                                 <th>qty</th>
                                                                                 <th>Aturan Pakai</th>
@@ -985,6 +988,7 @@
                                                                                 @foreach ($farmasi as $t)
                                                                                     @if ($t->kode_kunjungan == $k->id_kunjungan)
                                                                                         <tr>
+                                                                                            <td>{{ \Carbon\Carbon::parse($t->tgl_entry)->translatedFormat('d F Y, H:i') }} WIB</td>
                                                                                             <td>{{ $t->nama_barang }}
                                                                                             </td>
                                                                                             <td>{{ $t->jumlah_layanan }}
