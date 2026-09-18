@@ -144,15 +144,12 @@ class UpdateERMcontroller extends Controller
         $unit = auth()->user()->unit;
         $layanan = $this->carilayanan(3, $layanan, $unit);
         $hasil_ro = DB::select('select * from erm_mata_kanan_kiri where kode_kunjungan = ? ', [$request->kodekunjungan]);
-        $riwayat_diagnosa = DB::select('select * from di_pasien_diagnosa where no_rm = ?', [$no_rm]);
+        $riwayat_diagnosa = DB::select('select * from di_pasien_diagnosa where no_rm = ? and  kode_unit = ? LIMIT 1', [$no_rm, $unit]);
         $is_prb = false;
         $diagnosa_prb_matched = null;
-
         if (!empty($riwayat_diagnosa)) {
-
             // Iterasi/looping riwayat diagnosa
             foreach ($riwayat_diagnosa as $diag) {
-
                 // Pastikan kolom diag_utama tidak kosong
                 if (!empty($diag->diag_utama)) {
 
