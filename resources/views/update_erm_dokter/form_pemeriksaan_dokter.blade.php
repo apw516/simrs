@@ -157,10 +157,10 @@
                             SISTEM MONITORING PROGRAM PRB & RUJUKAN BPJS
                         </strong>
                         <p class="mb-0 font-weight-normal text-justify" style="font-size: 1.1rem; line-height: 1.5;">
-                        RUJUKAN : {{ $unit_rujukan }}  
-                         <br>
-                         <br>                         
-                         {!! $pesan_rujukan !!}
+                            RUJUKAN : {{ $unit_rujukan }}
+                            <br>
+                            <br>
+                            {!! $pesan_rujukan !!}
                         </p>
                     </div>
                 </div>
@@ -691,6 +691,101 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="card">
+                                                    <div class="card-header bg-danger">Mata Kanan</div>
+                                                    <div class="card-body">
+                                                        <table class="table table-sm">
+                                                            <tr>
+                                                                <td>Tekanan Intra Okular</td>
+                                                                <td colspan="3">
+                                                                    <textarea class="form-control" id="kiri_tekanan_intra_okular" name="kiri_tekanan_intra_okular">{{ $m[1] ?? '' }}</textarea>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Catatan Pemeriksaan Lainnya</td>
+                                                                <td colspan="3">
+                                                                    <textarea class="form-control" name="kiri_catatan_pemeriksaan_lainnya" id="kiri_catatan_pemerikssaan_lainnya">{{ $a[1] ?? '' }}</textarea>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Palpebra</td>
+                                                                <td colspan="3"><input class="form-control"
+                                                                        value="{{ $b[1] ?? '' }}"
+                                                                        id="kiri_palpebra"
+                                                                        name="kiri_palpebra"></input>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Konjungtiva</td>
+                                                                <td colspan="3"><input class="form-control"
+                                                                        value="{{ $c[1] ?? '' }}"
+                                                                        id="kiri_konjungtiva"
+                                                                        name="kiri_konjungtiva"></input>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Kornea</td>
+                                                                <td colspan="3"><input class="form-control"
+                                                                        value="{{ $d[1] ?? '' }}"
+                                                                        name="kiri_kornea" id="kiri_kornea"></input>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Bilik Mata Depan</td>
+                                                                <td colspan="3"><input class="form-control"
+                                                                        value="{{ $e[1] ?? '' }}"
+                                                                        name="kiri_bilik_mata_depan"
+                                                                        id="kiri_bilik_mata_depan"></input></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Pupil</td>
+                                                                <td colspan="3"><input class="form-control"
+                                                                        value="{{ $f[1] ?? '' }}" id="kiri_pupil"
+                                                                        name="kiri_pupil"></input></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Iris</td>
+                                                                <td colspan="3"><input class="form-control"
+                                                                        value="{{ $g[1] ?? '' }}" name="kiri_iris"
+                                                                        id="kiri_iris"></input></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Lensa</td>
+                                                                <td colspan="3"><input class="form-control"
+                                                                        value="{{ $h[1] ?? '' }}" name="kiri_lensa"
+                                                                        id="kiri_lensa"></input></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Funduskopi</td>
+                                                                <td colspan="3"><input class="form-control"
+                                                                        value="{{ $i[1] ?? '' }}"
+                                                                        name="kiri_funduskopi"
+                                                                        id="kiri_funduskopi"></input>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Status Oftalmologis Khusus</td>
+                                                                <td colspan="3">
+                                                                    <textarea class="form-control" value="" name="kiri_oftamologis" id="kiri_oftamologis">{{ $j[1] ?? '' }}</textarea>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Masalah Medis</td>
+                                                                <td colspan="3">
+                                                                    <textarea class="form-control" value="" name="kiri_masalahmedis" id="kiri_masalahmedis">{{ $k[1] ?? '' }}</textarea>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Prognosis</td>
+                                                                <td colspan="3">
+                                                                    <textarea class="form-control" value="" name="kiri_prognosis" id="kiri_prognosis">{{ $l[1] ?? '' }}</textarea>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card">
                                                     <div class="card-header bg-danger">Mata Kiri</div>
                                                     <div class="card-body">
                                                         <table class="table table-sm">
@@ -791,101 +886,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="card">
-                                                    <div class="card-header bg-danger">Mata Kanan</div>
-                                                    <div class="card-body">
-                                                        <table class="table table-sm">
-                                                            <tr>
-                                                                <td>Tekanan Intra Okular</td>
-                                                                <td colspan="3">
-                                                                    <textarea class="form-control" id="kiri_tekanan_intra_okular" name="kiri_tekanan_intra_okular">{{ $m[1] ?? '' }}</textarea>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Catatan Pemeriksaan Lainnya</td>
-                                                                <td colspan="3">
-                                                                    <textarea class="form-control" name="kiri_catatan_pemeriksaan_lainnya" id="kiri_catatan_pemerikssaan_lainnya">{{ $a[1] ?? '' }}</textarea>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Palpebra</td>
-                                                                <td colspan="3"><input class="form-control"
-                                                                        value="{{ $b[1] ?? '' }}"
-                                                                        id="kiri_palpebra"
-                                                                        name="kiri_palpebra"></input>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Konjungtiva</td>
-                                                                <td colspan="3"><input class="form-control"
-                                                                        value="{{ $c[1] ?? '' }}"
-                                                                        id="kiri_konjungtiva"
-                                                                        name="kiri_konjungtiva"></input>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Kornea</td>
-                                                                <td colspan="3"><input class="form-control"
-                                                                        value="{{ $d[1] ?? '' }}"
-                                                                        name="kiri_kornea" id="kiri_kornea"></input>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Bilik Mata Depan</td>
-                                                                <td colspan="3"><input class="form-control"
-                                                                        value="{{ $e[1] ?? '' }}"
-                                                                        name="kiri_bilik_mata_depan"
-                                                                        id="kiri_bilik_mata_depan"></input></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Pupil</td>
-                                                                <td colspan="3"><input class="form-control"
-                                                                        value="{{ $f[1] ?? '' }}" id="kiri_pupil"
-                                                                        name="kiri_pupil"></input></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Iris</td>
-                                                                <td colspan="3"><input class="form-control"
-                                                                        value="{{ $g[1] ?? '' }}" name="kiri_iris"
-                                                                        id="kiri_iris"></input></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Lensa</td>
-                                                                <td colspan="3"><input class="form-control"
-                                                                        value="{{ $h[1] ?? '' }}" name="kiri_lensa"
-                                                                        id="kiri_lensa"></input></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Funduskopi</td>
-                                                                <td colspan="3"><input class="form-control"
-                                                                        value="{{ $i[1] ?? '' }}"
-                                                                        name="kiri_funduskopi"
-                                                                        id="kiri_funduskopi"></input>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Status Oftalmologis Khusus</td>
-                                                                <td colspan="3">
-                                                                    <textarea class="form-control" value="" name="kiri_oftamologis" id="kiri_oftamologis">{{ $j[1] ?? '' }}</textarea>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Masalah Medis</td>
-                                                                <td colspan="3">
-                                                                    <textarea class="form-control" value="" name="kiri_masalahmedis" id="kiri_masalahmedis">{{ $k[1] ?? '' }}</textarea>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Prognosis</td>
-                                                                <td colspan="3">
-                                                                    <textarea class="form-control" value="" name="kiri_prognosis" id="kiri_prognosis">{{ $l[1] ?? '' }}</textarea>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
+
                                         </div>
                                     </form>
                                 @else
@@ -1428,8 +1429,8 @@
                                                 <tbody>
                                                     @foreach ($layanan_lab as $t)
                                                         <tr class="pilihlayanan" namatindakan="{{ $t->Tindakan }}"
-                                                            tarif="{{ $t->tarif }}" kode="{{ $t->kode }}"
-                                                            id="{{ $t->kode }}">
+                                                            tarif="{{ $t->tarif }}"
+                                                            kode="{{ $t->kode }}" id="{{ $t->kode }}">
                                                             <td>{{ $t->Tindakan }}</td>
                                                         </tr>
                                                     @endforeach

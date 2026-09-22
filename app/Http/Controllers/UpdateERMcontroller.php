@@ -55,7 +55,7 @@ class UpdateERMcontroller extends Controller
             ->get();
         $catatan_konsul = db::table('assesmen_dokters as a')->select('tindak_lanjut', 'keterangan_tindak_lanjut', 'diagnosakerja')->where('id_kunjungan', $ref_kunjungan)->get();
         //end cek konsul
-        if ($kunjungan[0]->ref_kunjungan != '') {
+        if ($kunjungan[0]->ref_kunjungan != '0') {
             $kunjungan_ref = DB::select('select *,fc_nama_unit1(kode_unit) AS poli_rujukan from ts_kunjungan a where kode_kunjungan = ?', [$kunjungan[0]->ref_kunjungan]);
             $nomor_rujukan = $kunjungan_ref[0]->no_rujukan;
             $unit_rujukan =  $kunjungan_ref[0]->poli_rujukan;
