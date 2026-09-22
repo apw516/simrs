@@ -41,7 +41,7 @@ class UpdateERMcontroller extends Controller
     }
     public function form_pemeriksaan_dokter(Request $request)
     {
-        $kunjungan = DB::select('select *,fc_nama_px(no_rm) as nama_pasien,fc_nama_paramedis(ref_paramedis) AS dokter_kirim,fc_nama_unit1(ref_unit) AS poli_asal from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
+        $kunjungan = DB::select('select *,fc_nama_px(no_rm) as nama_pasien,fc_nama_paramedis(ref_paramedis) AS dokter_kirim,fc_nama_unit1(ref_unit) AS poli_asal,fc_nama_unit1(kode_unit) AS poli_rujukan from ts_kunjungan a where kode_kunjungan = ?', [$request->kodekunjungan]);
         //cek konsul
         $ref_kunjungan = $kunjungan[0]->ref_kunjungan;
         $poli_pengirim_konsul = DB::table('ts_kunjungan as a')
@@ -55,7 +55,14 @@ class UpdateERMcontroller extends Controller
             ->get();
         $catatan_konsul = db::table('assesmen_dokters as a')->select('tindak_lanjut', 'keterangan_tindak_lanjut', 'diagnosakerja')->where('id_kunjungan', $ref_kunjungan)->get();
         //end cek konsul
-        $nomor_rujukan = $kunjungan[0]->no_rujukan;
+        if ($kunjungan[0]->ref_kunjungan != '') {
+            $kunjungan_ref = DB::select('select *,fc_nama_unit1(kode_unit) AS poli_rujukan from ts_kunjungan a where kode_kunjungan = ?', [$kunjungan[0]->ref_kunjungan]);
+            $nomor_rujukan = $kunjungan_ref[0]->no_rujukan;
+            $unit_rujukan =  $kunjungan_ref[0]->poli_rujukan;
+        } else {
+            $nomor_rujukan = $kunjungan[0]->no_rujukan;
+            $unit_rujukan =  $kunjungan[0]->poli_rujukan;
+        }
         $rujukan = $nomor_rujukan;
         $detailrujukan = '';
         $selisih = 0;
@@ -130,10 +137,10 @@ class UpdateERMcontroller extends Controller
             ->orderBy('a.tgl_masuk', 'DESC')
             ->orderBy('b.id', 'DESC')
             ->first();
-        
+
         $asesmen_perawat_last = DB::table('erm_hasil_assesmen_keperawatan_rajal')
-            ->where('kode_kunjungan','!=', $request->kodekunjungan)
-            ->where('kode_unit','=', auth()->user()->unit)
+            ->where('kode_kunjungan', '!=', $request->kodekunjungan)
+            ->where('kode_unit', '=', auth()->user()->unit)
             ->first();
         $asesmen_perawat = DB::table('erm_hasil_assesmen_keperawatan_rajal')
             ->where('kode_kunjungan', $request->kodekunjungan)
@@ -196,7 +203,8 @@ class UpdateERMcontroller extends Controller
                 'poli_pengirim_konsul',
                 'catatan_konsul',
                 'layanan',
-                'pesanprb'
+                'pesanprb',
+                'unit_rujukan'
             ]));
         } else {
             return view('update_erm_dokter.form_pemeriksaan_dokter', compact([
@@ -214,7 +222,8 @@ class UpdateERMcontroller extends Controller
                 'catatan_konsul',
                 'layanan',
                 'pesanprb',
-                'asesmen_perawat_last'
+                'asesmen_perawat_last',
+                'unit_rujukan'
             ]));
         }
     }
@@ -516,7 +525,7 @@ class UpdateERMcontroller extends Controller
                 'ada_rencana_operasi' => $rencanaoperasi,
                 'tgl_jadwal_operasi' => $tanggaloperasi,
                 'catatan_operasi' => $catatan_ok,
-            ];           
+            ];
 
             $assdok = assesmenawaldokter::updateOrCreate(
                 ['id_kunjungan' => $dataSet_1['kodekunjungan']],
@@ -980,7 +989,8 @@ class UpdateERMcontroller extends Controller
                 }
             }
             ts_kunjungan::whereRaw('kode_kunjungan = ?', array($kodekunjungan))->update([
-                'kode_paramedis' => auth()->user()->kode_paramedis,'cok' => $cok
+                'kode_paramedis' => auth()->user()->kode_paramedis,
+                'cok' => $cok
             ]);
             $di_diagnosa = [
                 'no_rm' => $dataSet_1['nomorrm'],

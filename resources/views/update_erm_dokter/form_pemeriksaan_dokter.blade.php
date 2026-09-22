@@ -157,7 +157,10 @@
                             SISTEM MONITORING PROGRAM PRB & RUJUKAN BPJS
                         </strong>
                         <p class="mb-0 font-weight-normal text-justify" style="font-size: 1.1rem; line-height: 1.5;">
-                            {!! $pesan_rujukan !!}
+                        RUJUKAN : {{ $unit_rujukan }}  
+                         <br>
+                         <br>                         
+                         {!! $pesan_rujukan !!}
                         </p>
                     </div>
                 </div>
