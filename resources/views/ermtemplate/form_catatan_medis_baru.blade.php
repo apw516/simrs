@@ -173,6 +173,29 @@
                                                             </td>
                                                             <td>{{ $k->keterangancacattubuh }}</td>
                                                         </tr>
+                                                        <tr @if($k->usia < 65) hidden @endif class="bg-info">
+                                                            <td colspan="3" class="text-center text-bold">Pasien Geriatri</td>
+                                                        </tr>
+                                                        <tr @if($k->usia < 65) hidden @endif>
+                                                            <td class="text-bold font-italic">ADL</td>
+                                                            <td colspan="2">{{ $k->adl_1 }}</td>
+                                                        </tr>
+                                                        <tr @if($k->usia < 65) hidden @endif>
+                                                            <td class="text-bold font-italic">Kognitif</td>
+                                                            <td colspan="2">{{ $k->kognitif_geriatri }}</td>
+                                                        </tr>
+                                                        <tr @if($k->usia < 65) hidden @endif>
+                                                            <td class="text-bold font-italic">Depresi</td>
+                                                            <td colspan="2">{{ $k->depresi_geriatri }}</td>
+                                                        </tr>
+                                                        <tr @if($k->usia < 65) hidden @endif>
+                                                            <td class="text-bold font-italic">Inkontinensia</td>
+                                                            <td colspan="2">{{ $k->inkontinensia_geriatri }}</td>
+                                                        </tr>
+                                                        <tr @if($k->usia < 65) hidden @endif>
+                                                            <td class="text-bold font-italic">Insomnia</td>
+                                                            <td colspan="2">{{ $k->insomnia_geriatri }}</td>
+                                                        </tr>
                                                         <tr>
                                                             <td colspan="4" class="bg-warning text-bold">Assesmen
                                                                 Nyeri
@@ -240,6 +263,66 @@
                                                         <tr>
                                                             <td>Keterangan </td>
                                                             <td>{{ $k->tglpengkajianlanjutgizi }}</td>
+                                                        </tr>
+                                                        <tr @if($k->usia < 65) hidden @endif>
+                                                            <td>Pasien Geriatri</td>
+                                                            <td>
+                                                                <div class="form-check">
+                                                                    <input onclick="return false;"
+                                                                        style="pointer-events: none;"
+                                                                        class="form-check-input" type="checkbox"
+                                                                        value="1" id="underweight"
+                                                                        name="underweight"
+                                                                        @if ($k->underweight == '1') checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="defaultCheck1">
+                                                                        Underweight ( < 18,0 ) </label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input onclick="return false;"
+                                                                        style="pointer-events: none;"
+                                                                        class="form-check-input" type="checkbox"
+                                                                        value="1" id="underweight"
+                                                                        name="underweight"
+                                                                        @if ($k->overweight == '1') checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="defaultCheck1">
+                                                                        Overweight (23,0 – 24,9) </label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input onclick="return false;"
+                                                                        style="pointer-events: none;"
+                                                                        class="form-check-input" type="checkbox"
+                                                                        value="1" id="underweight"
+                                                                        name="underweight"
+                                                                        @if ($k->normoweight == '1') checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="defaultCheck1">
+                                                                        Normoweight (18,0 – 22,9) </label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input onclick="return false;"
+                                                                        style="pointer-events: none;"
+                                                                        class="form-check-input" type="checkbox"
+                                                                        value="1" id="underweight"
+                                                                        name="underweight"
+                                                                        @if ($k->obese == '1') checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="defaultCheck1">
+                                                                        Obese (25 – 30) </label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input onclick="return false;"
+                                                                        style="pointer-events: none;"
+                                                                        class="form-check-input" type="checkbox"
+                                                                        value="1" id="underweight"
+                                                                        name="underweight"
+                                                                        @if ($k->moridobese == '1') checked @endif>
+                                                                    <label class="form-check-label"
+                                                                        for="defaultCheck1">
+                                                                        Morbid Obese (>30) </label>
+                                                                </div>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <td>Diagnosa Keperawatan</td>
@@ -959,7 +1042,8 @@
                                                                                 @foreach ($orderfarmasi as $t)
                                                                                     @if ($t->kode_kunjungan == $k->id_kunjungan)
                                                                                         <tr>
-                                                                                            <td>{{ \Carbon\Carbon::parse($t->tgl_entry)->translatedFormat('d F Y, H:i') }} WIB </td>
+                                                                                            <td>{{ \Carbon\Carbon::parse($t->tgl_entry)->translatedFormat('d F Y, H:i') }}
+                                                                                                WIB </td>
                                                                                             <td>{{ $t->kode_barang }}
                                                                                             </td>
                                                                                             <td>{{ $t->jumlah_layanan }}
@@ -988,7 +1072,8 @@
                                                                                 @foreach ($farmasi as $t)
                                                                                     @if ($t->kode_kunjungan == $k->id_kunjungan)
                                                                                         <tr>
-                                                                                            <td>{{ \Carbon\Carbon::parse($t->tgl_entry)->translatedFormat('d F Y, H:i') }} WIB</td>
+                                                                                            <td>{{ \Carbon\Carbon::parse($t->tgl_entry)->translatedFormat('d F Y, H:i') }}
+                                                                                                WIB</td>
                                                                                             <td>{{ $t->nama_barang }}
                                                                                             </td>
                                                                                             <td>{{ $t->jumlah_layanan }}
@@ -1116,8 +1201,7 @@
                                                                                 class="card-header bg-light py-1 px-3 d-flex justify-content-between align-items-center fw-bold">
                                                                                 <span><i class="fas fa-eye me-1"></i>
                                                                                     Hasil Pemeriksaan Mata (RO)</span>
-                                                                                <span
-                                                                                    class="text-dark">:
+                                                                                <span class="text-dark">:
                                                                                     {{ $mm->tajampenglihatandekat ?? '-' }}</span>
                                                                             </div>
                                                                             <div class="card-body p-2">

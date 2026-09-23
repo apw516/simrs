@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="card-header bg-info">Catatan Perkembangan Pasien Terintegrasi ( CPPT )</div>
+    <div class="card-header bg-info">Catatan Perkembangan Pasien Terintegrasi ( CPPT ) </div>
     <div class="card-body">
         <style>
             .alert-blink-danger {
@@ -706,6 +706,110 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <table @if ($usiatahun < 65) hidden @endif class="table">
+                                <tr>
+                                    <td class="bg-danger text-bold" colspan="2">PASIEN GERIATRI !!!</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-bold font-italic">ADL</td>
+                                    <td colspan="3">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="adl_1"
+                                                id="adl_1" value="mandiri"
+                                                @if (count($p_konsul) > 0) @if ($p_konsul[0]->adl_1 == 'mandiri') checked @endif
+                                                @endif>
+                                            <label class="form-check-label" for="inlineRadio1">Mandiri</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="adl_1"
+                                                id="adl_1" value="ketergantungan"
+                                                @if (count($p_konsul) > 0) @if ($p_konsul[0]->adl_1 == 'ketergantungan') checked @endif
+                                                @endif>
+                                            <label class="form-check-label" for="inlineRadio2">Ketergantungan</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-bold font-italic">Kognitif</td>
+                                    <td colspan="3">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="kognitif_geriatri"
+                                                id="kognitif_geriatri" value="normal"
+                                                @if (count($p_konsul) > 0) @if ($p_konsul[0]->kognitif_geriatri == 'normal') checked @endif
+                                                @endif>
+                                            <label class="form-check-label" for="inlineRadio1">Normal</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="kognitif_geriatri"
+                                                id="kognitif_geriatri" value="gangguan kognitif"
+                                                @if (count($p_konsul) > 0) @if ($p_konsul[0]->kognitif_geriatri == 'gangguan kognitif') checked @endif
+                                                @endif>
+                                            <label class="form-check-label" for="inlineRadio2">Gangguan
+                                                Kognitif</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-bold font-italic">Depresi</td>
+                                    <td colspan="3">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="depresi_geriatri"
+                                                id="depresi_geriatri" value="normal"
+                                                @if (count($p_konsul) > 0) @if ($p_konsul[0]->depresi_geriatri == 'normal') checked @endif
+                                                @endif>
+                                            <label class="form-check-label" for="inlineRadio1">Normal</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="depresi_geriatri"
+                                                id="depresi_geriatri" value="depresi"
+                                                @if (count($p_konsul) > 0) @if ($p_konsul[0]->depresi_geriatri == 'depresi') checked @endif
+                                                @endif>
+                                            <label class="form-check-label" for="inlineRadio2">Depresi</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-bold font-italic">Inkontinensia</td>
+                                    <td colspan="3">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio"
+                                                name="inkontinensia_geriatri" id="inkontinensia_geriatri"
+                                                value="Tidak Ada"
+                                                @if (count($p_konsul) > 0) @if ($p_konsul[0]->inkontinensia_geriatri == 'Tidak Ada') checked @endif
+                                                @endif>
+                                            <label class="form-check-label" for="inlineRadio1">Tidak ada
+                                                Inkontinensia</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio"
+                                                name="inkontinensia_geriatri" id="inkontinensia_geriatri"
+                                                value="inkontinensia"
+                                                @if (count($p_konsul) > 0) @if ($p_konsul[0]->inkontinensia_geriatri == 'inkontinensia') checked @endif
+                                                @endif>
+                                            <label class="form-check-label" for="inlineRadio2">Inkontinensia</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-bold font-italic">Insomnia</td>
+                                    <td colspan="3">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="insomnia_geriatri"
+                                                id="insomnia_geriatri" value="normal"
+                                                @if (count($p_konsul) > 0) @if ($p_konsul[0]->insomnia_geriatri == 'normal') checked @endif
+                                                @endif>
+                                            <label class="form-check-label" for="inlineRadio1">Normal</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="insomnia_geriatri"
+                                                id="insomnia_geriatri" value="insomnia"
+                                                @if (count($p_konsul) > 0) @if ($p_konsul[0]->insomnia_geriatri == 'insomnia') checked @endif
+                                                @endif>
+                                            <label class="form-check-label" for="inlineRadio2">Insomnia</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
                             <table @if ($usia_hari < 4383) hidden @endif class="table">
                                 <thead>
                                     <th colspan="4" class="text-center bg-warning">Assesmen Resiko Jatuh</th>
@@ -781,7 +885,8 @@
                                                 <input type="checkbox" class="form-check-input"
                                                     id="pendampinganpasien" name="pendampinganpasien">
                                                 <label class="form-check-label text-bold"
-                                                    for="exampleCheck1">Pendampingan : Memberikan pendampingan khusus
+                                                    for="exampleCheck1">Pendampingan
+                                                    : Memberikan pendampingan khusus
                                                     atau
                                                     menyediakan alat bantu jalan ( Kursi Roda / Tongkat ) bagi yang
                                                     membutuhkan </label>
@@ -795,7 +900,8 @@
                                                 <input type="checkbox" class="form-check-input" id="edukasipasien1"
                                                     name="edukasipasien1">
                                                 <label class="form-check-label text-bold"
-                                                    for="exampleCheck1">Mengajarkan cara penggunaan alat bantu dan
+                                                    for="exampleCheck1">Mengajarkan
+                                                    cara penggunaan alat bantu dan
                                                     mengunci rem kursi roda</label>
                                             </div>
                                             <div class="form-group form-check">
@@ -1069,29 +1175,33 @@
                                     <td>Gangguan Kognitif</td>
                                     <td>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Gangguan_Kognitif"
-                                                id="Gangguan_Kognitif" value="Tidak menyadari keterbatasan diri">
+                                            <input class="form-check-input" type="radio"
+                                                name="Gangguan_Kognitif" id="Gangguan_Kognitif"
+                                                value="Tidak menyadari keterbatasan diri">
                                             <label class="form-check-label" for="exampleRadios1">
                                                 Tidak menyadari keterbatasan diri
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Gangguan_Kognitif"
-                                                id="Gangguan_Kognitif" value="Lupa adanya keterbatasan">
+                                            <input class="form-check-input" type="radio"
+                                                name="Gangguan_Kognitif" id="Gangguan_Kognitif"
+                                                value="Lupa adanya keterbatasan">
                                             <label class="form-check-label" for="exampleRadios2">
                                                 Lupa adanya keterbatasan
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Gangguan_Kognitif"
-                                                id="Gangguan_Kognitif" value="Orientasi baik terhadap diri sendiri">
+                                            <input class="form-check-input" type="radio"
+                                                name="Gangguan_Kognitif" id="Gangguan_Kognitif"
+                                                value="Orientasi baik terhadap diri sendiri">
                                             <label class="form-check-label" for="exampleRadios3">
                                                 Orientasi baik terhadap diri sendiri
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Gangguan_Kognitif"
-                                                id="Gangguan_Kognitif" value="-" checked>
+                                            <input class="form-check-input" type="radio"
+                                                name="Gangguan_Kognitif" id="Gangguan_Kognitif" value="-"
+                                                checked>
                                             <label class="form-check-label" for="exampleRadios3">
                                                 -
                                             </label>
@@ -1102,31 +1212,33 @@
                                     <td>Faktor Lingkungan</td>
                                     <td>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Faktor_Lingkungan"
-                                                id="Faktor_Lingkungan"
+                                            <input class="form-check-input" type="radio"
+                                                name="Faktor_Lingkungan" id="Faktor_Lingkungan"
                                                 value="Riwayat jatuh dari tempat tidur saat bayi / anak">
                                             <label class="form-check-label" for="exampleRadios1">
                                                 Riwayat jatuh dari tempat tidur saat bayi / anak
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Faktor_Lingkungan"
-                                                id="Faktor_Lingkungan"
+                                            <input class="form-check-input" type="radio"
+                                                name="Faktor_Lingkungan" id="Faktor_Lingkungan"
                                                 value="Pasien menggunakan alat bantu atau box mebel">
                                             <label class="form-check-label" for="exampleRadios2">
                                                 Pasien menggunakan alat bantu atau box mebel
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Faktor_Lingkungan"
-                                                id="Faktor_Lingkungan" value="Pasien diletakan ditempat tidur">
+                                            <input class="form-check-input" type="radio"
+                                                name="Faktor_Lingkungan" id="Faktor_Lingkungan"
+                                                value="Pasien diletakan ditempat tidur">
                                             <label class="form-check-label" for="exampleRadios3">
                                                 Pasien diletakan ditempat tidur
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Faktor_Lingkungan"
-                                                id="Faktor_Lingkungan" value="Diluar ruang rawat">
+                                            <input class="form-check-input" type="radio"
+                                                name="Faktor_Lingkungan" id="Faktor_Lingkungan"
+                                                value="Diluar ruang rawat">
                                             <label class="form-check-label" for="exampleRadios3">
                                                 Diluar ruang rawat
                                             </label>
@@ -1385,6 +1497,76 @@
                                     </td>
                                     <td><input type="text" class="form-control" name="tglpengkajianlanjut"
                                             id="tglpengkajianlanjut"></td>
+                                </tr>
+                            </table>
+
+                            <table @if ($usiatahun < 65) hidden @endif class="table">
+                                <tr>
+                                    <td class="bg-danger text-bold" colspan="2">PASIEN GERIATRI !!!</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="1"
+                                                id="underweight" name="underweight"
+                                                @if (count($p_konsul) > 0) @if ($p_konsul[0]->underweight == '1') checked @endif
+                                                @endif>
+                                            <label class="form-check-label" for="defaultCheck1">
+                                                Underweight ( < 18,0 ) </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="1"
+                                                id="overweight" name="overweight"
+                                                @if (count($p_konsul) > 0) @if ($p_konsul[0]->overweight == '1') checked @endif
+                                                @endif>
+                                            <label class="form-check-label" for="defaultCheck1">
+                                                Overweight ( 23,0 – 24,9 )
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="1"
+                                                id="normoweight" name="normoweight"
+                                                @if (count($p_konsul) > 0) @if ($p_konsul[0]->normoweight == '1') checked @endif
+                                                @endif>
+                                            <label class="form-check-label" for="defaultCheck1">
+                                                Normoweight (18,0 – 22,9)
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="1"
+                                                id="obese" name="obese"
+                                                @if (count($p_konsul) > 0) @if ($p_konsul[0]->obese == '1') checked @endif
+                                                @endif>
+                                            <label class="form-check-label" for="defaultCheck1">
+                                                Obese (25 – 30)
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="1"
+                                                id="moridobese" name="moridobese"
+                                                @if (count($p_konsul) > 0) @if ($p_konsul[0]->moridobese == '1') checked @endif
+                                                @endif>
+                                            <label class="form-check-label" for="defaultCheck1">
+                                                Morbid Obese (>30)
+                                            </label>
+                                        </div>
+                                    </td>
                                 </tr>
                             </table>
                         </div>

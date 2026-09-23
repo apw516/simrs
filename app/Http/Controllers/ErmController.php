@@ -2220,6 +2220,62 @@ class ErmController extends Controller
             $value =  $nama['value'];
             $dataSet[$index] = $value;
         }
+        if (empty($dataSet['adl_1'])) {
+            $adl_1 = 'mandiri';
+        }else{
+            $adl_1 = $dataSet['adl_1'];
+        }
+
+        if (empty($dataSet['kognitif_geriatri'])) {
+            $kognitif_geriatri = 'normal';
+        }else{
+            $kognitif_geriatri = $dataSet['kognitif_geriatri'];
+        }
+
+        if (empty($dataSet['depresi_geriatri'])) {
+            $depresi_geriatri = 'normal';
+        }else{
+            $depresi_geriatri = $dataSet['depresi_geriatri'];
+        }
+        
+        if (empty($dataSet['inkontinensia_geriatri'])) {
+            $inkontinensia_geriatri = 'Tidak Ada';
+        }else{
+            $inkontinensia_geriatri = $dataSet['inkontinensia_geriatri'];
+        }        
+        
+        if (empty($dataSet['insomnia_geriatri'])) {
+            $insomnia_geriatri = 'normal';
+        }else{
+            $insomnia_geriatri = $dataSet['insomnia_geriatri'];
+        }     
+
+        if (empty($dataSet['underweight'])) {
+            $underweight = 0;
+        }else{
+            $underweight = 1;
+        }
+        if (empty($dataSet['overweight'])) {
+            $overweight = 0;
+        }else{
+            $overweight = 1;
+        }
+        if (empty($dataSet['normoweight'])) {
+            $normoweight = 0;
+        }else{
+            $normoweight = 1;
+        }
+        if (empty($dataSet['obese'])) {
+            $obese = 0;
+        }else{
+            $obese = 1;
+        }
+        if (empty($dataSet['moridobese'])) {
+            $moridobese = 0;
+        }else{
+            $moridobese = 1;
+        }
+
         if (empty($dataSet['pendampinganpasien'])) {
             $pendampinganpasien = 0;
         }else{
@@ -2367,6 +2423,16 @@ class ErmController extends Controller
                 'edukasipasien2' => $edukasipasien2,
                 'edukasipasien3' => $edukasipasien3,
                 'edukasipasien4' => $edukasipasien4,
+                'adl_1' => $adl_1,
+                'kognitif_geriatri' => $kognitif_geriatri,
+                'depresi_geriatri' => $depresi_geriatri,
+                'inkontinensia_geriatri' => $inkontinensia_geriatri,
+                'insomnia_geriatri' => $insomnia_geriatri,
+                'underweight' => $underweight,
+                'overweight' => $overweight,
+                'normoweight' => $normoweight,
+                'obese' => $obese,
+                'moridobese' => $moridobese,
             ];
         }
         try {
