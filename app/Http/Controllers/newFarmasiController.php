@@ -907,7 +907,7 @@ class newFarmasiController extends FarmasiController
                                     "SIGNA1OBT" => $a['signa1'],
                                     "SIGNA2OBT" => $a['signa2'],
                                     "PERMINTAAN" => $ddr->qty_barang,
-                                    "JMLOBT" => $a['qtyobat'],
+                                    "JMLOBT" => $ddr->qty_barang,
                                     "JHO" => $jumlahHari,
                                     "CatKhsObt" => $a['catatan']
                                 ];
