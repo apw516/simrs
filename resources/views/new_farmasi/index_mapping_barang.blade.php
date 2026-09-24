@@ -71,7 +71,6 @@
                                     </button>
                                 </div>
                             </div>
-
                             <div class="table-responsive">
                                 <table id="tabel_barang_simrs" class="table table-striped table-hover align-middle w-100"
                                     style="font-size:13px">

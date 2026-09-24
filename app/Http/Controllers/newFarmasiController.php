@@ -81,8 +81,25 @@ class newFarmasiController extends FarmasiController
         $sidebar = 'indexrefdpho';
         $sidebar_m = '1.1';
         $V = new MODEL_APOTEK_ONLINE();
-        $list_obat =   $V->referensi_dpho();
-        // dd($list_obat);
+        $list_obat = $V->referensi_dpho();
+        foreach ($list_obat->response->list as $l) {
+            // Sesuaikan 'AptOnlineRefDpho' dengan nama Model Eloquent Anda
+            MasterBarangBPJS::updateOrCreate(
+                ['kodeobat' => $l->kodeobat], // Parameter acuan pencarian (Primary Key / Unique)
+                [
+                    'namaobat'  => $l->namaobat,
+                    'prb'       => $l->prb,
+                    'kronis'    => $l->kronis,
+                    'kemo'      => $l->kemo,
+                    'harga'     => $l->harga,
+                    'restriksi' => $l->restriksi,
+                    'generik'   => $l->generik,
+                    'aktif'     => $l->aktif,
+                    'sedia'     => $l->sedia,
+                    'stok'      => $l->stok,
+                ]
+            );
+        }
         return view('new_farmasi.index_ref_dpho', compact([
             'title',
             'sidebar',
@@ -1460,15 +1477,14 @@ class newFarmasiController extends FarmasiController
             ];
             db::connection('mysql')->table('resep_header_bpjs')->where('id', $header_bpjs)->update($data_update);
         } else {
-            if($dataheader['jenisobat'] == 1){
+            if ($dataheader['jenisobat'] == 1) {
                 $jns = 'PRB';
-            }elseif($dataheader['jenisobat'] == 2)
-            {
+            } elseif ($dataheader['jenisobat'] == 2) {
                 $jns = 'KRONIS';
-            }elseif($dataheader['jenisobat'] == 3){
+            } elseif ($dataheader['jenisobat'] == 3) {
                 $jns = 'KEMOTERAPI';
             }
-            throw new \Exception("Gagal kirim header ". $jns." ke BPJS: " . $response_data->metaData->message);
+            throw new \Exception("Gagal kirim header " . $jns . " ke BPJS: " . $response_data->metaData->message);
         }
         foreach ($dataobat as $a) {
             if ($a['jenis_resep'] == 'NonRacikan') {
@@ -1539,13 +1555,6 @@ class newFarmasiController extends FarmasiController
             } else {
                 $kode_obat = $a['kode_barang'];
                 $detailracik = db::select('select * from template_racikan_detail where id_header = ?', [$kode_obat]);
-                // $v->hapus_resep([
-                //     "nosjp" => $sep_apotek,
-                //     "refasalsjp" => $dataheader['no_sep'],
-                //     "noresep" => $noresep
-                // ]);
-                //     db::connection('mysql')->table('resep_header_bpjs')->where('id', $header_bpjs)->update(['Bridging' => 'Batal']);
-                // dd($detailracik);
                 foreach ($detailracik as $ddr) {
                     $kode_barang = $ddr->kode_barang;
                     $mt_barang = db::select('select * from mt_barang where kode_barang = ?', [$kode_barang]);
@@ -1580,23 +1589,10 @@ class newFarmasiController extends FarmasiController
                             "SIGNA1OBT" => $a['signa1'],
                             "SIGNA2OBT" => $a['signa2'],
                             "PERMINTAAN" => $ddr->qty_barang,
-                            "JMLOBT" => $a['qtyobat'],
+                            "JMLOBT" => $ddr->qty_barang,
                             "JHO" => $jumlahHari,
                             "CatKhsObt" => $a['catatan']
                         ];
-                    // $save_dtail = [
-                    //     "NOSJP" => $sep_apotek,
-                    //     "NORESEP" => $noresep,
-                    //     "KDOBT" => $kode_barang_bpjs,
-                    //     "NMOBAT" => $mt_barang_bpjs[0]->namaobat,
-                    //     "SIGNA1OBT" => $a['signa1'],
-                    //     "SIGNA2OBT" => $a['signa2'],
-                    //     "JMLOBT" => $totalObat,
-                    //     "JHO" => $a['jumlahhari'],
-                    //     "CatKhsObt" => 'RACIKAN' . $a['catatan'],
-                    //     "id_resep_header" => $header_bpjs
-                    // ];
-                    // $detail = db::connection('mysql')->table('resep_detail_bpjs')->insertGetId($save_dtail);
                     $response_data_obat = $v->save_racikan($data_detail_obat_bpjs);
                     if ($response_data_obat->metaData->code == 200) {
                     } else {
@@ -4513,7 +4509,6 @@ class newFarmasiController extends FarmasiController
         $units = DB::table('mt_unit')->get(['kode_unit', 'nama_unit']);
         return view('dashboard.kartu_stok', compact('units'));
     }
-
     public function getDatastok(Request $request)
     {
         // 1. Subquery untuk mencari ID transaksi terakhir (MAX id/no) per barang & unit
@@ -5408,7 +5403,7 @@ class newFarmasiController extends FarmasiController
         $v = new MODEL_APOTEK_ONLINE();
         $dataobat = [
             'kdppk' => '0125A016',
-            'KdJnsObat' =>'0',
+            'KdJnsObat' => '0',
             'JnsTgl' => $jenistanggal,
             'TglMulai' => $awal,
             'TglAkhir' => $akhir,
