@@ -1574,7 +1574,6 @@ class newFarmasiController extends FarmasiController
                     $dosis     = (float) ($a['signa2'] ?? 1);     // Misal: 1
                     $pemakaianSehari = $frekuensi * $dosis;
                     if ($pemakaianSehari > 0) {
-                        // Hasilnya misal 10 / 3 = 3.33 hari (atau gunakan floor/round sesuai kebutuhan)
                         $jumlahHari = $totalObat / $pemakaianSehari;
                     } else {
                         $jumlahHari = 0;
@@ -1588,11 +1587,12 @@ class newFarmasiController extends FarmasiController
                             "NMOBAT" => $mt_barang_bpjs[0]->namaobat,
                             "SIGNA1OBT" => $a['signa1'],
                             "SIGNA2OBT" => $a['signa2'],
-                            "PERMINTAAN" => $ddr->qty_barang,
+                            "PERMINTAAN" => $ddr->dosis_racik,
                             "JMLOBT" => $ddr->qty_barang,
                             "JHO" => $jumlahHari,
                             "CatKhsObt" => $a['catatan']
                         ];
+                    // DD($data_detail_obat_bpjs);
                     $response_data_obat = $v->save_racikan($data_detail_obat_bpjs);
                     if ($response_data_obat->metaData->code == 200) {
                     } else {
@@ -3654,10 +3654,15 @@ class newFarmasiController extends FarmasiController
     }
     public function get_no_resep($kode)
     {
-        $q = DB::connection('mysql')->select('SELECT id,NORESEP,RIGHT(NORESEP,4) AS kd_max  FROM resep_header_bpjs
-        WHERE kode_kunjungan = ?
+        $now = $this->get_now();
+        $tahun = date('Y', strtotime($now));
+        $q = DB::connection('mysql')->select('
+        SELECT id, NORESEP, RIGHT(NORESEP, 4) AS kd_max 
+        FROM resep_header_bpjs
+        WHERE YEAR(TGLSJP) = ?
         ORDER BY id DESC
-        LIMIT 1', [$kode]);
+        LIMIT 1
+        ', [$tahun]);
         $kd = "";
         if (count($q) > 0) {
             foreach ($q as $k) {
