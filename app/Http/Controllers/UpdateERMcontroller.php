@@ -1693,7 +1693,7 @@ class UpdateERMcontroller extends Controller
     {
         $rm = $request->nomorrm;
         $cek = DB::select('select * from erm_upload_gambar where no_rm = ? order by id DESC', [$rm]);
-        $url = "https://192.168.2.45/files/";
+        $url = "http://192.168.2.45/files/";
         return view('update_erm_dokter.scan_berkas_luar', compact([
             'cek',
             'url'
