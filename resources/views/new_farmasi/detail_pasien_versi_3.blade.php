@@ -6,7 +6,7 @@
 
         <div class="d-flex align-items-center">
             <i class="fas fa-chevron-down toggle-icon transition-icon mr-2"></i>
-            <span class="font-weight-bold"><i class="fas fa-id-card mr-2"></i>Detail Pasien</span>
+            <span class="font-weight-bold"><i class="fas fa-id-card mr-2"></i>Detail Pasien ( new form )</span>
         </div>
         <span class="badge badge-light text-primary" style="font-size: 0.9rem;">No. RM:
             {{ $data_kunjungan[0]->no_rm ?? '' }}</span>
@@ -88,32 +88,65 @@
         </h6>
     </div>
     <div class="card-body p-4">
-        @if (count($dataiter) > 0)
-            <div class="alert alert-warning" role="alert">
-                Riwayat Iterasi Obat ....
+        <style>
+            /* Mengatur efek kedip yang halus (smooth blinking) */
+            @keyframes blink-warning {
+
+                0%,
+                100% {
+                    opacity: 1;
+                    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+                }
+
+                50% {
+                    opacity: 0.35;
+                    box-shadow: 0 0 15px rgba(255, 193, 7, 0.6);
+                }
+            }
+
+            /* Class untuk dipasang di elemen */
+            .blinking-card {
+                animation: blink-warning 1.5s infinite ease-in-out;
+            }
+        </style>
+
+        @if (count($cek_iter) > 0)
+            <!-- Tambahkan class 'blinking-card' di elemen card ini -->
+            <div class="card border-warning mb-4 shadow-sm blinking-card">
+                <div
+                    class="card-header bg-warning bg-opacity-10 text-dark border-warning d-flex align-items-center gap-2">
+                    <i class="bi bi-exclamation-triangle-fill text-warning fs-5"></i>
+                    <span class="fw-bold">Riwayat Iterasi Obat</span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light text-muted small text-uppercase">
+                                <tr>
+                                    <th class="ps-3">Tanggal Iter</th>
+                                    <th>Unit</th>
+                                    <th>Dokter</th>
+                                    <th class="text-center">Jumlah Iterasi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($cek_iter as $d)
+                                    <tr>
+                                        <td class="ps-3 fw-medium">{{ $d->tgl_iter }}</td>
+                                        <td>{{ $d->nama_unit }}</td>
+                                        <td>{{ $d->nama_Dokter }}</td>
+                                        <td class="text-center">
+                                            <span class="badge bg-warning text-dark rounded-pill px-3 py-2 fs-6">
+                                                {{ $d->jumlah }}x
+                                            </span>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <table class="table table-sm table-bordered table-hover mb-4">
-                <thead>
-                    <tr>
-                        <th>Tanggal Iter</th>
-                        <th>Unit Asal</th>
-                        <th>Dokter</th>
-                        <th>Jumlah iterasi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($dataiter as $d)
-                        <tr>
-                            <td>{{ $d->tgl_iter }}</td>
-                            <td>{{ $d->unit_asal }}</td>
-                            <td>{{ $d->nama_dokter }}</td>
-                            <td>{{ $d->jumlah }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        @else
-            <p class="text-warning fw-bold mb-0">Tidak ada data iterasi yang tersedia.</p>
         @endif
         <form action="" method="POST" id="formInputObat" class="formInputObat">
             <!-- Hidden Input untuk menangkap No RM / Kunjungan -->
@@ -131,11 +164,11 @@
                 </div>
                 <div class="col-md-2 mb-3">
                     <label class="font-weight-bold small text-muted">NO SEP KUNJUNGAN</label>
-                    <input readonly type="text" id="no_sep" name="no_sep" class="form-control" placeholder="0"
-                        min="1" value="{{ $data_kunjungan[0]->no_sep }}">
-                    @if (count($dataiter) > 0)
-                        <button type="button" class="btn btn-info mt-2" data-toggle="modal"
-                            data-target="#modalriwayatsep"><i class="bi bi-search"></i> Pilih Sep Kunjungan</button>
+                    <input readonly type="text" id="nosepkunjungan" name="no_sep" class="form-control"
+                        placeholder="0" min="1" value="{{ $data_kunjungan[0]->no_sep }}">
+                    @if (count($cek_iter) > 0)
+                        <button type="button" class="btn btn-info mt-2" no_rm="{{ $data_kunjungan[0]->no_rm }}"
+                            data-toggle="modal" data-target="#modalpilihsepiterasi">+ SEP ITERASI</button>
                     @endif
                 </div>
                 <!-- Jumlah / Qty -->
@@ -151,69 +184,99 @@
                 </div>
                 <div class="col-md-2 mb-3">
                     <label class="font-weight-bold small text-muted">Dokter</label>
-                    <input readonly type="text" id="namadokter" name="nama_dokter" class="form-control"
+                    <input readonly type="text" id="namadokterkunjungan" name="nama_dokter" class="form-control"
                         placeholder="0" min="1" value="{{ $dokter[0]->nama_paramedis }}">
-                    <input hidden type="text" id="kodejkn" name="kode_paramedis" class="form-control"
+                    <input hidden type="text" id="kode_paramedis_jkn" name="kode_paramedis" class="form-control"
                         placeholder="0" min="1" value="{{ $dokter[0]->kode_dokter_jkn }}">
+                </div>
+                <div hidden class="col-md-2 mb-3">
+                    <label class="font-weight-bold small text-muted">Iterasi</label>
+                    <select class="form-control" id="iterasi" name="iterasi">
+                        <option value="0">NON - ITERASI</option>
+                        <option value="1">ITERASI 1 X</option>
+                        <option value="2">ITERASI 2 X</option>
+                    </select>
+                </div>
+                <div hidden class="col-md-2 mb-3">
+                    <label class="font-weight-bold small text-muted">Jenis Obat</label>
+                    <select class="form-control" id="jenisobat" name="jenisobat">
+                        <option value="0">Obat Reguler</option>
+                        <option value="1">Obat PRB</option>
+                        <option value="2">Obat Kronis</option>
+                        <option value="3">Obat Kemo</option>
+                    </select>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="font-weight-bold small text-muted">Iterasi</label>
-                                    <select class="form-control" id="iterasi" name="iterasi">
-                                        <option value="0">NON - ITERASI</option>
-                                        <option value="1">ITERASI 1 X</option>
-                                        <option value="2">ITERASI 2 X</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="font-weight-bold small text-muted">Jenis Obat</label>
-                                    <select class="form-control" id="jenisobat" name="jenisobat">
-                                        <option value="0">Obat Reguler</option>
-                                        <option value="1">Obat PRB</option>
-                                        <option value="2">Obat Kronis</option>
-                                        <option value="3">Obat Kemo</option>
-                                    </select>
-                                </div>
+                    {{-- <div hidden class="col-md-2 mb-3 d-flex align-items-end">
+                    <button hidden type="button" class="btn btn-success btn-block font-weight-bold" data-toggle="modal"
+                        data-target="#modalpilihobat">
+                        <i class="fas fa-plus mr-1"></i> Pilih Obat
+                    </button>
+                    </div> --}}
+                    <div class="row">
+                        <div class="col-md-3 mb-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-success btn-block font-weight-bold ambilobatracik2"
+                                data-toggle="modal" data-target="#modalobatracikan">
+                                <i class="fas fa-plus mr-1"></i> Pilih Obat Racik
+                            </button>
+                        </div>
+                        <div class="col-md-3 mb-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-warning btn-block font-weight-bold"
+                                data-toggle="modal" data-target="#modalbuatobatracik">
+                                <i class="fas fa-plus mr-1"></i> Buat Obat Racik
+                            </button>
+                        </div>
+                        <div class="col-md-3 mb-3 d-flex align-items-end"> <button type="button"
+                                class="btn btn-info btn-block font-weight-bold ambilriwayatreseppasien"
+                                data-toggle="modal" data-target="#modalriwayatresep">
+                                <i class="fas fa-plus mr-1"></i> Riwayat Resep RS
+                            </button>
+                        </div>
+                        <div class="col-md-3 mb-3 d-flex align-items-end">
+                            <button type="button"
+                                class="btn btn-info btn-block font-weight-bold ambilriwayatreseppasien"
+                                data-toggle="modal" data-target="#modalriwayatresepbpjs">
+                                <i class="fas fa-plus mr-1"></i> Riwayat Resep Bridging BPJS </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label for="input-cari-obat" class="fw-bold mb-1">Pencarian Obat</label>
+                                <input type="text" class="form-control" id="input-cari-obat"
+                                    placeholder="Masukan nama obat ...">
                             </div>
                         </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-2 mb-3 d-flex align-items-end">
-                                    <button type="button" class="btn btn-success btn-block font-weight-bold"
-                                        data-toggle="modal" data-target="#modalpilihobat">
-                                        <i class="fas fa-plus mr-1"></i> Pilih Obat
-                                    </button>
-                                </div>
-                                <div class="col-md-4 mb-3 d-flex align-items-end">
-                                    <button type="button"
-                                        class="btn btn-success btn-block font-weight-bold ambilobatracik2"
-                                        data-toggle="modal" data-target="#modalobatracikan">
-                                        <i class="fas fa-plus mr-1"></i> Pilih Obat Racik
-                                    </button>
-                                </div>
-                                <div class="col-md-4 mb-3 d-flex align-items-end">
-                                    <button type="button" class="btn btn-warning btn-block font-weight-bold"
-                                        data-toggle="modal" data-target="#modalbuatobatracik">
-                                        <i class="fas fa-plus mr-1"></i> Buat Obat Racik
-                                    </button>
-                                </div>
-                                <div class="col-md-4 mb-3 d-flex align-items-end"> <button type="button"
-                                        class="btn btn-info btn-block font-weight-bold ambilriwayatreseppasien"
-                                        data-toggle="modal" data-target="#modalriwayatresep">
-                                        <i class="fas fa-plus mr-1"></i> Riwayat Resep RS
-                                    </button>
-                                </div>
-                                <div class="col-md-6 mb-3 d-flex align-items-end">
-                                    <button type="button"
-                                        class="btn btn-info btn-block font-weight-bold ambilriwayatreseppasien"
-                                        data-toggle="modal" data-target="#modalriwayatresepbpjs">
-                                        <i class="fas fa-plus mr-1"></i> Riwayat Resep Bridging BPJS </button>
-                                </div>
+                        <div class="col-md-2">
+                            <button style="margin-top:29px" type="button" class="btn btn-success" id="btn-cari">
+                                <i class="bi bi-search me-1"></i> Cari Obat
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle table-obat">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Nama Obat</th>
+                                            <th>Nama Generik</th>
+                                            <th>Stok</th>
+                                            {{-- <th>Mapping</th> --}}
+                                            <th class="text-end">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody-obat">
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted py-3">
+                                                Ketik nama obat lalu tekan enter atau klik tombol cari.
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -263,9 +326,9 @@
                                                     {{ $item->jenis_antrian }}
                                                 </td>
                                                 {{-- <td class="text-end fw-bold">
-                                                            Rp
-                                                            {{ number_format(($item->tarif ?? ($item->harga ?? 0)) * ($item->jumlah ?? ($item->qty ?? 1)), 0, ',', '.') }}
-                                                        </td> --}}
+                                                Rp
+                                                {{ number_format(($item->tarif ?? ($item->harga ?? 0)) * ($item->jumlah ?? ($item->qty ?? 1)), 0, ',', '.') }}
+                                            </td> --}}
                                                 <td class="text-center">
                                                     @if (($item->status_order ?? 0) == 2)
                                                         <span class="badge bg-success"
@@ -291,12 +354,6 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-            </div>
-            <div class="row">
-
-            </div>
-            <!-- Tombol Tambah ke Daftar -->
     </div>
     </form>
     <hr class="my-4">
@@ -312,10 +369,10 @@
                         <th style="min-width: 90px;">Nama Obat</th>
                         <th style="width: 180px;">Stok</th>
                         <th style="width: 180px;">Jenis Resep</th>
-                        <th hidden style="width: 180px;">Jenis Obat</th>
-                        <th hidden style="width: 90px;">Iterasi</th>
+                        <th style="width: 180px;">Jenis Obat</th>
+                        <th style="width: 190px;">Iterasi</th>
                         <th hidden style="width: 80px;">Jlh Iter</th>
-                        <th style="width: 190px;">Jlh Obat</th>
+                        <th style="width: 90px;">Jlh Obat</th>
                         <th hidden style="width: 100px;">Dosis Minum</th>
                         <th style="width: 120px;">Signa 1</th>
                         <th style="width: 80px;"></th>
@@ -335,189 +392,11 @@
             </table>
         </form>
     </div>
-    {{-- <div class="card">
-        <div class="card-header">Form Verifikasi Resep Farmasi ... </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="col-md-12">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">
-                                1. Kejelasan tulisan obat
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">
-                                2. Tepat nama pasien
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">
-                                3. Tepat nama obat
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="col-md-12">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">
-                                4. Tepat dosis
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">
-                                5. Tepat aturan pakai dan pemberian obat
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">
-                                6. Poli farmasi
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="col-md-12">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">
-                                7. Duplikasi
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">
-                                8. Interaksi Obat
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">
-                                9. Kontra indikasi
-                            </label>
-                        </div>
-                    </div>
-                </div>              
-            </div>        
-        </div>
-    </div>
+
+    <!-- Tombol Submit -->
     <div class="d-flex justify-content-end mt-3 mb-4">
         <button type="button" id="btn-submit-obat" class="btn btn-primary px-4 font-weight-bold"
             onclick="simpanresep()">
-            <i class="fas fa-save mr-2"></i>Simpan Resep
-        </button>
-    </div> --}}
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white font-weight-bold">
-            Form Verifikasi Resep Farmasi
-        </div>
-        <div class="card-body">
-            <form action="" method="POST" id="arrayceklis" class="arrayceklis">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group mb-2">
-                        <div class="form-check">
-                            <input class="form-check-input check-item" type="checkbox" id="c1" name="c1"
-                                value="1">
-                            <label class="form-check-label" for="check1">1. Kejelasan tulisan obat</label>
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <div class="form-check">
-                            <input class="form-check-input check-item" type="checkbox" id="c2" name="c2"
-                                value="1">
-                            <label class="form-check-label" for="check2">2. Tepat nama pasien</label>
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <div class="form-check">
-                            <input class="form-check-input check-item" type="checkbox" id="c3" name="c3"
-                                value="1">
-                            <label class="form-check-label" for="check3">3. Tepat nama obat</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group mb-2">
-                        <div class="form-check">
-                            <input class="form-check-input check-item" type="checkbox" id="c4" name="c4"
-                                value="1">
-                            <label class="form-check-label" for="check4">4. Tepat dosis</label>
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <div class="form-check">
-                            <input class="form-check-input check-item" type="checkbox" id="c5" name="c5"
-                                value="1">
-                            <label class="form-check-label" for="check5">5. Tepat aturan pakai dan pemberian
-                                obat</label>
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <div class="form-check">
-                            <input class="form-check-input check-item" type="checkbox" id="c6" name="c6"
-                                value="1">
-                            <label class="form-check-label" for="check6">6. Polifarmasi</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group mb-2">
-                        <div class="form-check">
-                            <input class="form-check-input check-item" type="checkbox" id="c7" name="c7"
-                                value="1">
-                            <label class="form-check-label" for="check7">7. Duplikasi</label>
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <div class="form-check">
-                            <input class="form-check-input check-item" type="checkbox" id="c8" name="c8"
-                                value="1">
-                            <label class="form-check-label" for="check8">8. Interaksi Obat</label>
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <div class="form-check">
-                            <input class="form-check-input check-item" type="checkbox" id="c9" name="c9"
-                                value="1">
-                            <label class="form-check-label" for="check9">9. Kontra indikasi</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </form>
-            <div class="mt-3 pt-3 border-top d-flex justify-content-between align-items-center">
-                <span id="status-verifikasi" class="badge badge-secondary py-2 px-3">Belum Diverifikasi</span>
-                <button type="button" id="btn-verifikasi" class="btn btn-warning font-weight-bold">
-                    <i class="fas fa-check-circle mr-1"></i> Verifikasi Resep
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Tombol Simpan -->
-    <div class="d-flex justify-content-end mt-3 mb-4">
-        <button type="button" id="btn-submit-obat" class="btn btn-primary px-4 font-weight-bold"
-            onclick="simpanresep()" disabled>
             <i class="fas fa-save mr-2"></i>Simpan Resep
         </button>
     </div>
@@ -809,43 +688,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($stokBarang as $index => $item)
-                                <tr>
-                                    <td class="text-center">{{ $index + 1 }}</td>
-                                    <td>
-                                        <span class="fw-bold d-block">{{ $item->nama_barang }}</span>
-                                        <small class="text-muted">{{ $item->kode_barang }}</small>
-                                    </td>
-                                    <td>{{ $item->nama_generik ?? '-' }}</td>
-                                    <td class="text-end fw-bold text-success">
-                                        {{ number_format($item->stok_saat_ini, 0, ',', '.') }}
-                                    </td>
-                                    <td>{{ $item->kronis }}</td>
-                                    <td>{{ $item->prb }}</td>
-                                    <td>{{ $item->kemo }}</td>
-                                    <td class="text-center">
-                                        {{-- <button type="button" class="btn btn-sm btn-primary btn-pilih-obat"
-                                            data-kode="{{ $item->kode_barang }}"
-                                            data-nama="{{ $item->nama_barang }}"
-                                            data-stok="{{ $item->stok_saat_ini }}">
-                                            <i class="bi bi-plus-lg"></i> Pilih
-                                        </button> --}}
-                                        <button type="button" class="btn btn-sm btn-primary btn-pilih-obat"
-                                            data-kode="{{ $item->kode_barang }}"
-                                            data-nama="{{ $item->nama_barang }}"
-                                            data-stok="{{ $item->stok_saat_ini }}" data-kronis="{{ $item->kronis }}"
-                                            data-prb="{{ $item->prb }}" data-kemo="{{ $item->kemo }}">
-                                            <i class="bi bi-plus-lg"></i> Pilih
-                                        </button>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="5" class="text-center text-muted py-4">
-                                        <em>Tidak ada data stok barang yang ditemukan.</em>
-                                    </td>
-                                </tr>
-                            @endforelse
+
                         </tbody>
                     </table>
                 </div>
@@ -939,63 +782,43 @@
         </div>
     </div>
 </div>
-<!-- Modal -->
-<div class="modal fade" id="modalriwayatsep" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalpilihsepiterasi" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Silahkan Pilih SEP Induk iterasi</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Silahkan Pilih SEP iterasi</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="table-responsive">
-                    <table class="table table-sm table-bordered table-striped table-hover align-middle">
-                        <thead class="table-light text-center">
-                            <tr>
-                                <th scope="col" style="width: 15%;">Tgl Kunjungan</th>
-                                <th scope="col">Unit</th>
-                                <th scope="col">Dokter</th>
-                                <th scope="col" style="width: 25%;">No SEP</th>
-                                <th></th>
+                <table class="table table-sm table-hover" id="tabelriwayatsepiter">
+                    <thead>
+                        <th>Tanggal Kunjungan</th>
+                        <th>Unit</th>
+                        <th>Doter</th>
+                        <th>SEP</th>
+                    </thead>
+                    <tbody>
+                        @foreach ($data_kunjungan_2 as $d)
+                            <tr class="pilihsep" nosep="{{ $d->no_sep }}" namadokter="{{ $d->nama_dokter }}"
+                                kode_jkn="{{ $d->kode_dokter_jkn }}">
+                                <td>{{ $d->tgl_masuk }}</td>
+                                <td>{{ $d->nama_unit }}</td>
+                                <td>{{ $d->nama_dokter }}</td>
+                                <td>{{ $d->no_sep }}</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($data_kunjungan2 as $dd)
-                                <tr>
-                                    <td class="text-center">
-                                        {{ \Carbon\Carbon::parse($dd->tgl_masuk)->locale('id')->translatedFormat('d F Y') }}
-                                    </td>
-                                    <td>{{ $dd->nama_unit }}</td>
-                                    <td>{{ $dd->nama_paramedis }}</td>
-                                    <td class="text-center fw-semibold">{{ $dd->no_sep }}</td>
-                                    <td>
-                                        <button nosep="{{ $dd->no_sep }}" namadokter="{{ $dd->nama_paramedis }}"
-                                            kodejkn="{{ $dd->kode_dokter_jkn }}"
-                                            class="badge badge-success pilihsep"><i
-                                                class="bi bi-check2-circle"></i></button>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="4" class="text-center text-muted py-3">
-                                        Data kunjungan tidak ditemukan.
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
 </div>
-
 <!-- Stylings & Helper Rotasi Collapse Icon -->
 <style>
     .transition-icon {
@@ -1133,7 +956,6 @@
             var kodeBarang = $(this).data('kode');
             var namaBarang = $(this).data('nama');
             var maxStok = parseInt($(this).data('stok')) || 999;
-
             // Ambil data status kronis, prb, kemo (bisa berupa boolean, 1/0, atau string '1'/'true')
             var isKronis = $(this).data('kronis') == 1 || $(this).data('kronis') == 'True' || $(this)
                 .data('kronis') == 'Ya';
@@ -1150,10 +972,8 @@
             } else if (isKemo) {
                 defaultJenis = 'Kemoterapi';
             }
-
             // Cek apakah obat sudah ada di dalam tabel terpilih
             var existingRow = $('#row-obat-' + kodeBarang);
-
             if (existingRow.length > 0) {
                 // Jika obat sudah ada, tambahkan nilai 'jumlahobat' (+1)
                 var inputQty = existingRow.find('.input-jumlah-obat');
@@ -1298,9 +1118,9 @@
             data: {
                 _token: "{{ csrf_token() }}",
                 data_obat: JSON.stringify(data1),
-                data_header_obat: JSON.stringify(data2)
+                data_header_obat: JSON.stringify(data2),
             },
-            url: '<?= route('simpandataresepobatpasien_versi_2') ?>',
+            url: '<?= route('simpandataresepobatpasien_versi_3') ?>',
             error: function(data) {
                 spinner.hide()
                 Swal.fire({
@@ -1363,16 +1183,6 @@
         var url = "{{ url('cetaknotafarmasi') }}/" + kode;
         window.open(url, '_blank');
     }
-    $('.pilihsep').click(function() {
-        const sep = $(this).attr('nosep');
-        const namadokter = $(this).attr('namadokter');
-        const kodejkn = $(this).attr('kodejkn');
-
-        $('#no_sep').val(sep);
-        $('#namadokter').val(namadokter);
-        $('#kodejkn').val(kodejkn);
-    });
-
     $('#tombol_cari_komponen').click(function() {
         $('#tabel_barang2').DataTable().ajax.reload(); // Reload tabel dengan parameter baru
     });
@@ -1599,6 +1409,15 @@
             }
         });
     });
+    $(".pilihsep").on('click', function(event) {
+        nosep = $(this).attr('nosep')
+        namadokter = $(this).attr('namadokter')
+        kode_jkn = $(this).attr('kode_jkn')
+        $('#nosepkunjungan').val(nosep)
+        $('#namadokterkunjungan').val(namadokter)
+        $('#kode_paramedis_jkn').val(kode_jkn)
+        alert('nomor sep berhasil dipilih ...')
+    });
 
     function caririwayatresepbpjs() {
         spinner_on()
@@ -1625,32 +1444,253 @@
         });
     }
     $(document).ready(function() {
-        $('#btn-verifikasi').click(function() {
-            // Opsional: Validasi apakah semua/salah satu checkbox sudah diisi
-            const totalChecked = $('.check-item:checked').length;
+        function cariObat() {
+            let keyword = $('#input-cari-obat').val().trim();
+            // Tampilkan indikator loading saat proses pencarian
+            $('#tbody-obat').html(`
+            <tr>
+                <td colspan="5" class="text-center py-3">
+                    <div class="spinner-border spinner-border-sm text-success me-2" role="status"></div>
+                    Mencari data obat...
+                </td>
+            </tr>
+        `);
+            $.ajax({
+                url: "{{ route('pencarian.obat') }}", // Sesuaikan dengan route Laravel Anda
+                type: "GET",
+                data: {
+                    q: keyword
+                },
+                dataType: "json",
+                success: function(response) {
+                    let html = '';
 
-            if (totalChecked === 0) {
-                alert('Pilih setidaknya satu item verifikasi sebelum melanjutkan!');
-                return false;
+                    if (response.data && response.data.length > 0) {
+                        $.each(response.data, function(index, item) {
+                            html += `
+                            <tr>
+                                <td class="fw-bold">${item.nama_barang ?? '-'}</td>
+                                <td>${item.nama_generik ?? '-'}</td>
+                                <td>
+                                    <span class="badge ${item.stok_saat_ini > 0 ? 'bg-success' : 'bg-danger'}">
+                                        ${item.stok_saat_ini ?? 0}
+                                    </span>
+                                </td>
+                                <td class="text-end">
+                                    <button type="button" 
+                                            class="btn btn-sm btn-primary btn-pilih-obat" 
+                                            data-kode="${item.kode_barang}"
+                                            data-nama="${item.nama_barang}"
+                                            data-stok="${item.stok_saat_ini ?? 0}"
+                                            data-kronis="${item.kronis ?? 0}"
+                                            data-prb="${item.prb ?? 0}"
+                                            data-kemo="${item.kemo ?? 0}">
+                                        Pilih
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                        });
+                    } else {
+                        html = `
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-3">
+                                Data obat tidak ditemukan.
+                            </td>
+                        </tr>
+                    `;
+                    }
+
+                    $('#tbody-obat').html(html);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                    $('#tbody-obat').html(`
+                    <tr>
+                        <td colspan="5" class="text-center text-danger py-3">
+                            Terjadi kesalahan saat mengambil data. Silakan coba lagi.
+                        </td>
+                    </tr>
+                `);
+                }
+            });
+        }
+        // 1. Event saat tombol Cari diklik
+        $('#btn-cari').on('click', function() {
+            cariObat();
+        });
+        // 2. Event saat menekan tombol ENTER pada input
+        $('#input-cari-obat').on('keypress', function(e) {
+            if (e.which === 13) { // 13 adalah Kode Key untuk Enter
+                e.preventDefault();
+                cariObat();
+            }
+        })
+        // 3. (Opsional) Live Search saat mengetik dengan Debounce (menunggu jeda 500ms)
+        let typingTimer;
+        $('#input-cari-obat').on('keyup', function(e) {
+            // Jangan jalankan jika tombol Enter (karena sudah ditangani event keypress)
+            if (e.which === 13) return;
+
+            clearTimeout(typingTimer);
+            let keyword = $(this).val().trim();
+
+            // Cari otomatis jika panjang karakter >= 3
+            if (keyword.length >= 3) {
+                typingTimer = setTimeout(cariObat, 500);
+            } else if (keyword.length === 0) {
+                // Reset tabel jika input dikosongkan
+                $('#tbody-obat').html(`
+                <tr>
+                    <td colspan="5" class="text-center text-muted py-3">
+                        Ketik nama obat lalu tekan enter atau klik tombol cari.
+                    </td>
+                </tr>
+            `);
+            }
+        });
+        $('#tbody-obat').on('click', '.btn-pilih-obat', function() {
+            var kodeBarang = $(this).data('kode');
+            var namaBarang = $(this).data('nama');
+            var maxStok = parseInt($(this).data('stok')) || 0;
+
+            // Validasi jika stok habis
+            if (maxStok <= 0) {
+                alert('Stok obat ini kosong!');
+                return;
+            }
+            var isKronis = $(this).data('kronis') == 1 || $(this).data('kronis') == 'True' || $(this)
+                .data('kronis') == 'Ya';
+            var isPrb = $(this).data('prb') == 1 || $(this).data('prb') == 'True' || $(this).data(
+                'prb') == 'Ya';
+            var isKemo = $(this).data('kemo') == 1 || $(this).data('kemo') == 'True' || $(this).data(
+                'kemo') == 'Ya';
+            var defaultJenis = 'Reguler';
+            if (isKronis) {
+                defaultJenis = 'Kronis';
+            } else if (isPrb) {
+                defaultJenis = 'PRB';
+            } else if (isKemo) {
+                defaultJenis = 'Kemoterapi';
             }
 
-            // Aktifkan tombol simpan resep
-            $('#btn-submit-obat').prop('disabled', false);
+            // Cek apakah obat sudah ada di tabel terpilih
+            var existingRow = $('#row-obat-' + kodeBarang);
 
-            // Ubah tampilan status dan tombol verifikasi
-            $('#status-verifikasi')
-                .removeClass('badge-secondary')
-                .addClass('badge-success')
-                .text('Sudah Diverifikasi');
+            if (existingRow.length > 0) {
+                // Jika sudah ada, tambahkan qty (+1)
+                var inputQty = existingRow.find('.input-jumlah-obat');
+                var currentQty = parseInt(inputQty.val()) || 0;
 
-            $(this)
-                .removeClass('btn-warning')
-                .addClass('btn-outline-success')
-                .html('<i class="fas fa-check mr-1"></i> Terverifikasi')
-                .prop('disabled', true); // Nonaktifkan tombol verifikasi agar tidak diklik ulang
+                if (currentQty < maxStok) {
+                    inputQty.val(currentQty + 1);
+                    // Sesuaikan juga qtyobat jika menggunakan input terpisah
+                    existingRow.find('input[name="qtyobat"]').val(currentQty + 1);
+                } else {
+                    alert('Jumlah melebihi stok yang tersedia (' + maxStok + ')');
+                }
+            } else {
+                // Hapus pesan "Belum ada obat" jika ada
+                $('#empty-row').hide();
 
-            // Nonaktifkan checkbox agar tidak bisa diubah setelah diverifikasi (opsional)
-            $('.check-item').prop('disabled', true);
+                // Hitung nomor urut
+                var noUrut = $('#wrapper-obat-terpilih tr').not('#empty-row').length + 1;
+
+                // Generate HTML Baris Baru
+                var htmlRow = `
+            <tr id="row-obat-${kodeBarang}">
+                <td class="text-center nomor-urut">${noUrut}</td>
+                <td>
+                    <span class="fw-bold d-block">${namaBarang}</span>
+                    <small class="text-muted">${kodeBarang}</small>
+                    <input type="hidden" name="kode_barang" value="${kodeBarang}">
+                </td>
+                <td>
+                    <input readonly type="number" name="stok" class="form-control form-control-sm text-center" value="${maxStok}">
+                </td>
+                <td>
+                    <select name="jenis_obat" class="form-control form-control-sm">
+                        <option value="Reguler" ${defaultJenis === 'Reguler' ? 'selected' : ''}>Reguler</option>
+                        <option value="Kronis" ${defaultJenis === 'Kronis' ? 'selected' : ''}>Kronis</option>
+                        <option value="PRB" ${defaultJenis === 'PRB' ? 'selected' : ''}>PRB</option>
+                        <option value="Kemoterapi" ${defaultJenis === 'Kemoterapi' ? 'selected' : ''}>Kemoterapi</option>
+                    </select>
+                </td>
+                <td>
+                    <select readonly name="jenis_resep" class="form-control form-control-sm">
+                        <option value="NonRacikan">(Non-Racik)</option>
+                        <option value="Racikan">Racikan</option>
+                    </select>
+                </td>
+                <td>
+                    <select name="iterasi" class="form-control form-control-sm text-center">
+                        <option value="0">Tidak</option>
+                        <option value="1">Iterasi 1</option>
+                        <option value="2">Iterasi 2</option>
+                    </select>
+                </td>
+                <td hidden>
+                    <input type="number" name="jlh_iterasi" class="form-control form-control-sm text-center" value="0" min="0">
+                </td>
+                <td>
+                    <div class="row">
+                        <input hidden type="number" name="jumlahhari" value="1">
+                        <div class="col-md-12">
+                            <input type="number" name="qtyobat" class="form-control form-control-sm text-center input-jumlah-obat" value="1" min="1" max="${maxStok}" required>
+                        </div>
+                    </div>
+                </td>
+                <td hidden>
+                    <input type="number" name="jumlahobat" class="form-control form-control-sm text-center" value="1">
+                </td>
+                <td>
+                    <input type="number" name="signa1" class="form-control form-control-sm text-center" value="3" min="1" required>
+                </td>
+                <td class="text-center align-middle fw-bold">x</td>
+                <td>
+                    <input type="number" name="signa2" class="form-control form-control-sm text-center" value="1" min="1" required>
+                </td>
+                <td>
+                    <input type="text" name="catatan" class="form-control form-control-sm" placeholder="Contoh: Ssh Makan">
+                </td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-sm btn-outline-danger btn-hapus-obat">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </td>
+            </tr>
+            `;
+
+                $('#wrapper-obat-terpilih').append(htmlRow);
+            }
+
+            updateNomorUrut();
+            checkSubmitButton();
         });
+
+        // ==========================================
+        // 2. EVENT HAPUS OBAT DARI TABEL TERPILIH
+        // ==========================================
+        $('#wrapper-obat-terpilih').on('click', '.btn-hapus-obat', function() {
+            $(this).closest('tr').remove();
+
+            // Tampilkan kembali row kosong jika tidak ada obat tersisa
+            if ($('#wrapper-obat-terpilih tr').not('#empty-row').length === 0) {
+                $('#empty-row').show();
+            }
+
+            updateNomorUrut();
+            checkSubmitButton();
+        });
+        function updateNomorUrut() {
+            $('#wrapper-obat-terpilih tr').not('#empty-row').each(function(index) {
+                $(this).find('.nomor-urut').text(index + 1);
+            });
+        }
+        function checkSubmitButton() {
+            var itemCount = $('#wrapper-obat-terpilih tr').not('#empty-row').length;
+            // Contoh: Buka/tutup tombol simpan berdasarkan jumlah obat
+            $('#btn-simpan-resep').prop('disabled', itemCount === 0);
+        }
     });
 </script>

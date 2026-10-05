@@ -305,7 +305,7 @@
                                     <td style="border: none; padding: 5px; width: 75%;">{{ $cp->diagnosakerja }}</td>
                                     <td
                                         style="border: none; border-left: 1px solid #dee2e6; padding: 5px; width: 25%; text-align: left; font-weight: bold; background-color: #fafafa; color: #555;">
-                                        ICD X : </td>
+                                        ICD X : @foreach($DIAGNOSAKUNJUNGAN as $dd)@if($dd->kategori == 'Utama'){{ $dd->kode_icd10 }} <br> @endif @endforeach</td>
                                 </tr>
                             </table>
                         </td>
@@ -322,7 +322,7 @@
                                         {{ $cp->diagnosabanding ?? '-' }}</td>
                                     <td
                                         style="border: none; border-left: 1px solid #dee2e6; padding: 5px; width: 25%; text-align: left; font-weight: bold; background-color: #fafafa; color: #555;">
-                                        ICD X :</td>
+                                        ICD X : @foreach($DIAGNOSAKUNJUNGAN as $dd)@if($dd->kategori == 'Sekunder'){{ $dd->kode_icd10 }} <br> @endif @endforeach</td>
                                 </tr>
                             </table>
                         </td>
@@ -345,7 +345,7 @@
                                     </td>
                                     <td
                                         style="border: none; border-left: 1px solid #dee2e6; padding: 5px; width: 25%; text-align: left; font-weight: bold; vertical-align: middle; background-color: #fafafa; color: #555;">
-                                        ICD 9 CM : </td>
+                                        ICD 9 CM : @foreach($DIAGNOSATINDAKAN as $dd)@if($dd->kategori == 'Prosedur'){{ $dd->kode_icd9 }} <br> @endif @endforeach </td>
                                 </tr>
                             </table>
                         </td>
@@ -362,7 +362,7 @@
                                     <td style="border: none; padding: 5px; width: 75%; color: #777;">-</td>
                                     <td
                                         style="border: none; border-left: 1px solid #dee2e6; padding: 5px; width: 25%; text-align: left; font-weight: bold; background-color: #fafafa; color: #555;">
-                                        ICD 9 CM :</td>
+                                        ICD 9 CM : @foreach($DIAGNOSATINDAKAN as $dd)@if($dd->kategori == 'Operasi'){{ $dd->kode_icd9 }} <br> @endif @endforeach</td>
                                 </tr>
                             </table>
                         </td>
@@ -425,7 +425,7 @@
                                     </td>
                                     <td
                                         style="border: none; border-left: 1px solid #dee2e6; padding: 5px; width: 25%; text-align: left; font-weight: bold; vertical-align: middle; background-color: #fafafa; color: #555;">
-                                        ICD 9 CM :</td>
+                                        ICD 9 CM : @foreach($DIAGNOSATINDAKAN as $dd)@if($dd->kategori == 'Penunjang'){{ $dd->kode_icd9 }} <br> @endif @endforeach</td>
                                 </tr>
                             </table>
                         </td>
@@ -463,7 +463,7 @@
                                 style="width: 200px; text-align: center; font-size: 11px; float: right; border: none; background: transparent;">
                                 <tr>
                                     <td style="border: none; padding-bottom: 5px;">
-                                        Waled, {{ $today }}<br>
+                                        Waled, {{ $tglperiksa }}<br>
                                         <strong>Dokter Pemeriksa,</strong><br><br>
                                     </td>
                                 </tr>
@@ -648,7 +648,7 @@
                                 style="width: 400px; text-align: center; font-size: 11px; float: right; border: none; background: transparent;">
                                 <tr>
                                     <td style="border: none; padding-bottom: 5px;">
-                                        Waled, {{ $today }}<br>
+                                        Waled, {{ $tglperiksa }}<br>
                                         <strong>Dokter Pemeriksa,</strong><br><br>
                                     </td>
                                 </tr>

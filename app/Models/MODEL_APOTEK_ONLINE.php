@@ -285,6 +285,7 @@ class MODEL_APOTEK_ONLINE extends Model
     }
     public function hapus_resep($dataobat)
     {
+        // dd($dataobat);
         $client = new Client();
         $data = json_encode($dataobat);
         $url = 'https://apijkn.bpjs-kesehatan.go.id/apotek-rest/hapusresep';

@@ -12,7 +12,7 @@
                         <th class="py-3">Poliklinik / Ruangan</th>
                         <th class="py-3">Dokter</th>
                         <th class="py-3">Penjamin</th>
-                        <th class="py-3 text-center" style="width: 180px;">Aksi</th>
+                        <th class="py-3 text-center" style="width: 280px;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y">
@@ -65,16 +65,16 @@
                             <td class="text-center px-3">
                                 <!-- PERBAIKAN: Flexbox container agar tombol sejajar -->
                                 <div class="d-flex justify-content-center align-items-center gap-1">
-                                    <button type="button" class="btn btn-sm btn-primary shadow-sm pilihpasien"
+                                    <button hidden type="button" class="btn btn-sm btn-primary shadow-sm pilihpasien"
                                         data-kodekunjungan="{{ $d->kode_kunjungan }}" data-form="1">
                                         <i class="fas fa-user-md mr-1"></i> Form 1
                                     </button>
                                     <button type="button" class="btn btn-sm btn-outline-primary shadow-sm pilihpasien2"
                                         data-kodekunjungan="{{ $d->kode_kunjungan }}" data-form="2">
-                                        <i class="fas fa-user-md mr-1"></i> Form 2
+                                        <i class="fas fa-user-md mr-1"></i> Input Resep
                                     </button>
                                     <button hidden type="button" class="btn btn-sm btn-outline-primary shadow-sm pilihpasien3"
-                                        data-kodekunjungan="{{ $d->kode_kunjungan }}" data-form="2">
+                                        data-kodekunjungan="{{ $d->kode_kunjungan }}" data-form="3">
                                         <i class="fas fa-user-md mr-1"></i> Form Input
                                     </button>
                                 </div>
@@ -146,6 +146,31 @@
                     form_type: formType
                 },
                 url: '<?= route('ambildetailkunjunganpasiendepo_versi2') ?>',
+                error: function(response) {
+                    alert('error!');
+                    spinner.hide();
+                },
+                success: function(response) {
+                    $('.v_1').attr('hidden', true);
+                    $('.v_2').removeAttr('hidden');
+                    $('.v_detail_pasien').html(response);
+                    spinner.hide();
+                }
+            });
+        });
+        $('#tabelkunjungan').on('click', '.pilihpasien3', function() {
+            var kodekunjungan = $(this).data('kodekunjungan');
+            var formType = $(this).data('form'); // Jika ingin membedakan form 1 & form 2 di backend
+            var spinner = $('#loader');
+            spinner.show();
+            $.ajax({
+                type: 'post',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    kodekunjungan: kodekunjungan,
+                    form_type: formType
+                },
+                url: '<?= route('ambildetailkunjunganpasiendepo_versi3') ?>',
                 error: function(response) {
                     alert('error!');
                     spinner.hide();

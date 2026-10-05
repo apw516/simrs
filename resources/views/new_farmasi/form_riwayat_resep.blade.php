@@ -10,13 +10,7 @@
             <input readonly type="number" name="stok" class="form-control form-control-sm text-center" value="0"
                 min="0">
         </td>
-        <td>
-            <select name="jenis_resep" class="form-control form-control-sm">
-                <option value="NonRacikan">(Non-Racik)</option>
-                <option value="Racikan">Racikan</option>
-            </select>
-        </td>
-        <td hidden >
+        <td hidden>
             <select name="jenis_obat" class="form-control form-control-sm">
                 <option value="Reguler">Reguler</option>
                 <option value="Kronis">Kronis</option>
@@ -24,13 +18,20 @@
                 <option value="Kemoterapi">Kempoterapi</option>
             </select>
         </td>
-        <td hidden >
-            <select name="iterasi" class="form-control form-control-sm text-center">
-                <option value="0">Tidak</option>
-                <option value="1">Ya</option>
+        <td>
+            <select name="jenis_resep" class="form-control form-control-sm">
+                <option value="NonRacikan">(Non-Racik)</option>
+                <option value="Racikan">Racikan</option>
             </select>
         </td>
-        <td hidden >
+        <td hidden>
+            <select name="iterasi" class="form-control form-control-sm text-center">
+                <option value="0">Tidak</option>
+                <option value="1">Iterasi 1</option>
+                <option value="2">Iterasi 2</option>
+            </select>
+        </td>
+        <td hidden>
             <input type="number" name="jlh_iterasi" class="form-control form-control-sm text-center" value="0"
                 min="0">
         </td>
@@ -39,17 +40,18 @@
                 <div hidden class="col-md-6"> <input type="number" name="jumlahhari"
                         class="form-control form-control-sm text-center" value="1" min="1" required></div>
                 <div class="col-md-12"><input type="number" name="qtyobat"
-                        class="form-control form-control-sm text-center" value="{{ $row->jumlah_layanan }}" min="1"
-                        required></div>
+                        class="form-control form-control-sm text-center" value="{{ $row->jumlah_layanan }}"
+                        min="1" required></div>
             </div>
         </td>
         <td hidden>
-            <input hidden type="number" name="jumlahobat" class="form-control form-control-sm text-center input-jumlah-obat"
-                value="1" min="1" required>
+            <input hidden type="number" name="jumlahobat"
+                class="form-control form-control-sm text-center input-jumlah-obat" value="1" min="1"
+                required>
         </td>
         <td>
-            <input type="number" name="signa1" class="form-control form-control-sm text-center" 
-                min="1" required value="0">
+            <input type="number" name="signa1" class="form-control form-control-sm text-center" min="1"
+                required value="0">
         </td>
         <td class="text-center align-middle font-weight-bold">
             <span class="mr-1">x</span>
@@ -59,7 +61,8 @@
                 min="1" required>
         </td>
         <td>
-            <input type="text" name="catatan" class="form-control form-control-sm" placeholder="Contoh: Ssh Makan" value="">
+            <input type="text" name="catatan" class="form-control form-control-sm" placeholder="Contoh: Ssh Makan"
+                value="">
         </td>
         <td class="text-center">
             <button type="button" class="btn btn-sm btn-outline-danger btn-hapus-obat">

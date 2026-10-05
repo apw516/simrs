@@ -15,7 +15,6 @@
                 $fullImageUrl = rtrim($url, '/') . '/' . ltrim($c->gambar, '/');
                 $ext = strtolower(pathinfo($c->gambar, PATHINFO_EXTENSION));
             @endphp
-
             <div class="col-12 mb-3">
                 <div class="card shadow-sm border">
                     <!-- Header Card Nama File & Akses Buka Tab Baru -->

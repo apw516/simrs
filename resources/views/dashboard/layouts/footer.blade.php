@@ -469,44 +469,57 @@
   </div>
   <!-- ./wrapper -->
 
-  <!-- REQUIRED SCRIPTS -->
-  <!-- jQuery -->
-  <script src="{{ asset('public/dist/js/jquery-3.js') }}"></script>
-  <script src="{{ asset('public/dist/js/jquery-ui.min.js') }}"></script>
-  {{-- <script src="{{ asset('public/plugins/jquery/jquery.min.js"></script> --}}
-  <!-- Bootstrap -->
-  <script src="{{ asset('public/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-  <!-- overlayScrollbars -->
-  <script src="{{ asset('public/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
-  <!-- AdminLTE App -->
-  <script src="{{ asset('public/dist/js/adminlte.js') }}"></script>
+  <!-- Masukkan CSS ini di dalam tag <head> -->
+<link rel="stylesheet" href="{{ asset('public/plugins/select2/css/select2.min.css') }}">
+<link rel="stylesheet" href="{{ asset('public/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 
-  <!-- PAGE PLUGINS -->
-  <!-- jQuery Mapael -->
-  <script src="{{ asset('public/plugins/jquery-mousewheel/jquery.mousewheel.js') }}"></script>
-  <script src="{{ asset('public/plugins/raphael/raphael.min.js') }}"></script>
-  <script src="{{ asset('public/plugins/jquery-mapael/jquery.mapael.min.js') }}"></script>
-  <script src="{{ asset('public/plugins/jquery-mapael/maps/usa_states.min.js') }}"></script>
-  <!-- ChartJS -->
-  <script src="{{ asset('public/plugins/chart.js/Chart.min.js') }}"></script>
-  <!-- datatable -->
-  <script src="{{ asset('public/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-  <script src="{{ asset('public/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-  <script src="{{ asset('public/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-  <script src="{{ asset('public/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-  <script src="{{ asset('public/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-  <script src="{{ asset('public/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-  <script src="{{ asset('public/plugins/jszip/jszip.min.js') }}"></script>
-  <script src="{{ asset('public/plugins/pdfmake/pdfmake.min.js') }}"></script>
-  <script src="{{ asset('public/plugins/pdfmake/vfs_fonts.js') }}"></script>
-  <script src="{{ asset('public/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
-  <script src="{{ asset('public/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
-  <script src="{{ asset('public/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
-  <script src="{{ asset('public/dist/js/bootstrap-datepicker.js') }}"></script>
-  <!-- AdminLTE for demo purposes -->
-  <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.10.8/sweetalert2.all.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="{{ asset('public/dist/js/demo.js') }}"></script>
+<!-- ========================================================================================== -->
+
+<!-- REQUIRED SCRIPTS (Di bagian bawah sebelum </body>) -->
+
+<!-- 1. Core jQuery (Gunakan 1 versi saja, sertakan jQuery UI jika diperlukan) -->
+{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+
+<!-- 2. Bootstrap 4 -->
+<script src="{{ asset('public/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+<!-- 3. SELECT2 JS (Wajib dimuat sebelum script halaman/view) -->
+<script src="{{ asset('public/plugins/select2/js/select2.full.min.js') }}"></script>
+<!-- Alternatif jika menggunakan CDN CDN Select2: -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.full.min.js"></script> -->
+
+<!-- 4. OverlayScrollbars & AdminLTE App -->
+<script src="{{ asset('public/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+<script src="{{ asset('public/dist/js/adminlte.js') }}"></script>
+
+<!-- 5. PAGE PLUGINS (Charts, Maps, Datepicker) -->
+<script src="{{ asset('public/plugins/jquery-mousewheel/jquery.mousewheel.js') }}"></script>
+<script src="{{ asset('public/plugins/raphael/raphael.min.js') }}"></script>
+<script src="{{ asset('public/plugins/jquery-mapael/jquery.mapael.min.js') }}"></script>
+<script src="{{ asset('public/plugins/jquery-mapael/maps/usa_states.min.js') }}"></script>
+<script src="{{ asset('public/plugins/chart.js/Chart.min.js') }}"></script>
+<script src="{{ asset('public/dist/js/bootstrap-datepicker.js') }}"></script>
+
+<!-- 6. DataTables Plugins -->
+<script src="{{ asset('public/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('public/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('public/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('public/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('public/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('public/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('public/plugins/jszip/jszip.min.js') }}"></script>
+<script src="{{ asset('public/plugins/pdfmake/pdfmake.min.js') }}"></script>
+<script src="{{ asset('public/plugins/pdfmake/vfs_fonts.js') }}"></script>
+<script src="{{ asset('public/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('public/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+<script src="{{ asset('public/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+
+<!-- 7. SweetAlert2 (Cukup panggil 1 kali dari CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- 8. Demo/Custom Script -->
+<script src="{{ asset('public/dist/js/demo.js') }}"></script>
   <script>
       $(function() {
           $(".datepicker").datepicker({

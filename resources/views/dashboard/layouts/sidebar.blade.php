@@ -597,7 +597,6 @@
                   @endif
                   @if (auth()->user()->nama == 'agyl')
                       <li class="nav-header"> <i class="nav-icon bi bi-person-circle mr-2"></i> ADMIN IT</li>
-
                       <li class="nav-item ">
                           <a href="{{ route('datauser') }}"
                               class="nav-link @if ($sidebar == 'datauser') active @endif">
@@ -610,6 +609,13 @@
                               class="nav-link @if ($sidebar == 'indexbedmonitoring') active @endif">
                               <i class="bi bi-person-lines-fill nav-icon"></i>
                               <p>Bridging Bed</p>
+                          </a>
+                      </li>
+                      <li class="nav-item ">
+                          <a href="{{ route('indexverifikasiberkasrajal') }}"
+                              class="nav-link @if ($sidebar == 'indexverifikasiberkasrajal') active @endif">
+                              <i class="bi bi-person-lines-fill nav-icon"></i>
+                              <p>Verifikasi Berkas Rajal</p>
                           </a>
                       </li>
                   @endif

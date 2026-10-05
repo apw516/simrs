@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SimrsController;
 use App\Http\Controllers\VclaimController;
+use App\Http\Controllers\VerifikasiBerkasRajalController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BillingController;
@@ -948,8 +949,10 @@ Route::post('ambildataklaimfarmasi', [newFarmasiController::class, 'ambildatakla
 Route::post('ambil_data_riwayat_pelayanan_obat', [newFarmasiController::class, 'ambil_data_riwayat_pelayanan_obat'])->name('ambil_data_riwayat_pelayanan_obat');
 Route::post('ambildetailkunjunganpasiendepo', [newFarmasiController::class, 'ambildetailkunjunganpasiendepo'])->name('ambildetailkunjunganpasiendepo');
 Route::post('ambildetailkunjunganpasiendepo_versi2', [newFarmasiController::class, 'ambildetailkunjunganpasiendepo_versi2'])->name('ambildetailkunjunganpasiendepo_versi2');
+Route::post('ambildetailkunjunganpasiendepo_versi3', [newFarmasiController::class, 'ambildetailkunjunganpasiendepo_versi3'])->name('ambildetailkunjunganpasiendepo_versi3');
 Route::post('simpandataresepobatpasien', [newFarmasiController::class, 'simpandataresepobatpasien'])->name('simpandataresepobatpasien');
 Route::post('simpandataresepobatpasien_versi_2', [newFarmasiController::class, 'simpandataresepobatpasien_versi_2'])->name('simpandataresepobatpasien_versi_2');
+Route::post('simpandataresepobatpasien_versi_3', [newFarmasiController::class, 'simpandataresepobatpasien_versi_3'])->name('simpandataresepobatpasien_versi_3');
 Route::post('ambildetaillayanandepo', [newFarmasiController::class, 'ambildetaillayanandepo'])->name('ambildetaillayanandepo');
 Route::get('ambildatastokdepokomponen', [newFarmasiController::class, 'ambildatastokdepokomponen'])->name('ambildatastokdepo');
 Route::post('proseskomponenracik', [newFarmasiController::class, 'proseskomponenracik'])->name('proseskomponenracik');
@@ -981,6 +984,9 @@ Route::get('/indexreffaskes', [newFarmasiController::class, 'indexreffaskes'])->
 Route::post('/carifaskes', [newFarmasiController::class, 'carifaskes'])->name('carifaskes');
 Route::post('/ambilriwayatresepbpjs', [newFarmasiController::class, 'ambilriwayatresepbpjs'])->name('ambilriwayatresepbpjs');
 Route::post('/ambildataresepbridging', [newFarmasiController::class, 'ambildataresepbridging'])->name('ambildataresepbridging');
+Route::post('/ambildetailsep_apotik', [newFarmasiController::class, 'ambildetailsep_apotik'])->name('ambildetailsep_apotik');
+Route::post('/batalsepbpjs', [newFarmasiController::class, 'batalsepbpjs'])->name('batalsepbpjs');
+Route::get('/pencarianobat', [newFarmasiController::class, 'pencarianobat'])->name('pencarian.obat');
 
 
 Route::get('/berkaserm', [RanapController::class, 'indexberkaserm'])
@@ -1006,3 +1012,14 @@ Route::get('/preview-merger-pdf/{kode_kunjungan}', [newFarmasiController::class,
 
 Route::get('/prb/cetak', [VclaimController::class, 'cetakPrb'])->name('prb.cetak');
 Route::get('/cetakcatatanhemodialisa2/{id}', [PdfController::class, 'cetakcatatanhemodialisa2']); //formpasien_bpjs
+
+
+Route::get('/indexverifikasiberkasrajal', [VerifikasiBerkasRajalController::class, 'index'])->name('indexverifikasiberkasrajal');
+Route::get('/getdatakunjunganpasien', [VerifikasiBerkasRajalController::class, 'getDataKunjungan'])->name('kunjungan.get-data');
+Route::get('/getformverifikasi', [VerifikasiBerkasRajalController::class, 'ambilformverifikasi'])->name('kunjungan.ambil-form-verifikasi');
+Route::get('/referensi.icd10', [VerifikasiBerkasRajalController::class, 'referensiicd10'])->name('referensi.icd10');
+Route::get('/referensi.icd9', [VerifikasiBerkasRajalController::class, 'referensiicd9'])->name('referensi.icd9');
+Route::post('/diagnosa-tindakan.store', [VerifikasiBerkasRajalController::class, 'savediagnosatindakanstore'])->name('diagnosa-tindakan.store');
+Route::delete('/destroy-diagnosa/{id}', [VerifikasiBerkasRajalController::class, 'destroyDiagnosa'])->name('diagnosa.destroy');
+Route::delete('/tindakan-destroy/{id}', [VerifikasiBerkasRajalController::class, 'destroyTindakan'])->name('tindakan.destroy');
+Route::post('/verifikasi.simpan', [VerifikasiBerkasRajalController::class, 'verifikasisimpan'])->name('verifikasi.simpan');

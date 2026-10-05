@@ -10,12 +10,6 @@
             <input readonly type="number" name="stok" class="form-control form-control-sm text-center" value="0"
                 min="0">
         </td>
-        <td>
-            <select readonly name="jenis_resep" class="form-control form-control-sm">
-                <option value="NonRacikan">(Non-Racik)</option>
-                <option value="Racikan" selected>Racikan</option>
-            </select>
-        </td>
         <td hidden >
             <select name="jenis_obat" class="form-control form-control-sm">
                 <option value="Reguler">Reguler</option>
@@ -24,10 +18,17 @@
                 <option value="Kemoterapi">Kempoterapi</option>
             </select>
         </td>
+        <td>
+            <select readonly name="jenis_resep" class="form-control form-control-sm">
+                <option value="NonRacikan">(Non-Racik)</option>
+                <option value="Racikan" selected>Racikan</option>
+            </select>
+        </td>
         <td hidden >
             <select name="iterasi" class="form-control form-control-sm text-center">
                 <option value="0">Tidak</option>
-                <option value="1">Ya</option>
+                <option value="1">Iterasi 1</option>
+                <option value="2">Iterasi 2</option>
             </select>
         </td>
         <td hidden >

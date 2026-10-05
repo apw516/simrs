@@ -563,7 +563,8 @@ class Pdf2Controller extends Controller
             'tanggal_verifikasi' => $assesmen[0]->tgl_pemeriksaan,
             'jabatan' => "Dokter",
         ];
-
+        $DIAGNOSAKUNJUNGAN = DB::select('select * from ts_kunjungan_diagnosa_utama where kode_kunjungan = ?',[$kodekunjungan]);
+        $DIAGNOSATINDAKAN = DB::select('select * from ts_kunjungan_diagnosa_tindakn where kode_kunjungan = ?',[$kodekunjungan]);
         $v = new ModelBSRE();
         $DD = $v->sendpdftosiramah($datasend);
         $url1 = "https://siramah.rsudwaled.com/filetandatangan?id=" . $nama . $kodekunjungan;
@@ -583,7 +584,9 @@ class Pdf2Controller extends Controller
             'mt_paramedis',
             'today',
             'cetakanke',
-            'qrttd'
+            'qrttd',
+            'DIAGNOSAKUNJUNGAN',
+            'DIAGNOSATINDAKAN'
         ]));
         $pdf->set_option("isPhpEnabled", true);
         $pdf->setPaper('Letter', 'portrait');
