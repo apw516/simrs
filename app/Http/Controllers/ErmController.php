@@ -80,10 +80,40 @@ class ErmController extends Controller
         
         $kode_kunjungan = $request->kodekunjungan;        
         $no_rm = $request->nomorrm;
+        $riwayat_diagnosa = DB::select('select * from di_pasien_diagnosa where no_rm = ?', [$no_rm]);
+
+        // 1. Ambil data 3 bulan terakhir berdasarkan no_rm
+       $tgl_tiga_bulan_lalu = Carbon::now()->subMonths(3)->format('Y-m-d');
+
+        $riwayat2 = DB::table('di_pasien_diagnosa')
+            ->where('no_rm', $no_rm)
+            ->where('input_date', '>=', $tgl_tiga_bulan_lalu) // Ganti 'input_date' jika nama kolom tanggal berbeda
+            // Validasi diag_sekunder_1
+            ->whereNotNull('diag_sekunder_01')
+            ->where('diag_sekunder_01', '!=', '')
+            // Validasi diag_sekunder_2
+            ->whereNotNull('diag_sekunder_02')
+            ->where('diag_sekunder_02', '!=', '')
+            // Validasi diag_sekunder_3
+            ->whereNotNull('diag_sekunder_03')
+            ->where('diag_sekunder_03', '!=', '')
+            ->where('kode_unit','<','2000')
+            ->get();
+
+            // $riwayat2 = DB::table('di_pasien_diagnosa')
+            // ->where('no_rm', $no_rm)
+            // ->where('input_date', '>=', $tgl_tiga_bulan_lalu)
+            // ->where('kode_unit', '<', '2000')
+            // ->where('diag_sekunder_01', '!=', '')
+            // ->where('diag_sekunder_02', '!=', '')
+            // ->where('diag_sekunder_03', '!=', '')
+            // ->groupBy('kode_paramedis')
+            // ->get();
+        
         $cek = model_prmj::where('kode_kunjungan', $kode_kunjungan)->get()->first();
         $riwayat = model_prmj::where('no_rm', $no_rm )->get();
         return view('ermdokter.form_prmj',compact([
-            'kode_kunjungan','no_rm','cek','riwayat'
+            'kode_kunjungan','no_rm','cek','riwayat','riwayat2'
         ]));
     }
     public function simpanpemeriksaanprmjedit(Request $request)

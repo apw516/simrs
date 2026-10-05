@@ -411,6 +411,9 @@
                 kodekunjungan
             },
             url: '<?= route('form_prmj') ?>',
+            error: function(response) {
+                spinner.hide()
+            },
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()
