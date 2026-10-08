@@ -8,9 +8,8 @@
                 <div class="col-md-3 mb-2">
                     <select class="form-control jenis-file" name="jenis_file[]">
                         <option value="" disabled selected>-- Pilih Jenis Berkas --</option>
-                        <option value="lab_luar">Berkas Lab Luar</option>
-                        <option value="lab_luar">Berkas Lab Luar</option>
-                        <option value="rad_luar">Rad Luar</option>
+                        <option value="lab_luar">Berkas Laboratorium dari Luar</option>
+                        <option value="rad_luar">Berkas Radiologi dari Luar</option>
                         <option value="echo_jantung">Echo Jantung</option>
                         <option value="ekg">EKG</option>
                         <option value="endoskopi">Endoskopi</option>
