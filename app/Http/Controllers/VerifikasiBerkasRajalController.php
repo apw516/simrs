@@ -20,9 +20,24 @@ class VerifikasiBerkasRajalController extends UpdateERMcontroller
         $title = 'SIMRS - VERIFIKASI BERKAS PASIEN RAWAT JALAN';
         $sidebar = 'indexverifikasiberkasrajal';
         $sidebar_m = '1.1';
-        $now = $this->get_date();
+        $now = date('Y-m-d', strtotime('-1 day', strtotime($this->get_date())));
         $unit = db::select('select * from mt_unit where group_unit = ?', ['J']);
         return view('Casemix.index', compact([
+            'title',
+            'sidebar',
+            'sidebar_m',
+            'now',
+            'unit'
+        ]));
+    }
+    public function indexverifikasiberkasirajaladmincasemix()
+    {
+        $title = 'SIMRS - VERIFIKASI BERKAS PASIEN RAWAT JALAN';
+        $sidebar = 'indexverifikasiberkasirajaladmincasemix';
+        $sidebar_m = '1.1';
+        $now = date('Y-m-d', strtotime('-1 day', strtotime($this->get_date())));
+        $unit = db::select('select * from mt_unit where group_unit = ?', ['J']);
+        return view('Casemix.indexberkas', compact([
             'title',
             'sidebar',
             'sidebar_m',
@@ -41,15 +56,50 @@ class VerifikasiBerkasRajalController extends UpdateERMcontroller
 
         $query = ts_kunjungan::select(
             'ts_kunjungan.*',
-            DB::raw('fc_nama_unit1(kode_unit) as nama_unit,fc_NAMA_PARAMEDIS1(kode_paramedis) as nama_dokter,fc_nama_px(no_rm) as nama_pasien')
+            'ts_verifikasi_berkas.catatan_verifikasi_awal',
+            DB::raw('COALESCE(ts_verifikasi_berkas.status_verifikasi, 0) as status_verifikasi'),
+            DB::raw('fc_nama_unit1(ts_kunjungan.kode_unit) as nama_unit'),
+            DB::raw('fc_NAMA_PARAMEDIS1(ts_kunjungan.kode_paramedis) as nama_dokter'),
+            DB::raw('fc_nama_px(ts_kunjungan.no_rm) as nama_pasien')
         )
-            ->whereBetween('tgl_masuk', [$awal, $akhir])
-            ->where('status_kunjungan', '!=', '8');
+            ->leftJoin('ts_verifikasi_berkas', 'ts_kunjungan.kode_kunjungan', '=', 'ts_verifikasi_berkas.kode_kunjungan')
+            ->whereBetween('ts_kunjungan.tgl_masuk', [$awal, $akhir])
+            ->where('ts_kunjungan.status_kunjungan', '!=', '8');
+
         if ($unit != '1') {
-            $query->where('kode_unit', $unit);
+            $query->where('ts_kunjungan.kode_unit', $unit);
         }
+
         $data = $query->get();
         return view('Casemix.tabel_data_kunjungan', compact('data'));
+    }
+    public function getDataKunjungan2(Request $request)
+    {
+        $tanggalAwal = $request->tanggalawal;
+        $tanggalAkhir = $request->tanggalakhir;
+        $jenisKunjungan = $request->jeniskunjungan;
+        $unit = $request->unit;
+        $awal  = Carbon::parse($tanggalAwal)->startOfDay();
+        $akhir = Carbon::parse($tanggalAkhir)->endOfDay();
+
+        $query = ts_kunjungan::select(
+            'ts_kunjungan.*',
+            'ts_verifikasi_berkas.catatan_verifikasi_awal',
+            DB::raw('COALESCE(ts_verifikasi_berkas.status_verifikasi, 0) as status_verifikasi'),
+            DB::raw('fc_nama_unit1(ts_kunjungan.kode_unit) as nama_unit'),
+            DB::raw('fc_NAMA_PARAMEDIS1(ts_kunjungan.kode_paramedis) as nama_dokter'),
+            DB::raw('fc_nama_px(ts_kunjungan.no_rm) as nama_pasien')
+        )
+            ->leftJoin('ts_verifikasi_berkas', 'ts_kunjungan.kode_kunjungan', '=', 'ts_verifikasi_berkas.kode_kunjungan')
+            ->whereBetween('ts_kunjungan.tgl_masuk', [$awal, $akhir])
+            ->where('ts_kunjungan.status_kunjungan', '!=', '8');
+
+        if ($unit != '1') {
+            $query->where('ts_kunjungan.kode_unit', $unit);
+        }
+
+        $data = $query->get();
+        return view('Casemix.tabel_data_kunjungan_admin', compact('data'));
     }
     public function ambilformverifikasi(Request $request)
     {
@@ -120,7 +170,9 @@ class VerifikasiBerkasRajalController extends UpdateERMcontroller
             $icd9 = db::select('select * from mt_icd9');
             $diagnosakunjungan = db::select('select * from ts_kunjungan_diagnosa_utama where kode_kunjungan = ?', [$kode_kunjungan]);
             $diagnosatindakan = db::select('select * from ts_kunjungan_diagnosa_tindakn where kode_kunjungan = ?', [$kode_kunjungan]);
-            return view('Casemix.form_verifikasi_berkas', compact([
+            $get_cek_ver = db::table('ts_verifikasi_berkas')->where('kode_kunjungan', $kode_kunjungan)->first();
+
+            return view('Casemix.form_coder', compact([
                 'kunjungan',
                 'layananheader',
                 'ts_kunjungan',
@@ -139,7 +191,110 @@ class VerifikasiBerkasRajalController extends UpdateERMcontroller
                 'icd10',
                 'icd9',
                 'diagnosakunjungan',
-                'diagnosatindakan'
+                'diagnosatindakan',
+                'get_cek_ver'
+            ]));
+        } catch (\Exception $e) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Terjadi kesalahan server.',
+                'error'   => $e->getMessage()
+            ], 500);
+        }
+    }
+    public function ambilformberkas(Request $request)
+    {
+        $data = ts_kunjungan::select(
+            'ts_kunjungan.*',
+            DB::raw('fc_nama_unit1(kode_unit) as nama_unit,fc_NAMA_PARAMEDIS1(kode_paramedis) as nama_dokter,fc_nama_px(no_rm) as nama_pasien')
+        )
+            ->where('kode_kunjungan', $request->kode_kunjungan);
+        $kunjungan = $data->first();
+        $kodekunjungan = $request->kode_kunjungan;
+        $kode_kunjungan = $request->kode_kunjungan;
+        // dd($kunjungan);
+        try {
+            // Ambil data layanan header
+            $layananheader = DB::select('SELECT * FROM ts_layanan_header WHERE kode_kunjungan = ? and kode_unit = ?', [$kodekunjungan, '4008']);
+            $layananheaderPA = DB::select('SELECT * FROM ts_layanan_header WHERE kode_kunjungan = ? and kode_unit = ?', [$kodekunjungan, '3020']);
+            $idresep = '';
+            $detail_obat = '';
+            $urlCetakNota = '';
+            if ($layananheader) {
+                $idresep = $layananheader[0]->id;
+                $detail_obat = DB::select('SELECT * FROM ts_layanan_detail WHERE row_id_header = ?', [$layananheader[0]->id]);
+                $urlCetakNota = url('cetaknotafarmasi/' . $layananheader[0]->id);
+            }
+
+            $gambarscan = DB::select('SELECT * FROM erm_upload_gambar WHERE kodekunjungan = ?', [$kode_kunjungan]);
+            $ts_kunjungan = DB::select('SELECT * FROM ts_kunjungan WHERE kode_kunjungan = ?', [$kode_kunjungan]);
+            $ref_kunjungan = $ts_kunjungan[0]->ref_kunjungan;
+            $no_sep = !empty($ts_kunjungan) ? $ts_kunjungan[0]->no_sep : null;
+            $rm = $ts_kunjungan[0]->no_rm;
+            // Ambil detail rincian obat/layanan (opsional, disesuaikan tabel detail Anda)
+            // URL Cetak SEP untuk dipanggil di frontend/blade
+            $urlCetakSEP = $no_sep ? "http://192.168.2.30/siramah/cetakSEPAntrian?noSep={$no_sep}" : null;
+            $urlLembarKonsul = url('cetaklembarkonsul/' . $kode_kunjungan);
+            $urlExpertisiPoli = url('cetakhasilexpertisipoli/' . $kode_kunjungan);
+            $headerhd = db::select('select * from ts_header_catatan_hemodialisis where kode_kunjungan = ?', [$kode_kunjungan]);
+            if (count($headerhd) > 0) {
+                // dd($headerhd);
+                $urlCetakHD = url('cetakcatatanhemodialisa/' . $headerhd[0]->id);
+            } else {
+                $urlCetakHD = '';
+            }
+            $hasil_lab = db::select("CALL LIHAT_HASIL_LAB_XXX(?)", [$rm]);
+            $hasil_lab_spesial = db::select("CALL LIHAT_HASIL_LAB_SPESIAL(?)", [$rm]);
+            $semua_hasil_lab = array_merge($hasil_lab, $hasil_lab_spesial);
+            $lab_terpilih = array_values(array_filter($semua_hasil_lab, function ($item) use ($kode_kunjungan) {
+                return isset($item->kode_kunjungan) && $item->kode_kunjungan == $kode_kunjungan;
+            }));
+            // Query Radiologi
+            $rad_terpilih = DB::connection('mysql6')->select('SELECT * FROM order_table WHERE KODE_KUNJUNGAN = ?', [$kode_kunjungan]);
+            $LINK_RADIOLOGI = [];
+            foreach ($rad_terpilih as $rad) {
+                if (!empty($rad->ACCESSIONNUMBER)) {
+                    $LINK_RADIOLOGI[] = "http://196.196.196.251/SIRAMAH/cetakexp/" . trim($rad->ACCESSIONNUMBER);
+                }
+            }
+            //resumerajal
+            $getresume_rajal = db::select('select * from log_ttd_elektronik where kode_kunjungan = ? and jenis_dokumen = ?', [$kode_kunjungan, 'Resume-medis22']);
+            if ($getresume_rajal) {
+                $urlCetakResume1 = $getresume_rajal[0]->file;
+                $urlCetakResume =  response($urlCetakResume1)
+                    ->header('Content-Security-Policy', "frame-ancestors 'self' http://192.168.2.14")
+                    ->header('Content-Type', 'application/pdf');
+            } else {
+                $urlCetakResume = '';
+            }
+            $icd10 = db::select('select * from mt_icd10');
+            $icd9 = db::select('select * from mt_icd9');
+            $diagnosakunjungan = db::select('select * from ts_kunjungan_diagnosa_utama where kode_kunjungan = ?', [$kode_kunjungan]);
+            $diagnosatindakan = db::select('select * from ts_kunjungan_diagnosa_tindakn where kode_kunjungan = ?', [$kode_kunjungan]);
+
+            $get_cek_ver = db::table('ts_verifikasi_berkas')->where('kode_kunjungan', $kode_kunjungan)->first();
+            return view('Casemix.list_berkas_klaim', compact([
+                'kunjungan',
+                'layananheader',
+                'ts_kunjungan',
+                'detail_obat',
+                'urlCetakSEP',
+                'urlCetakNota',
+                'lab_terpilih',
+                'LINK_RADIOLOGI',
+                'idresep',
+                'urlCetakResume',
+                'urlLembarKonsul',
+                'urlExpertisiPoli',
+                'urlCetakHD',
+                'gambarscan',
+                'layananheaderPA',
+                'icd10',
+                'icd9',
+                'diagnosakunjungan',
+                'diagnosatindakan',
+                'ref_kunjungan',
+                'get_cek_ver'
             ]));
         } catch (\Exception $e) {
             return response()->json([
@@ -164,7 +319,6 @@ class VerifikasiBerkasRajalController extends UpdateERMcontroller
 
         return response()->json($data);
     }
-
     public function referensiicd9(Request $request)
     {
         $search = $request->get('q');
@@ -352,18 +506,18 @@ class VerifikasiBerkasRajalController extends UpdateERMcontroller
                 $httpClient = Http::withoutVerifying()
                     ->timeout(30)
                     ->withCookies($cookies, parse_url('http://localhost/simrs/cetakresumedmedisttelokal/22776317', PHP_URL_HOST) ?? '');
-                $response = $httpClient->get('http://localhost/simrs/cetakresumedmedisttelokal/22776317'    );
+                $response = $httpClient->get('http://localhost/simrs/cetakresumedmedisttelokal/22776317');
                 if ($response->successful()) {
                     $body = $response->body();
                     // Cek apakah konten benar-benar berkas PDF (header %PDF- berada di awal file)
                     if (strlen($body) > 100 && strpos(substr($body, 0, 1024), '%PDF-') !== false) {
                         $tempPath = storage_path('app/temp_merger_' . uniqid() . '_' . $index . '.pdf');
                         file_put_contents($tempPath, $body);
-                        dd($tempPath);  
+                        dd($tempPath);
                         $merger->addPDF($tempPath, 'all');
                         $tempFiles[] = $tempPath;
                     } else {
-                       dd($url);
+                        dd($url);
                         // Jika bukan PDF (misal mengembalikan halaman HTML login / 404 custom)
                         Log::warning("URL tidak mengembalikan berkas PDF valid (Kemungkinan HTML/Login): {$url} | Awal Respon: " . substr(strip_tags($body), 0, 150));
                     }
@@ -409,5 +563,32 @@ class VerifikasiBerkasRajalController extends UpdateERMcontroller
             'message' => 'Verifikasi dan merger berkas berhasil!',
             'pdf_url' => asset('storage/berkas_merger/' . $fileName)
         ]);
+    }
+    public function simpan(Request $request)
+    {
+        $request->validate([
+            'kode_kunjungan'    => 'required',
+            'status_verifikasi' => 'required',
+        ]);
+
+        // Mengambil array berkas beserta URL-nya (hanya yang dicentang)
+        $berkasChecked = $request->input('berkas_checked', []);
+        if ($request->status_verifikasi == 2) {
+            $pesan = 'Berkas Lengkap';
+        } else {
+            $pesan = $request->catatan;
+        }
+        DB::table('ts_verifikasi_berkas')->updateOrInsert(
+            ['kode_kunjungan' => $request->kode_kunjungan],
+            [
+                'status_verifikasi' => $request->status_verifikasi,
+                'catatan_verifikasi_awal' => $pesan,
+                'detail_berkas'     => json_encode($berkasChecked), // Disimpan sebagai JSON jika perlu
+                'pic' => auth()->user()->id,
+                'tgl_verif' => $this->get_now()
+            ]
+        );
+
+        return response()->json(['status' => 'success', 'message' => 'Data berhasil disimpan']);
     }
 }

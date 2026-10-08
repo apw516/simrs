@@ -85,10 +85,14 @@ Route::post('/lihathasil_scanrm', [ErmController::class, 'lihathasil_scanrm'])
     ->name('lihathasil_scanrm'); //sidebar
 Route::post('/vberkasluar', [ErmController::class, 'vberkasluar'])
     ->name('vberkasluar'); //sidebar
+Route::post('/vberkasluar2', [UpdateERMcontroller::class, 'showfile2_all'])
+    ->name('vberkasluar2'); //sidebar
 Route::post('ambilsaran', [ErmController::class, 'ambilsaran'])
     ->name('ambilsaran'); //sidebar
 Route::post('showfile', [ErmController::class, 'showfile'])
     ->name('showfile'); //sidebar
+Route::post('showfile2', [UpdateERMcontroller::class, 'showfile2'])
+    ->name('showfile2'); //sidebar
 Route::get('kunjungan_pasien', [ErmController::class, 'kunjungan_pasien'])
     ->name('kunjungan_pasien'); //sidebar
 Route::get('berkas_erm', [ErmController::class, 'berkas_erm'])
@@ -563,6 +567,9 @@ Route::group(['middleware' => ['auth', 'hak_akses1:4']], function () {
         ->name('generatekode_igd'); //sidebar
     Route::post('/formupload', [ErmController::class, 'formupload'])
         ->name('formupload'); //sidebar
+    Route::post('/formupload2', [ErmController::class, 'formupload2'])
+        ->name('formupload2'); //sidebar
+    Route::post('/upload-gambarnya', [UpdateERMcontroller::class, 'uploadGambar'])->name('uploadgambarnyabaru');
     Route::post('/formsumarilis', [ErmController::class, 'formsumarilis'])
         ->name('formsumarilis'); //sidebar
     Route::post('/form_monitoring_darah', [ErmController::class, 'form_monitoring_darah'])
@@ -1014,12 +1021,15 @@ Route::get('/prb/cetak', [VclaimController::class, 'cetakPrb'])->name('prb.cetak
 Route::get('/cetakcatatanhemodialisa2/{id}', [PdfController::class, 'cetakcatatanhemodialisa2']); //formpasien_bpjs
 
 
+Route::get('/indexverifikasiberkasirajaladmincasemix', [VerifikasiBerkasRajalController::class, 'indexverifikasiberkasirajaladmincasemix'])->name('indexverifikasiberkasirajaladmincasemix');
 Route::get('/indexverifikasiberkasrajal', [VerifikasiBerkasRajalController::class, 'index'])->name('indexverifikasiberkasrajal');
 Route::get('/getdatakunjunganpasien', [VerifikasiBerkasRajalController::class, 'getDataKunjungan'])->name('kunjungan.get-data');
+Route::get('/getdatakunjunganpasien2', [VerifikasiBerkasRajalController::class, 'getDataKunjungan2'])->name('kunjungan.get-data2');
 Route::get('/getformverifikasi', [VerifikasiBerkasRajalController::class, 'ambilformverifikasi'])->name('kunjungan.ambil-form-verifikasi');
+Route::get('/getformberkas', [VerifikasiBerkasRajalController::class, 'ambilformberkas'])->name('kunjungan.ambil-berkas-verifikasi');
 Route::get('/referensi.icd10', [VerifikasiBerkasRajalController::class, 'referensiicd10'])->name('referensi.icd10');
 Route::get('/referensi.icd9', [VerifikasiBerkasRajalController::class, 'referensiicd9'])->name('referensi.icd9');
 Route::post('/diagnosa-tindakan.store', [VerifikasiBerkasRajalController::class, 'savediagnosatindakanstore'])->name('diagnosa-tindakan.store');
 Route::delete('/destroy-diagnosa/{id}', [VerifikasiBerkasRajalController::class, 'destroyDiagnosa'])->name('diagnosa.destroy');
 Route::delete('/tindakan-destroy/{id}', [VerifikasiBerkasRajalController::class, 'destroyTindakan'])->name('tindakan.destroy');
-Route::post('/verifikasi.simpan', [VerifikasiBerkasRajalController::class, 'verifikasisimpan'])->name('verifikasi.simpan');
+Route::post('/verifikasi.simpan', [VerifikasiBerkasRajalController::class, 'simpan'])->name('verifikasi.simpan');

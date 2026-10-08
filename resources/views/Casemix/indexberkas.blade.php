@@ -48,7 +48,9 @@
                                     <label for="exampleInputPassword1">Pilih Unit</label>
                                     <select class="form-control" id="unit">
                                         @foreach ($unit as $u)
+                                            @if($u->kode_unit < 2000 || $u->kode_unit == '3007')
                                             <option @if($u->kode_unit == 1006) selected @endif value="{{ $u->kode_unit }}">{{ $u->nama_unit }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
@@ -68,6 +70,8 @@
             </div>
         </div>
         <div hidden class="v_2">
+
+            </div>
         </div>
     </section>
     <script>
@@ -93,7 +97,7 @@
     
             // Kirim permintaan AJAX
             $.ajax({
-                url: "{{ route('kunjungan.get-data') }}", // Ganti dengan nama route atau URL controller Anda
+                url: "{{ route('kunjungan.get-data2') }}", // Ganti dengan nama route atau URL controller Anda
                 type: "GET",
                 data: {
                     tanggalawal: tanggalawal,

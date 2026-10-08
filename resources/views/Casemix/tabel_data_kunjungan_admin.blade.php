@@ -1,5 +1,3 @@
-
-
 <div class="card mt-4">
     <div class="card-header">Data Kunjungan Pasien</div>
     <div class="card-body">
@@ -60,11 +58,12 @@
                                     Terverifikasi</span>
                             @endif
                         </td>
+
                         <!-- Aksis / Tombol -->
                         <td class="text-center">
                             <button class="btn btn-sm btn-primary prosespasien shadow-sm"
                                 kode="{{ $d->kode_kunjungan }}" data-toggle="tooltip" title="Proses Verifikasi">
-                                <i class="bi bi-shield-check mr-1"></i> Get Coder
+                                <i class="bi bi-shield-check mr-1"></i> Verifikasi
                             </button>
                         </td>
                     </tr>
@@ -94,7 +93,7 @@
                 _token: "{{ csrf_token() }}",
                 kode_kunjungan
             },
-            url: '<?= route('kunjungan.ambil-form-verifikasi') ?>',
+            url: '<?= route('kunjungan.ambil-berkas-verifikasi') ?>',
             error: function(response) {
                 spinner.hide();
 

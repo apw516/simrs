@@ -1700,6 +1700,29 @@
                     </div>
                 </div>
             </div>
+            <div class="accordion" id="accordionExample">
+                <div class="card">
+                    <div class="card-header" style="background-color: rgba(255, 128, 0, 0.745)" id="headingOne">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left text-lg text-bold text-dark"
+                                type="button" data-toggle="collapse" data-target="#collapseOneberkas"
+                                aria-expanded="true" aria-controls="collapseOneberkas">
+                                <i class="bi bi-plus-lg text-bold mr-3"></i> Silahkan Upload Berkas dari luar atau
+                                berkas
+                                penunjang lain ( Jika ada )
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseOneberkas" class="collapse show" aria-labelledby="headingOne"
+                        data-parent="#accordionExample">
+                        <div class="card-body">
+                            <div class="v_f_u">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <button type="button" class="btn btn-danger float-right ml-2"
                 onclick="ambildatapasien()">Batal</button>
             <button type="button" class="btn btn-success float-right" onclick="simpanhasil()">Simpan</button>
@@ -1715,6 +1738,10 @@
             todayHighlight: true,
         }).datepicker('update', new Date());
     });
+    $(document).ready(function() {
+
+        formupload2()
+    })
 
     function simpanhasil() {
         spinner = $('#loader')

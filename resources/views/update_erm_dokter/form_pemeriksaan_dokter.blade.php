@@ -2007,14 +2007,14 @@
     function showmodalscanberkaslain() {
         spinner = $('#loader')
         spinner.show();
-        nomorrm = $(this).attr('nomorrm')
+        rm = $(this).attr('nomorrm')
         $.ajax({
             type: 'post',
             data: {
                 _token: "{{ csrf_token() }}",
-                nomorrm
+                rm
             },
-            url: '<?= route('lihatberkaslain') ?>',
+            url: '<?= route('vberkasluar2') ?>',
             error: function(response) {
                 spinner.hide()
             },

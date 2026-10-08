@@ -612,10 +612,17 @@
                           </a>
                       </li>
                       <li class="nav-item ">
+                          <a href="{{ route('indexverifikasiberkasirajaladmincasemix') }}"
+                              class="nav-link @if ($sidebar == 'indexverifikasiberkasirajaladmincasemix') active @endif">
+                              <i class="bi bi-person-lines-fill nav-icon"></i>
+                              <p>Verifikasi Berkas Rajal</p>
+                          </a>
+                      </li>
+                      <li class="nav-item ">
                           <a href="{{ route('indexverifikasiberkasrajal') }}"
                               class="nav-link @if ($sidebar == 'indexverifikasiberkasrajal') active @endif">
                               <i class="bi bi-person-lines-fill nav-icon"></i>
-                              <p>Verifikasi Berkas Rajal</p>
+                              <p>Coder Berkas Rawat Jalan</p>
                           </a>
                       </li>
                   @endif

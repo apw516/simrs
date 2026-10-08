@@ -137,7 +137,7 @@
             <!-- /.card-body -->
         </div>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-9">       
         <div class="slide3">
 
         </div>
@@ -150,6 +150,7 @@
         rm = $('#nomorrm').val()
         unit = $('#unitlogin').val()
         formcatatanmedis(rm)
+        formupload2()
     })
 
     function resume2() {
@@ -287,6 +288,7 @@
             }
         });
     }
+
     function formpemeriksaan() {
         spinner = $('#loader')
         spinner.show();
@@ -330,6 +332,7 @@
             }
         });
     }
+
     function formpemeriksaan_fisio() {
         spinner = $('#loader')
         spinner.show();
@@ -390,6 +393,26 @@
         });
     }
 
+    function formupload2() {
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('formupload2') ?>',
+            success: function(response) {
+                $('.v_f_u').html(response);
+                spinner.hide()
+            }
+        });
+    }
+
     function formupload() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -402,7 +425,7 @@
                 nomorrm,
                 kodekunjungan
             },
-            url: '<?= route('formupload') ?>',
+            url: '<?= route('formupload2') ?>',
             success: function(response) {
                 $('.slide3').html(response);
                 spinner.hide()

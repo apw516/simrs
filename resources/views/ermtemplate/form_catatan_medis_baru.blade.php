@@ -1998,7 +1998,7 @@
                 _token: "{{ csrf_token() }}",
                 rm
             },
-            url: '<?= route('vberkasluar') ?>',
+            url: '<?= route('vberkasluar2') ?>',
             error: function(data) {
                 spinner.hide();
                 alert('error')

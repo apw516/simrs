@@ -80,7 +80,7 @@ class UpdateERMcontroller extends Controller
                 $status_cek_rujukan = 1;
                 $alertClass = 'alert-success'; // Hijau aman karena pasca rawat inap
                 $alertIcon = 'fas fa-check-circle';
-                $borderClass = 'border-left: 6px solid #28a745;';
+                $borderClass = 'border-left: 6px solid #28a745/simrs;';
                 $pesan_rujukan = "Pasien merupakan pasien pasca rawat inap (Faskes 2 Intern).";
             } else {
                 $jenisrujukan = 'FASKES 1';
@@ -103,7 +103,7 @@ class UpdateERMcontroller extends Controller
                         if ($selisih >= 60) {
                             $alertClass = 'alert-danger';
                             $alertIcon = 'fas fa-times-circle';
-                            $borderClass = 'border-left: 6px solid #dc3545;';
+                            $borderClass = 'border-left: 6px solid #dc3545/simrs;';
                             $pesan_rujukan = "Masa berlaku rujukan Kritis! Sudah berjalan <strong>{$selisih} Hari</strong> (Sisa waktu {$sisa_hari} hari lagi). <br>
                             ⚠️ <strong>REKOMENDASI PROGRAM BPJS:</strong> Pasien wajib dievaluasi! Jika kondisi klinis sudah STABIL, segera daftarkan sebagai peserta <strong>PRB (Program Rujuk Balik)</strong> ke Faskes 1. Jika BELUM LAYAK PRB, berikan alasan medis yang jelas pada berkas kontrol (misal: Dosis obat belum stabil / Butuh observasi spesialistik berkelanjutan).";
                         } else {
@@ -1693,7 +1693,7 @@ class UpdateERMcontroller extends Controller
     {
         $rm = $request->nomorrm;
         $cek = DB::select('select * from erm_upload_gambar where no_rm = ? order by id DESC', [$rm]);
-        $url = "http://192.168.2.45/files/";
+        $url = "http://192.168.2.45/simrs/files/";
         return view('update_erm_dokter.scan_berkas_luar', compact([
             'cek',
             'url'
@@ -1703,7 +1703,7 @@ class UpdateERMcontroller extends Controller
     {
         $rm = $request->nomorrm;
         $cek = DB::select('select * from erm_upload_gambar where no_rm = ? order by id DESC', [$rm]);
-        $url = "http://192.168.2.45/files/";
+        $url = "http://192.168.2.45/simrs/files/";
         return view('update_erm_dokter.scan_berkas_luar', compact([
             'cek',
             'url'
@@ -1787,5 +1787,292 @@ class UpdateERMcontroller extends Controller
             'data'    => '',
             // 'html' => $html // Opsional jika update tabel tanpa reload
         ], 200);
+    }
+    public function uploadGambar(Request $request)
+    {
+        $request->validate([
+            'kodekunjungan' => 'required',
+            'nomorrm'       => 'required',
+            'upload_data'   => 'required|array',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $uploadedFiles = [];
+            $uploadData = $request->input('upload_data', []);
+
+            // Ambil array file dari request
+            $files = $request->file('upload_data', []);
+
+            foreach ($uploadData as $index => $item) {
+                // Cek apakah file ada dan valid pada index ini
+                if (isset($files[$index]['file']) && $files[$index]['file']->isValid()) {
+                    $file = $files[$index]['file'];
+                    $jenis = $item['jenis'];
+                    $nama = $item['nama'];
+
+                    // Buat nama file unik
+                    $extension = $file->getClientOriginalExtension();
+                    $fileName = $request->nomorrm . '_' . time() . '_' . $index . '.' . $extension;
+
+                    // Simpan file ke storage/app/public/berkas_pasien
+                    // $path = $file->storeAs('public/berkas_pasien', $fileName);
+                    $destinationPath = '\\\\192.168.2.14\\erm\\berkas_scan_poli';
+                    // Buat nama file unik
+                    $extension = $file->getClientOriginalExtension();
+                    $fileName = $request->nomorrm . '_' . time() . '_' . $index . '.' . $extension;
+
+                    // Pindahkan file langsung dari temp ke direktori NAS
+                    $file->move($destinationPath, $fileName);
+
+                    // Path lengkap file untuk disimpan di database
+                    $fullNasPath = $destinationPath . '\\' . $fileName;
+                    // Insert data ke database
+                    DB::table('erm_upload_gambar')->insert([
+                        'kodekunjungan' => $request->kodekunjungan,
+                        'no_rm'       => $request->nomorrm,
+                        'kode_unit'      => $request->kodeunitnya ?? null,
+                        'jenis_berkas'  => $jenis,
+                        'nama'   => $nama,
+                        'gambar'     => $fullNasPath,
+                        'tgl_upload'    => now(),
+                        'pic'    => auth()->user()->id,
+                    ]);
+                    $uploadedFiles[] = $fileName;
+                }
+            }
+
+            if (count($uploadedFiles) === 0) {
+                return response()->json([
+                    'kode'    => 500,
+                    'message' => 'Tidak ada file valid yang terunggah!'
+                ], 400);
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'kode'    => 200,
+                'message' => count($uploadedFiles) . ' Berkas berhasil diunggah!'
+            ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'kode'    => 500,
+                'message' => 'Gagal mengunggah berkas: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    public function showfile2(Request $request)
+    {
+        $data = DB::table('erm_upload_gambar')->where('id', $request->id)->first();
+        if (!$data) {
+            return '<div class="alert alert-danger">Data berkas tidak ditemukan di database!</div>';
+        }
+        $fileSource = $data->gambar;
+        $fileContent = '';
+        $extension = '';
+        $downloadUrl = '';
+        $jn = '0';
+        // Cek apakah awalan string adalah backslash (NAS)
+        if (str_starts_with($fileSource, '\\')) {
+            $jn = 'nas';
+            // File berada di NAS / Network Share Local
+            if (!file_exists($fileSource)) {
+                return '<div class="alert alert-danger">File tidak ditemukan di direktori NAS (' . htmlspecialchars($fileSource) . ')!</div>';
+            }
+            // Baca file dari NAS
+            $fileContent = base64_encode(file_get_contents($fileSource));
+            $extension = strtolower(pathinfo($fileSource, PATHINFO_EXTENSION));
+            $downloadUrl = $data->id;
+        } else {
+            $jn = 'lokal';
+            // File berada di HTTP/HTTPS Server lain
+            $cleanPath = ltrim($fileSource, '/');
+            $fullUrl = 'https://192.168.2.45/files/' . $cleanPath;
+            // Context stream untuk bypass verifikasi SSL & cegah hanging
+            $context = stream_context_create([
+                "ssl" => [
+                    "verify_peer"      => false,
+                    "verify_peer_name" => false,
+                ],
+                "http" => [
+                    "timeout" => 10 // Timeout 10 detik
+                ]
+            ]);
+            // Ambil isi file via HTTPS langsung tanpa get_headers()
+            $content = @file_get_contents($fullUrl, false, $context);
+            if ($content === false) {
+                return '<div class="alert alert-danger text-center">
+                        Gagal mengambil file dari server!<br>
+                        <small>URL: <a href="' . $fullUrl . '" target="_blank">' . htmlspecialchars($fullUrl) . '</a></small>
+                    </div>';
+            }
+
+            $fileContent = base64_encode($content);
+
+            // Ambil ekstensi dari URL, jika gagal gunakan pathinfo dari $fileSource
+            $pathForExt = parse_url($fullUrl, PHP_URL_PATH);
+            $extension = strtolower(pathinfo($pathForExt, PATHINFO_EXTENSION));
+
+            if (empty($extension)) {
+                $extension = strtolower(pathinfo($fileSource, PATHINFO_EXTENSION));
+            }
+
+            $downloadUrl = $fullUrl;
+        }
+        if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
+            $mime = ($extension === 'jpg') ? 'jpeg' : $extension;
+            if ($jn == 'nas') {
+                $src = 'data:image/' . $mime . ';base64,' . $fileContent;
+            } else {
+                $src = 'https://192.168.2.45/files/' . $fileSource . '/' . $mime . ';base64,' . $fileContent;;
+            }
+            return '<img src="' . $src . '" class="img-fluid rounded mx-auto d-block" style="max-height: 75vh;">';
+        } elseif ($extension === 'pdf') {
+            if ($jn == 'nas') {
+                $src = 'data:application/pdf;base64,' . $fileContent;
+                // $src = 'data:image/' . $mime . ';base64,' . $fileContent;
+            } else {
+                $src = 'https://192.168.2.45/files/' . ltrim($fileSource, '/');
+            }
+            return '<iframe src="' . $src . '" width="100%" height="600px" style="border: none;"></iframe>';
+        } else {
+            return '
+        <div class="alert alert-info text-center">
+            <p>Format file <strong>' . strtoupper($extension ?: 'TIDAK DIKETAHUI') . '</strong> tidak bisa di-preview langsung.</p>
+            <a href="' . $downloadUrl . '" target="_blank" class="btn btn-primary">
+                <i class="fas fa-download"></i> Unduh / Buka Berkas
+            </a>
+        </div>
+        ';
+        }
+    }
+    public function showfile2_all(Request $request)
+    {
+        $rm = $request->rm;
+
+        // Query banyak file berdasarkan No RM dan diurutkan ASC berdasarkan ID
+        $data = DB::table('erm_upload_gambar')
+            ->where('no_rm', $rm)
+            ->orderBy('id', 'asc')
+            ->get();
+
+        if ($data->isEmpty()) {
+            return '<div class="alert alert-warning text-center">Tidak ada berkas yang ditemukan untuk No. RM: <strong>' . htmlspecialchars($rm) . '</strong></div>';
+        }
+
+        $context = stream_context_create([
+            "ssl" => [
+                "verify_peer"      => false,
+                "verify_peer_name" => false,
+            ],
+            "http" => [
+                "timeout" => 10
+            ]
+        ]);
+
+        $html = '<div class="preview-container">';
+
+        // Loop setiap berkas milik RM tersebut
+        foreach ($data as $index => $row) {
+            $fileSource = $row->gambar;
+            $fileContent = '';
+            $extension = '';
+            $downloadUrl = '';
+            $isNas = str_starts_with($fileSource, '\\');
+
+            if ($isNas) {
+                // Processing File NAS
+                if (!file_exists($fileSource)) {
+                    $html .= '<div class="alert alert-danger mb-3">File ke-' . ($index + 1) . ' tidak ditemukan di NAS (' . htmlspecialchars($fileSource) . ')</div>';
+                    continue; // Lanjut ke file berikutnya
+                }
+
+                $fileContent = base64_encode(file_get_contents($fileSource));
+                $extension = strtolower(pathinfo($fileSource, PATHINFO_EXTENSION));
+                $downloadUrl = $row->gambar;
+            } else {
+                // Processing File HTTP/HTTPS Server
+                // $cleanPath = ltrim($fileSource, '/');
+                // $fullUrl = 'https://192.168.2.45/files/' . $cleanPath;
+
+                // $content = file_get_contents($fullUrl, false, $context);
+
+
+                $cleanPath = ltrim($fileSource, '/');
+
+                // 2. Encode nama file agar spasi terkonversi jadi %20
+                // (Sangat penting jika nama file mengandung spasi seperti 'audiometri_scan pasien000237.pdf')
+                $pathParts = explode('/', $cleanPath);
+                $encodedParts = array_map('rawurlencode', $pathParts);
+                $encodedPath = implode('/', $encodedParts);
+
+                // 3. Susun URL lengkap yang sudah aman untuk PHP
+                $fullUrl = 'https://192.168.2.45/files/' . $encodedPath;
+
+                // 4. Stream context dengan User-Agent agar menyerupai Browser
+                $context = stream_context_create([
+                    "ssl" => [
+                        "verify_peer"      => false,
+                        "verify_peer_name" => false,
+                    ],
+                    "http" => [
+                        "timeout"    => 10,
+                        "user_agent" => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+                    ]
+                ]);
+
+                // 5. Ambil file
+                $content = @file_get_contents($fullUrl, false, $context);
+
+
+
+                if ($content === false) {
+                    $html .= '<div class="alert alert-danger mb-3">Gagal mengunduh file ke-' . ($index + 1) . ' dari server (' . htmlspecialchars($fullUrl) . ')</div>';
+                    continue; // Lanjut ke file berikutnya
+                }
+
+                $fileContent = base64_encode($content);
+                $pathForExt = parse_url($fullUrl, PHP_URL_PATH);
+                $extension = strtolower(pathinfo($pathForExt, PATHINFO_EXTENSION)) ?: strtolower(pathinfo($fileSource, PATHINFO_EXTENSION));
+                $downloadUrl = $fullUrl;
+            }
+
+            // Render Komponen Berkas (Dinamis per file)
+            $html .= '<div class="card mb-4 shadow-sm">';
+            $html .= '  <div class="card-header bg-light d-flex justify-content-between align-items-center">';
+            $html .= '      <strong>Berkas #' . ($index + 1) . ' (ID: ' . $row->gambar . ')</strong>';
+            $html .= '      <span class="badge ' . ($isNas ? 'badge-info' : 'badge-success') . '">' . strtoupper($isNas ? 'NAS' : 'Server HTTPS') . '</span>';
+            $html .= '  </div>';
+            $html .= '  <div class="card-body text-center p-2">';
+
+            if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
+                $mime = ($extension === 'jpg') ? 'jpeg' : $extension;
+                $src = 'data:image/' . $mime . ';base64,' . $fileContent;
+                $html .= '<img src="' . $src . '" class="img-fluid rounded mx-auto d-block mb-2" style="max-height: 75vh;">';
+            } elseif ($extension === 'pdf') {
+                $src = 'data:application/pdf;base64,' . $fileContent;
+                $html .= '<iframe src="' . $src . '" width="100%" height="600px" style="border: none;"></iframe>';
+            } else {
+                $html .= '
+            <div class="alert alert-info my-2">
+                <p class="mb-2">Format file <strong>' . strtoupper($extension ?: 'UNKNOWN') . '</strong> tidak dapat di-preview langsung.</p>
+            </div>';
+            }
+
+            $html .= '  </div>'; // End Card Body
+            $html .= '  <div class="card-footer text-right">';
+            $html .= '      <a href="' . $downloadUrl . '" target="_blank" class="btn btn-sm btn-primary">';
+            $html .= '          <i class="fas fa-download"></i> Unduh / Buka Berkas Full';
+            $html .= '      </a>';
+            $html .= '  </div>';
+            $html .= '</div>'; // End Card
+        }
+
+        $html .= '</div>';
+
+        return $html;
     }
 }

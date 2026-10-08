@@ -7797,6 +7797,13 @@ class ErmController extends Controller
     {
         return view('ermtemplate.upload');
     }
+    public function formupload2(Request $request)
+    {
+        $kodekunjungan = $request->kodekunjungan;
+        return view('ermtemplate.upload2',compact([
+            'kodekunjungan'
+        ]));
+    }
     public function formsumarilis(Request $request)
     {
         $kodekunjungan = $request->kodekunjungan;
@@ -7910,6 +7917,7 @@ class ErmController extends Controller
     {
         $id = $request->id;
         $data = DB::select('select * from erm_upload_gambar where id = ?', [$id]);
+        
         $deleted = DB::table('erm_upload_gambar')->where('id', '=', $id)->delete();
         if (File::exists(public_path('../../files/' . $data[0]->gambar))) {
             File::delete(public_path('../../files/' . $data[0]->gambar));
@@ -7930,7 +7938,7 @@ class ErmController extends Controller
     }
     public function riwayatupload(Request $request)
     {
-        $cek = DB::select('select *,fc_nama_unit2(kode_unit) as nama_unit from erm_upload_gambar where no_rm = ?', [$request->rm]);
+        $cek = DB::select('select *,fc_nama_unit2(kode_unit) as nama_unit from erm_upload_gambar where kodekunjungan = ?', [$request->kodekunjungan]);
         return view('ermdokter.riwayatupload', compact([
             'cek'
         ]));
