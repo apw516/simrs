@@ -16,7 +16,7 @@
                         <option value="produk_obat">Produk Obat</option>
                         <option value="laporan_polisi">Laporan Polisi</option>
                         <option value="kronologis_laka">Kronologis Laka</option>
-                        <option value="kronologis_laka">USG Poliklinik</option>
+                        <option value="USG Poliklinik">USG Poliklinik</option>
                         <option value="lainnya">Lainnya</option>
                     </select>
                 </div>
