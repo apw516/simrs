@@ -60,8 +60,15 @@
                                 @endif
                             @endforeach
                         </td>
-                        <td></td>
-                        <td>{{ $r->renjana_tindakan }}</td>
+                        <td>{{ $r->keluhan_pasien }} <br>
+                        {{ $r->keterangan_alergi }} <br>
+                        {{ $r->riwyat_penyakit_sekarang }}
+                        </td>
+                        <td>{{ $r->tindakanmedis }} <br>
+                            {{ $r->rencanakerja }} <br>
+                            {{ $r->tindak_lanjut }} <br>
+                            {{ $r->catatan_operasi }} <br>
+                        </td>
                         <td></td>
                     </tr>
                 @endforeach
