@@ -100,20 +100,16 @@ class ErmController extends Controller
             ->where('kode_unit','<','2000')
             ->get();
 
-            // $riwayat2 = DB::table('di_pasien_diagnosa')
-            // ->where('no_rm', $no_rm)
-            // ->where('input_date', '>=', $tgl_tiga_bulan_lalu)
-            // ->where('kode_unit', '<', '2000')
-            // ->where('diag_sekunder_01', '!=', '')
-            // ->where('diag_sekunder_02', '!=', '')
-            // ->where('diag_sekunder_03', '!=', '')
-            // ->groupBy('kode_paramedis')
-            // ->get();
-        
+        $kodeKunjunganList = $riwayat2->pluck('kode_kunjungan')->unique()->filter()->toArray();
+        $assesmenMedis = DB::table('assesmen_dokters') // Ganti dengan nama tabel asesmen dokter Anda
+        ->whereIn('id_kunjungan', $kodeKunjunganList)
+        ->get()
+        ->toArray();
+        // dd($assesmenMedis);
         $cek = model_prmj::where('kode_kunjungan', $kode_kunjungan)->get()->first();
         $riwayat = model_prmj::where('no_rm', $no_rm )->get();
         return view('ermdokter.form_prmj',compact([
-            'kode_kunjungan','no_rm','cek','riwayat','riwayat2'
+            'kode_kunjungan','no_rm','cek','riwayat','riwayat2','assesmenMedis'
         ]));
     }
     public function simpanpemeriksaanprmjedit(Request $request)

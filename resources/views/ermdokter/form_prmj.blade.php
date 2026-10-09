@@ -44,142 +44,29 @@
                 <th>Uraian Klinis Penting</th>
                 <th>Rencana Penting</th>
                 <th>Remarks / Catatan Penting</th>
-                <th>Aksi</th>
             </thead>
             <tbody>
-                @foreach ($riwayat as $r)
+                @foreach ($assesmenMedis as $r)
                     <tr>
                         <td>{{ $r->tgl_entry }}</td>
                         <td>{{ $r->nama_dokter }}</td>
-                        <td>{{ $r->diagnosis }}</td>
-                        <td>{{ $r->uraian }}</td>
-                        <td>{{ $r->rencana }}</td>
-                        <td>{{ $r->catatan }}</td>
-                        <td>
-                            <button @if ($r->pic != auth()->user()->id) disabled @endif
-                                class="btn btn-danger btn-sm hapusdata" iddokumen="{{ $r->id }}"><i
-                                    class="bi bi-trash3"></i></button>
-                            <button @if ($r->pic != auth()->user()->id) disabled @endif
-                                class="btn btn-warning btn-sm editdata" iddokumen="{{ $r->id }}"
-                                kode_kunjungan="{{ $r->kode_kunjungan }}" nomor_rm="{{ $r->nomor_rm }}"
-                                kode_paramedis="{{ $r->kode_paramedis }}" namadokter="{{ $r->nama_dokter }}"
-                                diagnosis="{{ $r->diagnosis }}" uraian="{{ $r->uraian }}"
-                                rencana="{{ $r->rencana }}" catatan="{{ $r->catatan }}" data-toggle="modal"
-                                data-target="#modaleditprmj"><i class="bi bi-pencil-square"></i></button>
+                        <td>{{ $r->diagnosakerja }} <br><br>
+                            @foreach ($riwayat2 as $rr)
+                                @if ($rr->kode_kunjungan == $r->id_kunjungan)
+                                    Koding diagnosa Utama : {{ $rr->diag_utama }} <br>
+                                    Koding diagnosa Sekunder : {{ $rr->diag_sekunder_01 }}, {{ $rr->diag_sekunder_02 }},
+                                    {{ $rr->diag_sekunder_03 }}, {{ $rr->diag_sekunder_04 }},
+                                    {{ $rr->diag_sekunder_05 }}
+                                @endif
+                            @endforeach
                         </td>
+                        <td></td>
+                        <td>{{ $r->renjana_tindakan }}</td>
+                        <td></td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
-    </div>
-</div>
-<!-- Modal -->
-<div class="modal fade" id="modalprmj" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Form Profil Ringkas Medis Rawat Jalan</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form class="formisian">
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Diagnosa Penting</label>
-                        <textarea rows="3" type="email" class="form-control" id="diagnosapenting" name="diagnosapenting"
-                            aria-describedby="emailHelp" placeholder="Masukan diagnosa penting ...">
-@if ($cek)
-{{ $cek->diagnosis }}
-@endif
-</textarea>
-                        <input hidden rows="3" type="email" class="form-control" id="kode_kunjungan"
-                            name="kode_kunjungan" aria-describedby="emailHelp"
-                            placeholder="Masukan diagnosa penting ..." value="{{ $kode_kunjungan }}"></input>
-                        <input hidden rows="3" type="email" class="form-control" id="nomor_rm" name="nomor_rm"
-                            aria-describedby="emailHelp" placeholder="Masukan diagnosa penting ..."
-                            value="{{ $no_rm }}"></input>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Uraian Klinis Penting</label>
-                        <textarea rows="3" type="email" class="form-control" name="uraianklinispenting" id="uraianklinispenting"
-                            aria-describedby="emailHelp" placeholder="Masukan Uraian klinis penting ...">
-@if ($cek)
-{{ $cek->uraian }}
-@endif
-</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Rencana Penting</label>
-                        <textarea rows="3" type="email" class="form-control" id="rencanapenting" name="rencanapenting"
-                            aria-describedby="emailHelp" placeholder="Masukan rencana penting ...">
-@if ($cek)
-{{ $cek->rencana }}
-@endif
-</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Remarks / Catatan Penting</label>
-                        <textarea rows="3" type="email" class="form-control" id="catatanpenting" name="catatanpenting"
-                            aria-describedby="emailHelp" placeholder="Masukan Remarks / Catatan Penting ...">
-@if ($cek)
-{{ $cek->catatan }}
-@endif
-</textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="simpandata()">Simpan</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Modal -->
-<div class="modal fade" id="modaleditprmj" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Form Edit Profil Ringkas Medis Rawat Jalan</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form class="formisianedit">
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Diagnosa Penting</label>
-                        <textarea rows="3" type="email" class="form-control" id="diagnosapenting_edit" name="diagnosapenting_edit"
-                            aria-describedby="emailHelp" placeholder="Masukan diagnosa penting ..."></textarea>
-                        <input hidden rows="3" type="email" class="form-control" id="kode_kunjungan_edit"
-                            name="kode_kunjungan_edit" aria-describedby="emailHelp"
-                            placeholder="Masukan diagnosa penting ..." value=""></input>
-                        <input hidden rows="3" type="email" class="form-control" id="nomor_rm_edit"
-                            name="nomor_rm_edit" aria-describedby="emailHelp"
-                            placeholder="Masukan diagnosa penting ..." value=""></input>
-                        <input hidden rows="3" type="email" class="form-control" id="id_dokumen_edit"
-                            name="id_dokumen_edit" aria-describedby="emailHelp"
-                            placeholder="Masukan diagnosa penting ..." value=""></input>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Uraian Klinis Penting</label>
-                        <textarea rows="3" type="email" class="form-control" name="uraianklinispenting_edit"
-                            id="uraianklinispenting_edit" aria-describedby="emailHelp" placeholder="Masukan Uraian klinis penting ..."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Rencana Penting</label>
-                        <textarea rows="3" type="email" class="form-control" id="rencanapenting_edit" name="rencanapenting_edit"
-                            aria-describedby="emailHelp" placeholder="Masukan rencana penting ..."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Remarks / Catatan Penting</label>
-                        <textarea rows="3" type="email" class="form-control" id="catatanpenting_edit" name="catatanpenting_edit"
-                            aria-describedby="emailHelp" placeholder="Masukan Remarks / Catatan Penting ..."></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="simpandataedit()">Simpan</button>
-            </div>
-        </div>
     </div>
 </div>
 <script>
