@@ -48,7 +48,7 @@
         <button class="btn btn-success mb-2 lihat_catatan_hd" nomorrm="{{ $rm }}" data-toggle="modal"
             data-target="#modalcatatanhemodialisa"><i class="bi bi-journal-text"></i>CATATAN HEMODIALISA</button>
         <button class="btn btn-info mb-2 lihat_catatan_prmj" nomorrm="{{ $rm }}" data-toggle="modal"
-            data-target="#modalprmj"><i class="bi bi-journal-text"></i> Profil Ringkas Medis Rawat Jalan </button>
+            data-target="#modalprmj"><i class="bi bi-journal-text"></i> Profil Ringkas Medis Rawat Jalan</button>
         <div hidden class="slide3">
 
         </div>
@@ -2096,16 +2096,16 @@
     $(".lihat_catatan_prmj").click(function() {
         spinner = $('#loader')
         spinner.show();
-        rm = $(this).attr('nomorrm')
+        nomorrm = $(this).attr('nomorrm')        
         jenis = '1'
         $.ajax({
             type: 'post',
             data: {
                 _token: "{{ csrf_token() }}",
-                rm,
+                nomorrm,
                 jenis
             },
-            url: '<?= route('ambilcatatanprmj') ?>',
+            url: '<?= route('form_prmj') ?>',
             success: function(response) {
                 $('.v_prmj').html(response);
                 spinner.hide()

@@ -2099,16 +2099,18 @@
     $(".lihat_catatan_prmj").click(function() {
         spinner = $('#loader')
         spinner.show();
-        rm = $(this).attr('nomorrm')
+        nomorrm = $(this).attr('nomorrm')
+        kodekunjungan = $('#kodekunjungan').val()
         jenis = '1'
         $.ajax({
             type: 'post',
             data: {
                 _token: "{{ csrf_token() }}",
-                rm,
-                jenis
+                nomorrm,
+                jenis,
+                kodekunjungan
             },
-            url: '<?= route('ambilcatatanprmj') ?>',
+            url: '<?= route('form_prmj') ?>',
             success: function(response) {
                 $('.v_prmj').html(response);
                 spinner.hide()
