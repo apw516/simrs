@@ -432,78 +432,78 @@
         </div>
         <div class="card-body">
             <form action="" method="POST" id="arrayceklis" class="arrayceklis">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group mb-2">
-                        <div class="form-check">
-                            <input class="form-check-input check-item" type="checkbox" id="c1" name="c1"
-                                value="1">
-                            <label class="form-check-label" for="check1">1. Kejelasan tulisan obat</label>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input check-item" type="checkbox" id="c1"
+                                    name="c1" value="1">
+                                <label class="form-check-label" for="check1">1. Kejelasan tulisan obat</label>
+                            </div>
+                        </div>
+                        <div class="form-group mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input check-item" type="checkbox" id="c2"
+                                    name="c2" value="1">
+                                <label class="form-check-label" for="check2">2. Tepat nama pasien</label>
+                            </div>
+                        </div>
+                        <div class="form-group mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input check-item" type="checkbox" id="c3"
+                                    name="c3" value="1">
+                                <label class="form-check-label" for="check3">3. Tepat nama obat</label>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group mb-2">
-                        <div class="form-check">
-                            <input class="form-check-input check-item" type="checkbox" id="c2" name="c2"
-                                value="1">
-                            <label class="form-check-label" for="check2">2. Tepat nama pasien</label>
+                    <div class="col-md-4">
+                        <div class="form-group mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input check-item" type="checkbox" id="c4"
+                                    name="c4" value="1">
+                                <label class="form-check-label" for="check4">4. Tepat dosis</label>
+                            </div>
+                        </div>
+                        <div class="form-group mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input check-item" type="checkbox" id="c5"
+                                    name="c5" value="1">
+                                <label class="form-check-label" for="check5">5. Tepat aturan pakai dan pemberian
+                                    obat</label>
+                            </div>
+                        </div>
+                        <div class="form-group mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input check-item" type="checkbox" id="c6"
+                                    name="c6" value="1">
+                                <label class="form-check-label" for="check6">6. Polifarmasi</label>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group mb-2">
-                        <div class="form-check">
-                            <input class="form-check-input check-item" type="checkbox" id="c3" name="c3"
-                                value="1">
-                            <label class="form-check-label" for="check3">3. Tepat nama obat</label>
+                    <div class="col-md-4">
+                        <div class="form-group mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input check-item" type="checkbox" id="c7"
+                                    name="c7" value="1">
+                                <label class="form-check-label" for="check7">7. Duplikasi</label>
+                            </div>
+                        </div>
+                        <div class="form-group mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input check-item" type="checkbox" id="c8"
+                                    name="c8" value="1">
+                                <label class="form-check-label" for="check8">8. Interaksi Obat</label>
+                            </div>
+                        </div>
+                        <div class="form-group mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input check-item" type="checkbox" id="c9"
+                                    name="c9" value="1">
+                                <label class="form-check-label" for="check9">9. Kontra indikasi</label>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group mb-2">
-                        <div class="form-check">
-                            <input class="form-check-input check-item" type="checkbox" id="c4" name="c4"
-                                value="1">
-                            <label class="form-check-label" for="check4">4. Tepat dosis</label>
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <div class="form-check">
-                            <input class="form-check-input check-item" type="checkbox" id="c5" name="c5"
-                                value="1">
-                            <label class="form-check-label" for="check5">5. Tepat aturan pakai dan pemberian
-                                obat</label>
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <div class="form-check">
-                            <input class="form-check-input check-item" type="checkbox" id="c6" name="c6"
-                                value="1">
-                            <label class="form-check-label" for="check6">6. Polifarmasi</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group mb-2">
-                        <div class="form-check">
-                            <input class="form-check-input check-item" type="checkbox" id="c7" name="c7"
-                                value="1">
-                            <label class="form-check-label" for="check7">7. Duplikasi</label>
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <div class="form-check">
-                            <input class="form-check-input check-item" type="checkbox" id="c8" name="c8"
-                                value="1">
-                            <label class="form-check-label" for="check8">8. Interaksi Obat</label>
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <div class="form-check">
-                            <input class="form-check-input check-item" type="checkbox" id="c9" name="c9"
-                                value="1">
-                            <label class="form-check-label" for="check9">9. Kontra indikasi</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
             </form>
             <div class="mt-3 pt-3 border-top d-flex justify-content-between align-items-center">
                 <span id="status-verifikasi" class="badge badge-secondary py-2 px-3">Belum Diverifikasi</span>
@@ -1289,6 +1289,12 @@
     function save() {
         var data1 = $('.arrayobat').serializeArray();
         var data2 = $('.formInputObat').serializeArray();
+        var data3 = $('.arrayceklis input[type="checkbox"]:checked').map(function() {
+            return {
+                name: $(this).attr('name'),
+                value: $(this).val()
+            };
+        }).get();
         spinner = $('#loader')
         spinner.show();
         $.ajax({
@@ -1298,7 +1304,8 @@
             data: {
                 _token: "{{ csrf_token() }}",
                 data_obat: JSON.stringify(data1),
-                data_header_obat: JSON.stringify(data2)
+                data_header_obat: JSON.stringify(data2),
+                data_telaah_resep: JSON.stringify(data3)
             },
             url: '<?= route('simpandataresepobatpasien_versi_2') ?>',
             error: function(data) {

@@ -380,7 +380,7 @@ class newFarmasiController extends FarmasiController
 
         $data_kunjungan2 = db::select('select a.tgl_masuk,a.no_sep,fc_nama_unit1(a.kode_unit) as nama_unit,b.nama_paramedis,b.kode_dokter_jkn,fc_NAMA_PENJAMIN2(a.kode_penjamin) as nama_penjamin from ts_kunjungan a left outer join mt_paramedis b on a.kode_paramedis = b.kode_paramedis where a.no_rm = ? ORDER BY a.kode_kunjungan DESC LIMIT 5', [$data_kunjungan[0]->no_rm]);
 
-        
+
         $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx from mt_pasien where no_rm = ?', [$data_kunjungan[0]->no_rm]);
         $kode_paramedis = $data_kunjungan[0]->kode_paramedis;
         $dokter = db::select('select * from mt_paramedis where kode_paramedis = ?', [$kode_paramedis]);
@@ -1295,6 +1295,38 @@ class newFarmasiController extends FarmasiController
     {
         $data_obat = json_decode($_POST['data_obat'], true);
         $data_header_obat = json_decode($_POST['data_header_obat'], true);
+        $data_telaah_resep = json_decode($_POST['data_telaah_resep'], true);
+
+        $texts = []; // 1. Buat array kosong di luar perulangan untuk menampung teks
+
+        foreach ($data_telaah_resep as $dd) {
+            $text = '';
+            if ($dd['name'] == 'c1') {
+                $text = '1. Kejelasan tulisan obat';
+            } elseif ($dd['name'] == 'c2') {
+                $text = '2. Tepat nama pasien';
+            } elseif ($dd['name'] == 'c3') {
+                $text = '3. Tepat nama obat';
+            } elseif ($dd['name'] == 'c4') {
+                $text = '4. Tepat dosis';
+            } elseif ($dd['name'] == 'c5') {
+                $text = '5. Tepat aturan pakai dan pemberian obat';
+            } elseif ($dd['name'] == 'c6') {
+                $text = '6. Polifarmasi';
+            } elseif ($dd['name'] == 'c7') {
+                $text = '7. Duplikasi';
+            } elseif ($dd['name'] == 'c8') {
+                $text = '8. Interaksi Obat';
+            } elseif ($dd['name'] == 'c9') {
+                $text = '9. Kontra indikasi';
+            }
+
+            // Masukkan ke array penampung jika $text terisi
+            if (!empty($text)) {
+                $texts[] = $text;
+            }
+        }
+        $kalimat_hasil = implode(', ', $texts);
         $dataheader = [];
         foreach ($data_header_obat as $nama) {
             $index = $nama['name'];
@@ -1322,7 +1354,7 @@ class newFarmasiController extends FarmasiController
             $jenisobat = $dataheader['jenisobat'];
             if ($jenisobat == '0') {
                 $tipe_anestesi = '80';
-                $prossesobat = $this->prosesResepObat($arrayobat, $data_kunjungan, $kode_unit_pelayanan, $tipe_anestesi, $dataheader);
+                $prossesobat = $this->prosesResepObat($arrayobat, $data_kunjungan, $kode_unit_pelayanan, $tipe_anestesi, $dataheader, $kalimat_hasil);
             } else {
                 if ($jenisobat == '1') {
                     $tipe_anestesi = '84';
@@ -1331,7 +1363,7 @@ class newFarmasiController extends FarmasiController
                 } elseif ($jenisobat == '3') {
                     $tipe_anestesi = '82';
                 }
-                $prossesobat = $this->prosesResepObaKronis_versi2($arrayobat, $data_kunjungan, $kode_unit_pelayanan, $tipe_anestesi, $dataheader);
+                $prossesobat = $this->prosesResepObaKronis_versi2($arrayobat, $data_kunjungan, $kode_unit_pelayanan, $tipe_anestesi, $dataheader, $kalimat_hasil);
             }
             // Jalankan Commit jika semua proses sukses tanpa Exception\
             DB::connection('mysql')->commit();
@@ -1413,7 +1445,7 @@ class newFarmasiController extends FarmasiController
             ], 200);
         }
     }
-    public function prosesResepObaKronis_versi2($dataobat, $data_kunjungan, $kode_unit_pelayanan, $tipe_anestesi, $dataheader)
+    public function prosesResepObaKronis_versi2($dataobat, $data_kunjungan, $kode_unit_pelayanan, $tipe_anestesi, $dataheader, $kalimat_hasil)
     {
         // $r = DB::connection('mysql')->select("CALL GET_NOMOR_LAYANAN_HEADER('$kode_unit_pelayanan')");
         $PENJAMIN = $data_kunjungan[0]->kode_penjamin;
@@ -1427,7 +1459,18 @@ class newFarmasiController extends FarmasiController
             $kat_resep = 'Resep Kredit';
             $tipe_tx = '2';
         }
-        $kode_layanan_header = $this->get_layanan_header($kode_unit_pelayanan);
+        do {
+            $kode_layanan_header = $this->get_layanan_header($kode_unit_pelayanan);
+            $is_exists = DB::table('mt_kode_trans_header')
+                ->where('kode_header', $kode_layanan_header)
+                ->exists();
+        } while ($is_exists);
+        $dattt = [
+            'kode_header' => $kode_layanan_header,
+            'tgl_header' => $this->get_now(),
+            'kode_unit' => $kode_unit_pelayanan,
+        ];
+        DB::table('mt_kode_trans_header')->insert($dattt);
         $cek_resep_ke = DB::connection('mysql')->select('select id from ts_layanan_header where kode_kunjungan = ? and kode_unit = ? and status_layanan != 3', [$kode_kunjungan, $kode_unit_pelayanan]);
         $urutan = count($cek_resep_ke) + 1;
         $data_layanan_header = [
@@ -3558,7 +3601,7 @@ class newFarmasiController extends FarmasiController
             }
         }
     }
-    public function prosesResepObat($dataobat, $data_kunjungan, $kode_unit_pelayanan, $tipe_anestesi, $dataheader)
+    public function prosesResepObat($dataobat, $data_kunjungan, $kode_unit_pelayanan, $tipe_anestesi, $dataheader, $kalimat_hasil)
     {
         // $r = DB::select("CALL GET_NOMOR_LAYANAN_HEADER('$kode_unit_pelayanan')");
         $PENJAMIN = $data_kunjungan[0]->kode_penjamin;
@@ -3572,7 +3615,18 @@ class newFarmasiController extends FarmasiController
             $kat_resep = 'Resep Kredit';
             $tipe_tx = '2';
         }
-        $kode_layanan_header = $this->get_layanan_header($kode_unit_pelayanan);
+        do {
+            $kode_layanan_header = $this->get_layanan_header($kode_unit_pelayanan);
+            $is_exists = DB::table('mt_kode_trans_header')
+                ->where('kode_header', $kode_layanan_header)
+                ->exists();
+        } while ($is_exists);
+        $dattt = [
+            'kode_header' => $kode_layanan_header,
+            'tgl_header' => $this->get_now(),
+            'kode_unit' => $kode_unit_pelayanan,
+        ];
+        DB::table('mt_kode_trans_header')->insert($dattt);
         $cek_resep_ke = DB::connection('mysql')->select('select id from ts_layanan_header where kode_kunjungan = ? and kode_unit = ? and status_layanan != 3', [$kode_kunjungan, $kode_unit_pelayanan]);
         $urutan = count($cek_resep_ke) + 1;
         $data_layanan_header = [
@@ -4793,9 +4847,26 @@ class newFarmasiController extends FarmasiController
     }
     public function get_layanan_header($kode_unit)
     {
-        $q = DB::select('SELECT id,kode_layanan_header,RIGHT(kode_layanan_header,6) AS kd_max  FROM ts_layanan_header
-        WHERE DATE(tgl_entry) = CURDATE() AND kode_unit = ?
-        ORDER BY id DESC
+        // $q = DB::select('SELECT id,kode_layanan_header,RIGHT(kode_layanan_header,6) AS kd_max  FROM ts_layanan_header
+        // WHERE DATE(tgl_entry) = CURDATE() AND kode_unit = ?
+        // ORDER BY id DESC
+        // LIMIT 1', [$kode_unit]);
+        // $UNIT = db::select('select * from mt_unit where kode_unit = ? ', [$kode_unit]);
+        // $kd = "";
+        // $PREFIX = $UNIT[0]->prefix_unit;
+        // if (count($q) > 0) {
+        //     foreach ($q as $k) {
+        //         $tmp = ((int) $k->kd_max) + 1;
+        //         $kd = sprintf("%06s", $tmp);
+        //     }
+        // } else {
+        //     $kd = "000001";
+        // }
+        // date_default_timezone_set('Asia/Jakarta');
+        // return $PREFIX . date('ymd') . $kd;
+        $q = DB::select('SELECT idx,kode_header,RIGHT(kode_header,6) AS kd_max  FROM mt_kode_trans_header
+        WHERE DATE(tgl_header) = CURDATE() AND kode_unit = ?
+        ORDER BY idx DESC
         LIMIT 1', [$kode_unit]);
         $UNIT = db::select('select * from mt_unit where kode_unit = ? ', [$kode_unit]);
         $kd = "";
