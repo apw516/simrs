@@ -1471,6 +1471,13 @@ class newFarmasiController extends FarmasiController
             'kode_unit' => $kode_unit_pelayanan,
         ];
         DB::table('mt_kode_trans_header')->insert($dattt);
+        $datatelaah = [
+            'kode_order_header' => $kode_layanan_header,
+            'poin_telaah' => $kalimat_hasil,
+            'pic1' => auth()->user()->id,
+            'tgl_telaah' => $this->get_now()
+        ];
+        DB::table('ts_telaah_resep')->insert($datatelaah);
         $cek_resep_ke = DB::connection('mysql')->select('select id from ts_layanan_header where kode_kunjungan = ? and kode_unit = ? and status_layanan != 3', [$kode_kunjungan, $kode_unit_pelayanan]);
         $urutan = count($cek_resep_ke) + 1;
         $data_layanan_header = [
@@ -3627,6 +3634,13 @@ class newFarmasiController extends FarmasiController
             'kode_unit' => $kode_unit_pelayanan,
         ];
         DB::table('mt_kode_trans_header')->insert($dattt);
+        $datatelaah = [
+            'kode_order_header' => $kode_layanan_header,
+            'poin_telaah' => $kalimat_hasil,
+            'pic1' => auth()->user()->id,
+            'tgl_telaah' => $this->get_now()
+        ];
+        DB::table('ts_telaah_resep')->insert($datatelaah);
         $cek_resep_ke = DB::connection('mysql')->select('select id from ts_layanan_header where kode_kunjungan = ? and kode_unit = ? and status_layanan != 3', [$kode_kunjungan, $kode_unit_pelayanan]);
         $urutan = count($cek_resep_ke) + 1;
         $data_layanan_header = [
