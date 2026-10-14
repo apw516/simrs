@@ -1831,9 +1831,10 @@ class newFarmasiController extends FarmasiController
             ]);
         $mt_unit = db::select('select * from mt_unit where kode_unit = ?', [$data_kunjungan[0]->kode_unit]);
         $mt_paramedis = db::select('select * from mt_paramedis where kode_paramedis = ?', [$data_kunjungan[0]->kode_paramedis]);
-        if (count($mt_paramedis) == 0) {
+        if (strlen($mt_paramedis[0]->kode_dokter_jkn) < 3 ) {
             $mt_paramedis = db::select('select * from mt_paramedis where kode_dokter_jkn = ?', [$dataheader['kode_paramedis']]);
         }
+        // dd($mt_paramedis);
         $noresep = $this->get_no_resep($data_kunjungan[0]->kode_kunjungan);
         $v = new MODEL_APOTEK_ONLINE();
         $header_resep_bpjs = [
