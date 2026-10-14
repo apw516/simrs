@@ -785,7 +785,7 @@ class newFarmasiController extends FarmasiController
                             $namaBarang   = $mt_barang[0]->nama_barang;
                             throw new \Exception("Obat Out of Stock! Stok '{$namaBarang}' tidak mencukupi (Sisa: {$stokTersedia}, Butuh: {$totalObat}).");
                         }
-                        $totalbarang = $mt_barang[0]->harga_jual + $or->qty_barang;
+                        $totalbarang = $mt_barang[0]->harga_jual * $or->qty_barang;
                         $tt = $totalbarang + $jsf[0]->jasa_resep + $jsf[0]->jasa_embalase;
                         $mt_racikan_detail_1 = [
                             'kode_racik' => $kode_racik,
@@ -1665,7 +1665,7 @@ class newFarmasiController extends FarmasiController
                         $namaBarang   = $mt_barang[0]->nama_barang;
                         throw new \Exception("Obat Out of Stock! Stok '{$namaBarang}' tidak mencukupi (Sisa: {$stokTersedia}, Butuh: {$totalObat}).");
                     }
-                    $totalbarang = $mt_barang[0]->harga_jual + $or->qty_barang;
+                    $totalbarang = $mt_barang[0]->harga_jual * $or->qty_barang;
                     $tt = $totalbarang + $jsf[0]->jasa_resep + $jsf[0]->jasa_embalase;
                     $mt_racikan_detail_1 = [
                         'kode_racik' => $kode_racik,
@@ -2207,7 +2207,7 @@ class newFarmasiController extends FarmasiController
                         $namaBarang   = $mt_barang[0]->nama_barang;
                         throw new \Exception("Obat Out of Stock! Stok '{$namaBarang}' tidak mencukupi (Sisa: {$stokTersedia}, Butuh: {$totalObat}).");
                     }
-                    $totalbarang = $mt_barang[0]->harga_jual + $or->qty_barang;
+                    $totalbarang = $mt_barang[0]->harga_jual * $or->qty_barang;
                     $tt = $totalbarang + $jsf[0]->jasa_resep + $jsf[0]->jasa_embalase;
                     $mt_racikan_detail_1 = [
                         'kode_racik' => $kode_racik,
@@ -2725,7 +2725,7 @@ class newFarmasiController extends FarmasiController
                         $namaBarang   = $mt_barang[0]->nama_barang;
                         throw new \Exception("Obat Out of Stock! Stok '{$namaBarang}' tidak mencukupi (Sisa: {$stokTersedia}, Butuh: {$totalObat}).");
                     }
-                    $totalbarang = $mt_barang[0]->harga_jual + $or->qty_barang;
+                    $totalbarang = $mt_barang[0]->harga_jual * $or->qty_barang;
                     $tt = $totalbarang + $jsf[0]->jasa_resep + $jsf[0]->jasa_embalase;
                     $mt_racikan_detail_1 = [
                         'kode_racik' => $kode_racik,
@@ -3261,7 +3261,7 @@ class newFarmasiController extends FarmasiController
                         $namaBarang   = $mt_barang[0]->nama_barang;
                         throw new \Exception("Obat Out of Stock! Stok '{$namaBarang}' tidak mencukupi (Sisa: {$stokTersedia}, Butuh: {$totalObat}).");
                     }
-                    $totalbarang = $mt_barang[0]->harga_jual + $or->qty_barang;
+                    $totalbarang = $mt_barang[0]->harga_jual * $or->qty_barang;
                     $tt = $totalbarang + $jsf[0]->jasa_resep + $jsf[0]->jasa_embalase;
                     $mt_racikan_detail_1 = [
                         'kode_racik' => $kode_racik,
@@ -3834,7 +3834,7 @@ class newFarmasiController extends FarmasiController
                         $namaBarang   = $mt_barang[0]->nama_barang;
                         throw new \Exception("Obat Out of Stock! Stok '{$namaBarang}' tidak mencukupi (Sisa: {$stokTersedia}, Butuh: {$totalObat}).");
                     }
-                    $totalbarang = $mt_barang[0]->harga_jual + $or->qty_barang;
+                    $totalbarang = $mt_barang[0]->harga_jual * $or->qty_barang;
                     $tt = $totalbarang + $jsf[0]->jasa_resep + $jsf[0]->jasa_embalase;
                     $mt_racikan_detail_1 = [
                         'kode_racik' => $kode_racik,
