@@ -271,9 +271,41 @@ class VerifikasiBerkasRajalController extends UpdateERMcontroller
             $icd9 = db::select('select * from mt_icd9');
             $diagnosakunjungan = db::select('select * from ts_kunjungan_diagnosa_utama where kode_kunjungan = ?', [$kode_kunjungan]);
             $diagnosatindakan = db::select('select * from ts_kunjungan_diagnosa_tindakn where kode_kunjungan = ?', [$kode_kunjungan]);
-
             $get_cek_ver = db::table('ts_verifikasi_berkas')->where('kode_kunjungan', $kode_kunjungan)->first();
+            $hasil_scan_poli = db::table('erm_upload_gambar')->where('kodekunjungan', $kode_kunjungan)->get();
+            $jenis_list = [
+                'lab_luar',
+                'rad_luar',
+                'echo_jantung',
+                'ekg',
+                'endoskopi',
+                'produk_obat',
+                'laporan_polisi',
+                'kronologis_laka',
+                'USG_Poliklinik',
+                'lainnya'
+            ];
+            $berkas_tersimpan = [];
+            foreach ($jenis_list as $jenis) {
+                $berkas_tersimpan[$jenis] = $hasil_scan_poli
+                    ->where('jenis_berkas', $jenis)
+                    ->filter(fn($item) => strtolower(pathinfo($item->gambar, PATHINFO_EXTENSION)) === 'pdf')
+                    ->pluck('gambar')
+                    ->toArray();
+            }
+            $lab_luar        = $berkas_tersimpan['lab_luar'];
+            $rad_luar        = $berkas_tersimpan['rad_luar'];
+            $echo_jantung    = $berkas_tersimpan['echo_jantung'];
+            $ekg             = $berkas_tersimpan['ekg'];
+            $endoskopi       = $berkas_tersimpan['endoskopi'];
+            $produk_obat     = $berkas_tersimpan['produk_obat'];
+            $laporan_polisi  = $berkas_tersimpan['laporan_polisi'];
+            $kronologis_laka = $berkas_tersimpan['kronologis_laka'];
+            $USG             = $berkas_tersimpan['USG_Poliklinik'];
+            $lainnya         = $berkas_tersimpan['lainnya'];
+            // dd($lainn)
             return view('Casemix.list_berkas_klaim', compact([
+
                 'kunjungan',
                 'layananheader',
                 'ts_kunjungan',
@@ -294,7 +326,17 @@ class VerifikasiBerkasRajalController extends UpdateERMcontroller
                 'diagnosakunjungan',
                 'diagnosatindakan',
                 'ref_kunjungan',
-                'get_cek_ver'
+                'get_cek_ver',
+                'lab_luar',
+                'rad_luar',
+                'echo_jantung',
+                'ekg',
+                'endoskopi',
+                'USG',
+                'kronologis_laka',
+                'produk_obat',
+                'laporan_polisi',
+                'lainnya'
             ]));
         } catch (\Exception $e) {
             return response()->json([
@@ -590,5 +632,20 @@ class VerifikasiBerkasRajalController extends UpdateERMcontroller
         );
 
         return response()->json(['status' => 'success', 'message' => 'Data berhasil disimpan']);
+    }
+    public function streamPdfNas($filename)
+    {
+        // Path lengkap ke folder NAS Anda
+        $path = '\\\\192.168.2.14\\erm\\berkas_scan_poli\\' . $filename;
+        
+        // Cek apakah file fisiknya ada di NAS
+        if (!file_exists($path)) {
+            abort(404, 'File PDF tidak ditemukan di NAS.');
+        }
+
+        // Kirim file ke browser dengan header PDF yang benar agar iframe bisa merendernya
+        return response()->file($path, [
+            'Content-Type' => 'application/pdf',
+        ]);
     }
 }

@@ -79,9 +79,7 @@
             </button>
         </div>
     </div>
-
     <div class="card-body">
-
         <!-- 1. IDENTITAS & RINGKASAN DATA PASIEN -->
         <div class="card card-light mb-4">
             <div class="card-header bg-light">
@@ -248,7 +246,6 @@
                         </a>
                     </li>
                 </ul>
-
                 <!-- Tab Content -->
                 <div class="tab-content" id="berkasTabContent">
                     <div class="tab-pane fade" id="ringkasandiagnosa" role="tabpanel">

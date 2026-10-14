@@ -1033,3 +1033,4 @@ Route::post('/diagnosa-tindakan.store', [VerifikasiBerkasRajalController::class,
 Route::delete('/destroy-diagnosa/{id}', [VerifikasiBerkasRajalController::class, 'destroyDiagnosa'])->name('diagnosa.destroy');
 Route::delete('/tindakan-destroy/{id}', [VerifikasiBerkasRajalController::class, 'destroyTindakan'])->name('tindakan.destroy');
 Route::post('/verifikasi.simpan', [VerifikasiBerkasRajalController::class, 'simpan'])->name('verifikasi.simpan');
+Route::get('/tampilkan-pdf-nas/{filename}', [VerifikasiBerkasRajalController::class, 'streamPdfNas'])->name('berkas.nas');

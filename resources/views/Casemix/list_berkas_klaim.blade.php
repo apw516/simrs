@@ -94,7 +94,6 @@
                             Digital:
                         </label>
                         <div class="d-flex flex-wrap gap-3 bg-light p-2 rounded border">
-
                             <!-- Checkbox SEP -->
                             <div class="custom-control custom-checkbox mr-3">
                                 <input type="checkbox" class="custom-control-input check-berkas" id="check_sep"
@@ -157,10 +156,12 @@
 
                             <!-- Checkbox Lampiran Lain -->
                             <div class="custom-control custom-checkbox mr-3">
-                                <input type="checkbox" class="custom-control-input check-berkas" id="berkas_penunjang_lain"
-                                    name="berkas_checked[Lampiran Lain]" value="{{ $urlLampiranLain ?? '' }}"
+                                <input type="checkbox" class="custom-control-input check-berkas"
+                                    id="berkas_penunjang_lain" name="berkas_checked[Lampiran Lain]"
+                                    value="{{ $urlLampiranLain ?? '' }}"
                                     {{ isset($dataBerkas['Lampiran Lain']) ? 'checked' : '' }}>
-                                <label class="custom-control-label" for="berkas_penunjang_lain">Berkas Penunjang Lain</label>
+                                <label class="custom-control-label" for="berkas_penunjang_lain">Berkas Penunjang
+                                    Lain</label>
                             </div>
                             <div class="custom-control custom-checkbox mr-3">
                                 <input type="checkbox" class="custom-control-input check-berkas" id="berkas_lain"
@@ -171,11 +172,10 @@
 
                         </div>
                     </div>
-                </div>>
-
+                </div>
                 <!-- 2. Opsi Status Verifikasi -->
                 <div class="col-md-4 mb-2">
-                    <label class="font-weight-bold text-dark mb-1">Status Verifikasi:</label>
+                    <label class="font-weight-bold text-dark mb-1"> Status Verifikasi: </label>
                     <select name="status_verifikasi" id="status_verifikasi" class="form-control form-control-sm"
                         onchange="togglePesanVerifikasi()" required>
                         <option value="">-- Pilih Status --</option>
@@ -220,16 +220,13 @@
     if (!empty($urlCetakSEP)) {
         $dokumenList[] = ['judul' => 'Berkas SEP', 'url' => $urlCetakSEP];
     }
-
     $urlResume = isset($ts_kunjungan[0]) ? route('cetakresumedmedisttelokal', $ts_kunjungan[0]->kode_kunjungan) : null;
     if (!empty($urlResume)) {
         $dokumenList[] = ['judul' => 'Resume Medis / Catatan Dokter', 'url' => $urlResume];
     }
-
     if (($ref_kunjungan ?? '0') != '0' && !empty($urlLembarKonsul)) {
         $dokumenList[] = ['judul' => 'Lembar Konsultasi', 'url' => $urlLembarKonsul];
     }
-
     if (
         isset($ts_kunjungan[0]) &&
         ($ts_kunjungan[0]->kode_unit == '1012' || $ts_kunjungan[0]->ref_kunjungan == '1027') &&
@@ -241,7 +238,6 @@
     if (isset($ts_kunjungan[0]) && $ts_kunjungan[0]->kode_unit == '3007' && !empty($urlCetakHD)) {
         $dokumenList[] = ['judul' => 'Berkas Hemodialisa (HD)', 'url' => $urlCetakHD];
     }
-
     if (isset($LINK_RADIOLOGI) && is_array($LINK_RADIOLOGI)) {
         foreach ($LINK_RADIOLOGI as $idx => $urlPdfRad) {
             if (!empty($urlPdfRad)) {
@@ -249,7 +245,6 @@
             }
         }
     }
-
     if (isset($layananheaderPA) && count($layananheaderPA) > 0) {
         foreach ($layananheaderPA as $idx => $labPA) {
             if (!empty($labPA->id)) {
@@ -260,7 +255,6 @@
             }
         }
     }
-
     if (isset($lab_terpilih) && count($lab_terpilih) > 0) {
         foreach ($lab_terpilih as $idx => $lab) {
             $urlPdfLab = $lab->link ?? ($lab->file_pdf ?? ($lab->url_file ?? null));
@@ -298,36 +292,269 @@
             </div>
         @endforeach
     @endif
+    <h6 class="font-weight-bold text-dark border-bottom pb-2 mb-3 mt-4">
+        <i class="bi bi-images text-info mr-1"></i> Laboratorium dari luar
+    </h6>
+    @foreach ($lab_luar as $scanlab_luar)
+        @php
+            // Mengubah path mentah NAS (\\192.168.2.14\...\namafile.pdf)
+            // menjadi hanya nama file-nya saja (namafile.pdf)
+            $namaFilelab_luar = basename($scanlab_luar);
 
-    @if (isset($gambarscan) && count($gambarscan) > 0)
-        <h6 class="font-weight-bold text-dark border-bottom pb-2 mb-3 mt-4">
-            <i class="bi bi-images text-info mr-1"></i> Berkas Scan Poli / Gambar
-        </h6>
-        @foreach ($gambarscan as $scan)
-            @php $fileUrl = 'http://192.168.2.45/files/' . ltrim($scan->gambar, '/'); @endphp
-            <div class="card mb-4 border shadow-sm">
-                <div class="card-header bg-light d-flex justify-content-between align-items-center py-2">
-                    <span class="font-weight-bold text-dark text-sm">
-                        <i class="bi bi-file-earmark-image text-purple mr-1"></i> Berkas Scan Poli
-                    </span>
-                    <a href="{{ $fileUrl }}" target="_blank" class="btn btn-xs btn-outline-primary">
-                        <i class="bi bi-box-arrow-up-right mr-1"></i> Buka Gambar di Tab Baru
-                    </a>
-                </div>
-                <div class="card-body p-0">
-                    <iframe src="{{ $fileUrl }}" width="100%" height="700px" style="border: none;"
-                        loading="lazy"></iframe>
-                </div>
+            // Membuat URL web aman menuju route Laravel
+            $fileUrl = route('berkas.nas', ['filename' => $namaFilelab_luar]);
+        @endphp
+        <div class="card mb-4 border shadow-sm">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center py-2">
+                <span class="font-weight-bold text-dark text-sm">
+                    <i class="bi bi-file-earmark-pdf text-danger mr-1"></i> Berkas Lainnya
+                </span>
+                <a href="{{ $fileUrl }}" target="_blank" class="btn btn-xs btn-outline-primary">
+                    <i class="bi bi-box-arrow-up-right mr-1"></i> Buka di Tab Baru
+                </a>
             </div>
-        @endforeach
-    @endif
-
-    @if ((!isset($gambarscan) || count($gambarscan) == 0) && count($dokumenList) == 0)
-        <div class="card shadow-sm p-5 text-center text-muted">
-            <i class="bi bi-file-earmark-x display-4 text-secondary mb-2"></i>
-            <p class="mb-0 font-weight-bold">Tidak ada berkas scan maupun dokumen PDF untuk kunjungan ini.</p>
+            <div class="card-body p-0">
+                <!-- Iframe memuat URL HTTP aman dari Laravel, bukan path NAS langsung -->
+                <iframe src="{{ $fileUrl }}" width="100%" height="700px" style="border: none;"
+                    loading="lazy"></iframe>
+            </div>
         </div>
-    @endif
+    @endforeach
+    <h6 class="font-weight-bold text-dark border-bottom pb-2 mb-3 mt-4">
+        <i class="bi bi-images text-info mr-1"></i> Radiologi dari luar
+    </h6>
+    @foreach ($rad_luar as $scanrad_luar)
+        @php
+            // Mengubah path mentah NAS (\\192.168.2.14\...\namafile.pdf)
+            // menjadi hanya nama file-nya saja (namafile.pdf)
+            $namaFilerad_luar = basename($scanrad_luar);
+
+            // Membuat URL web aman menuju route Laravel
+            $fileUrl = route('berkas.nas', ['filename' => $namaFilerad_luar]);
+        @endphp
+        <div class="card mb-4 border shadow-sm">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center py-2">
+                <span class="font-weight-bold text-dark text-sm">
+                    <i class="bi bi-file-earmark-pdf text-danger mr-1"></i> Berkas Lainnya
+                </span>
+                <a href="{{ $fileUrl }}" target="_blank" class="btn btn-xs btn-outline-primary">
+                    <i class="bi bi-box-arrow-up-right mr-1"></i> Buka di Tab Baru
+                </a>
+            </div>
+            <div class="card-body p-0">
+                <!-- Iframe memuat URL HTTP aman dari Laravel, bukan path NAS langsung -->
+                <iframe src="{{ $fileUrl }}" width="100%" height="700px" style="border: none;"
+                    loading="lazy"></iframe>
+            </div>
+        </div>
+    @endforeach
+    <h6 class="font-weight-bold text-dark border-bottom pb-2 mb-3 mt-4">
+        <i class="bi bi-images text-info mr-1"></i> Berkas Penunjang Lain
+    </h6>
+    @foreach ($echo_jantung as $scanecho_jantung)
+        @php
+            // Mengubah path mentah NAS (\\192.168.2.14\...\namafile.pdf)
+            // menjadi hanya nama file-nya saja (namafile.pdf)
+            $namaFileecho_jantung = basename($scanecho_jantung);
+
+            // Membuat URL web aman menuju route Laravel
+            $fileUrl = route('berkas.nas', ['filename' => $namaFileecho_jantung]);
+        @endphp
+        <div class="card mb-4 border shadow-sm">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center py-2">
+                <span class="font-weight-bold text-dark text-sm">
+                    <i class="bi bi-file-earmark-pdf text-danger mr-1"></i> Berkas Lainnya
+                </span>
+                <a href="{{ $fileUrl }}" target="_blank" class="btn btn-xs btn-outline-primary">
+                    <i class="bi bi-box-arrow-up-right mr-1"></i> Buka di Tab Baru
+                </a>
+            </div>
+            <div class="card-body p-0">
+                <!-- Iframe memuat URL HTTP aman dari Laravel, bukan path NAS langsung -->
+                <iframe src="{{ $fileUrl }}" width="100%" height="700px" style="border: none;"
+                    loading="lazy"></iframe>
+            </div>
+        </div>
+    @endforeach
+    @foreach ($ekg as $scanekg)
+        @php
+            // Mengubah path mentah NAS (\\192.168.2.14\...\namafile.pdf)
+            // menjadi hanya nama file-nya saja (namafile.pdf)
+            $namaFileekg = basename($scanekg);
+
+            // Membuat URL web aman menuju route Laravel
+            $fileUrl = route('berkas.nas', ['filename' => $namaFileekg]);
+        @endphp
+        <div class="card mb-4 border shadow-sm">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center py-2">
+                <span class="font-weight-bold text-dark text-sm">
+                    <i class="bi bi-file-earmark-pdf text-danger mr-1"></i> Berkas Lainnya
+                </span>
+                <a href="{{ $fileUrl }}" target="_blank" class="btn btn-xs btn-outline-primary">
+                    <i class="bi bi-box-arrow-up-right mr-1"></i> Buka di Tab Baru
+                </a>
+            </div>
+            <div class="card-body p-0">
+                <!-- Iframe memuat URL HTTP aman dari Laravel, bukan path NAS langsung -->
+                <iframe src="{{ $fileUrl }}" width="100%" height="700px" style="border: none;"
+                    loading="lazy"></iframe>
+            </div>
+        </div>
+    @endforeach
+    @foreach ($endoskopi as $scanendoskopi)
+        @php
+            // Mengubah path mentah NAS (\\192.168.2.14\...\namafile.pdf)
+            // menjadi hanya nama file-nya saja (namafile.pdf)
+            $namaFileendoskopi = basename($scanendoskopi);
+
+            // Membuat URL web aman menuju route Laravel
+            $fileUrl = route('berkas.nas', ['filename' => $namaFileendoskopi]);
+        @endphp
+        <div class="card mb-4 border shadow-sm">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center py-2">
+                <span class="font-weight-bold text-dark text-sm">
+                    <i class="bi bi-file-earmark-pdf text-danger mr-1"></i> Berkas Lainnya
+                </span>
+                <a href="{{ $fileUrl }}" target="_blank" class="btn btn-xs btn-outline-primary">
+                    <i class="bi bi-box-arrow-up-right mr-1"></i> Buka di Tab Baru
+                </a>
+            </div>
+            <div class="card-body p-0">
+                <!-- Iframe memuat URL HTTP aman dari Laravel, bukan path NAS langsung -->
+                <iframe src="{{ $fileUrl }}" width="100%" height="700px" style="border: none;"
+                    loading="lazy"></iframe>
+            </div>
+        </div>
+    @endforeach
+    @foreach ($USG as $scanUSG)
+        @php
+            // Mengubah path mentah NAS (\\192.168.2.14\...\namafile.pdf)
+            // menjadi hanya nama file-nya saja (namafile.pdf)
+            $namaFileUSG = basename($scanUSG);
+
+            // Membuat URL web aman menuju route Laravel
+            $fileUrl = route('berkas.nas', ['filename' => $namaFileUSG]);
+        @endphp
+        <div class="card mb-4 border shadow-sm">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center py-2">
+                <span class="font-weight-bold text-dark text-sm">
+                    <i class="bi bi-file-earmark-pdf text-danger mr-1"></i> Berkas Lainnya
+                </span>
+                <a href="{{ $fileUrl }}" target="_blank" class="btn btn-xs btn-outline-primary">
+                    <i class="bi bi-box-arrow-up-right mr-1"></i> Buka di Tab Baru
+                </a>
+            </div>
+            <div class="card-body p-0">
+                <!-- Iframe memuat URL HTTP aman dari Laravel, bukan path NAS langsung -->
+                <iframe src="{{ $fileUrl }}" width="100%" height="700px" style="border: none;"
+                    loading="lazy"></iframe>
+            </div>
+        </div>
+    @endforeach
+    <h6 class="font-weight-bold text-dark border-bottom pb-2 mb-3 mt-4">
+        <i class="bi bi-images text-info mr-1"></i> Berkas Lain
+    </h6>
+    @foreach ($kronologis_laka as $scankronologis_laka)
+        @php
+            // Mengubah path mentah NAS (\\192.168.2.14\...\namafile.pdf)
+            // menjadi hanya nama file-nya saja (namafile.pdf)
+            $namaFilekronologis_laka = basename($scankronologis_laka);
+
+            // Membuat URL web aman menuju route Laravel
+            $fileUrl = route('berkas.nas', ['filename' => $namaFilekronologis_laka]);
+        @endphp
+        <div class="card mb-4 border shadow-sm">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center py-2">
+                <span class="font-weight-bold text-dark text-sm">
+                    <i class="bi bi-file-earmark-pdf text-danger mr-1"></i> Berkas Lainnya
+                </span>
+                <a href="{{ $fileUrl }}" target="_blank" class="btn btn-xs btn-outline-primary">
+                    <i class="bi bi-box-arrow-up-right mr-1"></i> Buka di Tab Baru
+                </a>
+            </div>
+            <div class="card-body p-0">
+                <!-- Iframe memuat URL HTTP aman dari Laravel, bukan path NAS langsung -->
+                <iframe src="{{ $fileUrl }}" width="100%" height="700px" style="border: none;"
+                    loading="lazy"></iframe>
+            </div>
+        </div>
+    @endforeach
+    @foreach ($laporan_polisi as $scanlaporan_polisi)
+        @php
+            // Mengubah path mentah NAS (\\192.168.2.14\...\namafile.pdf)
+            // menjadi hanya nama file-nya saja (namafile.pdf)
+            $namaFilelaporan_polisi = basename($scanlaporan_polisi);
+
+            // Membuat URL web aman menuju route Laravel
+            $fileUrl = route('berkas.nas', ['filename' => $namaFilelaporan_polisi]);
+        @endphp
+        <div class="card mb-4 border shadow-sm">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center py-2">
+                <span class="font-weight-bold text-dark text-sm">
+                    <i class="bi bi-file-earmark-pdf text-danger mr-1"></i> Berkas Lainnya
+                </span>
+                <a href="{{ $fileUrl }}" target="_blank" class="btn btn-xs btn-outline-primary">
+                    <i class="bi bi-box-arrow-up-right mr-1"></i> Buka di Tab Baru
+                </a>
+            </div>
+            <div class="card-body p-0">
+                <!-- Iframe memuat URL HTTP aman dari Laravel, bukan path NAS langsung -->
+                <iframe src="{{ $fileUrl }}" width="100%" height="700px" style="border: none;"
+                    loading="lazy"></iframe>
+            </div>
+        </div>
+    @endforeach
+    @foreach ($produk_obat as $scanproduk_obat)
+        @php
+            // Mengubah path mentah NAS (\\192.168.2.14\...\namafile.pdf)
+            // menjadi hanya nama file-nya saja (namafile.pdf)
+            $namaFileproduk_obat = basename($scanproduk_obat);
+
+            // Membuat URL web aman menuju route Laravel
+            $fileUrl = route('berkas.nas', ['filename' => $namaFileproduk_obat]);
+        @endphp
+        <div class="card mb-4 border shadow-sm">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center py-2">
+                <span class="font-weight-bold text-dark text-sm">
+                    <i class="bi bi-file-earmark-pdf text-danger mr-1"></i> Berkas Lainnya
+                </span>
+                <a href="{{ $fileUrl }}" target="_blank" class="btn btn-xs btn-outline-primary">
+                    <i class="bi bi-box-arrow-up-right mr-1"></i> Buka di Tab Baru
+                </a>
+            </div>
+            <div class="card-body p-0">
+                <!-- Iframe memuat URL HTTP aman dari Laravel, bukan path NAS langsung -->
+                <iframe src="{{ $fileUrl }}" width="100%" height="700px" style="border: none;"
+                    loading="lazy"></iframe>
+            </div>
+        </div>
+    @endforeach
+    @foreach ($lainnya as $scan)
+        @php
+            // Mengubah path mentah NAS (\\192.168.2.14\...\namafile.pdf)
+            // menjadi hanya nama file-nya saja (namafile.pdf)
+            $namaFile = basename($scan);
+
+            // Membuat URL web aman menuju route Laravel
+            $fileUrl = route('berkas.nas', ['filename' => $namaFile]);
+        @endphp
+        <div class="card mb-4 border shadow-sm">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center py-2">
+                <span class="font-weight-bold text-dark text-sm">
+                    <i class="bi bi-file-earmark-pdf text-danger mr-1"></i> Berkas Lainnya
+                </span>
+                <a href="{{ $fileUrl }}" target="_blank" class="btn btn-xs btn-outline-primary">
+                    <i class="bi bi-box-arrow-up-right mr-1"></i> Buka di Tab Baru
+                </a>
+            </div>
+            <div class="card-body p-0">
+                <!-- Iframe memuat URL HTTP aman dari Laravel, bukan path NAS langsung -->
+                <iframe src="{{ $fileUrl }}" width="100%" height="700px" style="border: none;"
+                    loading="lazy"></iframe>
+            </div>
+        </div>
+    @endforeach
+
 </div>
 <script>
     function kembaliKeTabel() {
