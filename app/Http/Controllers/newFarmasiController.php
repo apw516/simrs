@@ -1363,6 +1363,7 @@ class newFarmasiController extends FarmasiController
                 } elseif ($jenisobat == '3') {
                     $tipe_anestesi = '82';
                 }
+                // dd($dataheader);
                 $prossesobat = $this->prosesResepObaKronis_versi2($arrayobat, $data_kunjungan, $kode_unit_pelayanan, $tipe_anestesi, $dataheader, $kalimat_hasil);
             }
             // Jalankan Commit jika semua proses sukses tanpa Exception\
@@ -1830,6 +1831,9 @@ class newFarmasiController extends FarmasiController
             ]);
         $mt_unit = db::select('select * from mt_unit where kode_unit = ?', [$data_kunjungan[0]->kode_unit]);
         $mt_paramedis = db::select('select * from mt_paramedis where kode_paramedis = ?', [$data_kunjungan[0]->kode_paramedis]);
+        if (count($mt_paramedis) == 0) {
+            $mt_paramedis = db::select('select * from mt_paramedis where kode_dokter_jkn = ?', [$dataheader['kode_paramedis']]);
+        }
         $noresep = $this->get_no_resep($data_kunjungan[0]->kode_kunjungan);
         $v = new MODEL_APOTEK_ONLINE();
         $header_resep_bpjs = [
@@ -5121,7 +5125,6 @@ class newFarmasiController extends FarmasiController
             ->table('ts_layanan_header')
             ->where('id', $id)
             ->first();
-
         if (!$header) {
             return redirect()->back()->with('error', 'Data header tidak ditemukan.');
         }
@@ -5132,11 +5135,12 @@ class newFarmasiController extends FarmasiController
         $PDO = DB::connection()->getPdo();
         $QUERY = $PDO->prepare("CALL SP_CETAK_NOTA_WEB(?, ?)");
         $QUERY->execute([$kodeheader, $id]);
+
         $details = $QUERY->fetchAll(\PDO::FETCH_OBJ);
         // dd($details);
         // 3. Set Ukuran Kertas Custom (Lebar 10 cm x Tinggi 14 cm)
         $customPaper = [0, 0, 283.46, 396.85];
-
+        // dd($details);
         $pdf = Pdf::loadView('new_farmasi.nota_rincian_biaya_pdf', compact('header', 'details', 'dtpx'))
             ->setPaper($customPaper, 'portrait');
 

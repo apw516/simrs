@@ -203,13 +203,14 @@
             @endphp
             @foreach ($details as $item)
                 @php
-                    $jumlah = $item->total_tarif * $item->jumlah_layanan;
+                    $jumlah =  $item->total_tarif;
+                    // $jumlah = $item->total_tarif * $item->jumlah_layanan;
                     $subtotal += $jumlah;
                 @endphp
                 <tr>
                     <td align="left">{{ $item->NAMA_TARIF }}</td>
                     <td align="center">{{ number_format($item->jumlah_layanan, 0, ',', '.') }}</td>
-                    <td align="right">{{ number_format($jumlah, 2, '.', ',') }}</td>
+                    <td align="right">{{ number_format($item->total_tarif, 2, '.', ',') }}</td>
                 </tr>
             @endforeach
         </tbody>
