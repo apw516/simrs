@@ -706,7 +706,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <table @if ($usiatahun < 65) hidden @endif class="table">
+                            <table @if ($usiatahun < 60) hidden @endif class="table">
                                 <tr>
                                     <td class="bg-danger text-bold" colspan="2">PASIEN GERIATRI !!!</td>
                                 </tr>
@@ -1500,7 +1500,7 @@
                                 </tr>
                             </table>
 
-                            <table @if ($usiatahun < 65) hidden @endif class="table">
+                            <table @if ($usiatahun < 60) hidden @endif class="table">
                                 <tr>
                                     <td class="bg-danger text-bold" colspan="2">PASIEN GERIATRI !!!</td>
                                 </tr>

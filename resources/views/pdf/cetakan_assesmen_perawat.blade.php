@@ -565,26 +565,26 @@
                             </td>
                         </tr>
                     @else
-                        <tr @if ($usiatahun < 65) hidden @endif class="bg-light">
+                        <tr @if ($usiatahun < 60) hidden @endif class="bg-light">
                             <td colspan="4" class="text-center text-bold">PASIEN GERIATRI</td>
                         </tr>
-                        <tr @if ($usiatahun < 65) hidden @endif>
+                        <tr @if ($usiatahun < 60) hidden @endif>
                             <td class="text-bold font-italic">ADL</td>
                             <td colspan="3">{{ $k->adl_1 }}</td>
                         </tr>
-                        <tr @if ($usiatahun < 65) hidden @endif>
+                        <tr @if ($usiatahun < 60) hidden @endif>
                             <td class="text-bold font-italic">Kognitif</td>
                             <td colspan="3">{{ $k->kognitif_geriatri }}</td>
                         </tr>
-                        <tr @if ($usiatahun < 65) hidden @endif>
+                        <tr @if ($usiatahun < 60) hidden @endif>
                             <td class="text-bold font-italic">Depresi</td>
                             <td colspan="3">{{ $k->depresi_geriatri }}</td>
                         </tr>
-                        <tr @if ($usiatahun < 65) hidden @endif>
+                        <tr @if ($usiatahun < 60) hidden @endif>
                             <td class="text-bold font-italic">Inkontinensia</td>
                             <td colspan="3">{{ $k->inkontinensia_geriatri }}</td>
                         </tr>
-                        <tr @if ($usiatahun < 65) hidden @endif>
+                        <tr @if ($usiatahun < 60) hidden @endif>
                             <td class="text-bold font-italic">Insomnia</td>
                             <td colspan="3">{{ $k->insomnia_geriatri }}</td>
                         </tr>
@@ -1190,7 +1190,7 @@
             Lanjut</td>
         <td colspan="3" style="padding: 5px 8px;">{{ $k->tglpengkajianlanjutgizi ?? '-' }}</td>
     </tr>
-    <tr @if ($usiatahun < 65) hidden @endif>
+    <tr @if ($usiatahun < 60) hidden @endif>
         <td>Pasien Geriatri</td>
         <td colspan="3">
             <div class="form-check">
