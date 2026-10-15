@@ -127,8 +127,11 @@
                 RINCIAN BIAYA FARMASI<br>
                 RSUD WALED KAB.CIREBON
             </td>
-            <td class="header-status" style="font-size:8px">
-                {{ $header->jenis_resep ?? 'Resep Kredit' }} / {{ $details[0]->tiperesep}}
+            <td>
+                {{ $header->jenis_resep ?? 'Resep Kredit' }} /
+                <span class="header-status" style="font-size: 10px;">
+                    {{ $details[0]->tiperesep }}
+                </span>
             </td>
         </tr>
     </table>
@@ -154,36 +157,36 @@
             <td colspan="5">{{ $dtpx[0]->nama ?? '-' }}</td>
         </tr>
         <tr>
-            <td>Tanggal Lahir</td>
-            <td>:</td>
-            <td colspan="5">
-                {{ !empty($dtpx[0]->tgl_lahir) ? \Carbon\Carbon::parse($dtpx[0]->tgl_lahir)->format('d-m-Y') : '-' }}
+            <td style="font-weight:normal">Tanggal Lahir</td>
+            <td style="font-weight:normal">:</td>
+            <td colspan="5" style="font-weight:normal">
+            {{ !empty($dtpx[0]->tgl_lahir) ? \Carbon\Carbon::parse($dtpx[0]->tgl_lahir)->format('d-m-Y') : '-' }}
             </td>
         </tr>
-        <tr>
+        <tr style="font-weight:normal">
             <td>Alamat</td>
             <td>:</td>
-            <td colspan="5">
+            <td colspan="5" style="font-weight:normal">
                 {{ $dtpx[0]->alamat ?? '-' }}
             </td>
         </tr>
         <tr>
             <td colspan="7" style="height: 3px;"></td>
         </tr>
-        <tr>
+        <tr style="font-weight:normal">
             <td>Penjamin</td>
             <td>:</td>
-            <td colspan="5">{{ $dtpx[0]->nama_penjamin ?? '-' }}</td>
+            <td colspan="5" style="font-weight:normal">{{ $dtpx[0]->nama_penjamin ?? '-' }}</td>
         </tr>
-        <tr>
+        <tr style="font-weight:normal">
             <td>Unit Asal</td>
             <td>:</td>
-            <td colspan="5">{{ $dtpx[0]->unit ?? '-' }}</td>
+            <td colspan="5" style="font-weight:normal">{{ $dtpx[0]->unit ?? '-' }}</td>
         </tr>
-        <tr>
+        <tr style="font-weight:normal">
             <td>Dokter</td>
             <td>:</td>
-            <td colspan="5">{{ $dtpx[0]->dokter ?? '-' }}</td>
+            <td colspan="5" style="font-weight:normal">{{ $dtpx[0]->dokter ?? '-' }}</td>
         </tr>
     </table>
 
@@ -191,9 +194,9 @@
     <table class="item-table">
         <thead>
             <tr>
-                <th align="left" width="52%">Nama Obat</th>
+                <th align="left" width="52%">NAMA OBAT</th>
                 <th align="center" width="13%">QTY</th>
-                <th align="right" width="35%">Jumlah</th>
+                <th align="right" width="35%">JUMLAH</th>
             </tr>
         </thead>
         <tbody>
@@ -203,12 +206,12 @@
             @endphp
             @foreach ($details as $item)
                 @php
-                    $jumlah =  $item->grantotal_layanan;
+                    $jumlah = $item->grantotal_layanan;
                     // $jumlah = $item->total_tarif * $item->jumlah_layanan;
                     $subtotal += $jumlah;
                 @endphp
                 <tr>
-                    <td align="left">{{ $item->NAMA_TARIF }}</td>
+                    <td align="left">{{ strtoupper($item->NAMA_TARIF) }}</td>
                     <td align="center">{{ number_format($item->jumlah_layanan, 0, ',', '.') }}</td>
                     <td align="right">{{ number_format($item->grantotal_layanan, 2, '.', ',') }}</td>
                 </tr>
