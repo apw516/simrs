@@ -218,7 +218,6 @@
             </div>
         </div>
     </div>
-    tabelmapping
     <script>
         $(function() {
             $("#tabelmapping").DataTable({
