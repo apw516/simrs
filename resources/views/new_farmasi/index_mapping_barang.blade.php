@@ -40,6 +40,7 @@
                                             <th>Generik</th>
                                             <th>Restriksi</th>
                                             <th>Dosis</th>
+                                            {{-- <th>Status</th> --}}
                                             <th class="text-center" style="width: 40px;">Aksi</th>
                                         </tr>
                                     </thead>
@@ -55,10 +56,35 @@
                     <div class="card card-outline card-info shadow-sm h-100">
                         <div class="card-header bg-info text-white py-2">
                             <h5 class="card-title mb-0 fs-6 fw-semibold">
-                                <i class="bi bi-box-seam me-2"></i>Pilih Master Barang (SIMRS)
+                                <i class="bi bi-box-seam me-2"></i>Master Barang (SIMRS)
                             </h5>
                         </div>
                         <div class="card-body p-3">
+                            <div class="card">
+                                <div class="card-header bg-warning">List Barang yang sudah dimapping</div>
+                                <div class="card-body">
+                                    <table id="tabelmapping" class="table table-sm">
+                                        <thead>
+                                            <th>Kode Barang</th>
+                                            <th>Kode BPJS</th>
+                                            <th>Nama Barang SIMRS</th>
+                                            <th>Nama Barang BPJS</th>
+                                            <th>Nama Generik</th>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($databarang as $dd)
+                                                <tr>
+                                                    <td>{{ $dd->kode_barang }}</td>
+                                                    <td>{{ $dd->kodeobat }}</td>
+                                                    <td>{{ $dd->nama_barang }}</td>
+                                                    <td>{{ $dd->namaobat }}</td>
+                                                    <td>{{ $dd->generik }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                             <!-- Filter Pencarian Manual -->
                             <div class="row g-2 mb-3">
                                 <div class="col-8 col-sm-9">
@@ -192,8 +218,20 @@
             </div>
         </div>
     </div>
-
+    tabelmapping
     <script>
+        $(function() {
+            $("#tabelmapping").DataTable({
+                "responsive": false,
+                "lengthChange": false,
+                "autoWidth": true,
+                "pageLength": 2,
+                "searching": true,
+                "order": [
+                    [1, "desc"]
+                ]
+            });
+        })
         $(document).ready(function() {
             var tableBPJS = $('#tabel_barang_bpjs').DataTable({
                 processing: true,
@@ -221,6 +259,20 @@
                         data: 'sedia',
                         name: 'sedia'
                     },
+                    // --- KOLOM BARU UNTUK STATUS MAPPING ---
+                    // {
+                    //     data: 'status_mapping',
+                    //     name: 'status_mapping',
+                    //     className: 'text-center',
+                    //     render: function(data, type, row) {
+                    //         if (row.kode_lokal) {
+                    //             return '<span class="badge bg-success">Sudah Mapping</span>';
+                    //         } else {
+                    //             return '<span class="badge bg-secondary">Belum Mapping</span>';
+                    //         }
+                    //     }
+                    // },
+                    // ----------------------------------------
                     {
                         data: null,
                         name: 'aksi',
@@ -229,19 +281,19 @@
                         className: 'text-center',
                         render: function(data, type, row) {
                             return `
-                            <button class="btn btn-xs btn-success btn-pilih-bpjs" 
-                                    data-kode="${row.kodeobat}" 
-                                    data-nama="${row.namaobat}"
-                                    data-kronis="${row.kronis}"
-                                    data-prb="${row.prb}"
-                                    data-kemo="${row.kemo}"
-                                    data-restriksi="${row.restriksi}"
-                                    data-generik="${row.generik}"
-                                    data-sedia="${row.sedia}"
-                                    title="Pilih Obat BPJS">
-                                <i class="bi bi-check-lg"></i>
-                            </button>
-                        `;
+                    <button class="btn btn-xs btn-success btn-pilih-bpjs" 
+                            data-kode="${row.kodeobat}" 
+                            data-nama="${row.namaobat}"
+                            data-kronis="${row.kronis}"
+                            data-prb="${row.prb}"
+                            data-kemo="${row.kemo}"
+                            data-restriksi="${row.restriksi}"
+                            data-generik="${row.generik}"
+                            data-sedia="${row.sedia}"
+                            title="Pilih Obat BPJS">
+                        <i class="bi bi-check-lg"></i>
+                    </button>
+                `;
                         }
                     }
                 ]
@@ -258,7 +310,7 @@
                     type: "GET",
                     data: function(d) {
                         d.keyword = $('#keyword_simrs')
-                    .val(); // Kirim kata kunci pencarian ke controller
+                            .val(); // Kirim kata kunci pencarian ke controller
                     }
                 },
                 columns: [{

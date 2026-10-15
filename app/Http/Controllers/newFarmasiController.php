@@ -184,11 +184,16 @@ class newFarmasiController extends FarmasiController
             ->where('kode_unit', '>', 4000)
             ->where('kode_unit', '<', 4014)
             ->get(['kode_unit', 'nama_unit']);
+        $databarang = DB::table('apt_online_ref_dpho as a')
+            ->join('mt_barang as b', 'a.kodeobat', '=', 'b.kode_obat_bpjs')
+            ->select('b.kode_barang','a.kodeobat','a.namaobat', 'a.generik', 'b.nama_barang')
+            ->get();
         return view('new_farmasi.index_mapping_barang', compact([
             'title',
             'sidebar',
             'sidebar_m',
-            'units'
+            'units',
+            'databarang'
         ]));
     }
     public function index_riwayat_pelayanan_obat_depo()
@@ -1831,9 +1836,9 @@ class newFarmasiController extends FarmasiController
             ]);
         $mt_unit = db::select('select * from mt_unit where kode_unit = ?', [$data_kunjungan[0]->kode_unit]);
         $mt_paramedis = db::select('select * from mt_paramedis where kode_paramedis = ?', [$data_kunjungan[0]->kode_paramedis]);
-        if (strlen($mt_paramedis[0]->kode_dokter_jkn) < 3 ) {
+        if (strlen($mt_paramedis[0]->kode_dokter_jkn) < 3) {
             $mt_paramedis = db::select('select * from mt_paramedis where kode_dokter_jkn = ?', [$dataheader['kode_paramedis']]);
-            if($mt_unit[0]->kode_unit == '4008'){
+            if ($mt_unit[0]->kode_unit == '4008') {
                 $mt_unit = db::select('select * from mt_unit where kode_unit = ?', [$mt_paramedis[0]->unit]);
             }
         }
@@ -4998,9 +5003,27 @@ class newFarmasiController extends FarmasiController
     {
         if ($request->ajax()) {
             // $data = MasterBarang::query();
-            $data = MasterBarangBPJS::orderBy('id', 'desc');
+            // $data = MasterBarangBPJS::orderBy('id', 'desc');
+            // $data = MasterBarangBPJS::leftJoin('mt_barang', 'apt_online_ref_dpho.kodeobat', '=', 'mt_barang.kode_obat_bpjs')
+            //     ->select('apt_online_ref_dpho.*', 'mt_barang.*') // Pilih kolom yang ingin ditampilkan jika ada nama kolom yang sama
+            //     ->orderBy('apt_online_ref_dpho.id', 'desc')
+            //     ->get();
+
+            $data = MasterBarangBPJS::leftJoin('mt_barang', 'apt_online_ref_dpho.kodeobat', '=', 'mt_barang.kode_barang')
+                ->select(
+                    'apt_online_ref_dpho.*',
+                    'mt_barang.kode_barang as kode_lokal',
+                    DB::raw("IF(mt_barang.kode_obat_bpjs IS NOT NULL, 'Sudah Mapping', 'Belum Mapping') as status_mapping")
+                )
+                ->orderBy('apt_online_ref_dpho.id', 'desc');
             return DataTables::of($data)
-                ->addIndexColumn() // Untuk nomor urut otomatis
+                ->addIndexColumn()
+                // Kustomisasi pencarian untuk kolom status_mapping
+                ->filterColumn('status_mapping', function ($query, $keyword) {
+                    $sql = "IF(mt_barang.kode_obat_bpjs IS NOT NULL, 'Sudah Mapping', 'Belum Mapping') LIKE ?";
+                    $query->whereRaw($sql, ["%{$keyword}%"]);
+                })
+                ->rawColumns(['status_mapping'])
                 ->make(true);
         }
     }
