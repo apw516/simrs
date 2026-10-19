@@ -84,6 +84,21 @@
                 color: #ffc107;
             }
         </style>
+        @if(count($cek_alergi) > 0)
+        <div class="alert alert-warning alert-dismissible fade show d-flex align-items-center alert-prb-animated"
+            role="alert">
+            <i class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2 fs-3 text-warning-custom"></i>
+            <div>
+                <strong>Pasien memiliki riwayat alergi. <br>
+                <div class="small">
+                   @foreach($cek_alergi as $cc)
+                    {{ $cc->keterangan_alergi }} <br>
+                   @endforeach
+                </div>
+            </div>
+            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
         @if ($pesanprb !== 'Bukan Pasien PRB')
             <!-- Alert Pasien PRB (Animasi Zoom & Blink) -->
             <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center alert-prb-animated"

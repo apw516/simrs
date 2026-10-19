@@ -1034,3 +1034,11 @@ Route::delete('/destroy-diagnosa/{id}', [VerifikasiBerkasRajalController::class,
 Route::delete('/tindakan-destroy/{id}', [VerifikasiBerkasRajalController::class, 'destroyTindakan'])->name('tindakan.destroy');
 Route::post('/verifikasi.simpan', [VerifikasiBerkasRajalController::class, 'simpan'])->name('verifikasi.simpan');
 Route::get('/tampilkan-pdf-nas/{filename}', [VerifikasiBerkasRajalController::class, 'streamPdfNas'])->name('berkas.nas');
+Route::get('/cetakrincianbiaya/{filename}', [VerifikasiBerkasRajalController::class, 'cetakrincian'])->name('cetakrincianbiaya');
+Route::post('/ambil_diagnosa_utama_tersimpan', [VerifikasiBerkasRajalController::class, 'ambil_diagnosa_utama_tersimpan'])->name('ambil_diagnosa_utama_tersimpan');
+Route::post('/ambil_diagnosa_sekunder_tersimpan', [VerifikasiBerkasRajalController::class, 'ambil_diagnosa_sekunder_tersimpan'])->name('ambil_diagnosa_sekunder_tersimpan');
+Route::post('/ambil_tindakan_prosedur', [VerifikasiBerkasRajalController::class, 'ambil_tindakan_prosedur'])->name('ambil_tindakan_prosedur');
+Route::post('/ambil_tindakan_op', [VerifikasiBerkasRajalController::class, 'ambil_tindakan_op'])->name('ambil_tindakan_op');
+Route::post('/ambil_tindakan_penunjang', [VerifikasiBerkasRajalController::class, 'ambil_tindakan_penunjang'])->name('ambil_tindakan_penunjang');
+Route::post('/hapuscoderdiagnosau', [VerifikasiBerkasRajalController::class, 'hapuscoderdiagnosau'])->name('hapuscoderdiagnosau');
+Route::post('/hapuscoderdiagnosatindakan', [VerifikasiBerkasRajalController::class, 'hapuscoderdiagnosatindakan'])->name('hapuscoderdiagnosatindakan');

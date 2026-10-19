@@ -224,7 +224,7 @@
     if (!empty($urlResume)) {
         $dokumenList[] = ['judul' => 'Resume Medis / Catatan Dokter', 'url' => $urlResume];
     }
-    if (($ref_kunjungan ?? '0') != '0' && !empty($urlLembarKonsul)) {
+    if ($keterangankonsul == 1) {
         $dokumenList[] = ['judul' => 'Lembar Konsultasi', 'url' => $urlLembarKonsul];
     }
     if (
@@ -297,11 +297,7 @@
     </h6>
     @foreach ($lab_luar as $scanlab_luar)
         @php
-            // Mengubah path mentah NAS (\\192.168.2.14\...\namafile.pdf)
-            // menjadi hanya nama file-nya saja (namafile.pdf)
             $namaFilelab_luar = basename($scanlab_luar);
-
-            // Membuat URL web aman menuju route Laravel
             $fileUrl = route('berkas.nas', ['filename' => $namaFilelab_luar]);
         @endphp
         <div class="card mb-4 border shadow-sm">
@@ -314,7 +310,6 @@
                 </a>
             </div>
             <div class="card-body p-0">
-                <!-- Iframe memuat URL HTTP aman dari Laravel, bukan path NAS langsung -->
                 <iframe src="{{ $fileUrl }}" width="100%" height="700px" style="border: none;"
                     loading="lazy"></iframe>
             </div>
@@ -325,11 +320,7 @@
     </h6>
     @foreach ($rad_luar as $scanrad_luar)
         @php
-            // Mengubah path mentah NAS (\\192.168.2.14\...\namafile.pdf)
-            // menjadi hanya nama file-nya saja (namafile.pdf)
             $namaFilerad_luar = basename($scanrad_luar);
-
-            // Membuat URL web aman menuju route Laravel
             $fileUrl = route('berkas.nas', ['filename' => $namaFilerad_luar]);
         @endphp
         <div class="card mb-4 border shadow-sm">
@@ -363,7 +354,7 @@
         <div class="card mb-4 border shadow-sm">
             <div class="card-header bg-light d-flex justify-content-between align-items-center py-2">
                 <span class="font-weight-bold text-dark text-sm">
-                    <i class="bi bi-file-earmark-pdf text-danger mr-1"></i> Berkas Lainnya
+                    <i class="bi bi-file-earmark-pdf text-danger mr-1"></i> Berkas Penunjang Lainnya
                 </span>
                 <a href="{{ $fileUrl }}" target="_blank" class="btn btn-xs btn-outline-primary">
                     <i class="bi bi-box-arrow-up-right mr-1"></i> Buka di Tab Baru
@@ -388,7 +379,7 @@
         <div class="card mb-4 border shadow-sm">
             <div class="card-header bg-light d-flex justify-content-between align-items-center py-2">
                 <span class="font-weight-bold text-dark text-sm">
-                    <i class="bi bi-file-earmark-pdf text-danger mr-1"></i> Berkas Lainnya
+                    <i class="bi bi-file-earmark-pdf text-danger mr-1"></i> Berkas Penunjang Lainnya
                 </span>
                 <a href="{{ $fileUrl }}" target="_blank" class="btn btn-xs btn-outline-primary">
                     <i class="bi bi-box-arrow-up-right mr-1"></i> Buka di Tab Baru
@@ -413,7 +404,7 @@
         <div class="card mb-4 border shadow-sm">
             <div class="card-header bg-light d-flex justify-content-between align-items-center py-2">
                 <span class="font-weight-bold text-dark text-sm">
-                    <i class="bi bi-file-earmark-pdf text-danger mr-1"></i> Berkas Lainnya
+                    <i class="bi bi-file-earmark-pdf text-danger mr-1"></i> Berkas Penunjang Lainnya
                 </span>
                 <a href="{{ $fileUrl }}" target="_blank" class="btn btn-xs btn-outline-primary">
                     <i class="bi bi-box-arrow-up-right mr-1"></i> Buka di Tab Baru
@@ -438,7 +429,7 @@
         <div class="card mb-4 border shadow-sm">
             <div class="card-header bg-light d-flex justify-content-between align-items-center py-2">
                 <span class="font-weight-bold text-dark text-sm">
-                    <i class="bi bi-file-earmark-pdf text-danger mr-1"></i> Berkas Lainnya
+                    <i class="bi bi-file-earmark-pdf text-danger mr-1"></i> Berkas Penunjang Lainnya ( USG )
                 </span>
                 <a href="{{ $fileUrl }}" target="_blank" class="btn btn-xs btn-outline-primary">
                     <i class="bi bi-box-arrow-up-right mr-1"></i> Buka di Tab Baru

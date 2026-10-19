@@ -138,6 +138,14 @@ class UpdateERMcontroller extends Controller
             ->orderBy('b.id', 'DESC')
             ->first();
 
+        $cek_alergi = DB::table('assesmen_dokters as b')
+            ->select([
+                'b.*'
+            ])
+            ->where('b.id_pasien', $no_rm)
+            ->where('b.riwayat_alergi', 'Ada')
+            ->get();
+
         $asesmen_perawat_last = DB::table('erm_hasil_assesmen_keperawatan_rajal')
             ->where('kode_kunjungan', '!=', $request->kodekunjungan)
             ->where('kode_unit', '=', auth()->user()->unit)
@@ -223,7 +231,8 @@ class UpdateERMcontroller extends Controller
                 'layanan',
                 'pesanprb',
                 'asesmen_perawat_last',
-                'unit_rujukan'
+                'unit_rujukan',
+                'cek_alergi'
             ]));
         }
     }

@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Webklex\PDFMerger\Facades\PDFMergerFacade as PDFMerger;
+use simitsdk\phpjasperxml\PHPJasperXML;
 
 class VerifikasiBerkasRajalController extends UpdateERMcontroller
 {
@@ -171,9 +172,59 @@ class VerifikasiBerkasRajalController extends UpdateERMcontroller
             $diagnosakunjungan = db::select('select * from ts_kunjungan_diagnosa_utama where kode_kunjungan = ?', [$kode_kunjungan]);
             $diagnosatindakan = db::select('select * from ts_kunjungan_diagnosa_tindakn where kode_kunjungan = ?', [$kode_kunjungan]);
             $get_cek_ver = db::table('ts_verifikasi_berkas')->where('kode_kunjungan', $kode_kunjungan)->first();
+            $assesmen_dokters = db::table('assesmen_dokters')->where('id_kunjungan', $kode_kunjungan)->first();
+            $orderfarmasi = db::select('SELECT kode_barang,aturan_pakai,jumlah_layanan FROM ts_layanan_header_order a INNER JOIN ts_layanan_detail_order b ON a.id = b.row_id_header WHERE a.kode_kunjungan = ? and  kode_unit > ?', [$kode_kunjungan, '4000']);
+            $order_penunjang = db::select('SELECT fc_nama_unit1(a.`kode_unit`)AS nama_unit,a.kode_unit,SUBSTR(kode_tarif_detail,1,6) AS kode_tarif_header,c.`NAMA_TARIF` FROM ts_layanan_header_order a
+            INNER JOIN ts_layanan_detail_order b ON a.id = b.`row_id_header`
+            INNER JOIN mt_tarif_header c ON SUBSTR(b.kode_tarif_detail,1,6) = c.`KODE_TARIF_HEADER`
+            WHERE a.`kode_kunjungan` = ? AND a.`kode_unit` < ?', [$kode_kunjungan, '4000']);
+            $tindakan = db::select("SELECT a.`kode_kunjungan`,fc_nama_unit1(b.`kode_unit`) AS nama_unit
+            ,c.`kode_tarif_detail`,d.`NAMA_TARIF`
+            FROM ts_kunjungan a
+            INNER JOIN ts_layanan_header b ON a.`kode_kunjungan` = b.`kode_kunjungan`
+            INNER JOIN ts_layanan_detail c ON b.`id` = c.`row_id_header`
+            INNER JOIN mt_tarif_header d ON SUBSTR(c.`kode_tarif_detail`,1,6) = d.`KODE_TARIF_HEADER`
+            WHERE SUBSTR(b.`kode_unit`,1,1) = 1
+            AND c.`kode_tarif_detail` NOT IN ('TX06733','TX23543','TX03413','TX25573','TX23803','TX50683','TX46883')
+            AND a.kode_kunjungan = ?", [$kode_kunjungan]);
 
+            $hasil_scan_poli = db::table('erm_upload_gambar')->where('kodekunjungan', $kode_kunjungan)->get();
+            $jenis_list = [
+                'lab_luar',
+                'rad_luar',
+                'echo_jantung',
+                'ekg',
+                'endoskopi',
+                'produk_obat',
+                'laporan_polisi',
+                'kronologis_laka',
+                'USG_Poliklinik',
+                'lainnya'
+            ];
+            $berkas_tersimpan = [];
+            foreach ($jenis_list as $jenis) {
+                $berkas_tersimpan[$jenis] = $hasil_scan_poli
+                    ->where('jenis_berkas', $jenis)
+                    ->filter(fn($item) => strtolower(pathinfo($item->gambar, PATHINFO_EXTENSION)) === 'pdf')
+                    ->pluck('gambar')
+                    ->toArray();
+            }
+            $lab_luar        = $berkas_tersimpan['lab_luar'];
+            $rad_luar        = $berkas_tersimpan['rad_luar'];
+            $echo_jantung    = $berkas_tersimpan['echo_jantung'];
+            $ekg             = $berkas_tersimpan['ekg'];
+            $endoskopi       = $berkas_tersimpan['endoskopi'];
+            $produk_obat     = $berkas_tersimpan['produk_obat'];
+            $laporan_polisi  = $berkas_tersimpan['laporan_polisi'];
+            $kronologis_laka = $berkas_tersimpan['kronologis_laka'];
+            $USG             = $berkas_tersimpan['USG_Poliklinik'];
+            $lainnya         = $berkas_tersimpan['lainnya'];
             return view('Casemix.form_coder', compact([
                 'kunjungan',
+                'tindakan',
+                'assesmen_dokters',
+                'orderfarmasi',
+                'order_penunjang',
                 'layananheader',
                 'ts_kunjungan',
                 'detail_obat',
@@ -192,7 +243,18 @@ class VerifikasiBerkasRajalController extends UpdateERMcontroller
                 'icd9',
                 'diagnosakunjungan',
                 'diagnosatindakan',
-                'get_cek_ver'
+                'get_cek_ver',
+                'kode_kunjungan',
+                'lab_luar',
+                'rad_luar',
+                'echo_jantung',
+                'ekg',
+                'endoskopi',
+                'produk_obat',
+                'laporan_polisi',
+                'kronologis_laka',
+                'USG',
+                'lainnya'
             ]));
         } catch (\Exception $e) {
             return response()->json([
@@ -234,7 +296,15 @@ class VerifikasiBerkasRajalController extends UpdateERMcontroller
             // Ambil detail rincian obat/layanan (opsional, disesuaikan tabel detail Anda)
             // URL Cetak SEP untuk dipanggil di frontend/blade
             $urlCetakSEP = $no_sep ? "http://192.168.2.30/siramah/cetakSEPAntrian?noSep={$no_sep}" : null;
-            $urlLembarKonsul = url('cetaklembarkonsul/' . $kode_kunjungan);
+            $get_kunjungan_konsul = db::select('select * from ts_kunjungan where ref_kunjungan = ?', [$kode_kunjungan]);
+            if (count($get_kunjungan_konsul) > 0) {
+                $kode_konsul = $get_kunjungan_konsul[0]->kode_kunjungan;
+                $urlLembarKonsul = url('cetaklembarkonsul/' . $kode_konsul);
+                $keterangankonsul = '1';
+            } else {
+                $urlLembarKonsul = '';
+                $keterangankonsul = '0';
+            }
             $urlExpertisiPoli = url('cetakhasilexpertisipoli/' . $kode_kunjungan);
             $headerhd = db::select('select * from ts_header_catatan_hemodialisis where kode_kunjungan = ?', [$kode_kunjungan]);
             if (count($headerhd) > 0) {
@@ -304,9 +374,10 @@ class VerifikasiBerkasRajalController extends UpdateERMcontroller
             $USG             = $berkas_tersimpan['USG_Poliklinik'];
             $lainnya         = $berkas_tersimpan['lainnya'];
             // dd($lainn)
+            // DD('ok');
             return view('Casemix.list_berkas_klaim', compact([
-
                 'kunjungan',
+                'keterangankonsul',
                 'layananheader',
                 'ts_kunjungan',
                 'detail_obat',
@@ -381,7 +452,7 @@ class VerifikasiBerkasRajalController extends UpdateERMcontroller
             $kodeKunjungan = $request->kode_kunjungan;
             if ($request->has('diagnosa_utama')) {
                 foreach ($request->diagnosa_utama as $kode) {
-                    DiagnosaKunjungan::create([
+                    DiagnosaKunjungan::firstOrCreate([
                         'kode_kunjungan' => $kodeKunjungan,
                         'kategori'       => 'Utama',
                         'kode_icd10'     => $kode,
@@ -391,7 +462,7 @@ class VerifikasiBerkasRajalController extends UpdateERMcontroller
             // 2. Diagnosa Sekunder
             if ($request->has('diagnosa_sekunder')) {
                 foreach ($request->diagnosa_sekunder as $kode) {
-                    DiagnosaKunjungan::create([
+                    DiagnosaKunjungan::firstOrCreate([
                         'kode_kunjungan' => $kodeKunjungan,
                         'kategori'       => 'Sekunder',
                         'kode_icd10'     => $kode,
@@ -404,7 +475,7 @@ class VerifikasiBerkasRajalController extends UpdateERMcontroller
             // 1. Prosedur
             if ($request->has('tindakan_prosedur')) {
                 foreach ($request->tindakan_prosedur as $kode) {
-                    TindakanKunjungan::create([
+                    TindakanKunjungan::firstOrCreate([
                         'kode_kunjungan' => $kodeKunjungan,
                         'kategori'       => 'Prosedur',
                         'kode_icd9'      => $kode,
@@ -414,7 +485,7 @@ class VerifikasiBerkasRajalController extends UpdateERMcontroller
             // 2. Operasi
             if ($request->has('tindakan_operasi')) {
                 foreach ($request->tindakan_operasi as $kode) {
-                    TindakanKunjungan::create([
+                    TindakanKunjungan::firstOrCreate([
                         'kode_kunjungan' => $kodeKunjungan,
                         'kategori'       => 'Operasi',
                         'kode_icd9'      => $kode,
@@ -424,7 +495,7 @@ class VerifikasiBerkasRajalController extends UpdateERMcontroller
             // 3. Penunjang
             if ($request->has('tindakan_penunjang')) {
                 foreach ($request->tindakan_penunjang as $kode) {
-                    TindakanKunjungan::create([
+                    TindakanKunjungan::firstOrCreate([
                         'kode_kunjungan' => $kodeKunjungan,
                         'kategori'       => 'Penunjang',
                         'kode_icd9'      => $kode,
@@ -432,6 +503,7 @@ class VerifikasiBerkasRajalController extends UpdateERMcontroller
                 }
             }
             DB::commit();
+            // dd('ok');
             return response()->json([
                 'success' => true,
                 'message' => 'Data Diagnosa & Prosedur berhasil disimpan!'
@@ -439,7 +511,7 @@ class VerifikasiBerkasRajalController extends UpdateERMcontroller
         } catch (\Exception $e) {
             // Batalkan transaksi jika terjadi kesalahan
             DB::rollBack();
-
+            // dd('ok');
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal menyimpan data: ' . $e->getMessage()
@@ -637,7 +709,7 @@ class VerifikasiBerkasRajalController extends UpdateERMcontroller
     {
         // Path lengkap ke folder NAS Anda
         $path = '\\\\192.168.2.14\\erm\\berkas_scan_poli\\' . $filename;
-        
+
         // Cek apakah file fisiknya ada di NAS
         if (!file_exists($path)) {
             abort(404, 'File PDF tidak ditemukan di NAS.');
@@ -647,5 +719,95 @@ class VerifikasiBerkasRajalController extends UpdateERMcontroller
         return response()->file($path, [
             'Content-Type' => 'application/pdf',
         ]);
+    }
+    public function cetakrincian($kodekunjungan)
+    {
+        $DK = DB::select('select * from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+        $rm = $DK[0]->no_rm;
+        // $KODE_HEADER = $DH[0]->kode_layanan_header;
+        $counter = $DK[0]->counter;
+        // $PDO = DB::connection()->getPdo();
+        // $QUERY = $PDO->prepare("CALL RINCIAN_BIAYA_VERIF_REBORN_DUDY('$rm','$counter')");
+        // $QUERY->execute();
+        // $data = $QUERY->fetchAll();
+        // dd($data);
+        // $filename = 'C:\cetakanrincianbiaya\r_biaya1.jrxml';
+        // $config = ['driver' => 'array', 'data' => $data];
+        // $report = new PHPJasperXML();
+        // $report->load_xml_file($filename)
+        //     ->setDataSource($config)
+        //     ->export('Pdf');
+        $results = DB::select('CALL RINCIAN_BIAYA_VERIF_REBORN_DUDY(?, ?)', [$rm, $counter]);
+        $data = json_decode(json_encode($results), true);
+        // dd($data);
+        // Fallback pengaman jika data kosong agar tidak null
+        if (empty($data)) {
+            $data = []; // atau return error handling yang ramah
+        }
+
+        // $filename = 'C:\cetakanrincianbiaya\r_biaya1.jrxml';
+        $filename = 'C:/cetakanrincianbiaya/r_biaya2.jrxml'; // Gunakan slash biasa
+        if (!file_exists($filename)) {
+            dd("File .jrxml tidak ditemukan di direktori tersebut!");
+        }
+        $config = [
+            'driver' => 'array',
+            'data' => $data
+        ];
+        $report = new PHPJasperXML();
+        $report->load_xml_file($filename)
+            ->setDataSource($config)
+            ->export('Pdf');
+    }
+    public function ambil_diagnosa_utama_tersimpan(request $request)
+    {
+        $kode_kunjungan = $request->kode_kunjungan;
+        $data_digan = db::table('ts_kunjungan_diagnosa_utama')->where('kode_kunjungan', $kode_kunjungan)->where('kategori', 'Utama')->get();
+        // dd($kode_kunjungan);
+        return view('Casemix.tabel_diag_utama', compact(['data_digan']));
+    }
+    public function ambil_diagnosa_sekunder_tersimpan(request $request)
+    {
+        $kode_kunjungan = $request->kode_kunjungan;
+        $data_digan = db::table('ts_kunjungan_diagnosa_utama')->where('kode_kunjungan', $kode_kunjungan)->where('kategori', 'Sekunder')->get();        // dd($kode_kunjungan);
+        return view('Casemix.tabel_diag_sekunder', compact(['data_digan']));
+    }
+    public function ambil_tindakan_prosedur(request $request)
+    {
+        $kode_kunjungan = $request->kode_kunjungan;
+        $data_digan = db::table('ts_kunjungan_diagnosa_tindakn')->where('kode_kunjungan', $kode_kunjungan)->where('kategori', 'Prosedur')->get();        // dd($kode_kunjungan);
+        return view('Casemix.tabel_diag_tindakan_prosedur', compact(['data_digan']));
+    }
+    public function ambil_tindakan_op(request $request)
+    {
+        $kode_kunjungan = $request->kode_kunjungan;
+        $data_digan = db::table('ts_kunjungan_diagnosa_tindakn')->where('kode_kunjungan', $kode_kunjungan)->where('kategori', 'Operasi')->get();        // dd($kode_kunjungan);
+        return view('Casemix.tabel_diag_tindakan_prosedur', compact(['data_digan']));
+    }
+    public function ambil_tindakan_penunjang(request $request)
+    {
+        $kode_kunjungan = $request->kode_kunjungan;
+        $data_digan = db::table('ts_kunjungan_diagnosa_tindakn')->where('kode_kunjungan', $kode_kunjungan)->where('kategori', 'Penunjang')->get();        // dd($kode_kunjungan);
+        return view('Casemix.tabel_diag_tindakan_prosedur', compact(['data_digan']));
+    }
+    public function hapuscoderdiagnosau(Request $request)
+    {
+        $id = $request->id;
+        db::table('ts_kunjungan_diagnosa_utama')->where('id', $id)->delete();
+        return response()->json([
+            'kode' => 200,
+            'message' => 'data berhasil dihapus ...'
+        ]);
+        die;
+    }
+    public function hapuscoderdiagnosatindakan(Request $request)
+    {
+        $id = $request->id;
+        db::table('ts_kunjungan_diagnosa_tindakn')->where('id', $id)->delete();
+        return response()->json([
+            'kode' => 200,
+            'message' => 'data berhasil dihapus ...'
+        ]);
+        die;
     }
 }
