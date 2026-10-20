@@ -1739,7 +1739,6 @@
         }).datepicker('update', new Date());
     });
     $(document).ready(function() {
-
         formupload2()
     })
 
