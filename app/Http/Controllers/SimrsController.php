@@ -4119,7 +4119,6 @@ class SimrsController extends Controller
             echo json_encode($data);
             die;
         }
-        die;
         $waktu = $this->get_now();
         $data_pasien = [
             'no_rm' => $rm,

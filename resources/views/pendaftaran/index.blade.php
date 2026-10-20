@@ -620,7 +620,6 @@
                 });
             }
         }
-
         function updatepasien() {
             nomorrm = $('#edit_nomorrm').val()
             nomorktp = $('#edit_nomorktp').val()

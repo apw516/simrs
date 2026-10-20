@@ -924,6 +924,9 @@ Route::post('/simpanaktivasitte', [UpdateERMcontroller::class, 'simpanaktivasitt
 Route::post('/formassesmenbundir', [UpdateERMcontroller::class, 'formassesmenbundir'])->name('formassesmenbundir');
 Route::post('/v_berkas_scan_kunjungan', [UpdateERMcontroller::class, 'v_berkas_scan_kunjungan'])->name('v_berkas_scan_kunjungan');
 Route::post('/asesmen-bunuh-diri/store', [UpdateERMcontroller::class, 'storeassbun'])->name('asesmen-bunuh-diri.store');
+Route::post('/form_laporan_tindakan', [UpdateERMcontroller::class, 'form_laporan_tindakan'])->name('form_laporan_tindakan');
+
+
 
 // indexbillingpenunjang
 Route::get('indexlaporanpendapatanpa', [BillingController::class, 'indexlaporanpendapatanpa'])->name('indexlaporanpendapatanpa');

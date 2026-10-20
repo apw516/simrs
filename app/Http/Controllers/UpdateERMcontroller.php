@@ -2084,4 +2084,8 @@ class UpdateERMcontroller extends Controller
 
         return $html;
     }
+    public function form_laporan_tindakan(Request $request)
+    {
+        return view('form_erm_perawat.index_laporan_tindakan');
+    }
 }
