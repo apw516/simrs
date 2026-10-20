@@ -288,11 +288,27 @@
                                 <div class="col-6 text-center">
                                     <p class="mb-1">Cirebon, <input type="text"
                                             class="underline-input text-center" style="width: 150px;"
-                                            placeholder="....................... 20...."></p>
-                                    <div style="height: 70px;"></div>
-                                    <p class="mb-0 font-weight-bold">(
-                                        ................................................... )</p>
-                                    <small>Dokter Pemeriksa</small>
+                                            placeholder="Tanggal Pemeriksaan"></p>
+                                    <div style="height: 30px;"></div>
+
+                                    <!-- Autocomplete Search Container -->
+                                    <div class="position-relative px-3">
+                                        <!-- Hidden input untuk menyimpan ID/Kode Dokter -->
+                                        <input type="hidden" id="id_dokter" name="id_dokter">
+
+                                        <!-- Input Text untuk Pencarian -->
+                                        <input type="text" id="search_dokter"
+                                            class="form-control form-control-sm text-center underline-input font-weight-bold"
+                                            placeholder="Ketik nama dokter/paramedis..." autocomplete="off">
+
+                                        <!-- Dropdown Hasil AJAX -->
+                                        <div id="list_dokter" class="dropdown-menu w-100 shadow-sm"
+                                            style="max-height: 160px; overflow-y: auto; display: none; position: absolute; z-index: 1000;">
+                                            <!-- Hasil pencarian akan muncul di sini secara dinamis -->
+                                        </div>
+                                    </div>
+
+                                    <small class="text-muted mt-1 d-block">Dokter Pemeriksa</small>
                                 </div>
                             </div>
                         </form>

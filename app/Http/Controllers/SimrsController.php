@@ -4102,19 +4102,21 @@ class SimrsController extends Controller
             $nobpjs = '0';
         }
         $cek_ktp = db::table('mt_pasien')->where('nik_bpjs', $request->nomorktp)->get();
-        $cek_bpjs = db::table('mt_pasien')->where('no_Bpjs', $nobpjs)->get();
+        if($nobpjs != 0){
+            $cek_bpjs = db::table('mt_pasien')->where('no_Bpjs', $nobpjs)->get();
+            if (count($cek_bpjs) > 0) {
+                $data = [
+                    'code' => 500,
+                    'message' => 'Nomor BPJS Sudah dipakai ...'
+                ];
+                echo json_encode($data);
+                die;
+            }
+        }
         if (count($cek_ktp) > 0) {
             $data = [
                 'code' => 500,
                 'message' => 'Nomor KTP Sudah dipakai ...'
-            ];
-            echo json_encode($data);
-            die;
-        }
-        if (count($cek_bpjs) > 0) {
-            $data = [
-                'code' => 500,
-                'message' => 'Nomor BPJS Sudah dipakai ...'
             ];
             echo json_encode($data);
             die;
