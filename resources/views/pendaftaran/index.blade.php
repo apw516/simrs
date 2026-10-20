@@ -596,18 +596,25 @@
                         alamatdom
                     },
                     url: '<?= route('simpanpasien') ?>',
-                    error: function(datas) {
+                    error: function(data) {
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops maaf sepertinya ada masalah'
                         })
                     },
                     success: function(data) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil insert data pasien ...',
-                        })
-                        location.reload()
+                        if(data.code == 200){
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil insert data pasien ...',
+                            })
+                            location.reload()
+                        }else{
+                             Swal.fire({
+                                icon: 'error',
+                                title: data.message,
+                            })
+                        }
                         // $('#daftarpxumum').attr('disabled', true);
                     }
                 });

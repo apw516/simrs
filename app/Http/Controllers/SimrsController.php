@@ -873,7 +873,7 @@ class SimrsController extends Controller
 
         $result = $v->referensi_obat_generik_prb($keyword);
         $arr_result = [];
-        
+
         // Validasi response dari VClaim BPJS agar tidak error saat data kosong/null
         if (isset($result->response->list) && is_array($result->response->list) && count($result->response->list) > 0) {
             foreach ($result->response->list as $row) {
@@ -4083,6 +4083,7 @@ class SimrsController extends Controller
     public function simpanpasien(Request $request)
     {
         $rm = $this->get_rm();
+
         if ($request->sesuaiktp == 1) {
             $desa = $request->desa;
             $kecamatan = $request->kecamatan;
@@ -4100,6 +4101,25 @@ class SimrsController extends Controller
         if ($request->nomorbpjs == '') {
             $nobpjs = '0';
         }
+        $cek_ktp = db::table('mt_pasien')->where('nik_bpjs', $request->nomorktp)->get();
+        $cek_bpjs = db::table('mt_pasien')->where('no_Bpjs', $nobpjs)->get();
+        if (count($cek_ktp) > 0) {
+            $data = [
+                'code' => 500,
+                'message' => 'Nomor KTP Sudah dipakai ...'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        if (count($cek_bpjs) > 0) {
+            $data = [
+                'code' => 500,
+                'message' => 'Nomor BPJS Sudah dipakai ...'
+            ];
+            echo json_encode($data);
+            die;
+        }
+        die;
         $waktu = $this->get_now();
         $data_pasien = [
             'no_rm' => $rm,
