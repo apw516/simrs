@@ -541,13 +541,13 @@ class Pdf2Controller extends Controller
             $t = count($cek2) + 1;
             $nama = 'Resume-medis' . $t;
             $urlfile = '\\\\192.168.2.14\\erm\\resume_medis_rawat_jalan/';
-            $pdf = $urlfile.$kodekunjungan.$nama.'.pdf';
-            db::table('log_ttd_elektronik')->where('id',$cek2[0]->id)->update(['file' => $pdf]);
+            $pdf = $urlfile . $kodekunjungan . $nama . '.pdf';
+            db::table('log_ttd_elektronik')->where('id', $cek2[0]->id)->update(['file' => $pdf]);
         } else {
             $nama = 'Resume-medis' . '1';
             // $namafile = $nama . $kodekunjungan . '.pdf';
             $urlfile = '\\\\192.168.2.14\\erm\\resume_medis_rawat_jalan/';
-            $pdf = $urlfile.$kodekunjungan.$nama.'.pdf';
+            $pdf = $urlfile . $kodekunjungan . $nama . '.pdf';
             $savee = [
                 'kode_kunjungan' => $kodekunjungan,
                 'status_code' => '200',
@@ -563,8 +563,8 @@ class Pdf2Controller extends Controller
             'tanggal_verifikasi' => $assesmen[0]->tgl_pemeriksaan,
             'jabatan' => "Dokter",
         ];
-        $DIAGNOSAKUNJUNGAN = DB::select('select * from ts_kunjungan_diagnosa_utama where kode_kunjungan = ?',[$kodekunjungan]);
-        $DIAGNOSATINDAKAN = DB::select('select * from ts_kunjungan_diagnosa_tindakn where kode_kunjungan = ?',[$kodekunjungan]);
+        $DIAGNOSAKUNJUNGAN = DB::select('select * from ts_kunjungan_diagnosa_utama where kode_kunjungan = ?', [$kodekunjungan]);
+        $DIAGNOSATINDAKAN = DB::select('select * from ts_kunjungan_diagnosa_tindakn where kode_kunjungan = ?', [$kodekunjungan]);
         $v = new ModelBSRE();
         $DD = $v->sendpdftosiramah($datasend);
         $url1 = "https://siramah.rsudwaled.com/filetandatangan?id=" . $nama . $kodekunjungan;
@@ -1159,13 +1159,13 @@ class Pdf2Controller extends Controller
         $refkunjungan = $kunjungan[0]->ref_kunjungan;
         $assesmen_konsul = db::select('select * from assesmen_dokters where id_kunjungan = ?', [$refkunjungan]);
         $assesmen_jawab = db::select('select *,fc_nama_unit1(kode_unit) as unit_konsul from assesmen_dokters where id_kunjungan = ?', [$kodekunjungan]);
-        if($refkunjungan == 0){
+        if ($refkunjungan == 0) {
             $refkunjungan = $kodekunjungan;
             $assesmen_konsul = db::select('select * from assesmen_dokters where id_kunjungan = ?', [$refkunjungan]);
             $kunjungan2 = db::select('select * from ts_kunjungan where ref_kunjungan = ?', [$kodekunjungan]);
-            if(count($kunjungan2)>0){
+            if (count($kunjungan2) > 0) {
                 $assesmen_jawab = db::select('select *,fc_nama_unit1(kode_unit) as unit_konsul from assesmen_dokters where id_kunjungan = ?', [$kunjungan2[0]->kode_kunjungan]);
-            }else{
+            } else {
                 echo 'Tidak ada berkas Konsul';
                 die;
             }
@@ -1395,6 +1395,67 @@ class Pdf2Controller extends Controller
             return '<h5>' . $DD['messagee']->message . '</h5>';
         } else {
             return 'ERROR';
+        }
+    }
+    public function cetakLaporanTelinga($kode_kunjungan)
+    {
+        try {
+            // Ambil data laporan pemeriksaan telinga berdasarkan kode kunjungan
+            $get_data = DB::table('ts_laporan_tindakan_telinga')
+                ->where('kode_kunjungan', $kode_kunjungan)
+                ->first();
+
+            // Ambil data pasien (sesuaikan nama tabel/view pasien di SIMRS RSUD Waled Anda)
+            // Contoh mengambil data kunjungan/pasien:
+            $pasien = DB::table('ts_kunjungan') // Atau tabel pasien yang sesuai
+                ->select('ts_kunjungan.kode_kunjungan', 'b.nama_px', 'b.no_rm', 'b.tgl_lahir')
+                ->join('mt_pasien as b', 'ts_kunjungan.no_rm', '=', 'b.no_rm')
+                ->where('ts_kunjungan.kode_kunjungan', $kode_kunjungan)
+                ->first();
+            // Jika Anda ingin langsung melempar array kosong jika data belum ada
+            return view('pdf.cetakan_laporan_tindakan_endoskopi_telinga', compact('get_data', 'pasien', 'kode_kunjungan'));
+        } catch (\Exception $e) {
+            return abort(500, 'Terjadi kesalahan saat memuat data cetakan: ' . $e->getMessage());
+        }
+    }
+    public function cetakLaporanHidung($kode_kunjungan)
+    {
+        try {
+            // Ambil data laporan pemeriksaan hidung
+            $get_data = DB::table('ts_laporan_tindakan_hidung')
+                ->where('kode_kunjungan', $kode_kunjungan)
+                ->first();
+
+            // Ambil data pasien dari tabelSIMRS
+            $pasien = DB::table('ts_kunjungan')
+                ->select('ts_kunjungan.kode_kunjungan', 'b.nama_px', 'b.no_rm', 'b.tgl_lahir')
+                ->join('mt_pasien as b', 'ts_kunjungan.no_rm', '=', 'b.no_rm')
+                ->where('ts_kunjungan.kode_kunjungan', $kode_kunjungan)
+                ->first();
+
+            return view('pdf.print_laporan_hidung', compact('get_data', 'pasien', 'kode_kunjungan'));
+        } catch (\Exception $e) {
+            return abort(500, 'Terjadi kesalahan saat memuat cetakan: ' . $e->getMessage());
+        }
+    }
+    public function cetakLaporanEndoskopiTht($kode_kunjungan)
+    {
+        try {
+            // Ambil data laporan pemeriksaan endoskopi THT-KL
+            $get_data = DB::table('ts_laporan_tindakan_endoskopi_tht')
+                ->where('kode_kunjungan', $kode_kunjungan)
+                ->first();
+
+            // Ambil data pasien dari database SIMRS RSUD Waled
+            $pasien = DB::table('ts_kunjungan')
+                ->select('ts_kunjungan.kode_kunjungan', 'b.nama_px', 'b.no_rm', 'b.tgl_lahir', 'b.jenis_kelamin')
+                ->join('mt_pasien as b', 'ts_kunjungan.no_rm', '=', 'b.no_rm')
+                ->where('ts_kunjungan.kode_kunjungan', $kode_kunjungan)
+                ->first();
+
+            return view('pdf.print_laporan_endoskopi_tht', compact('get_data', 'pasien', 'kode_kunjungan'));
+        } catch (\Exception $e) {
+            return abort(500, 'Terjadi kesalahan saat memuat cetakan: ' . $e->getMessage());
         }
     }
 }

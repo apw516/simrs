@@ -2086,6 +2086,224 @@ class UpdateERMcontroller extends Controller
     }
     public function form_laporan_tindakan(Request $request)
     {
-        return view('form_erm_perawat.index_laporan_tindakan');
+        $kode_kunjungan = $request->kodekunjungan;
+        $get_data = db::table('ts_laporan_tindakan_telinga')->where('kode_kunjungan', $kode_kunjungan)->first();
+        $get_data_hidung = db::table('ts_laporan_tindakan_hidung')->where('kode_kunjungan', $kode_kunjungan)->first();
+        $get_data_tht = db::table('ts_laporan_tindakan_endoskopi_tht')->where('kode_kunjungan', $kode_kunjungan)->first();
+
+        $formData = [];
+        $formData_hidung = [];
+        $formData_tht = [];
+        // Jika data ditemukan dan kolom data_detail tidak kosong, decode JSON-nya
+        if ($get_data && !empty($get_data->data_detail)) {
+            $formData = json_decode($get_data->data_detail, true);
+        }
+        if ($get_data_hidung && !empty($get_data_hidung->data_detail)) {
+            $formData_hidung = json_decode($get_data_hidung->data_detail, true);
+        }
+        if ($get_data_tht && !empty($get_data_tht->data_detail)) {
+            $formData_tht = json_decode($get_data_tht->data_detail, true);
+        }
+        return view('form_erm_perawat.index_laporan_tindakan', compact([
+            'kode_kunjungan',
+            'get_data',
+            'formData',
+            'get_data_hidung',
+            'formData_hidung',
+            'get_data_tht',
+            'formData_tht'
+        ]));
+    }
+    public function caridoktertindakan(Request $request)
+    {
+
+        // Mengambil keyword dari parameter ?q=...
+        $keyword = $request->input('q');
+
+        // Contoh Query ke Database (Sesuaikan nama tabel dan kolom dengan database RSUD/SIMRS Anda)
+        $data = DB::table('mt_paramedis') // Contoh: tabel dokter / pegawai / paramedis
+            ->where('nama_paramedis', 'LIKE', "%{$keyword}%")
+            ->select('kode_paramedis', 'nama_paramedis') // Pastikan mengambil kolom 'id' dan 'nama'
+            ->limit(10) // Batasi hasil agar tidak terlalu banyak
+            ->get();
+
+        // Mengembalikan data dalam bentuk JSON
+        return response()->json($data);
+    }
+    public function simpanlaporantelinga(Request $request)
+    {
+        try {
+            $kodeKunjungan = $request->input('kode_kunjungan');
+            $semuaDataInput = $request->all();
+
+            // Cek dan lakukan insert atau update otomatis berdasarkan kode_kunjungan
+            DB::table('ts_laporan_tindakan_telinga')->updateOrInsert(
+                [
+                    'kode_kunjungan' => $kodeKunjungan // Kondisi unik yang dicek
+                ],
+                [
+                    'kode_paramedis' => $request->input('id_dokter'),
+                    'kesimpulan'     => $request->input('kesimpulan'),
+                    'anjuran'        => $request->input('anjuran'),
+                    'data_detail'    => json_encode($semuaDataInput),
+                    'updated_at'     => now(),
+                    // 'created_at' otomatis diisi oleh Laravel saat data baru dibuat jika menggunakan updateOrInsert
+                ]
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Laporan pemeriksaan berhasil disimpan!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    public function simpanlaporanhidung(Request $request)
+    {
+        try {
+            $kodeKunjungan = $request->input('kode_kunjungan');
+            $semuaDataInput = $request->all();
+
+            // Cek apakah data laporan hidung dengan kode_kunjungan tersebut sudah ada
+            $exists = DB::table('ts_laporan_tindakan_hidung')
+                ->where('kode_kunjungan', $kodeKunjungan)
+                ->exists();
+
+            if ($exists) {
+                // Jika SUDAH ADA, lakukan UPDATE (created_at dibiarkan tetap)
+                DB::table('ts_laporan_tindakan_hidung')
+                    ->where('kode_kunjungan', $kodeKunjungan)
+                    ->update([
+                        'kode_paramedis' => $request->input('id_dokter'),
+                        'kesimpulan'     => $request->input('kesimpulan'),
+                        'data_detail'    => json_encode($semuaDataInput),
+                        'updated_at'     => now(),
+                    ]);
+            } else {
+                // Jika BELUM ADA, lakukan INSERT (buat baru)
+                DB::table('ts_laporan_tindakan_hidung')->insert([
+                    'kode_kunjungan' => $kodeKunjungan,
+                    'kode_paramedis' => $request->input('id_dokter'),
+                    'kesimpulan'     => $request->input('kesimpulan'),
+                    'data_detail'    => json_encode($semuaDataInput),
+                    'created_at'     => now(),
+                    'updated_at'     => now(),
+                ]);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Laporan pemeriksaan nasoendoskopi hidung berhasil disimpan!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    public function simpanlaporanendoskopitht(Request $request)
+    {
+        try {
+            $kodeKunjungan = $request->input('kode_kunjungan');
+            $semuaDataInput = $request->all();
+
+            // Cek apakah data laporan endoskopi THT-KL dengan kode_kunjungan tersebut sudah ada
+            $exists = DB::table('ts_laporan_tindakan_endoskopi_tht')
+                ->where('kode_kunjungan', $kodeKunjungan)
+                ->exists();
+
+            if ($exists) {
+                // Jika SUDAH ADA, lakukan UPDATE (created_at dibiarkan tetap)
+                DB::table('ts_laporan_tindakan_endoskopi_tht')
+                    ->where('kode_kunjungan', $kodeKunjungan)
+                    ->update([
+                        'kode_paramedis' => $request->input('id_dokter'),
+                        'kesimpulan'     => $request->input('kesimpulan'),
+                        'saran'          => $request->input('saran'),
+                        'data_detail'    => json_encode($semuaDataInput),
+                        'updated_at'     => now(),
+                    ]);
+            } else {
+                // Jika BELUM ADA, lakukan INSERT (buat baru)
+                DB::table('ts_laporan_tindakan_endoskopi_tht')->insert([
+                    'kode_kunjungan' => $kodeKunjungan,
+                    'kode_paramedis' => $request->input('id_dokter'),
+                    'kesimpulan'     => $request->input('kesimpulan'),
+                    'saran'          => $request->input('saran'),
+                    'data_detail'    => json_encode($semuaDataInput),
+                    'created_at'     => now(),
+                    'updated_at'     => now(),
+                ]);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Laporan pemeriksaan endoskopi THT-KL berhasil disimpan!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    public function ambil_hasil_endos_telinga(Request $request)
+    {
+        $no_rm = $request->nomorrm;
+
+        // 1. Ambil daftar kode kunjungan berdasarkan No. RM
+        $kodeKunjungan = DB::table('ts_kunjungan')
+            ->where('no_rm', $no_rm)
+            ->pluck('kode_kunjungan'); // Sesuaikan nama kolom kode kunjungan di tabel ts_kunjungan
+
+        // 2. Ambil data laporan tindakan telinga berdasarkan daftar kode kunjungan tersebut
+        $data_laporan = DB::table('ts_laporan_tindakan_telinga')
+            ->whereIn('kode_kunjungan', $kodeKunjungan)
+            ->orderBy('id','DESC')
+            ->get();
+
+        // 3. Kirim data ke view
+        return view('form_erm_perawat.list_laporan_tindakan_telinga', compact('data_laporan'));
+    }
+    public function ambil_hasil_endos_hidung(Request $request)
+    {
+        $no_rm = $request->nomorrm;
+
+        // 1. Ambil daftar kode kunjungan berdasarkan No. RM
+        $kodeKunjungan = DB::table('ts_kunjungan')
+            ->where('no_rm', $no_rm)
+            ->pluck('kode_kunjungan'); // Sesuaikan nama kolom kode kunjungan di tabel ts_kunjungan
+
+        // 2. Ambil data laporan tindakan telinga berdasarkan daftar kode kunjungan tersebut
+        $data_laporan = DB::table('ts_laporan_tindakan_hidung')
+            ->whereIn('kode_kunjungan', $kodeKunjungan)
+            ->orderBy('id','DESC')
+            ->get();
+
+        // 3. Kirim data ke view
+        return view('form_erm_perawat.list_laporan_tindakan_hidung', compact('data_laporan'));
+    }
+    public function ambil_hasil_endos_tht(Request $request)
+    {
+        $no_rm = $request->nomorrm;
+
+        // 1. Ambil daftar kode kunjungan berdasarkan No. RM
+        $kodeKunjungan = DB::table('ts_kunjungan')
+            ->where('no_rm', $no_rm)
+            ->pluck('kode_kunjungan'); // Sesuaikan nama kolom kode kunjungan di tabel ts_kunjungan
+
+        // 2. Ambil data laporan tindakan telinga berdasarkan daftar kode kunjungan tersebut
+        $data_laporan = DB::table('ts_laporan_tindakan_endoskopi_tht')
+            ->whereIn('kode_kunjungan', $kodeKunjungan)
+            ->orderBy('id','DESC')
+            ->get();
+
+        // 3. Kirim data ke view
+        return view('form_erm_perawat.list_laporan_tindakan_tht', compact('data_laporan'));
     }
 }

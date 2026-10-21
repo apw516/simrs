@@ -920,13 +920,21 @@ Route::get('/panduan/aktivasi-tte', [UpdateERMcontroller::class, 'viewPanduanTte
 Route::get('log.buka.panduan', [UpdateERMcontroller::class, 'viewPanduanTte'])->name('log.buka.panduan');
 
 Route::post('/simpanaktivasitte', [UpdateERMcontroller::class, 'simpanaktivasitte'])->name('simpanaktivasitte');
+Route::post('/ambil_hasil_endos_telinga', [UpdateERMcontroller::class, 'ambil_hasil_endos_telinga'])->name('ambil_hasil_endos_telinga');
+Route::post('/ambil_hasil_endos_hidung', [UpdateERMcontroller::class, 'ambil_hasil_endos_hidung'])->name('ambil_hasil_endos_hidung');
+Route::post('/ambil_hasil_endos_tht', [UpdateERMcontroller::class, 'ambil_hasil_endos_tht'])->name('ambil_hasil_endos_tht');
 
 Route::post('/formassesmenbundir', [UpdateERMcontroller::class, 'formassesmenbundir'])->name('formassesmenbundir');
 Route::post('/v_berkas_scan_kunjungan', [UpdateERMcontroller::class, 'v_berkas_scan_kunjungan'])->name('v_berkas_scan_kunjungan');
 Route::post('/asesmen-bunuh-diri/store', [UpdateERMcontroller::class, 'storeassbun'])->name('asesmen-bunuh-diri.store');
 Route::post('/form_laporan_tindakan', [UpdateERMcontroller::class, 'form_laporan_tindakan'])->name('form_laporan_tindakan');
-
-
+Route::get('/caridoktertindakan', [UpdateERMcontroller::class, 'caridoktertindakan'])->name('caridoktertindakan');
+Route::post('/simpanlaporantelinga', [UpdateERMcontroller::class, 'simpanlaporantelinga'])->name('simpanlaporantelinga');
+Route::post('/simpanlaporanhidung', [UpdateERMcontroller::class, 'simpanlaporanhidung'])->name('simpanlaporanhidung');
+Route::post('/simpanlaporanendoskopitht', [UpdateERMcontroller::class, 'simpanlaporanendoskopitht'])->name('simpanlaporanendoskopitht');
+Route::get('/laporan-telinga/cetak/{kode_kunjungan}', [Pdf2Controller::class, 'cetakLaporanTelinga'])->name('cetak.laporantelinga');
+Route::get('/laporan-hidung/cetak/{kode_kunjungan}', [Pdf2Controller::class, 'cetakLaporanHidung'])->name('cetak.laporanhidung');
+Route::get('/laporan-endoskopi-tht/cetak/{kode_kunjungan}', [Pdf2Controller::class, 'cetakLaporanEndoskopiTht'])->name('cetak.laporanendoskopitht');
 
 // indexbillingpenunjang
 Route::get('indexlaporanpendapatanpa', [BillingController::class, 'indexlaporanpendapatanpa'])->name('indexlaporanpendapatanpa');

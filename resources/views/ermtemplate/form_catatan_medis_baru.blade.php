@@ -19,6 +19,14 @@
             data-target="#modalcatatanhemodialisa"><i class="bi bi-journal-text"></i> Catatan Hemodialisa </button>
         <button class="btn btn-info mb-2 lihat_catatan_prmj" nomorrm="{{ $rm }}" data-toggle="modal"
             data-target="#modalprmj"><i class="bi bi-journal-text"></i> Profil Ringkas Medis Rawat Jalan </button>
+        <button class="btn btn-danger mb-2 lihat_hasil_endos_telinga" nomorrm="{{ $rm }}" data-toggle="modal"
+            data-target="#modalendoskopitelingan"><i class="bi bi-journal-text"></i> Pemeriksaan Mikroskopik / Endoskopi
+            Telinga </button>
+        <button class="btn btn-danger mb-2 lihat_endos_hidung" nomorrm="{{ $rm }}" data-toggle="modal"
+            data-target="#modalendoskopihidung"><i class="bi bi-journal-text"></i> Pemeriksaan Nasoendoskopi / Endoskopi Hidung
+        </button>
+        <button class="btn btn-danger mb-2 lihat_endos_tht" nomorrm="{{ $rm }}" data-toggle="modal"
+            data-target="#modalendoskopitht"><i class="bi bi-journal-text"></i> Pemeriksaan Endoskopi THT - KL </button>
         <div class="accordion" id="accordionExample">
             @php
                 $urutan = 1;
@@ -173,26 +181,28 @@
                                                             </td>
                                                             <td>{{ $k->keterangancacattubuh }}</td>
                                                         </tr>
-                                                        <tr @if($k->usia < 65) hidden @endif class="bg-info">
-                                                            <td colspan="3" class="text-center text-bold">Pasien Geriatri</td>
+                                                        <tr @if ($k->usia < 65) hidden @endif
+                                                            class="bg-info">
+                                                            <td colspan="3" class="text-center text-bold">Pasien
+                                                                Geriatri</td>
                                                         </tr>
-                                                        <tr @if($k->usia < 65) hidden @endif>
+                                                        <tr @if ($k->usia < 65) hidden @endif>
                                                             <td class="text-bold font-italic">ADL</td>
                                                             <td colspan="2">{{ $k->adl_1 }}</td>
                                                         </tr>
-                                                        <tr @if($k->usia < 65) hidden @endif>
+                                                        <tr @if ($k->usia < 65) hidden @endif>
                                                             <td class="text-bold font-italic">Kognitif</td>
                                                             <td colspan="2">{{ $k->kognitif_geriatri }}</td>
                                                         </tr>
-                                                        <tr @if($k->usia < 65) hidden @endif>
+                                                        <tr @if ($k->usia < 65) hidden @endif>
                                                             <td class="text-bold font-italic">Depresi</td>
                                                             <td colspan="2">{{ $k->depresi_geriatri }}</td>
                                                         </tr>
-                                                        <tr @if($k->usia < 65) hidden @endif>
+                                                        <tr @if ($k->usia < 65) hidden @endif>
                                                             <td class="text-bold font-italic">Inkontinensia</td>
                                                             <td colspan="2">{{ $k->inkontinensia_geriatri }}</td>
                                                         </tr>
-                                                        <tr @if($k->usia < 65) hidden @endif>
+                                                        <tr @if ($k->usia < 65) hidden @endif>
                                                             <td class="text-bold font-italic">Insomnia</td>
                                                             <td colspan="2">{{ $k->insomnia_geriatri }}</td>
                                                         </tr>
@@ -264,7 +274,7 @@
                                                             <td>Keterangan </td>
                                                             <td>{{ $k->tglpengkajianlanjutgizi }}</td>
                                                         </tr>
-                                                        <tr @if($k->usia < 65) hidden @endif>
+                                                        <tr @if ($k->usia < 65) hidden @endif>
                                                             <td>Pasien Geriatri</td>
                                                             <td>
                                                                 <div class="form-check">
@@ -1775,6 +1785,181 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<style>
+    /* Mengatur tinggi modal agar proporsional dengan layar */
+    #modalendoskopitelingan .modal-dialog {
+        height: 90vh;
+        /* Tinggi modal 90% dari tinggi layar */
+        max-width: 95% !important;
+        margin: 1.75rem auto;
+    }
+
+    #modalendoskopitelingan .modal-content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #modalendoskopitelingan .modal-body {
+        flex: 1;
+        /* Membuat body mengisi sisa ruang secara fleksibel */
+        overflow-y: auto;
+        /* Scroll aktif jika isi modal terlalu panjang */
+        padding: 15px;
+    }
+
+    /* Memastikan kontainer dan iframe di dalamnya tampil full */
+    #modalendoskopitelingan .v_hasil_endos_telinga,
+    #modalendoskopitelingan .iframe-container {
+        height: 100%;
+    }
+
+    #modalendoskopitelingan iframe {
+        width: 100%;
+        height: 100%;
+        min-height: 450px;
+        /* Batas minimal tinggi iframe */
+        border: none;
+    }
+</style>
+<style>
+    /* Mengatur tinggi modal agar proporsional dengan layar */
+    #modalendoskopihidung .modal-dialog {
+        height: 90vh;
+        /* Tinggi modal 90% dari tinggi layar */
+        max-width: 95% !important;
+        margin: 1.75rem auto;
+    }
+
+    #modalendoskopihidung .modal-content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #modalendoskopihidung .modal-body {
+        flex: 1;
+        /* Membuat body mengisi sisa ruang secara fleksibel */
+        overflow-y: auto;
+        /* Scroll aktif jika isi modal terlalu panjang */
+        padding: 15px;
+    }
+
+    /* Memastikan kontainer dan iframe di dalamnya tampil full */
+    #modalendoskopihidung .v_hasil_endos_hidung,
+    #modalendoskopihidung .iframe-container {
+        height: 100%;
+    }
+
+    #modalendoskopihidung iframe {
+        width: 100%;
+        height: 100%;
+        min-height: 450px;
+        /* Batas minimal tinggi iframe */
+        border: none;
+    }
+</style>
+<style>
+    /* Mengatur tinggi modal agar proporsional dengan layar */
+    #modalendoskopitht .modal-dialog {
+        height: 90vh;
+        /* Tinggi modal 90% dari tinggi layar */
+        max-width: 95% !important;
+        margin: 1.75rem auto;
+    }
+
+    #modalendoskopitht .modal-content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #modalendoskopitht .modal-body {
+        flex: 1;
+        /* Membuat body mengisi sisa ruang secara fleksibel */
+        overflow-y: auto;
+        /* Scroll aktif jika isi modal terlalu panjang */
+        padding: 15px;
+    }
+
+    /* Memastikan kontainer dan iframe di dalamnya tampil full */
+    #modalendoskopitht .v_hasil_endos_tht,
+    #modalendoskopitht .iframe-container {
+        height: 100%;
+    }
+
+    #modalendoskopitht iframe {
+        width: 100%;
+        height: 100%;
+        min-height: 450px;
+        /* Batas minimal tinggi iframe */
+        border: none;
+    }
+</style>
+<div class="modal fade" id="modalendoskopitelingan" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 95%; margin: 1.75rem auto;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Pemeriksaan Mikroskopik / Endoskopi Telinga</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_hasil_endos_telinga">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalendoskopihidung" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 95%; margin: 1.75rem auto;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Pemeriksaan Nasoendoskopi / Endoskopi Hidung</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_hasil_endos_hidung">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalendoskopitht" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 95%; margin: 1.75rem auto;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Pemeriksaan Nasoendoskopi / Endoskopi Hidung</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="v_hasil_endos_tht">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $(".riwayatorderfarmasi").on('click', function(event) {
         kodekunjungan = $(this).attr('kodekunjungan')
@@ -2117,6 +2302,70 @@
             }
         });
     })
+    $(".lihat_hasil_endos_telinga").click(function() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        kodekunjungan = $('#kodekunjungan').val()
+        jenis = '1'
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                jenis,
+                kodekunjungan
+            },
+            url: '<?= route('ambil_hasil_endos_telinga') ?>',
+            success: function(response) {
+                $('.v_hasil_endos_telinga').html(response);
+                spinner.hide()
+            }
+        });
+    })
+    $(".lihat_endos_hidung").click(function() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        kodekunjungan = $('#kodekunjungan').val()
+        jenis = '1'
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                jenis,
+                kodekunjungan
+            },
+            url: '<?= route('ambil_hasil_endos_hidung') ?>',
+            success: function(response) {
+                $('.v_hasil_endos_hidung').html(response);
+                spinner.hide()
+            }
+        });
+    })
+    $(".lihat_endos_tht").click(function() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        kodekunjungan = $('#kodekunjungan').val()
+        jenis = '1'
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                jenis,
+                kodekunjungan
+            },
+            url: '<?= route('ambil_hasil_endos_tht') ?>',
+            success: function(response) {
+                $('.v_hasil_endos_tht').html(response);
+                spinner.hide()
+            }
+        });
+    })
+
 </script>
 <script>
     $(".cetakdokumen").on('click', function(event) {
