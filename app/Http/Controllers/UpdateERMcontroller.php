@@ -63,6 +63,7 @@ class UpdateERMcontroller extends Controller
             $nomor_rujukan = $kunjungan[0]->no_rujukan;
             $unit_rujukan =  $kunjungan[0]->poli_rujukan;
         }
+        sleep(30);
         $rujukan = $nomor_rujukan;
         $detailrujukan = '';
         $selisih = 0;
@@ -184,7 +185,6 @@ class UpdateERMcontroller extends Controller
                 }
             }
         }
-
         // Hasil Pengujian
         if ($is_prb) {
             // Ambil nama diagnosa/program PRB dari hasil query (sesuaikan nama kolomnya, misal: nama_diagnosa, nm_diagnosa, atau nama)
