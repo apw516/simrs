@@ -196,7 +196,7 @@
                     </div>
                     <div class="header-text">
                         <div class="title">INSTALASI FARMASI</div>
-                        <div class="sub-title">ETIKET RACIKAN</div>
+                        <div class="sub-title">RSUD WALED</div>
                     </div>
                 </div>
 
