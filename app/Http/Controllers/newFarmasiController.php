@@ -5123,7 +5123,7 @@ class newFarmasiController extends FarmasiController
         $QUERY = $PDO->prepare("CALL SP_CETAK_FARMASI_RACIKAN_DUDY('DP1261007000419','22778176','7689938')");
         $QUERY->execute();
         $data = $QUERY->fetchAll();
-        dd($data);
+        // dd($data);
         $filename = 'C:\cetakanresep\etiketracik2.jrxml';
         $config = ['driver' => 'array', 'data' => $data];
         $report = new PHPJasperXML();
