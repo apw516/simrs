@@ -129,18 +129,6 @@
                     @endif
                 </td>
             </tr>
-            {{-- <tr style="font-size:8px">
-                <td>Usia / BB</td>
-                <td>:</td>
-                <td>
-                    @if (!empty($row->tgl_lahir) && $row->tgl_lahir != '0000-00-00')
-                        {{ \Carbon\Carbon::parse($row->tgl_lahir)->age }} Thn
-                    @else
-                        -
-                    @endif
-                    / {{ $row->BB ? $row->BB . ' Kg' : '-' }}
-                </td>
-            </tr> --}}
             <tr>
                 <td>Alamat</td>
                 <td>:</td>
@@ -148,21 +136,9 @@
                     <a style="font-size:8px;font-color:black">{{ $row->alamat }}</a>
                 </td>
             </tr>
-            {{-- <tr>
-                <td>Obat</td>
-                <td>:</td>
-                <td>{{ $row->nama_barang ?? '-' }}</td>
-            </tr> --}}
-            {{-- <tr>
-                <td>Jumlah</td>
-                <td>:</td>
-                <td>{{ $row->jumlah_layanan ?? '-' }} {{ $row->satuan ?? '' }} {{ $row->sediaan }}</td>
-            </tr> --}}
         </table>
 
-        <!-- Box Aturan Pakai / Dosis -->
         <div class="aturan-pakai">
-            {{-- {{ $row->dosis }} --}}
             {{ $row->nama_barang ?? '-' }} <br>
             <a style="font-size: 8px">Qty : {{ $row->jumlah_layanan ?? '-' }} </a><br>
             {{ $row->dosis }} {{ $row->carapakai }}
