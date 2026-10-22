@@ -247,7 +247,7 @@
                 </div>
 
                 {{-- Menampilkan daftar item komposisi racikan dalam 1 baris --}}
-                <div style="font-size: 5pt; margin: 1px 0; font-weight: normal; line-height: 1.0;">
+                <div style="font-size: 7pt; margin: 1px 0; font-weight: normal; line-height: 1.0;">
                     {{ $items->map(function ($item) {
                             return $item->nm_item_racikan . ' (' . $item->qty_item_racik . ')';
                         })->implode(', ') }}
