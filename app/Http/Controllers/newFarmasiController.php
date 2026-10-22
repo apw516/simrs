@@ -5117,61 +5117,61 @@ class newFarmasiController extends FarmasiController
             die;
         }
     }
-    // public function cetakEtiket_new($id)
-    // {
-    //     $PDO = DB::connection()->getPdo();
-    //     $QUERY = $PDO->prepare("CALL SP_CETAK_FARMASI_RACIKAN_DUDY('DP1261007000419','22778176','7689938')");
-    //     $QUERY->execute();
-    //     $data = $QUERY->fetchAll();
-    //     dd($data);
-    //     $filename = 'C:\cetakanresep\etiketracik2.jrxml';
-    //     $config = ['driver' => 'array', 'data' => $data];
-    //     $report = new PHPJasperXML();
-    //     $report->load_xml_file($filename)
-    //         ->setDataSource($config)
-    //         ->export('Pdf');
-    // }
     public function cetakEtiket_new($id)
     {
-        $get_header = DB::connection('mysql')
-            ->table('ts_layanan_header')
-            ->where('id', $id)
-            ->first();
-
-        if (!$get_header) {
-            return redirect()->back()->with('error', 'Data header tidak ditemukan.');
-        }
-
-        $kodeheader = $get_header->kode_layanan_header;
-        $kode_kunjungan = $get_header->kode_kunjungan;
-
         $PDO = DB::connection()->getPdo();
-
-        // 1. Eksekusi SP Etiket WD
-        $QUERY = $PDO->prepare("CALL SP_CETAK_ETIKET_FARMASI_WD(?, ?)");
-        $QUERY->execute([$kodeheader, $id]);
-        $data = $QUERY->fetchAll(\PDO::FETCH_OBJ);
-        $QUERY->closeCursor(); // Wajib ditutup agar kursor PDO bersih
-
-        // 2. Eksekusi SP Racikan Dudy
-        $QUERY2 = $PDO->prepare("CALL sp_cetak_farmasi(?, ?, ?)");
-        $QUERY2->execute([$kodeheader, $kode_kunjungan, $id]);
-        $data_racikan = $QUERY2->fetchAll(\PDO::FETCH_OBJ);
-        $QUERY2->closeCursor(); // Wajib ditutup
-        // $customPaper = [0, 0, 144, 171.78];
-        // dd($data_racikan);
-        // 3. Kirim data dan data_racikan ke view
-        // $pdf = Pdf::loadView('new_farmasi.cetak_etiket_pdf_racikan', compact('get_header', 'data', 'data_racikan'))
-        //     ->setPaper($customPaper, 'portrait');
-        // return $pdf->stream('etiket_' . $id . '.pdf');
-        // dd($data_racikan);
-        $customPaper = [0, 0, 144, 171.78];
-
-        $pdf = Pdf::loadView('new_farmasi.cetak_etiket_pdf_racikan', compact('get_header', 'data', 'data_racikan'))
-            ->setPaper($customPaper, 'portrait');
-
-        return $pdf->stream('etiket_' . $id . '.pdf');
+        $QUERY = $PDO->prepare("CALL SP_CETAK_FARMASI_RACIKAN_DUDY('DP1261007000419','22778176','7689938')");
+        $QUERY->execute();
+        $data = $QUERY->fetchAll();
+        dd($data);
+        $filename = 'C:\cetakanresep\etiketracik2.jrxml';
+        $config = ['driver' => 'array', 'data' => $data];
+        $report = new PHPJasperXML();
+        $report->load_xml_file($filename)
+            ->setDataSource($config)
+            ->export('Pdf');
     }
+    // public function cetakEtiket_new($id)
+    // {
+    //     $get_header = DB::connection('mysql')
+    //         ->table('ts_layanan_header')
+    //         ->where('id', $id)
+    //         ->first();
+
+    //     if (!$get_header) {
+    //         return redirect()->back()->with('error', 'Data header tidak ditemukan.');
+    //     }
+
+    //     $kodeheader = $get_header->kode_layanan_header;
+    //     $kode_kunjungan = $get_header->kode_kunjungan;
+
+    //     $PDO = DB::connection()->getPdo();
+
+    //     // 1. Eksekusi SP Etiket WD
+    //     $QUERY = $PDO->prepare("CALL SP_CETAK_ETIKET_FARMASI_WD(?, ?)");
+    //     $QUERY->execute([$kodeheader, $id]);
+    //     $data = $QUERY->fetchAll(\PDO::FETCH_OBJ);
+    //     $QUERY->closeCursor(); // Wajib ditutup agar kursor PDO bersih
+
+    //     // 2. Eksekusi SP Racikan Dudy
+    //     $QUERY2 = $PDO->prepare("CALL sp_cetak_farmasi(?, ?, ?)");
+    //     $QUERY2->execute([$kodeheader, $kode_kunjungan, $id]);
+    //     $data_racikan = $QUERY2->fetchAll(\PDO::FETCH_OBJ);
+    //     $QUERY2->closeCursor(); // Wajib ditutup
+    //     // $customPaper = [0, 0, 144, 171.78];
+    //     // dd($data_racikan);
+    //     // 3. Kirim data dan data_racikan ke view
+    //     // $pdf = Pdf::loadView('new_farmasi.cetak_etiket_pdf_racikan', compact('get_header', 'data', 'data_racikan'))
+    //     //     ->setPaper($customPaper, 'portrait');
+    //     // return $pdf->stream('etiket_' . $id . '.pdf');
+    //     // dd($data_racikan);
+    //     $customPaper = [0, 0, 144, 171.78];
+
+    //     $pdf = Pdf::loadView('new_farmasi.cetak_etiket_pdf_racikan', compact('get_header', 'data', 'data_racikan'))
+    //         ->setPaper($customPaper, 'portrait');
+
+    //     return $pdf->stream('etiket_' . $id . '.pdf');
+    // }
     public function cetaknotafarmasi($id)
     {
         // 1. Ambil Data Header Transaksi

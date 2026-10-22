@@ -87,6 +87,7 @@
 </head>
 
 <body>
+    {{-- 1. ETIKET OBAT NON-RACIKAN / UMUM ($data) --}}
     @if (isset($data) && count($data) > 0)
         @foreach ($data as $row)
             <div class="etiket-box">
@@ -133,15 +134,17 @@
                     <tr>
                         <td>Alamat</td>
                         <td>:</td>
-                        <td><span style="font-size: 5.5pt; font-weight: normal;">{{ $row->alamat ?? '-' }}</span></td>
+                        <td><span style="font-size: 5pt; font-weight: normal;">{{ $row->alamat ?? '-' }}</span></td>
                     </tr>
                 </table>
+
                 <div class="aturan-pakai">
                     {{ $row->nama_barang ?? 'OBAT' }}<br>
-                    <span style="font-size: 8px;">Qty : {{ $row->jumlah_layanan ?? '-' }}
+                    <span style="font-size: 7.5pt;">Qty : {{ $row->jumlah_layanan ?? '-' }}
                         {{ $row->satuan ?? '' }}</span><br>
                     {{ $row->aturan_pakai ?? $row->dosis . ' ' . $row->carapakai }}
                 </div>
+
                 <div class="footer">
                     @if (!empty($row->BUD))
                         {{ $row->BUD }} /
@@ -154,6 +157,8 @@
             </div>
         @endforeach
     @endif
+
+    {{-- 2. ETIKET OBAT RACIKAN ($data_racikan) --}}
     @if (isset($data_racikan) && count($data_racikan) > 0)
         @php
             $groupedRacikan = collect($data_racikan)->groupBy('kode_layanan_header');
@@ -210,14 +215,14 @@
                     </tr>
                 </table>
 
-                <div style="font-size: 7.5pt; margin-top: 3px;">
+                <div style="font-size: 7pt; margin-top: 2px;">
                     <strong>{{ $firstRacik->nama_racik ?? 'Racikan' }}</strong>
                     ({{ $firstRacik->jumlah_layanan ?? 0 }} Bungkus/Kapsul)
                     :
                 </div>
 
                 {{-- Menampilkan komposisi item obat racikan digabung dalam satu baris --}}
-                <div style="font-size: 6pt; margin: 2px 0; font-weight: normal;">
+                <div style="font-size: 5.5pt; margin: 1px 0; font-weight: normal;">
                     {{ $items->map(function ($item) {
                             return $item->nm_item_racikan . ' (' . $item->qty_item_racik . ')';
                         })->implode(', ') }}
