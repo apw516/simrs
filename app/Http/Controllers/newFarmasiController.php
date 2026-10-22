@@ -5167,7 +5167,7 @@ class newFarmasiController extends FarmasiController
         // dd($data_racikan);
         $customPaper = [0, 0, 144, 171.78];
 
-        $pdf = Pdf::loadView('new_farmasi.cetak_etiket_pdf', compact('get_header', 'data', 'data_racikan'))
+        $pdf = Pdf::loadView('new_farmasi.cetak_etiket_pdf_racikan', compact('get_header', 'data', 'data_racikan'))
             ->setPaper($customPaper, 'portrait');
 
         return $pdf->stream('etiket_' . $id . '.pdf');

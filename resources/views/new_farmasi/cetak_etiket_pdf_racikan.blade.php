@@ -6,8 +6,8 @@
     <title>Cetak Etiket Farmasi</title>
     <style>
         @page {
+            size: 144pt 171.78pt;
             margin: 2px 4px;
-            /* Margin tipis untuk memaksimalkan area cetak thermal */
         }
 
         body {
@@ -18,6 +18,22 @@
             margin: 0;
             padding: 0;
             color: #000;
+        }
+
+        /* Container halaman per etiket untuk mengunci pemisahan halaman di Dompdf */
+        .etiket-page {
+            width: 100%;
+            height: 165pt;
+            max-height: 165pt;
+            box-sizing: border-box;
+            overflow: hidden;
+            page-break-inside: avoid;
+            page-break-after: always;
+        }
+
+        /* Hilangkan page break pada elemen paling akhir */
+        .etiket-page:last-child {
+            page-break-after: avoid;
         }
 
         /* Container Header dengan Logo */
@@ -69,19 +85,19 @@
         /* Box Aturan Pakai / Dosis */
         .aturan-pakai {
             text-align: center;
-            font-size: 9pt;
+            font-size: 8.5pt;
             font-weight: bold;
-            margin: 4px 0;
+            margin: 3px 0;
             border: 1px dashed #000;
-            padding: 3px 2px;
+            padding: 2px 2px;
             text-transform: uppercase;
         }
 
         .footer {
-            font-size: 6.5pt;
+            font-size: 6pt;
             font-weight: bold;
             text-align: right;
-            margin-top: 3px;
+            margin-top: 2px;
         }
     </style>
 </head>
@@ -90,7 +106,7 @@
     {{-- 1. ETIKET OBAT NON-RACIKAN / UMUM ($data) --}}
     @if (isset($data) && count($data) > 0)
         @foreach ($data as $row)
-            <div class="etiket-box">
+            <div class="etiket-page">
                 <div class="header-container">
                     <div class="header-logo">
                         <img src="{{ public_path('img/logo_rs.png') }}" alt="Logo">
@@ -102,12 +118,12 @@
                 </div>
 
                 <table class="content-table">
-                    <tr>
+                    <tr style="font-size:8px">
                         <td width="30%">No. RM</td>
                         <td width="5%">:</td>
                         <td>{{ $row->no_rm ?? ($get_header->no_rm ?? '-') }}</td>
                     </tr>
-                    <tr>
+                    <tr style="font-size:8px">
                         <td>Nama</td>
                         <td>:</td>
                         <td>
@@ -120,7 +136,7 @@
                             / {{ isset($row->BB) && $row->BB ? $row->BB . ' Kg' : '-' }}
                         </td>
                     </tr>
-                    <tr>
+                    <tr style="font-size:8px">
                         <td>Tgl Lahir</td>
                         <td>:</td>
                         <td>
@@ -134,13 +150,16 @@
                     <tr>
                         <td>Alamat</td>
                         <td>:</td>
-                        <td><span style="font-size: 5pt; font-weight: normal;">{{ $row->alamat ?? '-' }}</span></td>
+                        <td>
+                            <span
+                                style="font-size:5px; color:#000; font-weight: normal;">{{ $row->alamat ?? '-' }}</span>
+                        </td>
                     </tr>
                 </table>
 
                 <div class="aturan-pakai">
-                    {{ $row->nama_barang ?? 'OBAT' }}<br>
-                    <span style="font-size: 7.5pt;">Qty : {{ $row->jumlah_layanan ?? '-' }}
+                    {{ $row->nama_barang ?? '-' }} <br>
+                    <span style="font-size: 7.5pt">Qty : {{ $row->jumlah_layanan ?? '-' }}
                         {{ $row->satuan ?? '' }}</span><br>
                     {{ $row->aturan_pakai ?? $row->dosis . ' ' . $row->carapakai }}
                 </div>
@@ -149,23 +168,28 @@
                     @if (!empty($row->BUD))
                         {{ $row->BUD }} /
                     @endif
-                    @if (!empty($row->ed_obat))
-                        ed: {{ $row->ed_obat }} <br>
-                    @endif
-                    Par/Dr: {{ $get_header->nama_paramedis ?? '-' }} | Entry: {{ $row->tgl_entry ?? '-' }}
+                    ed: {{ $row->ed_obat ?? '-' }} <br>
+                    tgl entry : {{ $row->tgl_entry ?? '-' }}
                 </div>
             </div>
         @endforeach
     @endif
 
+
     {{-- 2. ETIKET OBAT RACIKAN ($data_racikan) --}}
     @if (isset($data_racikan) && count($data_racikan) > 0)
         @php
-            $groupedRacikan = collect($data_racikan)->groupBy('kode_layanan_header');
+            // Filter hanya data yang kode_barang-nya berawalan huruf 'R' (case-insensitive) lalu group berdasarkan kode_barang
+            $groupedRacikan = collect($data_racikan)
+                ->filter(function ($item) {
+                    return str_starts_with(strtoupper($item->kode_barang ?? ''), 'R');
+                })
+                ->groupBy('kode_barang');
         @endphp
+
         @foreach ($groupedRacikan as $idDetail => $items)
             @php $firstRacik = $items->first(); @endphp
-            <div class="etiket-box">
+            <div class="etiket-page">
                 <div class="header-container">
                     <div class="header-logo">
                         <img src="{{ public_path('img/logo_rs.png') }}" alt="Logo">
@@ -177,12 +201,12 @@
                 </div>
 
                 <table class="content-table">
-                    <tr>
+                    <tr style="font-size:8px">
                         <td width="30%">No. RM</td>
                         <td width="5%">:</td>
                         <td>{{ $firstRacik->no_rm ?? '-' }}</td>
                     </tr>
-                    <tr>
+                    <tr style="font-size:8px">
                         <td>Nama</td>
                         <td>:</td>
                         <td>
@@ -195,7 +219,7 @@
                             / {{ isset($firstRacik->BB) && $firstRacik->BB ? $firstRacik->BB . ' Kg' : '-' }}
                         </td>
                     </tr>
-                    <tr>
+                    <tr style="font-size:8px">
                         <td>Tgl Lahir</td>
                         <td>:</td>
                         <td>
@@ -209,8 +233,9 @@
                     <tr>
                         <td>Alamat</td>
                         <td>:</td>
-                        <td><span
-                                style="font-size: 4.5pt; font-weight: normal;">{{ $firstRacik->alamat ?? '-' }}</span>
+                        <td>
+                            <span
+                                style="font-size:4.5pt; color:#000; font-weight: normal;">{{ $firstRacik->alamat ?? '-' }}</span>
                         </td>
                     </tr>
                 </table>
@@ -221,15 +246,15 @@
                     :
                 </div>
 
-                {{-- Menampilkan komposisi item obat racikan digabung dalam satu baris --}}
-                <div style="font-size: 5.5pt; margin: 1px 0; font-weight: normal;">
+                {{-- Menampilkan daftar item komposisi racikan dalam 1 baris --}}
+                <div style="font-size: 5pt; margin: 1px 0; font-weight: normal; line-height: 1.0;">
                     {{ $items->map(function ($item) {
                             return $item->nm_item_racikan . ' (' . $item->qty_item_racik . ')';
                         })->implode(', ') }}
                 </div>
 
                 <div class="aturan-pakai">
-                    {{ $firstRacik->aturan_pakai ?? 'Sesuai Petunjuk Dokter' }}
+                    {{ $firstRacik->aturan_pakai ?? 'SESUAI PETUNJUK DOKTER' }}
                 </div>
 
                 <div class="footer">
