@@ -63,7 +63,7 @@ class UpdateERMcontroller extends Controller
             $nomor_rujukan = $kunjungan[0]->no_rujukan;
             $unit_rujukan =  $kunjungan[0]->poli_rujukan;
         }
-        sleep(30);
+        // sleep(30);
         $rujukan = $nomor_rujukan;
         $detailrujukan = '';
         $selisih = 0;
