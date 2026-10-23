@@ -1399,6 +1399,7 @@ class Pdf2Controller extends Controller
     }
     public function cetakLaporanTelinga($kode_kunjungan)
     {
+        // dd('ok');
         try {
             // Ambil data laporan pemeriksaan telinga berdasarkan kode kunjungan
             $get_data = DB::table('ts_laporan_tindakan_telinga')
@@ -1412,8 +1413,21 @@ class Pdf2Controller extends Controller
                 ->join('mt_pasien as b', 'ts_kunjungan.no_rm', '=', 'b.no_rm')
                 ->where('ts_kunjungan.kode_kunjungan', $kode_kunjungan)
                 ->first();
+            $USER = db::table('mt_paramedis')->where('kode_paramedis', $get_data->kode_paramedis)->first();
+            $datawebsiramah = [
+                'id_dokumen' => 'THT_TE' . $get_data->kode_kunjungan . $get_data->kode_paramedis,
+                'nama_user' => $USER->nama_paramedis,
+                'tanggal_verifikasi' => $get_data->created_at,
+                'jabatan' => "Dokter",
+            ];
+            $v = new ModelBSRE();
+            $DD = $v->sendpdftosiramah($datawebsiramah);
+            $url1 = "https://siramah.rsudwaled.com/filetandatangan?id=" . 'THT_TE' . $get_data->kode_kunjungan . $get_data->kode_paramedis;
+            // $url = 'adadad';
+            // dd($url1);
+            $qrtte = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url1));
             // Jika Anda ingin langsung melempar array kosong jika data belum ada
-            return view('pdf.cetakan_laporan_tindakan_endoskopi_telinga', compact('get_data', 'pasien', 'kode_kunjungan'));
+            return view('pdf.cetakan_laporan_tindakan_endoskopi_telinga', compact('get_data', 'pasien', 'kode_kunjungan', 'qrtte'));
         } catch (\Exception $e) {
             return abort(500, 'Terjadi kesalahan saat memuat data cetakan: ' . $e->getMessage());
         }
@@ -1432,8 +1446,18 @@ class Pdf2Controller extends Controller
                 ->join('mt_pasien as b', 'ts_kunjungan.no_rm', '=', 'b.no_rm')
                 ->where('ts_kunjungan.kode_kunjungan', $kode_kunjungan)
                 ->first();
-
-            return view('pdf.print_laporan_hidung', compact('get_data', 'pasien', 'kode_kunjungan'));
+            $USER = db::table('mt_paramedis')->where('kode_paramedis', $get_data->kode_paramedis)->first();
+            $datawebsiramah = [
+                'id_dokumen' => 'THT_N' . $get_data->kode_kunjungan . $get_data->kode_paramedis,
+                'nama_user' => $USER->nama_paramedis,
+                'tanggal_verifikasi' => $get_data->created_at,
+                'jabatan' => "Dokter",
+            ];
+            $v = new ModelBSRE();
+            $DD = $v->sendpdftosiramah($datawebsiramah);
+            $url1 = "https://siramah.rsudwaled.com/filetandatangan?id=" . 'THT_N' . $get_data->kode_kunjungan . $get_data->kode_paramedis;
+            $qrtte = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url1));
+            return view('pdf.print_laporan_hidung', compact('get_data', 'pasien', 'kode_kunjungan', 'qrtte'));
         } catch (\Exception $e) {
             return abort(500, 'Terjadi kesalahan saat memuat cetakan: ' . $e->getMessage());
         }
@@ -1452,8 +1476,18 @@ class Pdf2Controller extends Controller
                 ->join('mt_pasien as b', 'ts_kunjungan.no_rm', '=', 'b.no_rm')
                 ->where('ts_kunjungan.kode_kunjungan', $kode_kunjungan)
                 ->first();
-
-            return view('pdf.print_laporan_endoskopi_tht', compact('get_data', 'pasien', 'kode_kunjungan'));
+            $USER = db::table('mt_paramedis')->where('kode_paramedis', $get_data->kode_paramedis)->first();
+            $datawebsiramah = [
+                'id_dokumen' => 'THT_KL' . $get_data->kode_kunjungan . $get_data->kode_paramedis,
+                'nama_user' => $USER->nama_paramedis,
+                'tanggal_verifikasi' => $get_data->created_at,
+                'jabatan' => "Dokter",
+            ];
+            $v = new ModelBSRE();
+            $DD = $v->sendpdftosiramah($datawebsiramah);
+            $url1 = "https://siramah.rsudwaled.com/filetandatangan?id=" . 'THT_KL' . $get_data->kode_kunjungan . $get_data->kode_paramedis;
+            $qrtte = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url1));
+            return view('pdf.print_laporan_endoskopi_tht', compact('get_data', 'pasien', 'kode_kunjungan','qrtte'));
         } catch (\Exception $e) {
             return abort(500, 'Terjadi kesalahan saat memuat cetakan: ' . $e->getMessage());
         }

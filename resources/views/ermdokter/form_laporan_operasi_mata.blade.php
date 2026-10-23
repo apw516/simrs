@@ -1,19 +1,16 @@
-<div class="accordion" id="accordionExample">
-    <div class="card">
-        <div class="card-header" id="headingTwo">
+    <div hidden class="card">
+        <div class="card-header" id="headingFour">
             <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center"
-                    type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-                    aria-controls="collapseTwo">
+                <button class="btn btn-block text-left d-flex justify-content-between align-items-center"
+                    type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true"
+                    aria-controls="collapseFour">
                     <span class="text-bold">PENGKAJIAN PRA-BEDAH</span>
                     <!-- Badge Petunjuk -->
-                    <span class="badge badge-info p-2" style="font-size: 11px;">
-                        <i class="fas fa-edit mr-1"></i> Klik untuk Isi Form
-                    </span>
+                   
                 </button>
             </h2>
         </div>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+        <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
             <div class="card-body">
                 @if (isset($pengkajian->pic))
                     <div class="alert alert-warning alert-dismissible fade show d-flex align-items-center"
@@ -566,20 +563,18 @@
         </div>
     </div>
     <div class="card">
-        <div class="card-header" id="headingOne">
+        <div class="card-header" id="headingFive">
             <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center"
-                    type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
-                    aria-controls="collapseOne">
+                <button class="btn  btn-block text-left d-flex justify-content-between align-items-center"
+                    type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true"
+                    aria-controls="collapseFive">
                     <span class="text-bold">LAPORAN OPERASI</span>
                     <!-- Badge Petunjuk -->
-                    <span class="badge badge-info p-2" style="font-size: 11px;">
-                        <i class="fas fa-edit mr-1"></i> Klik untuk Isi Form
-                    </span>
+                   
                 </button>
             </h2>
         </div>
-        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+        <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
             <div class="card-body">
                 @if (isset($laporan_op->pic))
                     <div class="alert alert-warning alert-dismissible fade show d-flex align-items-center"
@@ -954,20 +949,18 @@
         </div>
     </div>
     <div @if (auth()->user()->unit != '1014') hidden @endif class="card">
-        <div class="card-header" id="headingThree">
+        <div class="card-header" id="headingSix">
             <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center"
-                    type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true"
-                    aria-controls="collapseThree">
+                <button class="btn btn-block text-left d-flex justify-content-between align-items-center"
+                    type="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true"
+                    aria-controls="collapseSix">
                     <span class="text-bold">LAPORAN OPERASI KATARAK</span>
                     <!-- Badge Petunjuk -->
-                    <span class="badge badge-info p-2" style="font-size: 11px;">
-                        <i class="fas fa-edit mr-1"></i> Klik untuk Isi Form
-                    </span>
+                   
                 </button>
             </h2>
         </div>
-        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+        <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordionExample">
             <div class="card-body">
                 @if (isset($katarak->pic))
                     <div class="alert alert-warning alert-dismissible fade show d-flex align-items-center"
@@ -1455,18 +1448,18 @@
         </div>
     </div>
     <div @if (auth()->user()->unit != '1014') hidden @endif class="card">
-        <div class="card-header" id="headingFour">
+        <div class="card-header" id="headingSeven">
             <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center"
-                    type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true"
-                    aria-controls="collapseFour">
+                <button class="btn btn-block text-left d-flex justify-content-between align-items-center"
+                    type="button" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="true"
+                    aria-controls="collapseSeven">
                     <span class="text-bold">LAPORAN OPERASI KATARAK & GLAUKOMA</span>
-                    <span class="badge badge-info p-2" style="font-size: 11px;"><i class="fas fa-edit mr-1"></i>
-                        Klik untuk Isi Form</span>
+                    {{-- <span class="badge badge-info p-2" style="font-size: 11px;"><i class="fas fa-edit mr-1"></i>
+                        Klik untuk Isi Form</span> --}}
                 </button>
             </h2>
         </div>
-        <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+        <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordionExample">
             <div class="card-body">
                 @if (isset($glaukoma->pic))
                     <div class="alert alert-warning alert-dismissible fade show d-flex align-items-center"
@@ -2225,20 +2218,18 @@
         </div>
     </div>
     <div @if (auth()->user()->unit != '1014') hidden @endif class="card">
-        <div class="card-header" id="headingFive">
+        <div class="card-header" id="headingEight">
             <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center"
-                    type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true"
-                    aria-controls="collapseFive">
+                <button class="btn btn-block text-left d-flex justify-content-between align-items-center"
+                    type="button" data-toggle="collapse" data-target="#collapseEight" aria-expanded="true"
+                    aria-controls="collapseEight">
                     <span class="text-bold">LAPORAN OPERASI TRABECULEKTOMI</span>
                     <!-- Badge Petunjuk -->
-                    <span class="badge badge-info p-2" style="font-size: 11px;">
-                        <i class="fas fa-edit mr-1"></i> Klik untuk Isi Form
-                    </span>
+                   
                 </button>
             </h2>
         </div>
-        <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
+        <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordionExample">
             <div class="card-body">
                 @if (isset($trabec->pic))
                     <div class="alert alert-warning alert-dismissible fade show d-flex align-items-center"
@@ -2470,20 +2461,18 @@
         </div>
     </div>
     <div @if (auth()->user()->unit != '1014') hidden @endif class="card">
-        <div class="card-header" id="headingSix">
+        <div class="card-header" id="headingNine">
             <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center"
-                    type="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true"
-                    aria-controls="collapseSix">
+                <button class="btn btn-block text-left d-flex justify-content-between align-items-center"
+                    type="button" data-toggle="collapse" data-target="#collapseNine" aria-expanded="true"
+                    aria-controls="collapseNine">
                     <span class="text-bold">LAPORAN OPERASI PTERYGIUM</span>
                     <!-- Badge Petunjuk -->
-                    <span class="badge badge-info p-2" style="font-size: 11px;">
-                        <i class="fas fa-edit mr-1"></i> Klik untuk Isi Form
-                    </span>
+                   
                 </button>
             </h2>
         </div>
-        <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordionExample">
+        <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordionExample">
             <div class="card-body">
                 @if (isset($pter->pic))
                     <div class="alert alert-warning alert-dismissible fade show d-flex align-items-center"
@@ -2748,20 +2737,18 @@
 
     </div>
     <div @if (auth()->user()->unit != '1014') hidden @endif class="card">
-        <div class="card-header" id="headingSeven">
+        <div class="card-header" id="headingTen">
             <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center"
-                    type="button" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="true"
-                    aria-controls="collapseSeven">
+                <button class="btn btn-block text-left d-flex justify-content-between align-items-center"
+                    type="button" data-toggle="collapse" data-target="#collapseTen" aria-expanded="true"
+                    aria-controls="collapseTen">
                     <span class="text-bold">LAPORAN INJEKSI INTRA VITREAL</span>
                     <!-- Badge Petunjuk -->
-                    <span class="badge badge-info p-2" style="font-size: 11px;">
-                        <i class="fas fa-edit mr-1"></i> Klik untuk Isi Form
-                    </span>
+                   
                 </button>
             </h2>
         </div>
-        <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordionExample">
+        <div id="collapseTen" class="collapse" aria-labelledby="headingTen" data-parent="#accordionExample">
             <div class="card-body">
                 @if (isset($inj->pic))
                     <div class="alert alert-warning alert-dismissible fade show d-flex align-items-center"

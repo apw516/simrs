@@ -1,8 +1,8 @@
 <div class="card">
-    <div class="card-header">Laporan Tindakan</div>
+    {{-- <div class="card-header">Laporan Tindakan</div> --}}
     <div class="card-body">
         <div class="accordion" id="accordionExample">
-            <div class="card">
+            <div @if (auth()->user()->unit != '1045' && auth()->user()->unit != '1019' ) hidden @endif class="card">
                 <div class="card-header" id="headingOne">
                     <h2 class="mb-0">
                         <button class="btn btn-link btn-block text-left text-dark text-bold collapsed" type="button"
@@ -11,7 +11,7 @@
                             Hasil Pemeriksaan Mikroskopik / Endoskopi Telinga
                         </button>
                     </h2>
-                    <a href="{{ route('cetak.laporantelinga', $kode_kunjungan ?? '') }}" target="_blank"
+                    <a hidden href="{{ route('cetak.laporantelinga', $kode_kunjungan ?? '') }}" target="_blank"
                         class="btn btn-sm btn-secondary text-nowrap ml-2">
                         <i class="fas fa-print"></i> Cetak PDF
                     </a>
@@ -543,7 +543,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
+            <div @if (auth()->user()->unit != '1045' && auth()->user()->unit != '1019' ) hidden @endif class="card">
                 <div class="card-header" id="headingTwo">
                     <h2 class="mb-0">
                         <button class="btn btn-link btn-block text-left collapsed text-dark text-bold" type="button"
@@ -552,7 +552,7 @@
                             Hasil Pemeriksaan Nasoendoskopi / Endoskopi Hidung
                         </button>
                     </h2>
-                     <a href="{{ route('cetak.laporanhidung', $kode_kunjungan ?? '') }}" target="_blank"
+                    <a hidden href="{{ route('cetak.laporanhidung', $kode_kunjungan ?? '') }}" target="_blank"
                         class="btn btn-sm btn-secondary text-nowrap ml-2">
                         <i class="fas fa-print"></i> Cetak PDF
                     </a>
@@ -985,7 +985,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
+            <div @if (auth()->user()->unit != '1045' && auth()->user()->unit != '1019' ) hidden @endif class="card">
                 <div class="card-header" id="headingThree">
                     <h2 class="mb-0">
                         <button class="btn btn-link btn-block text-left collapsed text-dark text-bold" type="button"
@@ -994,7 +994,7 @@
                             Laporan Hasil Pemeriksaan Endoskopi THT-KL
                         </button>
                     </h2>
-                    <a href="{{ route('cetak.laporanendoskopitht', $kode_kunjungan ?? '') }}" target="_blank"
+                    <a hidden href="{{ route('cetak.laporanendoskopitht', $kode_kunjungan ?? '') }}" target="_blank"
                         class="btn btn-sm btn-secondary text-nowrap ml-2">
                         <i class="fas fa-print"></i> Cetak PDF
                     </a>
@@ -1382,6 +1382,9 @@
                 </div>
             </div>
         </div>
+        <div class="v_lp">
+            
+        </div>
     </div>
 </div>
 <script>
@@ -1729,4 +1732,28 @@
             }
         }
     });
+</script>
+<script>
+    $(document).ready(function() {
+        laporanoperasi()
+    })
+    function laporanoperasi() {
+        rm = $('#nomorrm').val()
+        kodekunjungan = $('#kodekunjungan').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                rm,
+                kodekunjungan
+            },
+            url: '<?= route('formlaporanoperasimata') ?>',
+            success: function(response) {
+                $('.v_lp').html(response);
+                spinner.hide()
+            }
+        });
+    }
 </script>

@@ -84,20 +84,20 @@
                 color: #ffc107;
             }
         </style>
-        @if(count($cek_alergi) > 0)
-        <div class="alert alert-warning alert-dismissible fade show d-flex align-items-center alert-prb-animated"
-            role="alert">
-            <i class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2 fs-3 text-warning-custom"></i>
-            <div>
-                <strong>Pasien memiliki riwayat alergi. <br>
-                <div class="small">
-                   @foreach($cek_alergi as $cc)
-                    {{ $cc->keterangan_alergi }} <br>
-                   @endforeach
+        @if (count($cek_alergi) > 0)
+            <div class="alert alert-warning alert-dismissible fade show d-flex align-items-center alert-prb-animated"
+                role="alert">
+                <i class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2 fs-3 text-warning-custom"></i>
+                <div>
+                    <strong>Pasien memiliki riwayat alergi. <br>
+                        <div class="small">
+                            @foreach ($cek_alergi as $cc)
+                                {{ $cc->keterangan_alergi }} <br>
+                            @endforeach
+                        </div>
                 </div>
+                <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
         @endif
         @if ($pesanprb !== 'Bukan Pasien PRB')
             <!-- Alert Pasien PRB (Animasi Zoom & Blink) -->
@@ -1038,10 +1038,19 @@
                     </form>
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header text-bold bg-dark">FORMULIR HASIL EKSPERTISI MEDIS</div>
+                            <div class="card-header text-bold bg-dark">FORMULIR HASIL EKSPERTISI ULTRASONOGRAPHY ( USG
+                                )</div>
                             <div class="card-body">
                                 <textarea class="form-control" id="hasilexpertisi" name="hasilexpertisi" cols="30" rows="10"
-                                    placeholder="Silahkan isi hasil expertisi ...">{{ $asesmen_terakhir ? $asesmen_terakhir->evaluasi : '' }}</textarea>
+                                    placeholder="Silahkan isi hasilnya jika ada ...">{{ $asesmen_terakhir ? $asesmen_terakhir->evaluasi : '' }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header bg-warning text-bold">LAPORAN TINDAKAN</div>
+                        <div class="card-body">
+                            <div class="v_l_p">
+
                             </div>
                         </div>
                     </div>
@@ -1429,8 +1438,8 @@
                                             <div class="form-group">
                                                 <label for="exampleFormControlSelect1">Tanggal Pemeriksaan
                                                     Penunjang</label>
-                                                <input type="date" id="tanggalperiksapenunjang" value="03/06/2023"
-                                                    class="form-control">
+                                                <input type="date" id="tanggalperiksapenunjang"
+                                                    value="03/06/2023" class="form-control">
                                             </div>
                                         </div>
                                     </div>
@@ -2430,6 +2439,7 @@
         ambilgambar()
         ambilriwayatobat()
         ambilformiterasiobat()
+        formlaporantindakan()
     })
 
     function ambilriwayatobat() {
@@ -2627,5 +2637,25 @@
         } else {
             wrapper.style.display = 'none';
         }
+    }
+
+    function formlaporantindakan() {
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('form_laporan_tindakan') ?>',
+            success: function(response) {
+                $('.v_l_p').html(response);
+                spinner.hide()
+            }
+        });
     }
 </script>

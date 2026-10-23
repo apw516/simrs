@@ -322,8 +322,14 @@
             <div class="signature-box">
                 <p style="margin: 0;">Cirebon, {{ $formData['tanggal_pemeriksaan'] ?? date('d-m-Y') }}</p>
                 <p style="margin: 2px 0;">Dokter Pemeriksa,</p>
-                <div style="height: 45px;"></div>
-                <p style="margin: 0; font-weight: bold; text-decoration: underline;">
+                <div style="height: 8px;">
+                    
+                </div>
+                <div style="width: 90px; height: 90px; margin: 0 auto; text-align: center;">
+                    <img src="data:image/svg+xml;base64,{{ $qrtte }}"
+                        style="width: 90px; height: 90px; display: block;" alt="QR Code TTE">
+                </div>
+                <p style="margin: 4px; font-weight: bold; text-decoration: underline;">
                     {{ $formData['search_dokter'] ?? '(...................................................)' }}</p>
             </div>
             <div class="clear"></div>
