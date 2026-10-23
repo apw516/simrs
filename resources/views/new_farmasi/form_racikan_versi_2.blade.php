@@ -60,7 +60,7 @@
                 min="1" required>
         </td>
         <td>
-            <input type="text" name="catatan" class="form-control form-control-sm" placeholder="Contoh: Ssh Makan">
+            <input type="text" name="catatan" class="form-control form-control-sm" placeholder="Contoh: Ssh Makan" value="{{$row->aturanpakai}}">
         </td>
         <td class="text-center">
             <button type="button" class="btn btn-sm btn-outline-danger btn-hapus-obat">

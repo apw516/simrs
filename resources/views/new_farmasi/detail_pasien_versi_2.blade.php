@@ -437,21 +437,21 @@
                         <div class="form-group mb-2">
                             <div class="form-check">
                                 <input class="form-check-input check-item" type="checkbox" id="c1"
-                                    name="c1" value="1">
+                                    name="c1" value="1" checked>
                                 <label class="form-check-label" for="check1">1. Kejelasan tulisan obat</label>
                             </div>
                         </div>
                         <div class="form-group mb-2">
                             <div class="form-check">
                                 <input class="form-check-input check-item" type="checkbox" id="c2"
-                                    name="c2" value="1">
+                                    name="c2" value="1" checked>
                                 <label class="form-check-label" for="check2">2. Tepat nama pasien</label>
                             </div>
                         </div>
                         <div class="form-group mb-2">
                             <div class="form-check">
                                 <input class="form-check-input check-item" type="checkbox" id="c3"
-                                    name="c3" value="1">
+                                    name="c3" value="1" checked>
                                 <label class="form-check-label" for="check3">3. Tepat nama obat</label>
                             </div>
                         </div>
@@ -460,14 +460,14 @@
                         <div class="form-group mb-2">
                             <div class="form-check">
                                 <input class="form-check-input check-item" type="checkbox" id="c4"
-                                    name="c4" value="1">
+                                    name="c4" value="1" checked>
                                 <label class="form-check-label" for="check4">4. Tepat dosis</label>
                             </div>
                         </div>
                         <div class="form-group mb-2">
                             <div class="form-check">
                                 <input class="form-check-input check-item" type="checkbox" id="c5"
-                                    name="c5" value="1">
+                                    name="c5" value="1" checked>
                                 <label class="form-check-label" for="check5">5. Tepat aturan pakai dan pemberian
                                     obat</label>
                             </div>
@@ -522,7 +522,6 @@
         </button>
     </div>
 </div>
-<!-- Modal -->
 <div class="modal fade" id="modalbuatobatracik" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -712,7 +711,6 @@
         </div>
     </div>
 </div>
-<!-- Modal -->
 <div class="modal fade" id="modalpilihobat" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -833,8 +831,12 @@
                                         <button type="button" class="btn btn-sm btn-primary btn-pilih-obat"
                                             data-kode="{{ $item->kode_barang }}"
                                             data-nama="{{ $item->nama_barang }}"
-                                            data-stok="{{ $item->stok_saat_ini }}" data-kronis="{{ $item->kronis }}"
-                                            data-prb="{{ $item->prb }}" data-kemo="{{ $item->kemo }}">
+                                            data-stok="{{ $item->stok_saat_ini }}" 
+                                            data-kronis="{{ $item->kronis }}"
+                                            data-prb="{{ $item->prb }}" 
+                                            data-kemo="{{ $item->kemo }}"
+                                            data-aturan_pakai="{{ $item->aturan_pakai }}"
+                                            >
                                             <i class="bi bi-plus-lg"></i> Pilih
                                         </button>
                                     </td>
@@ -1132,6 +1134,7 @@
         $('#table-stok-obat').on('click', '.btn-pilih-obat', function() {
             var kodeBarang = $(this).data('kode');
             var namaBarang = $(this).data('nama');
+            var aturanpakai = $(this).data('aturan_pakai');
             var maxStok = parseInt($(this).data('stok')) || 999;
 
             // Ambil data status kronis, prb, kemo (bisa berupa boolean, 1/0, atau string '1'/'true')
@@ -1225,7 +1228,7 @@
                 <input type="number" name="signa2" class="form-control form-control-sm text-center" value="1" min="1" required>
             </td>
             <td>
-                <input type="text" name="catatan" class="form-control form-control-sm" placeholder="Contoh: Ssh Makan">
+                <input type="text" name="catatan" class="form-control form-control-sm" placeholder="Contoh: Ssh Makan" value="${aturanpakai}">
             </td>
             <td class="text-center">
                 <button type="button" class="btn btn-sm btn-outline-danger btn-hapus-obat">

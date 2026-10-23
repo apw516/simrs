@@ -412,6 +412,7 @@ class newFarmasiController extends FarmasiController
                 'b.kemo',
                 'k.stok_current as stok_saat_ini',
                 'k.tgl_stok as tanggal_transaksi_terakhir',
+                'b.aturan_pakai as aturan_pakai'
             ])
             ->get();
         $dataiter = db::select('select *,fc_nama_unit1(kode_unit) as unit_asal,fc_NAMA_PARAMEDIS1(kode_paramedis) as nama_dokter from ts_header_iter_bpjs where no_rm = ? order by id DESC LIMIT 3', [$data_kunjungan[0]->no_rm]);
@@ -4837,7 +4838,7 @@ class newFarmasiController extends FarmasiController
         if ($data->isEmpty()) {
             return response()->json(['html' => '<p class="text-danger">Data tidak ditemukan.</p>']);
         }
-
+        
         // Render file blade menjadi string HTML
         $view = view('new_farmasi.form_racikan_versi_2', compact('data'))->render();
         return response()->json(['html' => $view]);
