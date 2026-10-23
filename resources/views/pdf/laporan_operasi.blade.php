@@ -1,3 +1,7 @@
+@php
+    $d = $data[0] ?? null;
+    $pasien = $mt_pasien[0] ?? null;
+@endphp
 <!DOCTYPE html>
 <html>
 
@@ -9,57 +13,54 @@
     <link rel="stylesheet" href="{{ public_path('../public/dist/css/adminlte.min.css') }}">
     <!-- DataTables -->
     <link rel="stylesheet"
-        href="{{ public_path('../public/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }} ">
+        href="{{ public_path('../public/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet"
         href="{{ public_path('../public/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ public_path('../public/dist/css/datepicker.css') }}">
 
     <style>
         @page {
-            margin: 30px;
-            margin-top: 40px;
-            margin-bottom: 60px;
+            margin: 20px 25px;
         }
 
         body {
             font-family: sans-serif;
-            font-size: 11px;
+            font-size: 11.5px;
             color: #000;
-            line-height: 1.3;
+            line-height: 1.25;
         }
 
         #footer {
             position: fixed;
-            bottom: -20px;
+            bottom: -15px;
             width: 100%;
-            font-size: 6pt;
+            font-size: 7pt;
             color: #1d1c1c;
         }
 
-        /* Reset style table agar konsisten */
+        /* Reset style table agar lebih compact */
         table {
             border-collapse: collapse;
             width: 100%;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
         }
 
         th,
         td {
             border: 1px solid #000000;
-            padding: 5px;
+            padding: 4px 6px;
             vertical-align: top;
         }
 
-        /* Khusus untuk tabel tanpa border luar jika diperlukan */
         .table-no-border,
         .table-no-border tr,
         .table-no-border td {
             border: none !important;
-            padding: 2px;
+            padding: 1px;
         }
 
         .kop-table td {
-            padding: 8px;
+            padding: 4px;
         }
 
         .logo-container {
@@ -87,8 +88,9 @@
 
         /* Layout kolom tanda tangan */
         .table-ttd {
-            margin-top: 20px;
+            margin-top: 10px;
             border: none !important;
+            page-break-inside: avoid;
         }
 
         .table-ttd td {
@@ -98,8 +100,8 @@
         }
 
         .space-ttd {
-            height: 75px;
-            /* Memberikan ruang untuk tanda tangan */
+            height: 60px;
+            vertical-align: middle;
         }
     </style>
 </head>
@@ -108,11 +110,11 @@
 
     <div class="isi-surat">
         <!-- Dokumen Kode Kanan Atas -->
-        <div class="text-right text-bold" style="font-size: 10px; margin-bottom: 5px; padding-right: 5px;">
+        <div class="text-right text-bold" style="font-size: 10px; margin-bottom: 3px; padding-right: 2px;">
             RM.08.01-IBS/Rev.02/19
         </div>
 
-        <!-- Bagian Header / Kop Surat Berbentuk Tabel Agar Pas -->
+        <!-- Bagian Header / Kop Surat -->
         <table class="kop-table">
             <tbody>
                 <tr>
@@ -121,33 +123,33 @@
                     </td>
                     <td class="text-center" style="width: 50%; vertical-align: middle;">
                         <span class="text-bold" style="font-size: 12px;">PEMERINTAH KABUPATEN CIREBON</span><br>
-                        <span class="text-bold" style="font-size: 13px;">RUMAH SAKIT UMUM DAERAH WALED</span><br>
-                        <span style="font-size: 10px;">Jl. Prabu Kian Santang No. 4<br>Telp.(0231)661126 Email:
+                        <span class="text-bold" style="font-size: 13.5px;">RUMAH SAKIT UMUM DAERAH WALED</span><br>
+                        <span style="font-size: 9.5px;">Jl. Prabu Kian Santang No. 4 Telp.(0231)661126 Email:
                             brsud.waled@gmail.com</span>
                     </td>
                     <td style="width: 38%; padding: 0px;">
-                        <!-- Tabel Identitas Pasien di Dalam Kop -->
-                        <table class="table-no-border" style="width: 100%; margin: 4px; font-size: 10px;">
+                        <!-- Tabel Identitas Pasien -->
+                        <table class="table-no-border" style="width: 100%; margin: 2px; font-size: 10px;">
                             <tr>
                                 <td width="35%" class="text-bold">Nomor RM</td>
                                 <td width="5%">:</td>
-                                <td class="text-bold">{{ $mt_pasien[0]->no_rm }}</td>
+                                <td class="text-bold">{{ $pasien->no_rm ?? '-' }}</td>
                             </tr>
                             <tr>
                                 <td class="text-bold">Nama</td>
                                 <td>:</td>
-                                <td>{{ $mt_pasien[0]->nama_px }}</td>
+                                <td>{{ $pasien->nama_px ?? '-' }}</td>
                             </tr>
                             <tr>
                                 <td class="text-bold">Tgl Lahir</td>
                                 <td>:</td>
-                                <td>{{ $mt_pasien[0]->tgl_lahirs }}</td>
+                                <td>{{ $pasien->tgl_lahirs ?? '-' }}</td>
                             </tr>
                             <tr>
                                 <td class="text-bold">JK</td>
                                 <td>:</td>
                                 <td>
-                                    @if (strtoupper($mt_pasien[0]->jenis_kelamin) == 'L')
+                                    @if (isset($pasien->jenis_kelamin) && strtoupper($pasien->jenis_kelamin) == 'L')
                                         Laki - Laki
                                     @else
                                         Perempuan
@@ -158,100 +160,53 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="text-align: center;" colspan="2" class="text-bold">LAPORAN OPERASI</td>
+                    <td style="text-align: center; font-size: 12px;" colspan="2" class="text-bold">LAPORAN OPERASI</td>
                     <td style="font-style: italic; font-size: 9px; text-align: center; vertical-align: middle;">
                         (Label Pasien / Affix Patient Identification Label)
                     </td>
                 </tr>
                 <tr>
-                    <td style="text-align: left;" colspan="2">Ruang Operasi : @foreach ($data as $d)
-                            {{ $d->ruangoperasi }}
-                        @endforeach
-                    </td>
-                    <td>Kamar : @foreach ($data as $d)
-                            {{ $d->kamaroperasi }}
-                        @endforeach
-                    </td>
+                    <td style="text-align: left;" colspan="2">Ruang Operasi : {{ $d->ruangoperasi ?? '-' }}</td>
+                    <td>Kamar : {{ $d->kamaroperasi ?? '-' }}</td>
                 </tr>
                 <tr>
-                    <td style="text-align: left;" colspan="2">Cito / Terencana : @foreach ($data as $d)
-                            {{ $d->citoterencana }}
-                        @endforeach
-                    </td>
-                    <td>Tanggal Operasi : @foreach ($data as $d)
-                            {{ \Carbon\Carbon::parse($d->tanggaloperasi)->format('d-M-Y') }}
-                            @endforeach / Jam : @foreach ($data as $d)
-                                {{ $d->jamoperasi }}
-                            @endforeach
-                    </td>
+                    <td style="text-align: left;" colspan="2">Cito / Terencana : {{ $d->citoterencana ?? '-' }}</td>
+                    <td>Tanggal Operasi :
+                        {{ isset($d->tanggaloperasi) ? \Carbon\Carbon::parse($d->tanggaloperasi)->format('d-M-Y') : '-' }}
+                        / Jam : {{ $d->jamoperasi ?? '-' }}</td>
                 </tr>
                 <tr>
                     <td style="text-align: left; width: 35%;">
-                        Pembedah : @foreach ($data as $d)
-                            {{ $d->pembedah }}
-                        @endforeach
-                        <br>
-                        <br>
-                        Ahli Anestesi : @foreach ($data as $d)
-                            {{ $d->ahlianestesi }}
-                        @endforeach
+                        Pembedah : {{ $d->pembedah ?? '-' }}<br>
+                        Ahli Anestesi : {{ $d->ahlianestesi ?? '-' }}
                     </td>
                     <td style="text-align: left; width: 35%;">
-                        Asisten I : @foreach ($data as $d)
-                            {{ $d->asisten1 }}
-                        @endforeach
-                        <br>
-                        <br>
-                        Asisten II : @foreach ($data as $d)
-                            {{ $d->asisten2 }}
-                        @endforeach
+                        Asisten I : {{ $d->asisten1 ?? '-' }}<br>
+                        Asisten II : {{ $d->asisten2 ?? '-' }}
                     </td>
                     <td style="text-align: left; width: 30%;">
-                        Perawat Instrumen : @foreach ($data as $d)
-                            {{ $d->perawatinstrumen }}
-                        @endforeach
-                        <br>
-                        <br>
-                        Jenis Anestesi : @foreach ($data as $d)
-                            {{ $d->jenisanestesi }}
-                        @endforeach
+                        Perawat Instrumen : {{ $d->perawatinstrumen ?? '-' }}<br>
+                        Jenis Anestesi : {{ $d->jenisanestesi ?? '-' }}
                     </td>
                 </tr>
                 <tr>
-                    <td style="text-align: left;" colspan="2">Diagnosa Pra-bedah : @foreach ($data as $d)
-                            {{ $d->diagnosaprabedah }}
-                        @endforeach
+                    <td style="text-align: left;" colspan="2">Diagnosa Pra-bedah : {{ $d->diagnosaprabedah ?? '-' }}
                     </td>
-                    <td>Indikasi Operasi : @foreach ($data as $d)
-                            {{ $d->indikasioperasi }}
-                        @endforeach
-                    </td>
+                    <td>Indikasi Operasi : {{ $d->indikasioperasi ?? '-' }}</td>
                 </tr>
                 <tr>
-                    <td style="text-align: left;" colspan="2">Diagnosa Pasca-bedah : @foreach ($data as $d)
-                            {{ $d->diagnosapascabedah }}
-                        @endforeach
-                    </td>
-                    <td>Jenis Operasi : @foreach ($data as $d)
-                            {{ $d->jenisoperasi }}
-                        @endforeach
-                    </td>
+                    <td style="text-align: left;" colspan="2">Diagnosa Pasca-bedah :
+                        {{ $d->diagnosapascabedah ?? '-' }}</td>
+                    <td>Jenis Operasi : {{ $d->jenisoperasi ?? '-' }}</td>
                 </tr>
                 <tr>
-                    <td style="text-align: left;" colspan="2">Desinfeksi Kulit dengan : @foreach ($data as $d)
-                            {{ $d->desinfeksikulitdengan }}
-                        @endforeach
-                    </td>
+                    <td style="text-align: left;" colspan="2">Desinfeksi Kulit dengan :
+                        {{ $d->desinfeksikulitdengan ?? '-' }}</td>
                     <td>
-                        Jaringan yang dieksisi : @foreach ($data as $d)
-                            {{ $d->jaringanyangdieksisi }}
-                        @endforeach
-                        <br>
-                        Dikirim ke bagian patologi anatomi :
-                        <input type="checkbox"
-                            @foreach ($data as $d) @if ($d->kirimkepatologi == 1) checked @endif @endforeach> Ya
-                        <input type="checkbox"
-                            @foreach ($data as $d) @if ($d->kirimkepatologi == 0) checked @endif @endforeach> Tidak
+                        Jaringan yang dieksisi : {{ $d->jaringanyangdieksisi ?? '-' }}<br>
+                        Dikirim ke PA :
+                        <input type="checkbox" {{ ($d->kirimkepatologi ?? 0) == 1 ? 'checked' : '' }}> Ya
+                        <input type="checkbox" {{ ($d->kirimkepatologi ?? 1) == 0 ? 'checked' : '' }}> Tidak
                     </td>
                 </tr>
             </tbody>
@@ -261,55 +216,28 @@
         <table>
             <tbody>
                 <tr>
-                    <td style="width: 25%;">Jam operasi dimulai :<br>
-                        @foreach ($data as $d)
-                            {{ $d->jammulaioperasi }}
-                        @endforeach
-                    </td>
-                    <td style="width: 25%;">Jam operasi selesai :<br>
-                        @foreach ($data as $d)
-                            {{ $d->jamoperasiselesai }}
-                        @endforeach
-                    </td>
-                    <td style="width: 25%;">Lama operasi :<br>
-                        @foreach ($data as $d)
-                            {{ $d->lamaoperasiberlangsung }}
-                        @endforeach
-                    </td>
-                    <td style="width: 25%;">Jenis bahan dikirim : @foreach ($data as $d)
-                            {{ $d->jenisbahanyangdikirim }}
-                        @endforeach
-                        <br>
-                        Untuk pemeriksaan : @foreach ($data as $d)
-                            {{ $d->untukpemeriksaan }}
-                        @endforeach
+                    <td style="width: 25%;">Jam mulai : {{ $d->jammulaioperasi ?? '-' }}</td>
+                    <td style="width: 25%;">Jam selesai : {{ $d->jamoperasiselesai ?? '-' }}</td>
+                    <td style="width: 25%;">Lama : {{ $d->lamaoperasiberlangsung ?? '-' }}</td>
+                    <td style="width: 25%;">Bahan dikirim : {{ $d->jenisbahanyangdikirim ?? '-' }}<br>Pemeriksaan :
+                        {{ $d->untukpemeriksaan ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="height: 40px;">Macam Sayatan :<br>{{ $d->macamsayatan ?? '-' }}</td>
+                    <td colspan="2" style="height: 40px;">Posisi Penderita :<br>{{ $d->posisipenderita ?? '-' }}
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" style="height: 60px;">Macam Sayatan (Bila perlu dengan gambar) :<br>
-                        @foreach ($data as $d)
-                            {{ $d->macamsayatan }}
-                        @endforeach
-                    </td>
-                    <td colspan="2" style="height: 60px;">Posisi Penderita (Bila perlu dengan gambar) :<br>
-                        @foreach ($data as $d)
-                            {{ $d->posisipenderita }}
-                        @endforeach
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="4" style="min-height: 150px;">
-                        <span class="text-bold">Teknik Operasi dan Temuan Intra Operasi</span><br><br>
+                    <td colspan="4" style="min-height: 100px;">
+                        <span class="text-bold" style="font-size: 12px;">Teknik Operasi dan Temuan Intra Operasi</span><br>
                         @if ($kode_unit == '1014')
-                            <div style="margin-left: 20px;">
+                            <div style="margin-left: 15px; margin-top: 4px;">
                                 1. Pasien tidur terlentang di meja operasi<br>
                                 2. Dilakukan tindakan aseptik dan antiseptik dengan betadine<br>
                                 <div style="margin-left: 15px; margin-top: 2px; margin-bottom: 2px;">
-                                    <input
-                                        @foreach ($data as $c) @if ($c->pertanyaan2 == 'Mata Kanan') checked @endif @endforeach
+                                    <input {{ ($d->pertanyaan2 ?? '') == 'Mata Kanan' ? 'checked' : '' }}
                                         type="radio"> Mata Kanan &nbsp;&nbsp;
-                                    <input
-                                        @foreach ($data as $c) @if ($c->pertanyaan2 == 'Mata Kiri') checked @endif @endforeach
+                                    <input {{ ($d->pertanyaan2 ?? '') == 'Mata Kiri' ? 'checked' : '' }}
                                         type="radio"> Mata Kiri
                                 </div>
                                 3. Pasang Doek bolong<br>
@@ -322,141 +250,105 @@
                                 10. Operasi Selesai
                             </div>
                         @else
-                            @foreach ($data as $d)
-                                {{ $d->teknikoperasi }}
-                            @endforeach
+                            {{ $d->teknikoperasi ?? '-' }}
                         @endif
                     </td>
                 </tr>
                 <tr>
                     <td colspan="4">
                         Penggunaan BHP khusus :
-                        <input type="checkbox"
-                            @foreach ($data as $c) @if ($c->penggunaanBHP == '1') checked @endif @endforeach> Ya
-                        &nbsp;
-                        <input type="checkbox"
-                            @foreach ($data as $c) @if ($c->penggunaanBHP == '0') checked @endif @endforeach> Tidak
+                        <input type="checkbox" {{ ($d->penggunaanBHP ?? 0) == '1' ? 'checked' : '' }}> Ya &nbsp;
+                        <input type="checkbox" {{ ($d->penggunaanBHP ?? 1) == '0' ? 'checked' : '' }}> Tidak
                         <br>
-                        Jenis dan Jumlah (BHP Khusus) : @foreach ($data as $d)
-                            {{ $d->jenisjumlahBHP }}
-                        @endforeach
+                        Jenis dan Jumlah (BHP Khusus) : {{ $d->jenisjumlahBHP ?? '-' }}
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2">Komplikasi Intra-Operasi : <br>
-                        <input type="checkbox"
-                            @foreach ($data as $c) @if ($c->komplikasiintraoprasi == '1') checked @endif @endforeach> Ya
+                    <td colspan="2">Komplikasi Intra-Operasi :
+                        <input type="checkbox" {{ ($d->komplikasiintraoprasi ?? 0) == '1' ? 'checked' : '' }}> Ya
                         &nbsp;
-                        <input type="checkbox"
-                            @foreach ($data as $c) @if ($c->komplikasiintraoprasi == '0') checked @endif @endforeach> Tidak
+                        <input type="checkbox" {{ ($d->komplikasiintraoprasi ?? 1) == '0' ? 'checked' : '' }}> Tidak
                     </td>
-                    <td colspan="2" rowspan="2">Penjabaran Komplikasi Intra-Operasi :<br>
-                        @foreach ($data as $d)
-                            {{ $d->penjabarankomplikasi }}
-                        @endforeach
+                    <td colspan="2" rowspan="2">Penjabaran Komplikasi :<br>{{ $d->penjabarankomplikasi ?? '-' }}
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2">Perdarahan : @foreach ($data as $d)
-                            {{ $d->perdarahan }}
-                        @endforeach CC</td>
+                    <td colspan="2">Perdarahan : {{ $d->perdarahan ?? '-' }} CC</td>
                 </tr>
                 <tr>
-                    <td colspan="2">1. Kontrol nadi / tensi / pernafasan / suhu :<br>
-                        @foreach ($data as $d)
-                            {{ $d->kontrolnaditensi }}
-                        @endforeach
-                    </td>
-                    <td colspan="2">5. Obat-obatan :<br>
-                        @foreach ($data as $d)
-                            {{ $d->obatobatan }}
-                        @endforeach
-                    </td>
+                    <td colspan="2">1. Kontrol nadi / tensi / pernafasan / suhu
+                        :<br>{{ $d->kontrolnaditensi ?? '-' }}</td>
+                    <td colspan="2">5. Obat-obatan :<br>{{ $d->obatobatan ?? '-' }}</td>
                 </tr>
                 <tr>
-                    <td colspan="2">2. Puasa :<br>
-                        @foreach ($data as $d)
-                            {{ $d->puasa }}
-                        @endforeach
-                    </td>
-                    <td colspan="2">6. Ganti balut :<br>
-                        @foreach ($data as $d)
-                            {{ $d->gantibalut }}
-                        @endforeach
-                    </td>
+                    <td colspan="2">2. Puasa :<br>{{ $d->puasa ?? '-' }}</td>
+                    <td colspan="2">6. Ganti balut :<br>{{ $d->gantibalut ?? '-' }}</td>
                 </tr>
                 <tr>
-                    <td colspan="2">3. Drain :<br>
-                        @foreach ($data as $d)
-                            {{ $d->drain }}
-                        @endforeach
-                    </td>
-                    <td colspan="2" rowspan="2">7. Lain - Lain :<br>
-                        @foreach ($data as $d)
-                            {{ $d->lainlain }}
-                        @endforeach
-                    </td>
+                    <td colspan="2">3. Drain :<br>{{ $d->drain ?? '-' }}</td>
+                    <td colspan="2" rowspan="2">7. Lain - Lain :<br>{{ $d->lainlain ?? '-' }}</td>
                 </tr>
                 <tr>
-                    <td colspan="2">4. Infus :<br>
-                        @foreach ($data as $d)
-                            {{ $d->infus }}
-                        @endforeach
-                    </td>
+                    <td colspan="2">4. Infus :<br>{{ $d->infus ?? '-' }}</td>
                 </tr>
             </tbody>
         </table>
 
         <!-- Bagian Tempat, Tanggal dan Kolom Tanda Tangan -->
-        <div class="text-right font-italic text-bold" style="margin-top: 15px; padding-right: 40px; font-size: 11px;">
-            Waled, @foreach ($data as $d)
-                {{ \Carbon\Carbon::parse($d->tgl_entry)->format('d-M-Y') }}
-            @endforeach
+        <div class="text-right font-italic text-bold" style="margin-top: 10px; padding-right: 30px; font-size: 11px;">
+            Waled, {{ isset($d->tgl_entry) ? \Carbon\Carbon::parse($d->tgl_entry)->format('d-M-Y') : date('d-M-Y') }}
         </div>
+        
         <table class="table-ttd">
             <tbody>
                 <tr>
-                    <td>Pembuat Laporan</td>
-                    <td>Pembedah</td>
+                    <td style="font-size: 11px; font-weight: bold;">Pembuat Laporan</td>
+                    <td style="font-size: 11px; font-weight: bold;">Pembedah</td>
                 </tr>
                 <tr>
-                    <td class="space-ttd"></td>
-                    <td class="space-ttd"></td>
-                </tr>
-                <tr>
-                    <td class="text-bold" style="text-decoration: underline;">
-                        @if ($username != '')
-                            {{ $username }}
-                        @else
-                            ........................................
+                    <!-- Kolom Barcode Pembuat Laporan -->
+                    <td class="space-ttd" style="vertical-align: middle; text-align: center;">
+                        @if (!empty($qrtte))
+                            <img src="data:image/svg+xml;base64,{{ $qrtte }}"
+                                style="width: 85px; height: 85px; display: inline-block;" alt="QR Code TTE">
                         @endif
                     </td>
-                    <td class="text-bold" style="text-decoration: underline;">
-                        @if ($username != '')
-                            {{ $username }}
-                        @else
-                            ........................................
+                    <!-- Kolom Barcode Pembedah -->
+                    <td class="space-ttd" style="vertical-align: middle; text-align: center;">
+                        @if (!empty($qrtte))
+                            <img src="data:image/svg+xml;base64,{{ $qrtte }}"
+                                style="width: 85px; height: 85px; display: inline-block;" alt="QR Code TTE">
                         @endif
                     </td>
                 </tr>
                 <tr>
-                    <td style="font-size: 10px;font-weight:bold; color: #000000;">NIP : {{ $nip }}</td>
-                    <td style="font-size: 10px;font-weight:bold; color: #000000;">NIP : {{ $nip }}</td>
+                    <td class="text-bold" style="text-decoration: underline; font-size: 11px;">
+                        {{ !empty($username) ? $username : '........................................' }}
+                    </td>
+                    <td class="text-bold" style="text-decoration: underline; font-size: 11px;">
+                        {{ !empty($username) ? $username : '........................................' }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 10px; font-weight: bold; margin-top: 2px;">NIP : {{ $nip ?? '-' }}</td>
+                    <td style="font-size: 10px; font-weight: bold; margin-top: 2px;">NIP : {{ $nip ?? '-' }}</td>
                 </tr>
             </tbody>
         </table>
+
         <footer>
             <div id="footer"></div>
         </footer>
     </div>
+
     <!-- Script DomPDF Page Numbering -->
     <script type="text/php">
         if ( isset($pdf) ) {
-            $x = 40;
-            $y = 800;
+            $x = 35;
+            $y = 815;
             $text = "Halaman {PAGE_NUM} dari {PAGE_COUNT}";
             $font = $fontMetrics->get_font("helvetica", "normal");
-            $size = 7;
+            $size = 8;
             $color = array(0,0,0);
             $word_space = 0.0;
             $char_space = 0.0;

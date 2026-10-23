@@ -1487,9 +1487,252 @@ class Pdf2Controller extends Controller
             $DD = $v->sendpdftosiramah($datawebsiramah);
             $url1 = "https://siramah.rsudwaled.com/filetandatangan?id=" . 'THT_KL' . $get_data->kode_kunjungan . $get_data->kode_paramedis;
             $qrtte = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url1));
-            return view('pdf.print_laporan_endoskopi_tht', compact('get_data', 'pasien', 'kode_kunjungan','qrtte'));
+            return view('pdf.print_laporan_endoskopi_tht', compact('get_data', 'pasien', 'kode_kunjungan', 'qrtte'));
         } catch (\Exception $e) {
             return abort(500, 'Terjadi kesalahan saat memuat cetakan: ' . $e->getMessage());
         }
+    }
+    public function cetaklaporanoperasi($kodekunjungan)
+    {
+        $data = db::select('select * from laporan_operasi_poli_mata where kode_kunjungan = ?', [$kodekunjungan]);
+        $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
+        if (count($data) > 0) {
+            $user = db::select('select * from user where id = ?', [$data[0]->pic]);
+            $username = $user[0]->nama;
+            $nip = $user[0]->nip;
+        } else {
+            $username = '';
+            $nip = '';
+        }
+        $kode_unit = $ts_kunjungan[0]->kode_unit;
+
+        $USER = db::table('mt_paramedis')->where('kode_paramedis', $ts_kunjungan[0]->kode_paramedis)->first();
+        $datawebsiramah = [
+            'id_dokumen' => 'LP' . $kodekunjungan,
+            'nama_user' => $USER->nama_paramedis,
+            'tanggal_verifikasi' => $data[0]->tgl_entry,
+            'jabatan' => "Dokter",
+        ];
+        $v = new ModelBSRE();
+        $DD = $v->sendpdftosiramah($datawebsiramah);
+        $url1 = "https://siramah.rsudwaled.com/filetandatangan?id=" . 'LP' . $kodekunjungan;
+        $qrtte = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url1));
+        $dompdf = Pdf::loadView('pdf.laporan_operasi', compact([
+            'data',
+            'mt_pasien',
+            'username',
+            'kode_unit',
+            'nip',
+            'qrtte'
+        ]));
+        $dompdf->setPaper('A4', 'portrait'); // 'A4' for paper size, 'portrait' or 'landscape' for orientation
+
+        // Render the HTML as PDF
+        $dompdf->render();
+        $namaberkas = 'LAPORAN_OPERASI_' . $mt_pasien[0]->nama_px;
+        // return $dompdf->download($namaberkas . '.pdf');
+        // Output the generated PDF to Browser
+        return $dompdf->stream($namaberkas . ".pdf", array("Attachment" => false));
+    }
+    public function laporanoperasikatarak($kodekunjungan)
+    {
+        // $katarak = db::select('select * from laporan_operasi_katarak where kode_kunjungan = ?', [$kodekunjungan]);
+        $katarak = db::table('laporan_operasi_katarak')->where('kode_kunjungan', $kodekunjungan)->first();
+        $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
+        if ($katarak) {
+            $user = db::select('select * from user where id = ?', [$katarak->pic]);
+            $username = $user[0]->nama;
+            $nip = $user[0]->nip;
+        } else {
+            $username = '';
+            $nip = '';
+        }
+        $USER = db::table('mt_paramedis')->where('kode_paramedis', $ts_kunjungan[0]->kode_paramedis)->first();
+        $datawebsiramah = [
+            'id_dokumen' => 'LKT' . $kodekunjungan,
+            'nama_user' => $USER->nama_paramedis,
+            'tanggal_verifikasi' => $katarak->tgl_entry,
+            'jabatan' => "Dokter",
+        ];
+        $v = new ModelBSRE();
+        $DD = $v->sendpdftosiramah($datawebsiramah);
+        $url1 = "https://siramah.rsudwaled.com/filetandatangan?id=" . 'LKT' . $kodekunjungan;
+        $qrtte = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url1));
+        $dompdf = Pdf::loadView('pdf.cetakan_laporan_op_katarak', compact([
+            'mt_pasien',
+            'katarak',
+            'username',
+            'nip',
+            'qrtte'
+        ]));
+        $dompdf->setPaper('A4', 'portrait'); // 'A4' for paper size, 'portrait' or 'landscape' for orientation
+        // Render the HTML as PDF
+        $dompdf->render();
+        $namaberkas = 'LAPORAN_OPERASI_' . $mt_pasien[0]->nama_px;
+        // return $dompdf->download($namaberkas . '.pdf');
+        // Output the generated PDF to Browser
+        return $dompdf->stream($namaberkas . ".pdf", array("Attachment" => false));
+    }
+    public function laporanoperasikatarakgl($kodekunjungan)
+    {
+        // $katarak = db::select('select * from laporan_operasi_katarak where kode_kunjungan = ?', [$kodekunjungan]);
+        $glaukoma = db::table('laporan_operasi_katarak_glaukoma')->where('kode_kunjungan', $kodekunjungan)->first();
+        $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
+        if ($glaukoma) {
+            $user = db::select('select * from user where id = ?', [$glaukoma->pic]);
+            $username = $user[0]->nama;
+            $nip = $user[0]->nip;
+        } else {
+            $username = '';
+            $nip = '';
+        }
+        $USER = db::table('mt_paramedis')->where('kode_paramedis', $ts_kunjungan[0]->kode_paramedis)->first();
+        $datawebsiramah = [
+            'id_dokumen' => 'LKTG' . $kodekunjungan,
+            'nama_user' => $USER->nama_paramedis,
+            'tanggal_verifikasi' => $glaukoma->tgl_entry,
+            'jabatan' => "Dokter",
+        ];
+        $v = new ModelBSRE();
+        $DD = $v->sendpdftosiramah($datawebsiramah);
+        $url1 = "https://siramah.rsudwaled.com/filetandatangan?id=" . 'LKTG' . $kodekunjungan;
+        $qrtte = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url1));
+        $dompdf = Pdf::loadView('pdf.cetakan_laporan_op_katarak_gl', compact([
+            'mt_pasien',
+            'glaukoma',
+            'username',
+            'nip',
+            'qrtte'
+        ]));
+        $dompdf->setPaper('A4', 'portrait'); // 'A4' for paper size, 'portrait' or 'landscape' for orientation
+        // Render the HTML as PDF
+        $dompdf->render();
+        $namaberkas = 'LAPORAN_OPERASI_' . $mt_pasien[0]->nama_px;
+        // return $dompdf->download($namaberkas . '.pdf');
+        // Output the generated PDF to Browser
+        return $dompdf->stream($namaberkas . ".pdf", array("Attachment" => false));
+    }
+    public function laporanoperasikataraktrab($kodekunjungan)
+    {
+        // $katarak = db::select('select * from laporan_operasi_katarak where kode_kunjungan = ?', [$kodekunjungan]);
+        $trabec = db::table('laporan_operasi_trabecuektomi')->where('kode_kunjungan', $kodekunjungan)->first();
+        $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
+        if ($trabec) {
+            $user = db::select('select * from user where id = ?', [$trabec->pic]);
+            $username = $user[0]->nama;
+            $nip = $user[0]->nip;
+        } else {
+            $username = '';
+            $nip = '';
+        }
+        $USER = db::table('mt_paramedis')->where('kode_paramedis', $ts_kunjungan[0]->kode_paramedis)->first();
+        $datawebsiramah = [
+            'id_dokumen' => 'LKTRB' . $kodekunjungan,
+            'nama_user' => $USER->nama_paramedis,
+            'tanggal_verifikasi' => $trabec->tgl_entry,
+            'jabatan' => "Dokter",
+        ];
+        $v = new ModelBSRE();
+        $DD = $v->sendpdftosiramah($datawebsiramah);
+        $url1 = "https://siramah.rsudwaled.com/filetandatangan?id=" . 'LKTRB' . $kodekunjungan;
+        $qrtte = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url1));
+        $dompdf = Pdf::loadView('pdf.cetakan_laporan_op_katarak_trab', compact([
+            'mt_pasien',
+            'trabec',
+            'username',
+            'nip',
+            'qrtte'
+        ]));
+        $dompdf->setPaper('A4', 'portrait'); // 'A4' for paper size, 'portrait' or 'landscape' for orientation
+        // Render the HTML as PDF
+        $dompdf->render();
+        $namaberkas = 'LAPORAN_OPERASI_' . $mt_pasien[0]->nama_px;
+        // return $dompdf->download($namaberkas . '.pdf');
+        // Output the generated PDF to Browser
+        return $dompdf->stream($namaberkas . ".pdf", array("Attachment" => false));
+    }
+    public function laporanoperasiptery($kodekunjungan)
+    {
+        // $katarak = db::select('select * from laporan_operasi_katarak where kode_kunjungan = ?', [$kodekunjungan]);
+        $pter = db::table('laporan_operasi_pterygium')->where('kode_kunjungan', $kodekunjungan)->first();
+        $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
+        if ($pter) {
+            $user = db::select('select * from user where id = ?', [$pter->pic]);
+            $username = $user[0]->nama;
+            $nip = $user[0]->nip;
+        } else {
+            $username = '';
+            $nip = '';
+        }
+        $USER = db::table('mt_paramedis')->where('kode_paramedis', $ts_kunjungan[0]->kode_paramedis)->first();
+        $datawebsiramah = [
+            'id_dokumen' => 'LPTR' . $kodekunjungan,
+            'nama_user' => $USER->nama_paramedis,
+            'tanggal_verifikasi' => $pter->tgl_entry,
+            'jabatan' => "Dokter",
+        ];
+        $v = new ModelBSRE();
+        $DD = $v->sendpdftosiramah($datawebsiramah);
+        $url1 = "https://siramah.rsudwaled.com/filetandatangan?id=" . 'LPTR' . $kodekunjungan;
+        $qrtte = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url1));
+        $dompdf = Pdf::loadView('pdf.cetakan_laporan_op_ptery', compact([
+            'mt_pasien',
+            'pter',
+            'username',
+            'nip',
+            'qrtte'
+        ]));
+        $dompdf->setPaper('A4', 'portrait'); // 'A4' for paper size, 'portrait' or 'landscape' for orientation
+        // Render the HTML as PDF
+        $dompdf->render();
+        $namaberkas = 'LAPORAN_OPERASI_' . $mt_pasien[0]->nama_px;
+        // return $dompdf->download($namaberkas . '.pdf');
+        // Output the generated PDF to Browser
+        return $dompdf->stream($namaberkas . ".pdf", array("Attachment" => false));
+    }
+    public function laporanoperasiint($kodekunjungan)
+    {
+        // $katarak = db::select('select * from laporan_operasi_katarak where kode_kunjungan = ?', [$kodekunjungan]);
+        $inj = db::table('laporan_operasi_injeksi_intra_vitreal')->where('kode_kunjungan', $kodekunjungan)->first();
+        $ts_kunjungan = db::select('select *,date(tgl_masuk) as tgl_msk ,fc_nama_paramedis1(kode_paramedis) as nama_dokter,fc_NAMA_PENJAMIN2(kode_penjamin) as nama_penjamin,fc_nama_unit1(kode_unit) as nama_unit from ts_kunjungan where kode_kunjungan = ?', [$kodekunjungan]);
+        $mt_pasien = db::select('select *,fc_alamat(no_rm) as alamatpx,date(tgl_lahir) as tgl_lahirs from mt_pasien where no_rm = ?', [$ts_kunjungan[0]->no_rm]);
+        if ($inj) {
+            $user = db::select('select * from user where id = ?', [$inj->pic]);
+            $username = $user[0]->nama;
+            $nip = $user[0]->nip;
+        } else {
+            $username = '';
+            $nip = '';
+        }
+        $USER = db::table('mt_paramedis')->where('kode_paramedis', $ts_kunjungan[0]->kode_paramedis)->first();
+        $datawebsiramah = [
+            'id_dokumen' => 'LPINJ' . $kodekunjungan,
+            'nama_user' => $USER->nama_paramedis,
+            'tanggal_verifikasi' => $inj->tgl_entry,
+            'jabatan' => "Dokter",
+        ];
+        $v = new ModelBSRE();
+        $DD = $v->sendpdftosiramah($datawebsiramah);
+        $url1 = "https://siramah.rsudwaled.com/filetandatangan?id=" . 'LPINJ' . $kodekunjungan;
+        $qrtte = base64_encode(QrCode::format('svg')->size(90)->margin(1)->generate($url1));
+        $dompdf = Pdf::loadView('pdf.cetakan_laporan_op_int', compact([
+            'mt_pasien',
+            'inj',
+            'username',
+            'nip',
+            'qrtte'
+        ]));
+        $dompdf->setPaper('A4', 'portrait'); // 'A4' for paper size, 'portrait' or 'landscape' for orientation
+        // Render the HTML as PDF
+        $dompdf->render();
+        $namaberkas = 'LAPORAN_OPERASI_' . $mt_pasien[0]->nama_px;
+        // return $dompdf->download($namaberkas . '.pdf');
+        // Output the generated PDF to Browser
+        return $dompdf->stream($namaberkas . ".pdf", array("Attachment" => false));
     }
 }

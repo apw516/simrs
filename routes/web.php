@@ -871,7 +871,12 @@ Route::get('/ermrajal/{rm}', [RanapController::class, 'cariberkasnya_pasien3']);
 
 
 Route::get('/cetakcatatanhemodialisa/{id}', [PdfController::class, 'cetakcatatanhemodialisa']); //formpasien_bpjs
-Route::get('/cetaklaporanoperasi/{kodekunjungan}', [PdfController::class, 'cetaklaporanoperasi']); //formpasien_bpjs
+Route::get('/cetaklaporanoperasi/{kodekunjungan}', [Pdf2Controller::class, 'cetaklaporanoperasi']); //formpasien_bpjs
+Route::get('/laporanoperasikatarak/{kodekunjungan}', [Pdf2Controller::class, 'laporanoperasikatarak']); //
+Route::get('/laporanoperasikatarakgl/{kodekunjungan}', [Pdf2Controller::class, 'laporanoperasikatarakgl']); //
+Route::get('/laporanoperasikataraktrab/{kodekunjungan}', [Pdf2Controller::class, 'laporanoperasikataraktrab']); //
+Route::get('/laporanoperasiptery/{kodekunjungan}', [Pdf2Controller::class, 'laporanoperasiptery']); //
+Route::get('/laporanoperasiint/{kodekunjungan}', [Pdf2Controller::class, 'laporanoperasiint']); //
 Route::get('/cetaksep/{kodekunjungan}', [PdfController::class, 'Cetaksep2']); //formpasien_bpjs
 // Route::get('/cetaksep/{kodekunjungan}', [SimrsController::class, 'Cetaksep']); //formpasien_bpjs
 Route::get('/cetaksep_v/{nosep}', [PdfController::class, 'cetaksep']);

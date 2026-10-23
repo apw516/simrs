@@ -105,17 +105,37 @@
                                         unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
                                             class="bi bi-printer mr-2"></i>Assesmen
                                         Medis </button>
-                                    {{-- @if ($k->kode_unit == 1014) --}}
                                     <button type="button" class="btn btn-secondary laporanoperasi"
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
                                         unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
                                             class="bi bi-printer mr-2"></i>Laporan Operasi </button>
+                                    @if ($k->kode_unit == 1014)
+                                    <button type="button" class="btn btn-secondary laporanoperasikatarak"
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
+                                            class="bi bi-printer mr-2"></i>Laporan Operasi Katarak</button>
+                                    <button type="button" class="btn btn-secondary laporanoperasikatarakgl"
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
+                                            class="bi bi-printer mr-2"></i>Laporan Operasi Katarak & Glaukoma</button>
+                                    <button type="button" class="btn btn-secondary laporanoperasikataraktrab"
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
+                                            class="bi bi-printer mr-2"></i>Laporan Operasi Trabeculektomi</button>
+                                    <button type="button" class="btn btn-secondary laporanoperasiptery"
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
+                                            class="bi bi-printer mr-2"></i>Laporan Operasi Pterygium</button>
+                                    <button type="button" class="btn btn-secondary laporanoperasiint"
+                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
+                                            class="bi bi-printer mr-2"></i>Laporan Injeksi Intra Vitreal</button>
                                     <button type="button" class="btn btn-secondary ambildataberkasscan"
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
                                         unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"
                                         data-toggle="modal" data-target="#modalberkasyangdiscan"><i
                                             class="bi bi-printer mr-2"></i>Berkas yang discan </button>
-                                    {{-- @endif --}}
+                                    @endif
                                 </div>
                             </div>
                             <div class="row">
@@ -2084,6 +2104,26 @@
     $(".laporanoperasi").on('click', function(event) {
         kode_kunjungan = $(this).attr('kodekunjungan')
         window.open('cetaklaporanoperasi/' + kode_kunjungan);
+    })
+    $(".laporanoperasikatarak").on('click', function(event) {
+        kode_kunjungan = $(this).attr('kodekunjungan')
+        window.open('laporanoperasikatarak/' + kode_kunjungan);
+    })
+    $(".laporanoperasikatarakgl").on('click', function(event) {
+        kode_kunjungan = $(this).attr('kodekunjungan')
+        window.open('laporanoperasikatarakgl/' + kode_kunjungan);
+    })
+    $(".laporanoperasikataraktrab").on('click', function(event) {
+        kode_kunjungan = $(this).attr('kodekunjungan')
+        window.open('laporanoperasikataraktrab/' + kode_kunjungan);
+    })
+    $(".laporanoperasiptery").on('click', function(event) {
+        kode_kunjungan = $(this).attr('kodekunjungan')
+        window.open('laporanoperasiptery/' + kode_kunjungan);
+    })
+    $(".laporanoperasiint").on('click', function(event) {
+        kode_kunjungan = $(this).attr('kodekunjungan')
+        window.open('laporanoperasiint/' + kode_kunjungan);
     })
     $(".cetakresumeperawatbaru").on('click', function(event) {
         kode_kunjungan = $(this).attr('kodekunjungan')
