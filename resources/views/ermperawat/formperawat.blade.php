@@ -62,7 +62,7 @@
                             </li>
                         @endif
                         @if (auth()->user()->unit == '3012')
-                            <li class="nav-item" id="pemeriksaan">
+                            <li hidden class="nav-item" id="pemeriksaan">
                                 <a href="#" class="nav-link" onclick="formlaporantindakan()">
                                     <i class="fas fa-inbox mr-2"></i>Laporan Tindakan
                                 </a>

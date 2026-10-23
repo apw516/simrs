@@ -70,7 +70,8 @@
                         @if (auth()->user()->unit == '1009')
                             <li class="nav-item" id="pemeriksaan">
                                 <a href="#" class="nav-link" onclick="assesmenbundir()">
-                                    <i class="fas fa-inbox mr-2"></i>Asesmen Khusus Resiko Bunuh Diri ( Inpatient Suicide/Self-Harm Assesment)
+                                    <i class="fas fa-inbox mr-2"></i>Asesmen Khusus Resiko Bunuh Diri ( Inpatient
+                                    Suicide/Self-Harm Assesment)
                                 </a>
                             </li>
                         @endif
@@ -82,6 +83,11 @@
                         <li hidden class="nav-item" id="pemeriksaan" @if (auth()->user()->unit == '1046') hidden @endif>
                             <a href="#" class="nav-link" onclick="formpemeriksaandokter()">
                                 <i class="fas fa-inbox mr-2"></i>Catatan Perkembangan Pasien Terintegrasi ( CPPT )
+                            </a>
+                        </li>
+                        <li class="nav-item" id="pemeriksaan">
+                            <a href="#" class="nav-link" onclick="formlaporantindakan()">
+                                <i class="fas fa-inbox mr-2"></i>Laporan Tindakan
                             </a>
                         </li>
                         <li class="nav-item">
@@ -168,7 +174,8 @@
                 <iframe src="{{ $urlicare }}" frameborder="0" width="100%" height="1000px%"></iframe>
             </div>
             <div class="card-footer">
-                <button class="btn btn-danger" onclick="tutupicare()"><i class="bi bi-x mr-1 ml-1"></i> Tutup</button>
+                <button class="btn btn-danger" onclick="tutupicare()"><i class="bi bi-x mr-1 ml-1"></i>
+                    Tutup</button>
             </div>
         </div>
         <div class="warning catatankonsul">
@@ -360,6 +367,7 @@
             }
         });
     }
+
     function assesmenbundir() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -379,6 +387,7 @@
             }
         });
     }
+
     function formpemeriksaandokter() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -398,6 +407,7 @@
             }
         });
     }
+
     function formprmj() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -420,6 +430,27 @@
             }
         });
     }
+
+    function formlaporantindakan() {
+        kodekunjungan = $('#kodekunjungan').val()
+        nomorrm = $('#nomorrm').val()
+        spinner = $('#loader')
+        spinner.show();
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                kodekunjungan
+            },
+            url: '<?= route('form_laporan_tindakan') ?>',
+            success: function(response) {
+                $('.slide3').html(response);
+                spinner.hide()
+            }
+        });
+    }
+
     function formpemeriksaankhusus() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()
@@ -439,6 +470,7 @@
             }
         });
     }
+
     function formupload() {
         kodekunjungan = $('#kodekunjungan').val()
         nomorrm = $('#nomorrm').val()

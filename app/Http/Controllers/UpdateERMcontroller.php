@@ -2104,6 +2104,7 @@ class UpdateERMcontroller extends Controller
         if ($get_data_tht && !empty($get_data_tht->data_detail)) {
             $formData_tht = json_decode($get_data_tht->data_detail, true);
         }
+        $mt_paramedis = db::table('mt_paramedis')->where('kode_paramedis',auth()->user()->kode_paramedis)->first();
         return view('form_erm_perawat.index_laporan_tindakan', compact([
             'kode_kunjungan',
             'get_data',
@@ -2111,7 +2112,8 @@ class UpdateERMcontroller extends Controller
             'get_data_hidung',
             'formData_hidung',
             'get_data_tht',
-            'formData_tht'
+            'formData_tht',
+            'mt_paramedis'
         ]));
     }
     public function caridoktertindakan(Request $request)
@@ -2142,7 +2144,7 @@ class UpdateERMcontroller extends Controller
                     'kode_kunjungan' => $kodeKunjungan // Kondisi unik yang dicek
                 ],
                 [
-                    'kode_paramedis' => $request->input('id_dokter'),
+                    'kode_paramedis' => auth()->user()->kode_paramedis,
                     'kesimpulan'     => $request->input('kesimpulan'),
                     'anjuran'        => $request->input('anjuran'),
                     'data_detail'    => json_encode($semuaDataInput),
@@ -2178,7 +2180,7 @@ class UpdateERMcontroller extends Controller
                 DB::table('ts_laporan_tindakan_hidung')
                     ->where('kode_kunjungan', $kodeKunjungan)
                     ->update([
-                        'kode_paramedis' => $request->input('id_dokter'),
+                        'kode_paramedis' => auth()->user()->kode_paramedis,
                         'kesimpulan'     => $request->input('kesimpulan'),
                         'data_detail'    => json_encode($semuaDataInput),
                         'updated_at'     => now(),
@@ -2187,7 +2189,7 @@ class UpdateERMcontroller extends Controller
                 // Jika BELUM ADA, lakukan INSERT (buat baru)
                 DB::table('ts_laporan_tindakan_hidung')->insert([
                     'kode_kunjungan' => $kodeKunjungan,
-                    'kode_paramedis' => $request->input('id_dokter'),
+                    'kode_paramedis' => auth()->user()->kode_paramedis,
                     'kesimpulan'     => $request->input('kesimpulan'),
                     'data_detail'    => json_encode($semuaDataInput),
                     'created_at'     => now(),
@@ -2222,7 +2224,7 @@ class UpdateERMcontroller extends Controller
                 DB::table('ts_laporan_tindakan_endoskopi_tht')
                     ->where('kode_kunjungan', $kodeKunjungan)
                     ->update([
-                        'kode_paramedis' => $request->input('id_dokter'),
+                        'kode_paramedis' => auth()->user()->kode_paramedis,
                         'kesimpulan'     => $request->input('kesimpulan'),
                         'saran'          => $request->input('saran'),
                         'data_detail'    => json_encode($semuaDataInput),
@@ -2232,7 +2234,7 @@ class UpdateERMcontroller extends Controller
                 // Jika BELUM ADA, lakukan INSERT (buat baru)
                 DB::table('ts_laporan_tindakan_endoskopi_tht')->insert([
                     'kode_kunjungan' => $kodeKunjungan,
-                    'kode_paramedis' => $request->input('id_dokter'),
+                    'kode_paramedis' => auth()->user()->kode_paramedis,
                     'kesimpulan'     => $request->input('kesimpulan'),
                     'saran'          => $request->input('saran'),
                     'data_detail'    => json_encode($semuaDataInput),

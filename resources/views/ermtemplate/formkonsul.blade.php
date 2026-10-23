@@ -1,4 +1,3 @@
-
 <div class="card">
     <div class="card-header bg-dark">FORM RUJUKAN INTERNAL / KONSUL POLI LAIN</div>
     <div class="card-body">
@@ -21,31 +20,37 @@
             <div class="form-group">
                 <label for="exampleInputPassword1">Diagnosa</label>
                 <input type="text" class="form-control" id="diagnosakonsul" name="diagnosakonsul"
-                    value="@foreach ($assdok as $as )
-                    {{ $as->diagnosakerja }}
-                    @endforeach">
+                    value="@foreach ($assdok as $as)
+                    {{ $as->diagnosakerja }} @endforeach">
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">Keterangan</label>
-                <textarea type="text" class="form-control" id="keterangankonsul" name="keterangankonsul">@foreach ($assdok as $as )
-                    {{ $as->keterangan_tindak_lanjut }}
-                    @endforeach</textarea>
+                <textarea type="text" class="form-control" id="keterangankonsul" name="keterangankonsul">
+@foreach ($assdok as $as)
+{{ $as->keterangan_tindak_lanjut }}
+@endforeach
+</textarea>
             </div>
         </form>
         <button class="btn btn-success" onclick="simpankonsul()">Simpan</button>
     </div>
 </div>
+<script src="{{ asset('public/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('public/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('public/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('public/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('public/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
 <script>
     $(document).ready(function() {
         $(document).ready(function() {
-        $('#namadokter').autocomplete({
-            source: "<?= route('caridokter_erm') ?>",
-            select: function(event, ui) {
-                $('[id="namadokter"]').val(ui.item.label);
-                $('[id="kodeparamedis_konsul"]').val(ui.item.kode);
-            }
-        });
-    })
+            $('#namadokter').autocomplete({
+                source: "<?= route('caridokter_erm') ?>",
+                select: function(event, ui) {
+                    $('[id="namadokter"]').val(ui.item.label);
+                    $('[id="kodeparamedis_konsul"]').val(ui.item.kode);
+                }
+            });
+        })
         $('#politujuan').autocomplete({
             source: "<?= route('caripoli_konsul') ?>",
             select: function(event, ui) {

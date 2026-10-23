@@ -523,7 +523,7 @@
                                     <div class="position-relative px-3">
                                         <!-- Input Text untuk Pencarian -->
                                         <input type="text" id="search_dokter"
-                                            value="{{ $formData['search_dokter'] ?? '' }}"
+                                            value="{{ $mt_paramedis->nama_paramedis }}"
                                             class="form-control form-control-sm text-center underline-input font-weight-bold"
                                             placeholder="Ketik nama dokter/paramedis..." autocomplete="off">
 
@@ -968,15 +968,13 @@
                                     <!-- Autocomplete Search Container -->
                                     <div class="position-relative px-3">
                                         <input type="text" id="search_dokter_hidung"
-                                            value="{{ $formData_hidung['search_dokter'] ?? '' }}"
+                                            value="{{ $mt_paramedis->nama_paramedis }}"
                                             class="form-control form-control-sm text-center underline-input font-weight-bold"
                                             placeholder="Ketik nama dokter/paramedis..." autocomplete="off">
-
                                         <div id="list_dokter_hidung" class="dropdown-menu w-100 shadow-sm"
                                             style="max-height: 160px; overflow-y: auto; display: none; position: absolute; z-index: 1000;">
                                         </div>
                                     </div>
-
                                     <small class="text-muted mt-1 d-block">Tanda tangan dan Nama jelas</small>
                                 </div>
                             </div>
@@ -1363,7 +1361,7 @@
                                     <!-- Autocomplete Search Container -->
                                     <div class="position-relative px-3">
                                         <input type="text" id="search_dokter_tht"
-                                            value="{{ $formData_tht['search_dokter'] ?? '' }}"
+                                            value="{{ $mt_paramedis->nama_paramedis }}"
                                             class="form-control form-control-sm text-center underline-input font-weight-bold"
                                             placeholder="Ketik nama dokter/paramedis..." autocomplete="off">
 

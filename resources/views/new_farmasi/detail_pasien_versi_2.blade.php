@@ -11,7 +11,7 @@
         <span class="badge badge-light text-primary" style="font-size: 0.9rem;">No. RM:
             {{ $data_kunjungan[0]->no_rm ?? '' }}</span>
     </div>
-    <div id="patientDetailBody" class="collapse">
+    <div id="patientDetailBody" class="collapse show">
         <div class="card-body p-4">
             <div class="row">
                 <!-- Kolom Kiri: Informasi Pribadi -->
