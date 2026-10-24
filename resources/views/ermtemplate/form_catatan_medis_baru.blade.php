@@ -23,7 +23,8 @@
             data-target="#modalendoskopitelingan"><i class="bi bi-journal-text"></i> Pemeriksaan Mikroskopik / Endoskopi
             Telinga </button>
         <button class="btn btn-danger mb-2 lihat_endos_hidung" nomorrm="{{ $rm }}" data-toggle="modal"
-            data-target="#modalendoskopihidung"><i class="bi bi-journal-text"></i> Pemeriksaan Nasoendoskopi / Endoskopi Hidung
+            data-target="#modalendoskopihidung"><i class="bi bi-journal-text"></i> Pemeriksaan Nasoendoskopi / Endoskopi
+            Hidung
         </button>
         <button class="btn btn-danger mb-2 lihat_endos_tht" nomorrm="{{ $rm }}" data-toggle="modal"
             data-target="#modalendoskopitht"><i class="bi bi-journal-text"></i> Pemeriksaan Endoskopi THT - KL </button>
@@ -109,32 +110,55 @@
                                         rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
                                         unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
                                             class="bi bi-printer mr-2"></i>Laporan Operasi </button>
+                                    @if ($k->kode_unit == 1019 || $k->kode_unit == 1045)
+                                        <button type="button" class="btn btn-secondary laporanendoskopitelinga"
+                                            rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                            unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"
+                                            data-toggle="modal" data-target="#modalendoskopitelingan"><i
+                                                class="bi bi-printer mr-2"></i>Pemeriksaan Mikroskopik Endoskopi
+                                            telinga
+                                        </button>
+                                        <button type="button" class="btn btn-secondary laporanendoskopihidung"
+                                            rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                            unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"
+                                            data-toggle="modal" data-target="#modalendoskopihidung"><i
+                                                class="bi bi-printer mr-2"></i>Pemeriksaan Nasoendoskopi / endoskopi
+                                            hidung
+                                        </button>
+                                        <button type="button" class="btn btn-secondary laporanendoskopitht"
+                                            rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                            unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"
+                                            data-toggle="modal" data-target="#modalendoskopitht"><i
+                                                class="bi bi-printer mr-2"></i> Pemeriksaan Endoskopi THT - KL
+                                        </button>
+                                    @endif
                                     @if ($k->kode_unit == 1014)
-                                    <button type="button" class="btn btn-secondary laporanoperasikatarak"
-                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
-                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
-                                            class="bi bi-printer mr-2"></i>Laporan Operasi Katarak</button>
-                                    <button type="button" class="btn btn-secondary laporanoperasikatarakgl"
-                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
-                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
-                                            class="bi bi-printer mr-2"></i>Laporan Operasi Katarak & Glaukoma</button>
-                                    <button type="button" class="btn btn-secondary laporanoperasikataraktrab"
-                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
-                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
-                                            class="bi bi-printer mr-2"></i>Laporan Operasi Trabeculektomi</button>
-                                    <button type="button" class="btn btn-secondary laporanoperasiptery"
-                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
-                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
-                                            class="bi bi-printer mr-2"></i>Laporan Operasi Pterygium</button>
-                                    <button type="button" class="btn btn-secondary laporanoperasiint"
-                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
-                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
-                                            class="bi bi-printer mr-2"></i>Laporan Injeksi Intra Vitreal</button>
-                                    <button type="button" class="btn btn-secondary ambildataberkasscan"
-                                        rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
-                                        unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"
-                                        data-toggle="modal" data-target="#modalberkasyangdiscan"><i
-                                            class="bi bi-printer mr-2"></i>Berkas yang discan </button>
+                                        <button type="button" class="btn btn-secondary laporanoperasikatarak"
+                                            rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                            unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
+                                                class="bi bi-printer mr-2"></i>Laporan Operasi Katarak</button>
+                                        <button type="button" class="btn btn-secondary laporanoperasikatarakgl"
+                                            rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                            unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
+                                                class="bi bi-printer mr-2"></i>Laporan Operasi Katarak &
+                                            Glaukoma</button>
+                                        <button type="button" class="btn btn-secondary laporanoperasikataraktrab"
+                                            rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                            unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
+                                                class="bi bi-printer mr-2"></i>Laporan Operasi Trabeculektomi</button>
+                                        <button type="button" class="btn btn-secondary laporanoperasiptery"
+                                            rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                            unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
+                                                class="bi bi-printer mr-2"></i>Laporan Operasi Pterygium</button>
+                                        <button type="button" class="btn btn-secondary laporanoperasiint"
+                                            rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                            unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"><i
+                                                class="bi bi-printer mr-2"></i>Laporan Injeksi Intra Vitreal</button>
+                                        <button type="button" class="btn btn-secondary ambildataberkasscan"
+                                            rm="{{ $k->no_rm_k }}" counter="{{ $k->counter }}"
+                                            unit="{{ $k->kode_unit }}" kodekunjungan="{{ $k->kodek }}"
+                                            data-toggle="modal" data-target="#modalberkasyangdiscan"><i
+                                                class="bi bi-printer mr-2"></i>Berkas yang discan </button>
                                     @endif
                                 </div>
                             </div>
@@ -2342,6 +2366,48 @@
             }
         });
     })
+    $(".laporanendoskopitelinga").click(function() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('rm')
+        kodekunjungan = $('#kodekunjungan').val()
+        jenis = '1'
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                jenis,
+                kodekunjungan
+            },
+            url: '<?= route('ambil_hasil_endos_telinga_by_kunjungan') ?>',
+            success: function(response) {
+                $('.v_hasil_endos_telinga').html(response);
+                spinner.hide()
+            }
+        });
+    })
+    $(".laporanendoskopihidung").click(function() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        kodekunjungan = $('#kodekunjungan').val()
+        jenis = '1'
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                jenis,
+                kodekunjungan
+            },
+            url: '<?= route('ambil_hasil_endos_hidung_by_kunjungn') ?>',
+            success: function(response) {
+                $('.v_hasil_endos_hidung').html(response);
+                spinner.hide()
+            }
+        });
+    })
     $(".lihat_hasil_endos_telinga").click(function() {
         spinner = $('#loader')
         spinner.show();
@@ -2384,6 +2450,29 @@
             }
         });
     })
+
+    $(".laporanendoskopitht").click(function() {
+        spinner = $('#loader')
+        spinner.show();
+        nomorrm = $(this).attr('nomorrm')
+        kodekunjungan = $('#kodekunjungan').val()
+        jenis = '1'
+        $.ajax({
+            type: 'post',
+            data: {
+                _token: "{{ csrf_token() }}",
+                nomorrm,
+                jenis,
+                kodekunjungan
+            },
+            url: '<?= route('ambil_hasil_endos_tht_by_kunjungan') ?>',
+            success: function(response) {
+                $('.v_hasil_endos_tht').html(response);
+                spinner.hide()
+            }
+        });
+    })
+
     $(".lihat_endos_tht").click(function() {
         spinner = $('#loader')
         spinner.show();
@@ -2405,7 +2494,6 @@
             }
         });
     })
-
 </script>
 <script>
     $(".cetakdokumen").on('click', function(event) {

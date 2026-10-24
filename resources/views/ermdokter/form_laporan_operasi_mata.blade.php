@@ -563,12 +563,12 @@
         </div>
     </div>
     <div class="card">
-        <div class="card-header" id="headingFive">
+        <div class="card-header bg-warning " id="headingFive">
             <h2 class="mb-0">
                 <button class="btn  btn-block text-left d-flex justify-content-between align-items-center"
                     type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true"
                     aria-controls="collapseFive">
-                    <span class="text-bold">LAPORAN OPERASI</span>
+                    <span class="text-bold">Laporan Operasi</span>
                     <!-- Badge Petunjuk -->
                    
                 </button>
@@ -949,12 +949,12 @@
         </div>
     </div>
     <div @if (auth()->user()->unit != '1014') hidden @endif class="card">
-        <div class="card-header" id="headingSix">
+        <div class="card-header bg-warning " id="headingSix">
             <h2 class="mb-0">
                 <button class="btn btn-block text-left d-flex justify-content-between align-items-center"
                     type="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true"
                     aria-controls="collapseSix">
-                    <span class="text-bold">LAPORAN OPERASI KATARAK</span>
+                    <span class="text-bold">Laporan Operasi Katarak</span>
                     <!-- Badge Petunjuk -->
                    
                 </button>
@@ -1447,12 +1447,12 @@
         </div>
     </div>
     <div @if (auth()->user()->unit != '1014') hidden @endif class="card">
-        <div class="card-header" id="headingSeven">
+        <div class="card-header bg-warning " id="headingSeven">
             <h2 class="mb-0">
                 <button class="btn btn-block text-left d-flex justify-content-between align-items-center"
                     type="button" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="true"
                     aria-controls="collapseSeven">
-                    <span class="text-bold">LAPORAN OPERASI KATARAK & GLAUKOMA</span>
+                    <span class="text-bold">Laporan Operasi Katarak & Glaukoma</span>
                     {{-- <span class="badge badge-info p-2" style="font-size: 11px;"><i class="fas fa-edit mr-1"></i>
                         Klik untuk Isi Form</span> --}}
                 </button>
@@ -2217,12 +2217,12 @@
         </div>
     </div>
     <div @if (auth()->user()->unit != '1014') hidden @endif class="card">
-        <div class="card-header" id="headingEight">
+        <div class="card-header bg-warning " id="headingEight">
             <h2 class="mb-0">
                 <button class="btn btn-block text-left d-flex justify-content-between align-items-center"
                     type="button" data-toggle="collapse" data-target="#collapseEight" aria-expanded="true"
                     aria-controls="collapseEight">
-                    <span class="text-bold">LAPORAN OPERASI TRABECULEKTOMI</span>
+                    <span class="text-bold">Laporan Operasi Trabeculektomi</span>
                     <!-- Badge Petunjuk -->
                    
                 </button>
@@ -2460,12 +2460,12 @@
         </div>
     </div>
     <div @if (auth()->user()->unit != '1014') hidden @endif class="card">
-        <div class="card-header" id="headingNine">
+        <div class="card-header bg-warning " id="headingNine">
             <h2 class="mb-0">
                 <button class="btn btn-block text-left d-flex justify-content-between align-items-center"
                     type="button" data-toggle="collapse" data-target="#collapseNine" aria-expanded="true"
                     aria-controls="collapseNine">
-                    <span class="text-bold">LAPORAN OPERASI PTERYGIUM</span>
+                    <span class="text-bold">Laporan Operasi Pterygium</span>
                     <!-- Badge Petunjuk -->
                    
                 </button>
@@ -2733,17 +2733,14 @@
                     Simpan Laporan</button>
             </div>
         </div>
-
     </div>
     <div @if (auth()->user()->unit != '1014') hidden @endif class="card">
-        <div class="card-header" id="headingTen">
+        <div class="card-header bg-warning " id="headingTen">
             <h2 class="mb-0">
                 <button class="btn btn-block text-left d-flex justify-content-between align-items-center"
                     type="button" data-toggle="collapse" data-target="#collapseTen" aria-expanded="true"
                     aria-controls="collapseTen">
-                    <span class="text-bold">LAPORAN INJEKSI INTRA VITREAL</span>
-                    <!-- Badge Petunjuk -->
-                   
+                    <span class="text-bold">Laporan Injeksi Intra Vitreal</span>                 
                 </button>
             </h2>
         </div>

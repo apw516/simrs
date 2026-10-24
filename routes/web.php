@@ -926,8 +926,11 @@ Route::get('log.buka.panduan', [UpdateERMcontroller::class, 'viewPanduanTte'])->
 
 Route::post('/simpanaktivasitte', [UpdateERMcontroller::class, 'simpanaktivasitte'])->name('simpanaktivasitte');
 Route::post('/ambil_hasil_endos_telinga', [UpdateERMcontroller::class, 'ambil_hasil_endos_telinga'])->name('ambil_hasil_endos_telinga');
+Route::post('/ambil_hasil_endos_telinga_by_kunjungan', [UpdateERMcontroller::class, 'ambil_hasil_endos_telinga_by_kunjungan'])->name('ambil_hasil_endos_telinga_by_kunjungan');
+Route::post('/ambil_hasil_endos_hidung_by_kunjungn', [UpdateERMcontroller::class, 'ambil_hasil_endos_hidung_by_kunjungn'])->name('ambil_hasil_endos_hidung_by_kunjungn');
 Route::post('/ambil_hasil_endos_hidung', [UpdateERMcontroller::class, 'ambil_hasil_endos_hidung'])->name('ambil_hasil_endos_hidung');
 Route::post('/ambil_hasil_endos_tht', [UpdateERMcontroller::class, 'ambil_hasil_endos_tht'])->name('ambil_hasil_endos_tht');
+Route::post('/ambil_hasil_endos_tht_by_kunjungan', [UpdateERMcontroller::class, 'ambil_hasil_endos_tht_by_kunjungan'])->name('ambil_hasil_endos_tht_by_kunjungan');
 
 Route::post('/formassesmenbundir', [UpdateERMcontroller::class, 'formassesmenbundir'])->name('formassesmenbundir');
 Route::post('/v_berkas_scan_kunjungan', [UpdateERMcontroller::class, 'v_berkas_scan_kunjungan'])->name('v_berkas_scan_kunjungan');

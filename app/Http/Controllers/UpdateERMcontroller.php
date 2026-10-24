@@ -2254,6 +2254,21 @@ class UpdateERMcontroller extends Controller
             ], 500);
         }
     }
+    public function ambil_hasil_endos_telinga_by_kunjungan(Request $request)
+    {
+        $kode_kunjungan = $request->kodekunjungan;
+        $kodeKunjungan = DB::table('ts_kunjungan')
+            ->where('kode_kunjungan', $kode_kunjungan)
+            ->pluck('kode_kunjungan'); // Sesuaikan nama kolom kode kunjungan di tabel ts_kunjungan
+
+        $data_laporan = DB::table('ts_laporan_tindakan_telinga')
+            ->whereIn('kode_kunjungan', $kodeKunjungan)
+            ->orderBy('id','DESC')
+            ->get();
+
+        // 3. Kirim data ke view
+        return view('form_erm_perawat.list_laporan_tindakan_telinga', compact('data_laporan'));
+    }
     public function ambil_hasil_endos_telinga(Request $request)
     {
         $no_rm = $request->nomorrm;
@@ -2272,6 +2287,24 @@ class UpdateERMcontroller extends Controller
         // 3. Kirim data ke view
         return view('form_erm_perawat.list_laporan_tindakan_telinga', compact('data_laporan'));
     }
+    public function ambil_hasil_endos_hidung_by_kunjungn(Request $request)
+    {
+        $kode_kunjungan = $request->kodekunjungan;
+
+        // 1. Ambil daftar kode kunjungan berdasarkan No. RM
+        $kodeKunjungan = DB::table('ts_kunjungan')
+            ->where('kode_kunjungan', $kode_kunjungan)
+            ->pluck('kode_kunjungan'); // Sesuaikan nama kolom kode kunjungan di tabel ts_kunjungan
+
+        // 2. Ambil data laporan tindakan telinga berdasarkan daftar kode kunjungan tersebut
+        $data_laporan = DB::table('ts_laporan_tindakan_hidung')
+            ->whereIn('kode_kunjungan', $kodeKunjungan)
+            ->orderBy('id','DESC')
+            ->get();
+
+        // 3. Kirim data ke view
+        return view('form_erm_perawat.list_laporan_tindakan_hidung', compact('data_laporan'));
+    }
     public function ambil_hasil_endos_hidung(Request $request)
     {
         $no_rm = $request->nomorrm;
@@ -2289,6 +2322,23 @@ class UpdateERMcontroller extends Controller
 
         // 3. Kirim data ke view
         return view('form_erm_perawat.list_laporan_tindakan_hidung', compact('data_laporan'));
+    }
+    public function ambil_hasil_endos_tht_by_kunjungan(Request $request)
+    {
+        $kode_kunjungan = $request->kodekunjungan;
+        // 1. Ambil daftar kode kunjungan berdasarkan No. RM
+        $kodeKunjungan = DB::table('ts_kunjungan')
+            ->where('kode_kunjungan', $kode_kunjungan)
+            ->pluck('kode_kunjungan'); // Sesuaikan nama kolom kode kunjungan di tabel ts_kunjungan
+
+        // 2. Ambil data laporan tindakan telinga berdasarkan daftar kode kunjungan tersebut
+        $data_laporan = DB::table('ts_laporan_tindakan_endoskopi_tht')
+            ->whereIn('kode_kunjungan', $kodeKunjungan)
+            ->orderBy('id','DESC')
+            ->get();
+
+        // 3. Kirim data ke view
+        return view('form_erm_perawat.list_laporan_tindakan_tht', compact('data_laporan'));
     }
     public function ambil_hasil_endos_tht(Request $request)
     {
